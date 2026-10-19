@@ -8,7 +8,8 @@ Plan and estimates: docs/BRIEFING.md. Architecture: docs/ARCHITECTURE.md. Token 
   tools (check.sh, run_godot.sh, godot.sh, lint, map, doc check); CI workflow; .claude settings, session hook,
   /handoff skill.
 - `tools/check.sh`: docs, lint, import, tests all ok (11 tests).
-- Not seen yet: the first CI run on GitHub; the look test on the owner's laptop.
+- GitHub CI run 39335654359 (check #1) on 780e986: success, log read ("all checks passed", 7 s).
+- Not seen yet: the look test on the owner's laptop.
 - Branch `claude/loving-galileo-g4170t`, pushed. Not merged into `main` (needs the owner's OK).
 
 ## Waiting on the owner
@@ -16,7 +17,7 @@ Plan and estimates: docs/BRIEFING.md. Architecture: docs/ARCHITECTURE.md. Token 
 2. Answer BRIEFING section 9 (world and cast, combat core, Arabic, merge-to-main OK, title).
 
 ## Next steps
-1. Read the first CI run; review the look test from the owner's screenshot; set camera, depth of field and
+1. Review the look test from the owner's screenshot and FPS; set camera, depth of field and
    texel density; log the look decisions. Model: Sonnet. Effort: medium.
 2. M1 art spike: `tools/art/pixelize.py` (downscale, palette lock, background key, sheet packing) and one
    Gemini-made character as a pixel sprite in the look test; draft docs/design/art-bible.md. Model: Opus (it judges
