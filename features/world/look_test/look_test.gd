@@ -5,16 +5,17 @@ extends Node3D
 
 const GROUND: int = 12
 const PIXELS_PER_UNIT: float = 16.0
-const CAMERA_POS: Vector3 = Vector3(0.0, 7.5, 11.0)
+const CAMERA_POS: Vector3 = Vector3(0.0, 6.0, 8.5)
 const CAMERA_FOV: float = 30.0
-const DOF_NEAR: float = 8.0
-const DOF_FAR: float = 14.0
-const DOF_AMOUNT: float = 0.12
+const DOF_NEAR: float = 5.0
+const DOF_FAR: float = 12.0
+const DOF_AMOUNT: float = 0.1
 
 var _fps_label: Label
 
 
 func _ready() -> void:
+	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	_add_environment()
 	_add_sun()
 	_add_ground()

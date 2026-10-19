@@ -9,11 +9,12 @@ Plan and estimates: docs/BRIEFING.md. Architecture: docs/ARCHITECTURE.md. Token 
   /handoff skill.
 - `tools/check.sh`: docs, lint, import, tests all ok (11 tests).
 - GitHub CI run 39335654359 (check #1) on 780e986: success, log read ("all checks passed", 7 s).
-- Not seen yet: the look test on the owner's laptop.
+- Look test seen (owner: Dell Latitude 5520, i7-1185G7, 16 GB, Iris Xe, 60 FPS, likely vsync-capped). Look v1 applied
+  (DECISIONS): closer camera, softer DoF, vsync off. Pixels not re-checked: owner to rerun F5 and send screenshot + FPS.
 - Branch `claude/loving-galileo-g4170t`, pushed. Not merged into `main` (needs the owner's OK).
 
 ## Waiting on the owner
-1. Install the must-haves (BRIEFING section 6), open the project, press F5: screenshot, FPS, laptop specs.
+1. Pull, press F5 again: screenshot and FPS (vsync is now off, so the number is real headroom).
 2. Answer BRIEFING section 9 (world and cast, combat core, Arabic, merge-to-main OK, title).
 
 ## Next steps
@@ -27,7 +28,7 @@ Plan and estimates: docs/BRIEFING.md. Architecture: docs/ARCHITECTURE.md. Token 
 
 ## Paste-ready prompt
 ```
-Continue the game repo (ferasalm/game), next step 1 in HANDOFF.md. My laptop: <CPU, RAM, GPU>.
-Look test FPS: <n>. Screenshot attached. Answers to BRIEFING section 9: <1..6 or "defaults">.
+Continue the game repo (ferasalm/game), next step 1 in HANDOFF.md. Laptop: Latitude 5520, i7-1185G7, 16 GB, Iris Xe.
+Look v1 FPS: <n>. Screenshot attached. BRIEFING section 9: defaults.
 Sonnet, medium effort. Finish with /handoff.
 ```
