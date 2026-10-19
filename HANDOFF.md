@@ -14,7 +14,7 @@ Plan and estimates: docs/BRIEFING.md. Architecture: docs/ARCHITECTURE.md. Token 
 - Branch `claude/new-session-0mxnqs`, pushed. Not merged into `main` (needs the owner's OK).
 
 ## Waiting on the owner
-1. Answer BRIEFING section 9 (world and cast, combat core, Arabic, merge-to-main OK, title).
+1. Review docs/design/world.md (cast, djanbeyyah); send the Gemini character picture.
 
 ## Next steps
 1. M1 art spike: `tools/art/pixelize.py` (downscale, palette lock, background key, sheet packing) and one
@@ -26,5 +26,5 @@ Plan and estimates: docs/BRIEFING.md. Architecture: docs/ARCHITECTURE.md. Token 
 ## Paste-ready prompt
 ```
 Continue the game repo (ferasalm/game), next step 1 in HANDOFF.md (M1 art spike). A Gemini character picture is attached.
-BRIEFING section 9: defaults. Opus, high effort. Finish with /handoff.
+Opus, high effort. Finish with /handoff.
 ```

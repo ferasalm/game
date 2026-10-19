@@ -7,8 +7,8 @@ real usage after the first three build sessions (docs/USAGE.md).
 ## 1. What we're building
 A 30-minute Chapter 1 vertical slice of an HD-2D RPG: pixel-art characters in small 3D diorama worlds with
 miniature-style depth of field, a Grandia-style timeline battle system (choose an action, charge it, interrupt
-enemies who are charging), set in the frankincense mountains of pre-Islamic South Arabia (Gemini's world, pending
-your review). After the slice, you decide whether to make a full game.
+enemies who are charging), set in a cyberpunk futuristic Sana'a, Yemen (owner decision;
+see docs/design/world.md). After the slice, you decide whether to make a full game.
 
 Gemini's research is a good start: Godot, headless tests, typed code, a data-driven combat design, a strong world
 and a minute-by-minute slice plan. It also has problems: invented statistics (the token numbers have no source),

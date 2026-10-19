@@ -39,7 +39,7 @@ plays and makes art; Claude writes the code and runs every check itself. He is o
 
 ## Branches
 Work on the session branch and push it. `main` is the shared branch; merge into it only with the owner's
-standing OK (pending: BRIEFING question 5).
+standing OK (given 2026-10-19: merge at the end of each session).
 
 ## End of every session
 Run /handoff (.claude/skills/handoff/SKILL.md).
