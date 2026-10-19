@@ -1,0 +1,7 @@
+# Godot cache and local files (the editor rebuilds .godot/); keep *.import and *.uid files in git.
+/.godot/
+/export/
+/builds/
+/.check/
+*.tmp
+__pycache__/

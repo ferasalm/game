@@ -1,0 +1,13 @@
+{
+  "kind": "action",
+  "items": [
+    {"id": "khopesh_combo", "name_key": "ACTION_KHOPESH_COMBO", "sp_cost": 0, "power": 25, "hit_count": 2,
+     "cast_speed": 1.2, "recovery": 500, "knockback": 1200},
+    {"id": "sluice_breaker", "name_key": "ACTION_SLUICE_BREAKER", "sp_cost": 8, "power": 40,
+     "cast_speed": 0.8, "recovery": 1000, "knockback": 3000, "cancels_cast": true},
+    {"id": "silt_flask", "name_key": "ACTION_SILT_FLASK", "sp_cost": 5, "power": 8, "is_melee": false,
+     "ignores_cover": true, "cast_speed": 1.6, "recovery": 300, "knockback": 400, "applies_status": "silt_bogged"},
+    {"id": "cleaving_tax", "name_key": "ACTION_CLEAVING_TAX", "sp_cost": 0, "power": 45,
+     "cast_speed": 0.55, "recovery": 800, "knockback": 1500}
+  ]
+}

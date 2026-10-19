@@ -1,0 +1,6 @@
+{
+  "kind": "combatant",
+  "items": [
+    {"id": "Bad Id", "max_hp": 10, "attack": 1, "defense": 1, "agility": 0, "weight": 0, "actions": ["no_such_action"]}
+  ]
+}
