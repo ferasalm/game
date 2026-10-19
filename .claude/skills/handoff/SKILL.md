@@ -1,0 +1,27 @@
+---
+name: handoff
+description: End-of-session wrap-up for the game repo. Runs the checks, logs the owner's decisions, curates LESSONS, adds a USAGE row, rewrites HANDOFF.md, commits and pushes. Use when the user types /handoff, says "wrap up", or the chat passes ~150k tokens.
+---
+
+# Handoff (game)
+
+HANDOFF, DECISIONS and LESSONS load at every session start, so every line costs tokens in every future chat.
+
+1. **Check.** `tools/check.sh` must end with "all checks passed"; read and fix any FAIL lines first.
+   New or moved files: `python3 tools/map.py` (the docs check fails on a stale map).
+2. **Decisions.** Each decision the owner made this session: one dated line in docs/DECISIONS.md
+   (`- YYYY-MM-DD | decision | why | by`), with his words where short. A replaced line is struck through
+   (`~~...~~`) and says what superseded it. Never delete or reword one.
+3. **Lessons.** Anything that cost real time (an error, a wrong guess, nearly asking the owner for something you
+   could do): symptom -> cause -> fix, dated, verified only. Merge with similar entries; fix or delete wrong ones.
+   Max 80 lines: summarize back to ~65 when it gets there.
+4. **Usage.** One row in docs/USAGE.md: date, model (name and raw ID from `get_session` when available), effort,
+   task, share of the 5-hour window used if the owner told you (`/usage`), result.
+5. **HANDOFF.md** (rewrite, max 60 lines): Last updated (session number, model); Status (what is built and checked,
+   what is not seen yet, which branch, whether merged into main); Waiting on the owner; Next steps, each with
+   `Model: Haiku|Sonnet|Opus` and `Effort: low|medium|high` (the cheapest model that can do it well); a
+   paste-ready prompt for the next chat.
+6. **Commit and push.** `tools/check.sh` again, commit (one message saying what changed), `git push -u origin
+   <branch>`. Merge into `main` only if the owner gave his standing OK (DECISIONS); then `git push origin HEAD:main`.
+7. **Tell the owner** in a few lines: what was done, where it is (branch, main or not), the next step with its
+   model and effort, and whether to start a new chat.

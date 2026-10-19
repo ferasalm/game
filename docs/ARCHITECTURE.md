@@ -1,0 +1,159 @@
+# Architecture
+
+How the game is built and why. Not loaded at session start: grep the heading you need. Rules that tools enforce
+are marked (enforced). Decisions behind this file: docs/DECISIONS.md, 2026-10-19. Code map: docs/MAP.md.
+
+## 1. Goals (what every choice below optimizes)
+1. **Cheap to change for years.** A change touches one feature folder; nothing reaches across by node path.
+2. **Verified by text, not by eye.** Rules live in pure code with headless tests, so Claude checks work by reading
+   one summary line instead of playing the game or reading screenshots.
+3. **Art never blocks code.** Every visual has a placeholder; real art swaps in by id.
+4. **AI-friendly.** Small typed files, data in JSON, one generated map, levels described as text.
+5. **Runs well on a laptop with integrated graphics** at 60 fps.
+
+## 2. Platform
+- Godot **4.7.2 stable**, pinned in `.godot-version` (tools/godot.sh downloads it; CI and cloud sessions use it).
+  Upgrade only in a chat of its own: bump the file, run tools/check.sh, play the look test.
+- **GDScript, statically typed** (Godot treats an untyped declaration as an error: project.godot).
+- Renderer **Forward+** (Vulkan/D3D12). Fallback if the owner's laptop is too slow: Mobile renderer.
+- Target: Windows first (Steam later if the owner decides). Linux and Steam Deck cost little later.
+- Window 1920x1080, scales down; 60 fps on integrated GPUs (Intel Iris Xe / AMD Radeon 600M class).
+
+## 3. The HD-2D render model (owner's choice: true HD-2D)
+- **World = 3D diorama.** Ground and buildings are modular blocks on a GridMap (a 3D tile map) plus prop scenes.
+  Blocks are low-poly models made in Blockbench with pixel-art textures, exported as glTF.
+- **Characters = 2D pixel-art sprites standing in 3D**: Sprite3D/AnimatedSprite3D, billboard on the Y axis only,
+  nearest filtering, alpha cut, lit by the scene (shaded) and casting shadows. A `CharacterVisual` component hides
+  the technique, so it can change (e.g. to a quad with a normal-mapped shader) without touching gameplay.
+- **One texel density everywhere: 16 px = 1 m** (sprites and textures). Characters about 32 px tall. One locked
+  palette (art bible, M1). These keep AI-made art consistent.
+- **Camera:** perspective, narrow FOV (25-35°), raised 30-40°, smooth follow; per-area limits come from level data.
+- **The look:** CameraAttributesPractical depth of field (near + far blur = the tilt-shift miniature look), glow,
+  filmic tonemapping, a low warm sun with shadows, a few point lights. Static light baked (LightmapGI) to spare the
+  GPU; volumetric fog only where it pays. Screen shaders only if the built-in effects fall short.
+- **Spike:** `features/world/look_test/` builds this in code with an FPS counter. The owner runs it on his laptop
+  (M1); the chosen numbers then move into content data.
+
+## 4. Layers (dependencies point one way)
+```
+tools/ (outside the game)          content/*.json (data)
+core/  autoloads, Def base, save   <- every feature may use core
+features/<f>/defs/    read-only definitions built from content
+features/<f>/logic/   pure rules: RefCounted, no nodes (enforced)
+features/<f>/view/    nodes and scenes that show logic results and collect input
+levels/<area>/        scenes built from level data + hand-placed dressing
+```
+- Logic never touches nodes, the scene tree, autoloads, input or `await` (enforced in `logic/` folders).
+- View never computes rules: it asks logic and plays the events logic returns.
+- A feature never reaches into another feature's view. Cross-feature talk goes through EventBus or GameState.
+
+## 5. Folders (by feature, so one task reads one folder)
+```
+project.godot  .godot-version  CLAUDE.md  HANDOFF.md  README.md
+core/           event_bus.gd game_state.gd content_db.gd defs/ tests/   (later: scene_router, save_service,
+                audio_director, settings, asset_manifest)
+features/       combat/ exploration/ dialogue/ inventory/ puzzles/ party/ ui/ world/
+  <feature>/    defs/ logic/ view/ tests/ (only the folders it needs)
+content/        <feature>/*.json   {"kind": ..., "items": [...]}
+levels/         <area>/layout.txt area.json area.tscn (generated) dressing.tscn (hand-made)   (M2)
+assets/         sprites/ textures/ models/ audio/ fonts/ + manifest.json   (binary; Claude doesn't read them)
+localization/   strings.csv (key, en[, ar])   (M4)
+tests/          runner.gd base_test.gd
+tools/          check.sh run_godot.sh godot.sh lint_gd.py map.py doc_check.py (later: art/, build_level)
+docs/           ARCHITECTURE BRIEFING EFFICIENCY DECISIONS LESSONS MAP USAGE design/ research/
+```
+
+## 6. Data: definitions, state, saves
+- **Content** is JSON under `content/`. Each file: `{"kind": "action", "items": [{...}]}`. Ids are
+  lowercase_identifiers. Player-facing text is a localization key (`name_key`), never the text itself.
+- **ContentDB** (autoload) reads every file once into typed **Def** objects (ActionDef, CombatantDef, StatusDef...),
+  reports every problem at once (missing field, range, bad id, dangling reference) and is read-only afterwards.
+  A test loads all shipped content and a broken fixture, so bad data fails CI before anyone plays.
+- **Runtime state** lives in separate objects (UnitState in battle; later PartyState, InventoryState). Never mutate a
+  definition: two enemies of one kind share one CombatantDef but each has its own UnitState.
+- **GameState** (autoload) is the save file: plain data with `to_dict()/from_dict()`, a `SAVE_VERSION`, a migration
+  for each version bump, slots in `user://saves/`. Settings in `user://settings.cfg`.
+- Why JSON and not Godot `.tres` for content: one format, short diffs Claude can edit by the line, validation in
+  tests, editable by the owner in any text editor. Scenes (`.tscn`) stay Godot's own format.
+
+## 7. Communication
+- **EventBus** (autoload): a few coarse cross-feature signals (area entered, battle started/ended, item gained,
+  lore read, dialogue, music mood). It holds no state and no logic.
+- Inside a feature: direct calls downward and signals upward; battle events come back from logic as data.
+- Child references: `@export var x: Node` set in the scene, or `%UniqueName`. Never `$Path`, `get_node`,
+  `get_parent`, `find_child` or `/root/` paths (enforced).
+
+## 8. Combat (Grandia-style timeline; design source: docs/research/gemini-blueprint.md, Module 3)
+- **Timeline** (pure, built): positions are integers 0..10000; COMMAND at 7000, ACT at 10000; 60 fixed ticks a
+  second; units move in list order; every change returns a `TimelineEvent`. A unit reaching COMMAND freezes time
+  until `choose()` (player menu or AI). Cancel hits during a cast interrupt (back to 2500); other hits knock back,
+  never below COMMAND while casting. Same inputs give the same events (tested), so battles can be replayed.
+- **Formation** (pure, built): two rows per side; slot n+2 is covered by a living slot n; melee row multipliers.
+- Next (M3): `BattleSim` (damage, statuses, deaths, victory) in logic/, seeded RNG per battle; AI policies as pure
+  classes; `BattleController` (view) runs ticks, plays each event's animation and waits for it ("wait mode");
+  HUD reads state. A **balance harness** runs 1,000 seeded battles headless and prints one table (win rate,
+  length, interrupts), so tuning costs a few lines of output.
+
+## 9. Exploration, encounters, puzzles (M2, M4, M5)
+- Player: CharacterBody3D + CharacterVisual; 8-way movement, sprite faces 4 ways (left = mirrored right).
+- Interaction: Area3D zones emit to a small interaction component; lore stones, wheels, doors are scenes with ids.
+- Encounters are visible enemies; touching one from behind gives the ambush timeline bonus (blueprint Module 7).
+- Battles load as an overlay scene; the area pauses and stays in memory; a SceneRouter does fades and spawns.
+- Puzzles (sluice wheels, twin weir) are small pure state machines in logic/ with tests for every solution.
+- Hydration, resin drops (pity ramp) and trust bonds are counters in GameState with rules in logic/.
+
+## 10. Levels as data (M2/M7)
+- `levels/<area>/layout.txt` (an ASCII height/tile map, about 20 lines) + `area.json` (spawns, exits, camera
+  limits, lights, encounters) -> `tools/build_level` (headless Godot) -> `area.tscn` (generated, never hand-edited).
+- Hand-placed props go in `dressing.tscn`, which the builder never touches. The owner can paint blocks in the
+  editor's GridMap tool too; the builder then keeps his cells (decided when M2 starts).
+- Why: Claude edits a 20-line text map instead of a 5,000-line scene file.
+
+## 11. Dialogue, text and languages (M4)
+- Dialogue as plain-text scripts (recommended: the Dialogue Manager plugin, MIT; decided in M4 after a test).
+- All player text through `tr()` keys in `localization/strings.csv`. English first; Arabic can be added later at
+  little cost (Godot shapes right-to-left text natively; it needs a font with Arabic glyphs and an RTL test).
+- Musnad inscriptions can use the free Noto Sans Old South Arabian font.
+
+## 12. Audio (M8)
+- AudioDirector autoload; buses Music, Ambience, SFX, UI.
+- Music moods with Godot's built-in AudioStreamInteractive (switch on the beat) and AudioStreamSynchronized
+  (layers), instead of hand-written crossfades. Separately generated AI tracks don't line up as layers: layers
+  must come from one track split into stems (Demucs, free) or be switched, not stacked.
+
+## 13. Art pipeline at $0 (M1 spike, M6 production)
+- Raw generations (Gemini, Flow) stay in the owner's Google Drive, not in git.
+- `tools/art/` (Python): downscale to the target size, lock to the palette, key out the background, trim, pack
+  sprite sheets, split a Flow video into frames for animation reference. Output goes to `assets/`.
+- `assets/manifest.json`: id, path, source (gemini, flow, kenney-cc0, own), licence, prompt reference. Code asks
+  for assets by id and gets a placeholder if missing; a check fails on any asset without a licence entry; the
+  credits screen is generated from it.
+
+## 14. Code rules (enforced by Godot and tools/lint_gd.py)
+- Typed everything; <= 200 lines a file; <= 40 lines a function; a `## purpose` line in the first 6 lines.
+- logic/ is pure; no node lookups by path; no gameplay numbers in code (content JSON; named constants for engine
+  values); every rule and every fixed bug gets a test; Godot 4 syntax only.
+- `tools/check.sh` = docs + lint + import + tests. Godot errors fail the run even when Godot exits 0.
+
+## 15. Checks, CI, builds, branches
+- `tools/check.sh` before every push; GitHub Actions runs it on every push (`.github/workflows/check.yml`).
+- Planned: screenshot checks at 640x360 with software rendering for visual regressions (M1, if it works in the
+  container); a Windows export built by CI on `main` so the owner downloads and plays without the editor (M2).
+- Git: work on the session branch; `main` is the shared branch (merging into it needs the owner's standing OK);
+  tag playable builds (`v0.1-look`, `v0.5-combat`, `v1.0-slice`).
+
+## 16. What we kept and changed from the Gemini blueprint
+| Blueprint | Here | Why |
+|---|---|---|
+| Godot 4, headless tests, typed GDScript, small files | Kept | Text-checkable, AI-friendly |
+| EventBus with ~20 signals incl. every combat tick | Small bus + feature-local events | A god-bus couples everything |
+| CombatantData Resource holds stats and HP | Def (read-only) + UnitState | Shared .tres would give all enemies of a kind one HP bar |
+| Timeline in `_process(delta)` floats | Integer fixed ticks | Frame-rate independent, replayable, testable |
+| 2D Parallax2D, PointLight2D, normal maps | 3D diorama + billboard sprites | Owner chose true HD-2D |
+| JSON schema files + .tres data | One format: JSON read into Defs | One validator, small diffs |
+| Hand-written stem crossfades | Godot interactive audio streams | Built in since 4.3 |
+| WSL2 mandatory; token statistics | Not needed; ignored | Cloud sessions are Linux; the numbers have no source |
+| One file per commit; 120-line cap | One change per commit; 200 lines | Fewer tool calls and CI runs; less fragmentation |
+| Never open the GUI | Owner playtests every milestone | Someone has to see it |
+| PR per feature via gh | Session branch, then main | Solo project; no gh in cloud sessions |
+| World, cast, timeline, rows, pacing ledger | Kept as design input | Owner reviews before it becomes a spec |
