@@ -16,3 +16,4 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-19 | Always-loaded notes <= 24 KB; one task, one model and effort per chat; /handoff every session | Pro limits | Claude (from reem-bot, feras-career)
 - 2026-10-19 | Laptop (Dell Latitude 5520, i7-1185G7, 16 GB, Iris Xe, 60 FPS look test) is the minimum target: Forward+ stays, effects must hold 60 FPS here | measured by owner | Claude
 - 2026-10-19 | Look v1: camera (0,6,8.5), FOV 30, DoF near 5 far 12 amount 0.1, 16 px = 1 m; character larger on screen, far blur softer; vsync off in look test to show real FPS | owner screenshot: hero small, back half too blurry | Claude
+- 2026-10-19 | Look v1 accepted as is (camera, FOV 30, DoF 5/12/0.1): 81 FPS on the laptop with vsync off = ~35% headroom over 60; texel density decided at the M1 art spike with a real sprite | owner screenshot + FPS: hero clear, far blur readable | Claude (owner may veto)

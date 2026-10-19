@@ -6,3 +6,4 @@ sessions. "Window %" = the share of the Pro 5-hour window the session used (from
 | Date | Model | Effort | Task | Window % | Result |
 |---|---|---|---|---|---|
 | 2026-10-19 | Opus 5.5 (`claude-opus-5-5`) | session default | Architecture, foundation, briefing | not measured (cloud session) | Foundation built, checks pass |
+| 2026-10-19 | Sonnet 5.5 (`claude-sonnet-5-5`) | medium | Look v1 review from owner screenshot (81 FPS), log decision | not measured | Look v1 accepted; no code change |
