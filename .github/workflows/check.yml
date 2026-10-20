@@ -14,6 +14,7 @@ jobs:
         with:
           path: ~/.cache/godot
           key: godot-${{ hashFiles('.godot-version') }}
+      - run: python3 -m pip install --quiet pillow==12.0.0
       - run: tools/check.sh
       - if: failure()
         run: tail -n 60 .check/*.log

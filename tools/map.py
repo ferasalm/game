@@ -71,7 +71,7 @@ def main() -> int:
         if stale:
             print("map: docs/MAP.md is stale; run python3 tools/map.py")
         return 1 if stale or missing else 0
-    MAP.write_text(text, encoding="utf-8")
+    MAP.write_text(text, encoding="utf-8", newline="\n")
     print(f"map: wrote docs/MAP.md ({text.count(chr(10) + '- ')} files)")
     return 1 if missing else 0
 
