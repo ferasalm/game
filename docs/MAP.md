@@ -102,9 +102,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/view/battle_end_panel.gd`: The end-of-battle panel in the middle of the screen
 - `features/combat/view/battle_event_player.gd`: Plays a batch of TimelineEvents one after another with the animation each one deserves (lunge, flash and rising number, banner and hit-stop, shake, status text, knocked out)
 - `features/combat/view/battle_fighters.gd`: The 3D side of a battle: one CharacterVisual per unit on the stage, floating damage numbers and status text, intent labels over casting enemies, and the bouncing target marker
-- `features/combat/view/battle_hud.gd`: The battle HUD, built in code: timeline bar (top), party panel (bottom right), command menu (bottom left), enemy-intent banner/tip texts and the end panel
+- `features/combat/view/battle_hud.gd`: The battle HUD, built in code: timeline bar (top) with the one-time tip under it, party panel (bottom right), command menu (bottom left), the banner text and the end panel
 - `features/combat/view/battle_labels.gd`: Builders for the 3D bits of the battle screen: billboard text (damage numbers, status text, enemy intent) and the target marker
-- `features/combat/view/battle_party_panel.gd`: The party panel (bottom right): per hero the name, an HP bar with numbers and an SP bar with numbers
+- `features/combat/view/battle_party_panel.gd`: The party panel (bottom right, compact): per hero the name beside an HP bar and an SP bar, each with numbers
 - `features/combat/view/battle_stage.gd`: The battle screen (wait mode): places the fighters and the camera, runs the HUD, steps a BattleSim a few ticks per physics frame and plays the resulting events
 - `features/combat/view/battle_style.gd`: Small builders for the battle screen's look (panels, labels, bars, names, head icons) from a BattleViewDef
 - `features/combat/view/battle_timeline_bar.gd`: The timeline along the top: a track from 0 to ACT_POINT with a COMMAND mark and a tinted cast zone, and one head icon per living unit at its timeline position (enemies above the track, the party below it)
@@ -136,6 +136,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/djanbeyyah/view/workshop_menu.gd`: The djanbeyyah bench: pick 1 of 2 hilts and 1 of 2 blades, see how Zayd's numbers change, Confirm to save the pair in GameState.equipment
 - `features/djanbeyyah/view/workshop_page.gd`: The workshop layout: title, a hilt column, a blade column, the stats panel, and the Confirm button with the back hint
 - `features/djanbeyyah/view/workshop_stats_panel.gd`: The right-hand panel of the workshop: one line per stat (name, base value, value with the chosen pair, an up/down arrow in green or red) and below them the hilt's move with its description
+- `features/prototype/prototype_main.gd`: The playable prototype: the rooftop, the workshop (talk once, then the bench menu) and the patrol battle, wired through the other features' public signals
+- `features/prototype/prototype_main.tscn`: scene
+- `features/prototype/tests/test_prototype.gd`: T6: the prototype main scene builds headless with rooftop, dialogue box and workshop menu; a simulated patrol touch starts a battle and stops exploring; an auto-played battle ends and walking resumes with the patrol reset; retry starts a fresh battle; the first workshop visit plays the talk, then the menu; later visits skip the talk
 - `features/world/defs/area_def.gd`: A level as data: equal-width rows of tile characters, a legend (character -> tile id) and four markers (S spawn, W workshop bench, P patrol start, Q patrol end) that each appear once and stand on floor
 - `features/world/defs/explore_rules_def.gd`: Numbers for walking around an area: player speed and size, follower, camera, patrol, touch and interact ranges, collision wall height and the workshop prompt
 - `features/world/defs/look_def.gd`: The HD-2D look as data: camera offset and field of view, tilt-shift depth of field, sun, ambient light, background and bloom

@@ -1,6 +1,6 @@
 class_name BattlePartyPanel
 extends VBoxContainer
-## The party panel (bottom right): per hero the name, an HP bar with numbers and an SP bar with numbers.
+## The party panel (bottom right, compact): per hero the name beside an HP bar and an SP bar, each with numbers.
 ## The hero waiting for a command is outlined. HP shown follows the played events, not the sim's finished tick.
 
 
@@ -73,9 +73,14 @@ func _add_row(unit: UnitState) -> Row:
 	row.unit = unit
 	row.panel = PanelContainer.new()
 	row.panel.add_theme_stylebox_override("panel", BattleStyle.panel(_view))
+	var line := HBoxContainer.new()
+	row.panel.add_child(line)
+	var name_label: Label = BattleStyle.label(BattleStyle.unit_name(_sim, unit))
+	name_label.custom_minimum_size.x = _view.margin * 4.0
+	line.add_child(name_label)
 	var box := VBoxContainer.new()
-	row.panel.add_child(box)
-	box.add_child(BattleStyle.label(BattleStyle.unit_name(_sim, unit)))
+	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	line.add_child(box)
 	row.hp_bar = _stat(box, BattleStyle.text("UI_HP"), _view.hp_color, unit.def.max_hp)
 	row.hp_text = row.hp_bar.get_meta("text") as Label
 	row.sp_bar = _stat(box, BattleStyle.text("UI_SP"), _view.sp_color, unit.def.max_sp)
