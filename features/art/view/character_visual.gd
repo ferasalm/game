@@ -15,6 +15,7 @@ var _moving: bool = false
 var _down: bool = false
 var _bob_time: float = 0.0
 var _height_px: int = 0
+var _ppm: float = 1.0
 
 
 func _init() -> void:
@@ -28,7 +29,6 @@ func _init() -> void:
 	_sprite.alpha_cut = SpriteBase3D.ALPHA_CUT_DISCARD
 	_sprite.shaded = true
 	_sprite.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
-	_sprite.pixel_size = 1.0 / _rules.pixels_per_metre
 	_pivot.add_child(_sprite)
 	add_child(_pivot)
 	set_process(false)
@@ -37,6 +37,8 @@ func _init() -> void:
 ## Shows the sprite with this id (a magenta placeholder when the id or its palette is missing).
 func set_sprite(sprite_id: StringName) -> void:
 	var def := ContentDB.get_def("sprite", sprite_id) as SpriteDef
+	_ppm = def.pixels_per_metre if def != null and def.pixels_per_metre > 0.0 else _rules.pixels_per_metre
+	_sprite.pixel_size = 1.0 / _ppm
 	var palette: PaletteDef = null
 	if def != null:
 		palette = ContentDB.get_def("palette", def.palette) as PaletteDef
@@ -92,7 +94,7 @@ func set_down(down: bool) -> void:
 
 ## Sprite height in metres, for placing labels above a head.
 func height() -> float:
-	return float(_height_px) / _rules.pixels_per_metre
+	return float(_height_px) / _ppm
 
 
 func _process(delta: float) -> void:

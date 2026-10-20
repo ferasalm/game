@@ -1,8 +1,8 @@
 {
   "kind": "visual_rules",
   "items": [
-    {"id": "default", "pixels_per_metre": 16.0, "bob_height": 0.06, "bob_speed": 9.0,
+    {"id": "default", "pixels_per_metre": 32.0, "bob_height": 0.06, "bob_speed": 9.0,
      "lunge_distance": 0.7, "lunge_time": 0.12, "flash_time": 0.12,
-     "down_squash": 0.45, "placeholder_width": 16, "placeholder_height": 32}
+     "down_squash": 0.45, "placeholder_width": 32, "placeholder_height": 64}
   ]
 }
