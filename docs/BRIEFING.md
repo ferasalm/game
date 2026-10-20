@@ -104,7 +104,7 @@ Send a screenshot and the FPS.
 
 ## 7. The $0 art plan
 - **Style first (M1):** Gemini makes concept sheets; we fix a palette (about 32-48 colors), 16 px per meter,
-  characters about 32 px tall, light from the upper left. Every later image is forced onto that palette by script,
+  characters about 32 px tall (now 32 px per meter, 64 px tall: DECISIONS 2026-10-21), light from the upper left. Every later image is forced onto that palette by script,
   which is what keeps AI art consistent.
 - **Characters:** Gemini (image model, with a reference picture of the character for consistency) draws front,
   side and back poses; `tools/art` shrinks them to pixel size on the palette; you clean details in Pixelorama.

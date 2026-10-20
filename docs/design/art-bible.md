@@ -3,7 +3,8 @@ Pixel sprites are data: rows of palette letters in `content/art/sprites.json` ('
 textures at runtime by PixelArt. Palette: `content/art/palette.json` (id "main", 32 colours, never add one casually).
 
 ## Scale and light
-- 16 px = 1 m (sprites and textures). Humans about 32 px tall, 16-20 wide; drone 16x16; bench 24x16.
+- 32 px = 1 m (sprites and textures). Humans about 64 px tall (Feras 2026-10-21). Today's sprites are
+  Claude's stand-ins at the old scale (16 px = 1 m, humans 32 px); real ones replace them one by one.
 - Feet on the bottom row. Art faces right (CharacterVisual mirrors it). Light comes from the upper left.
 - 3 tones per material (dark / mid / light) plus a dark selective outline (`k`). No anti-aliasing, no gradients.
 - Faces and visors get 1-2 pixel highlights. Neon is for accents only (a lens, a rig, a stripe), never big areas.
@@ -30,7 +31,11 @@ plus x for the glint. Glow: C or M with a on top.
 - Workshop bench: low table, a glowing screen, tools, a brass-hilted blade.
 
 ## Pipeline
-Gemini/Flow picture to sprite entry: `python tools/art/pixelize.py --in PIC.png --id ID [--height 32] [--out content/art/sprites.json]`.
+Gemini/Flow picture to sprite entry: `python tools/art/pixelize.py --in PIC.png --id ID [--height 64] [--out content/art/sprites.json]`.
+Real sprites: Feras's Gemini picture -> pixelize.py -> touch-up in Pixelorama (free). Edit any sprite:
+`python tools/art/sprite_png.py export --id ID --png ID.png`, paint, then `... import --id ID --png ID.png`
+(lossless; refuses colours outside the palette). `... palette --out main.gpl` gives Pixelorama the palette.
+Self-test: `python tools/art/test_sprite_png.py`.
 Self-test: `python tools/art/test_pixelize.py`.
 
 ## Portraits

@@ -25,7 +25,8 @@ are marked (enforced). Decisions behind this file: docs/DECISIONS.md, 2026-10-19
 - **Characters = 2D pixel-art sprites standing in 3D**: Sprite3D/AnimatedSprite3D, billboard on the Y axis only,
   nearest filtering, alpha cut, lit by the scene (shaded) and casting shadows. A `CharacterVisual` component hides
   the technique, so it can change (e.g. to a quad with a normal-mapped shader) without touching gameplay.
-- **One texel density everywhere: 16 px = 1 m** (sprites and textures). Characters about 32 px tall. One locked
+- **One texel density everywhere: 32 px = 1 m** (sprites and textures; was 16, DECISIONS 2026-10-21). Characters
+  about 64 px tall. One locked
   palette (art bible, M1). These keep AI-made art consistent.
 - **Camera:** perspective, narrow FOV (25-35°), raised 30-40°, smooth follow; per-area limits come from level data.
 - **The look:** CameraAttributesPractical depth of field (near + far blur = the tilt-shift miniature look), glow,

@@ -94,8 +94,10 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 ## tools
 - `tools/art/pixelize.py`: Turn a Gemini/Flow PNG into a palette-locked pixel sprite entry for content/art/sprites.json.
 - `tools/art/portrait.py`: Turn a Gemini portrait (flat background colour) into a game portrait.
+- `tools/art/sprite_png.py`: Edit a sprite in a pixel editor (Pixelorama): export it to PNG, paint, import it back, losslessly.
 - `tools/art/test_pixelize.py`: Self-test for pixelize.py: python tools/art/test_pixelize.py (plain asserts, exits non-zero on failure).
 - `tools/art/test_portrait.py`: Self-test for portrait.py on a synthetic picture in a temp dir; exit 1 on any failure.
+- `tools/art/test_sprite_png.py`: Self-test for sprite_png.py: python tools/art/test_sprite_png.py (plain asserts, exits non-zero on failure).
 - `tools/check.sh`: One command for every check (docs, lint, Godot import, tests). One ok/FAIL line per step; logs in .check/.
 - `tools/doc_check.py`: Keeps the always-loaded notes small and well-formed (docs/EFFICIENCY.md); exit 1 on any failure.
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.
