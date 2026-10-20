@@ -1,0 +1,12 @@
+keys,en
+UI_COMMAND,Command
+UI_CAST,Casting
+UI_WILL_INTERRUPT,will interrupt
+UI_PICK_TARGET,Choose a target
+UI_CONTINUE,Continue
+UI_RETRY,Retry
+UI_BACK_TO_ROOFTOP,Back to the rooftop
+UI_UNIT_NUMBERED,%s %d
+UI_STATUS_ENDED,%s ended
+UI_TIP_COMMAND,Time stops while you choose. Moves charge before they hit.
+UI_TIP_CHARGE,A charging enemy can be interrupted: hit it with a move marked cancels.
