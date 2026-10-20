@@ -1,0 +1,9 @@
+{
+  "kind": "look",
+  "items": [
+    {"id": "v1", "camera_offset_x": 0.0, "camera_offset_y": 6.0, "camera_offset_z": 8.5, "look_height": 0.8,
+     "fov": 30.0, "dof_near": 5.0, "dof_far": 12.0, "dof_amount": 0.1,
+     "sun_pitch": -50.0, "sun_yaw": -35.0, "sun_color": "#ffe6bf",
+     "ambient_color": "#d9c7b3", "ambient_energy": 0.5, "background_color": "#8ca8c7", "glow_bloom": 0.15}
+  ]
+}

@@ -28,6 +28,10 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/dialogue/box.json`: content: dialogue_style x1
 - `content/dialogue/dialogues.json`: content: dialogue x1
 - `content/dialogue/speakers.json`: content: speaker x2
+- `content/world/areas.json`: content: area x1
+- `content/world/explore.json`: content: explore_rules x1
+- `content/world/look.json`: content: look x1
+- `content/world/tiles.json`: content: tile x11
 
 ## core
 - `core/asset_manifest.gd`: Checks assets/manifest.json: every file under the assets folder (except *.import, .gdignore, *.md and the manifest itself) has an entry with a non-empty source and licence
@@ -77,9 +81,23 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/dialogue/view/dialogue_demo.tscn`: scene
 - `features/dialogue/view/dialogue_layout.gd`: Builds the dialogue box's controls in code (no scene file, no path lookups) and keeps references to them
 - `features/dialogue/view/portraits.gd`: Finds the portrait texture for (speaker, expression): res://assets/portraits/<speaker>_<expression>.png when it exists (loaded straight from the file, the "keep" importer needs no import step), else a stand-in built from the speaker's pixel sprite (StandinPortrait)
-- `features/world/look_test/look_test.gd`: HD-2D look test (the M1 rendering spike): a block diorama, a pixel-art billboard hero (CharacterVisual), tilt-shift depth of field, bloom and a low sun with shadows, all built in code
+- `features/world/defs/area_def.gd`: A level as data: equal-width rows of tile characters, a legend (character -> tile id) and four markers (S spawn, W workshop bench, P patrol start, Q patrol end) that each appear once and stand on floor
+- `features/world/defs/explore_rules_def.gd`: Numbers for walking around an area: player speed and size, follower, camera, patrol, touch and interact ranges, collision wall height and the workshop prompt
+- `features/world/defs/look_def.gd`: The HD-2D look as data: camera offset and field of view, tilt-shift depth of field, sun, ambient light, background and bloom
+- `features/world/defs/tile_def.gd`: One kind of block: height in metres, colour (an art-bible palette letter or #hex), whether it blocks walking, an optional glow, and an optional cap tile drawn on top of it (gypsum trim on a tower)
+- `features/world/look_test/look_test.gd`: HD-2D look test (the M1 rendering spike): a block diorama, a pixel-art billboard hero (CharacterVisual), tilt-shift depth of field, bloom and a low sun with shadows
 - `features/world/look_test/look_test.tscn`: scene
+- `features/world/patrol/patrol.gd`: A Concession enforcer walking between two points with pauses at the ends
+- `features/world/player/follower.gd`: Bilqis: trails the leader along the path he recently walked, at the follower distance, closing in with a little lag
+- `features/world/player/player.gd`: Zayd: 8-way walking from the move_* actions (up = -Z), stopped by solid tiles
+- `features/world/rooftop/rooftop.gd`: The rooftop exploration scene
+- `features/world/rooftop/rooftop.tscn`: scene
+- `features/world/tests/test_area.gd`: Area, tile and look content: the rooftop layout is well formed and every probe of a broken layout is caught
 - `features/world/tests/test_look_test.gd`: The look-test scene builds without errors (headless: no pixels are drawn, but every node and resource is made)
+- `features/world/tests/test_rooftop.gd`: The rooftop scene builds headless; walking, the follower, the patrol touch, the ambush direction, the exploring switch, the patrol respawn, the workshop prompt and the camera
+- `features/world/view/area_builder.gd`: Builds an area's blocks: one MultiMeshInstance3D per tile type (bodies, and caps drawn with the cap tile's material), plus one StaticBody3D holding a box per run of solid tiles and walls that close the area's edges
+- `features/world/view/diorama.gd`: Static helpers that build the HD-2D look from a LookDef: WorldEnvironment, low sun, tilt-shift camera, and the nearest-filtered block material
+- `features/world/workshop/workshop_spot.gd`: The workshop bench: its sprite, and a floating prompt that shows while the player is within the interact radius
 
 ## localization
 - `localization/combat.csv`
@@ -94,8 +112,10 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 ## tools
 - `tools/art/pixelize.py`: Turn a Gemini/Flow PNG into a palette-locked pixel sprite entry for content/art/sprites.json.
 - `tools/art/portrait.py`: Turn a Gemini portrait (flat background colour) into a game portrait.
+- `tools/art/sprite_png.py`: Edit a sprite in a pixel editor (Pixelorama): export it to PNG, paint, import it back, losslessly.
 - `tools/art/test_pixelize.py`: Self-test for pixelize.py: python tools/art/test_pixelize.py (plain asserts, exits non-zero on failure).
 - `tools/art/test_portrait.py`: Self-test for portrait.py on a synthetic picture in a temp dir; exit 1 on any failure.
+- `tools/art/test_sprite_png.py`: Self-test for sprite_png.py: python tools/art/test_sprite_png.py (plain asserts, exits non-zero on failure).
 - `tools/check.sh`: One command for every check (docs, lint, Godot import, tests). One ok/FAIL line per step; logs in .check/.
 - `tools/doc_check.py`: Keeps the always-loaded notes small and well-formed (docs/EFFICIENCY.md); exit 1 on any failure.
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.

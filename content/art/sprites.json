@@ -1,7 +1,7 @@
 {
   "kind": "sprite",
   "items": [
-    {"id": "zayd", "palette": "main",
+    {"id": "zayd", "palette": "main", "pixels_per_metre": 16.0,
      "source": "own (Claude, hand-placed pixels)", "licence": "project-own",
      "rows": [
        "................",
@@ -37,7 +37,7 @@
        "...kkkkkkkkkkk..",
        "................"
      ]},
-    {"id": "bilqis", "palette": "main",
+    {"id": "bilqis", "palette": "main", "pixels_per_metre": 16.0,
      "source": "own (Claude, hand-placed pixels)", "licence": "project-own",
      "rows": [
        "................",
@@ -73,7 +73,7 @@
        "...kkkkkkkkkkk..",
        "................"
      ]},
-    {"id": "concession_enforcer", "palette": "main",
+    {"id": "concession_enforcer", "palette": "main", "pixels_per_metre": 16.0,
      "source": "own (Claude, hand-placed pixels)", "licence": "project-own",
      "rows": [
        "..................",
@@ -109,7 +109,7 @@
        "..kkkkkkk.kkkkkk..",
        ".................."
      ]},
-    {"id": "survey_drone", "palette": "main",
+    {"id": "survey_drone", "palette": "main", "pixels_per_metre": 16.0,
      "source": "own (Claude, hand-placed pixels)", "licence": "project-own",
      "rows": [
        "................",
@@ -129,7 +129,7 @@
        "....k..OO..k....",
        "................"
      ]},
-    {"id": "workshop_bench", "palette": "main",
+    {"id": "workshop_bench", "palette": "main", "pixels_per_metre": 16.0,
      "source": "own (Claude, hand-placed pixels)", "licence": "project-own",
      "rows": [
        "........................",

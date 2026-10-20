@@ -1,0 +1,10 @@
+{
+  "kind": "explore_rules",
+  "items": [
+    {"id": "default", "walk_speed": 3.5, "follower_distance": 1.1, "follower_lag": 10.0,
+     "follower_stop_distance": 0.05, "trail_step": 0.1, "camera_smoothing": 6.0,
+     "patrol_speed": 1.6, "patrol_pause": 1.5, "patrol_respawn": 6.0, "touch_radius": 0.9, "interact_radius": 1.4,
+     "capsule_radius": 0.3, "capsule_height": 1.6, "wall_height": 3.0,
+     "prompt_height": 0.4, "prompt_pixel_size": 0.01, "prompt_font_size": 48}
+  ]
+}
