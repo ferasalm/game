@@ -27,6 +27,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/combat/encounters.json`: content: encounter x1
 - `content/combat/rules.json`: content: battle_rules x1
 - `content/combat/statuses.json`: content: status x1
+- `content/combat/view.json`: content: battle_view x1
 - `content/dialogue/box.json`: content: dialogue_style x1
 - `content/dialogue/dialogues.json`: content: dialogue x1
 - `content/dialogue/speakers.json`: content: speaker x2
@@ -71,6 +72,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/art/view/character_visual.gd`: A pixel-art character standing in the 3D world: a billboard Sprite3D (feet on the node's origin) plus its small animations (walking bob, lunge, hit flash, knocked out)
 - `features/combat/defs/action_def.gd`: One battle technique: its cost, power, and what it does to the timeline (cast speed, recovery, knockback, cancel)
 - `features/combat/defs/battle_rules_def.gd`: The tunable numbers of one battle ruleset: damage formula factors, SP gain and the stall guard
+- `features/combat/defs/battle_view_def.gd`: Layout and pacing numbers of the battle screen (content/combat/view.json): camera, where each formation slot stands, ticks per frame, hit-stop and banner times, floating-text sizes, HUD sizes and colours
 - `features/combat/defs/combatant_def.gd`: One kind of fighter (a party member or an enemy type): base stats and the actions it can use
 - `features/combat/defs/encounter_def.gd`: One battle setup: which enemies stand in which formation slots, and which slots the party takes
 - `features/combat/defs/status_def.gd`: One status effect: how long it lasts and how it changes timeline speed and interrupt immunity
@@ -88,11 +90,24 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/tests/test_battle_interrupt.gd`: T4: a cancel move landing on a casting enemy interrupts it (back to INTERRUPT_POS) inside BattleSim
 - `features/combat/tests/test_battle_rules.gd`: T5: damage, SP, cover, retargeting and status turns follow docs/design/combat.md
 - `features/combat/tests/test_battle_sim.gd`: BattleSim: unit ids, determinism (T1), every battle ends (T2), refused choices, event order, stall guard
+- `features/combat/tests/test_battle_stage.gd`: BattleStage headless (instant mode): it builds with 5 fighters, 5 timeline icons and a camera; an auto-played battle ends once; the command menu opens for a waiting hero, lists that hero's moves and the sim's valid targets, and choosing through its confirm path calls sim.choose; enemy intent labels; tips; the end panel
 - `features/combat/tests/test_battle_start.gd`: Starting positions and ambushes, the first-hit-only knockback bonus, downed units, and lands_before()
 - `features/combat/tests/test_battle_status.gd`: T5 (statuses): applied by a move, refreshed on re-apply, one turn lost per act of the afflicted unit, and the cast-speed / knockback-bonus numbers of a CombatantDef
 - `features/combat/tests/test_formation.gd`: Formation rows: cover and melee multipliers
 - `features/combat/tests/test_reverse_stab.gd`: The reverse stab: only when the party was ambushed, Zayd strikes the lowest-slot living enemy first
 - `features/combat/tests/test_timeline.gd`: Timeline rules: command pause, cast and act, interrupts, knockback limits, determinism
+- `features/combat/view/battle_command_menu.gd`: The command menu (bottom left) for the hero waiting at COMMAND: first one Button per move (unaffordable ones disabled; name, SP cost, a "cancels" tag; the focused move's description below), then one Button per valid target
+- `features/combat/view/battle_demo.gd`: Battle view demo: a plain floor in the accepted HD-2D look and a BattleStage fighting the rooftop patrol (swift hilt, keen blade, seed 7, ambushed so the reverse stab shows)
+- `features/combat/view/battle_demo.tscn`: scene
+- `features/combat/view/battle_end_panel.gd`: The end-of-battle panel in the middle of the screen
+- `features/combat/view/battle_event_player.gd`: Plays a batch of TimelineEvents one after another with the animation each one deserves (lunge, flash and rising number, banner and hit-stop, shake, status text, knocked out)
+- `features/combat/view/battle_fighters.gd`: The 3D side of a battle: one CharacterVisual per unit on the stage, floating damage numbers and status text, intent labels over casting enemies, and the bouncing target marker
+- `features/combat/view/battle_hud.gd`: The battle HUD, built in code: timeline bar (top), party panel (bottom right), command menu (bottom left), enemy-intent banner/tip texts and the end panel
+- `features/combat/view/battle_labels.gd`: Builders for the 3D bits of the battle screen: billboard text (damage numbers, status text, enemy intent) and the target marker
+- `features/combat/view/battle_party_panel.gd`: The party panel (bottom right): per hero the name, an HP bar with numbers and an SP bar with numbers
+- `features/combat/view/battle_stage.gd`: The battle screen (wait mode): places the fighters and the camera, runs the HUD, steps a BattleSim a few ticks per physics frame and plays the resulting events
+- `features/combat/view/battle_style.gd`: Small builders for the battle screen's look (panels, labels, bars, names, head icons) from a BattleViewDef
+- `features/combat/view/battle_timeline_bar.gd`: The timeline along the top: a track from 0 to ACT_POINT with a COMMAND mark and a tinted cast zone, and one head icon per living unit at its timeline position (enemies above the track, the party below it)
 - `features/dialogue/defs/dialogue_def.gd`: A conversation: an ordered list of lines (speaker, expression, text key)
 - `features/dialogue/defs/dialogue_line.gd`: One spoken line: who says it, with which expression, and the localization key of the text
 - `features/dialogue/defs/dialogue_style_def.gd`: Look and timing of the dialogue box (fractions of the screen, pixels, colours, speed) and the pixel marks (brows, mouth) that make the stand-in portraits show an expression
@@ -141,6 +156,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/workshop/workshop_spot.gd`: The workshop bench: its sprite, and a floating prompt that shows while the player is within the interact radius
 
 ## localization
+- `localization/battle.csv`
 - `localization/combat.csv`
 - `localization/dialogue.csv`
 - `localization/ui.csv`
