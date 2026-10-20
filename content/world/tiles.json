@@ -1,0 +1,16 @@
+{
+  "kind": "tile",
+  "items": [
+    {"id": "roof_floor", "height": 0.5, "color": "q", "solid": false},
+    {"id": "roof_worn", "height": 0.5, "color": "p", "solid": false},
+    {"id": "bridge", "height": 0.5, "color": "o", "solid": false},
+    {"id": "street", "height": 0.05, "color": "n", "solid": true},
+    {"id": "parapet", "height": 1.2, "color": "g", "solid": true},
+    {"id": "kerb", "height": 0.35, "color": "h", "solid": true},
+    {"id": "gypsum_trim", "height": 0.3, "color": "w", "solid": false},
+    {"id": "tower_brick", "height": 4.0, "color": "b", "solid": true, "cap": "gypsum_trim"},
+    {"id": "glass_amber", "height": 4.0, "color": "Y", "solid": true, "glow": 0.35, "cap": "gypsum_trim"},
+    {"id": "glass_blue", "height": 4.0, "color": "B", "solid": true, "glow": 0.35, "cap": "gypsum_trim"},
+    {"id": "glass_violet", "height": 4.0, "color": "V", "solid": true, "glow": 0.35, "cap": "gypsum_trim"}
+  ]
+}

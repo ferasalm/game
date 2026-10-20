@@ -6,7 +6,7 @@ config_version=5
 
 config/name="Qarnaw (working title)"
 config/version="0.0.1"
-run/main_scene="res://features/world/look_test/look_test.tscn"
+run/main_scene="res://features/world/rooftop/rooftop.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 
 [autoload]

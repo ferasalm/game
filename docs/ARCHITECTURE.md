@@ -109,6 +109,8 @@ docs/           ARCHITECTURE BRIEFING EFFICIENCY DECISIONS LESSONS MAP USAGE des
 - Hand-placed props go in `dressing.tscn`, which the builder never touches. The owner can paint blocks in the
   editor's GridMap tool too; the builder then keeps his cells (decided when M2 starts).
 - Why: Claude edits a 20-line text map instead of a 5,000-line scene file.
+- Prototype (built): `content/world/areas.json` (kind "area": rows of tile characters, legend char -> tile id, markers S spawn,
+  W workshop, P/Q patrol ends, encounter id) + `tiles.json` (height, palette letter or hex, solid, glow, cap); `features/world/view/area_builder.gd` builds it at runtime (MultiMesh per tile type + box colliders), no generated scene. Look: `content/world/look.json`.
 
 ## 11. Dialogue, text and languages (M4)
 - Dialogue as plain-text scripts (recommended: the Dialogue Manager plugin, MIT; decided in M4 after a test).
