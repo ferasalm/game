@@ -11,6 +11,9 @@ const KINDS: Dictionary = {
 	"palette": preload("res://features/art/defs/palette_def.gd"),
 	"sprite": preload("res://features/art/defs/sprite_def.gd"),
 	"visual_rules": preload("res://features/art/defs/visual_rules_def.gd"),
+	"speaker": preload("res://features/dialogue/defs/speaker_def.gd"),
+	"dialogue": preload("res://features/dialogue/defs/dialogue_def.gd"),
+	"dialogue_style": preload("res://features/dialogue/defs/dialogue_style_def.gd"),
 }
 
 var _defs: Dictionary[String, Dictionary] = {}

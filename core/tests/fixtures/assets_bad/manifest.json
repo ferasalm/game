@@ -1,0 +1,4 @@
+{"assets": [
+  {"id": "a", "path": "a.txt", "source": "gemini", "licence": "", "prompt": "x"},
+  {"id": "gone", "path": "gone.txt", "source": "own", "licence": "project-own", "prompt": ""}
+]}

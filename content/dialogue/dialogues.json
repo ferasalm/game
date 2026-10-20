@@ -1,0 +1,11 @@
+{
+  "kind": "dialogue",
+  "items": [
+    {"id": "workshop_first", "lines": [
+      {"speaker": "bilqis", "expression": "surprised", "text": "DLG_WORKSHOP_FIRST_1"},
+      {"speaker": "bilqis", "expression": "happy", "text": "DLG_WORKSHOP_FIRST_2"},
+      {"speaker": "zayd", "expression": "neutral", "text": "DLG_WORKSHOP_FIRST_3"},
+      {"speaker": "bilqis", "expression": "angry", "text": "DLG_WORKSHOP_FIRST_4"}
+    ]}
+  ]
+}

@@ -25,15 +25,25 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/combat/actions.json`: content: action x4
 - `content/combat/combatants.json`: content: combatant x3
 - `content/combat/statuses.json`: content: status x2
+- `content/dialogue/box.json`: content: dialogue_style x1
+- `content/dialogue/dialogues.json`: content: dialogue x1
+- `content/dialogue/speakers.json`: content: speaker x2
 
 ## core
+- `core/asset_manifest.gd`: Checks assets/manifest.json: every file under the assets folder (except *.import, .gdignore, *.md and the manifest itself) has an entry with a non-empty source and licence
 - `core/content_db.gd`: All authored game data (autoload ContentDB)
 - `core/defs/def.gd`: Base of every content definition: an id, how it reads itself from JSON, and which other ids it needs
 - `core/defs/def_reader.gd`: Typed, validated reads from one JSON object
 - `core/event_bus.gd`: Global signals between features (autoload EventBus)
 - `core/game_state.gd`: Everything a save file holds (autoload GameState)
+- `core/tests/fixtures/assets_bad/a.txt`
+- `core/tests/fixtures/assets_bad/manifest.json`: content: ? x0
+- `core/tests/fixtures/assets_bad/unlisted.txt`
+- `core/tests/fixtures/assets_ok/manifest.json`: content: ? x0
+- `core/tests/fixtures/assets_ok/sub/note.txt`
 - `core/tests/fixtures/bad_content/combatants.json`: content: combatant x1
 - `core/tests/fixtures/bad_text/bad.csv`
+- `core/tests/test_asset_manifest.gd`: Asset manifest: every shipped asset has a source and licence; the checker catches missing entries, empty licences and entries without files (fixtures), and ignores notes, .import files and the manifest
 - `core/tests/test_content_db.gd`: The shipped content loads with no problems, and the validator catches broken content
 - `core/tests/test_game_state.gd`: Save data survives a round trip through JSON, and a save from another version is refused
 - `core/tests/test_text_db.gd`: Player text: every localization CSV loads, keys translate, and a malformed file is reported
@@ -55,12 +65,25 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/logic/unit_state.gd`: One fighter during one battle: the numbers that change (hp, timeline position, the action being cast), built from a read-only CombatantDef
 - `features/combat/tests/test_formation.gd`: Formation rows: cover and melee multipliers
 - `features/combat/tests/test_timeline.gd`: Timeline rules: command pause, cast and act, interrupts, knockback limits, determinism
+- `features/dialogue/defs/dialogue_def.gd`: A conversation: an ordered list of lines (speaker, expression, text key)
+- `features/dialogue/defs/dialogue_line.gd`: One spoken line: who says it, with which expression, and the localization key of the text
+- `features/dialogue/defs/dialogue_style_def.gd`: Look and timing of the dialogue box (fractions of the screen, pixels, colours, speed) and the pixel marks (brows, mouth) that make the stand-in portraits show an expression
+- `features/dialogue/defs/speaker_def.gd`: One speaking character: name key, name colour, the pixel sprite used for the stand-in portrait, and where the face sits on that sprite (sprite pixels) so the stand-in can draw brows and a mouth
+- `features/dialogue/logic/dialogue_run.gd`: Steps through a DialogueDef one line at a time
+- `features/dialogue/logic/standin_portrait.gd`: Builds a stand-in portrait Image from a speaker's pixel sprite: head-and-chest rows cropped, scaled up with nearest filtering, over a soft backdrop in the speaker colour, plus brow and mouth marks per expression
+- `features/dialogue/tests/test_dialogue.gd`: Dialogue: T8 (every line has a known speaker, one of 4 expressions, a translating text key), DialogueRun stepping, the object-list reader, the stand-in portraits, and DialogueBox playing to the end once
+- `features/dialogue/view/dialogue_box.gd`: The dialogue box: a chest-up portrait at the left overlapping a dark text box along the bottom, with the speaker's name in their colour and the line typed out quickly
+- `features/dialogue/view/dialogue_demo.gd`: Manual check: plays the workshop_first dialogue over a plain background (F6 in the editor)
+- `features/dialogue/view/dialogue_demo.tscn`: scene
+- `features/dialogue/view/dialogue_layout.gd`: Builds the dialogue box's controls in code (no scene file, no path lookups) and keeps references to them
+- `features/dialogue/view/portraits.gd`: Finds the portrait texture for (speaker, expression): res://assets/portraits/<speaker>_<expression>.png when it exists (loaded straight from the file, the "keep" importer needs no import step), else a stand-in built from the speaker's pixel sprite (StandinPortrait)
 - `features/world/look_test/look_test.gd`: HD-2D look test (the M1 rendering spike): a block diorama, a pixel-art billboard hero (CharacterVisual), tilt-shift depth of field, bloom and a low sun with shadows, all built in code
 - `features/world/look_test/look_test.tscn`: scene
 - `features/world/tests/test_look_test.gd`: The look-test scene builds without errors (headless: no pixels are drawn, but every node and resource is made)
 
 ## localization
 - `localization/combat.csv`
+- `localization/dialogue.csv`
 - `localization/ui.csv`
 - `localization/world.csv`
 
@@ -70,7 +93,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 
 ## tools
 - `tools/art/pixelize.py`: Turn a Gemini/Flow PNG into a palette-locked pixel sprite entry for content/art/sprites.json.
+- `tools/art/portrait.py`: Turn a Gemini portrait (flat background colour) into a game portrait.
 - `tools/art/test_pixelize.py`: Self-test for pixelize.py: python tools/art/test_pixelize.py (plain asserts, exits non-zero on failure).
+- `tools/art/test_portrait.py`: Self-test for portrait.py on a synthetic picture in a temp dir; exit 1 on any failure.
 - `tools/check.sh`: One command for every check (docs, lint, Godot import, tests). One ok/FAIL line per step; logs in .check/.
 - `tools/doc_check.py`: Keeps the always-loaded notes small and well-formed (docs/EFFICIENCY.md); exit 1 on any failure.
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.
