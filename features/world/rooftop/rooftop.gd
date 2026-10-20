@@ -27,6 +27,7 @@ var _floor_y: float = 0.0
 var _focus: Vector3 = Vector3.ZERO
 var _anchor: Vector3 = Vector3.ZERO
 var _locked: bool = false
+var _ambush: int = 0
 var _fps_label: Label
 var _name_label: Label
 
@@ -67,6 +68,12 @@ func reset_patrol() -> void:
 ## The floor point where a battle should be staged: where the last touch happened.
 func battle_anchor() -> Vector3:
 	return _anchor
+
+
+## Who struck first at the last touch: 1 the patrol came at the player from behind, 2 the player came at the patrol
+## from behind, 0 neither (and before any touch).
+func last_touch_ambush() -> int:
+	return _ambush
 
 
 ## Makes the follow camera the current one again.
@@ -131,5 +138,14 @@ func _on_touched(from_behind: bool) -> void:
 	if _locked:
 		return
 	_locked = true
+	_ambush = _ambush_side(from_behind)
 	_anchor = player.position.lerp(patrol.position, 0.5)
 	encounter_touched.emit(_area.encounter, from_behind)
+
+
+func _ambush_side(from_behind: bool) -> int:
+	if from_behind:
+		return 1
+	var to_player: Vector3 = player.position - patrol.position
+	to_player.y = 0.0
+	return 2 if to_player.dot(patrol.facing()) < 0.0 else 0

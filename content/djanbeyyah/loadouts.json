@@ -1,0 +1,6 @@
+{
+  "kind": "loadout",
+  "items": [
+    {"id": "zayd_start", "hilt": "swift_hilt", "blade": "keen_blade"}
+  ]
+}
