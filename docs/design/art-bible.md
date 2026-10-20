@@ -32,3 +32,9 @@ plus x for the glint. Glow: C or M with a on top.
 ## Pipeline
 Gemini/Flow picture to sprite entry: `python tools/art/pixelize.py --in PIC.png --id ID [--height 32] [--out content/art/sprites.json]`.
 Self-test: `python tools/art/test_pixelize.py`.
+
+## Portraits
+Dialogue portraits are chest-up painted pictures, one per speaker and expression (neutral, happy, angry, surprised),
+facing right toward the text box, lit from the upper left, on a flat plain colour so the background can be keyed out.
+Until the real ones exist the game draws pixel stand-ins from the sprites. Gemini prompts and the exact steps
+(save, run tools/art/portrait.py, check in the game): docs/design/portrait-prompts.md. Files: assets/portraits/.
