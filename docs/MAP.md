@@ -8,6 +8,16 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `.godot-version`
 - `project.godot`
 
+## .agents
+- `.agents/skills/blender-addon-engineer/SKILL.md`
+- `.agents/skills/game-audio-engineer/SKILL.md`
+- `.agents/skills/game-designer/SKILL.md`
+- `.agents/skills/godot-gameplay-scripter/SKILL.md`
+- `.agents/skills/godot-shader-developer/SKILL.md`
+- `.agents/skills/level-designer/SKILL.md`
+- `.agents/skills/narrative-designer/SKILL.md`
+- `.agents/skills/technical-artist/SKILL.md`
+
 ## content
 - `content/combat/actions.json`: content: action x4
 - `content/combat/combatants.json`: content: combatant x3
