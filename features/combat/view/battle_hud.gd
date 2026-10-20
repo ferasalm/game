@@ -1,7 +1,7 @@
 class_name BattleHud
 extends CanvasLayer
-## The battle HUD, built in code: timeline bar (top), party panel (bottom right), command menu (bottom left),
-## enemy-intent banner/tip texts and the end panel. Works with keyboard, mouse and gamepad through Button focus.
+## The battle HUD, built in code: timeline bar (top) with the one-time tip under it, party panel (bottom right),
+## command menu (bottom left), the banner text and the end panel. Works with keyboard, mouse and gamepad through Button focus.
 
 ## The player committed a move on a target in the command menu.
 signal move_chosen(action: ActionDef, target_id: StringName)
@@ -113,14 +113,14 @@ func _build_texts() -> void:
 	_root.add_child(_banner)
 	_tip = PanelContainer.new()
 	_tip.add_theme_stylebox_override("panel", BattleStyle.panel(_view))
-	_tip.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
+	_tip.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
 	_tip.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	_tip.grow_vertical = Control.GROW_DIRECTION_BEGIN
-	_tip.offset_top = -_view.margin
-	_tip.offset_bottom = -_view.margin
+	_tip.grow_vertical = Control.GROW_DIRECTION_END
+	_tip.offset_top = timeline_bar.height() + _view.margin / 2.0
+	_tip.offset_bottom = _tip.offset_top
 	_tip_label = BattleStyle.label("")
 	_tip_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_tip_label.custom_minimum_size.x = _view.menu_width - _view.margin * 4.0
+	_tip_label.custom_minimum_size.x = _view.menu_width + _view.party_panel_width - _view.margin * 4.0
 	_tip.add_child(_tip_label)
 	_tip.visible = false
 	_root.add_child(_tip)
