@@ -28,3 +28,8 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-21 | Next chat: Opus runs autonomously toward a playable prototype (later grown into the MVP); scope is open and set by its questions | Feras wants big progress per chat | Feras
 - 2026-10-21 | Every question to Feras: 2-4 multiple-choice options, a recommended first one with the why, plain words (beginner) | Feras is new to game dev | Feras
 - 2026-10-21 | The autonomous run pauses only for owner questions, logins, CAPTCHAs, downloads and anything that costs money; it never works around them | safety rules + $0 budget | Feras/Claude
+- 2026-10-21 | Prototype v0 = walk, then battle: one rooftop area, a workshop, a patrol, one battle in place (docs/design/prototype.md) | Feras chose it over "one battle" | Feras
+- 2026-10-21 | Prototype battle: Zayd + Bilqis vs 3 Concession enemies (2 enforcers, 1 drone) | Feras (recommended) | Feras
+- 2026-10-21 | Prototype has a small djanbeyyah pick: 2 hilts x 2 blades at a workshop | Feras (recommended) | Feras
+- 2026-10-21 | Prototype art: Claude draws pixel sprites by script; Gemini/Flow art replaces them later through the same format | Feras (recommended) | Feras
+- 2026-10-21 | Player text: localization/<feature>.csv loaded at startup by a TextDB autoload, not Godot's CSV import | that import errors on a fresh clone (CI) and writes binaries | Claude

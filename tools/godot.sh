@@ -4,6 +4,9 @@ set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"
 ver="$(tr -d '[:space:]' < "$root/.godot-version")"
 win="$root/Godot_v${ver}_win64_console.exe"
+# A git worktree has no copy of the git-ignored exe: fall back to the main checkout's.
+main="$(cd "$(git -C "$root" rev-parse --path-format=absolute --git-common-dir 2> /dev/null)/.." 2> /dev/null && pwd)"
+[ -f "$win" ] || win="$main/Godot_v${ver}_win64_console.exe"
 case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*) [ -f "$win" ] && { echo "$win"; exit 0; }
   echo "Windows: put Godot_v${ver}_win64_console.exe in the repo root" >&2; exit 1;; esac
 dir="${GODOT_CACHE:-$HOME/.cache/godot}/$ver"

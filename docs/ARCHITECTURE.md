@@ -111,7 +111,8 @@ docs/           ARCHITECTURE BRIEFING EFFICIENCY DECISIONS LESSONS MAP USAGE des
 
 ## 11. Dialogue, text and languages (M4)
 - Dialogue as plain-text scripts (recommended: the Dialogue Manager plugin, MIT; decided in M4 after a test).
-- All player text through `tr()` keys in `localization/strings.csv`. English first; Arabic can be added later at
+- All player text through `tr()` keys in `localization/<feature>.csv` (header `keys,en`), loaded at startup by
+  the TextDB autoload (the CSVs use the "keep" importer: Godot's CSV import fails on a fresh clone). English first; Arabic can be added later at
   little cost (Godot shapes right-to-left text natively; it needs a font with Arabic glyphs and an RTL test).
 - Musnad inscriptions can use the free Noto Sans Old South Arabian font.
 

@@ -30,8 +30,11 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `core/event_bus.gd`: Global signals between features (autoload EventBus)
 - `core/game_state.gd`: Everything a save file holds (autoload GameState)
 - `core/tests/fixtures/bad_content/combatants.json`: content: combatant x1
+- `core/tests/fixtures/bad_text/bad.csv`
 - `core/tests/test_content_db.gd`: The shipped content loads with no problems, and the validator catches broken content
 - `core/tests/test_game_state.gd`: Save data survives a round trip through JSON, and a save from another version is refused
+- `core/tests/test_text_db.gd`: Player text: every localization CSV loads, keys translate, and a malformed file is reported
+- `core/text_db.gd`: Player text (autoload TextDB): loads every res://localization/*.csv (header "keys,<lang>,...") into the TranslationServer at startup, so tr("KEY") works
 
 ## features
 - `features/combat/defs/action_def.gd`: One battle technique: its cost, power, and what it does to the timeline (cast speed, recovery, knockback, cancel)
@@ -46,6 +49,11 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/look_test/look_test.gd`: HD-2D look test (the M1 rendering spike): a block diorama, a pixel-art billboard placeholder, tilt-shift depth of field, bloom and a low sun with shadows, all built in code
 - `features/world/look_test/look_test.tscn`: scene
 - `features/world/tests/test_look_test.gd`: The look-test scene builds without errors (headless: no pixels are drawn, but every node and resource is made)
+
+## localization
+- `localization/combat.csv`
+- `localization/ui.csv`
+- `localization/world.csv`
 
 ## tests
 - `tests/base_test.gd`: Base class for test files
