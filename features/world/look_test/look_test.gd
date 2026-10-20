@@ -1,23 +1,22 @@
 extends Node3D
 ## HD-2D look test (the M1 rendering spike): a block diorama, a pixel-art billboard hero (CharacterVisual), tilt-shift
-## depth of field, bloom and a low sun with shadows, all built in code. Open the project and press F5.
-## Tune the constants below on your own laptop; the chosen values move to content data in M1.
+## depth of field, bloom and a low sun with shadows. The look numbers come from content/world/look.json (look v1).
+## Open the project and press F5 on this scene.
 
 const GROUND: int = 12
-const PIXELS_PER_UNIT: float = 16.0
-const CAMERA_POS: Vector3 = Vector3(0.0, 6.0, 8.5)
-const CAMERA_FOV: float = 30.0
-const DOF_NEAR: float = 5.0
-const DOF_FAR: float = 12.0
-const DOF_AMOUNT: float = 0.1
+const LOOK_ID: StringName = &"v1"
 
+var _look: LookDef
 var _fps_label: Label
 
 
 func _ready() -> void:
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
-	_add_environment()
-	_add_sun()
+	_look = ContentDB.get_def("look", LOOK_ID) as LookDef
+	if _look == null:
+		_look = LookDef.new()
+	add_child(Diorama.make_environment(_look))
+	add_child(Diorama.make_sun(_look))
 	_add_ground()
 	_add_hero()
 	_add_camera()
@@ -37,32 +36,9 @@ func _add_fps_label() -> void:
 	add_child(layer)
 
 
-func _add_environment() -> void:
-	var env := Environment.new()
-	env.background_mode = Environment.BG_COLOR
-	env.background_color = Color(0.55, 0.66, 0.78)
-	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = Color(0.85, 0.78, 0.7)
-	env.ambient_light_energy = 0.5
-	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
-	env.glow_enabled = true
-	env.glow_bloom = 0.15
-	var world := WorldEnvironment.new()
-	world.environment = env
-	add_child(world)
-
-
-func _add_sun() -> void:
-	var sun := DirectionalLight3D.new()
-	sun.rotation_degrees = Vector3(-50.0, -35.0, 0.0)
-	sun.light_color = Color(1.0, 0.9, 0.75)
-	sun.shadow_enabled = true
-	add_child(sun)
-
-
 func _add_ground() -> void:
-	var stone := _material(Color(0.78, 0.7, 0.55))
-	var grass := _material(Color(0.45, 0.55, 0.3))
+	var stone := Diorama.material(Color(0.78, 0.7, 0.55))
+	var grass := Diorama.material(Color(0.45, 0.55, 0.3))
 	for x: int in GROUND:
 		for z: int in GROUND:
 			var height: float = 1.0 if x >= GROUND - 3 else 0.5
@@ -82,23 +58,7 @@ func _add_hero() -> void:
 
 
 func _add_camera() -> void:
-	var camera := Camera3D.new()
-	camera.fov = CAMERA_FOV
-	camera.position = CAMERA_POS
-	var attributes := CameraAttributesPractical.new()
-	attributes.dof_blur_near_enabled = true
-	attributes.dof_blur_near_distance = DOF_NEAR
-	attributes.dof_blur_far_enabled = true
-	attributes.dof_blur_far_distance = DOF_FAR
-	attributes.dof_blur_amount = DOF_AMOUNT
-	camera.attributes = attributes
+	var camera := Diorama.make_camera(_look)
 	add_child(camera)
-	camera.look_at(Vector3(0.0, 0.8, 0.0))
+	Diorama.aim(camera, Vector3.ZERO, _look)
 	camera.current = true
-
-
-func _material(color: Color) -> StandardMaterial3D:
-	var material := StandardMaterial3D.new()
-	material.albedo_color = color
-	material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
-	return material

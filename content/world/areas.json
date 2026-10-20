@@ -1,0 +1,28 @@
+{
+  "kind": "area",
+  "items": [
+    {"id": "souq_rooftops", "name_key": "WORLD_ROOFTOP_NAME", "encounter": "rooftop_patrol",
+     "rows": [
+       "%%%%%%%%%%%%%%%%%%%%%%%%%%",
+       "%TTTT...TTTT....%__%.TTTT%",
+       "%TTTT...TVVT....%__%.TTTT%",
+       "%TYYT...........%__%.TBBT%",
+       "%...............%__%.....%",
+       "%...............====.....%",
+       "%...............%__%.....%",
+       "%...............%__%.....%",
+       "%...............%__%.....%",
+       "%.....P,,,,,,,Q.%__%.....%",
+       "%TTTT...........%__%.....%",
+       "%TTTT.....%%%...%__%.....%",
+       "%TYYT...........%__%.TTTT%",
+       "%.W..%..........%__%.TTTT%",
+       "%...............%__%.TVVT%",
+       "%....S..........%__%.....%",
+       "%...............%__%.....%",
+       "kkkkkkkkkkkkkkkkkkkkkkkkkk"],
+     "legend": {".": "roof_floor", ",": "roof_worn", "=": "bridge", "_": "street", "%": "parapet", "k": "kerb",
+       "T": "tower_brick", "Y": "glass_amber", "B": "glass_blue", "V": "glass_violet",
+       "S": "roof_floor", "W": "roof_floor", "P": "roof_worn", "Q": "roof_worn"}}
+  ]
+}

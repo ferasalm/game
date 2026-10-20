@@ -11,6 +11,10 @@ const KINDS: Dictionary = {
 	"palette": preload("res://features/art/defs/palette_def.gd"),
 	"sprite": preload("res://features/art/defs/sprite_def.gd"),
 	"visual_rules": preload("res://features/art/defs/visual_rules_def.gd"),
+	"look": preload("res://features/world/defs/look_def.gd"),
+	"tile": preload("res://features/world/defs/tile_def.gd"),
+	"area": preload("res://features/world/defs/area_def.gd"),
+	"explore_rules": preload("res://features/world/defs/explore_rules_def.gd"),
 }
 
 var _defs: Dictionary[String, Dictionary] = {}
