@@ -96,6 +96,31 @@ func text_map(key: String) -> Dictionary[String, String]:
 	return out
 
 
+## A list of JSON objects as one reader each; errors name the element, e.g. "file[0].lines[2].key".
+func objects(key: String) -> Array[DefReader]:
+	var out: Array[DefReader] = []
+	if not _data.has(key):
+		_fail(key, "missing")
+	elif not (_data[key] is Array):
+		_fail(key, "not a list")
+	else:
+		var items: Array = _data[key] as Array
+		for i: int in items.size():
+			if items[i] is Dictionary:
+				out.append(DefReader.new(items[i] as Dictionary, "%s.%s[%d]" % [_where, key, i], _errors))
+			else:
+				_fail("%s[%d]" % [key, i], "not an object")
+	return out
+
+
+## A string that must be one of options (an id such as an expression name).
+func one_of(key: String, options: Array[StringName]) -> StringName:
+	var value := StringName(text(key))
+	if not options.has(value):
+		_fail(key, "'%s' is not one of %s" % [value, options])
+	return value
+
+
 static func _num(value: float) -> String:
 	return str(int(value)) if value == floorf(value) else str(value)
 

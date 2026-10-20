@@ -7,3 +7,5 @@
 __pycache__/
 # Godot editor binaries (Windows, local only; tools/godot.sh finds them)
 /Godot_v*_win64*.exe
+# Claude Code agent worktrees (local only)
+/.claude/worktrees/
