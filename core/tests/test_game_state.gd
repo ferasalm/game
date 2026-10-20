@@ -4,9 +4,9 @@ extends TestCase
 
 func test_round_trip_through_json() -> void:
 	var state: Node = load("res://core/game_state.gd").new()
-	state.set("party", [&"malik", &"thurya"] as Array[StringName])
+	state.set("party", [&"zayd", &"bilqis"] as Array[StringName])
 	state.set("area_id", &"ch1_ridge")
-	(state.get("flags") as Dictionary)[&"met_thurya"] = true
+	(state.get("flags") as Dictionary)[&"met_bilqis"] = true
 	(state.get("counters") as Dictionary)[&"resin_hojari"] = 3
 	var saved: String = JSON.stringify(state.call("to_dict"))
 	var loaded: Node = load("res://core/game_state.gd").new()

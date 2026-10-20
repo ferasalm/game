@@ -14,15 +14,17 @@ func _ready() -> void:
 func load_all(root: String = TEXT_ROOT) -> PackedStringArray:
 	var errors := PackedStringArray()
 	var by_lang: Dictionary[String, Translation] = {}
+	var seen: Dictionary[String, String] = {}
 	for file: String in DirAccess.get_files_at(root):
 		if file.ends_with(".csv"):
-			_load_file(root.path_join(file), by_lang, errors)
+			_load_file(root.path_join(file), by_lang, seen, errors)
 	for lang: String in by_lang:
 		TranslationServer.add_translation(by_lang[lang])
 	return errors
 
 
-func _load_file(path: String, by_lang: Dictionary[String, Translation], errors: PackedStringArray) -> void:
+func _load_file(path: String, by_lang: Dictionary[String, Translation], seen: Dictionary[String, String],
+		errors: PackedStringArray) -> void:
 	var file := FileAccess.open(path, FileAccess.READ)
 	var header: PackedStringArray = file.get_csv_line()
 	if header.size() < 2 or header[0] != "keys":
@@ -32,6 +34,9 @@ func _load_file(path: String, by_lang: Dictionary[String, Translation], errors: 
 		var row: PackedStringArray = file.get_csv_line()
 		if row.size() < 2 or row[0].is_empty():
 			continue
+		if seen.has(row[0]):
+			errors.append("%s: key %s is already in %s" % [path, row[0], seen[row[0]]])
+		seen[row[0]] = path
 		for col: int in range(1, mini(row.size(), header.size())):
 			var lang: String = header[col]
 			if not by_lang.has(lang):

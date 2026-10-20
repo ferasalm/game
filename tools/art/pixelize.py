@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Turn a Gemini/Flow PNG into a palette-locked pixel sprite entry for content/art/sprites.json.
 
-Usage: python tools/art/pixelize.py --in PIC.png --id my_sprite [--height 32] [--tolerance 40]
+Usage: python tools/art/pixelize.py --in PIC.png --id my_sprite [--height 64] [--tolerance 40]
        [--palette content/art/palette.json] [--out content/art/sprites.json]
 Steps: key out the corner colour, trim, box-downscale to --height, snap each pixel to the nearest palette colour.
 """
@@ -87,7 +87,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--in", dest="src", required=True)
     ap.add_argument("--id", required=True)
-    ap.add_argument("--height", type=int, default=32)
+    ap.add_argument("--height", type=int, default=64)
     ap.add_argument("--tolerance", type=int, default=40)
     ap.add_argument("--palette", default="content/art/palette.json")
     ap.add_argument("--out")

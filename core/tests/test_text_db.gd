@@ -9,8 +9,11 @@ func test_shipped_text_loads_and_translates() -> void:
 	db.free()
 
 
-func test_bad_header_is_reported() -> void:
+func test_bad_header_and_duplicate_key_are_reported() -> void:
 	var db: Node = load("res://core/text_db.gd").new()
 	var problems: PackedStringArray = db.call("load_all", "res://core/tests/fixtures/bad_text")
-	check(problems.size() == 1 and problems[0].contains("keys,<lang>"), "header check")
+	var joined: String = "
+".join(problems)
+	check(joined.contains("keys,<lang>"), "header check")
+	check(joined.contains("key DUP_KEY is already in"), "duplicate key check")
 	db.free()
