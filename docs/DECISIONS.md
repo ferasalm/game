@@ -40,3 +40,4 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-21 | Slice: medium difficulty; Hamoud joins at beat 5; Idris escapes mid-fight; both a stealth walk and the sluice puzzle | Feras (slice.md questions) | Feras
 - 2026-10-21 | Ambush from behind: the hero answers with a djanbeyyah reverse stab (its hooked blade is made to strike behind, game fiction) before battle; first used in slice beat 3 | Feras's idea | Feras
 - 2026-10-21 | Game Designer review applied: show enemy intent + "will interrupt" preview, Bilqis's static_net cancels, blade knockback on the first hit only, seeded start positions (party ahead), downed units lose their cast, first-time tips, battles 40-90 s | readable interrupts are the fun hypothesis | Claude (Game Designer skill)
+- 2026-10-21 | The reverse-stab ambush goes into prototype v0 (patrol touch from behind; party head start when Zayd reaches it from behind) | Feras (recommended) | Feras

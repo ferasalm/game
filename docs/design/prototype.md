@@ -10,7 +10,9 @@ bump into a Concession patrol, win or lose a timeline battle, return. Rules: doc
    lines): a text box at the bottom with the speaker's name, a chest-up painted portrait beside it, the
    expression changing per line (stand-ins until Feras's Gemini art). Then pick 1 of 2 hilts and 1 of 2 blades; the menu
    shows how Zayd's numbers change. Esc (pad B) closes it. Default pair: swift hilt + keen blade.
-4. A Concession patrol (one enforcer sprite) walks back and forth. Touching it starts a battle in place.
+4. A Concession patrol (one enforcer sprite) walks back and forth. Touching it starts a battle in place. If it
+   catches Zayd from behind: the reverse stab (he spins and stabs backward with the djanbeyyah's hook, damage and
+   stagger on that enemy), and the enemies start ahead. If Zayd reaches it from behind, the party starts ahead.
 5. Battle: the camera moves to the battle view. Zayd stands in front, Bilqis behind him. Enemies: two enforcers
    in front, a survey drone behind them. A timeline bar shows every fighter's icon moving toward COMMAND.
 6. Wait mode: time stops when a hero reaches COMMAND. Pick a move (name, SP cost, a "cancels" tag), then a
@@ -34,7 +36,7 @@ bump into a Concession patrol, win or lose a timeline battle, return. Rules: doc
   turns a Gemini or Flow picture into the same format later.
 
 ## Not in v0
-Dialogue beyond the workshop talk, saves, items, healing, ambush bonus, sound, title screen, Arabic text, walk-cycle frames
+Dialogue beyond the workshop talk, saves, items, healing, sound, title screen, Arabic text, walk-cycle frames
 (a bob stands in), more than one area, Sheikh Hamoud.
 
 ## Acceptance tests
