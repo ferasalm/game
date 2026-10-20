@@ -17,3 +17,13 @@ func test_bad_header_and_duplicate_key_are_reported() -> void:
 	check(joined.contains("keys,<lang>"), "header check")
 	check(joined.contains("key DUP_KEY is already in"), "duplicate key check")
 	db.free()
+
+
+## Godot's CSV translation import breaks a fresh clone (DECISIONS 2026-10-21): every CSV must use "keep".
+func test_every_text_csv_uses_the_keep_importer() -> void:
+	for file: String in DirAccess.get_files_at("res://localization"):
+		if file.ends_with(".csv"):
+			var config := ConfigFile.new()
+			var path: String = "res://localization/%s.import" % file
+			check(config.load(path) == OK and str(config.get_value("remap", "importer", "")) == "keep",
+				"%s uses the keep importer" % file)
