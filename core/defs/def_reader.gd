@@ -71,6 +71,31 @@ func id_list(key: String) -> Array[StringName]:
 	return out
 
 
+func text_list(key: String) -> PackedStringArray:
+	var out := PackedStringArray()
+	if not _data.has(key):
+		_fail(key, "missing")
+	elif not (_data[key] is Array):
+		_fail(key, "not a list")
+	else:
+		for item: Variant in (_data[key] as Array):
+			out.append(str(item))
+	return out
+
+
+## A {"key": "text"} object as a dictionary of String to String.
+func text_map(key: String) -> Dictionary[String, String]:
+	var out: Dictionary[String, String] = {}
+	if not _data.has(key):
+		_fail(key, "missing")
+	elif not (_data[key] is Dictionary):
+		_fail(key, "not an object")
+	else:
+		for name: Variant in (_data[key] as Dictionary):
+			out[str(name)] = str((_data[key] as Dictionary)[name])
+	return out
+
+
 static func _num(value: float) -> String:
 	return str(int(value)) if value == floorf(value) else str(value)
 

@@ -19,6 +19,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `.agents/skills/technical-artist/SKILL.md`
 
 ## content
+- `content/art/palette.json`: content: palette x1
+- `content/art/sprites.json`: content: sprite x5
+- `content/art/visual.json`: content: visual_rules x1
 - `content/combat/actions.json`: content: action x4
 - `content/combat/combatants.json`: content: combatant x3
 - `content/combat/statuses.json`: content: status x2
@@ -37,6 +40,12 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `core/text_db.gd`: Player text (autoload TextDB): loads every res://localization/*.csv (header "keys,<lang>,...") into the TranslationServer at startup, so tr("KEY") works
 
 ## features
+- `features/art/defs/palette_def.gd`: The locked colour palette: one letter per colour ("." is transparent and never listed here)
+- `features/art/defs/sprite_def.gd`: One pixel sprite: rows of palette letters ('.' = transparent), all the same width, feet on the last row
+- `features/art/defs/visual_rules_def.gd`: Numbers for how a CharacterVisual looks and moves (art scale, walking bob, lunge, hit flash, knocked out)
+- `features/art/logic/pixel_art.gd`: Turns a palette-indexed sprite (rows of letters) into an Image or texture
+- `features/art/tests/test_sprites.gd`: Prototype T7: every sprite is well formed and uses only palette letters; PixelArt and CharacterVisual work
+- `features/art/view/character_visual.gd`: A pixel-art character standing in the 3D world: a billboard Sprite3D (feet on the node's origin) plus its small animations (walking bob, lunge, hit flash, knocked out)
 - `features/combat/defs/action_def.gd`: One battle technique: its cost, power, and what it does to the timeline (cast speed, recovery, knockback, cancel)
 - `features/combat/defs/combatant_def.gd`: One kind of fighter (a party member or an enemy type): base stats and the actions it can use
 - `features/combat/defs/status_def.gd`: One status effect: how long it lasts and how it changes timeline speed and interrupt immunity
@@ -46,7 +55,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/logic/unit_state.gd`: One fighter during one battle: the numbers that change (hp, timeline position, the action being cast), built from a read-only CombatantDef
 - `features/combat/tests/test_formation.gd`: Formation rows: cover and melee multipliers
 - `features/combat/tests/test_timeline.gd`: Timeline rules: command pause, cast and act, interrupts, knockback limits, determinism
-- `features/world/look_test/look_test.gd`: HD-2D look test (the M1 rendering spike): a block diorama, a pixel-art billboard placeholder, tilt-shift depth of field, bloom and a low sun with shadows, all built in code
+- `features/world/look_test/look_test.gd`: HD-2D look test (the M1 rendering spike): a block diorama, a pixel-art billboard hero (CharacterVisual), tilt-shift depth of field, bloom and a low sun with shadows, all built in code
 - `features/world/look_test/look_test.tscn`: scene
 - `features/world/tests/test_look_test.gd`: The look-test scene builds without errors (headless: no pixels are drawn, but every node and resource is made)
 
@@ -60,6 +69,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tests/runner.gd`: Headless test runner: runs every test_* method of every res://**/tests/test_*.gd file
 
 ## tools
+- `tools/art/pixelize.py`: Turn a Gemini/Flow PNG into a palette-locked pixel sprite entry for content/art/sprites.json.
+- `tools/art/test_pixelize.py`: Self-test for pixelize.py: python tools/art/test_pixelize.py (plain asserts, exits non-zero on failure).
 - `tools/check.sh`: One command for every check (docs, lint, Godot import, tests). One ok/FAIL line per step; logs in .check/.
 - `tools/doc_check.py`: Keeps the always-loaded notes small and well-formed (docs/EFFICIENCY.md); exit 1 on any failure.
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.
