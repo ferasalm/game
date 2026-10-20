@@ -24,3 +24,7 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-19 | Standing OK: each session merges its checked work into main at the end | Feras BRIEFING q5 "ok to merge" | Feras
 - 2026-10-19 | Title stays "Qarnaw" for now, may change later | Feras BRIEFING q6 | Feras
 - 2026-10-19 | Hero's weapon is a djanbeyyah in two parts, hilt and blade, each upgraded or swapped separately (design: docs/design/world.md) | Feras: combos give varied combat styles | Feras
+- 2026-10-21 | Local development on Windows is primary: edit and check here, push a branch; Godot 4.7.2 win64 exes sit in the repo root (git-ignored) | Feras runs the editor here | Feras/Claude
+- 2026-10-21 | Next chat: Opus runs autonomously toward a playable prototype (later grown into the MVP); scope is open and set by its questions | Feras wants big progress per chat | Feras
+- 2026-10-21 | Every question to Feras: 2-4 multiple-choice options, a recommended first one with the why, plain words (beginner) | Feras is new to game dev | Feras
+- 2026-10-21 | The autonomous run pauses only for owner questions, logins, CAPTCHAs, downloads and anything that costs money; it never works around them | safety rules + $0 budget | Feras/Claude

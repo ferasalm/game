@@ -14,17 +14,21 @@ Plan and estimates: docs/BRIEFING.md. Architecture: docs/ARCHITECTURE.md. Token 
 - Branch `claude/new-session-0mxnqs`, pushed. Not merged into `main` (needs the owner's OK).
 
 ## Waiting on the owner
-1. Review docs/design/world.md (cast, djanbeyyah); send the Gemini character picture.
+1. Review docs/design/world.md (cast, djanbeyyah). Send a Gemini or Flow character picture (or let Opus make one).
 
 ## Next steps
-1. M1 art spike: `tools/art/pixelize.py` (downscale, palette lock, background key, sheet packing) and one
-   Gemini-made character as a pixel sprite in the look test (this sets texel density); draft
-   docs/design/art-bible.md. Model: Opus (it judges the pictures). Effort: high.
-2. Design docs from the blueprint, owner-approved parts only: docs/design/combat.md and slice.md (<= 60 lines each,
-   with acceptance tests). Model: Opus. Effort: medium.
+1. Autonomous prototype run (ultracode), one chat. Model: Opus. Effort: high. Milestones, milestones committed and pushed:
+   (a) ask the owner to define "prototype" with multiple-choice questions (DECISIONS 2026-10-21), write
+   docs/design/prototype.md (<= 60 lines, acceptance tests); (b) M1 art spike: `tools/art/pixelize.py` and one
+   pixel sprite in the look test, docs/design/art-bible.md; (c) combat.md and slice.md; (d) playable
+   prototype scene wired to the timeline logic. Use subagents only for work that reads far more than its brief
+   (Image Prompt Engineer, Technical Artist, Godot Gameplay Scripter), each with the cheapest fitting model.
+2. Local checks on Windows pass (11 tests, 2026-10-21); rerun `tools/check.sh` after each milestone. Model: Haiku. Effort: low.
 
 ## Paste-ready prompt
 ```
-Continue the game repo (ferasalm/game), next step 1 in HANDOFF.md (M1 art spike). A Gemini character picture is attached.
-Opus, high effort. Finish with /handoff.
+Continue the game repo (ferasalm/game). Read HANDOFF.md, then run next step 1: work autonomously toward a playable
+prototype. I am a beginner: ask me questions as 2-4 multiple choices, your recommendation first with the why.
+Pause for my questions, logins (Google Flow in the built-in browser), CAPTCHAs, downloads and anything costing money.
+Commit and push each milestone; /handoff when done or near 150k tokens. Opus, high effort.
 ```

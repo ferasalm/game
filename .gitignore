@@ -5,3 +5,5 @@
 /.check/
 *.tmp
 __pycache__/
+# Godot editor binaries (Windows, local only; tools/godot.sh finds them)
+/Godot_v*_win64*.exe

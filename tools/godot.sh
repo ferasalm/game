@@ -3,6 +3,9 @@
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"
 ver="$(tr -d '[:space:]' < "$root/.godot-version")"
+win="$root/Godot_v${ver}_win64_console.exe"
+case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*) [ -f "$win" ] && { echo "$win"; exit 0; }
+  echo "Windows: put Godot_v${ver}_win64_console.exe in the repo root" >&2; exit 1;; esac
 dir="${GODOT_CACHE:-$HOME/.cache/godot}/$ver"
 bin="$dir/Godot_v${ver}_linux.x86_64"
 if [ ! -x "$bin" ]; then
