@@ -20,6 +20,7 @@ const KINDS: Dictionary = {
 	"explore_rules": preload("res://features/world/defs/explore_rules_def.gd"),
 	"battle_rules": preload("res://features/combat/defs/battle_rules_def.gd"),
 	"encounter": preload("res://features/combat/defs/encounter_def.gd"),
+	"battle_view": preload("res://features/combat/defs/battle_view_def.gd"),
 	"hilt": preload("res://features/djanbeyyah/defs/hilt_def.gd"),
 	"blade": preload("res://features/djanbeyyah/defs/blade_def.gd"),
 }
