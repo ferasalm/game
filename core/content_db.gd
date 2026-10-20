@@ -22,6 +22,8 @@ const KINDS: Dictionary = {
 	"encounter": preload("res://features/combat/defs/encounter_def.gd"),
 	"hilt": preload("res://features/djanbeyyah/defs/hilt_def.gd"),
 	"blade": preload("res://features/djanbeyyah/defs/blade_def.gd"),
+	"loadout": preload("res://features/djanbeyyah/defs/loadout_def.gd"),
+	"workshop_style": preload("res://features/djanbeyyah/defs/workshop_style_def.gd"),
 }
 
 var _defs: Dictionary[String, Dictionary] = {}

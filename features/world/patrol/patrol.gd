@@ -45,6 +45,16 @@ func reset() -> void:
 	_refresh_visible()
 
 
+## The way it is walking, flat on the floor and unit length (toward the point it is heading for).
+func facing() -> Vector3:
+	var goal: Vector3 = _end if _heading_to_end else _start
+	var dir: Vector3 = goal - position
+	if dir.length() < 0.001:
+		dir = (_end - _start) if _heading_to_end else (_start - _end)
+	dir.y = 0.0
+	return dir.normalized()
+
+
 func _physics_process(delta: float) -> void:
 	if not _active:
 		return

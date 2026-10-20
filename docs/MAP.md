@@ -32,6 +32,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/dialogue/speakers.json`: content: speaker x2
 - `content/djanbeyyah/blades.json`: content: blade x2
 - `content/djanbeyyah/hilts.json`: content: hilt x2
+- `content/djanbeyyah/loadouts.json`: content: loadout x1
+- `content/djanbeyyah/menu.json`: content: workshop_style x1
 - `content/world/areas.json`: content: area x1
 - `content/world/explore.json`: content: explore_rules x1
 - `content/world/look.json`: content: look x1
@@ -40,11 +42,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 ## core
 - `core/asset_manifest.gd`: Checks assets/manifest.json: every file under the assets folder (except *.import, .gdignore, *.md and the manifest itself) has an entry with a non-empty source and licence
 - `core/content_db.gd`: All authored game data (autoload ContentDB)
-- `core/content_db.gd`: All authored game data (autoload ContentDB)
-- `core/content_db.gd`: All authored game data (autoload ContentDB)
 - `core/defs/def.gd`: Base of every content definition: an id, how it reads itself from JSON, and which other ids it needs
-- `core/defs/def_reader.gd`: Typed, validated reads from one JSON object
-- `core/defs/def_reader.gd`: Typed, validated reads from one JSON object
 - `core/defs/def_reader.gd`: Typed, validated reads from one JSON object
 - `core/event_bus.gd`: Global signals between features (autoload EventBus)
 - `core/game_state.gd`: Everything a save file holds (autoload GameState)
@@ -60,7 +58,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `core/tests/test_asset_manifest.gd`: Asset manifest: every shipped asset has a source and licence; the checker catches missing entries, empty licences and entries without files (fixtures), and ignores notes, .import files and the manifest
 - `core/tests/test_content_db.gd`: The shipped content loads with no problems, and the validator catches broken content
 - `core/tests/test_def_reader.gd`: DefReader int lists and cross-key problems, and the encounter definition built on them
-- `core/tests/test_game_state.gd`: Save data survives a round trip through JSON, and a save from another version is refused
+- `core/tests/test_game_state.gd`: Save data survives a round trip through JSON, a version-1 save migrates, and an unknown version is refused
 - `core/tests/test_text_db.gd`: Player text: every localization CSV loads, keys translate, and a malformed file is reported
 - `core/text_db.gd`: Player text (autoload TextDB): loads every res://localization/*.csv (header "keys,<lang>,...") into the TranslationServer at startup, so tr("KEY") works
 
@@ -109,8 +107,20 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/dialogue/view/portraits.gd`: Finds the portrait texture for (speaker, expression): res://assets/portraits/<speaker>_<expression>.png when it exists (loaded straight from the file, the "keep" importer needs no import step), else a stand-in built from the speaker's pixel sprite (StandinPortrait)
 - `features/djanbeyyah/defs/blade_def.gd`: A djanbeyyah blade: adds to attack, adds knockback to every hit the wielder lands, adds weight
 - `features/djanbeyyah/defs/hilt_def.gd`: A djanbeyyah hilt: adds to agility, multiplies cast speed, adds weight, and grants exactly one move
+- `features/djanbeyyah/defs/loadout_def.gd`: A named djanbeyyah pair (hilt id + blade id), such as Zayd's starting gear
+- `features/djanbeyyah/defs/workshop_style_def.gd`: Layout (pixels at 1920x1080), font sizes and colours of the workshop menu, and which fighter it compares
 - `features/djanbeyyah/logic/djanbeyyah.gd`: Builds Zayd's fighter from a base CombatantDef plus one hilt and one blade (docs/design/combat.md)
+- `features/djanbeyyah/logic/loadout.gd`: Which hilt and blade Zayd wears: the saved choice per slot, else the starting pair
+- `features/djanbeyyah/logic/stat_row.gd`: One line of the workshop comparison: label key, value now (base) and value with the chosen pair
+- `features/djanbeyyah/logic/workshop_stats.gd`: The comparison rows the workshop shows: base fighter against the fighter built by Djanbeyyah.equip
 - `features/djanbeyyah/tests/test_djanbeyyah.gd`: T3: the 4 hilt + blade pairings give 4 different Zayd stat sets, inside the timeline caps; each hilt adds exactly one move; the shared base definition is never changed
+- `features/djanbeyyah/tests/test_workshop.gd`: The loadout fallback, saved equipment, and the workshop menu: it builds headless with 2 + 2 choices, selecting anchor + broad and confirming saves them and closes once, back changes nothing, the panel shows merged numbers
+- `features/djanbeyyah/view/workshop_choice.gd`: One hilt or blade on the bench: its name and a short description on a panel
+- `features/djanbeyyah/view/workshop_demo.gd`: Manual check: opens the workshop menu over a plain background (F6 in the editor)
+- `features/djanbeyyah/view/workshop_demo.tscn`: scene
+- `features/djanbeyyah/view/workshop_menu.gd`: The djanbeyyah bench: pick 1 of 2 hilts and 1 of 2 blades, see how Zayd's numbers change, Confirm to save the pair in GameState.equipment
+- `features/djanbeyyah/view/workshop_page.gd`: The workshop layout: title, a hilt column, a blade column, the stats panel, and the Confirm button with the back hint
+- `features/djanbeyyah/view/workshop_stats_panel.gd`: The right-hand panel of the workshop: one line per stat (name, base value, value with the chosen pair, an up/down arrow in green or red) and below them the hilt's move with its description
 - `features/world/defs/area_def.gd`: A level as data: equal-width rows of tile characters, a legend (character -> tile id) and four markers (S spawn, W workshop bench, P patrol start, Q patrol end) that each appear once and stand on floor
 - `features/world/defs/explore_rules_def.gd`: Numbers for walking around an area: player speed and size, follower, camera, patrol, touch and interact ranges, collision wall height and the workshop prompt
 - `features/world/defs/look_def.gd`: The HD-2D look as data: camera offset and field of view, tilt-shift depth of field, sun, ambient light, background and bloom
@@ -122,6 +132,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/player/player.gd`: Zayd: 8-way walking from the move_* actions (up = -Z), stopped by solid tiles
 - `features/world/rooftop/rooftop.gd`: The rooftop exploration scene
 - `features/world/rooftop/rooftop.tscn`: scene
+- `features/world/tests/test_ambush.gd`: Which side struck first: the patrol's walking direction, and last_touch_ambush() after a touch (0 nobody, 1 the patrol caught the player from behind, 2 the player caught the patrol from behind)
 - `features/world/tests/test_area.gd`: Area, tile and look content: the rooftop layout is well formed and every probe of a broken layout is caught
 - `features/world/tests/test_look_test.gd`: The look-test scene builds without errors (headless: no pixels are drawn, but every node and resource is made)
 - `features/world/tests/test_rooftop.gd`: The rooftop scene builds headless; walking, the follower, the patrol touch, the ambush direction, the exploring switch, the patrol respawn, the workshop prompt and the camera
@@ -133,6 +144,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `localization/combat.csv`
 - `localization/dialogue.csv`
 - `localization/ui.csv`
+- `localization/workshop.csv`
 - `localization/world.csv`
 
 ## tests
