@@ -40,11 +40,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 ## core
 - `core/asset_manifest.gd`: Checks assets/manifest.json: every file under the assets folder (except *.import, .gdignore, *.md and the manifest itself) has an entry with a non-empty source and licence
 - `core/content_db.gd`: All authored game data (autoload ContentDB)
-- `core/content_db.gd`: All authored game data (autoload ContentDB)
-- `core/content_db.gd`: All authored game data (autoload ContentDB)
 - `core/defs/def.gd`: Base of every content definition: an id, how it reads itself from JSON, and which other ids it needs
-- `core/defs/def_reader.gd`: Typed, validated reads from one JSON object
-- `core/defs/def_reader.gd`: Typed, validated reads from one JSON object
 - `core/defs/def_reader.gd`: Typed, validated reads from one JSON object
 - `core/event_bus.gd`: Global signals between features (autoload EventBus)
 - `core/game_state.gd`: Everything a save file holds (autoload GameState)
