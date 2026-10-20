@@ -1,5 +1,5 @@
 extends Node3D
-## HD-2D look test (the M1 rendering spike): a block diorama, a pixel-art billboard placeholder, tilt-shift
+## HD-2D look test (the M1 rendering spike): a block diorama, a pixel-art billboard hero (CharacterVisual), tilt-shift
 ## depth of field, bloom and a low sun with shadows, all built in code. Open the project and press F5.
 ## Tune the constants below on your own laptop; the chosen values move to content data in M1.
 
@@ -76,16 +76,9 @@ func _add_ground() -> void:
 
 
 func _add_hero() -> void:
-	var sprite := Sprite3D.new()
-	sprite.texture = _placeholder_texture()
-	sprite.pixel_size = 1.0 / PIXELS_PER_UNIT
-	sprite.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
-	sprite.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
-	sprite.alpha_cut = SpriteBase3D.ALPHA_CUT_DISCARD
-	sprite.shaded = true
-	sprite.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
-	sprite.position = Vector3(0.0, 1.0, 0.0)
-	add_child(sprite)
+	var hero := CharacterVisual.new()
+	hero.set_sprite(&"zayd")
+	add_child(hero)
 
 
 func _add_camera() -> void:
@@ -109,14 +102,3 @@ func _material(color: Color) -> StandardMaterial3D:
 	material.albedo_color = color
 	material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
 	return material
-
-
-## A 16x32 stand-in for a character sprite until real art exists (docs/ARCHITECTURE.md, "Art pipeline").
-func _placeholder_texture() -> ImageTexture:
-	var image := Image.create_empty(16, 32, false, Image.FORMAT_RGBA8)
-	image.fill(Color(0.0, 0.0, 0.0, 0.0))
-	image.fill_rect(Rect2i(5, 2, 6, 7), Color(0.8, 0.6, 0.45))
-	image.fill_rect(Rect2i(3, 9, 10, 13), Color(0.6, 0.25, 0.15))
-	image.fill_rect(Rect2i(4, 22, 3, 10), Color(0.25, 0.2, 0.15))
-	image.fill_rect(Rect2i(9, 22, 3, 10), Color(0.25, 0.2, 0.15))
-	return ImageTexture.create_from_image(image)
