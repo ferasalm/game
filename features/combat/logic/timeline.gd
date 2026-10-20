@@ -40,7 +40,7 @@ func choose(unit_id: StringName, chosen: ActionDef, target_ids: Array[StringName
 
 ## Applies a landed hit's timeline effect: a cancel during a cast interrupts it; anything else knocks the
 ## target back, never below COMMAND_POINT while it casts.
-func hit(target_id: StringName, by: ActionDef) -> TimelineEvent:
+func hit(target_id: StringName, by: ActionDef, bonus_knockback: int = 0) -> TimelineEvent:
 	var target: UnitState = find(target_id)
 	if target.phase == UnitState.Phase.CAST and by.cancels_cast and not target.interrupt_immune():
 		target.phase = UnitState.Phase.WAIT
@@ -48,8 +48,14 @@ func hit(target_id: StringName, by: ActionDef) -> TimelineEvent:
 		target.targets.clear()
 		target.pos = INTERRUPT_POS
 		return TimelineEvent.new(&"interrupted", target_id, target.pos)
-	var shift: int = roundi(by.knockback * (1.0 - target.def.interrupt_resist))
+	var shift: int = roundi((by.knockback + bonus_knockback) * (1.0 - target.def.interrupt_resist))
 	var lowest: int = COMMAND_POINT if target.phase == UnitState.Phase.CAST else 0
+	if target.phase == UnitState.Phase.COMMAND:
+		# Hit in the same tick it reached COMMAND, before its owner could choose: back to waiting.
+		target.phase = UnitState.Phase.WAIT
+		if waiting_for == target:
+			waiting_for = null
+		target.pos = COMMAND_POINT - 1
 	target.pos = maxi(lowest, target.pos - shift)
 	return TimelineEvent.new(&"knocked_back", target_id, target.pos)
 
@@ -72,6 +78,8 @@ func _advance(unit: UnitState, events: Array[TimelineEvent]) -> void:
 		unit.pos = mini(ACT_POINT, unit.pos + unit.speed())
 		if unit.pos == ACT_POINT:
 			events.append(TimelineEvent.new(&"act", unit.unit_id, unit.pos))
+			unit.acted = unit.action
+			unit.acted_targets = unit.targets.duplicate()
 			unit.pos = maxi(0, AFTER_ACT_POS - unit.action.recovery)
 			unit.phase = UnitState.Phase.WAIT
 			unit.action = null

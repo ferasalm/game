@@ -4,6 +4,7 @@ extends Def
 ## knockback, cancel). Timeline numbers are in timeline units (Timeline.ACT_POINT = 10000).
 
 var name_key: String = ""
+var desc_key: String = ""
 var sp_cost: int = 0
 var power: int = 0
 var hit_count: int = 1
@@ -19,6 +20,7 @@ var applies_status: StringName = &""
 func read(r: DefReader) -> void:
 	id = r.id()
 	name_key = r.text("name_key")
+	desc_key = r.text("desc_key", "", false)
 	sp_cost = r.integer("sp_cost", 0, 999)
 	power = r.integer("power", 0, 9999)
 	hit_count = r.integer("hit_count", 1, 9, 1, false)

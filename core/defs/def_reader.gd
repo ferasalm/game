@@ -119,6 +119,24 @@ func one_of(key: String, options: Array[StringName]) -> StringName:
 	if not options.has(value):
 		_fail(key, "'%s' is not one of %s" % [value, options])
 	return value
+func int_list(key: String, min_value: int, max_value: int) -> Array[int]:
+	var out: Array[int] = []
+	if not _data.has(key):
+		return out
+	if not (_data[key] is Array):
+		_fail(key, "not a list")
+		return out
+	for item: Variant in (_data[key] as Array):
+		if not (item is float or item is int) or item < min_value or item > max_value:
+			_fail(key, "'%s' is not a whole number in %d..%d" % [str(item), min_value, max_value])
+		else:
+			out.append(roundi(float(item)))
+	return out
+
+
+## Lets a Def report a rule that spans several keys.
+func problem(key: String, what: String) -> void:
+	_fail(key, what)
 
 
 static func _num(value: float) -> String:

@@ -22,12 +22,16 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/art/palette.json`: content: palette x1
 - `content/art/sprites.json`: content: sprite x5
 - `content/art/visual.json`: content: visual_rules x1
-- `content/combat/actions.json`: content: action x4
-- `content/combat/combatants.json`: content: combatant x3
-- `content/combat/statuses.json`: content: status x2
+- `content/combat/actions.json`: content: action x10
+- `content/combat/combatants.json`: content: combatant x4
+- `content/combat/encounters.json`: content: encounter x1
+- `content/combat/rules.json`: content: battle_rules x1
+- `content/combat/statuses.json`: content: status x1
 - `content/dialogue/box.json`: content: dialogue_style x1
 - `content/dialogue/dialogues.json`: content: dialogue x1
 - `content/dialogue/speakers.json`: content: speaker x2
+- `content/djanbeyyah/blades.json`: content: blade x2
+- `content/djanbeyyah/hilts.json`: content: hilt x2
 - `content/world/areas.json`: content: area x1
 - `content/world/explore.json`: content: explore_rules x1
 - `content/world/look.json`: content: look x1
@@ -36,7 +40,11 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 ## core
 - `core/asset_manifest.gd`: Checks assets/manifest.json: every file under the assets folder (except *.import, .gdignore, *.md and the manifest itself) has an entry with a non-empty source and licence
 - `core/content_db.gd`: All authored game data (autoload ContentDB)
+- `core/content_db.gd`: All authored game data (autoload ContentDB)
+- `core/content_db.gd`: All authored game data (autoload ContentDB)
 - `core/defs/def.gd`: Base of every content definition: an id, how it reads itself from JSON, and which other ids it needs
+- `core/defs/def_reader.gd`: Typed, validated reads from one JSON object
+- `core/defs/def_reader.gd`: Typed, validated reads from one JSON object
 - `core/defs/def_reader.gd`: Typed, validated reads from one JSON object
 - `core/event_bus.gd`: Global signals between features (autoload EventBus)
 - `core/game_state.gd`: Everything a save file holds (autoload GameState)
@@ -47,8 +55,11 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `core/tests/fixtures/assets_ok/sub/note.txt`
 - `core/tests/fixtures/bad_content/combatants.json`: content: combatant x1
 - `core/tests/fixtures/bad_text/bad.csv`
+- `core/tests/fixtures/bad_text/dup_a.csv`
+- `core/tests/fixtures/bad_text/dup_b.csv`
 - `core/tests/test_asset_manifest.gd`: Asset manifest: every shipped asset has a source and licence; the checker catches missing entries, empty licences and entries without files (fixtures), and ignores notes, .import files and the manifest
 - `core/tests/test_content_db.gd`: The shipped content loads with no problems, and the validator catches broken content
+- `core/tests/test_def_reader.gd`: DefReader int lists and cross-key problems, and the encounter definition built on them
 - `core/tests/test_game_state.gd`: Save data survives a round trip through JSON, and a save from another version is refused
 - `core/tests/test_text_db.gd`: Player text: every localization CSV loads, keys translate, and a malformed file is reported
 - `core/text_db.gd`: Player text (autoload TextDB): loads every res://localization/*.csv (header "keys,<lang>,...") into the TranslationServer at startup, so tr("KEY") works
@@ -61,13 +72,28 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/art/tests/test_sprites.gd`: Prototype T7: every sprite is well formed and uses only palette letters; PixelArt and CharacterVisual work
 - `features/art/view/character_visual.gd`: A pixel-art character standing in the 3D world: a billboard Sprite3D (feet on the node's origin) plus its small animations (walking bob, lunge, hit flash, knocked out)
 - `features/combat/defs/action_def.gd`: One battle technique: its cost, power, and what it does to the timeline (cast speed, recovery, knockback, cancel)
+- `features/combat/defs/battle_rules_def.gd`: The tunable numbers of one battle ruleset: damage formula factors, SP gain and the stall guard
 - `features/combat/defs/combatant_def.gd`: One kind of fighter (a party member or an enemy type): base stats and the actions it can use
+- `features/combat/defs/encounter_def.gd`: One battle setup: which enemies stand in which formation slots, and which slots the party takes
 - `features/combat/defs/status_def.gd`: One status effect: how long it lasts and how it changes timeline speed and interrupt immunity
+- `features/combat/harness/balance.gd`: Balance harness: 1,000 seeded battles per hilt + blade pairing with BattleAI playing both sides, one table
+- `features/combat/harness/battle_loader.gd`: Gathers the battle content from a loaded ContentDB (passed in as a Node) and builds ready-to-run BattleSims for the default encounter
+- `features/combat/logic/battle_ai.gd`: The one battle policy (enemies in play, both sides in the balance harness): cancel the casting foe nearest to ACT when a cancel move is affordable, else a random affordable move on a random valid target
+- `features/combat/logic/battle_resolver.gd`: Resolves one landed act (docs/design/combat.md, "Resolving an action"): retarget, damage per hit, timeline effect per hit, status, SP gain, status turns
+- `features/combat/logic/battle_sim.gd`: One battle (docs/design/combat.md): builds the units, steps the Timeline one tick at a time, asks the player (heroes) or BattleAI (enemies) for choices, resolves acts and decides victory or defeat
+- `features/combat/logic/battle_targets.gd`: Who can do what in a battle: a unit's moves, which of them it can pay for, and which foes a move may target (covered rearguard units are safe from moves without ignores_cover)
 - `features/combat/logic/formation.gd`: Two rows per side: slots 0-1 are the vanguard, 2-3 the rearguard, and slot n+2 stands behind slot n
 - `features/combat/logic/timeline.gd`: Grandia-style initiative track (docs/ARCHITECTURE.md, "Combat")
-- `features/combat/logic/timeline_event.gd`: One thing that happened on the timeline, for the battle view and battle logs: what, who, and a value (the unit's new timeline position)
+- `features/combat/logic/timeline_event.gd`: One thing that happened in a battle, for the battle view and logs: what, who, a value (timeline position, damage, status turns) and a detail id (the action for damage, the status for status/status_ended)
 - `features/combat/logic/unit_state.gd`: One fighter during one battle: the numbers that change (hp, timeline position, the action being cast), built from a read-only CombatantDef
+- `features/combat/tests/battle_probe.gd`: Test helper (not a test): hand-made fighters, moves and battles with exact numbers, and loops that play a BattleSim until an event kind appears
+- `features/combat/tests/test_battle_interrupt.gd`: T4: a cancel move landing on a casting enemy interrupts it (back to INTERRUPT_POS) inside BattleSim
+- `features/combat/tests/test_battle_rules.gd`: T5: damage, SP, cover, retargeting and status turns follow docs/design/combat.md
+- `features/combat/tests/test_battle_sim.gd`: BattleSim: unit ids, determinism (T1), every battle ends (T2), refused choices, event order, stall guard
+- `features/combat/tests/test_battle_start.gd`: Starting positions and ambushes, the first-hit-only knockback bonus, downed units, and lands_before()
+- `features/combat/tests/test_battle_status.gd`: T5 (statuses): applied by a move, refreshed on re-apply, one turn lost per act of the afflicted unit, and the cast-speed / knockback-bonus numbers of a CombatantDef
 - `features/combat/tests/test_formation.gd`: Formation rows: cover and melee multipliers
+- `features/combat/tests/test_reverse_stab.gd`: The reverse stab: only when the party was ambushed, Zayd strikes the lowest-slot living enemy first
 - `features/combat/tests/test_timeline.gd`: Timeline rules: command pause, cast and act, interrupts, knockback limits, determinism
 - `features/dialogue/defs/dialogue_def.gd`: A conversation: an ordered list of lines (speaker, expression, text key)
 - `features/dialogue/defs/dialogue_line.gd`: One spoken line: who says it, with which expression, and the localization key of the text
@@ -81,6 +107,10 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/dialogue/view/dialogue_demo.tscn`: scene
 - `features/dialogue/view/dialogue_layout.gd`: Builds the dialogue box's controls in code (no scene file, no path lookups) and keeps references to them
 - `features/dialogue/view/portraits.gd`: Finds the portrait texture for (speaker, expression): res://assets/portraits/<speaker>_<expression>.png when it exists (loaded straight from the file, the "keep" importer needs no import step), else a stand-in built from the speaker's pixel sprite (StandinPortrait)
+- `features/djanbeyyah/defs/blade_def.gd`: A djanbeyyah blade: adds to attack, adds knockback to every hit the wielder lands, adds weight
+- `features/djanbeyyah/defs/hilt_def.gd`: A djanbeyyah hilt: adds to agility, multiplies cast speed, adds weight, and grants exactly one move
+- `features/djanbeyyah/logic/djanbeyyah.gd`: Builds Zayd's fighter from a base CombatantDef plus one hilt and one blade (docs/design/combat.md)
+- `features/djanbeyyah/tests/test_djanbeyyah.gd`: T3: the 4 hilt + blade pairings give 4 different Zayd stat sets, inside the timeline caps; each hilt adds exactly one move; the shared base definition is never changed
 - `features/world/defs/area_def.gd`: A level as data: equal-width rows of tile characters, a legend (character -> tile id) and four markers (S spawn, W workshop bench, P patrol start, Q patrol end) that each appear once and stand on floor
 - `features/world/defs/explore_rules_def.gd`: Numbers for walking around an area: player speed and size, follower, camera, patrol, touch and interact ranges, collision wall height and the workshop prompt
 - `features/world/defs/look_def.gd`: The HD-2D look as data: camera offset and field of view, tilt-shift depth of field, sun, ambient light, background and bloom

@@ -16,6 +16,11 @@ var phase: Phase = Phase.WAIT
 var action: ActionDef = null
 var targets: Array[StringName] = []
 var statuses: Array[StatusDef] = []
+## Turns left per status id; re-applying a status refreshes it.
+var status_turns: Dictionary[StringName, int] = {}
+## The action and targets of the act that just resolved (Timeline clears action/targets at ACT).
+var acted: ActionDef = null
+var acted_targets: Array[StringName] = []
 
 
 static func create(from_def: CombatantDef, new_id: StringName, on_side: int, in_slot: int) -> UnitState:
@@ -36,13 +41,40 @@ func is_alive() -> bool:
 ## Timeline units gained per tick: agility, slowed by equipment weight and statuses; while casting,
 ## the chosen action's cast speed applies too.
 func speed() -> int:
+	return _speed(phase == Phase.CAST, action)
+
+
+## Timeline units per tick this unit would cast the given action at, with its current statuses.
+func cast_speed_for(chosen: ActionDef) -> int:
+	return _speed(true, chosen)
+
+
+func _speed(casting: bool, chosen: ActionDef) -> int:
 	var mult: float = maxf(0.5, 1.0 - def.weight * 0.015)
 	for status: StatusDef in statuses:
-		mult *= status.cast_speed if phase == Phase.CAST else status.wait_speed
-	if phase == Phase.CAST and action != null:
-		mult *= action.cast_speed
+		mult *= status.cast_speed if casting else status.wait_speed
+	if casting and chosen != null:
+		mult *= chosen.cast_speed * def.cast_speed
 	return maxi(1, roundi(def.agility * mult))
 
 
 func interrupt_immune() -> bool:
 	return statuses.any(func(s: StatusDef) -> bool: return s.interrupt_immune)
+
+
+func apply_status(status: StatusDef) -> void:
+	statuses = statuses.filter(func(s: StatusDef) -> bool: return s.id != status.id)
+	statuses.append(status)
+	status_turns[status.id] = status.turns
+
+
+## One of this unit's acts has passed: every status loses a turn. Returns the ids that ran out.
+func tick_statuses() -> Array[StringName]:
+	var ended: Array[StringName] = []
+	for status: StatusDef in statuses.duplicate():
+		status_turns[status.id] -= 1
+		if status_turns[status.id] <= 0:
+			statuses.erase(status)
+			status_turns.erase(status.id)
+			ended.append(status.id)
+	return ended

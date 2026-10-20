@@ -1,2 +1,43 @@
 keys,en
 UI_PROTOTYPE_TITLE,Qarnaw prototype
+UI_VICTORY,Victory
+UI_DEFEAT,Defeated
+UI_INTERRUPTED,Interrupted!
+UI_CANCELS,cancels
+UI_SP,SP
+UI_HP,HP
+NAME_ZAYD,Zayd
+NAME_BILQIS,Bilqis
+NAME_CONCESSION_ENFORCER,Concession Enforcer
+NAME_SURVEY_DRONE,Survey Drone
+ENCOUNTER_ROOFTOP_PATROL,Rooftop patrol
+STATUS_JAMMED,Jammed
+ACTION_DJANBEYYAH_STRIKE,Djanbeyyah Strike
+ACTION_BREAKER,Breaker
+ACTION_SPARK_SHOT,Spark Shot
+ACTION_STATIC_NET,Static Net
+ACTION_BATON_SLAM,Baton Slam
+ACTION_LASER_PING,Laser Ping
+ACTION_OVERCHARGE_BEAM,Overcharge Beam
+ACTION_QUICK_SLASH,Quick Slash
+ACTION_CRUSHING_BLOW,Crushing Blow
+MOVE_DESC_DJANBEYYAH_STRIKE,Two quick cuts with the curved blade.
+MOVE_DESC_BREAKER,A hard shove that shatters a charging move.
+MOVE_DESC_SPARK_SHOT,A stolen-grid spark that finds anyone.
+MOVE_DESC_STATIC_NET,Jams a target's gear so it crawls.
+MOVE_DESC_BATON_SLAM,A slow overhead swing; the Concession pays by the blow.
+MOVE_DESC_LASER_PING,A thin survey beam that tags its target.
+MOVE_DESC_OVERCHARGE_BEAM,A drone burns its battery in one blast.
+MOVE_DESC_QUICK_SLASH,A flick of the swift hilt that cuts a charge short.
+MOVE_DESC_CRUSHING_BLOW,The anvil hilt's slow and ruinous overhead strike.
+HILT_SWIFT,Swift Hilt
+HILT_SWIFT_DESC,Light grip from the metal souq. Faster hands; teaches Quick Slash.
+HILT_ANVIL,Anvil Hilt
+HILT_ANVIL_DESC,Cast from salvaged ration-gate plates. Slower; teaches Crushing Blow.
+BLADE_KEEN,Keen Blade
+BLADE_KEEN_DESC,Honed on a whetstone from the ration queue. Cuts deeper.
+BLADE_BROAD,Broad Blade
+BLADE_BROAD_DESC,A wide blade that shoves foes back on every hit.
+ACTION_REVERSE_STAB,Reverse stab
+UI_REVERSE_STAB,Reverse stab!
+MOVE_DESC_REVERSE_STAB,The hooked blade answers an attack from behind.
