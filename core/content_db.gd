@@ -8,6 +8,9 @@ const KINDS: Dictionary = {
 	"action": preload("res://features/combat/defs/action_def.gd"),
 	"status": preload("res://features/combat/defs/status_def.gd"),
 	"combatant": preload("res://features/combat/defs/combatant_def.gd"),
+	"palette": preload("res://features/art/defs/palette_def.gd"),
+	"sprite": preload("res://features/art/defs/sprite_def.gd"),
+	"visual_rules": preload("res://features/art/defs/visual_rules_def.gd"),
 }
 
 var _defs: Dictionary[String, Dictionary] = {}
