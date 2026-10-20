@@ -14,7 +14,10 @@ bump into a Concession patrol, win or lose a timeline battle, return. Rules: doc
 5. Battle: the camera moves to the battle view. Zayd stands in front, Bilqis behind him. Enemies: two enforcers
    in front, a survey drone behind them. A timeline bar shows every fighter's icon moving toward COMMAND.
 6. Wait mode: time stops when a hero reaches COMMAND. Pick a move (name, SP cost, a "cancels" tag), then a
-   target. Enemies choose by themselves. Moves charge, then hit: damage numbers, knockback, "Interrupted!".
+   target. Enemies choose by themselves. Moves charge, then hit: damage numbers, knockback, "Interrupted!"
+   with a short hit-stop. A charging enemy shows its move's name above it; the target picker marks a cancel
+   move "will interrupt" when it lands before that enemy's charge (BattleSim.lands_before). One-time tips at
+   the first command ("time stops while you choose") and the first enemy charge ("hit it with a cancels move").
 7. Win: every enemy down -> "Victory" -> back on the rooftop. Lose: both heroes down -> "Defeated" -> retry
    the battle or go back. HP and SP refill after each battle. The patrol returns to its route a few seconds
    later, so another pairing can be tried.
@@ -40,13 +43,13 @@ Automated (tools/check.sh runs them all):
 - T2 Every battle ends (victory or defeat) within the rules' tick limit, for all 4 pairings, 200 seeds each.
 - T3 The 4 hilt + blade pairings give 4 different Zayd stat sets; all stay inside the timeline caps; each
   hilt adds exactly one move.
-- T4 A cancel move landing on a casting enemy interrupts it (back to 2500) inside BattleSim.
+- T4 A cancel move landing on a casting enemy interrupts it (back to 2500) inside BattleSim; lands_before agrees.
 - T5 Damage, SP costs, cover (a covered unit can't be a melee target) and status turns follow combat.md.
 - T6 The rooftop scene builds headless; a simulated touch starts a battle; an auto-played battle ends and
   control returns to walking.
 - T7 Every sprite row has the same width and uses only palette letters; every sprite has a source and licence.
 - T8 Every dialogue line names a known speaker and expression (portrait or stand-in exists) and a text key.
 Balance target (harness, auto-play policy): each pairing wins 60-95% of battles, and no pairing beats another
-by more than 25 points. Battles last 45-120 seconds of game time.
+by more than 25 points. Battles last 40-90 seconds of game time.
 Owner (Feras on the Latitude): walk, set a pairing, fight, win or lose, return without help; >= 60 FPS;
 the 4 pairings feel different. Verdict logged in DECISIONS.
