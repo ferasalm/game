@@ -1,11 +1,13 @@
 {
   "kind": "combatant",
   "items": [
-    {"id": "malik", "name_key": "NAME_MALIK", "max_hp": 120, "max_sp": 30, "attack": 22, "defense": 14,
-     "agility": 25, "weight": 5.0, "actions": ["khopesh_combo", "sluice_breaker"]},
-    {"id": "thurya", "name_key": "NAME_THURYA", "max_hp": 85, "max_sp": 40, "attack": 14, "defense": 9,
-     "agility": 28, "weight": 2.0, "actions": ["silt_flask"]},
-    {"id": "syndicate_halberdier", "name_key": "NAME_SYNDICATE_HALBERDIER", "max_hp": 140, "max_sp": 0,
-     "attack": 20, "defense": 15, "agility": 18, "weight": 8.0, "interrupt_resist": 0.2, "actions": ["cleaving_tax"]}
+    {"id": "zayd", "name_key": "NAME_ZAYD", "max_hp": 400, "max_sp": 24, "attack": 20, "defense": 14,
+     "agility": 40, "weight": 3.0, "actions": ["djanbeyyah_strike", "breaker"]},
+    {"id": "bilqis", "name_key": "NAME_BILQIS", "max_hp": 280, "max_sp": 36, "attack": 16, "defense": 9,
+     "agility": 44, "weight": 1.0, "actions": ["spark_shot", "static_net"]},
+    {"id": "concession_enforcer", "name_key": "NAME_CONCESSION_ENFORCER", "max_hp": 420, "max_sp": 0, "attack": 28,
+     "defense": 14, "agility": 30, "weight": 6.0, "interrupt_resist": 0.2, "actions": ["baton_slam"]},
+    {"id": "survey_drone", "name_key": "NAME_SURVEY_DRONE", "max_hp": 180, "max_sp": 12, "attack": 20,
+     "defense": 6, "agility": 48, "weight": 0.0, "actions": ["laser_ping", "overcharge_beam"]}
   ]
 }

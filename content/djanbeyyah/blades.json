@@ -1,0 +1,7 @@
+{
+  "kind": "blade",
+  "items": [
+    {"id": "keen_blade", "name_key": "BLADE_KEEN", "desc_key": "BLADE_KEEN_DESC", "attack": 8, "knockback": 0, "weight": 1.0},
+    {"id": "broad_blade", "name_key": "BLADE_BROAD", "desc_key": "BLADE_BROAD_DESC", "attack": 5, "knockback": 1500, "weight": 2.0}
+  ]
+}

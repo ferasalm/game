@@ -1,0 +1,168 @@
+class_name BattleSim
+extends RefCounted
+## One battle (docs/design/combat.md): builds the units, steps the Timeline one tick at a time, asks the
+## player (heroes) or BattleAI (enemies) for choices, resolves acts and decides victory or defeat.
+## Pure and deterministic for a given seed and the same choices. The view plays the events step() returns.
+
+var timeline := Timeline.new()
+var rules: BattleRulesDef
+var rng := RandomNumberGenerator.new()
+## &"" while running, then &"victory" or &"defeat".
+var result: StringName = &""
+var ticks: int = 0
+var ambush: int = 0
+var _opened: bool = false
+var actions: Dictionary[StringName, ActionDef] = {}
+var _resolver: BattleResolver
+
+
+## Party units use their def id; enemies use "<def id>_<n>" counting from 1. Slots pair with the units in order.
+## Units start at seeded random timeline positions from the rules' ranges. ambush: 0 none, 1 the party was
+## ambushed (the two ranges swap), 2 the party ambushed the enemy (enemies start at 0).
+## actions / statuses map ids to the Defs the fighters refer to (from ContentDB).
+static func create(
+		battle_rules: BattleRulesDef, party: Array[CombatantDef], party_slots: Array[int],
+		enemies: Array[CombatantDef], enemy_slots: Array[int], battle_seed: int, ambush: int,
+		action_defs: Dictionary[StringName, ActionDef], status_defs: Dictionary[StringName, StatusDef]) -> BattleSim:
+	var sim := BattleSim.new()
+	sim.rules = battle_rules
+	sim.actions = action_defs
+	sim.rng.seed = battle_seed
+	sim.ambush = ambush
+	for i: int in party.size():
+		sim.timeline.units.append(UnitState.create(party[i], party[i].id, 0, party_slots[i]))
+		sim.timeline.units[-1].pos = sim._start_pos(0, ambush)
+	var counts: Dictionary[StringName, int] = {}
+	for i: int in enemies.size():
+		counts[enemies[i].id] = counts.get(enemies[i].id, 0) + 1
+		var unit_id := StringName("%s_%d" % [enemies[i].id, counts[enemies[i].id]])
+		sim.timeline.units.append(UnitState.create(enemies[i], unit_id, 1, enemy_slots[i]))
+		sim.timeline.units[-1].pos = sim._start_pos(1, ambush)
+	sim._resolver = BattleResolver.new(battle_rules, sim.rng, sim.timeline, status_defs)
+	return sim
+
+
+## True when the actor's cast of this action (COMMAND to ACT at its cast speed, statuses included) finishes
+## in fewer ticks than the target needs to reach ACT from where it is. False if the target is not casting.
+func lands_before(actor: UnitState, action: ActionDef, target: UnitState) -> bool:
+	if target.phase != UnitState.Phase.CAST:
+		return false
+	var mine: int = ceili(float(Timeline.ACT_POINT - Timeline.COMMAND_POINT) / actor.cast_speed_for(action))
+	var theirs: int = ceili(float(Timeline.ACT_POINT - target.pos) / target.speed())
+	return mine < theirs
+
+
+## The reverse stab: when the party was ambushed (ambush 1), Zayd strikes the lowest-slot living enemy with
+## the action "reverse_stab" before the battle starts. Returns its events once, [] on any later call or
+## when there is no ambush, no Zayd or no such action. step() calls it first if the view did not.
+func opening() -> Array[TimelineEvent]:
+	var out: Array[TimelineEvent] = []
+	var zayd: UnitState = timeline.find(&"zayd")
+	var stab: ActionDef = actions.get(&"reverse_stab") as ActionDef
+	if _opened or ambush != 1 or zayd == null or stab == null:
+		_opened = true
+		return out
+	_opened = true
+	var target: UnitState = null
+	for unit: UnitState in timeline.units:
+		if unit.side == 1 and unit.is_alive() and (target == null or unit.slot < target.slot):
+			target = unit
+	if target == null:
+		return out
+	out.append(TimelineEvent.new(&"reverse_stab", zayd.unit_id, 0, stab.id))
+	out.append_array(_resolver.strike(zayd, stab, target))
+	if BattleTargets.side_is_down(timeline, 1):
+		_end(&"victory", out)
+	return out
+
+
+## One tick. Returns what happened, in order; [] while a hero waits for a choice or once the battle is over.
+func step() -> Array[TimelineEvent]:
+	var out: Array[TimelineEvent] = []
+	if result != &"" or timeline.waiting_for != null:
+		return out
+	if not _opened:
+		out.append_array(opening())
+		if result != &"":
+			return out
+	ticks += 1
+	for event: TimelineEvent in timeline.tick():
+		_handle(event, out)
+		if result != &"":
+			return out
+	if ticks >= rules.max_ticks:
+		_end(&"defeat", out)
+	return out
+
+
+## The party unit waiting at COMMAND, or null.
+func waiting_hero() -> UnitState:
+	var waiting: UnitState = timeline.waiting_for
+	return waiting if waiting != null and waiting.side == 0 else null
+
+
+## The unit's moves it can pay for now.
+func choices_for(unit: UnitState) -> Array[ActionDef]:
+	return BattleTargets.affordable_moves(unit, actions)
+
+
+func valid_targets(unit: UnitState, action: ActionDef) -> Array[UnitState]:
+	return BattleTargets.valid_targets(timeline, unit, action)
+
+
+## Commits the waiting unit to a move on a target, paying its SP. Returns "" or why it was refused.
+func choose(unit_id: StringName, action: ActionDef, target_id: StringName) -> String:
+	var unit: UnitState = timeline.waiting_for
+	if unit == null or unit.unit_id != unit_id:
+		return "not waiting for '%s'" % unit_id
+	if action == null or not unit.def.actions.has(action.id):
+		return "'%s' is not a move of '%s'" % [action.id if action != null else &"", unit_id]
+	if action.sp_cost > unit.sp:
+		return "not enough SP for '%s'" % action.id
+	var target_ids: Array[StringName] = []
+	for target: UnitState in valid_targets(unit, action):
+		target_ids.append(target.unit_id)
+	if not target_ids.has(target_id):
+		return "'%s' is not a valid target for '%s'" % [target_id, action.id]
+	unit.sp -= action.sp_cost
+	return timeline.choose(unit_id, action, [target_id] as Array[StringName])
+
+
+## BattleAI chooses for this waiting unit (enemies always; the harness and the view's auto-play for heroes).
+func auto_choose(unit: UnitState) -> void:
+	var choice: BattleAI.Choice = BattleAI.pick(timeline, actions, unit, rng)
+	if choice != null:
+		choose(unit.unit_id, choice.action, choice.target_id)
+
+
+func _start_pos(side: int, ambush: int) -> int:
+	if ambush == 2 and side == 1:
+		return 0
+	var party_range: bool = (side == 0) != (ambush == 1)
+	var low: int = rules.party_start_min if party_range else rules.enemy_start_min
+	var high: int = rules.party_start_max if party_range else rules.enemy_start_max
+	return rng.randi_range(low, high)
+
+
+func _handle(event: TimelineEvent, out: Array[TimelineEvent]) -> void:
+	var unit: UnitState = timeline.find(event.unit_id)
+	if not unit.is_alive():
+		return
+	if event.kind == &"command":
+		if unit.phase != UnitState.Phase.COMMAND:
+			return  # knocked back in the same tick it arrived
+		out.append(event)
+		if unit.side == 1:
+			auto_choose(unit)
+	elif event.kind == &"act":
+		out.append(event)
+		out.append_array(_resolver.resolve(unit))
+		if BattleTargets.side_is_down(timeline, 1):
+			_end(&"victory", out)
+		elif BattleTargets.side_is_down(timeline, 0):
+			_end(&"defeat", out)
+
+
+func _end(outcome: StringName, out: Array[TimelineEvent]) -> void:
+	result = outcome
+	out.append(TimelineEvent.new(outcome, &"", ticks))
