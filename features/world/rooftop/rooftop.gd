@@ -105,6 +105,7 @@ func _build_world(rig: CameraRigDef) -> void:
 	blocks = AreaBuilder.build(_area, _rules)
 	add_child(blocks)
 	add_child(MistBuilder.build_area(_area))
+	add_child(SkylineBuilder.build(_area))
 	camera = Diorama.make_camera(_look)
 	add_child(camera)
 	camera.make_current()
