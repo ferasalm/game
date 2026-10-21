@@ -1,8 +1,8 @@
 class_name BattleCommandMenu
 extends PanelContainer
 ## The command menu (bottom left) for the hero waiting at COMMAND: first one Button per move (unaffordable ones
-## disabled; name, SP cost, a "cancels" tag; the focused move's description below), then one Button per valid
-## target. The back action (ui_cancel) returns from targets to moves. The sim answers every rule question.
+## disabled; name, SP cost, a "cancels" / target tag; the focused move's description below), then one Button
+## per valid target (foes or allies; self and all-moves skip this list). The back action (ui_cancel) returns from targets to moves. The sim answers every rule question.
 
 ## The player committed to this move and target (the stage calls BattleSim.choose).
 signal chosen(action: ActionDef, target_id: StringName)
@@ -117,6 +117,9 @@ func _show_moves(focus_move: ActionDef) -> void:
 
 
 func _pick_move(action: ActionDef) -> void:
+	if not action.needs_picker():
+		chosen.emit(action, &"")  # self and all-moves skip the target list
+		return
 	_move = action
 	_clear()
 	_title.text = BattleStyle.text("UI_PICK_TARGET")
@@ -140,6 +143,8 @@ func _move_text(action: ActionDef) -> String:
 		line += "   %d %s" % [action.sp_cost, BattleStyle.text("UI_SP")]
 	if action.cancels_cast:
 		line += "   [%s]" % BattleStyle.text("UI_CANCELS")
+	if action.target != &"foe" and action.target != &"ally":
+		line += "   [%s]" % BattleStyle.text("UI_TARGET_" + String(action.target).to_upper())
 	return line
 
 

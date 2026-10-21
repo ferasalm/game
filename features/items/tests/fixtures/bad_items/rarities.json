@@ -1,0 +1,7 @@
+{
+  "kind": "rarity",
+  "items": [
+    {"id": "common", "name_key": "RARITY_COMMON", "colour": "#e6e6e6", "order": 0, "story_only": false, "allows_perk": false},
+    {"id": "broken", "name_key": "RARITY_COMMON", "colour": "nope", "order": 1, "story_only": false, "allows_perk": false}
+  ]
+}

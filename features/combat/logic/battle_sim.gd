@@ -13,6 +13,7 @@ var ticks: int = 0
 var ambush: int = 0
 var _opened: bool = false
 var actions: Dictionary[StringName, ActionDef] = {}
+var statuses: Dictionary[StringName, StatusDef] = {}
 var _resolver: BattleResolver
 
 
@@ -27,17 +28,18 @@ static func create(
 	var sim := BattleSim.new()
 	sim.rules = battle_rules
 	sim.actions = action_defs
+	sim.statuses = status_defs
 	sim.rng.seed = battle_seed
 	sim.ambush = ambush
 	for i: int in party.size():
 		sim.timeline.units.append(UnitState.create(party[i], party[i].id, 0, party_slots[i]))
-		sim.timeline.units[-1].pos = sim._start_pos(0, ambush)
+		sim.timeline.units[-1].pos = sim._start_pos(0, ambush, party[i])
 	var counts: Dictionary[StringName, int] = {}
 	for i: int in enemies.size():
 		counts[enemies[i].id] = counts.get(enemies[i].id, 0) + 1
 		var unit_id := StringName("%s_%d" % [enemies[i].id, counts[enemies[i].id]])
 		sim.timeline.units.append(UnitState.create(enemies[i], unit_id, 1, enemy_slots[i]))
-		sim.timeline.units[-1].pos = sim._start_pos(1, ambush)
+		sim.timeline.units[-1].pos = sim._start_pos(1, ambush, enemies[i])
 	sim._resolver = BattleResolver.new(battle_rules, sim.rng, sim.timeline, status_defs)
 	return sim
 
@@ -110,7 +112,8 @@ func valid_targets(unit: UnitState, action: ActionDef) -> Array[UnitState]:
 	return BattleTargets.valid_targets(timeline, unit, action)
 
 
-## Commits the waiting unit to a move on a target, paying its SP. Returns "" or why it was refused.
+## Commits the waiting unit to a move on a target, paying its SP. Self and all-moves ignore target_id (pass
+## &""); foe and ally moves need a valid one. Returns "" or why it was refused.
 func choose(unit_id: StringName, action: ActionDef, target_id: StringName) -> String:
 	var unit: UnitState = timeline.waiting_for
 	if unit == null or unit.unit_id != unit_id:
@@ -119,29 +122,27 @@ func choose(unit_id: StringName, action: ActionDef, target_id: StringName) -> St
 		return "'%s' is not a move of '%s'" % [action.id if action != null else &"", unit_id]
 	if action.sp_cost > unit.sp:
 		return "not enough SP for '%s'" % action.id
-	var target_ids: Array[StringName] = []
-	for target: UnitState in valid_targets(unit, action):
-		target_ids.append(target.unit_id)
-	if not target_ids.has(target_id):
+	var target_ids: Array[StringName] = BattleTargets.chosen_ids(timeline, unit, action, target_id)
+	if target_ids.is_empty():
 		return "'%s' is not a valid target for '%s'" % [target_id, action.id]
 	unit.sp -= action.sp_cost
-	return timeline.choose(unit_id, action, [target_id] as Array[StringName])
+	return timeline.choose(unit_id, action, target_ids)
 
 
 ## BattleAI chooses for this waiting unit (enemies always; the harness and the view's auto-play for heroes).
 func auto_choose(unit: UnitState) -> void:
-	var choice: BattleAI.Choice = BattleAI.pick(timeline, actions, unit, rng)
+	var choice: BattleAI.Choice = BattleAI.pick(self, unit)
 	if choice != null:
 		choose(unit.unit_id, choice.action, choice.target_id)
 
 
-func _start_pos(side: int, ambush: int) -> int:
+func _start_pos(side: int, ambush: int, fighter: CombatantDef) -> int:
 	if ambush == 2 and side == 1:
 		return 0
 	var party_range: bool = (side == 0) != (ambush == 1)
 	var low: int = rules.party_start_min if party_range else rules.enemy_start_min
 	var high: int = rules.party_start_max if party_range else rules.enemy_start_max
-	return rng.randi_range(low, high)
+	return mini(Timeline.COMMAND_POINT - 1, rng.randi_range(low, high) + fighter.start_bonus)
 
 
 func _handle(event: TimelineEvent, out: Array[TimelineEvent]) -> void:

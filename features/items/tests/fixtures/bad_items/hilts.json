@@ -1,0 +1,9 @@
+{
+  "kind": "hilt",
+  "items": [
+    {"id": "mythic_hilt", "name_key": "X", "desc_key": "X", "rarity": "mythic", "agility": 0, "cast_speed": 1.0, "weight": 1.0, "ability": "a"},
+    {"id": "plain_hilt", "name_key": "X", "desc_key": "X", "agility": 0, "cast_speed": 1.0, "weight": 1.0, "ability": "a"},
+    {"id": "haunted_hilt", "name_key": "X", "desc_key": "X", "rarity": "common", "perk": "ghost_perk", "agility": 0,
+     "cast_speed": 1.0, "weight": 1.0, "ability": "a"}
+  ]
+}

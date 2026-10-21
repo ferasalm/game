@@ -1,0 +1,21 @@
+{
+  "kind": "prosthetic",
+  "items": [
+    {"id": "salvage_arm", "name_key": "PROSTHETIC_SALVAGE_ARM", "desc_key": "PROSTHETIC_SALVAGE_ARM_DESC", "rarity": "common",
+     "wearer": "zayd", "part": "arm", "attack": 2, "defense": 1, "weight": 1.0, "actions": ["piston_jab"]},
+    {"id": "cradle_spine", "name_key": "PROSTHETIC_CRADLE_SPINE", "desc_key": "PROSTHETIC_CRADLE_SPINE_DESC", "rarity": "rare",
+     "perk": "mender_loop", "wearer": "zayd", "part": "spine", "hp": 40, "defense": 3, "agility": -1, "weight": 1.5,
+     "actions": ["reactive_guard"]},
+    {"id": "arc_arm", "name_key": "PROSTHETIC_ARC_ARM", "desc_key": "PROSTHETIC_ARC_ARM_DESC", "rarity": "epic",
+     "perk": "surge_current", "wearer": "zayd", "part": "arm", "sp": 6, "attack": 4, "agility": 1, "weight": 1.5,
+     "actions": ["arc_discharge", "piston_jab"]},
+    {"id": "wrist_rig", "name_key": "PROSTHETIC_WRIST_RIG", "desc_key": "PROSTHETIC_WRIST_RIG_DESC", "rarity": "common",
+     "wearer": "bilqis", "part": "arm", "sp": 4, "weight": 0.3, "actions": ["nanite_mend"]},
+    {"id": "lens_array", "name_key": "PROSTHETIC_LENS_ARRAY", "desc_key": "PROSTHETIC_LENS_ARRAY_DESC", "rarity": "uncommon",
+     "wearer": "bilqis", "part": "eye", "sp": 4, "attack": 1, "agility": 1, "weight": 0.3,
+     "actions": ["nanite_mend", "overclock_link"]},
+    {"id": "dawn_lens", "name_key": "PROSTHETIC_DAWN_LENS", "desc_key": "PROSTHETIC_DAWN_LENS_DESC", "rarity": "legendary",
+     "perk": "deep_mender", "wearer": "bilqis", "part": "eye", "hp": 30, "sp": 10, "attack": 5, "agility": 3, "weight": 0.3,
+     "actions": ["overload_lance", "reboot_pulse"]}
+  ]
+}

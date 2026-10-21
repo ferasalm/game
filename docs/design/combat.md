@@ -23,35 +23,55 @@ Every number below lives in content JSON; code reads it from Defs. Each rule her
 
 ## Resolving an action
 1. Pay: SP is paid at choose(); a move costing more SP than the unit has can't be chosen.
-2. Targets: if the chosen target is down, retarget to the first living valid target on that side; none: the
-   act fizzles (event "fizzled").
+2. Targets (ActionDef "target"): foe (default) and ally moves keep the chosen target while it is still valid,
+   else retarget to the first valid one on that side; self hits the actor; all_foes and all_allies hit every
+   living unit on that side at act time, once per unit (each gets its own hits and first-hit knockback). No
+   valid target: the act fizzles (event "fizzled"). choose() ignores target_id for self and all-moves.
 3. Each hit (hit_count times): damage = max(1, round((power + attack - defense * defense_factor)
    * row_mult * variance)); row_mult = Formation.melee_multiplier for melee moves, else 1.0; variance is a
    seeded random in [1 - damage_variance, 1 + damage_variance]. HP never goes below 0.
 4. Timeline effect per hit: Timeline.hit(target, action, bonus). The attacker's knockback_bonus applies to
    the FIRST hit only (no multi-hit stunlock). Only the first hit can cancel a cast; later hits knock back.
    A target at 0 HP gets no timeline effect. A target that just reached COMMAND and is hit goes back to waiting.
+   Hostile moves (foe, all_foes) deal damage; friendly moves (ally, self, all_allies) never do (power 0, no cancel).
+   A status's damage_taken multiplies the damage its unit receives (guarded 0.6 = 40% less).
+3b. Heal (friendly moves with heal > 0): restores round(heal + actor attack * heal_attack_factor) HP, never above
+   max HP (event "healed", value = HP actually restored). A downed ally is not a valid target and stays down,
+   unless the move has revive: then it stands up (event "revived" before "healed"), hp = the heal, phase WAIT,
+   timeline position Timeline.AFTER_ACT_POS, no cast.
 5. Status: if the move applies one and the target lives, set it with the status's turns (re-applying refreshes).
-6. The actor gains battle_rules.sp_per_act SP (capped at max SP). Each of the actor's statuses loses one turn;
-   at 0 it is removed (event "status_ended").
+6. The actor gains battle_rules.sp_per_act + its sp_per_act_bonus (perk) SP (capped at max SP) and regains
+   hp_regen (perk) HP (event "healed" with detail regen). Each of the actor's statuses loses one turn, except a
+   status it just gave itself; at 0 it is removed (event "status_ended").
 7. A unit that goes down loses its pending cast (phase WAIT, no action or targets), is skipped by the timeline
    and never acts again.
-- Valid targets: living units on the other side. A covered rearguard unit (Formation.is_covered) can't be the
-  target of a move unless the move has ignores_cover.
+- Valid targets: foe moves: living units on the other side; a covered rearguard unit (Formation.is_covered) can't
+  be the target unless the move has ignores_cover. all_foes ignores cover. ally: living units on the actor's side
+  (downed ones too for a revive); self: the actor; all_allies: every living ally.
+- Perks (features/items): start_bonus adds to the unit's starting timeline position (capped below COMMAND_POINT);
+  see docs/design/prosthetics.md.
 - Events (TimelineEvent: kind, unit_id, value, detail), in order: reverse_stab (opening only), command, act (actor), damage (target, amount),
-  interrupted / knocked_back (target, new position), status (target), status_ended, down (target),
-  fizzled, victory, defeat. The view plays them in this order.
+  interrupted / knocked_back (target, new position), healed (target, HP restored, detail = action id or regen),
+  revived (target), status (target), status_ended, down (target), fizzled, victory, defeat. The view plays them in this order.
 
 ## BattleAI (the same policy plays enemies and, in the harness, the party)
 1. If an opposing unit is casting and this unit has an affordable cancel move that can target it: use it on
    the casting unit nearest to ACT.
-2. Else pick a random affordable move (seeded), target a random valid target.
+2. Else a downed ally and an affordable revive move: stand it up; else a living ally under
+   battle_rules.ai_heal_below (0.4) of max HP and an affordable heal: heal the weakest (lowest share).
+3. Else, when a foe is casting a hostile move with power x hits >= battle_rules.ai_big_cast_power (25) and
+   this side has an affordable guard (a friendly move whose status has damage_taken < 1) on a unit that lacks
+   it: guard (itself first).
+4. Else pick a random affordable useful move (seeded) and target: random valid target for hostile moves; for
+   heals the most hurt ally; for buffs a unit lacking the status. Useful = hostile; heal when someone is hurt;
+   buff when someone lacks it. Guard moves are never random picks.
 
 ## The djanbeyyah (Zayd only; docs/design/world.md)
 - Hilt: agility add, cast_speed multiplier, weight, and exactly one ability (an action id) added to Zayd's moves.
 - Blade: attack add, knockback bonus (added to the first hit of each of Zayd's actions), weight.
-- Merge order: base CombatantDef -> hilt -> blade -> caps. Caps: agility 1-99, cast_speed 0.5-2.0.
-  The result is a new CombatantDef (never the shared one from ContentDB).
+- Merge order: base CombatantDef -> hilt -> blade -> prosthetic -> perks -> caps (Gear.build; the prosthetic
+  step is Prosthetics.equip). Caps: agility 1-99, cast_speed 0.5-2.0. The result is a new CombatantDef
+  (never the shared one from ContentDB). Hilt and blade are items with a rarity and an optional perk.
 - CombatantDef gains cast_speed (default 1.0; multiplies every move's cast speed) and knockback_bonus (default 0).
 
 ## Starting content (final numbers, tuned by the harness)

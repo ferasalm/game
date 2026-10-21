@@ -1,7 +1,7 @@
 class_name WorkshopMenu
 extends CanvasLayer
-## The djanbeyyah bench: pick 1 of 2 hilts and 1 of 2 blades, see how Zayd's numbers change, Confirm to save the
-## pair in GameState.equipment. The back action leaves without saving. Built in code from content/djanbeyyah.
+## The djanbeyyah bench: pick one owned hilt and one owned blade, see how Zayd's numbers change, Confirm to save
+## the pair in GameState.equipment ("zayd.hilt" / "zayd.blade"). Items not in GameState.inventory are hidden. The back action leaves without saving. Built in code from content/djanbeyyah.
 ## Use: add it to the scene, call open(), listen to closed. Keyboard, mouse and pad work through Button focus.
 
 ## Emitted once each time the menu closes (Confirm or back).
@@ -42,6 +42,7 @@ func open() -> void:
 		var choice: WorkshopChoice = _choices[choice_id]
 		choice.mark_current(_worn.has(choice_id))
 		choice.mark_staged(_staged.has(choice_id))
+		choice.visible = GameState.inventory.has(choice_id) or _worn.has(choice_id)
 	_preview(_staged)
 	visible = true
 	_opened_frame = Engine.get_process_frames()
@@ -65,8 +66,8 @@ func select_blade(blade_id: StringName) -> void:
 func confirm() -> void:
 	if not visible:
 		return
-	GameState.equipment[&"hilt"] = _staged[0]
-	GameState.equipment[&"blade"] = _staged[1]
+	GameState.equipment[Inventory.slot_key(_start.hero, &"hilt")] = _staged[0]
+	GameState.equipment[Inventory.slot_key(_start.hero, &"blade")] = _staged[1]
 	_close()
 
 
@@ -109,6 +110,9 @@ func _unhandled_input(event: InputEvent) -> void:
 func _stage(slot: int, item_id: StringName, table: Dictionary) -> void:
 	if not table.has(item_id):
 		push_warning("WorkshopMenu: unknown part '%s'" % item_id)
+		return
+	if not (GameState.inventory.has(item_id) or _worn.has(item_id)):
+		push_warning("WorkshopMenu: '%s' is not owned" % item_id)
 		return
 	_staged[slot] = item_id
 	for choice_id: StringName in table:
