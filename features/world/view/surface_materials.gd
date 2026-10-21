@@ -66,7 +66,9 @@ static func trim() -> Material:
 
 
 ## Unshaded vertex colours boosted above 1 so neon and lit windows bloom; for far landmarks and beacons.
-static func glow() -> StandardMaterial3D:
+static func glow() -> Material:
+	if PaintedMaterials.paint != null:
+		return PaintedMaterials.glow()
 	if not _cache.has("glow"):
 		var mat := StandardMaterial3D.new()
 		mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
@@ -74,7 +76,7 @@ static func glow() -> StandardMaterial3D:
 		mat.vertex_color_is_srgb = true
 		mat.albedo_color = Color(GLOW_BOOST, GLOW_BOOST, GLOW_BOOST)
 		_cache["glow"] = mat
-	return _cache["glow"] as StandardMaterial3D
+	return _cache["glow"]
 
 
 ## Unshaded vertex colours that pulse on and off rate times a second, each instance at its own phase (beacons).

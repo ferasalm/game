@@ -54,6 +54,7 @@ var occlude_margin: float = 2.5
 var occlude_speed: float = 6.0
 var occlude_min_height: float = 1.2
 var occlude_focus: float = 1.2
+var occlude_floor: float = 0.8  ## nothing below this height above the party's floor is cut
 
 
 func read(r: DefReader) -> void:
@@ -93,6 +94,7 @@ func _read_occlusion(r: DefReader) -> void:
 	occlude_speed = r.number("occlude_speed", 0.1, 60.0, occlude_speed, false)
 	occlude_min_height = r.number("occlude_min_height", 0.0, 20.0, occlude_min_height, false)
 	occlude_focus = r.number("occlude_focus", 0.0, 4.0, occlude_focus, false)
+	occlude_floor = r.number("occlude_floor", 0.0, 10.0, occlude_floor, false)
 
 
 func _read_outline(r: DefReader) -> void:

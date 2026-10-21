@@ -70,3 +70,18 @@ menu={
 
 renderer/rendering_method="forward_plus"
 textures/canvas_textures/default_texture_filter=0
+
+[shader_globals]
+
+occ_cam={
+"type": "vec4",
+"value": Vector4(0, 0, 0, 0)
+}
+occ_target={
+"type": "vec4",
+"value": Vector4(0, 0, 0, 2.4)
+}
+occ_shape={
+"type": "vec4",
+"value": Vector4(1.4, 2.5, 0, 0)
+}

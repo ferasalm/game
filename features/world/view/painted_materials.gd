@@ -6,6 +6,7 @@ extends RefCounted
 ## Diorama route here while a painted look is in use (use()); with none in use nothing here runs.
 
 const SHADER: Shader = preload("res://features/world/view/shaders/painted_world.gdshader")
+const GLOW_SHADER: Shader = preload("res://features/world/view/shaders/painted_glow.gdshader")
 const BAKED_DIR: String = "res://assets/textures/painted"
 
 static var paint: PaintDef = null
@@ -53,6 +54,15 @@ static func trim() -> ShaderMaterial:
 		mat.set_shader_parameter(&"use_vertex_color", true)
 		_cache["trim"] = mat
 	return _cache["trim"] as ShaderMaterial
+
+
+## Unshaded vertex-colour glow (neon strips, far landmarks): the painted counterpart of SurfaceMaterials.glow().
+static func glow() -> ShaderMaterial:
+	if not _cache.has("glow"):
+		var mat := ShaderMaterial.new()
+		mat.shader = GLOW_SHADER
+		_cache["glow"] = mat
+	return _cache["glow"] as ShaderMaterial
 
 
 ## One flat colour (tiles without a pattern).

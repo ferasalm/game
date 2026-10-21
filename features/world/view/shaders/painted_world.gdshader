@@ -2,9 +2,10 @@ shader_type spatial;
 // The painted world surface (painted looks only; the unpainted look keeps StandardMaterial3D): a painted or
 // pixel texture, either on the mesh UVs (facade atlases) or world-space triplanar (tiles, so strokes stay square
 // across blocks), times vertex colours and a tint, an optional emission map (lit windows), lit by the shared
-// painted light model with its min_light floor.
+// painted light model with its min_light floor. Fragments in the camera's cut-away tube dither away.
 render_mode diffuse_lambert, specular_disabled;
 #include "res://features/world/view/shaders/painted_light.gdshaderinc"
+#include "res://features/world/view/shaders/occlusion_dither.gdshaderinc"
 
 uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D emission_tex : source_color, filter_linear_mipmap, repeat_enable;
@@ -33,6 +34,7 @@ vec4 triplanar(sampler2D tex) {
 }
 
 void fragment() {
+	occlusion_dither(world_pos, FRAGCOORD.xy);  // the camera cut-away
 	vec3 colour = tint.rgb;
 	if (use_texture) {
 		colour *= use_triplanar ? triplanar(albedo_tex).rgb : texture(albedo_tex, UV).rgb;

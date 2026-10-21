@@ -3,7 +3,8 @@ extends RefCounted
 ## Turns a scene painted when its look has a "paint" recipe (PaintDef): begin() before the world is built (world
 ## materials go through PaintedMaterials), finish() once it stands: the ink outline quad on the camera, the grade
 ## (split-tone LUT, contrast and saturation on the Environment; vignette and canvas grain on screen), the
-## anti-aliasing mode, the shared light on every character, and the painted figure in place of the player's sprite.
+## anti-aliasing mode, the shared light on every character, the camera cut-away (OcclusionFade, on the party node)
+## and the painted figure in place of the player's sprite.
 ## A look without paint changes nothing.
 
 const OUTLINE_SHADER: Shader = preload("res://features/world/view/shaders/ink_outline.gdshader")
@@ -47,6 +48,8 @@ static func finish(root: Node, look: LookDef, env: Environment, camera: Camera3D
 	root.get_viewport().screen_space_aa = modes[0] as Viewport.ScreenSpaceAA
 	root.get_viewport().msaa_3d = modes[1] as Viewport.MSAA
 	paint_characters(root, paint)
+	if figure_host != null and paint.occlude_radius > 0.0:
+		OcclusionFade.attach(root, camera, figure_host, paint)
 	if paint.figure and figure_host != null:
 		PaintedFigure.replace_sprite(figure_host, paint)
 
