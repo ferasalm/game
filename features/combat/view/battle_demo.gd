@@ -3,7 +3,7 @@ extends Node3D
 ## (swift hilt, keen blade, seed 7, ambushed so the reverse stab shows). Press F6 on this scene. When the battle
 ## ends the scene restarts. Tick auto_play in the inspector to watch the heroes play themselves.
 
-const LOOK_ID: StringName = &"v1"
+const LOOK_ID: StringName = &"night"
 const FLOOR_SIZE: Vector3 = Vector3(24.0, 0.5, 24.0)
 const FLOOR_COLOR: Color = Color(0.78, 0.7, 0.55)
 const HILT: StringName = &"swift_hilt"

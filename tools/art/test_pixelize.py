@@ -39,6 +39,8 @@ def main():
     assert any(r[0] != "." for r in rows), "left edge trimmed"
     assert any(r[-1] != "." for r in rows), "right edge trimmed"
     assert "." in "".join(rows), "background keyed out"
+    assert pixelize.outline(["a."]) == [".k..", "kak.", ".k.."], "one pixel gets a 4-neighbour ring"
+    assert pixelize.outline([".a.", "aaa"]) == ["..k..", ".kak.", "kaaak", ".kkk."], "4-neighbour ring"
     print("pixelize self-test ok")
 
 

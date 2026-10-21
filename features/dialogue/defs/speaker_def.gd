@@ -9,6 +9,8 @@ var sprite: StringName = &""
 var face_x: int = 0
 var brow_y: int = 0
 var mouth_y: int = 0
+## Mirror the real portrait so it faces the text box (art that faces away needs it; stand-ins already face it).
+var portrait_flip: bool = false
 
 
 func read(r: DefReader) -> void:
@@ -23,6 +25,7 @@ func read(r: DefReader) -> void:
 	face_x = r.integer("face_x", 0, 63)
 	brow_y = r.integer("brow_y", 0, 63)
 	mouth_y = r.integer("mouth_y", 0, 63)
+	portrait_flip = r.flag("portrait_flip")
 
 
 func references() -> Array[Array]:

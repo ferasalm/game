@@ -76,10 +76,13 @@ func test_standins_exist_and_differ_per_expression() -> void:
 				check(images[a].get_data() != images[b].get_data(), "%s: expressions %d and %d differ" % [speaker, a, b])
 
 
-func test_missing_real_portrait_falls_back_to_standin() -> void:
-	check(not Portraits.has_real(&"zayd", &"happy"), "no real PNG is shipped yet")
+func test_real_portraits_load_and_standins_remain() -> void:
+	for speaker: StringName in [&"zayd", &"bilqis"]:
+		for expression: StringName in [&"neutral", &"happy", &"angry", &"surprised"]:
+			check(Portraits.has_real(speaker, expression), "owner portrait %s_%s is shipped" % [speaker, expression])
 	var texture: Texture2D = Portraits.texture(&"zayd", &"happy")
-	check(texture != null and texture.get_height() > 0, "stand-in texture")
+	check(texture != null and texture.get_height() > 0, "real portrait texture")
+	check(Portraits.standin_image(&"zayd", &"happy") != null, "the stand-in still builds for speakers without art")
 	check(Portraits.texture(&"nobody", &"happy") == null, "unknown speaker gives null")
 
 

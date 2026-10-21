@@ -1,0 +1,59 @@
+keys,en
+RARITY_COMMON,Common
+RARITY_UNCOMMON,Uncommon
+RARITY_RARE,Rare
+RARITY_EPIC,Epic
+RARITY_LEGENDARY,Legendary
+RARITY_HEIRLOOM,Heirloom
+PERK_HEAD_START,Head start
+PERK_HEAD_START_DESC,Starts each battle further along the timeline.
+PERK_STEADY_CURRENT,Steady current
+PERK_STEADY_CURRENT_DESC,Gains 1 extra SP after every act.
+PERK_SURGE_CURRENT,Surge current
+PERK_SURGE_CURRENT_DESC,Gains 2 extra SP after every act.
+PERK_MENDER_LOOP,Mender loop
+PERK_MENDER_LOOP_DESC,Heals a little HP after every act.
+PERK_DEEP_MENDER,Deep mender
+PERK_DEEP_MENDER_DESC,Heals more HP after every act.
+PERK_HEAVY_HAND,Heavy hand
+PERK_HEAVY_HAND_DESC,The first hit of every move shoves foes back further.
+HILT_GRANDFATHER,Grandfather's Hilt
+HILT_GRANDFATHER_DESC,Worn smooth by three generations of Sana'a smiths. Teaches Elder Cut.
+BLADE_RUSTWIRE,Rustwire Blade
+BLADE_RUSTWIRE_DESC,Drawn from scrap cable and sharpened at home. Plain but honest.
+PROSTHETIC_SALVAGE_ARM,Salvage Arm
+PROSTHETIC_SALVAGE_ARM_DESC,A steel left arm rebuilt from souq parts. Grants Piston Jab.
+PROSTHETIC_CRADLE_SPINE,Cradle Spine
+PROSTHETIC_CRADLE_SPINE_DESC,A load-bearing frame that spreads every blow. Grants Reactive Guard.
+PROSTHETIC_ARC_ARM,Arc Arm
+PROSTHETIC_ARC_ARM_DESC,A coil-wound arm that stores a storm. Grants Arc Discharge and Piston Jab.
+PROSTHETIC_WRIST_RIG,Wrist Rig
+PROSTHETIC_WRIST_RIG_DESC,A cuff of nanite vials and wire. Grants Nanite Mend.
+PROSTHETIC_LENS_ARRAY,Lens Array
+PROSTHETIC_LENS_ARRAY_DESC,An ocular implant that reads the whole street at once. Grants Nanite Mend and Overclock Link.
+PROSTHETIC_DAWN_LENS,Dawn Lens
+PROSTHETIC_DAWN_LENS_DESC,A lens that catches first light over Marib. Grants Overload Lance and Reboot Pulse.
+STATUS_GUARDED,Guarded
+STATUS_OVERCLOCKED,Overclocked
+ACTION_ELDER_CUT,Elder Cut
+ACTION_PISTON_JAB,Piston Jab
+ACTION_ARC_DISCHARGE,Arc Discharge
+ACTION_REACTIVE_GUARD,Reactive Guard
+ACTION_NANITE_MEND,Nanite Mend
+ACTION_OVERCLOCK_LINK,Overclock Link
+ACTION_OVERLOAD_LANCE,Overload Lance
+ACTION_REBOOT_PULSE,Reboot Pulse
+MOVE_DESC_ELDER_CUT,A clean old family cut that breaks a charge.
+MOVE_DESC_PISTON_JAB,A steel fist driven by a piston. Breaks a charge.
+MOVE_DESC_ARC_DISCHARGE,Lightning across every foe at once.
+MOVE_DESC_REACTIVE_GUARD,Plates lock in place. Take 40% less damage for 2 turns.
+MOVE_DESC_NANITE_MEND,Nanites knit one ally's wounds.
+MOVE_DESC_OVERCLOCK_LINK,Pushes the whole party faster for 3 turns.
+MOVE_DESC_OVERLOAD_LANCE,One huge slow beam from an overloaded implant.
+MOVE_DESC_REBOOT_PULSE,Heals an ally and stands up one who has fallen.
+UI_TARGET_ALL_FOES,all foes
+UI_TARGET_ALL_ALLIES,all allies
+UI_TARGET_SELF,self
+UI_TARGET_ALLY,ally
+UI_HEALED,+%d
+UI_REVIVED,Back up

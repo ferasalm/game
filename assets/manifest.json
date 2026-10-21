@@ -1,1 +1,2615 @@
-{"assets": []}
+{
+  "assets": [
+    {
+      "id": "bilqis_angry",
+      "path": "portraits/bilqis_angry.png",
+      "source": "gemini",
+      "licence": "Gemini, owner-generated",
+      "prompt": "bilqis_angry_v1"
+    },
+    {
+      "id": "bilqis_happy",
+      "path": "portraits/bilqis_happy.png",
+      "source": "gemini",
+      "licence": "Gemini, owner-generated",
+      "prompt": "bilqis_happy_v1"
+    },
+    {
+      "id": "bilqis_neutral",
+      "path": "portraits/bilqis_neutral.png",
+      "source": "gemini",
+      "licence": "Gemini, owner-generated",
+      "prompt": "bilqis_neutral_v1"
+    },
+    {
+      "id": "bilqis_surprised",
+      "path": "portraits/bilqis_surprised.png",
+      "source": "gemini",
+      "licence": "Gemini, owner-generated",
+      "prompt": "bilqis_surprised_v1"
+    },
+    {
+      "id": "zayd_angry",
+      "path": "portraits/zayd_angry.png",
+      "source": "gemini",
+      "licence": "Gemini, owner-generated",
+      "prompt": "zayd_angry_v1"
+    },
+    {
+      "id": "zayd_happy",
+      "path": "portraits/zayd_happy.png",
+      "source": "gemini",
+      "licence": "Gemini, owner-generated",
+      "prompt": "zayd_happy_v1"
+    },
+    {
+      "id": "zayd_neutral",
+      "path": "portraits/zayd_neutral.png",
+      "source": "gemini",
+      "licence": "Gemini, owner-generated",
+      "prompt": "zayd_neutral_v1"
+    },
+    {
+      "id": "zayd_surprised",
+      "path": "portraits/zayd_surprised.png",
+      "source": "gemini",
+      "licence": "Gemini, owner-generated",
+      "prompt": "zayd_surprised_v1"
+    },
+    {
+      "id": "font_amiri_regular",
+      "path": "fonts/amiri_regular.ttf",
+      "source": "github.com/google/fonts (Amiri)",
+      "licence": "SIL Open Font Licence 1.1",
+      "prompt": ""
+    },
+    {
+      "id": "font_amiri_bold",
+      "path": "fonts/amiri_bold.ttf",
+      "source": "github.com/google/fonts (Amiri)",
+      "licence": "SIL Open Font Licence 1.1",
+      "prompt": ""
+    },
+    {
+      "id": "font_amiri_licence",
+      "path": "fonts/amiri_ofl.txt",
+      "source": "github.com/google/fonts (Amiri)",
+      "licence": "SIL Open Font Licence 1.1",
+      "prompt": ""
+    },
+    {
+      "id": "font_reem_kufi",
+      "path": "fonts/reem_kufi.ttf",
+      "source": "github.com/google/fonts (Reem Kufi)",
+      "licence": "SIL Open Font Licence 1.1",
+      "prompt": ""
+    },
+    {
+      "id": "font_reem_kufi_licence",
+      "path": "fonts/reem_kufi_ofl.txt",
+      "source": "github.com/google/fonts (Reem Kufi)",
+      "licence": "SIL Open Font Licence 1.1",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_licence",
+      "path": "audio/sfx/impact_sounds/license.txt",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_carpet_000",
+      "path": "audio/sfx/impact_sounds/footstep_carpet_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_carpet_001",
+      "path": "audio/sfx/impact_sounds/footstep_carpet_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_carpet_002",
+      "path": "audio/sfx/impact_sounds/footstep_carpet_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_carpet_003",
+      "path": "audio/sfx/impact_sounds/footstep_carpet_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_carpet_004",
+      "path": "audio/sfx/impact_sounds/footstep_carpet_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_concrete_000",
+      "path": "audio/sfx/impact_sounds/footstep_concrete_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_concrete_001",
+      "path": "audio/sfx/impact_sounds/footstep_concrete_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_concrete_002",
+      "path": "audio/sfx/impact_sounds/footstep_concrete_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_concrete_003",
+      "path": "audio/sfx/impact_sounds/footstep_concrete_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_concrete_004",
+      "path": "audio/sfx/impact_sounds/footstep_concrete_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_grass_000",
+      "path": "audio/sfx/impact_sounds/footstep_grass_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_grass_001",
+      "path": "audio/sfx/impact_sounds/footstep_grass_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_grass_002",
+      "path": "audio/sfx/impact_sounds/footstep_grass_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_grass_003",
+      "path": "audio/sfx/impact_sounds/footstep_grass_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_grass_004",
+      "path": "audio/sfx/impact_sounds/footstep_grass_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_snow_000",
+      "path": "audio/sfx/impact_sounds/footstep_snow_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_snow_001",
+      "path": "audio/sfx/impact_sounds/footstep_snow_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_snow_002",
+      "path": "audio/sfx/impact_sounds/footstep_snow_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_snow_003",
+      "path": "audio/sfx/impact_sounds/footstep_snow_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_snow_004",
+      "path": "audio/sfx/impact_sounds/footstep_snow_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_wood_000",
+      "path": "audio/sfx/impact_sounds/footstep_wood_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_wood_001",
+      "path": "audio/sfx/impact_sounds/footstep_wood_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_wood_002",
+      "path": "audio/sfx/impact_sounds/footstep_wood_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_wood_003",
+      "path": "audio/sfx/impact_sounds/footstep_wood_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_footstep_wood_004",
+      "path": "audio/sfx/impact_sounds/footstep_wood_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactBell_heavy_000",
+      "path": "audio/sfx/impact_sounds/impactBell_heavy_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactBell_heavy_001",
+      "path": "audio/sfx/impact_sounds/impactBell_heavy_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactBell_heavy_002",
+      "path": "audio/sfx/impact_sounds/impactBell_heavy_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactBell_heavy_003",
+      "path": "audio/sfx/impact_sounds/impactBell_heavy_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactBell_heavy_004",
+      "path": "audio/sfx/impact_sounds/impactBell_heavy_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactGeneric_light_000",
+      "path": "audio/sfx/impact_sounds/impactGeneric_light_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactGeneric_light_001",
+      "path": "audio/sfx/impact_sounds/impactGeneric_light_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactGeneric_light_002",
+      "path": "audio/sfx/impact_sounds/impactGeneric_light_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactGeneric_light_003",
+      "path": "audio/sfx/impact_sounds/impactGeneric_light_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactGeneric_light_004",
+      "path": "audio/sfx/impact_sounds/impactGeneric_light_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactGlass_heavy_000",
+      "path": "audio/sfx/impact_sounds/impactGlass_heavy_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactGlass_heavy_001",
+      "path": "audio/sfx/impact_sounds/impactGlass_heavy_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactGlass_heavy_002",
+      "path": "audio/sfx/impact_sounds/impactGlass_heavy_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactGlass_heavy_003",
+      "path": "audio/sfx/impact_sounds/impactGlass_heavy_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactGlass_heavy_004",
+      "path": "audio/sfx/impact_sounds/impactGlass_heavy_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactGlass_light_000",
+      "path": "audio/sfx/impact_sounds/impactGlass_light_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactGlass_light_001",
+      "path": "audio/sfx/impact_sounds/impactGlass_light_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactGlass_light_002",
+      "path": "audio/sfx/impact_sounds/impactGlass_light_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactGlass_light_003",
+      "path": "audio/sfx/impact_sounds/impactGlass_light_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactGlass_light_004",
+      "path": "audio/sfx/impact_sounds/impactGlass_light_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactGlass_medium_000",
+      "path": "audio/sfx/impact_sounds/impactGlass_medium_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactGlass_medium_001",
+      "path": "audio/sfx/impact_sounds/impactGlass_medium_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactGlass_medium_002",
+      "path": "audio/sfx/impact_sounds/impactGlass_medium_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactGlass_medium_003",
+      "path": "audio/sfx/impact_sounds/impactGlass_medium_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactGlass_medium_004",
+      "path": "audio/sfx/impact_sounds/impactGlass_medium_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactMetal_heavy_000",
+      "path": "audio/sfx/impact_sounds/impactMetal_heavy_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactMetal_heavy_001",
+      "path": "audio/sfx/impact_sounds/impactMetal_heavy_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactMetal_heavy_002",
+      "path": "audio/sfx/impact_sounds/impactMetal_heavy_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactMetal_heavy_003",
+      "path": "audio/sfx/impact_sounds/impactMetal_heavy_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactMetal_heavy_004",
+      "path": "audio/sfx/impact_sounds/impactMetal_heavy_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactMetal_light_000",
+      "path": "audio/sfx/impact_sounds/impactMetal_light_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactMetal_light_001",
+      "path": "audio/sfx/impact_sounds/impactMetal_light_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactMetal_light_002",
+      "path": "audio/sfx/impact_sounds/impactMetal_light_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactMetal_light_003",
+      "path": "audio/sfx/impact_sounds/impactMetal_light_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactMetal_light_004",
+      "path": "audio/sfx/impact_sounds/impactMetal_light_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactMetal_medium_000",
+      "path": "audio/sfx/impact_sounds/impactMetal_medium_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactMetal_medium_001",
+      "path": "audio/sfx/impact_sounds/impactMetal_medium_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactMetal_medium_002",
+      "path": "audio/sfx/impact_sounds/impactMetal_medium_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactMetal_medium_003",
+      "path": "audio/sfx/impact_sounds/impactMetal_medium_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactMetal_medium_004",
+      "path": "audio/sfx/impact_sounds/impactMetal_medium_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactMining_000",
+      "path": "audio/sfx/impact_sounds/impactMining_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactMining_001",
+      "path": "audio/sfx/impact_sounds/impactMining_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactMining_002",
+      "path": "audio/sfx/impact_sounds/impactMining_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactMining_003",
+      "path": "audio/sfx/impact_sounds/impactMining_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactMining_004",
+      "path": "audio/sfx/impact_sounds/impactMining_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPlank_medium_000",
+      "path": "audio/sfx/impact_sounds/impactPlank_medium_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPlank_medium_001",
+      "path": "audio/sfx/impact_sounds/impactPlank_medium_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPlank_medium_002",
+      "path": "audio/sfx/impact_sounds/impactPlank_medium_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPlank_medium_003",
+      "path": "audio/sfx/impact_sounds/impactPlank_medium_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPlank_medium_004",
+      "path": "audio/sfx/impact_sounds/impactPlank_medium_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPlate_heavy_000",
+      "path": "audio/sfx/impact_sounds/impactPlate_heavy_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPlate_heavy_001",
+      "path": "audio/sfx/impact_sounds/impactPlate_heavy_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPlate_heavy_002",
+      "path": "audio/sfx/impact_sounds/impactPlate_heavy_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPlate_heavy_003",
+      "path": "audio/sfx/impact_sounds/impactPlate_heavy_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPlate_heavy_004",
+      "path": "audio/sfx/impact_sounds/impactPlate_heavy_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPlate_light_000",
+      "path": "audio/sfx/impact_sounds/impactPlate_light_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPlate_light_001",
+      "path": "audio/sfx/impact_sounds/impactPlate_light_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPlate_light_002",
+      "path": "audio/sfx/impact_sounds/impactPlate_light_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPlate_light_003",
+      "path": "audio/sfx/impact_sounds/impactPlate_light_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPlate_light_004",
+      "path": "audio/sfx/impact_sounds/impactPlate_light_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPlate_medium_000",
+      "path": "audio/sfx/impact_sounds/impactPlate_medium_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPlate_medium_001",
+      "path": "audio/sfx/impact_sounds/impactPlate_medium_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPlate_medium_002",
+      "path": "audio/sfx/impact_sounds/impactPlate_medium_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPlate_medium_003",
+      "path": "audio/sfx/impact_sounds/impactPlate_medium_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPlate_medium_004",
+      "path": "audio/sfx/impact_sounds/impactPlate_medium_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPunch_heavy_000",
+      "path": "audio/sfx/impact_sounds/impactPunch_heavy_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPunch_heavy_001",
+      "path": "audio/sfx/impact_sounds/impactPunch_heavy_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPunch_heavy_002",
+      "path": "audio/sfx/impact_sounds/impactPunch_heavy_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPunch_heavy_003",
+      "path": "audio/sfx/impact_sounds/impactPunch_heavy_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPunch_heavy_004",
+      "path": "audio/sfx/impact_sounds/impactPunch_heavy_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPunch_medium_000",
+      "path": "audio/sfx/impact_sounds/impactPunch_medium_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPunch_medium_001",
+      "path": "audio/sfx/impact_sounds/impactPunch_medium_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPunch_medium_002",
+      "path": "audio/sfx/impact_sounds/impactPunch_medium_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPunch_medium_003",
+      "path": "audio/sfx/impact_sounds/impactPunch_medium_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactPunch_medium_004",
+      "path": "audio/sfx/impact_sounds/impactPunch_medium_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactSoft_heavy_000",
+      "path": "audio/sfx/impact_sounds/impactSoft_heavy_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactSoft_heavy_001",
+      "path": "audio/sfx/impact_sounds/impactSoft_heavy_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactSoft_heavy_002",
+      "path": "audio/sfx/impact_sounds/impactSoft_heavy_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactSoft_heavy_003",
+      "path": "audio/sfx/impact_sounds/impactSoft_heavy_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactSoft_heavy_004",
+      "path": "audio/sfx/impact_sounds/impactSoft_heavy_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactSoft_medium_000",
+      "path": "audio/sfx/impact_sounds/impactSoft_medium_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactSoft_medium_001",
+      "path": "audio/sfx/impact_sounds/impactSoft_medium_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactSoft_medium_002",
+      "path": "audio/sfx/impact_sounds/impactSoft_medium_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactSoft_medium_003",
+      "path": "audio/sfx/impact_sounds/impactSoft_medium_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactSoft_medium_004",
+      "path": "audio/sfx/impact_sounds/impactSoft_medium_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactTin_medium_000",
+      "path": "audio/sfx/impact_sounds/impactTin_medium_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactTin_medium_001",
+      "path": "audio/sfx/impact_sounds/impactTin_medium_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactTin_medium_002",
+      "path": "audio/sfx/impact_sounds/impactTin_medium_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactTin_medium_003",
+      "path": "audio/sfx/impact_sounds/impactTin_medium_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactTin_medium_004",
+      "path": "audio/sfx/impact_sounds/impactTin_medium_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactWood_heavy_000",
+      "path": "audio/sfx/impact_sounds/impactWood_heavy_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactWood_heavy_001",
+      "path": "audio/sfx/impact_sounds/impactWood_heavy_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactWood_heavy_002",
+      "path": "audio/sfx/impact_sounds/impactWood_heavy_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactWood_heavy_003",
+      "path": "audio/sfx/impact_sounds/impactWood_heavy_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactWood_heavy_004",
+      "path": "audio/sfx/impact_sounds/impactWood_heavy_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactWood_light_000",
+      "path": "audio/sfx/impact_sounds/impactWood_light_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactWood_light_001",
+      "path": "audio/sfx/impact_sounds/impactWood_light_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactWood_light_002",
+      "path": "audio/sfx/impact_sounds/impactWood_light_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactWood_light_003",
+      "path": "audio/sfx/impact_sounds/impactWood_light_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactWood_light_004",
+      "path": "audio/sfx/impact_sounds/impactWood_light_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactWood_medium_000",
+      "path": "audio/sfx/impact_sounds/impactWood_medium_000.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactWood_medium_001",
+      "path": "audio/sfx/impact_sounds/impactWood_medium_001.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactWood_medium_002",
+      "path": "audio/sfx/impact_sounds/impactWood_medium_002.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactWood_medium_003",
+      "path": "audio/sfx/impact_sounds/impactWood_medium_003.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_impact_sounds_impactWood_medium_004",
+      "path": "audio/sfx/impact_sounds/impactWood_medium_004.ogg",
+      "source": "kenney.nl/assets/impact-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_licence",
+      "path": "audio/sfx/interface_sounds/license.txt",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_back_001",
+      "path": "audio/sfx/interface_sounds/back_001.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_back_002",
+      "path": "audio/sfx/interface_sounds/back_002.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_back_003",
+      "path": "audio/sfx/interface_sounds/back_003.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_back_004",
+      "path": "audio/sfx/interface_sounds/back_004.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_bong_001",
+      "path": "audio/sfx/interface_sounds/bong_001.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_click_001",
+      "path": "audio/sfx/interface_sounds/click_001.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_click_002",
+      "path": "audio/sfx/interface_sounds/click_002.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_click_003",
+      "path": "audio/sfx/interface_sounds/click_003.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_click_004",
+      "path": "audio/sfx/interface_sounds/click_004.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_click_005",
+      "path": "audio/sfx/interface_sounds/click_005.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_close_001",
+      "path": "audio/sfx/interface_sounds/close_001.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_close_002",
+      "path": "audio/sfx/interface_sounds/close_002.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_close_003",
+      "path": "audio/sfx/interface_sounds/close_003.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_close_004",
+      "path": "audio/sfx/interface_sounds/close_004.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_confirmation_001",
+      "path": "audio/sfx/interface_sounds/confirmation_001.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_confirmation_002",
+      "path": "audio/sfx/interface_sounds/confirmation_002.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_confirmation_003",
+      "path": "audio/sfx/interface_sounds/confirmation_003.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_confirmation_004",
+      "path": "audio/sfx/interface_sounds/confirmation_004.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_drop_001",
+      "path": "audio/sfx/interface_sounds/drop_001.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_drop_002",
+      "path": "audio/sfx/interface_sounds/drop_002.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_drop_003",
+      "path": "audio/sfx/interface_sounds/drop_003.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_drop_004",
+      "path": "audio/sfx/interface_sounds/drop_004.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_error_001",
+      "path": "audio/sfx/interface_sounds/error_001.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_error_002",
+      "path": "audio/sfx/interface_sounds/error_002.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_error_003",
+      "path": "audio/sfx/interface_sounds/error_003.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_error_004",
+      "path": "audio/sfx/interface_sounds/error_004.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_error_005",
+      "path": "audio/sfx/interface_sounds/error_005.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_error_006",
+      "path": "audio/sfx/interface_sounds/error_006.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_error_007",
+      "path": "audio/sfx/interface_sounds/error_007.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_error_008",
+      "path": "audio/sfx/interface_sounds/error_008.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_glass_001",
+      "path": "audio/sfx/interface_sounds/glass_001.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_glass_002",
+      "path": "audio/sfx/interface_sounds/glass_002.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_glass_003",
+      "path": "audio/sfx/interface_sounds/glass_003.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_glass_004",
+      "path": "audio/sfx/interface_sounds/glass_004.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_glass_005",
+      "path": "audio/sfx/interface_sounds/glass_005.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_glass_006",
+      "path": "audio/sfx/interface_sounds/glass_006.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_glitch_001",
+      "path": "audio/sfx/interface_sounds/glitch_001.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_glitch_002",
+      "path": "audio/sfx/interface_sounds/glitch_002.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_glitch_003",
+      "path": "audio/sfx/interface_sounds/glitch_003.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_glitch_004",
+      "path": "audio/sfx/interface_sounds/glitch_004.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_maximize_001",
+      "path": "audio/sfx/interface_sounds/maximize_001.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_maximize_002",
+      "path": "audio/sfx/interface_sounds/maximize_002.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_maximize_003",
+      "path": "audio/sfx/interface_sounds/maximize_003.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_maximize_004",
+      "path": "audio/sfx/interface_sounds/maximize_004.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_maximize_005",
+      "path": "audio/sfx/interface_sounds/maximize_005.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_maximize_006",
+      "path": "audio/sfx/interface_sounds/maximize_006.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_maximize_007",
+      "path": "audio/sfx/interface_sounds/maximize_007.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_maximize_008",
+      "path": "audio/sfx/interface_sounds/maximize_008.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_maximize_009",
+      "path": "audio/sfx/interface_sounds/maximize_009.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_minimize_001",
+      "path": "audio/sfx/interface_sounds/minimize_001.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_minimize_002",
+      "path": "audio/sfx/interface_sounds/minimize_002.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_minimize_003",
+      "path": "audio/sfx/interface_sounds/minimize_003.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_minimize_004",
+      "path": "audio/sfx/interface_sounds/minimize_004.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_minimize_005",
+      "path": "audio/sfx/interface_sounds/minimize_005.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_minimize_006",
+      "path": "audio/sfx/interface_sounds/minimize_006.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_minimize_007",
+      "path": "audio/sfx/interface_sounds/minimize_007.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_minimize_008",
+      "path": "audio/sfx/interface_sounds/minimize_008.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_minimize_009",
+      "path": "audio/sfx/interface_sounds/minimize_009.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_open_001",
+      "path": "audio/sfx/interface_sounds/open_001.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_open_002",
+      "path": "audio/sfx/interface_sounds/open_002.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_open_003",
+      "path": "audio/sfx/interface_sounds/open_003.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_open_004",
+      "path": "audio/sfx/interface_sounds/open_004.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_pluck_001",
+      "path": "audio/sfx/interface_sounds/pluck_001.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_pluck_002",
+      "path": "audio/sfx/interface_sounds/pluck_002.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_question_001",
+      "path": "audio/sfx/interface_sounds/question_001.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_question_002",
+      "path": "audio/sfx/interface_sounds/question_002.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_question_003",
+      "path": "audio/sfx/interface_sounds/question_003.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_question_004",
+      "path": "audio/sfx/interface_sounds/question_004.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_scratch_001",
+      "path": "audio/sfx/interface_sounds/scratch_001.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_scratch_002",
+      "path": "audio/sfx/interface_sounds/scratch_002.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_scratch_003",
+      "path": "audio/sfx/interface_sounds/scratch_003.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_scratch_004",
+      "path": "audio/sfx/interface_sounds/scratch_004.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_scratch_005",
+      "path": "audio/sfx/interface_sounds/scratch_005.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_scroll_001",
+      "path": "audio/sfx/interface_sounds/scroll_001.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_scroll_002",
+      "path": "audio/sfx/interface_sounds/scroll_002.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_scroll_003",
+      "path": "audio/sfx/interface_sounds/scroll_003.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_scroll_004",
+      "path": "audio/sfx/interface_sounds/scroll_004.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_scroll_005",
+      "path": "audio/sfx/interface_sounds/scroll_005.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_select_001",
+      "path": "audio/sfx/interface_sounds/select_001.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_select_002",
+      "path": "audio/sfx/interface_sounds/select_002.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_select_003",
+      "path": "audio/sfx/interface_sounds/select_003.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_select_004",
+      "path": "audio/sfx/interface_sounds/select_004.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_select_005",
+      "path": "audio/sfx/interface_sounds/select_005.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_select_006",
+      "path": "audio/sfx/interface_sounds/select_006.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_select_007",
+      "path": "audio/sfx/interface_sounds/select_007.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_select_008",
+      "path": "audio/sfx/interface_sounds/select_008.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_switch_001",
+      "path": "audio/sfx/interface_sounds/switch_001.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_switch_002",
+      "path": "audio/sfx/interface_sounds/switch_002.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_switch_003",
+      "path": "audio/sfx/interface_sounds/switch_003.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_switch_004",
+      "path": "audio/sfx/interface_sounds/switch_004.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_switch_005",
+      "path": "audio/sfx/interface_sounds/switch_005.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_switch_006",
+      "path": "audio/sfx/interface_sounds/switch_006.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_switch_007",
+      "path": "audio/sfx/interface_sounds/switch_007.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_tick_001",
+      "path": "audio/sfx/interface_sounds/tick_001.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_tick_002",
+      "path": "audio/sfx/interface_sounds/tick_002.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_tick_004",
+      "path": "audio/sfx/interface_sounds/tick_004.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_toggle_001",
+      "path": "audio/sfx/interface_sounds/toggle_001.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_toggle_002",
+      "path": "audio/sfx/interface_sounds/toggle_002.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_toggle_003",
+      "path": "audio/sfx/interface_sounds/toggle_003.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_interface_sounds_toggle_004",
+      "path": "audio/sfx/interface_sounds/toggle_004.ogg",
+      "source": "kenney.nl/assets/interface-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_licence",
+      "path": "audio/sfx/rpg_audio/license.txt",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_beltHandle1",
+      "path": "audio/sfx/rpg_audio/beltHandle1.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_beltHandle2",
+      "path": "audio/sfx/rpg_audio/beltHandle2.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_bookClose",
+      "path": "audio/sfx/rpg_audio/bookClose.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_bookFlip1",
+      "path": "audio/sfx/rpg_audio/bookFlip1.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_bookFlip2",
+      "path": "audio/sfx/rpg_audio/bookFlip2.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_bookFlip3",
+      "path": "audio/sfx/rpg_audio/bookFlip3.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_bookOpen",
+      "path": "audio/sfx/rpg_audio/bookOpen.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_bookPlace1",
+      "path": "audio/sfx/rpg_audio/bookPlace1.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_bookPlace2",
+      "path": "audio/sfx/rpg_audio/bookPlace2.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_bookPlace3",
+      "path": "audio/sfx/rpg_audio/bookPlace3.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_chop",
+      "path": "audio/sfx/rpg_audio/chop.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_cloth1",
+      "path": "audio/sfx/rpg_audio/cloth1.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_cloth2",
+      "path": "audio/sfx/rpg_audio/cloth2.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_cloth3",
+      "path": "audio/sfx/rpg_audio/cloth3.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_cloth4",
+      "path": "audio/sfx/rpg_audio/cloth4.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_clothBelt",
+      "path": "audio/sfx/rpg_audio/clothBelt.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_clothBelt2",
+      "path": "audio/sfx/rpg_audio/clothBelt2.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_creak1",
+      "path": "audio/sfx/rpg_audio/creak1.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_creak2",
+      "path": "audio/sfx/rpg_audio/creak2.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_creak3",
+      "path": "audio/sfx/rpg_audio/creak3.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_doorClose_1",
+      "path": "audio/sfx/rpg_audio/doorClose_1.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_doorClose_2",
+      "path": "audio/sfx/rpg_audio/doorClose_2.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_doorClose_3",
+      "path": "audio/sfx/rpg_audio/doorClose_3.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_doorClose_4",
+      "path": "audio/sfx/rpg_audio/doorClose_4.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_doorOpen_1",
+      "path": "audio/sfx/rpg_audio/doorOpen_1.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_doorOpen_2",
+      "path": "audio/sfx/rpg_audio/doorOpen_2.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_drawKnife1",
+      "path": "audio/sfx/rpg_audio/drawKnife1.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_drawKnife2",
+      "path": "audio/sfx/rpg_audio/drawKnife2.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_drawKnife3",
+      "path": "audio/sfx/rpg_audio/drawKnife3.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_dropLeather",
+      "path": "audio/sfx/rpg_audio/dropLeather.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_footstep00",
+      "path": "audio/sfx/rpg_audio/footstep00.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_footstep01",
+      "path": "audio/sfx/rpg_audio/footstep01.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_footstep02",
+      "path": "audio/sfx/rpg_audio/footstep02.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_footstep03",
+      "path": "audio/sfx/rpg_audio/footstep03.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_footstep04",
+      "path": "audio/sfx/rpg_audio/footstep04.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_footstep05",
+      "path": "audio/sfx/rpg_audio/footstep05.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_footstep06",
+      "path": "audio/sfx/rpg_audio/footstep06.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_footstep07",
+      "path": "audio/sfx/rpg_audio/footstep07.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_footstep08",
+      "path": "audio/sfx/rpg_audio/footstep08.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_footstep09",
+      "path": "audio/sfx/rpg_audio/footstep09.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_handleCoins",
+      "path": "audio/sfx/rpg_audio/handleCoins.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_handleCoins2",
+      "path": "audio/sfx/rpg_audio/handleCoins2.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_handleSmallLeather",
+      "path": "audio/sfx/rpg_audio/handleSmallLeather.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_handleSmallLeather2",
+      "path": "audio/sfx/rpg_audio/handleSmallLeather2.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_knifeSlice",
+      "path": "audio/sfx/rpg_audio/knifeSlice.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_knifeSlice2",
+      "path": "audio/sfx/rpg_audio/knifeSlice2.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_metalClick",
+      "path": "audio/sfx/rpg_audio/metalClick.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_metalLatch",
+      "path": "audio/sfx/rpg_audio/metalLatch.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_metalPot1",
+      "path": "audio/sfx/rpg_audio/metalPot1.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_metalPot2",
+      "path": "audio/sfx/rpg_audio/metalPot2.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_rpg_audio_metalPot3",
+      "path": "audio/sfx/rpg_audio/metalPot3.ogg",
+      "source": "kenney.nl/assets/rpg-audio",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_licence",
+      "path": "audio/sfx/sci_fi_sounds/license.txt",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_computerNoise_000",
+      "path": "audio/sfx/sci_fi_sounds/computerNoise_000.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_computerNoise_001",
+      "path": "audio/sfx/sci_fi_sounds/computerNoise_001.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_computerNoise_002",
+      "path": "audio/sfx/sci_fi_sounds/computerNoise_002.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_computerNoise_003",
+      "path": "audio/sfx/sci_fi_sounds/computerNoise_003.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_doorClose_000",
+      "path": "audio/sfx/sci_fi_sounds/doorClose_000.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_doorClose_001",
+      "path": "audio/sfx/sci_fi_sounds/doorClose_001.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_doorClose_002",
+      "path": "audio/sfx/sci_fi_sounds/doorClose_002.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_doorOpen_000",
+      "path": "audio/sfx/sci_fi_sounds/doorOpen_000.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_doorOpen_001",
+      "path": "audio/sfx/sci_fi_sounds/doorOpen_001.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_doorOpen_002",
+      "path": "audio/sfx/sci_fi_sounds/doorOpen_002.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_engineCircular_000",
+      "path": "audio/sfx/sci_fi_sounds/engineCircular_000.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_engineCircular_001",
+      "path": "audio/sfx/sci_fi_sounds/engineCircular_001.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_engineCircular_002",
+      "path": "audio/sfx/sci_fi_sounds/engineCircular_002.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_engineCircular_003",
+      "path": "audio/sfx/sci_fi_sounds/engineCircular_003.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_engineCircular_004",
+      "path": "audio/sfx/sci_fi_sounds/engineCircular_004.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_explosionCrunch_000",
+      "path": "audio/sfx/sci_fi_sounds/explosionCrunch_000.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_explosionCrunch_001",
+      "path": "audio/sfx/sci_fi_sounds/explosionCrunch_001.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_explosionCrunch_002",
+      "path": "audio/sfx/sci_fi_sounds/explosionCrunch_002.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_explosionCrunch_003",
+      "path": "audio/sfx/sci_fi_sounds/explosionCrunch_003.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_explosionCrunch_004",
+      "path": "audio/sfx/sci_fi_sounds/explosionCrunch_004.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_forceField_000",
+      "path": "audio/sfx/sci_fi_sounds/forceField_000.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_forceField_001",
+      "path": "audio/sfx/sci_fi_sounds/forceField_001.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_forceField_002",
+      "path": "audio/sfx/sci_fi_sounds/forceField_002.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_forceField_003",
+      "path": "audio/sfx/sci_fi_sounds/forceField_003.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_forceField_004",
+      "path": "audio/sfx/sci_fi_sounds/forceField_004.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_impactMetal_000",
+      "path": "audio/sfx/sci_fi_sounds/impactMetal_000.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_impactMetal_001",
+      "path": "audio/sfx/sci_fi_sounds/impactMetal_001.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_impactMetal_002",
+      "path": "audio/sfx/sci_fi_sounds/impactMetal_002.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_impactMetal_003",
+      "path": "audio/sfx/sci_fi_sounds/impactMetal_003.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_impactMetal_004",
+      "path": "audio/sfx/sci_fi_sounds/impactMetal_004.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_laserLarge_000",
+      "path": "audio/sfx/sci_fi_sounds/laserLarge_000.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_laserLarge_001",
+      "path": "audio/sfx/sci_fi_sounds/laserLarge_001.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_laserLarge_002",
+      "path": "audio/sfx/sci_fi_sounds/laserLarge_002.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_laserLarge_003",
+      "path": "audio/sfx/sci_fi_sounds/laserLarge_003.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_laserLarge_004",
+      "path": "audio/sfx/sci_fi_sounds/laserLarge_004.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_laserRetro_000",
+      "path": "audio/sfx/sci_fi_sounds/laserRetro_000.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_laserRetro_001",
+      "path": "audio/sfx/sci_fi_sounds/laserRetro_001.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_laserRetro_002",
+      "path": "audio/sfx/sci_fi_sounds/laserRetro_002.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_laserRetro_003",
+      "path": "audio/sfx/sci_fi_sounds/laserRetro_003.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_laserRetro_004",
+      "path": "audio/sfx/sci_fi_sounds/laserRetro_004.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_laserSmall_000",
+      "path": "audio/sfx/sci_fi_sounds/laserSmall_000.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_laserSmall_001",
+      "path": "audio/sfx/sci_fi_sounds/laserSmall_001.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_laserSmall_002",
+      "path": "audio/sfx/sci_fi_sounds/laserSmall_002.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_laserSmall_003",
+      "path": "audio/sfx/sci_fi_sounds/laserSmall_003.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_laserSmall_004",
+      "path": "audio/sfx/sci_fi_sounds/laserSmall_004.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_lowFrequency_explosion_000",
+      "path": "audio/sfx/sci_fi_sounds/lowFrequency_explosion_000.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_lowFrequency_explosion_001",
+      "path": "audio/sfx/sci_fi_sounds/lowFrequency_explosion_001.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_slime_000",
+      "path": "audio/sfx/sci_fi_sounds/slime_000.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_slime_001",
+      "path": "audio/sfx/sci_fi_sounds/slime_001.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_spaceEngine_000",
+      "path": "audio/sfx/sci_fi_sounds/spaceEngine_000.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_spaceEngine_001",
+      "path": "audio/sfx/sci_fi_sounds/spaceEngine_001.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_spaceEngine_002",
+      "path": "audio/sfx/sci_fi_sounds/spaceEngine_002.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_spaceEngine_003",
+      "path": "audio/sfx/sci_fi_sounds/spaceEngine_003.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_spaceEngineLarge_000",
+      "path": "audio/sfx/sci_fi_sounds/spaceEngineLarge_000.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_spaceEngineLarge_001",
+      "path": "audio/sfx/sci_fi_sounds/spaceEngineLarge_001.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_spaceEngineLarge_002",
+      "path": "audio/sfx/sci_fi_sounds/spaceEngineLarge_002.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_spaceEngineLarge_003",
+      "path": "audio/sfx/sci_fi_sounds/spaceEngineLarge_003.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_spaceEngineLarge_004",
+      "path": "audio/sfx/sci_fi_sounds/spaceEngineLarge_004.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_spaceEngineLow_000",
+      "path": "audio/sfx/sci_fi_sounds/spaceEngineLow_000.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_spaceEngineLow_001",
+      "path": "audio/sfx/sci_fi_sounds/spaceEngineLow_001.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_spaceEngineLow_002",
+      "path": "audio/sfx/sci_fi_sounds/spaceEngineLow_002.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_spaceEngineLow_003",
+      "path": "audio/sfx/sci_fi_sounds/spaceEngineLow_003.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_spaceEngineLow_004",
+      "path": "audio/sfx/sci_fi_sounds/spaceEngineLow_004.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_spaceEngineSmall_000",
+      "path": "audio/sfx/sci_fi_sounds/spaceEngineSmall_000.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_spaceEngineSmall_001",
+      "path": "audio/sfx/sci_fi_sounds/spaceEngineSmall_001.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_spaceEngineSmall_002",
+      "path": "audio/sfx/sci_fi_sounds/spaceEngineSmall_002.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_spaceEngineSmall_003",
+      "path": "audio/sfx/sci_fi_sounds/spaceEngineSmall_003.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_spaceEngineSmall_004",
+      "path": "audio/sfx/sci_fi_sounds/spaceEngineSmall_004.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_thrusterFire_000",
+      "path": "audio/sfx/sci_fi_sounds/thrusterFire_000.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_thrusterFire_001",
+      "path": "audio/sfx/sci_fi_sounds/thrusterFire_001.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_thrusterFire_002",
+      "path": "audio/sfx/sci_fi_sounds/thrusterFire_002.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_thrusterFire_003",
+      "path": "audio/sfx/sci_fi_sounds/thrusterFire_003.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_sci_fi_sounds_thrusterFire_004",
+      "path": "audio/sfx/sci_fi_sounds/thrusterFire_004.ogg",
+      "source": "kenney.nl/assets/sci-fi-sounds",
+      "licence": "CC0 1.0",
+      "prompt": ""
+    },
+    {
+      "id": "music_night_rooftops",
+      "path": "audio/music/night_rooftops.ogg",
+      "source": "flow music (flowmusic.app, Lyria), owner-generated",
+      "licence": "Google Flow Music output, owner-generated; check Flow Music terms before a commercial release",
+      "prompt": "Night over Souq al-Milh"
+    },
+    {
+      "id": "music_battle",
+      "path": "audio/music/battle.ogg",
+      "source": "flow music (flowmusic.app, Lyria), owner-generated",
+      "licence": "Google Flow Music output, owner-generated; check Flow Music terms before a commercial release",
+      "prompt": "Concession Clash"
+    }
+  ]
+}

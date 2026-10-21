@@ -43,3 +43,8 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-21 | The reverse-stab ambush goes into prototype v0 (patrol touch from behind; party head start when Zayd reaches it from behind) | Feras (recommended) | Feras
 - 2026-10-21 | Characters 64 px tall; one texel density of 32 px = 1 m for sprites and world (supersedes the 16 px = 1 m in Look v1); same size on screen, finer pixels | Feras chose 64 over 48 and 32 (density follows: Claude, owner may veto) | Feras
 - 2026-10-21 | Real sprites: Feras's Gemini picture -> tools/art/pixelize.py -> his touch-up in Pixelorama; tools/art/sprite_png.py exports/imports any sprite losslessly; Claude's sprites are stand-ins | Feras (recommended) | Feras
+- 2026-10-21 | Prototype look: old Sana'a at night (tower-houses, glowing qamariya, moon, stars, clouds, fog) with neon accents and the 2150 megacity on the horizon; real place names (Souq al-Milh, al-Saila, Bab al-Yaman, Zubairi, Haddah, Bayt Baws) | Feras (recommended) | Feras
+- 2026-10-21 | Prosthetics: one slot per hero; it grants the tech moves (attacks, heals, shields, debuffs) paid from SP; the djanbeyyah stays the physical weapon | Feras (recommended) | Feras
+- 2026-10-21 | Rarity: Common, Uncommon, Rare, Epic, Legendary (white, green, blue, purple, gold) on hand-made fixed items, plus a story-only Heirloom tier | Feras | Feras
+- 2026-10-21 | Music: Yemeni fusion (qanbus oud, hand drums, synth bass and pads): a night rooftops theme and a battle theme, made in Google Flow (Feras logs in) | Feras (recommended) | Feras
+- 2026-10-21 | Free online assets (CC0 / OFL) allowed where the game doesn't need unique art; each gets a manifest entry; downloads confirmed with the owner | Feras | Feras

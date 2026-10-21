@@ -1,7 +1,7 @@
 class_name AreaBuilder
 extends RefCounted
 ## Builds an area's blocks: one MultiMeshInstance3D per tile type (bodies, and caps drawn with the cap tile's
-## material), plus one StaticBody3D holding a box per run of solid tiles and walls that close the area's edges.
+## material; tiles with a pattern get its painted triplanar texture), plus one StaticBody3D holding a box per run of solid tiles and walls that close the area's edges.
 ## Tile (x, z) is the unit square [x, x+1] by [z, z+1]; the walkable floor is a visual only (the player floats).
 
 const PALETTE_ID: StringName = &"main"
@@ -29,6 +29,8 @@ static func _groups(area: AreaDef) -> Dictionary[StringName, Array]:
 	for z: int in area.depth():
 		for x: int in area.width():
 			var tile := ContentDB.get_def("tile", area.tile_id_at(x, z)) as TileDef
+			if tile.hidden:
+				continue
 			_add(out, tile.id, _box(x, z, 0.0, tile.height))
 			var cap := ContentDB.get_def("tile", tile.cap) as TileDef
 			if cap != null:
@@ -49,7 +51,10 @@ static func _box(x: int, z: int, y0: float, height: float) -> Transform3D:
 static func _multimesh(tile: TileDef, palette: PaletteDef, transforms: Array) -> MultiMeshInstance3D:
 	var mesh := BoxMesh.new()
 	mesh.size = Vector3.ONE
-	mesh.material = Diorama.material(tile.to_color(palette), tile.glow)
+	if tile.pattern != &"":
+		mesh.material = SurfaceMaterials.tile(tile.pattern, palette, tile.tint)
+	else:
+		mesh.material = Diorama.material(tile.to_color(palette), tile.glow)
 	var multi := MultiMesh.new()
 	multi.transform_format = MultiMesh.TRANSFORM_3D
 	multi.mesh = mesh

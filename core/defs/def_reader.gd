@@ -145,3 +145,50 @@ static func _num(value: float) -> String:
 
 func _fail(key: String, problem: String) -> void:
 	_errors.append("%s.%s: %s" % [_where, key, problem])
+
+
+## A "#rrggbb" string as a Color (magenta, plus a problem, when it is wrong or required and missing).
+func color(key: String, default: Color = Color.MAGENTA, required: bool = true) -> Color:
+	if not required and not _data.has(key):
+		return default
+	var value: String = text(key)
+	if not Color.html_is_valid(value):
+		_fail(key, "'%s' is not a colour" % value)
+		return Color.MAGENTA
+	return Color.html(value)
+
+
+## A list of JSON objects that may be absent (then empty); errors name the element like objects().
+func optional_objects(key: String) -> Array[DefReader]:
+	if not _data.has(key):
+		return []
+	return objects(key)
+
+
+## A list of numbers that may be absent (then empty), each inside min_value..max_value.
+func float_list(key: String, min_value: float, max_value: float) -> Array[float]:
+	var out: Array[float] = []
+	if not _data.has(key):
+		return out
+	if not (_data[key] is Array):
+		_fail(key, "not a list")
+		return out
+	for item: Variant in (_data[key] as Array):
+		if not (item is float or item is int) or float(item) < min_value or float(item) > max_value:
+			_fail(key, "'%s' is not a number in %s..%s" % [str(item), _num(min_value), _num(max_value)])
+		else:
+			out.append(float(item))
+	return out
+
+
+## True when the key is present (for optional nested objects and lists).
+func has(key: String) -> bool:
+	return _data.has(key)
+
+
+## A nested JSON object as its own reader (errors name it, e.g. "file[0].light.color").
+func child(key: String) -> DefReader:
+	if _data.has(key) and _data[key] is Dictionary:
+		return DefReader.new(_data[key] as Dictionary, "%s.%s" % [_where, key], _errors)
+	_fail(key, "not an object")
+	return DefReader.new({}, _where, _errors)

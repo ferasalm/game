@@ -58,6 +58,14 @@ func _speed(casting: bool, chosen: ActionDef) -> int:
 	return maxi(1, roundi(def.agility * mult))
 
 
+## Product of the damage_taken multipliers of the unit's statuses (1.0 with none).
+func damage_taken_mult() -> float:
+	var mult: float = 1.0
+	for status: StatusDef in statuses:
+		mult *= status.damage_taken
+	return mult
+
+
 func interrupt_immune() -> bool:
 	return statuses.any(func(s: StatusDef) -> bool: return s.interrupt_immune)
 
@@ -68,10 +76,13 @@ func apply_status(status: StatusDef) -> void:
 	status_turns[status.id] = status.turns
 
 
-## One of this unit's acts has passed: every status loses a turn. Returns the ids that ran out.
-func tick_statuses() -> Array[StringName]:
+## One of this unit's acts has passed: every status loses a turn, except the ids in skip (statuses the unit
+## just gave itself). Returns the ids that ran out.
+func tick_statuses(skip: Array[StringName] = []) -> Array[StringName]:
 	var ended: Array[StringName] = []
 	for status: StatusDef in statuses.duplicate():
+		if skip.has(status.id):
+			continue
 		status_turns[status.id] -= 1
 		if status_turns[status.id] <= 0:
 			statuses.erase(status)

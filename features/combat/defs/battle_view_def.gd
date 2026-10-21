@@ -16,6 +16,8 @@ var tip_seconds: float = 0.0
 var end_delay: float = 0.0
 var number_rise: float = 0.0
 var number_seconds: float = 0.0
+## Brightness multiplier on 3D text (damage numbers, BREAK!, intents): above 1 it cuts through the night fog and blooms.
+var label_energy: float = 1.0
 var number_font_size: int = 64
 var text_font_size: int = 40
 var label_pixel_size: float = 0.01
@@ -64,6 +66,7 @@ func _read_pacing(r: DefReader) -> void:
 	end_delay = r.number("end_delay", 0.0, 10.0)
 	number_rise = r.number("number_rise", 0.0, 5.0)
 	number_seconds = r.number("number_seconds", 0.05, 5.0)
+	label_energy = r.number("label_energy", 1.0, 6.0, 1.0, false)
 	number_font_size = r.integer("number_font_size", 8, 300)
 	text_font_size = r.integer("text_font_size", 8, 300)
 	label_pixel_size = r.number("label_pixel_size", 0.001, 0.1)

@@ -18,14 +18,32 @@ const KINDS: Dictionary = {
 	"tile": preload("res://features/world/defs/tile_def.gd"),
 	"area": preload("res://features/world/defs/area_def.gd"),
 	"explore_rules": preload("res://features/world/defs/explore_rules_def.gd"),
+	"sky": preload("res://features/world/defs/sky_def.gd"),
+	"mist": preload("res://features/world/defs/mist_def.gd"),
+	"camera_rig": preload("res://features/world/defs/camera_rig_def.gd"),
 	"battle_rules": preload("res://features/combat/defs/battle_rules_def.gd"),
 	"encounter": preload("res://features/combat/defs/encounter_def.gd"),
 	"battle_view": preload("res://features/combat/defs/battle_view_def.gd"),
 	"hilt": preload("res://features/djanbeyyah/defs/hilt_def.gd"),
 	"blade": preload("res://features/djanbeyyah/defs/blade_def.gd"),
 	"loadout": preload("res://features/djanbeyyah/defs/loadout_def.gd"),
-	"workshop_style": preload("res://features/djanbeyyah/defs/workshop_style_def.gd"),
+	"sound": preload("res://features/audio/defs/sound_def.gd"),
+	"music": preload("res://features/audio/defs/music_def.gd"),
+	"audio_rules": preload("res://features/audio/defs/audio_rules_def.gd"),
+	"building": preload("res://features/world/defs/building_def.gd"),
+	"skyline": preload("res://features/world/defs/skyline_def.gd"),
+	"prop": preload("res://features/world/defs/prop_def.gd"),
+	"rarity": preload("res://features/items/defs/rarity_def.gd"),
+	"perk": preload("res://features/items/defs/perk_def.gd"),
+	"chest": preload("res://features/items/defs/chest_def.gd"),
+	"prosthetic": preload("res://features/prosthetics/defs/prosthetic_def.gd"),
+	"vfx": preload("res://features/combat/defs/vfx_def.gd"),
+	"battle_juice": preload("res://features/combat/defs/juice_def.gd"),
+	"battle_camera": preload("res://features/combat/defs/battle_camera_def.gd"),
+	"ui_style": preload("res://features/ui/defs/ui_style_def.gd"),
 }
+## Equippable kinds share one id namespace; get_def("item", id) finds any of them.
+const ITEM_KINDS: Array[String] = ["hilt", "blade", "prosthetic"]
 
 var _defs: Dictionary[String, Dictionary] = {}
 
@@ -46,6 +64,12 @@ func load_all(root: String = CONTENT_ROOT) -> PackedStringArray:
 
 
 func get_def(kind: String, def_id: StringName) -> Def:
+	if kind == "item":
+		for item_kind: String in ITEM_KINDS:
+			var found: Def = get_def(item_kind, def_id)
+			if found != null:
+				return found
+		return null
 	return (_defs.get(kind, {}) as Dictionary).get(def_id) as Def
 
 

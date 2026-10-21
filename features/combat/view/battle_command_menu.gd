@@ -1,8 +1,8 @@
 class_name BattleCommandMenu
 extends PanelContainer
 ## The command menu (bottom left) for the hero waiting at COMMAND: first one Button per move (unaffordable ones
-## disabled; name, SP cost, a "cancels" tag; the focused move's description below), then one Button per valid
-## target. The back action (ui_cancel) returns from targets to moves. The sim answers every rule question.
+## disabled; name, SP cost, a "cancels" / target tag; the focused move's description below), then one Button
+## per valid target (foes or allies; self and all-moves skip this list). The back action (ui_cancel) returns from targets to moves. The sim answers every rule question.
 
 ## The player committed to this move and target (the stage calls BattleSim.choose).
 signal chosen(action: ActionDef, target_id: StringName)
@@ -33,18 +33,19 @@ func setup(sim: BattleSim, view: BattleViewDef) -> void:
 	offset_bottom = -view.margin
 	offset_top = -view.margin
 	offset_right = view.margin + view.menu_width
-	add_theme_stylebox_override("panel", BattleStyle.panel(view, view.highlight_color))
 	var box := VBoxContainer.new()
 	add_child(box)
-	_title = BattleStyle.label("", view.highlight_color)
+	_title = BattleStyle.label("", &"TitleLabel")
 	box.add_child(_title)
+	box.add_child(Ui.divider())
 	_list = VBoxContainer.new()
 	box.add_child(_list)
-	_desc = BattleStyle.label("")
+	box.add_child(Ui.divider())
+	_desc = BattleStyle.label("", &"MutedLabel")
 	_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_desc.custom_minimum_size.x = view.menu_width - view.margin * 2.0
+	_desc.custom_minimum_size = Vector2(view.menu_width - view.margin * 2.0, view.margin * 2.4)
 	box.add_child(_desc)
-	_notice = BattleStyle.label("", view.enemy_color)
+	_notice = BattleStyle.label("", &"SmallLabel", Ui.style().colour(&"c_bad"))
 	box.add_child(_notice)
 	visible = false
 
@@ -88,6 +89,7 @@ func show_notice(content: String) -> void:
 ## Back from the target list to the move list.
 func back() -> void:
 	if _open and _move != null:
+		AudioDirector.play_ui(&"menu_cancel")
 		var previous: ActionDef = _move
 		target_focused.emit(&"")
 		_show_moves(previous)
@@ -108,7 +110,7 @@ func _show_moves(focus_move: ActionDef) -> void:
 		var action: ActionDef = _sim.actions.get(action_id) as ActionDef
 		if action == null:
 			continue
-		var button: Button = _add_button(_move_text(action))
+		var button: Button = _add_button(BattleStyle.text(action.name_key), BattleMenuChips.for_move(action))
 		button.set_meta("action_id", action_id)
 		button.disabled = not affordable.has(action)
 		button.pressed.connect(_pick_move.bind(action))
@@ -117,11 +119,14 @@ func _show_moves(focus_move: ActionDef) -> void:
 
 
 func _pick_move(action: ActionDef) -> void:
+	if not action.needs_picker():
+		chosen.emit(action, &"")  # self and all-moves skip the target list
+		return
 	_move = action
 	_clear()
 	_title.text = BattleStyle.text("UI_PICK_TARGET")
 	for target: UnitState in _sim.valid_targets(_hero, action):
-		var button: Button = _add_button(_target_text(action, target))
+		var button: Button = _add_button(BattleStyle.unit_name(_sim, target), BattleMenuChips.for_target(_sim, _hero, action, target))
 		button.set_meta("unit_id", target.unit_id)
 		button.pressed.connect(confirm.bind(target.unit_id))
 		button.focus_entered.connect(_emit_focus.bind(target.unit_id))
@@ -134,22 +139,6 @@ func confirm(target_id: StringName) -> void:
 		chosen.emit(_move, target_id)
 
 
-func _move_text(action: ActionDef) -> String:
-	var line: String = BattleStyle.text(action.name_key)
-	if action.sp_cost > 0:
-		line += "   %d %s" % [action.sp_cost, BattleStyle.text("UI_SP")]
-	if action.cancels_cast:
-		line += "   [%s]" % BattleStyle.text("UI_CANCELS")
-	return line
-
-
-func _target_text(action: ActionDef, target: UnitState) -> String:
-	var line: String = "%s   %s %d" % [BattleStyle.unit_name(_sim, target), BattleStyle.text("UI_HP"), target.hp]
-	if action.cancels_cast and _sim.lands_before(_hero, action, target):
-		line += "   [%s]" % BattleStyle.text("UI_WILL_INTERRUPT")
-	return line
-
-
 func _emit_focus(unit_id: StringName) -> void:
 	target_focused.emit(unit_id)
 
@@ -158,12 +147,16 @@ func _describe(action: ActionDef) -> void:
 	_desc.text = BattleStyle.text(action.desc_key) if not action.desc_key.is_empty() else ""
 
 
-func _add_button(content: String) -> Button:
+func _add_button(content: String, chips: Array[Control]) -> Button:
 	var button := Button.new()
 	button.text = content
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	button.custom_minimum_size.y = Ui.style().size(&"s_button_h")
+	button.add_child(Ui.chip_row(chips))
 	_list.add_child(button)
 	_buttons.append(button)
+	button.focus_entered.connect(AudioDirector.play_ui.bind(&"menu_move"))
+	button.pressed.connect(AudioDirector.play_ui.bind(&"menu_confirm"))
 	button.mouse_entered.connect(func() -> void: if not button.disabled: button.grab_focus())
 	return button
 

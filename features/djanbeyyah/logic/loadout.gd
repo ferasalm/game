@@ -1,13 +1,25 @@
 class_name Loadout
 extends RefCounted
-## Which hilt and blade Zayd wears: the saved choice per slot, else the starting pair. Pure.
+## Which gear a hero wears: the saved choice per slot ("<hero>.<part>" in GameState.equipment), else the
+## starting gear. Pure.
 
 
-## Returns [hilt_id, blade_id]; a missing or empty slot falls back to the start pair.
+## Returns [hilt_id, blade_id]; a missing or empty slot falls back to the start loadout.
 static func current(equipment: Dictionary[StringName, StringName], start: LoadoutDef) -> Array[StringName]:
-	var hilt: StringName = equipment.get(&"hilt", &"")
-	var blade: StringName = equipment.get(&"blade", &"")
 	var out: Array[StringName] = []
-	out.append(hilt if hilt != &"" else start.hilt)
-	out.append(blade if blade != &"" else start.blade)
+	out.append(worn(equipment, start, &"hilt"))
+	out.append(worn(equipment, start, &"blade"))
 	return out
+
+
+## The item worn in one part slot ("hilt", "blade", "prosthetic") or &"" when neither saved nor in the start gear.
+static func worn(equipment: Dictionary[StringName, StringName], start: LoadoutDef, part: StringName) -> StringName:
+	var saved: StringName = equipment.get(Inventory.slot_key(start.hero, part), &"")
+	if saved != &"":
+		return saved
+	match part:
+		&"hilt":
+			return start.hilt
+		&"blade":
+			return start.blade
+	return start.prosthetic

@@ -1,0 +1,32 @@
+{
+  "kind": "building",
+  "items": [
+    {"id": "tower_a", "footprint_w": 5, "footprint_d": 5, "floors": 7, "stone_floors": 1, "columns_front": 2, "columns_side": 2,
+     "frieze": "zigzag", "qamariya": ["R", "Y", "G", "B", "V"], "lit_ratio": 0.35, "shutter_ratio": 0.2,
+     "parapet": "stepped", "roof_extras": ["water_tank", "dish"], "seed": 11},
+    {"id": "tower_b", "footprint_w": 6, "footprint_d": 5, "floors": 8, "stone_floors": 2, "columns_front": 2, "columns_side": 2,
+     "frieze": "triangles", "qamariya": ["B", "V", "R"], "lit_ratio": 0.5, "shutter_ratio": 0.15,
+     "parapet": "horned", "roof_extras": ["antenna", "solar"], "seed": 23},
+    {"id": "tower_c", "footprint_w": 5, "footprint_d": 6, "floors": 6, "stone_floors": 1, "columns_front": 2, "columns_side": 2,
+     "frieze": "rosettes", "qamariya": ["Y", "R", "G"], "lit_ratio": 0.25, "shutter_ratio": 0.3,
+     "parapet": "crenellated", "roof_extras": ["water_tank"], "seed": 37},
+    {"id": "tower_d", "footprint_w": 6, "footprint_d": 6, "floors": 9, "stone_floors": 2, "columns_front": 3, "columns_side": 3,
+     "frieze": "zigzag", "qamariya": ["R", "B", "Y", "G", "V"], "lit_ratio": 0.45, "shutter_ratio": 0.1,
+     "parapet": "horned", "roof_extras": ["dish", "antenna", "solar"], "seed": 41},
+    {"id": "tower_e", "footprint_w": 4, "footprint_d": 5, "floors": 5, "stone_floors": 1, "columns_front": 1, "columns_side": 2,
+     "frieze": "rosettes", "qamariya": ["G", "Y", "B"], "lit_ratio": 0.3, "shutter_ratio": 0.25,
+     "parapet": "stepped", "roof_extras": ["dish"], "seed": 53},
+    {"id": "tower_f", "footprint_w": 5, "footprint_d": 5, "floors": 7, "stone_floors": 1, "columns_front": 2, "columns_side": 2,
+     "frieze": "triangles", "qamariya": ["V", "R", "Y"], "lit_ratio": 0.4, "shutter_ratio": 0.2,
+     "parapet": "crenellated", "roof_extras": ["solar", "water_tank"], "seed": 67},
+    {"id": "tower_g", "footprint_w": 7, "footprint_d": 5, "floors": 8, "stone_floors": 2, "columns_front": 3, "columns_side": 2,
+     "frieze": "zigzag", "qamariya": ["R", "Y", "G", "B"], "lit_ratio": 0.55, "shutter_ratio": 0.15,
+     "parapet": "stepped", "roof_extras": ["antenna"], "seed": 71},
+    {"id": "tower_h", "footprint_w": 5, "footprint_d": 4, "floors": 6, "stone_floors": 1, "columns_front": 2, "columns_side": 1,
+     "frieze": "rosettes", "qamariya": ["B", "G", "V"], "lit_ratio": 0.2, "shutter_ratio": 0.3,
+     "parapet": "horned", "roof_extras": [], "seed": 89},
+    {"id": "house_a", "footprint_w": 4, "footprint_d": 3, "floors": 4, "stone_floors": 1, "columns_front": 2, "columns_side": 1,
+     "frieze": "zigzag", "qamariya": ["R", "Y", "G"], "lit_ratio": 0.5, "shutter_ratio": 0.2,
+     "parapet": "crenellated", "roof_extras": ["water_tank"], "seed": 101}
+  ]
+}

@@ -38,6 +38,19 @@ func _talk_through(main: PrototypeMain) -> int:
 	return presses
 
 
+func test_map_chests_give_their_items_once() -> void:
+	var main: PrototypeMain = _make()
+	for chest_id: StringName in [&"chest_saila", &"chest_mafraj"]:
+		var chest := ContentDB.get_def("chest", chest_id) as ChestDef
+		check(chest != null and chest.place == &"rooftop", "map chest %s has a rooftop ChestDef" % chest_id)
+		main.rooftop.chest_opened.emit(chest_id)
+		check(GameState.inventory.has(chest.item), "opening %s gives %s" % [chest_id, chest.item])
+		var count := GameState.inventory.size()
+		main.rooftop.chest_opened.emit(chest_id)
+		check_eq(GameState.inventory.size(), count, "a chest gives its item only once")
+	main.free()
+
+
 func test_builds_headless() -> void:
 	var main: PrototypeMain = _make()
 	check(main.rooftop != null and main.rooftop.player != null, "the rooftop is built")
@@ -95,11 +108,15 @@ func test_ambush_side_reaches_the_battle() -> void:
 
 func test_saved_equipment_is_used() -> void:
 	var main: PrototypeMain = _make()
-	GameState.equipment[&"hilt"] = &"anvil_hilt"
-	GameState.equipment[&"blade"] = &"broad_blade"
+	GameState.equipment[&"zayd.hilt"] = &"anvil_hilt"
+	GameState.equipment[&"zayd.blade"] = &"broad_blade"
+	GameState.equipment[&"zayd.prosthetic"] = &"arc_arm"
 	_touch(main)
-	var expected: CombatantDef = BattleLoader.from_db(ContentDB).zayd_with(&"anvil_hilt", &"broad_blade")
-	check_eq(main.stage.sim.timeline.find(&"zayd").def.max_hp, expected.max_hp, "Zayd wears the saved pair")
+	var expected: CombatantDef = BattleLoader.from_db(ContentDB).zayd_with(&"anvil_hilt", &"broad_blade", &"arc_arm")
+	var zayd: CombatantDef = main.stage.sim.timeline.find(&"zayd").def
+	check_eq(zayd.attack, expected.attack, "Zayd wears the saved blade and prosthetic")
+	check_eq(zayd.agility, expected.agility, "and the saved hilt")
+	check(zayd.actions.has(&"arc_discharge"), "the prosthetic's tech move is in his list")
 	main.free()
 	GameState.reset()
 
@@ -120,5 +137,52 @@ func test_first_workshop_visit_talks_then_opens_the_menu() -> void:
 	check(main.menu.is_open(), "and opens the menu at once")
 	main.menu.cancel()
 	check(main.rooftop.player.visible, "closed again, walking")
+	main.free()
+	GameState.reset()
+
+
+func test_a_new_game_owns_the_start_gear() -> void:
+	var main: PrototypeMain = _make()
+	for item_id: StringName in [&"grandfather_hilt", &"rustwire_blade", &"salvage_arm", &"wrist_rig"]:
+		check(GameState.inventory.has(item_id), "owns %s" % item_id)
+	check_eq(GameState.inventory.size(), 4, "and nothing else")
+	main.free()
+	GameState.reset()
+
+
+func test_the_first_workshop_visit_stocks_the_bench_once() -> void:
+	var main: PrototypeMain = _make()
+	var got: Array[StringName] = []
+	var hook := func(item_id: StringName) -> void: got.append(item_id)
+	EventBus.item_obtained.connect(hook)
+	_visit_workshop(main)
+	check_eq(got, [&"swift_hilt", &"keen_blade"] as Array[StringName], "the Uncommon hilt and blade, announced")
+	check(GameState.inventory.has(&"swift_hilt") and GameState.inventory.has(&"keen_blade"), "both owned")
+	_talk_through(main)
+	main.menu.cancel()
+	_visit_workshop(main)
+	check_eq(got.size(), 2, "the second visit gives nothing more")
+	EventBus.item_obtained.disconnect(hook)
+	main.free()
+	GameState.reset()
+
+
+func test_winning_grants_the_loot_once_and_losing_grants_nothing() -> void:
+	var main: PrototypeMain = _make()
+	var got: Array[StringName] = []
+	var hook := func(item_id: StringName) -> void: got.append(item_id)
+	EventBus.item_obtained.connect(hook)
+	_touch(main)
+	main.stage.ended.emit(&"defeat")
+	check(not GameState.inventory.has(&"anvil_hilt"), "a defeat drops nothing")
+	main.free()
+	main = _make()
+	_touch(main)
+	main.stage.ended.emit(&"victory")
+	check(GameState.inventory.has(&"anvil_hilt"), "the patrol's Rare hilt is owned")
+	check_eq(got, [&"anvil_hilt"] as Array[StringName], "announced once through item_obtained")
+	main._grant([&"anvil_hilt"] as Array[StringName])
+	check_eq(got.size(), 1, "owning it already: no second announcement")
+	EventBus.item_obtained.disconnect(hook)
 	main.free()
 	GameState.reset()

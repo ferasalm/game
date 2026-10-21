@@ -4,6 +4,15 @@
     {"id": "v1", "camera_offset_x": 0.0, "camera_offset_y": 6.0, "camera_offset_z": 8.5, "look_height": 0.8,
      "fov": 30.0, "dof_near": 5.0, "dof_far": 12.0, "dof_amount": 0.1,
      "sun_pitch": -50.0, "sun_yaw": -35.0, "sun_color": "#ffe6bf",
-     "ambient_color": "#d9c7b3", "ambient_energy": 0.5, "background_color": "#8ca8c7", "glow_bloom": 0.15}
+     "ambient_color": "#d9c7b3", "ambient_energy": 0.5, "background_color": "#8ca8c7", "glow_bloom": 0.15},
+    {"id": "night", "camera_offset_x": 0.0, "camera_offset_y": 4.9, "camera_offset_z": 8.5, "look_height": 0.8,
+     "fov": 30.0, "dof_near": 5.0, "dof_far": 14.0, "dof_amount": 0.1,
+     "sun_pitch": -42.0, "sun_yaw": 125.0, "sun_color": "#7f9bff", "sun_energy": 0.7, "sun_shadow_blur": 1.5,
+     "fill_pitch": -25.0, "fill_yaw": -24.0, "fill_color": "#5b78c8", "fill_energy": 0.16,
+     "ambient_color": "#2b3380", "ambient_energy": 0.3, "ambient_sky_mix": 0.4, "background_color": "#05071c",
+     "glow_bloom": 0.05, "sky_id": "sanaa_night", "tonemap": "agx", "exposure": 0.9, "white_point": 1.0,
+     "glow_threshold": 0.9, "glow_intensity": 1.0, "glow_strength": 1.0,
+     "fog_density": 0.01, "fog_color": "#2c3470", "fog_sky_affect": 0.0, "fog_aerial": 0.3,
+     "fog_height": 0.45, "fog_height_density": 1.0, "volumetric_fog": false}
   ]
 }

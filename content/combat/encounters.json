@@ -3,6 +3,6 @@
   "items": [
     {"id": "rooftop_patrol", "name_key": "ENCOUNTER_ROOFTOP_PATROL",
      "enemies": ["concession_enforcer", "concession_enforcer", "survey_drone"],
-     "enemy_slots": [0, 1, 2], "party_slots": [0, 2]}
+     "enemy_slots": [0, 1, 2], "party_slots": [0, 2], "loot": ["anvil_hilt"]}
   ]
 }
