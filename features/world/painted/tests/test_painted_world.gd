@@ -87,7 +87,10 @@ func test_prop_builder_places_the_splash_with_the_prop() -> void:
 	area.props.append(placement)
 	var palette := ContentDB.get_def("palette", &"main") as PaletteDef
 	var root: Node3D = PropBuilder.build(area, palette, 0.4)
-	var splash: CPUParticles3D = root.find_child("Splash", true, false) as CPUParticles3D
+	var splash: CPUParticles3D = null
+	for child: Node in root.get_children():
+		if child is CPUParticles3D:
+			splash = child as CPUParticles3D
 	check(splash != null, "a sabil placement brings its splash")
 	if splash != null:
 		check(absf(splash.position.x - 5.0) < 0.01 and absf(splash.position.y - 1.04) < 0.01, "at the prop, up at the stream's end")

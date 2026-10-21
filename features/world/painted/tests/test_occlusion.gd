@@ -52,7 +52,7 @@ func test_painted_rooftop_cuts_when_blocked() -> void:
 	var rooftop := (load("res://features/world/rooftop/rooftop.tscn") as PackedScene).instantiate() as Rooftop
 	rooftop.look_id = &"painted_b"
 	tree.root.add_child(rooftop)
-	var fade: OcclusionFade = rooftop.find_child("OcclusionFade", true, false) as OcclusionFade
+	var fade: OcclusionFade = OcclusionFade.of(rooftop)
 	check(fade != null, "a painted look adds the cut-away")
 	if fade == null:
 		rooftop.free()

@@ -44,7 +44,7 @@ func setup(root: Node, camera: Camera3D, target: Node3D, paint: PaintDef) -> voi
 ## Boxes of every tall block under root drawn with the painted world shader.
 static func collect_boxes(root: Node, floor_y: float, min_height: float) -> Array[AABB]:
 	var out: Array[AABB] = []
-	for node: Node in root.find_children("*", "GeometryInstance3D", true, false):
+	for node: Node in _geometry(root):
 		var mesh: Mesh = null
 		var transforms: Array[Transform3D] = []
 		if node is MultiMeshInstance3D:
@@ -59,6 +59,23 @@ static func collect_boxes(root: Node, floor_y: float, min_height: float) -> Arra
 			transforms.append((node as Node3D).global_transform)
 		if mesh != null and _is_painted(mesh):
 			out.append_array(SegmentBox.boxes_of(mesh.get_aabb(), transforms, floor_y, min_height, MAX_SIZE))
+	return out
+
+
+## The cut-away a painted look added under root (null when there is none).
+static func of(root: Node) -> OcclusionFade:
+	for child: Node in root.get_children():
+		if child is OcclusionFade:
+			return child as OcclusionFade
+	return null
+
+
+static func _geometry(root: Node) -> Array[Node]:
+	var out: Array[Node] = []
+	for child: Node in root.get_children():
+		if child is GeometryInstance3D:
+			out.append(child)
+		out.append_array(_geometry(child))
 	return out
 
 

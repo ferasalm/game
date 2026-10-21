@@ -57,7 +57,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/world/explore.json`: content: explore_rules x1
 - `content/world/look.json`: content: look x5
 - `content/world/mist.json`: content: mist x3
-- `content/world/props.json`: content: prop x23
+- `content/world/props.json`: content: prop x25
 - `content/world/sky.json`: content: sky x1
 - `content/world/skyline.json`: content: skyline x1
 - `content/world/tiles.json`: content: tile x8
@@ -323,7 +323,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/defs/place_def.gd`: Stub (v0.3 registry, filled by the level builder): a named spot in an area (sabil, stall, workshop, vista) at a grid cell, so code finds it by id instead of by node path
 - `features/world/defs/placement.gd`: Where one building or prop stands in an area: the content id (ref), an optional name for it (chests), the position (x, z on the floor; y absolute, or the floor height when absent) and a yaw in degrees
 - `features/world/defs/prop_def.gd`: A rooftop prop as data (content/world/props.json): a list of simple parts (PropPart), an optional practical light it carries, an optional box that blocks walking (collide = width, height, depth, centred on the prop's base) and, for a chest, the lid's hinge (lid_hinge x, y, z) so the "lid" part group can swing open
-- `features/world/defs/prop_part.gd`: One solid piece of a prop: a box (size = width, height, depth; at = centre) or a frustum (size = bottom radius, top radius, height; at = base centre), a palette letter, an optional yaw/tilt (degrees), and how it is drawn: glow (unshaded, boosted, blooms), blink (a glow that pulses), pattern (a painted tile texture instead of the letter), group (a named sub-mesh that can move, such as a chest lid)
+- `features/world/defs/prop_part.gd`: One solid piece of a prop: a box (size = width, height, depth; at = centre) or a frustum (size = bottom radius, top radius, height; at = base centre), a palette letter, an optional yaw/tilt (degrees), and how it is drawn: glow (unshaded, boosted, blooms), blink (a glow that pulses), water (rippling or falling painted water), pattern (a painted tile texture instead of the letter), group (a named sub-mesh that can move, such as a chest lid)
+- `features/world/defs/prop_splash.gd`: Water drops a prop throws up where its stream lands (the sabil): a small burst of additive quads, drawn from a CPUParticles3D at `at` (prop space)
 - `features/world/defs/sign_spec.gd`: One neon sign: a localization key (Arabic proper nouns and English together), a dark board with a glowing frame, the glow colour, a position and yaw, the text height in metres (size) and how much it flickers
 - `features/world/defs/sky_def.gd`: The night sky as data (content/world/sky.json): gradient, stars, milky way, moon, two cloud layers and the megacity glow
 - `features/world/defs/skyline_band.gd`: One depth band of the skyline: city blocks on a jittered grid between min_dist and max_dist metres from the play area's edge
@@ -343,6 +344,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/logic/surface_painter.gd`: Seamless 128x128 surface textures (4 m at 32 px/m) for the playable tiles, painted with palette letters: lime-plaster roof floor, worn plaster, white gypsum, wooden planks, stone paving (al-Saila), basalt, brick, and the dotted window texture of far silhouettes
 - `features/world/look_test/look_test.gd`: HD-2D look test (the M1 rendering spike): a block diorama, a pixel-art billboard hero (CharacterVisual), tilt-shift depth of field, bloom and a low sun with shadows
 - `features/world/look_test/look_test.tscn`: scene
+- `features/world/painted/logic/segment_box.gd`: Pure helpers of the camera cut-away: does the line from the camera to the party cross a box (slab test), which world boxes could ever block it (instance transforms of a mesh, tall enough), how a point weighs in the tube around the line (the same maths as occlusion_dither.gdshaderinc), and the ease of the fade amount
+- `features/world/painted/tests/test_occlusion.gd`: The camera cut-away: the segment-vs-box helper (hits, misses, grazing, a segment that ends inside), the tube weight (inside, soft edge, the party's own margin, the floor), the box list of tall instances, the fade easing, and a painted rooftop whose camera line is blocked by the mafraj (the cut amount rises) and clear in the open (it falls)
+- `features/world/painted/tests/test_painted_world.gd`: The painted world rules: the game look (painted_b) uses the hades camera and a brighter night, the cut-away globals exist, painted glow replaces the plain glow only while a painted look is in use, neon text is never alpha-cut, the sabil and the herb stall are painted (water, five qamariya panes, lights, splash, stall awning and herbs), the arena look is usable, and switching looks clears every cached material
 - `features/world/patrol/patrol.gd`: A Concession enforcer walking between two points with pauses at the ends
 - `features/world/player/follower.gd`: Bilqis: trails the leader along the path he recently walked, at the follower distance, closing in with a little lag
 - `features/world/player/player.gd`: Zayd: 8-way walking from the move_* actions (up = -Z), stopped by solid tiles
@@ -373,11 +377,13 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/view/landmark_builder.gd`: Builds all landmarks of a SkylineDef into one ArrayMesh with two surfaces: 0 lit (minarets, Bab al-Yaman: vertex colours shaded by the scene lights) and 1 glow (ridge, megacity, village: unshaded, boosted above 1 so neon and lit windows bloom)
 - `features/world/view/mist_builder.gd`: Builds one mist layer from a MistDef: a big flat plane over the area at the def's height, with the scrolling noise shader and a seamless noise texture made once here
 - `features/world/view/neon_sign.gd`: One neon sign: a dark board, a glowing frame and the text (Label3D in Reem Kufi, unshaded and boosted above 1 so it blooms)
+- `features/world/view/occlusion_fade.gd`: The camera cut-away (painted looks): when a building or prop stands between the camera and the party, a tube from the camera to the party dithers away in the painted world shaders (occlusion_dither.gdshaderinc)
 - `features/world/view/painted_atlases.gd`: The code-painted world atlases that the offline painterly bake repaints, by atlas id: tile_<pattern> for every playable surface pattern and facade_<building> / facade_<building>_emit for every tower-house
 - `features/world/view/painted_figure.gd`: Look spike: a static painted billboard of Zayd (assets/textures/painted/figures/zayd.webp, cut from the owner's Flow picture by tools/art/figure_cut.py) with the shared painted light and an alpha-edge ink line
-- `features/world/view/painted_look.gd`: Turns a scene painted when its look has a "paint" recipe (PaintDef): begin() before the world is built (world materials go through PaintedMaterials), finish() once it stands: the ink outline quad on the camera, the grade (split-tone LUT, contrast and saturation on the Environment; vignette and canvas grain on screen), the anti-aliasing mode, the shared light on every character, and the painted figure in place of the player's sprite
+- `features/world/view/painted_look.gd`: Turns a scene painted when its look has a "paint" recipe (PaintDef): begin() before the world is built (world materials go through PaintedMaterials), finish() once it stands: the ink outline quad on the camera, the grade (split-tone LUT, contrast and saturation on the Environment; vignette and canvas grain on screen), the anti-aliasing mode, the shared light on every character, the camera cut-away (OcclusionFade, on the party node) and the painted figure in place of the player's sprite
 - `features/world/view/painted_materials.gd`: World materials of a painted look (painted_world.gdshader + the shared painted light): tiles, facades, trim and flat colours
 - `features/world/view/prop_builder.gd`: Places an area's props and tower-houses from its placement lists
+- `features/world/view/prop_fx.gd`: Live effects a prop carries on top of its mesh: the splash of a stream (PropSplash) as a CPUParticles3D of additive billboard quads, placed with the prop's transform
 - `features/world/view/prop_mesh.gd`: Builds one prop's ArrayMesh from its PropDef parts (palette-letter vertex colours, flat shaded)
 - `features/world/view/roof_extras.gd`: The 2150 clutter on a tower-house roof: water tank, satellite dish, antenna with a red beacon, small solar panel
 - `features/world/view/shaders/blink.gdshader`
@@ -385,10 +391,13 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/view/shaders/light_pool.gdshader`
 - `features/world/view/shaders/mist.gdshader`
 - `features/world/view/shaders/night_sky.gdshader`
+- `features/world/view/shaders/occlusion_dither.gdshaderinc`
 - `features/world/view/shaders/painted_figure.gdshader`
+- `features/world/view/shaders/painted_glow.gdshader`
 - `features/world/view/shaders/painted_light.gdshaderinc`
 - `features/world/view/shaders/painted_screen.gdshader`
 - `features/world/view/shaders/painted_world.gdshader`
+- `features/world/view/shaders/prop_water.gdshader`
 - `features/world/view/sky_builder.gd`: Builds the night Sky resource from a SkyDef: the sky shader with every uniform filled from the def, and the three direction vectors (moon, city glow, milky way normal) computed from its angles
 - `features/world/view/skyline_builder.gd`: Builds the old city of Sana'a around a play area from the "skyline" content: tower-houses in depth bands (one MultiMeshInstance3D per building type, shared meshes and materials), far unshaded silhouettes (one MultiMesh), the landmarks (one mesh), the street-level ground and the al-Saila street
 - `features/world/view/skyline_demo.gd`: Skyline demo: the rooftop area inside the old city, seen from a chosen camera
