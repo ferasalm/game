@@ -3,13 +3,18 @@
 
 Usage: python tools/art/pixelize.py --in PIC.png --id my_sprite [--height 64] [--tolerance 40]
        [--palette content/art/palette.json] [--out content/art/sprites.json]
-Steps: key out the corner colour, trim, box-downscale to --height, snap each pixel to the nearest palette colour.
+       [--contrast 1.25] [--saturation 1.4] [--outline]
+Steps: key out the corner colour, trim, boost contrast/saturation (painted art is soft and loses its hues when
+snapped), box-downscale to --height, snap each pixel to the nearest palette colour, optionally ring the figure
+with the dark outline letter (art bible: dark outline 'k').
 """
 import argparse
 import json
 import sys
 
-from PIL import Image
+from PIL import Image, ImageEnhance
+
+OUTLINE_LETTER = "k"  # art bible: the dark selective outline colour
 
 ALPHA_MIN = 128
 
@@ -67,11 +72,36 @@ def to_rows(img, palette):
     return rows
 
 
-def pixelize(path, sprite_id, height, tolerance, palette):
+def boost(img, contrast, saturation):
+    """Contrast and colour saturation on the RGB channels; alpha is kept."""
+    rgb = ImageEnhance.Color(ImageEnhance.Contrast(img.convert("RGB")).enhance(contrast)).enhance(saturation)
+    out = rgb.convert("RGBA")
+    out.putalpha(img.getchannel("A"))
+    return out
+
+
+def outline(rows, letter=OUTLINE_LETTER):
+    """Pads the sprite by one pixel and paints every empty pixel that touches the figure (4 neighbours) with
+    the outline letter, so the figure reads against any background."""
+    w = len(rows[0]) + 2
+    grid = ["." * w] + ["." + r + "." for r in rows] + ["." * w]
+    out = []
+    for y, row in enumerate(grid):
+        line = ""
+        for x, c in enumerate(row):
+            near = [grid[y + dy][x + dx] for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))
+                    if 0 <= x + dx < w and 0 <= y + dy < len(grid)]
+            line += letter if c == "." and any(n not in (".", letter) for n in near) else c
+        out.append(line)
+    return out
+
+
+def pixelize(path, sprite_id, height, tolerance, palette, contrast=1.0, saturation=1.0, ring=False):
     img = trim(key_out(Image.open(path), tolerance))
-    img = trim(downscale(img, height))
+    img = trim(downscale(boost(img, contrast, saturation), height - (2 if ring else 0)))
+    rows = to_rows(img, palette)
     return {"id": sprite_id, "palette": "main", "source": "gemini/flow picture via tools/art/pixelize.py",
-            "licence": "project-own", "rows": to_rows(img, palette)}
+            "licence": "project-own", "rows": outline(rows) if ring else rows}
 
 
 def write_entry(out_path, entry):
@@ -91,8 +121,12 @@ def main(argv=None):
     ap.add_argument("--tolerance", type=int, default=40)
     ap.add_argument("--palette", default="content/art/palette.json")
     ap.add_argument("--out")
+    ap.add_argument("--contrast", type=float, default=1.0)
+    ap.add_argument("--saturation", type=float, default=1.0)
+    ap.add_argument("--outline", action="store_true", help="ring the figure with the dark outline letter")
     args = ap.parse_args(argv)
-    entry = pixelize(args.src, args.id, args.height, args.tolerance, load_palette(args.palette))
+    entry = pixelize(args.src, args.id, args.height, args.tolerance, load_palette(args.palette),
+                     args.contrast, args.saturation, args.outline)
     if args.out:
         write_entry(args.out, entry)
         print("wrote %s (%dx%d) to %s" % (args.id, len(entry["rows"][0]), len(entry["rows"]), args.out))

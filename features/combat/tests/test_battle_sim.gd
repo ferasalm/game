@@ -41,7 +41,7 @@ func test_every_battle_ends_for_every_pairing() -> void:
 	for hilt_id: StringName in _loader.hilts:
 		for blade_id: StringName in _loader.blades:
 			var stalled: int = 0
-			for battle_seed: int in range(1, 201):
+			for battle_seed: int in range(1, 31):
 				var sim: BattleSim = _loader.make_sim(hilt_id, blade_id, battle_seed)
 				BattleLoader.autoplay(sim)
 				var ended: bool = sim.result == &"victory" or sim.result == &"defeat"

@@ -1,5 +1,5 @@
 extends TestCase
-## T3: the 4 hilt + blade pairings give 4 different Zayd stat sets, inside the timeline caps; each hilt adds
+## T3: every hilt + blade pairing gives a different Zayd stat sets, inside the timeline caps; each hilt adds
 ## exactly one move; the shared base definition is never changed.
 
 
@@ -16,7 +16,7 @@ func _signature(def: CombatantDef) -> String:
 	return "%d/%.2f/%.2f/%d/%d" % [def.agility, def.cast_speed, def.weight, def.attack, def.knockback_bonus]
 
 
-func test_four_pairings_four_different_stat_sets() -> void:
+func test_every_pairing_gives_a_different_stat_set() -> void:
 	var loader: BattleLoader = _loader()
 	var base: CombatantDef = loader.combatants[&"zayd"]
 	var seen: Dictionary[String, bool] = {}
@@ -29,8 +29,8 @@ func test_four_pairings_four_different_stat_sets() -> void:
 			check(zayd.cast_speed >= CombatantDef.CAST_SPEED_MIN and zayd.cast_speed <= CombatantDef.CAST_SPEED_MAX, "cast cap")
 			check_eq(zayd.actions.size(), base.actions.size() + 1, "%s adds exactly one move" % hilt_id)
 			check(zayd.actions.has(loader.hilts[hilt_id].ability), "and it is the hilt's ability")
-	check_eq(seen.size(), 4, "four distinct stat sets")
-	check_eq(loader.hilts.size() * loader.blades.size(), 4, "two hilts x two blades")
+	check_eq(seen.size(), loader.hilts.size() * loader.blades.size(), "every pairing is distinct")
+	check_eq(loader.hilts.size() * loader.blades.size(), 9, "three hilts x three blades")
 
 
 func test_equip_follows_the_merge_order_and_leaves_the_base_alone() -> void:

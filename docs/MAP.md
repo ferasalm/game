@@ -25,19 +25,23 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/audio/music.json`: content: music x2
 - `content/audio/rules.json`: content: audio_rules x1
 - `content/audio/sounds.json`: content: sound x30
-- `content/combat/actions.json`: content: action x10
+- `content/combat/actions.json`: content: action x18
 - `content/combat/combatants.json`: content: combatant x4
 - `content/combat/encounters.json`: content: encounter x1
 - `content/combat/rules.json`: content: battle_rules x1
-- `content/combat/statuses.json`: content: status x1
+- `content/combat/statuses.json`: content: status x3
 - `content/combat/view.json`: content: battle_view x1
 - `content/dialogue/box.json`: content: dialogue_style x1
 - `content/dialogue/dialogues.json`: content: dialogue x1
 - `content/dialogue/speakers.json`: content: speaker x2
-- `content/djanbeyyah/blades.json`: content: blade x2
-- `content/djanbeyyah/hilts.json`: content: hilt x2
-- `content/djanbeyyah/loadouts.json`: content: loadout x1
+- `content/djanbeyyah/blades.json`: content: blade x3
+- `content/djanbeyyah/hilts.json`: content: hilt x3
+- `content/djanbeyyah/loadouts.json`: content: loadout x2
 - `content/djanbeyyah/menu.json`: content: workshop_style x1
+- `content/items/chests.json`: content: chest x4
+- `content/items/perks.json`: content: perk x6
+- `content/items/rarities.json`: content: rarity x6
+- `content/prosthetics/prosthetics.json`: content: prosthetic x6
 - `content/world/areas.json`: content: area x1
 - `content/world/buildings.json`: content: building x9
 - `content/world/camera.json`: content: camera_rig x1
@@ -86,33 +90,38 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/audio/logic/sound_logic.gd`: Pure sound rules: which variant to play, which sound a move uses, when the next footstep is due, and the item chime boost for a rarity
 - `features/audio/tests/test_audio.gd`: Audio: every sound and music entry is well formed, every sfx file exists, every vfx id has a sound, the pure sound rules hold, and the AudioDirector builds its buses, plays headless and skips missing music
 - `features/audio/view/music_deck.gd`: The music side of the AudioDirector: two players so one track crossfades into the next, and a duck of the Music bus under stingers
-- `features/combat/defs/action_def.gd`: One battle technique: its cost, power, and what it does to the timeline (cast speed, recovery, knockback, cancel)
-- `features/combat/defs/battle_rules_def.gd`: The tunable numbers of one battle ruleset: damage formula factors, SP gain and the stall guard
+- `features/combat/defs/action_def.gd`: One battle technique: its cost, power, who it targets, and what it does to the timeline (cast speed, recovery, knockback, cancel)
+- `features/combat/defs/battle_rules_def.gd`: The tunable numbers of one battle ruleset: damage and heal formula factors, SP gain, the stall guard, start ranges and the two thresholds BattleAI uses for heals and guards
 - `features/combat/defs/battle_view_def.gd`: Layout and pacing numbers of the battle screen (content/combat/view.json): camera, where each formation slot stands, ticks per frame, hit-stop and banner times, floating-text sizes, HUD sizes and colours
 - `features/combat/defs/combatant_def.gd`: One kind of fighter (a party member or an enemy type): base stats and the actions it can use
-- `features/combat/defs/encounter_def.gd`: One battle setup: which enemies stand in which formation slots, and which slots the party takes
-- `features/combat/defs/status_def.gd`: One status effect: how long it lasts and how it changes timeline speed and interrupt immunity
-- `features/combat/harness/balance.gd`: Balance harness: 1,000 seeded battles per hilt + blade pairing with BattleAI playing both sides, one table
+- `features/combat/defs/encounter_def.gd`: One battle setup: which enemies stand in which formation slots, which slots the party takes, and the guaranteed loot (item ids, no randomness) granted after a win
+- `features/combat/defs/status_def.gd`: One status effect: how long it lasts and how it changes timeline speed, interrupt immunity and the damage the afflicted unit takes (guarded: 0.6 means 40% less)
+- `features/combat/harness/balance.gd`: Balance harness: seeded battles per gear pairing with BattleAI playing both sides, one table
 - `features/combat/harness/battle_loader.gd`: Gathers the battle content from a loaded ContentDB (passed in as a Node) and builds ready-to-run BattleSims for the default encounter
-- `features/combat/logic/battle_ai.gd`: The one battle policy (enemies in play, both sides in the balance harness): cancel the casting foe nearest to ACT when a cancel move is affordable, else a random affordable move on a random valid target
-- `features/combat/logic/battle_resolver.gd`: Resolves one landed act (docs/design/combat.md, "Resolving an action"): retarget, damage per hit, timeline effect per hit, status, SP gain, status turns
+- `features/combat/logic/battle_ai.gd`: The one battle policy (enemies in play, both sides in the balance harness), in this order: 1
+- `features/combat/logic/battle_resolver.gd`: Resolves one landed act (docs/design/combat.md, "Resolving an action"): targets, damage or heal per target, timeline effect per hit, status, SP gain, regen, status turns
 - `features/combat/logic/battle_sim.gd`: One battle (docs/design/combat.md): builds the units, steps the Timeline one tick at a time, asks the player (heroes) or BattleAI (enemies) for choices, resolves acts and decides victory or defeat
-- `features/combat/logic/battle_targets.gd`: Who can do what in a battle: a unit's moves, which of them it can pay for, and which foes a move may target (covered rearguard units are safe from moves without ignores_cover)
+- `features/combat/logic/battle_targets.gd`: Who can do what in a battle: a unit's moves, which of them it can pay for, and who a move may target
 - `features/combat/logic/formation.gd`: Two rows per side: slots 0-1 are the vanguard, 2-3 the rearguard, and slot n+2 stands behind slot n
 - `features/combat/logic/timeline.gd`: Grandia-style initiative track (docs/ARCHITECTURE.md, "Combat")
 - `features/combat/logic/timeline_event.gd`: One thing that happened in a battle, for the battle view and logs: what, who, a value (timeline position, damage, status turns) and a detail id (the action for damage, the status for status/status_ended)
 - `features/combat/logic/unit_state.gd`: One fighter during one battle: the numbers that change (hp, timeline position, the action being cast), built from a read-only CombatantDef
 - `features/combat/tests/battle_probe.gd`: Test helper (not a test): hand-made fighters, moves and battles with exact numbers, and loops that play a BattleSim until an event kind appears
+- `features/combat/tests/test_action_def.gd`: ActionDef new fields: target, heal, revive, vfx (validated on load), and the shipped actions: every one has a vfx from the agreed list, and the tech moves have the shape the design asks for
+- `features/combat/tests/test_battle_ai_support.gd`: BattleAI with support moves: heal an ally under 40% HP, revive the fallen, guard before a big enemy cast, and never waste a heal or buff when nobody needs it
 - `features/combat/tests/test_battle_interrupt.gd`: T4: a cancel move landing on a casting enemy interrupts it (back to INTERRUPT_POS) inside BattleSim
+- `features/combat/tests/test_battle_menu_support.gd`: The command menu with tech moves: an ally move lists the allies (not the foes), self and all-moves skip the target list and commit at once, and the party is built from saved gear
+- `features/combat/tests/test_battle_perks.gd`: Perks in battle (sp_per_act, hp_regen, start_bonus, bonus_knockback), Perks.apply on a fighter copy, and the rarity rule that only Rare and above may carry a perk
 - `features/combat/tests/test_battle_rules.gd`: T5: damage, SP, cover, retargeting and status turns follow docs/design/combat.md
 - `features/combat/tests/test_battle_sim.gd`: BattleSim: unit ids, determinism (T1), every battle ends (T2), refused choices, event order, stall guard
 - `features/combat/tests/test_battle_stage.gd`: BattleStage headless (instant mode): it builds with 5 fighters, 5 timeline icons and a camera; an auto-played battle ends once; the command menu opens for a waiting hero, lists that hero's moves and the sim's valid targets, and choosing through its confirm path calls sim.choose; enemy intent labels; tips; the end panel
 - `features/combat/tests/test_battle_start.gd`: Starting positions and ambushes, the first-hit-only knockback bonus, downed units, and lands_before()
 - `features/combat/tests/test_battle_status.gd`: T5 (statuses): applied by a move, refreshed on re-apply, one turn lost per act of the afflicted unit, and the cast-speed / knockback-bonus numbers of a CombatantDef
+- `features/combat/tests/test_battle_tech.gd`: Tech moves: ally / self / all-target moves, heals (never above max HP, downed allies stay down unless the move revives), the guarded and overclocked statuses, and the damage-taken multiplier
 - `features/combat/tests/test_formation.gd`: Formation rows: cover and melee multipliers
 - `features/combat/tests/test_reverse_stab.gd`: The reverse stab: only when the party was ambushed, Zayd strikes the lowest-slot living enemy first
 - `features/combat/tests/test_timeline.gd`: Timeline rules: command pause, cast and act, interrupts, knockback limits, determinism
-- `features/combat/view/battle_command_menu.gd`: The command menu (bottom left) for the hero waiting at COMMAND: first one Button per move (unaffordable ones disabled; name, SP cost, a "cancels" tag; the focused move's description below), then one Button per valid target
+- `features/combat/view/battle_command_menu.gd`: The command menu (bottom left) for the hero waiting at COMMAND: first one Button per move (unaffordable ones disabled; name, SP cost, a "cancels" / target tag; the focused move's description below), then one Button per valid target (foes or allies; self and all-moves skip this list)
 - `features/combat/view/battle_demo.gd`: Battle view demo: a plain floor in the accepted HD-2D look and a BattleStage fighting the rooftop patrol (swift hilt, keen blade, seed 7, ambushed so the reverse stab shows)
 - `features/combat/view/battle_demo.tscn`: scene
 - `features/combat/view/battle_end_panel.gd`: The end-of-battle panel in the middle of the screen
@@ -138,20 +147,35 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/dialogue/view/portraits.gd`: Finds the portrait texture for (speaker, expression): res://assets/portraits/<speaker>_<expression>.png when it exists (loaded straight from the file, the "keep" importer needs no import step), else a stand-in built from the speaker's pixel sprite (StandinPortrait)
 - `features/djanbeyyah/defs/blade_def.gd`: A djanbeyyah blade: adds to attack, adds knockback to every hit the wielder lands, adds weight
 - `features/djanbeyyah/defs/hilt_def.gd`: A djanbeyyah hilt: adds to agility, multiplies cast speed, adds weight, and grants exactly one move
-- `features/djanbeyyah/defs/loadout_def.gd`: A named djanbeyyah pair (hilt id + blade id), such as Zayd's starting gear
+- `features/djanbeyyah/defs/loadout_def.gd`: A hero's starting gear: which hilt, blade and prosthetic they own and wear at the start (each optional)
 - `features/djanbeyyah/defs/workshop_style_def.gd`: Layout (pixels at 1920x1080), font sizes and colours of the workshop menu, and which fighter it compares
 - `features/djanbeyyah/logic/djanbeyyah.gd`: Builds Zayd's fighter from a base CombatantDef plus one hilt and one blade (docs/design/combat.md)
-- `features/djanbeyyah/logic/loadout.gd`: Which hilt and blade Zayd wears: the saved choice per slot, else the starting pair
+- `features/djanbeyyah/logic/loadout.gd`: Which gear a hero wears: the saved choice per slot ("<hero>.<part>" in GameState.equipment), else the starting gear
 - `features/djanbeyyah/logic/stat_row.gd`: One line of the workshop comparison: label key, value now (base) and value with the chosen pair
 - `features/djanbeyyah/logic/workshop_stats.gd`: The comparison rows the workshop shows: base fighter against the fighter built by Djanbeyyah.equip
-- `features/djanbeyyah/tests/test_djanbeyyah.gd`: T3: the 4 hilt + blade pairings give 4 different Zayd stat sets, inside the timeline caps; each hilt adds exactly one move; the shared base definition is never changed
-- `features/djanbeyyah/tests/test_workshop.gd`: The loadout fallback, saved equipment, and the workshop menu: it builds headless with 2 + 2 choices, selecting anchor + broad and confirming saves them and closes once, back changes nothing, the panel shows merged numbers
+- `features/djanbeyyah/tests/test_djanbeyyah.gd`: T3: every hilt + blade pairing gives a different Zayd stat sets, inside the timeline caps; each hilt adds exactly one move; the shared base definition is never changed
+- `features/djanbeyyah/tests/test_workshop.gd`: The loadout fallback, saved equipment, and the workshop menu: it builds headless with every hilt and blade but shows only owned ones, selecting anvil + broad and confirming saves "zayd.hilt" / "zayd.blade" and closes once, back changes nothing, the panel shows merged numbers
 - `features/djanbeyyah/view/workshop_choice.gd`: One hilt or blade on the bench: its name and a short description on a panel
 - `features/djanbeyyah/view/workshop_demo.gd`: Manual check: opens the workshop menu over a plain background (F6 in the editor)
 - `features/djanbeyyah/view/workshop_demo.tscn`: scene
-- `features/djanbeyyah/view/workshop_menu.gd`: The djanbeyyah bench: pick 1 of 2 hilts and 1 of 2 blades, see how Zayd's numbers change, Confirm to save the pair in GameState.equipment
+- `features/djanbeyyah/view/workshop_menu.gd`: The djanbeyyah bench: pick one owned hilt and one owned blade, see how Zayd's numbers change, Confirm to save the pair in GameState.equipment ("zayd.hilt" / "zayd.blade")
 - `features/djanbeyyah/view/workshop_page.gd`: The workshop layout: title, a hilt column, a blade column, the stats panel, and the Confirm button with the back hint
 - `features/djanbeyyah/view/workshop_stats_panel.gd`: The right-hand panel of the workshop: one line per stat (name, base value, value with the chosen pair, an up/down arrow in green or red) and below them the hilt's move with its description
+- `features/items/defs/chest_def.gd`: A chest holding one item (an id of a hilt, blade or prosthetic)
+- `features/items/defs/equip_def.gd`: Shared base of everything a hero can wear or wield (hilt, blade, prosthetic): names, a rarity tier and an optional perk (Rare and above only; rules in docs/design/prosthetics.md)
+- `features/items/defs/perk_def.gd`: One perk an item can carry: a kind that battle logic implements and an amount
+- `features/items/defs/rarity_def.gd`: One rarity tier: its name, display colour, sort order, whether it is story-only (never loot) and whether gear of this tier may carry a perk
+- `features/items/logic/chests.gd`: Chest rules: opening gives the item once, and the opened state is a saved flag
+- `features/items/logic/gear.gd`: Builds a hero's fighter from the shared base plus worn gear: base -> hilt -> blade -> prosthetic -> perks (caps are applied by each step)
+- `features/items/logic/inventory.gd`: Which unique items the party owns and whether a hero may wear one in a slot
+- `features/items/logic/perks.gd`: Applies perks to a fighter
+- `features/items/tests/fixtures/bad_items/hilts.json`: content: hilt x3
+- `features/items/tests/fixtures/bad_items/rarities.json`: content: rarity x2
+- `features/items/tests/test_inventory.gd`: Inventory (unique owned items, equip checks per slot), chests (open once, saved flag) and the item_obtained signal on the EventBus
+- `features/items/tests/test_items.gd`: Rarity tiers and the shipped items: six tiers with the owner's colours, every equippable has a real rarity, ids are unique across hilts / blades / prosthetics, the Heirloom is story-only and never loot, and bad content (an unknown rarity, a bad colour) is reported
+- `features/prosthetics/defs/prosthetic_def.gd`: A high-tech prosthetic: one slot per hero
+- `features/prosthetics/logic/prosthetics.gd`: Merges a prosthetic into a fighter (docs/design/prosthetics.md), like Djanbeyyah.equip: stat adds, then the granted moves, then the caps
+- `features/prosthetics/tests/test_prosthetics.gd`: Prosthetics: the merge (base -> hilt -> blade -> prosthetic -> perks -> caps) builds new fighters and never touches the shared defs; each hero's prosthetics grant 1-2 tech moves; a prosthetic fits only its wearer
 - `features/prototype/prototype_main.gd`: The playable prototype: the rooftop, the workshop (talk once, then the bench menu) and the patrol battle, wired through the other features' public signals
 - `features/prototype/prototype_main.tscn`: scene
 - `features/prototype/tests/test_prototype.gd`: T6: the prototype main scene builds headless with rooftop, dialogue box and workshop menu; a simulated patrol touch starts a battle and stops exploring; an auto-played battle ends and walking resumes with the patrol reset; retry starts a fresh battle; the first workshop visit plays the talk, then the menu; later visits skip the talk
@@ -231,6 +255,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `localization/battle.csv`
 - `localization/combat.csv`
 - `localization/dialogue.csv`
+- `localization/items.csv`
 - `localization/ui.csv`
 - `localization/workshop.csv`
 - `localization/world.csv`
