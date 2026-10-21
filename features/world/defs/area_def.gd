@@ -2,6 +2,7 @@ class_name AreaDef
 extends Def
 ## A level as data: equal-width rows of tile characters, a legend (character -> tile id) and four markers
 ## (S spawn, W workshop bench, P patrol start, Q patrol end) that each appear once and stand on floor.
+## Optional: mist layer ids and a vista zone (cells x0, z0, x1, z1, inclusive) where the camera shows the sky.
 
 const SPAWN: String = "S"
 const WORKSHOP: String = "W"
@@ -13,6 +14,9 @@ var name_key: String = ""
 var encounter: StringName = &""
 var rows: PackedStringArray = PackedStringArray()
 var legend: Dictionary[String, String] = {}
+var mist: Array[StringName] = []
+## The vista zone in cells; an empty rect (size 0) means the area has none.
+var vista: Rect2i = Rect2i()
 
 
 func read(r: DefReader) -> void:
@@ -21,12 +25,20 @@ func read(r: DefReader) -> void:
 	encounter = StringName(r.text("encounter"))
 	rows = r.text_list("rows")
 	legend = r.text_map("legend")
+	mist = r.id_list("mist")
+	var cells: Array[int] = r.int_list("vista", 0, 500)
+	if cells.size() == 4:
+		vista = Rect2i(cells[0], cells[1], cells[2] - cells[0] + 1, cells[3] - cells[1] + 1)
+	elif not cells.is_empty():
+		r.problem("vista", "needs 4 numbers: x0, z0, x1, z1")
 
 
 func references() -> Array[Array]:
 	var out: Array[Array] = []
 	for tile_id: String in legend.values():
 		out.append(["tile", StringName(tile_id)])
+	for mist_id: StringName in mist:
+		out.append(["mist", mist_id])
 	return out
 
 
@@ -36,6 +48,11 @@ func width() -> int:
 
 func depth() -> int:
 	return rows.size()
+
+
+## The vista zone on the floor plane (x, z in metres; one cell is one metre); empty when there is none.
+func vista_world() -> Rect2:
+	return Rect2(vista)
 
 
 ## The tile id standing at column x, row z (empty when outside or unknown).
@@ -65,6 +82,8 @@ func problems() -> PackedStringArray:
 		for ch: String in rows[z]:
 			if not legend.has(ch):
 				out.append("row %d: '%s' is not in the legend" % [z, ch])
+	if vista.has_area() and not Rect2i(0, 0, width(), depth()).encloses(vista):
+		out.append("the vista zone sticks out of the area")
 	for marker: String in MARKERS:
 		var count: int = "".join(rows).count(marker)
 		if count != 1:

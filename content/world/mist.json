@@ -1,0 +1,11 @@
+{
+  "kind": "mist",
+  "items": [
+    {"id": "street_mist", "height": 0.32, "color": "#5565a8", "opacity": 0.5, "noise_scale": 0.16,
+     "speed_x": 0.05, "speed_z": -0.02, "low": 0.35, "high": 0.8, "depth_fade": 0.7, "near_fade": 4.0,
+     "edge_fade": 0.25, "margin": 12.0, "noise_seed": 7, "noise_size": 256},
+    {"id": "roof_mist", "height": 0.62, "color": "#6c7cc0", "opacity": 0.28, "noise_scale": 0.11,
+     "speed_x": -0.12, "speed_z": 0.04, "low": 0.35, "high": 0.95, "depth_fade": 0.5, "near_fade": 5.0,
+     "edge_fade": 0.2, "margin": 12.0, "noise_seed": 21, "noise_size": 256}
+  ]
+}

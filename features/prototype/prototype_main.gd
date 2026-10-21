@@ -33,6 +33,7 @@ func _ready() -> void:
 	rooftop.encounter_touched.connect(_on_encounter_touched)
 	dialogue.finished.connect(_on_dialogue_finished)
 	menu.closed.connect(_on_menu_closed)
+	rooftop.play_intro()
 
 
 func _on_workshop_opened() -> void:
