@@ -11,6 +11,7 @@ var _total: int = 0
 
 func _init() -> void:
 	_rng.seed = 5
+	VfxTextures.warm()
 
 
 ## Plays the effect of this def: `actor` and `targets` are the CharacterVisuals involved (targets may be empty).
@@ -28,6 +29,18 @@ func play(def: VfxDef, actor: CharacterVisual, targets: Array[CharacterVisual]) 
 				previous = targets[i]
 		else:
 			_spawn(layer, actor, actor, focus, dir, 0)
+
+
+## Draws one tiny sprite so the effect shader is ready before the first real effect.
+func warm_up() -> void:
+	var layer := VfxLayer.new()
+	layer.time = 0.1
+	layer.size = Vector2(0.01, 0.01)
+	layer.size_end = layer.size
+	layer.color = Color.BLACK
+	var sprite: VfxSprite = _acquire()
+	sprite.launch(&"glow", layer, 0.0, Vector3.ZERO, Vector3.ZERO, 1.0)
+	_active.append(sprite)
 
 
 func active_count() -> int:

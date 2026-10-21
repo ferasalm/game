@@ -164,6 +164,7 @@ func _add_camera(anchor: Vector3) -> void:
 func _add_show() -> void:
 	vfx = VfxPlayer.new()
 	add_child(vfx)
+	vfx.warm_up()
 	juice = BattleJuice.new()
 	add_child(juice)
 	juice.setup(ContentDB.get_def("battle_juice", &"default") as JuiceDef, camera_rig)

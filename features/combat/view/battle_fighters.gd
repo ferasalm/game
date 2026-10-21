@@ -37,6 +37,7 @@ func build(sim: BattleSim, view: BattleViewDef, anchor: Vector3) -> void:
 	_marker.visible = false
 	add_child(_marker)
 	set_process(false)
+	_warm_text(anchor)
 
 
 func visual(unit_id: StringName) -> CharacterVisual:
@@ -137,6 +138,20 @@ func _pop(unit_id: StringName, content: String, size: int, color: Color, size_fa
 		return
 	BattleNumbers.pop(self, content, _head(target, 0.0), size, color, size_factor, _view, _juice,
 		_rng.randf_range(-1.0, 1.0))
+
+
+## Draws each pop-up font size once, tiny, so the first big number does not hitch the fight.
+func _warm_text(anchor: Vector3) -> void:
+	if not is_inside_tree():
+		return
+	var sizes: Dictionary[String, int] = {"0123456789+": _view.number_font_size, "BREAK!": _juice.break_size,
+		"abcdefghijklmnopqrstuvwxyz": _view.text_font_size}
+	for content: String in sizes:
+		var label: Label3D = BattleLabels.floating(content, sizes[content], Color.WHITE, _view)
+		label.scale = Vector3.ONE * 0.001
+		add_child(label)
+		label.position = anchor
+		get_tree().create_timer(0.5).timeout.connect(label.queue_free)
 
 
 func _head(target: CharacterVisual, extra: float) -> Vector3:

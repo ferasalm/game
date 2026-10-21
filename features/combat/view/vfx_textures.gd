@@ -19,6 +19,12 @@ static func texture(tex: StringName) -> ImageTexture:
 	return _cache[tex]
 
 
+## Paints every texture now (a battle start), so no effect hitches the first time it plays.
+static func warm() -> void:
+	for tex: StringName in SIZES:
+		texture(tex)
+
+
 ## Pixels across the longer side, so a layer can turn metres into a sprite scale.
 static func pixels(tex: StringName) -> Vector2:
 	var size: Vector2i = SIZES.get(tex, Vector2i(16, 16)) as Vector2i
