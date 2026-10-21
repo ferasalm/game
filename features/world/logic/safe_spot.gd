@@ -1,11 +1,11 @@
 class_name SafeSpot
 extends RefCounted
 ## Remembers where the player last stood still (the "unstuck" targets). A spot counts after idle_seconds without
-## moving more than still_radius; a new spot closer than still_radius to the newest one only refreshes it. The two
-## newest spots are kept, so standing wedged at the newest one still has an older place to go back to. Pure.
+## moving more than still_radius; a new spot closer than still_radius to the newest one only refreshes it. The newest
+## `kept` spots (2 by default) are remembered, so standing wedged at the newest one still has an older place to go
+## back to. Pure.
 
-const KEPT: int = 2
-
+var _kept: int
 var _idle_seconds: float
 var _still_radius: float
 var _spots: Array[Vector3] = []
@@ -15,7 +15,8 @@ var _fallback: Vector3
 
 
 ## fallback: the spot used before the player ever stood still (the spawn).
-func _init(idle_seconds: float, still_radius: float, fallback: Vector3) -> void:
+func _init(idle_seconds: float, still_radius: float, fallback: Vector3, kept: int = 2) -> void:
+	_kept = kept
 	_idle_seconds = idle_seconds
 	_still_radius = still_radius
 	_fallback = fallback
@@ -51,7 +52,7 @@ func _remember(spot: Vector3) -> void:
 		_spots[-1] = spot
 		return
 	_spots.append(spot)
-	if _spots.size() > KEPT:
+	if _spots.size() > _kept:
 		_spots.remove_at(0)
 
 

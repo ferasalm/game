@@ -1,17 +1,14 @@
 class_name AreaDef
 extends Def
-## A level as data: equal-width rows of tile characters, a legend (character -> tile id) and four markers
-## (S spawn, W workshop bench, P patrol start, Q patrol end) that each appear once and stand on floor.
+## A level as data: equal-width rows of tile characters, a legend (character -> tile id), two markers (S spawn,
+## W workshop bench) that each appear once and stand on floor, and typed places (PlaceDef: stall, sabil, patrols...).
 ## Optional: mist layer ids and a vista zone (cells x0, z0, x1, z1, inclusive) where the camera shows the sky.
 
 const SPAWN: String = "S"
 const WORKSHOP: String = "W"
-const PATROL_START: String = "P"
-const PATROL_END: String = "Q"
-const MARKERS: Array[String] = ["S", "W", "P", "Q"]
+const MARKERS: Array[String] = ["S", "W"]
 
 var name_key: String = ""
-var encounter: StringName = &""
 var rows: PackedStringArray = PackedStringArray()
 var legend: Dictionary[String, String] = {}
 var mist: Array[StringName] = []
@@ -22,6 +19,8 @@ var buildings: Array[Placement] = []
 var props: Array[Placement] = []
 var lights: Array[LightSpec] = []
 var signs: Array[SignSpec] = []
+## Named spots (stall, sabil, patrol lanes, chests, unstuck targets); see PlaceDef.
+var places: Array[PlaceDef] = []
 ## The sunken street under the roofs (null = none).
 var canyon: CanyonSpec = null
 ## At most this many real OmniLights near the player; they fade in or out light_fade per second.
@@ -32,7 +31,6 @@ var light_fade: float = 3.0
 func read(r: DefReader) -> void:
 	id = r.id()
 	name_key = r.text("name_key")
-	encounter = StringName(r.text("encounter"))
 	rows = r.text_list("rows")
 	legend = r.text_map("legend")
 	mist = r.id_list("mist")
@@ -50,6 +48,8 @@ func references() -> Array[Array]:
 		out.append(["tile", StringName(tile_id)])
 	for mist_id: StringName in mist:
 		out.append(["mist", mist_id])
+	for place: PlaceDef in places:
+		out.append_array(place.references())
 	for b: Placement in buildings:
 		out.append(["building", b.ref])
 	for p: Placement in props:
@@ -67,6 +67,11 @@ func _read_dressing(r: DefReader) -> void:
 		buildings.append(_placement(reader))
 	for reader: DefReader in r.optional_objects("props"):
 		props.append(_placement(reader))
+	for reader: DefReader in r.optional_objects("places"):
+		var place := PlaceDef.new()
+		place.read(reader)
+		place.area = id
+		places.append(place)
 	for reader: DefReader in r.optional_objects("lights"):
 		var light := LightSpec.new()
 		light.read(reader)
@@ -80,6 +85,22 @@ func _read_dressing(r: DefReader) -> void:
 func _placement(reader: DefReader) -> Placement:
 	var out := Placement.new()
 	out.read(reader)
+	return out
+
+
+## The place with this id, or null.
+func place(place_id: StringName) -> PlaceDef:
+	for p: PlaceDef in places:
+		if p.id == place_id:
+			return p
+	return null
+
+
+func places_of(kind: StringName) -> Array[PlaceDef]:
+	var out: Array[PlaceDef] = []
+	for p: PlaceDef in places:
+		if p.kind == kind:
+			out.append(p)
 	return out
 
 
@@ -129,4 +150,22 @@ func problems() -> PackedStringArray:
 		var count: int = "".join(rows).count(marker)
 		if count != 1:
 			out.append("marker %s appears %d times (must be once)" % [marker, count])
+	out.append_array(_place_problems())
+	return out
+
+
+func _place_problems() -> PackedStringArray:
+	var out := PackedStringArray()
+	var seen: Dictionary[StringName, bool] = {}
+	var bounds := Rect2(0.0, 0.0, width(), depth())
+	for p: PlaceDef in places:
+		if seen.has(p.id):
+			out.append("place %s appears twice" % p.id)
+		seen[p.id] = true
+		var points: Array[Vector3] = [] if p.kind == PlaceDef.VISTA else [p.pos]
+		if p.kind == PlaceDef.PATROL:
+			points.append(p.end)
+		for point: Vector3 in points:
+			if not bounds.has_point(Vector2(point.x, point.z)):
+				out.append("place %s is outside the area" % p.id)
 	return out

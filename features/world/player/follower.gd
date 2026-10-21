@@ -1,11 +1,14 @@
 class_name Follower
-extends Node3D
+extends CharacterBody3D
 ## Bilqis: trails the leader along the path he recently walked, at the follower distance, closing in with a little
-## lag. No physics: she only moves toward a point on the leader's trail.
+## lag. She is a body that the walls stop (the leader's path always fits her capsule), and a FollowGuard puts her
+## back on the trail if she ever wedges on a corner or falls behind the leash: she never sticks. She does not block
+## the leader (her layer is off; her mask is the world).
 
 var _rules: ExploreRulesDef
 var _leader: Node3D
 var _visual: CharacterVisual
+var _guard: FollowGuard
 var _trail: Array[Vector3] = []
 var _keep_from: int = 0
 var _active: bool = true
@@ -15,9 +18,14 @@ var _step_clock: float = 0.0
 func _init(rules: ExploreRulesDef, leader: Node3D) -> void:
 	_rules = rules
 	_leader = leader
+	motion_mode = CharacterBody3D.MOTION_MODE_FLOATING
+	collision_layer = 0
+	collision_mask = 1
+	_guard = FollowGuard.new(rules.follower_stuck_seconds, rules.follower_leash, rules.follower_stuck_ratio)
 	_visual = CharacterVisual.new()
 	_visual.set_sprite(&"bilqis")
 	add_child(_visual)
+	ActorBody.add_capsule(self, rules)
 
 
 func _ready() -> void:
@@ -30,9 +38,15 @@ func stand_by_player() -> void:
 	position = start - Vector3(0.0, 0.0, _rules.follower_distance)
 	_trail = [position, start]
 	_keep_from = 0
+	_guard.reset()
 
 
-## Off: stops and hides. On: shows and follows again.
+## What draws her (the camera frames its head anchor in dialogue).
+func visual() -> CharacterVisual:
+	return _visual
+
+
+## Off: stops, hides and does not collide. On: shows and follows again.
 func set_active(on: bool) -> void:
 	_active = on
 	visible = on
@@ -45,15 +59,31 @@ func _physics_process(delta: float) -> void:
 		return
 	if _trail.back().distance_to(_leader.position) >= _rules.trail_step:
 		_trail.append(_leader.position)
-	var to_target: Vector3 = _target_point() - position
+	var target: Vector3 = _target_point()
+	var to_target: Vector3 = target - position
 	to_target.y = 0.0
 	var moving: bool = to_target.length() > _rules.follower_stop_distance
+	var moved: float = 0.0
+	var wanted: float = 0.0
 	if moving:
-		position += to_target * (1.0 - exp(-_rules.follower_lag * delta))
-		_visual.face(to_target.x)
+		var step: Vector3 = to_target * (1.0 - exp(-_rules.follower_lag * delta))
+		wanted = step.length()
+		var before: Vector3 = position
+		_move(step)
+		moved = position.distance_to(before)
+		_visual.face_dir(Vector3(to_target.x, 0.0, to_target.z))
+	if _guard.update(delta, to_target.length(), wanted, moved):
+		position = Vector3(target.x, position.y, target.z)
 	_visual.set_moving(moving)
 	_step_clock = AudioDirector.step(_step_clock, delta, moving, &"footstep_follower")
 	_prune()
+
+
+## Moves by this much, sliding along a wall instead of stopping dead.
+func _move(motion: Vector3) -> void:
+	var hit: KinematicCollision3D = move_and_collide(motion)
+	if hit != null:
+		move_and_collide(hit.get_remainder().slide(hit.get_normal()))
 
 
 ## The point on the trail one follower distance behind the leader, walking back along the path.

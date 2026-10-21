@@ -6,6 +6,7 @@
        {"at": 0.0, "px": 1.5, "py": 1.6, "pz": 6.0, "tx": 15.7, "ty": 14.6, "tz": -29.1, "fov": 52.0, "dof": 0.2},
        {"at": 2.4, "px": 1.0, "py": 2.2, "pz": 6.8, "tx": 9.2, "ty": 8.5, "tz": -31.8, "fov": 46.0, "dof": 0.3},
        {"at": 4.4, "px": 0.4, "py": 3.4, "pz": 8.0, "tx": 3.2, "ty": -0.1, "tz": -31.8, "fov": 38.0, "dof": 0.7}],
+     "limits": {"x": [7.5, 18.5], "z": [3.0, 14.0]},
      "vista_offset_y": 1.5, "vista_offset_z": 9.0, "vista_look_height": 2.8, "vista_fov": 40.0, "vista_dof": 0.4, "vista_ease": 2.0,
      "presets": [
        {"id": "diorama", "pitch": 35.0, "distance": 31.0, "look_height": 0.8, "fov": 22.0,

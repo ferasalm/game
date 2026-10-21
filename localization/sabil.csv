@@ -10,3 +10,6 @@ SABIL_PATROLS,The Concession's patrols return.
 SABIL_FAIL,Could not save.
 PROMPT_TALK,Talk
 PROMPT_OPEN,Open
+WORLD_SIGN_SABIL,سبيل  Sabil
+ENCOUNTER_PATROL_PAIR,Enforcer pair
+ENCOUNTER_PATROL_DRONE,Survey drone
