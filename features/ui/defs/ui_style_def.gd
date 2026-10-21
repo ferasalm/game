@@ -1,0 +1,46 @@
+class_name UiStyleDef
+extends Def
+## The look of every menu and HUD (content/ui/style.json): three font files, named colours (c_*), sizes in pixels
+## at 1920x1080 (s_*) and times in seconds (t_*). Screens ask for a name; they never hold a number or colour.
+
+const COLOURS: Array[StringName] = [
+	&"c_glass", &"c_glass_deep", &"c_indigo", &"c_indigo_lit", &"c_brass", &"c_brass_dim", &"c_gypsum",
+	&"c_gypsum_dim", &"c_text", &"c_muted", &"c_cyan", &"c_magenta", &"c_hp_a", &"c_hp_b", &"c_sp_a", &"c_sp_b",
+	&"c_good", &"c_bad", &"c_party", &"c_enemy", &"c_cast", &"c_shadow", &"c_scrim"]
+const SIZES: Array[StringName] = [
+	&"s_font_body", &"s_font_small", &"s_font_name", &"s_font_title", &"s_font_big", &"s_font_number", &"s_margin",
+	&"s_pad", &"s_gap", &"s_frame_cell", &"s_frame_line", &"s_frame_gap", &"s_ornament", &"s_frieze_h",
+	&"s_frieze_period", &"s_button_h", &"s_bar_h", &"s_icon", &"s_focus_glow", &"s_outline"]
+const TIMES: Array[StringName] = [
+	&"t_loot_fade", &"t_loot_hold", &"t_loot_shine", &"t_title_fade", &"t_pulse", &"t_card_in", &"t_card_hold",
+	&"t_card_out"]
+const FONTS: Array[StringName] = [&"font_body", &"font_bold", &"font_title"]
+
+var colours: Dictionary[StringName, Color] = {}
+var sizes: Dictionary[StringName, int] = {}
+var times: Dictionary[StringName, float] = {}
+var fonts: Dictionary[StringName, String] = {}
+
+
+func read(r: DefReader) -> void:
+	id = r.id()
+	for key: StringName in COLOURS:
+		colours[key] = r.color(String(key))
+	for key: StringName in SIZES:
+		sizes[key] = r.integer(String(key), 1, 400)
+	for key: StringName in TIMES:
+		times[key] = r.number(String(key), 0.0, 30.0)
+	for key: StringName in FONTS:
+		fonts[key] = r.text(String(key))
+
+
+func colour(key: StringName) -> Color:
+	return colours.get(key, Color.MAGENTA)
+
+
+func size(key: StringName) -> int:
+	return sizes.get(key, 0)
+
+
+func time(key: StringName) -> float:
+	return times.get(key, 0.0)

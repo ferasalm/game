@@ -1,7 +1,7 @@
 class_name PrototypeMain
 extends Node3D
-## The playable prototype: the rooftop, the workshop (talk once, then the bench menu) and the patrol battle,
-## wired through the other features' public signals. Children are built in code; a BattleStage lives only while
+## The playable prototype: the rooftop, the workshop (talk once, then the equipment screen), the patrol battle,
+## the title overlay, area title card and loot banners, wired through the other features' public signals. Children are built in code; a BattleStage lives only while
 ## a battle runs.
 
 ## A battle stage was just made, before start(); tests use it to switch on auto_play / instant.
@@ -13,10 +13,15 @@ const WORKSHOP_FLAG: StringName = &"workshop_talk_done"
 const EXPLORE_MUSIC: StringName = &"night_rooftops"
 const BATTLE_MUSIC: StringName = &"battle"
 const BENCH_PLACE: StringName = &"workshop"
+const AREA_CARD: Array[String] = ["AREA_SOUQ_NAME", "AREA_SOUQ_NAME_AR", "AREA_SUBTITLE"]
 
 var rooftop: Rooftop
 var dialogue: DialogueBox
-var menu: WorkshopMenu
+var menu: EquipmentScreen
+## The title over the opening sky (null once it is gone), and the banners for the area and for loot.
+var title: TitleOverlay
+var area_card: AreaTitleCard
+var loot_popup: LootPopup
 ## The running battle's stage, null while exploring.
 var stage: BattleStage
 var _encounter_id: StringName = &""
@@ -30,14 +35,33 @@ func _ready() -> void:
 	add_child(rooftop)
 	dialogue = DialogueBox.new()
 	add_child(dialogue)
-	menu = WorkshopMenu.new()
+	menu = EquipmentScreen.new()
 	add_child(menu)
+	loot_popup = LootPopup.new()
+	add_child(loot_popup)
+	area_card = AreaTitleCard.new()
+	add_child(area_card)
 	rooftop.workshop_opened.connect(_on_workshop_opened)
 	rooftop.encounter_touched.connect(_on_encounter_touched)
 	dialogue.finished.connect(_on_dialogue_finished)
 	menu.closed.connect(_on_menu_closed)
 	AudioDirector.play_music(EXPLORE_MUSIC)
 	rooftop.play_intro()
+	_show_title()
+
+
+## The title holds the opening shot on the moon until a key is pressed; the area card follows the shot.
+func _show_title() -> void:
+	title = TitleOverlay.new()
+	add_child(title)
+	rooftop.camera_rig.hold_intro(true)
+	title.dismissed.connect(rooftop.camera_rig.hold_intro.bind(false))
+	rooftop.camera_rig.intro_finished.connect(title.dismiss)
+	rooftop.camera_rig.intro_finished.connect(_on_intro_finished, CONNECT_ONE_SHOT)
+
+
+func _on_intro_finished() -> void:
+	area_card.show_card(AREA_CARD[0], AREA_CARD[1], AREA_CARD[2])
 
 
 func _on_workshop_opened() -> void:
@@ -79,6 +103,7 @@ func _start_battle() -> void:
 	stage.ended.connect(_on_battle_ended)
 	stage_created.emit(stage)
 	stage.start(loader.make_sim_for(party, battle_seed, _ambush), rooftop.battle_anchor())
+	stage.hud.end_panel.set_loot(loader.encounter.loot)
 
 
 func _drop_stage() -> void:
