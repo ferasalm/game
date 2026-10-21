@@ -117,3 +117,10 @@ func _build_texts() -> void:
 	_tip.add_child(_tip_label)
 	_tip.visible = false
 	_root.add_child(_tip)
+	var strip: PromptStrip = Ui.prompt_strip([{"key": "accept", "text": "PROMPT_SELECT"},
+			{"key": "back", "text": "PROMPT_BACK"}, {"key": "info", "text": "PROMPT_INFO"}])
+	strip.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	strip.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	strip.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	strip.offset_bottom = -Ui.style().size(&"s_strip_bottom")
+	_root.add_child(strip)

@@ -8,12 +8,15 @@ signal stack_changed(depth: int)
 
 const PAUSE_ID: StringName = &"pause"
 const EQUIPMENT_ID: StringName = &"equipment"
+const SABIL_ID: StringName = &"sabil"  ## closes with &"drink" or &"leave"
+const DEFEAT_ID: StringName = &"defeat"  ## closes with &"retry", &"load" or &"title"
 
 var _stack: Array[UiScreen] = []
 var _hosts: Dictionary[int, CanvasLayer] = {}
 var _focus_back: Dictionary[int, Control] = {}
 var _factories: Dictionary[StringName, Callable] = {}
 var _paused_by_us: bool = false
+var _toasts: ToastHost = null
 
 
 func _ready() -> void:
@@ -21,6 +24,8 @@ func _ready() -> void:
 	layer = UiLayers.SCREEN
 	register(PAUSE_ID, func() -> Control: return PauseMenu.new())
 	register(EQUIPMENT_ID, func() -> Control: return EquipmentHost.new())
+	register(SABIL_ID, func() -> Control: return SabilScreen.new())
+	register(DEFEAT_ID, func() -> Control: return DefeatScreen.new())
 	Router.flow_changed.connect(_on_flow_changed)
 
 
@@ -72,16 +77,26 @@ func has_screen(id: StringName) -> bool:
 
 
 ## Builds the registered screen and pushes it with args; an unknown id is a warning. The same id is never stacked twice.
-func open(id: StringName, args: Dictionary = {}) -> void:
+## Returns the screen (listen to its `closed(result)`), or null when refused.
+func open(id: StringName, args: Dictionary = {}) -> UiScreen:
 	if not _factories.has(id):
 		push_warning("Screens: no screen registered as %s" % id)
-		return
+		return null
 	if is_open_id(id):
-		return
+		return null
 	var screen := _factories[id].call() as UiScreen
 	if screen != null:
 		screen.set_meta(&"screen_id", id)
 		_push(screen, args)
+	return screen
+
+
+## Queues a toast on the toast layer (Ui.toast calls this).
+func toast(text_key: String, kind: StringName = &"info") -> void:
+	if _toasts == null:
+		_toasts = ToastHost.new()
+		add_child(_toasts)
+	_toasts.show_toast(text_key, kind)
 
 
 func _unhandled_input(event: InputEvent) -> void:

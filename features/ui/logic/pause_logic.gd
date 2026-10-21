@@ -25,6 +25,7 @@ const ENTRIES: Dictionary[StringName, Array] = {
 }
 const SECONDS_PER_MINUTE: int = 60
 const SECONDS_PER_HOUR: int = 3600
+const GROUP: int = 3  ## digits per thousands group
 
 
 ## The entries to show, top to bottom. Items and Equipment need their screens registered; the fourth entry is
@@ -70,3 +71,14 @@ static func clock(seconds: Variant) -> String:
 ## Whole riyal for display; a missing value counts as zero.
 static func money_of(value: Variant) -> int:
 	return maxi(int(value) if value != null else 0, 0)
+
+
+## 1240 -> "1,240" (digits grouped by thousands; negatives count as zero).
+static func grouped(amount: int) -> String:
+	var digits: String = str(maxi(amount, 0))
+	var out: String = ""
+	for i: int in digits.length():
+		if i > 0 and (digits.length() - i) % GROUP == 0:
+			out += ","
+		out += digits[i]
+	return out

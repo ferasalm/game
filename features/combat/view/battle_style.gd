@@ -36,18 +36,8 @@ static func unit_name(sim: BattleSim, unit: UnitState) -> String:
 	return text("UI_UNIT_NUMBERED") % [base, same.find(unit) + 1]
 
 
-## A square crop of the sprite's head pixels (the top of its opaque area) for timeline icons.
-static func head_icon(sprite_id: StringName) -> ImageTexture:
-	var def := ContentDB.get_def("sprite", sprite_id) as SpriteDef
-	var palette: PaletteDef = null
-	if def != null:
-		palette = ContentDB.get_def("palette", def.palette) as PaletteDef
-	if def == null or palette == null:
-		return ImageTexture.create_from_image(PixelArt.placeholder(1, 1))
-	var img: Image = PixelArt.image(def, palette)
-	var used: Rect2i = img.get_used_rect()
-	if used.size.x == 0 or used.size.y == 0:
-		return ImageTexture.create_from_image(img)
-	var side: int = mini(used.size.x, used.size.y)
-	var left: int = used.position.x + roundi((used.size.x - side) / 2.0)
-	return ImageTexture.create_from_image(img.get_region(Rect2i(left, used.position.y, side, side)))
+## The head icon of a unit for timeline medallions: the character's icon file from content, else a coloured disc
+## with the initial (CharacterIcons). Never a crop of sprite pixels. side 0 = party, 1 = enemy tint.
+static func head_icon(unit_id: StringName, side: int = 0) -> Control:
+	var style: UiStyleDef = Ui.style()
+	return CharacterIcons.face(unit_id, style.colour(&"c_party" if side == 0 else &"c_enemy"))

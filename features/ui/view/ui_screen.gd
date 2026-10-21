@@ -34,6 +34,7 @@ func open(args: Dictionary = {}) -> void:
 	_scrim.mouse_filter = Control.MOUSE_FILTER_STOP
 	add_child(_scrim)
 	build(args)
+	_add_prompt_strip()
 	UiMotion.screen_in(self)
 	focus_default()
 
@@ -79,6 +80,18 @@ func build(_args: Dictionary) -> void:
 ## Override: put keyboard/pad focus on the first control; Screens calls it again when this screen is uncovered.
 func focus_default() -> void:
 	pass
+
+
+## The bottom hint strip from `prompts` (nothing when the list is empty).
+func _add_prompt_strip() -> void:
+	if prompts.is_empty():
+		return
+	var strip: PromptStrip = Ui.prompt_strip(prompts)
+	strip.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	strip.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	strip.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	strip.offset_bottom = -Ui.style().size(&"s_strip_bottom")
+	add_child(strip)
 
 
 ## Gives a button the qamariya sweep each time it takes focus.

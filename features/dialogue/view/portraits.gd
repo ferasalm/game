@@ -1,8 +1,8 @@
 class_name Portraits
 extends RefCounted
 ## Finds the portrait texture for (speaker, expression): res://assets/portraits/<speaker>_<expression>.png when it
-## exists (loaded straight from the file, the "keep" importer needs no import step), else a stand-in built from the
-## speaker's pixel sprite (StandinPortrait).
+## exists (loaded straight from the file, the "keep" importer needs no import step), else a stand-in disc with the
+## expression's brows and mouth (StandinPortrait). Sprite pixels are never cropped.
 
 const FOLDER: String = "res://assets/portraits"
 
@@ -39,11 +39,7 @@ static func standin_image(speaker: StringName, expression: StringName) -> Image:
 	var style := ContentDB.get_def("dialogue_style", &"default") as DialogueStyleDef
 	if def == null or style == null:
 		return null
-	var sprite := ContentDB.get_def("sprite", def.sprite) as SpriteDef
-	var palette: PaletteDef = null if sprite == null else ContentDB.get_def("palette", sprite.palette) as PaletteDef
-	if palette == null:
-		return null
-	return StandinPortrait.image(def, expression, sprite, palette, style)
+	return StandinPortrait.image(def, expression, style)
 
 
 static func _load_real(speaker: StringName, expression: StringName) -> Texture2D:

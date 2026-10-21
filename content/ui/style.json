@@ -24,9 +24,19 @@
      "s_plate_h": 56, "s_portrait_w": 620, "s_portrait_h": 960, "s_sweep_h": 4, "s_slide": 24, "s_pause_h": 640, "s_party_w": 1040,
      "s_loot_top": 194, "s_loot_w": 552, "s_end_button_w": 206, "s_end_button_h": 55, "s_cmd_desc_h": 58,
 
+     "s_head_icon": 44, "s_timeline_w": 1200, "s_timeline_top": 24, "s_prompt_near": 3, "s_prompt_far": 7,
+     "s_toast_top": 96, "s_strip_bottom": 40, "s_defeat_w": 640, "s_defeat_h": 420, "s_portrait_x": 60,
+     "s_portrait_slide": 80, "s_dialog_right": 80, "s_dialog_bottom": 80, "s_plate_w": 420, "s_plate_lift": 40,
+     "s_dialog_inset": 40, "s_icon_pip": 14, "s_money_pad": 18,
+
      "t_loot_fade": 0.35, "t_loot_hold": 2.2, "t_loot_shine": 0.9,
      "t_title_fade": 0.9, "t_pulse": 1.6, "t_card_in": 0.9, "t_card_hold": 2.8, "t_card_out": 1.1,
      "t_focus_sweep": 0.35, "t_screen_in": 0.22, "t_screen_out": 0.16, "t_portrait_in": 0.4, "t_text_char": 0.025,
-     "t_money_count": 0.5, "t_toast_hold": 2.0, "t_toast_fade": 0.3, "t_transition_sweep": 0.6, "t_defeat_fade": 1.2}
+     "t_money_count": 0.5, "t_toast_hold": 2.0, "t_toast_fade": 0.3, "t_transition_sweep": 0.6, "t_defeat_fade": 1.2,
+     "t_money_flash": 0.4, "t_caret": 0.5, "t_prompt_fade": 0.2,
+
+     "icons": {"zayd": "res://assets/icons/zayd.png", "bilqis": "res://assets/icons/bilqis.png",
+               "concession_enforcer": "res://assets/icons/concession_enforcer.png",
+               "survey_drone": "res://assets/icons/survey_drone.png"}}
   ]
 }
