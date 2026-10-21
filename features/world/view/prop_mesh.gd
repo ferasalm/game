@@ -1,7 +1,7 @@
 class_name PropMesh
 extends RefCounted
 ## Builds one prop's ArrayMesh from its PropDef parts (palette-letter vertex colours, flat shaded). Surfaces, in
-## order: lit trim, one per painted pattern, unshaded glow, pulsing blink. One mesh per prop id and part group is
+## order: lit trim, one per painted pattern, unshaded glow, pulsing blink, water. One mesh per prop id and part group is
 ## cached, so every placement of a prop shares it (and a MultiMesh can draw them all at once).
 
 static var _cache: Dictionary[String, ArrayMesh] = {}
@@ -33,6 +33,8 @@ static func _build(def: PropDef, palette: PaletteDef, group: StringName) -> Arra
 
 
 static func _surface_key(part: PropPart) -> String:
+	if part.water:
+		return "water"
 	if part.blink:
 		return "blink"
 	if part.glow:
@@ -41,7 +43,7 @@ static func _surface_key(part: PropPart) -> String:
 
 
 static func _order(key: String) -> int:
-	return {"trim": 0, "glow": 2, "blink": 3}.get(key, 1)
+	return {"trim": 0, "glow": 2, "blink": 3, "water": 4}.get(key, 1)
 
 
 static func _buffer(buffers: Dictionary[String, SurfaceBuffer], key: String) -> SurfaceBuffer:
@@ -63,6 +65,8 @@ static func _add_part(buf: SurfaceBuffer, part: PropPart, palette: PaletteDef) -
 static func _material(key: String, def: PropDef, palette: PaletteDef) -> Material:
 	if key == "glow":
 		return SurfaceMaterials.glow()
+	if key == "water":
+		return SurfaceMaterials.water()
 	if key == "blink":
 		return SurfaceMaterials.blink(def.blink_rate)
 	if key.begins_with("pat:"):

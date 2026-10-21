@@ -2,7 +2,8 @@ class_name PropBuilder
 extends RefCounted
 ## Places an area's props and tower-houses from its placement lists. Every prop or building id becomes one
 ## MultiMeshInstance3D (shared mesh and materials), so a hundred props cost a handful of draw calls. Props with a
-## collide box also get a static box so the player cannot walk through them. Chests are left to AreaDressing.
+## collide box also get a static box so the player cannot walk through them; a prop with a splash gets its drops.
+## Chests are left to AreaDressing.
 
 
 ## One node with the tower-houses (group per building id) and the props (group per prop id), plus "Collision".
@@ -29,6 +30,9 @@ static func build(area: AreaDef, palette: PaletteDef, floor_y: float) -> Node3D:
 		var def := ContentDB.get_def("prop", id) as PropDef
 		if not def.chest:
 			root.add_child(_multi(PropMesh.mesh(def, palette), by_prop[id]))
+		if def.splash != null:
+			for at: Transform3D in by_prop[id]:
+				root.add_child(PropFx.splash(def.splash, at))
 	root.add_child(body)
 	return root
 

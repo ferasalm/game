@@ -2,7 +2,7 @@ class_name PropPart
 extends RefCounted
 ## One solid piece of a prop: a box (size = width, height, depth; at = centre) or a frustum (size = bottom radius,
 ## top radius, height; at = base centre), a palette letter, an optional yaw/tilt (degrees), and how it is drawn:
-## glow (unshaded, boosted, blooms), blink (a glow that pulses), pattern (a painted tile texture instead of the
+## glow (unshaded, boosted, blooms), blink (a glow that pulses), water (rippling or falling painted water), pattern (a painted tile texture instead of the
 ## letter), group (a named sub-mesh that can move, such as a chest lid).
 
 const SHAPES: Array[StringName] = [&"box", &"frustum"]
@@ -16,6 +16,7 @@ var tilt: Vector3 = Vector3.ZERO
 var sides: int = 8
 var glow: bool = false
 var blink: bool = false
+var water: bool = false
 var pattern: StringName = &""
 var group: StringName = &"body"
 
@@ -32,6 +33,7 @@ func read(r: DefReader) -> void:
 	sides = r.integer("sides", 3, 16, 8, false)
 	glow = r.flag("glow")
 	blink = r.flag("blink")
+	water = r.flag("water")
 	pattern = StringName(r.text("pattern", "", false))
 	group = StringName(r.text("group", "body", false))
 	if pattern != &"" and not SurfacePainter.PATTERNS.has(pattern):

@@ -6,6 +6,7 @@ extends Def
 
 var parts: Array[PropPart] = []
 var light: LightSpec = null
+var splash: PropSplash = null
 var collide: Vector3 = Vector3.ZERO
 var chest: bool = false
 var lid_hinge: Vector3 = Vector3.ZERO
@@ -22,6 +23,9 @@ func read(r: DefReader) -> void:
 	if r.has("light"):
 		light = LightSpec.new()
 		light.read(r.child("light"))
+	if r.has("splash"):
+		splash = PropSplash.new()
+		splash.read(r.child("splash"))
 	var box: Array[float] = r.float_list("collide", 0.0, 50.0)
 	if box.size() == 3:
 		collide = Vector3(box[0], box[1], box[2])

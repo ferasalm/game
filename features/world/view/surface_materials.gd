@@ -8,6 +8,7 @@ extends RefCounted
 
 const GLOW_BOOST: float = 1.6
 const BLINK_SHADER: Shader = preload("res://features/world/view/shaders/blink.gdshader")
+const WATER_SHADER: Shader = preload("res://features/world/view/shaders/prop_water.gdshader")
 static var _cache: Dictionary[String, Material] = {}
 
 
@@ -89,6 +90,15 @@ static func blink(rate: float) -> ShaderMaterial:
 		mat.set_shader_parameter(&"boost", GLOW_BOOST * 1.5)
 		_cache[key] = mat
 	return _cache[key] as ShaderMaterial
+
+
+## Painted water (the sabil): ripples on upward faces, falling dashes on upright ones; vertex colours are unused.
+static func water() -> ShaderMaterial:
+	if not _cache.has("water"):
+		var mat := ShaderMaterial.new()
+		mat.shader = WATER_SHADER
+		_cache["water"] = mat
+	return _cache["water"] as ShaderMaterial
 
 
 ## Far city blocks: unshaded, window dots in world space, tinted per instance.
