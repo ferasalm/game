@@ -64,6 +64,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `core/defs/def_reader.gd`: Typed, validated reads from one JSON object
 - `core/event_bus.gd`: Global signals between features (autoload EventBus)
 - `core/game_state.gd`: Everything a save file holds (autoload GameState)
+- `core/scene_router.gd`: Game flow owner (autoload Router): title -> area -> battle arena -> area, transitions, new game, load, can_save
 - `core/tests/fixtures/assets_bad/a.txt`
 - `core/tests/fixtures/assets_bad/manifest.json`: content: ? x0
 - `core/tests/fixtures/assets_bad/unlisted.txt`
@@ -111,6 +112,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/harness/balance.gd`: Balance harness: seeded battles per gear pairing with BattleAI playing both sides, one table
 - `features/combat/harness/battle_loader.gd`: Gathers the battle content from a loaded ContentDB (passed in as a Node) and builds ready-to-run BattleSims for the default encounter
 - `features/combat/logic/battle_ai.gd`: The one battle policy (enemies in play, both sides in the balance harness), in this order: 1
+- `features/combat/logic/battle_outcome.gd`: What a finished battle hands back: result (victory, defeat, retry), the party's vitals and bag after the fight, and the rewards (money, equippable items, consumables) still to be applied to GameState by the Router
+- `features/combat/logic/battle_request.gd`: What the Router hands to a battle: encounter, arena, ambush, seed, party order, and the pre-battle snapshot (vitals, bag, money) that "Retry fight" restores
 - `features/combat/logic/battle_resolver.gd`: Resolves one landed act (docs/design/combat.md, "Resolving an action"): targets, damage or heal per target, timeline effect per hit, status, SP gain, regen, status turns
 - `features/combat/logic/battle_sim.gd`: One battle (docs/design/combat.md): builds the units, steps the Timeline one tick at a time, asks the player (heroes) or BattleAI (enemies) for choices, resolves acts and decides victory or defeat
 - `features/combat/logic/battle_targets.gd`: Who can do what in a battle: a unit's moves, which of them it can pay for, and who a move may target
@@ -217,6 +220,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/ui_boxes.gd`: StyleBox builders for the UI theme: ornate panels (painted nine-patch frames), button states with the warm brass focus glow, and progress-bar tracks and gradient fills
 - `features/ui/view/ui_ornament.gd`: Procedurally painted UI textures from the UiStyleDef (no image files): the nine-patch frames (a thin brass line, a thin gypsum line inside it and a small diamond in each corner, like the carved plaster of a Sana'a tower-house), and the zigzag frieze band that divides sections
 - `features/ui/view/ui_rarity.gd`: Rarity helpers for every screen: the tier colour (from RarityDef), coloured item names and the small rarity tag
+- `features/ui/view/ui_stack.gd`: Screen stack (autoload Screens): push/pop UiScreens, pause the tree while one is open, restore focus, route back/menu input, open the pause menu when nothing is open
 - `features/ui/view/ui_theme.gd`: Builds the one Godot Theme every menu and HUD uses: Amiri for reading, Reem Kufi for titles, names and numbers, ornate panels, brass-focus buttons, gradient bars
 - `features/world/defs/area_def.gd`: A level as data: equal-width rows of tile characters, a legend (character -> tile id) and four markers (S spawn, W workshop bench, P patrol start, Q patrol end) that each appear once and stand on floor
 - `features/world/defs/building_def.gd`: One Sana'a tower-house as data: footprint (metres), floors (the lowest stone_floors are basalt), window columns per facade, frieze style, qamariya glass letters, lit-window ratio, parapet style and roof extras
@@ -295,7 +299,10 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `localization/combat.csv`
 - `localization/dialogue.csv`
 - `localization/items.csv`
+- `localization/pause.csv`
+- `localization/sabil.csv`
 - `localization/screens.csv`
+- `localization/shop.csv`
 - `localization/ui.csv`
 - `localization/workshop.csv`
 - `localization/world.csv`

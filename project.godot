@@ -16,6 +16,8 @@ GameState="*res://core/game_state.gd"
 ContentDB="*res://core/content_db.gd"
 TextDB="*res://core/text_db.gd"
 AudioDirector="*res://core/audio_director.gd"
+Router="*res://core/scene_router.gd"
+Screens="*res://features/ui/view/ui_stack.gd"
 
 [debug]
 
@@ -59,7 +61,10 @@ back={
 "deadzone": 0.2,
 "events": [Object(InputEventKey,"physical_keycode":4194305), Object(InputEventKey,"physical_keycode":4194308), Object(InputEventJoypadButton,"button_index":1)]
 }
-
+menu={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":4194305), Object(InputEventKey,"physical_keycode":4194306), Object(InputEventJoypadButton,"button_index":6)]
+}
 
 [rendering]
 
