@@ -17,6 +17,8 @@ var camera: Camera3D
 ## When set, the battle camera renders with this Environment instead of the scene's WorldEnvironment (the Router
 ## gives the arena its own, so the exploring area's environment is overridden).
 var environment: Environment
+## The arena's look (the runner sets it before start); null falls back to the night look.
+var look: LookDef
 ## The cinematic rig that moves `camera` (swoop in, drift, push, shake, victory pose).
 var camera_rig: BattleCamera
 var vfx: VfxPlayer
@@ -47,6 +49,7 @@ func start(battle: BattleSim, anchor: Vector3) -> void:
 	hud = BattleHud.new()
 	add_child(hud)
 	hud.setup(sim, _view, shown_hp)
+	_paint()
 	hud.move_chosen.connect(_on_move_chosen)
 	hud.target_focused.connect(_on_target_focused)
 	hud.end_chosen.connect(_finish)
@@ -143,24 +146,28 @@ func _on_target_focused(unit_id: StringName) -> void:
 
 
 func _turn_wielder_away() -> void:
-	var wielder: CharacterVisual = fighters.visual(Djanbeyyah.WIELDER)
-	if wielder != null:
-		wielder.face(-1.0)
+	fighters.face_foes(Djanbeyyah.WIELDER, true)
 
 
 func _add_camera(anchor: Vector3) -> void:
-	var look := ContentDB.get_def("look", &"night") as LookDef
 	if look == null:
-		look = ContentDB.get_def("look", &"v1") as LookDef
+		look = ContentDB.get_def("look", &"night") as LookDef
+	if look == null:
+		look = LookDef.new()
 	var def := ContentDB.get_def("battle_camera", &"default") as BattleCameraDef
-	camera = Diorama.make_camera(look if look != null else LookDef.new())
+	camera = Diorama.make_camera(look)
 	camera.environment = environment
 	add_child(camera)
 	camera_rig = BattleCamera.new()
 	add_child(camera_rig)
-	camera_rig.setup(camera, def if def != null else BattleCameraDef.new(), look if look != null else LookDef.new(),
-		anchor, null, instant)  # no previous camera: the arena is far from the exploring area
-	camera.current = true
+	camera_rig.setup(camera, def if def != null else BattleCameraDef.new(), look, anchor, null, instant)
+	camera.current = true  # no previous camera: the arena is far from the exploring area
+
+
+## A painted look gives the fight its ink outline, grade and vignette, like the area it left.
+func _paint() -> void:
+	if environment != null and look != null and look.paint != null:
+		PaintedLook.finish(self, look, environment, camera, null)
 
 
 ## The effect painter, the hitstop / shake node and the move player that drives them.

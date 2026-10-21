@@ -3,9 +3,9 @@
   "items": [
     {"id": "default",
      "camera_x": 0.0, "camera_y": 4.6, "camera_z": 9.5, "camera_fov": 38.0, "look_height": 0.3,
-     "party_stage": [{"x": -1.4, "z": 0.8}, {"x": -1.9, "z": -0.8}, {"x": -3.4, "z": 0.2}, {"x": -3.9, "z": -1.2}],
-     "enemy_stage": [{"x": 1.2, "z": 0.9}, {"x": 2.5, "z": -0.9}, {"x": 3.9, "z": 0.4}, {"x": 4.6, "z": -1.0}],
-     "ticks_per_frame": 3, "hit_stop": 0.35, "banner_seconds": 0.9, "damage_gap": 0.18, "tip_seconds": 7.0,
+     "party_stage": [{"x": 1.4, "z": 0.8}, {"x": 1.9, "z": -0.8}, {"x": 3.4, "z": 0.2}, {"x": 3.9, "z": -1.2}],
+     "enemy_stage": [{"x": -1.2, "z": 0.9}, {"x": -2.5, "z": -0.9}, {"x": -3.9, "z": 0.4}, {"x": -4.6, "z": -1.0}],
+     "ticks_per_frame": 3, "face_bias": 0.35, "hit_stop": 0.35, "banner_seconds": 0.9, "damage_gap": 0.18, "tip_seconds": 7.0,
      "end_delay": 0.8, "number_rise": 1.0, "number_seconds": 0.9, "label_energy": 2.6, "number_font_size": 72, "text_font_size": 32,
      "label_pixel_size": 0.008, "intent_offset": 0.35, "marker_offset": 0.5, "marker_size": 0.25, "banner_anchor_y": 0.3, "marker_bounce": 0.2,
      "marker_speed": 6.0, "shake_distance": 0.15, "shake_time": 0.25,

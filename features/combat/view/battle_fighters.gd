@@ -15,7 +15,7 @@ var _marker_time: float = 0.0
 var _rng := RandomNumberGenerator.new()
 
 
-## Party on the left facing right, enemies on the right facing left, around the anchor.
+## Party on the right facing left, enemies on the left facing right, around the anchor.
 func build(sim: BattleSim, view: BattleViewDef, anchor: Vector3) -> void:
 	_view = view
 	_juice = ContentDB.get_def("battle_juice", &"default") as JuiceDef
@@ -29,8 +29,8 @@ func build(sim: BattleSim, view: BattleViewDef, anchor: Vector3) -> void:
 		visual.set_sprite(unit.def.id)
 		add_child(visual)
 		visual.position = anchor + Vector3(spot.x, 0.0, spot.y)
-		visual.face(1.0 if unit.side == 0 else -1.0)
 		_visuals[unit.unit_id] = visual
+		visual.face_dir(facing_of(unit.side))
 		if unit.side == 0:
 			_party.append(unit.unit_id)
 	_marker = BattleLabels.marker(view)
@@ -38,6 +38,21 @@ func build(sim: BattleSim, view: BattleViewDef, anchor: Vector3) -> void:
 	add_child(_marker)
 	set_process(false)
 	_warm_text(anchor)
+
+
+## The way a side faces on the ground: the party toward the enemies on its left (-x), the enemies toward +x, both
+## leaning toward the camera by the view's face_bias (a sprite only mirrors on x; a model turns by yaw).
+func facing_of(side: int) -> Vector3:
+	return Vector3(-1.0 if side == 0 else 1.0, 0.0, _view.face_bias).normalized()
+
+
+## Turns a unit to face the other side (its foes) or, with away, the way it came.
+func face_foes(unit_id: StringName, away: bool = false) -> void:
+	var unit: CharacterVisual = visual(unit_id)
+	if unit == null:
+		return
+	var side: int = 0 if _party.has(unit_id) else 1
+	unit.face_dir(facing_of(1 - side if away else side))
 
 
 func visual(unit_id: StringName) -> CharacterVisual:

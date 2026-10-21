@@ -9,6 +9,8 @@ var look_height: float = 0.0
 var party_stage: Array[Vector2] = []
 var enemy_stage: Array[Vector2] = []
 var ticks_per_frame: int = 1
+## How far a fighter's facing leans toward the camera (z share of the sideways facing; 0 = pure side view).
+var face_bias: float = 0.0
 var hit_stop: float = 0.0
 var banner_seconds: float = 0.0
 var damage_gap: float = 0.0
@@ -59,6 +61,7 @@ func read(r: DefReader) -> void:
 
 func _read_pacing(r: DefReader) -> void:
 	ticks_per_frame = r.integer("ticks_per_frame", 1, 30)
+	face_bias = r.number("face_bias", 0.0, 2.0, 0.0, false)
 	hit_stop = r.number("hit_stop", 0.0, 3.0)
 	banner_seconds = r.number("banner_seconds", 0.0, 5.0)
 	damage_gap = r.number("damage_gap", 0.0, 2.0)

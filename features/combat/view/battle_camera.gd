@@ -108,7 +108,9 @@ func _apply(_delta: float) -> void:
 	camera.fov = lerpf(_from_fov, fov, s)
 	var practical := camera.attributes as CameraAttributesPractical
 	if practical != null:
-		practical.dof_blur_amount = _look.dof_amount * lerpf(1.0, _def.dof_scale, s)
+		practical.dof_blur_near_distance = _def.dof_near
+		practical.dof_blur_far_distance = _def.dof_far
+		practical.dof_blur_amount = _def.dof_amount * lerpf(1.0, _def.dof_scale, s)
 
 
 func _shake_offset() -> Vector3:

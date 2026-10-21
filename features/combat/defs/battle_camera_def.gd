@@ -8,7 +8,11 @@ var swoop_time: float = 1.0
 var pos: Vector3 = Vector3.ZERO
 var look: Vector3 = Vector3.ZERO
 var fov: float = 34.0
-var dof_scale: float = 0.5
+## The camera's own depth of field (metres, blur amount); dof_scale multiplies the amount at the start of the swoop.
+var dof_near: float = 7.0
+var dof_far: float = 13.0
+var dof_amount: float = 0.07
+var dof_scale: float = 1.0
 var drift: Vector2 = Vector2.ZERO
 var drift_speed: float = 0.4
 ## Share of the acting unit's x offset that the camera and its look target follow, and how fast it eases.
@@ -29,6 +33,9 @@ func read(r: DefReader) -> void:
 	pos = _v3(r, "pos")
 	look = _v3(r, "look")
 	fov = r.number("fov", 5.0, 120.0)
+	dof_near = r.number("dof_near", 0.0, 100.0)
+	dof_far = r.number("dof_far", 0.0, 400.0)
+	dof_amount = r.number("dof_amount", 0.0, 1.0)
 	dof_scale = r.number("dof_scale", 0.0, 3.0)
 	drift = Vector2(r.number("drift_x", 0.0, 3.0), r.number("drift_y", 0.0, 3.0))
 	drift_speed = r.number("drift_speed", 0.0, 5.0)

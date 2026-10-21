@@ -82,9 +82,7 @@ func _on_reverse_stab(event: TimelineEvent, targets: Array[StringName]) -> void:
 	if not _skip:
 		_hud.show_banner(BattleStyle.text("UI_REVERSE_STAB"))
 		await _wait(_view.banner_seconds * 0.5)
-	var stabber: CharacterVisual = _fighters.visual(event.unit_id)
-	if stabber != null:
-		stabber.face(1.0)
+	_fighters.face_foes(event.unit_id)
 	await _on_move(event.unit_id, _sim.actions.get(event.detail) as ActionDef, targets)
 
 
