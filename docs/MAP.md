@@ -6,7 +6,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 
 ## (root)
 - `.godot-version`
-- `WIP_NOTES.md`
 - `project.godot`
 
 ## .agents

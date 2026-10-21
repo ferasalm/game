@@ -20,10 +20,15 @@ const AA: Dictionary = {
 
 ## The look to build: a "look=<id>" user argument (after "--") overrides the scene's own look id.
 static func pick(default_id: StringName) -> StringName:
+	return user_arg("look=", default_id)
+
+
+## The value of a "<prefix><value>" user argument (after "--"), or default_value when there is none.
+static func user_arg(prefix: String, default_value: StringName) -> StringName:
 	for arg: String in OS.get_cmdline_user_args():
-		if arg.begins_with("look="):
-			return StringName(arg.substr(5))
-	return default_id
+		if arg.begins_with(prefix):
+			return StringName(arg.substr(prefix.length()))
+	return default_value
 
 
 static func begin(look: LookDef) -> void:
@@ -38,7 +43,7 @@ static func finish(root: Node, look: LookDef, env: Environment, camera: Camera3D
 		camera.add_child(make_outline(paint, look.fog_density))
 	grade(env, paint)
 	root.add_child(make_screen(paint))
-	var modes: Array = AA[paint.aa]
+	var modes: Array = AA.get(user_arg("aa=", paint.aa), AA[paint.aa])  # "aa=msaa2" compares modes in a probe
 	root.get_viewport().screen_space_aa = modes[0] as Viewport.ScreenSpaceAA
 	root.get_viewport().msaa_3d = modes[1] as Viewport.MSAA
 	paint_characters(root, paint)
