@@ -29,7 +29,8 @@ func test_round_trip_hides_the_rooftop_and_brings_it_back() -> void:
 	var result: StringName = main.stage.run_to_end(30000)
 	check(result == &"victory" or result == &"defeat", "the fight ends")
 	check(main.rooftop.visible and main.rooftop.process_mode == Node.PROCESS_MODE_INHERIT, "the rooftop is back and enabled")
-	check(not main.rooftop.patrol.visible, "the patrol was reset (hidden until it respawns)")
+	check_eq(main.rooftop.patrol.visible, not GameState.cleared_patrols.has(main.rooftop.patrol.encounter_id),
+		"a beaten patrol is gone until the sabil; one that won is back at its start")
 	check(main.rooftop.camera.current, "the rooftop camera is current again")
 	check(main.stage == null and not main.get_children().any(func(n: Node) -> bool: return n is BattleRunner), "no arena left")
 	check(Router.is_exploring(), "and the flow explores again")

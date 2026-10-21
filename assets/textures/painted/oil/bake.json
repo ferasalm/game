@@ -1,7 +1,9 @@
 {
  "inputs": {
-  "facade_house_a": "4034f65715ea067ad5b23fa70f44a54a2c184a6678ff510a7d69f0d7ba7ff3a2",
-  "facade_house_a_emit": "8e825ab6ae01b671a1f9eab90d28008c24ed4827c960820985700b10bcd25e92",
+  "facade_house_a": "020043c22029974da52b5aad3f32747cd8588a33bc77cc9d2f6b4506135fcfe6",
+  "facade_house_a_emit": "1cc90d23ab81c158c03f1eb53da7a67364af82b64e46d859d18d7fae658a695f",
+  "facade_house_b": "9bf97bc132f82f90b92878511d13184830f7b7944cb12c889b18a9e501facb0a",
+  "facade_house_b_emit": "b2babe0f9848171177af324e6244ab9c58d3c429dc989ae374fac07034566221",
   "facade_tower_a": "59d110456c3d97c367223c90db1cc366a3b7b2808fd73c6c44fb17967d74cf15",
   "facade_tower_a_emit": "371b5fbb27549dfd45ebdd81228e6eb63a872f929c9c3158dfcc2d4bd647b149",
   "facade_tower_b": "12a665d07aac56fd26d44e3dbd1b6767ef87f624509b1610fe61403b99870ae2",

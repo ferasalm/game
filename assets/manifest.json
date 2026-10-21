@@ -2612,6 +2612,13 @@
       "prompt": "Concession Clash"
     },
     {
+      "id": "zayd",
+      "path": "textures/painted/figures/zayd.webp",
+      "source": "google flow, owner-generated",
+      "licence": "Google Flow output, owner-generated; check Flow terms before a commercial release",
+      "prompt": "flow_zayd_full_a.png"
+    },
+    {
       "id": "painted_oil_facade_house_a",
       "path": "textures/painted/oil/facade_house_a.webp",
       "source": "own",
@@ -2621,6 +2628,20 @@
     {
       "id": "painted_oil_facade_house_a_emit",
       "path": "textures/painted/oil/facade_house_a_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_house_b",
+      "path": "textures/painted/oil/facade_house_b.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_house_b_emit",
+      "path": "textures/painted/oil/facade_house_b_emit.webp",
       "source": "own",
       "licence": "own",
       "prompt": "painterly_bake"
@@ -2808,6 +2829,20 @@
       "prompt": "painterly_bake"
     },
     {
+      "id": "painted_wash_facade_house_b",
+      "path": "textures/painted/wash/facade_house_b.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_house_b_emit",
+      "path": "textures/painted/wash/facade_house_b_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
       "id": "painted_wash_facade_tower_a",
       "path": "textures/painted/wash/facade_tower_a.webp",
       "source": "own",
@@ -2974,13 +3009,6 @@
       "source": "own",
       "licence": "own",
       "prompt": "painterly_bake"
-    },
-    {
-      "id": "zayd",
-      "path": "textures/painted/figures/zayd.webp",
-      "source": "google flow, owner-generated",
-      "licence": "Google Flow output, owner-generated; check Flow terms before a commercial release",
-      "prompt": "flow_zayd_full_a.png"
     }
   ]
 }

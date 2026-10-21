@@ -8,6 +8,7 @@ const DT: float = 1.0 / 60.0
 
 func _make() -> Rooftop:
 	var rooftop := (load("res://features/world/rooftop/rooftop.tscn") as PackedScene).instantiate() as Rooftop
+	rooftop.look_id = &"night"  # the plain follow camera; the painted look and its limits have their own tests
 	tree.root.add_child(rooftop)
 	return rooftop
 
@@ -52,7 +53,7 @@ func test_touch_fires_once() -> void:
 	rooftop.patrol._physics_process(DT)
 	rooftop.patrol._physics_process(DT)
 	check_eq(hits.size(), 1, "exactly one touch")
-	check_eq((hits[0] as Array)[0], &"rooftop_patrol", "the encounter id")
+	check_eq((hits[0] as Array)[0], rooftop.patrol.encounter_id, "the touching patrol's encounter id")
 	check(rooftop.battle_anchor().distance_to(rooftop.player.position) < 1.0, "anchor is where the touch happened")
 	rooftop.free()
 
@@ -107,19 +108,19 @@ func test_no_second_touch_until_exploring_resumes() -> void:
 	rooftop.free()
 
 
-func test_reset_patrol_hides_for_the_respawn_time() -> void:
+func test_reset_patrol_gives_a_grace_time_without_touch() -> void:
 	var rooftop: Rooftop = _make()
 	var hits: Array = _touches(rooftop)
-	var respawn: float = _rules().patrol_respawn
+	var grace: float = _rules().touch_grace
 	rooftop.reset_patrol()
-	check(not rooftop.patrol.visible, "hidden right after reset")
-	rooftop.player.position = rooftop.patrol.position
-	rooftop.patrol._physics_process(respawn - 0.5)
-	check(not rooftop.patrol.visible and hits.is_empty(), "still hidden and harmless before the time is up")
+	check(rooftop.patrol.visible, "a patrol that was not beaten stays in play")
+	rooftop.patrol.position = rooftop.player.position
+	rooftop.patrol._physics_process(grace - 0.5)
+	check(hits.is_empty(), "harmless while the grace time runs")
 	rooftop.patrol._physics_process(1.0)
-	check(rooftop.patrol.visible, "visible again after the respawn time")
+	rooftop.patrol.position = rooftop.player.position
 	rooftop.patrol._physics_process(DT)
-	check_eq(hits.size(), 1, "harmful again once it walks")
+	check_eq(hits.size(), 1, "harmful again after it")
 	rooftop.free()
 
 

@@ -2,7 +2,7 @@ class_name InteractSpot
 extends Node3D
 ## Something the player can press interact next to: a floating prompt (a localization key) that shows while he is
 ## within the interact radius, and a virtual _interact() that runs on the key press. The workshop bench and the
-## chests build on it.
+## chests, the stall and the sabil build on it.
 
 ## The floating "E: ..." label (public so tests can read whether it shows).
 var prompt: Label3D
@@ -34,17 +34,22 @@ func _ready() -> void:
 ## Off: the prompt hides and interact does nothing. On: works again.
 func set_active(on: bool) -> void:
 	_active = on
-	prompt.visible = on and _can_interact()
+	_show_prompt(on and _can_interact())
 
 
 func _physics_process(_delta: float) -> void:
-	prompt.visible = _active and _can_interact()
+	_show_prompt(_active and _can_interact())
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if _active and _can_interact() and event.is_action_pressed("interact"):
 		_interact()
 		get_viewport().set_input_as_handled()
+
+
+## Shows or hides the prompt (PillSpot swaps in the UI pill).
+func _show_prompt(on: bool) -> void:
+	prompt.visible = on
 
 
 ## Override: what pressing interact does.

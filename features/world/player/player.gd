@@ -18,13 +18,12 @@ func _init(rules: ExploreRulesDef) -> void:
 	_visual = CharacterVisual.new()
 	_visual.set_sprite(&"zayd")
 	add_child(_visual)
-	var capsule := CapsuleShape3D.new()
-	capsule.radius = rules.capsule_radius
-	capsule.height = rules.capsule_height
-	var shape := CollisionShape3D.new()
-	shape.shape = capsule
-	shape.position.y = rules.capsule_height / 2.0
-	add_child(shape)
+	ActorBody.add_capsule(self, rules)
+
+
+## What draws him (the camera frames its head anchor in dialogue).
+func visual() -> CharacterVisual:
+	return _visual
 
 
 ## Off: stops, hides and ignores input. On: shows and walks again.
@@ -45,7 +44,7 @@ func _physics_process(delta: float) -> void:
 	var moving: bool = not direction.is_zero_approx()
 	if moving:
 		facing = direction.normalized()
-		_visual.face(direction.x)
+		_visual.face_dir(direction)
 	_visual.set_moving(moving)
 	_step_clock = AudioDirector.step(_step_clock, delta, moving, &"footstep_zayd")
 

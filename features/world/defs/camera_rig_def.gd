@@ -42,6 +42,10 @@ var vista_fov: float = 30.0
 var vista_dof_scale: float = 1.0
 var vista_ease: float = 2.0
 var presets: Dictionary[StringName, Preset] = {}
+## Where the camera target may go (x range and z range, metres); the player can walk past it, the frame stays put.
+## (0, 0) for both = no limits.
+var limit_x: Vector2 = Vector2.ZERO
+var limit_z: Vector2 = Vector2.ZERO
 
 
 func read(r: DefReader) -> void:
@@ -65,9 +69,27 @@ func read(r: DefReader) -> void:
 	vista_ease = r.number("vista_ease", 0.1, 20.0)
 	for pr: DefReader in r.optional_objects("presets"):
 		presets[pr.id()] = _read_preset(pr)
+	_read_limits(r)
 	for i: int in keys.size():
 		if keys[i].at >= intro_duration or (i > 0 and keys[i].at <= keys[i - 1].at):
 			r.problem("keys", "key %d: times must rise and stay under intro_duration" % i)
+
+
+func has_limits() -> bool:
+	return limit_x != Vector2.ZERO or limit_z != Vector2.ZERO
+
+
+func _read_limits(r: DefReader) -> void:
+	if not r.has("limits"):
+		return
+	var lr: DefReader = r.child("limits")
+	var xs: Array[float] = lr.float_list("x", -500.0, 500.0)
+	var zs: Array[float] = lr.float_list("z", -500.0, 500.0)
+	if xs.size() != 2 or zs.size() != 2 or xs[0] > xs[1] or zs[0] > zs[1]:
+		r.problem("limits", "needs x and z as [min, max]")
+		return
+	limit_x = Vector2(xs[0], xs[1])
+	limit_z = Vector2(zs[0], zs[1])
 
 
 ## The exploring pose for a look: its camera_preset when it names one of ours, else the look's own numbers.

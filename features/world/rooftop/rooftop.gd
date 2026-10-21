@@ -1,11 +1,10 @@
 class_name Rooftop
 extends Node3D
-## The rooftop exploration scene: builds the night diorama from content, walks Zayd with Bilqis in tow, runs a
-## Concession patrol and the workshop bench, moves the camera through an ExploreCamera. Battle and menu scenes use
-## only the public API (signals, set_exploring, reset_patrol, battle_anchor, restore_camera, play_intro,
-## last_safe_position, teleport_party, place_party). Actors are direct children: their positions are area positions.
+## The rooftop exploration scene: builds the diorama (RooftopWorld), the actors (AreaActors) and the patrol rules
+## (PatrolDirector); battle and menu scenes use only the public API below. Actors are direct children: their
+## positions are area positions.
 
-## The patrol touched the player. from_behind: it came from behind the way he faces (the ambush rule).
+## A patrol touched the player. from_behind: it came from behind the way he faces (the ambush rule).
 signal encounter_touched(encounter_id: StringName, from_behind: bool)
 ## The player pressed interact at the workshop bench.
 signal workshop_opened
@@ -17,17 +16,22 @@ const RIG_ID: StringName = &"explore"
 const SNAP_SECONDS: float = 100.0
 
 @export var area_id: StringName = &"souq_rooftops"
-@export var look_id: StringName = &"night"
+@export var look_id: StringName = &"painted_b"
 
 var player: Player
 var follower: Follower
+## The first patrol (kept for callers that know one patrol), and all of them.
 var patrol: Patrol
+var patrols: Array[Patrol] = []
 var workshop: WorkshopSpot
+var stall: StallSpot
+var sabil: SabilSpot
 var dressing: AreaDressing
 var camera: Camera3D
 var blocks: Node3D
 var camera_rig: ExploreCamera
 
+var _actors: AreaActors
 var _rules: ExploreRulesDef
 var _look: LookDef
 var _env: WorldEnvironment
@@ -37,10 +41,11 @@ var _anchor: Vector3 = Vector3.ZERO
 var _locked: bool = false
 var _exploring: bool = true
 var _ambush: int = 0
+var _director: PatrolDirector
 var _flow: FlowRulesDef
-var _safe: SafeSpot
+var _safety: RooftopSafety
+var _aim: RooftopCamera
 var _debug: RooftopDebug
-
 
 func _ready() -> void:
 	_rules = ContentDB.get_def("explore_rules", &"default") as ExploreRulesDef
@@ -51,20 +56,26 @@ func _ready() -> void:
 	if _rules == null or _look == null or _area == null or rig == null or _flow == null:
 		push_error("Rooftop: missing explore rules, flow rules, look, area or camera content")
 		return
-	var spawn: Vector2i = _area.find_marker(AreaDef.SPAWN)
-	var floor_tile := ContentDB.get_def("tile", _area.tile_id_at(spawn.x, spawn.y)) as TileDef
-	_floor_y = floor_tile.height
-	_build_world(rig)
+	_floor_y = AreaWalk.floor_height(_area)
+	_aim = RooftopCamera.new(rig, _look)
+	var world: RooftopWorld = RooftopWorld.build(self, _area, _rules, _look, rig,
+		AreaActors.marker_of(_area, AreaDef.SPAWN, _floor_y))
+	_env = world.env
+	blocks = world.blocks
+	camera = world.camera
+	camera_rig = world.camera_rig
+	camera_rig.intro_finished.connect(_freeze_actors.bind(false))
 	_build_actors()
 	_debug = RooftopDebug.new()
 	_debug.setup(_flow, tr(_area.name_key))
 	add_child(_debug)
 	PaintedLook.finish(self, _look, _env.environment, camera, player)
 	_anchor = player.position
-	_safe = SafeSpot.new(_flow.safe_idle_seconds, _flow.safe_still_radius, player.position)
+	_safety = RooftopSafety.for_area(_area, _rules, _flow, player.position)
+	_director.sync_cleared()
 
 
-## Off: player, follower and patrol stop and hide, input is ignored. On: everything shows and resumes, and a new
+## Off: player, follower and patrols stop and hide, input is ignored. On: everything shows and resumes, and a new
 ## touch can fire.
 func set_exploring(on: bool) -> void:
 	_exploring = on
@@ -72,24 +83,25 @@ func set_exploring(on: bool) -> void:
 		_locked = false
 	else:
 		camera_rig.skip_intro(true)
-	player.set_active(on)
-	follower.set_active(on)
-	patrol.set_active(on)
-	workshop.set_active(on)
+	for actor: Node in _actors.switchables():
+		actor.call(&"set_active", on)
 	dressing.set_active(on)
 	_debug.set_name_visible(on)
+	if on:
+		_director.sync_cleared()
 
 
-## The opening establishing shot (moon and clouds, then down to Zayd). The actors stand frozen until it ends or any
-## key or click skips it.
+## The opening establishing shot; the actors stand frozen until it ends or any key or click skips it.
 func play_intro() -> void:
 	_freeze_actors(true)
 	camera_rig.play_intro()
 
 
-## The patrol goes back to its start, hidden and harmless for the respawn time, then walks again.
+## Called after every battle: patrols beaten (GameState.cleared_patrols) disappear; the one that fought goes back to
+## its lane start; nobody can touch for touch_grace seconds; the party stands clear of every patrol.
 func reset_patrol() -> void:
-	patrol.reset()
+	_director.after_battle()
+	teleport_party(_safety.return_spot(player.position, patrols), false)
 
 
 ## The floor point where a battle should be staged: where the last touch happened.
@@ -108,93 +120,81 @@ func restore_camera() -> void:
 	camera.make_current()
 
 
-## Where "unstuck" puts the party: the newest spot the player stood still at that is not where he is now.
+## Where "unstuck" puts the party: the newest still spot clear of the patrols, else the nearest safe place.
 func last_safe_position() -> Vector3:
-	return _safe.last_safe(player.position)
+	return _safety.unstuck_target(player.position, patrols)
 
 
-## Moves Zayd to pos and Bilqis beside him (her trail restarts there) and the camera jumps to follow.
-func teleport_party(pos: Vector3) -> void:
+## Moves Zayd to pos and Bilqis beside him (her trail restarts there) and the camera jumps to follow. Patrols
+## cannot touch for touch_grace seconds (when grace is true).
+func teleport_party(pos: Vector3, grace: bool = true) -> void:
 	player.position = pos
 	follower.stand_by_player()
+	if grace:
+		_director.hold_all()
 	if not camera_rig.is_intro_playing():
-		camera_rig.update(SNAP_SECONDS, pos)
+		camera_rig.update(SNAP_SECONDS, _aim.subject(pos))
 
 
-## Puts the party at a save point (a PlaceDef id); an unknown or empty id means the spawn.
+## Puts the party at a save point (a place id of this area); an unknown or empty id means the spawn (no grace).
 func place_party(save_point: StringName) -> void:
-	var place := ContentDB.get_def("place", save_point) as PlaceDef
-	if place == null or place.area != area_id:
-		teleport_party(_marker(AreaDef.SPAWN))
+	var place: PlaceDef = _area.place(save_point)
+	if place == null:
+		teleport_party(AreaActors.marker_of(_area, AreaDef.SPAWN, _floor_y), false)
 	else:
-		teleport_party(AreaBuilder.cell_center(place.cell) + Vector3(0.0, _floor_y, 0.0))
+		teleport_party(Vector3(place.pos.x, _floor_y, place.pos.z))
+
+
+## Dialogue framing: the camera looks at this speaker's head (&"zayd", &"bilqis", a bystander's place id or sprite).
+## Returns false when nobody here has that id.
+func frame_speaker(speaker_id: StringName) -> bool:
+	return _aim.frame(speaker_id, _actors)
+
+
+func clear_speaker() -> void:
+	_aim.clear_speaker()
 
 
 func _process(delta: float) -> void:
-	camera_rig.update(delta, player.position)
+	camera_rig.update(delta, _aim.subject(player.position))
 	if _exploring and not _locked:
-		_safe.update(player.position, delta)
-
-
-func _build_world(rig: CameraRigDef) -> void:
-	PaintedLook.begin(_look)
-	_env = Diorama.make_environment(_look)
-	add_child(_env)
-	add_child(Diorama.make_sun(_look))
-	blocks = AreaBuilder.build(_area, _rules)
-	add_child(blocks)
-	add_child(MistBuilder.build_area(_area))
-	add_child(SkylineBuilder.build(_area))
-	camera = Diorama.make_camera(_look)
-	add_child(camera)
-	camera.make_current()
-	camera_rig = ExploreCamera.new()
-	add_child(camera_rig)
-	camera_rig.setup(camera, _look, rig, _area.vista_world(), _rules.camera_smoothing, _marker(AreaDef.SPAWN))
-	camera_rig.intro_finished.connect(_freeze_actors.bind(false))
+		_safety.update(player.position, delta, patrols)
 
 
 func _freeze_actors(frozen: bool) -> void:
 	var mode: Node.ProcessMode = Node.PROCESS_MODE_DISABLED if frozen else Node.PROCESS_MODE_INHERIT
-	for actor: Node in [player, follower, patrol, workshop]:
+	for actor: Node in _actors.switchables():
 		actor.process_mode = mode
 	for chest: Chest in dressing.chests:
 		chest.process_mode = mode
 
 
 func _build_actors() -> void:
-	player = Player.new(_rules)
-	player.position = _marker(AreaDef.SPAWN)
-	add_child(player)
-	follower = Follower.new(_rules, player)
-	add_child(follower)
-	patrol = Patrol.new(_rules, _marker(AreaDef.PATROL_START), _marker(AreaDef.PATROL_END), player)
-	patrol.touched.connect(_on_touched)
-	add_child(patrol)
-	workshop = WorkshopSpot.new(_rules, player)
-	workshop.position = _marker(AreaDef.WORKSHOP)
+	_actors = AreaActors.build(self, _area, _rules, _floor_y)
+	player = _actors.player
+	follower = _actors.follower
+	patrols = _actors.patrols
+	patrol = patrols[0] if not patrols.is_empty() else null
+	_director = PatrolDirector.new(patrols, _rules.touch_grace)
+	workshop = _actors.workshop
+	stall = _actors.stalls[0] if not _actors.stalls.is_empty() else null
+	sabil = _actors.sabil
+	for p: Patrol in patrols:
+		p.touched.connect(_on_touched.bind(p))
 	workshop.opened.connect(workshop_opened.emit)
-	add_child(workshop)
+	if sabil != null:
+		sabil.drunk.connect(_director.after_drink)
 	dressing = AreaDressing.build(_area, _rules, player, _floor_y)
 	for chest: Chest in dressing.chests:
 		chest.opened.connect(chest_opened.emit)
 	add_child(dressing)
 
 
-func _marker(marker: String) -> Vector3:
-	return AreaBuilder.cell_center(_area.find_marker(marker)) + Vector3(0.0, _floor_y, 0.0)
-
-
-func _on_touched(from_behind: bool) -> void:
-	if _locked: return
+func _on_touched(from_behind: bool, source: Patrol) -> void:
+	if _locked:
+		return
 	_locked = true
-	_ambush = _ambush_side(from_behind)
-	_anchor = player.position.lerp(patrol.position, 0.5)
-	encounter_touched.emit(_area.encounter, from_behind)
-
-
-func _ambush_side(from_behind: bool) -> int:
-	if from_behind:
-		return 1
-	var to_player: Vector3 = (player.position - patrol.position) * Vector3(1.0, 0.0, 1.0)
-	return 2 if to_player.dot(patrol.facing()) < 0.0 else 0
+	_director.fought = source
+	_ambush = _director.ambush_side(from_behind, player.position, source)
+	_anchor = player.position.lerp(source.position, 0.5)
+	encounter_touched.emit(source.encounter_id, from_behind)
