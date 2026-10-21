@@ -36,6 +36,7 @@ var _locked: bool = false
 var _ambush: int = 0
 var _fps_label: Label
 var _name_label: Label
+var _debug_layer: CanvasLayer  ## FPS + area name; hidden until F3 (the area card shows the name to players)
 
 
 func _ready() -> void:
@@ -99,7 +100,8 @@ func restore_camera() -> void:
 
 
 func _process(delta: float) -> void:
-	_fps_label.text = tr("UI_FPS") % Engine.get_frames_per_second()
+	if _debug_layer.visible:
+		_fps_label.text = tr("UI_FPS") % Engine.get_frames_per_second()
 	camera_rig.update(delta, player.position)
 
 
@@ -148,10 +150,18 @@ func _build_actors() -> void:
 
 func _build_ui() -> void:
 	var layer := CanvasLayer.new()
+	layer.visible = false
+	_debug_layer = layer
 	_fps_label = _label(layer, Vector2(16.0, 16.0))
 	_name_label = _label(layer, Vector2(16.0, 56.0))
 	_name_label.text = tr(_area.name_key)
 	add_child(layer)
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	var key := event as InputEventKey
+	if key != null and key.pressed and not key.echo and key.keycode == KEY_F3:
+		_debug_layer.visible = not _debug_layer.visible
 
 
 func _label(layer: CanvasLayer, pos: Vector2) -> Label:

@@ -6,7 +6,7 @@ extends Def
 const COLOURS: Array[StringName] = [
 	&"c_glass", &"c_glass_deep", &"c_indigo", &"c_indigo_lit", &"c_brass", &"c_brass_dim", &"c_gypsum",
 	&"c_gypsum_dim", &"c_text", &"c_muted", &"c_cyan", &"c_magenta", &"c_hp_a", &"c_hp_b", &"c_sp_a", &"c_sp_b",
-	&"c_good", &"c_bad", &"c_party", &"c_enemy", &"c_cast", &"c_shadow", &"c_scrim"]
+	&"c_good", &"c_bad", &"c_party", &"c_enemy", &"c_cast", &"c_shadow", &"c_scrim", &"c_title_shade"]
 const SIZES: Array[StringName] = [
 	&"s_font_body", &"s_font_small", &"s_font_name", &"s_font_title", &"s_font_big", &"s_font_number", &"s_margin",
 	&"s_pad", &"s_gap", &"s_frame_cell", &"s_frame_line", &"s_frame_gap", &"s_ornament", &"s_frieze_h",

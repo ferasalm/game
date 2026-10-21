@@ -183,3 +183,16 @@ func test_camera_follows_and_can_be_restored() -> void:
 	rooftop.restore_camera()
 	check(rooftop.camera.current, "restore_camera makes the follow camera current again")
 	rooftop.free()
+
+
+func test_debug_overlay_is_hidden_until_f3() -> void:
+	var rooftop: Rooftop = _make()
+	check(not rooftop._debug_layer.visible, "players never see the FPS/debug overlay by default")
+	var f3 := InputEventKey.new()
+	f3.keycode = KEY_F3
+	f3.pressed = true
+	rooftop._unhandled_key_input(f3)
+	check(rooftop._debug_layer.visible, "F3 shows it")
+	rooftop._unhandled_key_input(f3)
+	check(not rooftop._debug_layer.visible, "F3 again hides it")
+	rooftop.free()

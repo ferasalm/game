@@ -7,7 +7,7 @@
      "font_title": "res://assets/fonts/reem_kufi.ttf",
 
      "c_glass": "#161230ea", "c_glass_deep": "#0d0a1ef0", "c_indigo": "#2b2540", "c_indigo_lit": "#3d3a73",
-     "c_brass": "#e8c070", "c_brass_dim": "#9a7a3c", "c_gypsum": "#f2ead8", "c_gypsum_dim": "#a89d88",
+     "c_title_shade": "#0b0818b8", "c_brass": "#e8c070", "c_brass_dim": "#9a7a3c", "c_gypsum": "#f2ead8", "c_gypsum_dim": "#a89d88",
      "c_text": "#f2ead8", "c_muted": "#b8aecb", "c_cyan": "#3df0e0", "c_magenta": "#ff3d9a",
      "c_hp_a": "#b8282e", "c_hp_b": "#ff8a2a", "c_sp_a": "#2f78c8", "c_sp_b": "#3df0e0",
      "c_good": "#6ed08a", "c_bad": "#ff8e78", "c_party": "#4ad0ff", "c_enemy": "#ff5a4a",
