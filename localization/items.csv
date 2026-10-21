@@ -67,3 +67,18 @@ ITEM_QISHR_CUP,Qishr cup
 ITEM_DESC_QISHR_CUP,"Small heal for the whole party. Husk coffee and ginger, poured from a brass pot."
 ENCOUNTER_PATROL_SCOUTS,Scout patrol
 ENCOUNTER_PATROL_GATE,Gate patrol
+ITEMS_TITLE,Items
+ITEMS_TITLE_AR,الأغراض
+ITEMS_OWNED,Owned %d
+ITEMS_USE_ON,Use on
+ITEMS_USE_PARTY,Use on the whole party
+ITEMS_PREVIEW,%d -> %d
+ITEMS_USED,Used %s on %s
+ITEMS_USED_PARTY,Used %s on the party
+ITEMS_FULL,Already full
+ITEMS_EMPTY,Nothing here
+ITEMS_EFFECT_HP,HP +%d
+ITEMS_EFFECT_SP,SP +%d
+ITEMS_EFFECT_REVIVE,Revives in battle
+ITEMS_PROMPT_USE,Use
+ITEMS_PROMPT_BACK,Back

@@ -2,13 +2,18 @@ class_name LootPopup
 extends CanvasLayer
 ## The "Obtained" banner: listens to EventBus.item_obtained and shows each new item centred high on the screen with
 ## its name in the rarity colour, a light sweep for Rare and above and a rarity jingle (AudioDirector.play_item).
-## Several items queue in order (the more waiting, the shorter each one stays). It never takes input.
+## Riyal earned (money_changed with a positive delta, except while the shop is open) gets its own "+N riyal" banner.
+## Several banners queue in order (the more waiting, the shorter each one stays). It never takes input.
 
 signal shown(item_id: StringName)
+## A riyal banner started (rewards only: shop sales do not show one).
+signal money_shown(amount: int)
 
 var _root: Control
-var _queue: Array[StringName] = []
+var _queue: Array[Dictionary] = []
 var _current: StringName = &""
+var _amount: int = 0
+var _busy: bool = false
 var _banner: PanelContainer = null
 var _tween: Tween = null
 var _clip: Control = null
@@ -19,13 +24,26 @@ func _ready() -> void:
 	_root = Ui.screen_root()
 	add_child(_root)
 	EventBus.item_obtained.connect(enqueue)
+	EventBus.money_changed.connect(_on_money_changed)
 
 
 ## Adds an item to the queue; it shows at once when nothing is showing.
 func enqueue(item_id: StringName) -> void:
-	_queue.append(item_id)
-	if _current == &"":
+	_queue.append({"item": item_id, "money": 0})
+	if not _busy:
 		_next()
+
+
+## Adds a riyal banner to the queue.
+func enqueue_money(amount: int) -> void:
+	_queue.append({"item": &"", "money": amount})
+	if not _busy:
+		_next()
+
+
+func _on_money_changed(_total: int, delta: int) -> void:
+	if delta > 0 and not Screens.is_open_id(&"shop"):
+		enqueue_money(delta)
 
 
 ## The item on screen now (&"" when idle) and how many wait behind it.
@@ -47,12 +65,18 @@ func skip() -> void:
 func _next() -> void:
 	if _queue.is_empty():
 		return
-	_current = _queue.pop_front()
+	var entry: Dictionary = _queue.pop_front()
+	_busy = true
+	_current = entry["item"]
+	_amount = entry["money"]
 	var rarity: StringName = UiRarity.of_item(_current)
 	_banner = _build_banner(rarity)
 	_root.add_child(_banner)
 	AudioDirector.play_item(maxi(UiRarity.order(rarity), 0))
-	shown.emit(_current)
+	if _amount > 0:
+		money_shown.emit(_amount)
+	else:
+		shown.emit(_current)
 	var style: UiStyleDef = Ui.style()
 	_banner.modulate.a = 0.0
 	_tween = create_tween()
@@ -70,6 +94,7 @@ func _finish() -> void:
 		_banner.queue_free()
 		_banner = null
 	_current = &""
+	_busy = false
 	_next()
 
 
@@ -93,14 +118,21 @@ func _build_banner(rarity: StringName) -> PanelContainer:
 	var caption: Label = Ui.label(Ui.text("LOOT_OBTAINED"), &"CaptionLabel")
 	caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(caption)
-	var name_label: Label = UiRarity.item_label(_current, &"TitleLabel")
+	var name_label: Label = Ui.label(Ui.text("LOOT_MONEY") % str(_amount), &"TitleLabel", Ui.style().colour(&"c_brass")) \
+			if _amount > 0 else UiRarity.item_label(_current, &"TitleLabel")
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(name_label)
+	if _amount > 0:
+		return _finish_banner(banner)
 	box.add_child(Ui.divider())
 	var tag_row := HBoxContainer.new()
 	tag_row.alignment = BoxContainer.ALIGNMENT_CENTER
 	tag_row.add_child(UiRarity.tag(rarity))
 	box.add_child(tag_row)
+	return _finish_banner(banner)
+
+
+func _finish_banner(banner: PanelContainer) -> PanelContainer:
 	_clip = Control.new()
 	_clip.clip_contents = true
 	_clip.mouse_filter = Control.MOUSE_FILTER_IGNORE

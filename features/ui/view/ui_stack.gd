@@ -21,6 +21,8 @@ func _ready() -> void:
 	layer = UiLayers.SCREEN
 	register(PAUSE_ID, func() -> Control: return PauseMenu.new())
 	register(EQUIPMENT_ID, func() -> Control: return EquipmentHost.new())
+	register(ItemsScreen.ID, func() -> Control: return ItemsScreen.new())
+	register(ShopScreen.ID, func() -> Control: return ShopScreen.new())
 	Router.flow_changed.connect(_on_flow_changed)
 
 
