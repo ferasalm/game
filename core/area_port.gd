@@ -2,10 +2,11 @@ class_name AreaPort
 extends RefCounted
 ## What the Router needs from the area that is playing (a base class to override; the default does nothing). The
 ## area's composition root registers one with Router.register_area. The Router never touches the area's nodes
-## except through this: world() is the node battle arenas are added beside.
+## except through this: host() is the node battle arenas are added to.
 
-## The area's root node. Battle arenas and stages become its siblings (children of its parent).
-func world() -> Node3D:
+## The node battle arenas and stages are added to: the area's parent, so they become the area's siblings. It must
+## outlive the battle.
+func host() -> Node:
 	return null
 
 

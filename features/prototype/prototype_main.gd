@@ -48,7 +48,7 @@ func _ready() -> void:
 	dialogue.finished.connect(_on_dialogue_finished)
 	menu.closed.connect(_on_menu_closed)
 	GameState.area_id = rooftop.area_id
-	_port = RooftopPort.new(rooftop)
+	_port = RooftopPort.new(rooftop, self)
 	Router.register_area(_port)
 	Router.stage_created.connect(_on_stage_created)
 	EventBus.battle_started.connect(_on_battle_started)

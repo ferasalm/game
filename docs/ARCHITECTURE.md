@@ -99,7 +99,10 @@ docs/           ARCHITECTURE BRIEFING EFFICIENCY DECISIONS LESSONS MAP USAGE des
 - Player: CharacterBody3D + CharacterVisual; 8-way movement, sprite faces 4 ways (left = mirrored right).
 - Interaction: Area3D zones emit to a small interaction component; lore stones, wheels, doors are scenes with ids.
 - Encounters are visible enemies; touching one from behind gives the ambush timeline bonus (blueprint Module 7).
-- Battles load as an overlay scene; the area pauses and stays in memory; a SceneRouter does fades and spawns.
+- Battles run in an arena built beside the area (v0.3): the Router (autoload, core/scene_router.gd) hides and
+  disables the area through its AreaPort (the area stays in the tree), BattleSession launches a BattleRunner
+  (arena + BattleStage) and turns the result into GameState changes (victory pays once; defeat and Retry restore
+  the pre-battle snapshot). The Router also owns new game, save slot I/O, load, unstuck and the play-time clock.
 - Puzzles (sluice wheels, twin weir) are small pure state machines in logic/ with tests for every solution.
 - Hydration, resin drops (pity ramp) and trust bonds are counters in GameState with rules in logic/.
 

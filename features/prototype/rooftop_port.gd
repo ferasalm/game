@@ -4,14 +4,17 @@ extends AreaPort
 ## signals and camera keep working), bring it back, and move the party for unstuck and loading.
 
 var _rooftop: Rooftop
+var _host: Node
 
 
-func _init(rooftop: Rooftop) -> void:
+## host_node: the rooftop's parent, where battle arenas are added.
+func _init(rooftop: Rooftop, host_node: Node) -> void:
 	_rooftop = rooftop
+	_host = host_node
 
 
-func world() -> Node3D:
-	return _rooftop
+func host() -> Node:
+	return _host
 
 
 func suspend() -> void:

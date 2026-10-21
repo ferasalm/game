@@ -16,8 +16,11 @@ func test_round_trip_hides_the_rooftop_and_brings_it_back() -> void:
 	var h := FlowHarness.new(tree)
 	var main: PrototypeMain = h.make_main()
 	h.touch(main)
-	var runner := main.stage.get_parent() as BattleRunner
-	check(runner != null and runner.get_parent() == main, "the arena runner is the rooftop's sibling")
+	var runner: BattleRunner = null
+	for child: Node in main.get_children():
+		if child is BattleRunner:
+			runner = child as BattleRunner
+	check(runner != null and runner.stage == main.stage, "the arena runner is the rooftop's sibling")
 	var arena := ContentDB.get_def("arena", &"rooftop_arena") as ArenaDef
 	check_eq(runner.arena.position, arena.origin, "the arena sits at its far origin")
 	check(not main.rooftop.visible and main.rooftop.process_mode == Node.PROCESS_MODE_DISABLED, "the rooftop is hidden and stopped")

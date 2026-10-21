@@ -25,11 +25,10 @@ var last_frame: Image
 ## The running battle's stage, null while exploring.
 var stage: BattleStage:
 	get:
-		return _runner.stage if _runner != null else null
+		return _session.stage() if _session != null else null
 
 var _port: AreaPort
-var _runner: BattleRunner
-var _request: BattleRequest
+var _session: BattleSession  ## the last battle's; it holds no stage once the fight is over
 var _skip_title: bool = false
 
 
@@ -140,62 +139,15 @@ func start_battle(request: BattleRequest) -> void:
 	if request.arena_id == &"":
 		request.arena_id = flow.arena_id
 	request.take_snapshot(GameState.vitals, GameState.bag, GameState.money)
-	_request = request
 	_capture_frame()
 	_set_state(STATE_BATTLE)
 	_port.suspend()
 	EventBus.battle_started.emit(request.encounter_id)
 	AudioDirector.play_music(flow.battle_music)
-	_launch()
-
-
-func _launch() -> void:
-	_runner = BattleRunner.new()
-	_runner.name = "BattleRunner"
-	_port.world().get_parent().add_child(_runner)
-	_runner.stage_created.connect(stage_created.emit)
-	_runner.ended.connect(_on_stage_ended)
-	if not _runner.begin(_request):
-		var failed := BattleOutcome.new()
-		failed.encounter_id = _request.encounter_id
-		failed.result = BattleOutcome.DEFEAT
-		_free_runner()
-		_restore_snapshot()
-		_return_to_area(failed)
-
-
-func _on_stage_ended(result: StringName) -> void:
-	var outcome: BattleOutcome = BattleOutcome.from_sim(_runner.stage.sim, result)
-	_free_runner()
-	if result == BattleOutcome.RETRY:
-		_restore_snapshot()
-		_request.retry_count += 1
-		_launch()
-		return
-	if result == BattleOutcome.VICTORY:
-		_win(outcome)
-	else:
-		_restore_snapshot()
-	_return_to_area(outcome)
-
-
-## Carries the fight's vitals and herbs into the game and pays the encounter's rewards once.
-func _win(outcome: BattleOutcome) -> void:
-	GameState.set_vitals(outcome.vitals)
-	GameState.set_bag(outcome.bag)
-	var reward: RewardResult = RewardApplier.victory(outcome.encounter_id)
-	outcome.money = reward.money
-	outcome.items = reward.items
-	outcome.consumables = reward.consumables.duplicate()
-	outcome.rewarded = true
-	if not GameState.cleared_patrols.has(outcome.encounter_id):
-		GameState.cleared_patrols.append(outcome.encounter_id)
-
-
-func _restore_snapshot() -> void:
-	GameState.set_vitals(_request.vitals_before)
-	GameState.set_bag(_request.bag_before)
-	GameState.money = _request.money_before
+	_session = BattleSession.new(_port.host(), request)
+	_session.stage_created.connect(stage_created.emit)
+	_session.finished.connect(_return_to_area)
+	_session.launch()
 
 
 func _return_to_area(outcome: BattleOutcome) -> void:
@@ -204,19 +156,9 @@ func _return_to_area(outcome: BattleOutcome) -> void:
 	_port.resume()
 	_port.reset_patrol()
 	_port.restore_camera()
-	_request = null
 	_set_state(STATE_EXPLORING)
 	EventBus.battle_ended.emit(outcome.encounter_id, outcome.result == BattleOutcome.VICTORY)
 	battle_finished.emit(outcome)
-
-
-func _free_runner() -> void:
-	if _runner == null:
-		return
-	if _runner.get_parent() != null:
-		_runner.get_parent().remove_child(_runner)
-	_runner.queue_free()
-	_runner = null
 
 
 func _capture_frame() -> void:
@@ -227,8 +169,8 @@ func _capture_frame() -> void:
 
 ## Ends any fight and closes every screen, then rebuilds the area from GameState (the new scene reads it).
 func _restart(skip_title: bool, next_state: StringName) -> void:
-	_free_runner()
-	_request = null
+	if _session != null:
+		_session.free_runner()
 	Screens.clear()
 	get_tree().paused = false
 	_skip_title = skip_title

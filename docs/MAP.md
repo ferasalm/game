@@ -26,9 +26,10 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/audio/rules.json`: content: audio_rules x1
 - `content/audio/sounds.json`: content: sound x30
 - `content/combat/actions.json`: content: action x18
+- `content/combat/arenas.json`: content: arena x1
 - `content/combat/camera.json`: content: battle_camera x1
 - `content/combat/combatants.json`: content: combatant x4
-- `content/combat/encounters.json`: content: encounter x1
+- `content/combat/encounters.json`: content: encounter x3
 - `content/combat/juice.json`: content: battle_juice x1
 - `content/combat/rules.json`: content: battle_rules x1
 - `content/combat/statuses.json`: content: status x3
@@ -40,11 +41,15 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/djanbeyyah/blades.json`: content: blade x3
 - `content/djanbeyyah/hilts.json`: content: hilt x3
 - `content/djanbeyyah/loadouts.json`: content: loadout x2
+- `content/economy/rules.json`: content: economy_rules x1
 - `content/items/chests.json`: content: chest x4
+- `content/items/consumables.json`: content: consumable x4
 - `content/items/perks.json`: content: perk x6
 - `content/items/rarities.json`: content: rarity x6
 - `content/prosthetics/prosthetics.json`: content: prosthetic x6
+- `content/prototype/flow.json`: content: flow_rules x1
 - `content/ui/style.json`: content: ui_style x1
+- `content/ui/transitions.json`: content: transition x3
 - `content/world/areas.json`: content: area x1
 - `content/world/buildings.json`: content: building x9
 - `content/world/camera.json`: content: camera_rig x1
@@ -57,14 +62,20 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/world/tiles.json`: content: tile x8
 
 ## core
+- `core/area_port.gd`: What the Router needs from the area that is playing (a base class to override; the default does nothing)
 - `core/asset_manifest.gd`: Checks assets/manifest.json: every file under the assets folder (except *.import, .gdignore, *.md and the manifest itself) has an entry with a non-empty source and licence
 - `core/audio_director.gd`: All game audio (autoload AudioDirector)
+- `core/battle_session.gd`: One battle from the Router's side: launches a BattleRunner beside the area, and when the stage ends turns its result into GameState changes
 - `core/content_db.gd`: All authored game data (autoload ContentDB)
 - `core/defs/def.gd`: Base of every content definition: an id, how it reads itself from JSON, and which other ids it needs
 - `core/defs/def_reader.gd`: Typed, validated reads from one JSON object
+- `core/defs/flow_rules_def.gd`: Numbers and ids of the game flow (content/prototype/flow.json): which arena battles use, the music of exploring and of fighting, how long the player must stand still for a spot to count as safe (the unstuck target), and where the debug labels sit
+- `core/defs/transition_def.gd`: A screen transition between flow states: a plain fade or the qamariya-glass shatter, how long it runs and the colour it fades through (content/ui/transitions.json)
 - `core/event_bus.gd`: Global signals between features (autoload EventBus)
 - `core/game_state.gd`: Everything a save file holds (autoload GameState)
-- `core/scene_router.gd`: Game flow owner (autoload Router): title -> area -> battle arena -> area, transitions, new game, load, can_save
+- `core/save/save_codec.gd`: Pure save format: migrate() lifts any old save dictionary to the current version one step at a time (_v1_to_v2, _v2_to_v3, _v3_to_v4), and sanitize() drops content ids the game no longer knows
+- `core/save/save_service.gd`: Save slots on disk: <dir>/slot_N.json, written atomically (tmp file, then rename over the old one, with the previous save kept as slot_N.json.bak)
+- `core/scene_router.gd`: Game flow owner (autoload Router): title -> area -> battle arena -> area, new game, save and load, unstuck, and the play-time clock
 - `core/tests/fixtures/assets_bad/a.txt`
 - `core/tests/fixtures/assets_bad/manifest.json`: content: ? x0
 - `core/tests/fixtures/assets_bad/unlisted.txt`
@@ -74,15 +85,20 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `core/tests/fixtures/bad_text/bad.csv`
 - `core/tests/fixtures/bad_text/dup_a.csv`
 - `core/tests/fixtures/bad_text/dup_b.csv`
+- `core/tests/fixtures/save_v3.json`: content: ? x0
 - `core/tests/test_asset_manifest.gd`: Asset manifest: every shipped asset has a source and licence; the checker catches missing entries, empty licences and entries without files (fixtures), and ignores notes, .import files and the manifest
 - `core/tests/test_content_db.gd`: The shipped content loads with no problems, and the validator catches broken content
 - `core/tests/test_def_reader.gd`: DefReader int lists and cross-key problems, and the encounter definition built on them
 - `core/tests/test_game_state.gd`: Save data survives a round trip through JSON, a version-1 save migrates, and an unknown version is refused
+- `core/tests/test_save_codec.gd`: SaveCodec: a v3 fixture migrates to v4, unknown versions are refused, unknown content ids are dropped with a warning, and the full v4 state (money, bag, vitals with hp 0, cleared patrols) round trips through GameState
+- `core/tests/test_save_service.gd`: SaveService: round trip, summary, an existing slot is replaced (the rename overwrites on Windows too) with the old save kept as .bak, and corrupt files give a clear error
 - `core/tests/test_text_db.gd`: Player text: every localization CSV loads, keys translate, and a malformed file is reported
 - `core/text_db.gd`: Player text (autoload TextDB): loads every res://localization/*.csv (header "keys,<lang>,...") into the TranslationServer at startup, so tr("KEY") works
 
 ## features
+- `features/art/defs/clip_def.gd`: Stub (v0.3 registry, filled by the puppet builder): one keyframed puppet clip (attack, cast, hurt...) with its length in seconds and whether it loops
 - `features/art/defs/palette_def.gd`: The locked colour palette: one letter per colour ("." is transparent and never listed here)
+- `features/art/defs/puppet_def.gd`: Stub (v0.3 registry, filled by the puppet builder): one painted puppet, cut into parts from a full-body picture and animated in code
 - `features/art/defs/sprite_def.gd`: One pixel sprite: rows of palette letters ('.' = transparent), all the same width, feet on the last row
 - `features/art/defs/visual_rules_def.gd`: Numbers for how a CharacterVisual looks and moves: art scale, idle breathing, walking (bob, squash and stretch, lean, dust), turning, the blob shadow, and the battle motions (anticipation, lunge with afterimages, recoil, hurt, knocked out, revive, victory hop)
 - `features/art/logic/pixel_art.gd`: Turns a palette-indexed sprite (rows of letters) into an Image or texture
@@ -105,11 +121,12 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/audio/tests/test_audio.gd`: Audio: every sound and music entry is well formed, every sfx file exists, every vfx id has a sound, the pure sound rules hold, and the AudioDirector builds its buses, plays headless and skips missing music
 - `features/audio/view/music_deck.gd`: The music side of the AudioDirector: two players so one track crossfades into the next, and a duck of the Music bus under stingers
 - `features/combat/defs/action_def.gd`: One battle technique: its cost, power, who it targets, and what it does to the timeline (cast speed, recovery, knockback, cancel)
+- `features/combat/defs/arena_def.gd`: A battle arena: a floor built as a sibling of the exploring area, far from it (origin), so the fight never shares space with the rooftop
 - `features/combat/defs/battle_camera_def.gd`: The cinematic battle camera (content/combat/camera.json): the low pose it swoops to from the exploration camera, the gentle idle drift, how far it follows the acting side, the push-in on big moves and the victory pose
 - `features/combat/defs/battle_rules_def.gd`: The tunable numbers of one battle ruleset: damage and heal formula factors, SP gain, the stall guard, start ranges and the two thresholds BattleAI uses for heals and guards
 - `features/combat/defs/battle_view_def.gd`: Layout and pacing numbers of the battle screen (content/combat/view.json): camera, where each formation slot stands, ticks per frame, hit-stop and banner times, floating-text sizes, HUD sizes and colours
 - `features/combat/defs/combatant_def.gd`: One kind of fighter (a party member or an enemy type): base stats and the actions it can use
-- `features/combat/defs/encounter_def.gd`: One battle setup: which enemies stand in which formation slots, which slots the party takes, and the guaranteed loot (item ids, no randomness) granted after a win
+- `features/combat/defs/encounter_def.gd`: One battle setup: which enemies stand in which formation slots, which slots the party takes, and the guaranteed rewards (equippable loot ids, riyal and consumables, no randomness) granted after a win
 - `features/combat/defs/juice_def.gd`: The "feel" numbers of a battle (content/combat/juice.json): how hard hitstop freezes, how the BREAK flash and the damage numbers pop and bounce, how a camera shake decays
 - `features/combat/defs/status_def.gd`: One status effect: how long it lasts and how it changes timeline speed, interrupt immunity and the damage the afflicted unit takes (guarded: 0.6 means 40% less)
 - `features/combat/defs/vfx_def.gd`: One battle effect kind (content/combat/vfx.json, id = an ActionDef.VFX_KINDS entry): when the hit lands, the hitstop and camera shake / push it earns, and the layers of pooled sprites it paints
@@ -120,6 +137,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/logic/battle_outcome.gd`: What a finished battle hands back: result (victory, defeat, retry), the party's vitals and bag after the fight, and the rewards (money, equippable items, consumables) still to be applied to GameState by the Router
 - `features/combat/logic/battle_request.gd`: What the Router hands to a battle: encounter, arena, ambush, seed, party order, and the pre-battle snapshot (vitals, bag, money) that "Retry fight" restores
 - `features/combat/logic/battle_resolver.gd`: Resolves one landed act (docs/design/combat.md, "Resolving an action"): targets, damage or heal per target, timeline effect per hit, status, SP gain, regen, status turns
+- `features/combat/logic/battle_setup.gd`: Everything BattleSim.create_from needs for one fight, in one object: the built party (in party order, one CombatantDef per hero) and the enemies with their formation slots, the rules and move tables, the carried vitals and bag, the gear snapshot, the seed, the ambush, which encounter and arena, and the stage anchor
 - `features/combat/logic/battle_sim.gd`: One battle (docs/design/combat.md): builds the units, steps the Timeline one tick at a time, asks the player (heroes) or BattleAI (enemies) for choices, resolves acts and decides victory or defeat
 - `features/combat/logic/battle_targets.gd`: Who can do what in a battle: a unit's moves, which of them it can pay for, and who a move may target
 - `features/combat/logic/formation.gd`: Two rows per side: slots 0-1 are the vanguard, 2-3 the rearguard, and slot n+2 stands behind slot n
@@ -133,6 +151,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/tests/test_battle_hud_style.gd`: The restyled battle HUD keeps its behaviour and gains: tags on the command buttons, gradient bars in the party panel, the brass timeline track, and rarity-coloured spoils on the victory panel (only items not owned yet)
 - `features/combat/tests/test_battle_interrupt.gd`: T4: a cancel move landing on a casting enemy interrupts it (back to INTERRUPT_POS) inside BattleSim
 - `features/combat/tests/test_battle_menu_support.gd`: The command menu with tech moves: an ally move lists the allies (not the foes), self and all-moves skip the target list and commit at once, and the party is built from saved gear
+- `features/combat/tests/test_battle_outcome.gd`: The battle contract: BattleSetup carries carried vitals and the bag into units, hero ids come from the party list, BattleOutcome reports vitals after (a downed hero stands at ko_stand_hp after a victory only) and the bag, and the speed / melee numbers come from the battle rules
 - `features/combat/tests/test_battle_perks.gd`: Perks in battle (sp_per_act, hp_regen, start_bonus, bonus_knockback), Perks.apply on a fighter copy, and the rarity rule that only Rare and above may carry a perk
 - `features/combat/tests/test_battle_rules.gd`: T5: damage, SP, cover, retargeting and status turns follow docs/design/combat.md
 - `features/combat/tests/test_battle_sim.gd`: BattleSim: unit ids, determinism (T1), every battle ends (T2), refused choices, event order, stall guard
@@ -145,6 +164,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/tests/test_reverse_stab.gd`: The reverse stab: only when the party was ambushed, Zayd strikes the lowest-slot living enemy first
 - `features/combat/tests/test_timeline.gd`: Timeline rules: command pause, cast and act, interrupts, knockback limits, determinism
 - `features/combat/tests/test_vfx.gd`: Battle effects: every ActionDef vfx kind has data, every texture paints, the effect player builds and plays each kind (single target and all foes) without errors and gives its sprites back to the pool, and the juice numbers (hitstop, shake, zoom) come from data and rank heavy above light
+- `features/combat/view/arena_builder.gd`: Builds a battle arena from its ArenaDef: a floor slab whose top is at the arena origin and the look's key light, placed far from the exploring area (content/combat/arenas.json)
 - `features/combat/view/battle_action_player.gd`: Plays the swing of one move: the camera leans toward the actor, a melee actor anticipates and dashes (a caster crouches and rises), the move's effect plays, and the call returns when the hit lands
 - `features/combat/view/battle_camera.gd`: The cinematic battle camera
 - `features/combat/view/battle_command_menu.gd`: The command menu (bottom left) for the hero waiting at COMMAND: first one Button per move (unaffordable ones disabled; name, SP cost, a "cancels" / target tag; the focused move's description below), then one Button per valid target (foes or allies; self and all-moves skip this list)
@@ -159,6 +179,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/view/battle_menu_chips.gd`: The small tags on the right edge of a command-menu button: SP cost (cyan), "cancels" (magenta), the target scope of a self / all move, and for a target the HP and a "will interrupt" warning
 - `features/combat/view/battle_numbers.gd`: The pop-up text of a battle: damage and heal numbers that pop in with an overshoot, bounce up and fade (bigger for heavy hits, green for heals), and the BREAK! stamp over a unit whose cast was cut
 - `features/combat/view/battle_party_panel.gd`: The party panel (bottom right, compact): per hero an ornate name plate beside an HP bar (red to orange) and an SP bar (blue to cyan), each with its numbers in Reem Kufi
+- `features/combat/view/battle_runner.gd`: One fight, away from the exploring area: builds the arena from the request, the sim from content and the saved gear, the BattleStage beside it, and reports the stage's result
 - `features/combat/view/battle_stage.gd`: The battle screen (wait mode): places the fighters and the camera, runs the HUD, steps a BattleSim a few ticks per physics frame and plays the resulting events
 - `features/combat/view/battle_style.gd`: Small builders for the battle screen's look (labels, bars, names, head icons)
 - `features/combat/view/battle_timeline_bar.gd`: The timeline along the top: an ornate brass track from 0 to ACT_POINT with a COMMAND mark and a tinted cast zone (BattleTrackArt), and one framed head icon per living unit at its timeline position (enemies above the track, the party below it, a small pointer in the team colour toward the track)
@@ -198,24 +219,42 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/equipment/view/equipment_item_button.gd`: Builds one owned item as a menu button: its name in the rarity colour, the rarity tag and an "Equipped" mark on the right
 - `features/equipment/view/equipment_page.gd`: The equipment layout: title and hero tabs on top, the slot lists on the left, the item detail and stat comparison on the right, Confirm with the back hint at the bottom
 - `features/equipment/view/equipment_screen.gd`: The equipment screen (the bench): a tab per hero (Zayd: hilt, blade, prosthetic; Bilqis: prosthetic), the OWNED items of each slot with rarity colours and tags, the perk and tech moves of the focused item, and the stat comparison base vs
-- `features/items/defs/chest_def.gd`: A chest holding one item (an id of a hilt, blade or prosthetic)
+- `features/items/defs/chest_def.gd`: A chest holding an equippable (an id of a hilt, blade or prosthetic), riyal and/or consumables; at least one
+- `features/items/defs/consumable_def.gd`: A stackable item used from the bag, in the field or in battle (feathered herbs, the qishr cup)
+- `features/items/defs/count_map.gd`: Reads an optional {"id": count} JSON object (rewards, the start bag) as {StringName: int}, each count 1 or more
+- `features/items/defs/economy_rules_def.gd`: The money and rest numbers (content/economy/rules.json, id "default"): start purse and bag, the cap, the repeat-win payout share, the HP a downed hero stands up with after a victory, the patrol respawn guards
 - `features/items/defs/equip_def.gd`: Shared base of everything a hero can wear or wield (hilt, blade, prosthetic): names, a rarity tier and an optional perk (Rare and above only; rules in docs/design/prosthetics.md)
 - `features/items/defs/perk_def.gd`: One perk an item can carry: a kind that battle logic implements and an amount
 - `features/items/defs/rarity_def.gd`: One rarity tier: its name, display colour, sort order, whether it is story-only (never loot) and whether gear of this tier may carry a perk
+- `features/items/defs/shop_def.gd`: A stall: who keeps it, her greeting and the consumable ids on sale (price and sell come from the ConsumableDef)
+- `features/items/logic/bag.gd`: The party's stackable consumables: counts per id plus RESERVATIONS made by pending battle casts
 - `features/items/logic/chests.gd`: Chest rules: opening gives the item once, and the opened state is a saved flag
 - `features/items/logic/gear.gd`: Builds a hero's fighter from the shared base plus worn gear: base -> hilt -> blade -> prosthetic -> perks (caps are applied by each step)
+- `features/items/logic/holdings.gd`: What rewards are paid into: riyal, the consumable Bag, the unique-item inventory and the flags
 - `features/items/logic/inventory.gd`: Which unique items the party owns and whether a hero may wear one in a slot
+- `features/items/logic/item_effect.gd`: What a consumable does to one hero: gains() computes the real change from current numbers (never past the maximum, a herb never helps a downed hero, a white herb only a downed one); apply() writes it into carried vitals
 - `features/items/logic/perks.gd`: Applies perks to a fighter
+- `features/items/logic/reward_result.gd`: What a reward really changed: riyal added (after the cap), the equippables that were new, the consumables that fit in the bag, and riyal that came from herbs which did not fit (sold at their sell price)
+- `features/items/logic/rewards.gd`: Rewards for a won battle or an opened chest, paid straight into a Holdings
+- `features/items/logic/vitals.gd`: Carried HP and SP per hero: {hero id: {"hp": int, "sp": int}}
+- `features/items/reward_applier.gd`: Pays rewards (Rewards) into GameState and announces them: item_obtained per new equippable, item_gained per herb stack, money_changed for the riyal
 - `features/items/tests/fixtures/bad_items/hilts.json`: content: hilt x3
 - `features/items/tests/fixtures/bad_items/rarities.json`: content: rarity x2
+- `features/items/tests/test_bag.gd`: Bag: stack caps with overflow, removal, and reservations (two heroes cannot both claim the last herb; release gives the claim back; consume uses it up)
 - `features/items/tests/test_inventory.gd`: Inventory (unique owned items, equip checks per slot), chests (open once, saved flag) and the item_obtained signal on the EventBus
 - `features/items/tests/test_items.gd`: Rarity tiers and the shipped items: six tiers with the owner's colours, every equippable has a real rarity, ids are unique across hilts / blades / prosthetics, the Heirloom is story-only and never loot, and bad content (an unknown rarity, a bad colour) is reported
+- `features/items/tests/test_rewards.gd`: Rewards: the first win pays everything and sets patrol_paid_<id>, a repeat win pays half the riyal and nothing else, herbs over the stack turn into riyal, the purse has a cap, a chest pays once
 - `features/prosthetics/defs/prosthetic_def.gd`: A high-tech prosthetic: one slot per hero
 - `features/prosthetics/logic/prosthetics.gd`: Merges a prosthetic into a fighter (docs/design/prosthetics.md), like Djanbeyyah.equip: stat adds, then the granted moves, then the caps
 - `features/prosthetics/tests/test_prosthetics.gd`: Prosthetics: the merge (base -> hilt -> blade -> prosthetic -> perks -> caps) builds new fighters and never touches the shared defs; each hero's prosthetics grant 1-2 tech moves; a prosthetic fits only its wearer
-- `features/prototype/prototype_main.gd`: The playable prototype: the rooftop, the workshop (talk once, then the equipment screen), the patrol battle, the title overlay, area title card and loot banners, wired through the other features' public signals
+- `features/prototype/prototype_main.gd`: The playable prototype's composition root: builds the rooftop, the workshop dialogue and menu, the title overlay, area title card and loot banners, registers the rooftop with the Router and wires the features' public signals
 - `features/prototype/prototype_main.tscn`: scene
+- `features/prototype/rooftop_port.gd`: The rooftop as the Router sees it: hide and disable it during a battle (it stays in the tree, so its awaits, signals and camera keep working), bring it back, and move the party for unstuck and loading
+- `features/prototype/tests/flow_harness.gd`: Test helpers for the game flow: a PrototypeMain whose battles run instantly with the AI choosing for the heroes, a patrol touch, a scratch save folder and a Router that records reloads instead of reloading the scene
 - `features/prototype/tests/test_prototype.gd`: T6: the prototype main scene builds headless with rooftop, dialogue box and workshop menu; a simulated patrol touch starts a battle and stops exploring; an auto-played battle ends and walking resumes with the patrol reset; retry starts a fresh battle; the first workshop visit plays the talk, then the menu; later visits skip the talk
+- `features/prototype/tests/test_router_area.gd`: The Router outside battles: the play-time clock (not while paused or at the title, real seconds under a slowed time scale), busy and can_save, unstuck to the last place the player stood still, and the saved chest state
+- `features/prototype/tests/test_router_battle.gd`: The Router's battle round trip: the area is hidden and stopped while the arena fights, then restored; Retry and defeat restore the pre-battle snapshot; vitals and herbs carry (a downed hero stands up after a victory); the first win pays everything and a repeat pays half
+- `features/prototype/tests/test_smoke_flow.gd`: Smoke test of the whole flow, headless through the Router: a new game, a fight on auto-play, the outcome applied to GameState, a save, a load that restores exactly that state
 - `features/ui/defs/ui_style_def.gd`: The look of every menu and HUD (content/ui/style.json): three font files, named colours (c_*), sizes in pixels at 1920x1080 (s_*) and times in seconds (t_*)
 - `features/ui/logic/pause_logic.gd`: Pure rules of the pause menu: which entries show and in what order, which ask "are you sure", the vitals of a hero with a missing record (= full), and the play-time clock text
 - `features/ui/tests/node_walk.gd`: Test helper (not a test): every descendant of a node, depth first
@@ -243,12 +282,14 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/ui_theme.gd`: Builds the one Godot Theme every menu and HUD uses: Amiri for reading, Reem Kufi for titles, names and numbers, ornate panels, brass-focus buttons, gradient bars
 - `features/world/defs/area_def.gd`: A level as data: equal-width rows of tile characters, a legend (character -> tile id) and four markers (S spawn, W workshop bench, P patrol start, Q patrol end) that each appear once and stand on floor
 - `features/world/defs/building_def.gd`: One Sana'a tower-house as data: footprint (metres), floors (the lowest stone_floors are basalt), window columns per facade, frieze style, qamariya glass letters, lit-window ratio, parapet style and roof extras
+- `features/world/defs/camera_preset_def.gd`: Stub (v0.3 registry, filled by the level builder): one named camera pose with its own field of view and depth of field, e.g
 - `features/world/defs/camera_rig_def.gd`: Camera language for exploring (content/world/camera.json): the opening establishing shot as keyframes (camera and target positions relative to the player, field of view, depth-of-field scale, seconds) and the "vista" pose the camera eases to inside a vista zone
 - `features/world/defs/canyon_spec.gd`: The sunken street (al-Saila) under the area: two walls from bottom_y up to top_y between x0 and x1 (the street's width) over the area's z range z0..z1, continued extend metres beyond both ends up to ext_top_y only, with a stone base of base_height under a brick upper wall and a thin water channel down the middle
 - `features/world/defs/explore_rules_def.gd`: Numbers for walking around an area: player speed and size, follower, camera, patrol, touch and interact ranges, collision wall height and the workshop prompt
 - `features/world/defs/light_spec.gd`: One practical light: where it is, its colour, a real OmniLight (energy, range; only the nearest few are alive at once) and a fake light pool (an additive quad on the floor or a wall, radius in metres, cheap and always on)
 - `features/world/defs/look_def.gd`: The HD-2D look as data: camera offset and field of view, tilt-shift depth of field, key light, ambient light, background and bloom
 - `features/world/defs/mist_def.gd`: One drifting mist layer (content/world/mist.json): a flat transparent plane at a height, scrolling noise between two thresholds, faded where it meets geometry, near the camera and at the plane's edges
+- `features/world/defs/place_def.gd`: Stub (v0.3 registry, filled by the level builder): a named spot in an area (sabil, stall, workshop, vista) at a grid cell, so code finds it by id instead of by node path
 - `features/world/defs/placement.gd`: Where one building or prop stands in an area: the content id (ref), an optional name for it (chests), the position (x, z on the floor; y absolute, or the floor height when absent) and a yaw in degrees
 - `features/world/defs/prop_def.gd`: A rooftop prop as data (content/world/props.json): a list of simple parts (PropPart), an optional practical light it carries, an optional box that blocks walking (collide = width, height, depth, centred on the prop's base) and, for a chest, the lid's hinge (lid_hinge x, y, z) so the "lid" part group can swing open
 - `features/world/defs/prop_part.gd`: One solid piece of a prop: a box (size = width, height, depth; at = centre) or a frustum (size = bottom radius, top radius, height; at = base centre), a palette letter, an optional yaw/tilt (degrees), and how it is drawn: glow (unshaded, boosted, blooms), blink (a glow that pulses), pattern (a painted tile texture instead of the letter), group (a named sub-mesh that can move, such as a chest lid)
@@ -266,6 +307,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/logic/light_pick.gd`: Which practical lights get a real OmniLight: the nearest few to a focus point (the rest keep only their fake light pool), plus the fade and flicker maths
 - `features/world/logic/masonry.gd`: Brick courses and stone slabs painted with palette letters
 - `features/world/logic/pixel_canvas.gd`: A pixel canvas painted with palette letters, with an optional emission layer (black = no glow)
+- `features/world/logic/safe_spot.gd`: Remembers where the player last stood still (the "unstuck" targets)
 - `features/world/logic/skyline_layout.gd`: Where the city blocks stand: for each band a jittered grid of cells between the band's distances from the play area, minus the al-Saila corridor and the landmark clearings, thinned by the band's fill
 - `features/world/logic/surface_painter.gd`: Seamless 128x128 surface textures (4 m at 32 px/m) for the playable tiles, painted with palette letters: lime-plaster roof floor, worn plaster, white gypsum, wooden planks, stone paving (al-Saila), basalt, brick, and the dotted window texture of far silhouettes
 - `features/world/look_test/look_test.gd`: HD-2D look test (the M1 rendering spike): a block diorama, a pixel-art billboard hero (CharacterVisual), tilt-shift depth of field, bloom and a low sun with shadows
@@ -275,6 +317,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/player/player.gd`: Zayd: 8-way walking from the move_* actions (up = -Z), stopped by solid tiles
 - `features/world/rooftop/rooftop.gd`: The rooftop exploration scene
 - `features/world/rooftop/rooftop.tscn`: scene
+- `features/world/rooftop/rooftop_debug.gd`: The F3 debug labels of an area: frames per second and the area name
 - `features/world/rooftop/rooftop_shot.gd`: Frame tool: the rooftop with Zayd put at chosen floor coordinates (and an optional free camera), for rendering pictures
 - `features/world/rooftop/rooftop_shot.tscn`: scene
 - `features/world/tests/test_ambush.gd`: Which side struck first: the patrol's walking direction, and last_touch_ambush() after a touch (0 nobody, 1 the patrol caught the player from behind, 2 the player caught the patrol from behind)
@@ -286,6 +329,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/tests/test_look_test.gd`: The look-test scene builds without errors (headless: no pixels are drawn, but every node and resource is made)
 - `features/world/tests/test_night.gd`: Night look: the sky def feeds every shader uniform, look "night" builds a sky environment with fog and a fill light while "v1" stays the flat daytime look, bad look keys are caught, the vista zone and mist layers load
 - `features/world/tests/test_rooftop.gd`: The rooftop scene builds headless; walking, the follower, the patrol touch, the ambush direction, the exploring switch, the patrol respawn, the workshop prompt and the camera
+- `features/world/tests/test_safe_spot.gd`: SafeSpot: a place counts after standing still, walking resets the clock, the newest spot is skipped when the player is wedged right there, and only the two newest spots are kept
 - `features/world/tests/test_skyline.gd`: Night Sana'a city: building and skyline content, the layout rules (outside the area, out of the al-Saila corridor, inside the band, deterministic), the tower-house mesh, the landmarks and the draw-call budget
 - `features/world/view/area_builder.gd`: Builds an area's blocks: one MultiMeshInstance3D per tile type (bodies, and caps drawn with the cap tile's material; tiles with a pattern get its painted triplanar texture), plus one StaticBody3D holding a box per run of solid tiles and walls that close the area's edges
 - `features/world/view/area_dressing.gd`: Everything an area has on top of its tiles: tower-houses and props (PropBuilder), neon signs, the practical lights with their fake pools (AreaLights) and the chests (one Chest each, interactive)
