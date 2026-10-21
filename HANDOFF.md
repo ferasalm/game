@@ -13,8 +13,9 @@ Plan (approved by Feras): docs/design/v03-plan.md. Architecture: docs/ARCHITECTU
 - In flight when the 5-h limit hit (local worktree branches; each should have a WIP commit + WIP_NOTES.md at its
   root; if a note is missing, read `git -C <worktree> log` and `diff`):
   - P1a flow/state/items/battle contract: .claude/worktrees/agent-a6fa1b1bce014b0a4 (worktree-agent-a6fa1b1bce014b0a4)
-  - P1b UI stack/pause/battle timers/CharacterVisual split: .claude/worktrees/agent-a053ea400a3633839
-    (worktree-agent-a053ea400a3633839)
+  - P1b DONE (143bc79, check.sh ok, 307 tests; APIs + leftovers in its WIP_NOTES.md): merge as is:
+    worktree-agent-a053ea400a3633839. Leftover: create_timer in battle_action_player/battle_stage/fighters.
+  - P1a partial (3f22d3e: items 1-4 done; Router, chest fix, PrototypeMain, smoke test left).
   - Look spike (painted light, bake, outlines, grade, camera presets, 3 variants): .claude/worktrees/
     agent-a4e91f85045597ede (worktree-agent-a4e91f85045597ede); renders go to inbox/spike/.
 - Herb seller name "Umm Nabil" (Narrative Designer); Feras may rename.
@@ -26,7 +27,7 @@ Plan (approved by Feras): docs/design/v03-plan.md. Architecture: docs/ARCHITECTU
 3. Optional: Flow/Gemini pictures from docs/design/art-prompts-v03.md (herb seller, parts sheets, herb icons).
 
 ## Next steps
-1. Finish Phase 1 and the look spike: start FRESH agents (Agent tool, isolation worktree), one per WIP branch; each
+1. Finish Phase 1 and the look spike: start FRESH agents (Agent tool, isolation worktree), for P1a and the spike; each
    brief = the original brief in docs/design/v03-plan.md Phase 1 / look spike + "git merge --ff-only
    claude/night-sanaa && git merge <WIP branch>, read WIP_NOTES.md, continue". Lead reviews, merges P1a then
    P1b into claude/night-sanaa, runs check.sh. Model: Opus lead (high); Sonnet builders (high); spike Opus (high).
