@@ -1,6 +1,6 @@
 # Art bible: cyberpunk Sana'a 2150 (locked palette, scale and rules; owner may veto)
-Pixel sprites are data: rows of palette letters in `content/art/sprites.json` ('.' = transparent), turned into
-textures at runtime by PixelArt. Palette: `content/art/palette.json` (id "main", 32 colours, never add one casually).
+Characters are live 3D models (docs/design/characters-3d.md). The old pixel sprites (rows of palette letters in
+`content/art/sprites.json`, turned into textures by PixelArt) stay only as the fallback source. Palette: `content/art/palette.json` (id "main", 32 colours, never add one casually).
 
 ## Scale and light
 - Godot units are metres. Characters are live 3D models, 2 m tall (Feras 2026-10-21; characters-3d.md).
