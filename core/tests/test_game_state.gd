@@ -30,8 +30,8 @@ func test_round_trip_through_json() -> void:
 
 func test_unknown_versions_are_refused() -> void:
 	var state: Node = _state()
-	check_eq(state.call("from_dict", {"version": 99}), "save version 99, expected 3", "newer version refused")
-	check_eq(state.call("from_dict", {"version": 0}), "save version 0, expected 3", "no version refused")
+	check_eq(state.call("from_dict", {"version": 99}), "save version 99, expected 4", "newer version refused")
+	check_eq(state.call("from_dict", {"version": 0}), "save version 0, expected 4", "no version refused")
 	state.free()
 
 
@@ -43,7 +43,7 @@ func test_version_one_save_migrates_with_empty_equipment() -> void:
 	check_eq(state.call("from_dict", old), "", "version 1 accepted")
 	check((state.get("equipment") as Dictionary).is_empty(), "equipment empty after migration")
 	check_eq((state.get("area_id") as StringName), &"ch1_ridge", "other fields kept")
-	check_eq((state.call("to_dict") as Dictionary)["version"], 3, "saved again as version 3")
+	check_eq((state.call("to_dict") as Dictionary)["version"], 4, "saved again as version 4")
 	state.free()
 
 

@@ -1,0 +1,8 @@
+{
+  "kind": "transition",
+  "items": [
+    {"id": "fade_out", "kind": "fade", "seconds": 0.4, "color": "#05060d"},
+    {"id": "fade_in", "kind": "fade", "seconds": 0.5, "color": "#05060d"},
+    {"id": "shatter", "kind": "fade", "seconds": 0.6, "color": "#05060d"}
+  ]
+}

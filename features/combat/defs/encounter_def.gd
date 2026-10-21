@@ -1,13 +1,16 @@
 class_name EncounterDef
 extends Def
 ## One battle setup: which enemies stand in which formation slots, which slots the party takes, and the
-## guaranteed loot (item ids, no randomness) granted after a win.
+## guaranteed rewards (equippable loot ids, riyal and consumables, no randomness) granted after a win.
 
 var name_key: String = ""
 var enemies: Array[StringName] = []
 var enemy_slots: Array[int] = []
 var party_slots: Array[int] = []
 var loot: Array[StringName] = []
+## Riyal paid for the first win; a repeat win pays rules.repeat_payout of it (items and herbs only the first time).
+var money: int = 0
+var consumables: Dictionary[StringName, int] = {}
 
 
 func read(r: DefReader) -> void:
@@ -17,6 +20,8 @@ func read(r: DefReader) -> void:
 	enemy_slots = r.int_list("enemy_slots", 0, 3)
 	party_slots = r.int_list("party_slots", 0, 3)
 	loot = r.id_list("loot")
+	money = r.integer("money", 0, 9999, 0, false)
+	consumables = CountMap.read(r, "consumables")
 	if enemies.is_empty() or enemies.size() != enemy_slots.size():
 		r.problem("enemy_slots", "needs one slot per enemy (and at least one enemy)")
 	if party_slots.is_empty():
@@ -24,7 +29,7 @@ func read(r: DefReader) -> void:
 
 
 func references() -> Array[Array]:
-	var out: Array[Array] = []
+	var out: Array[Array] = CountMap.references(consumables)
 	for enemy_id: StringName in enemies:
 		out.append(["combatant", enemy_id])
 	for item_id: StringName in loot:

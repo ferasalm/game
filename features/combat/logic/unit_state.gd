@@ -21,10 +21,18 @@ var status_turns: Dictionary[StringName, int] = {}
 ## The action and targets of the act that just resolved (Timeline clears action/targets at ACT).
 var acted: ActionDef = null
 var acted_targets: Array[StringName] = []
+## Speed numbers from the battle rules (BattleRulesDef): weight slows a unit by weight x weight_factor.
+var weight_factor: float = 0.0
+var min_speed_mult: float = 1.0
 
 
-static func create(from_def: CombatantDef, new_id: StringName, on_side: int, in_slot: int) -> UnitState:
+static func create(
+		from_def: CombatantDef, new_id: StringName, on_side: int, in_slot: int,
+		rules: BattleRulesDef = null) -> UnitState:
 	var unit := UnitState.new()
+	var numbers: BattleRulesDef = rules if rules != null else BattleRulesDef.new()
+	unit.weight_factor = numbers.speed_weight_factor
+	unit.min_speed_mult = numbers.speed_min_mult
 	unit.unit_id = new_id
 	unit.def = from_def
 	unit.side = on_side
@@ -50,7 +58,7 @@ func cast_speed_for(chosen: ActionDef) -> int:
 
 
 func _speed(casting: bool, chosen: ActionDef) -> int:
-	var mult: float = maxf(0.5, 1.0 - def.weight * 0.015)
+	var mult: float = maxf(min_speed_mult, 1.0 - def.weight * weight_factor)
 	for status: StatusDef in statuses:
 		mult *= status.cast_speed if casting else status.wait_speed
 	if casting and chosen != null:

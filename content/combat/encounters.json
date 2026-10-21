@@ -1,8 +1,15 @@
 {
   "kind": "encounter",
   "items": [
+    {"id": "patrol_scouts", "name_key": "ENCOUNTER_PATROL_SCOUTS",
+     "enemies": ["concession_enforcer", "survey_drone"],
+     "enemy_slots": [0, 2], "party_slots": [0, 2], "loot": [], "money": 40},
     {"id": "rooftop_patrol", "name_key": "ENCOUNTER_ROOFTOP_PATROL",
      "enemies": ["concession_enforcer", "concession_enforcer", "survey_drone"],
-     "enemy_slots": [0, 1, 2], "party_slots": [0, 2], "loot": ["anvil_hilt"]}
+     "enemy_slots": [0, 1, 2], "party_slots": [0, 2], "loot": ["anvil_hilt"], "money": 70},
+    {"id": "patrol_gate", "name_key": "ENCOUNTER_PATROL_GATE",
+     "enemies": ["concession_enforcer", "concession_enforcer", "survey_drone", "survey_drone"],
+     "enemy_slots": [0, 1, 2, 3], "party_slots": [0, 2], "loot": [], "money": 120,
+     "consumables": {"white_herb": 1}}
   ]
 }

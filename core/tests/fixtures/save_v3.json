@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "flags": {"workshop_talk_done": true, "chest_opened_chest_saila": true},
+  "equipment": {"zayd.hilt": "swift_hilt", "zayd.blade": "keen_blade", "bilqis.prosthetic": "lens_array"},
+  "inventory": ["grandfather_hilt", "swift_hilt", "keen_blade", "lens_array", "ghost_item"],
+  "counters": {"battles": 2},
+  "party": ["zayd", "bilqis"],
+  "area_id": "souq_rooftops",
+  "spawn_id": "gate"
+}

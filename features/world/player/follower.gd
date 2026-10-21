@@ -21,9 +21,15 @@ func _init(rules: ExploreRulesDef, leader: Node3D) -> void:
 
 
 func _ready() -> void:
+	stand_by_player()
+
+
+## Jumps to one follower distance behind the leader and forgets the old trail (after a teleport).
+func stand_by_player() -> void:
 	var start: Vector3 = _leader.position
 	position = start - Vector3(0.0, 0.0, _rules.follower_distance)
 	_trail = [position, start]
+	_keep_from = 0
 
 
 ## Off: stops and hides. On: shows and follows again.

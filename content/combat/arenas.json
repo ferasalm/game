@@ -1,0 +1,7 @@
+{
+  "kind": "arena",
+  "items": [
+    {"id": "rooftop_arena", "origin": [0, 0, 300], "look": "night", "floor_size": [24, 0.5, 24],
+     "floor_color": "#c7b38c"}
+  ]
+}

@@ -1,7 +1,8 @@
 class_name Chest
 extends InteractSpot
 ## A treasure chest: the prop's body and a lid that swings open on a hinge when the player interacts. It opens
-## once, saves nothing itself and emits `opened(chest_id)`; whoever owns the inventory listens.
+## once and emits `opened(chest_id)`; whoever owns the inventory listens. A chest the saved flags already show as
+## opened (GameState, Chests.flag) is built open, its lid at rest, and answers to nothing.
 
 ## The lid started to open (the chest is now empty-handed for good).
 signal opened(chest_id: StringName)
@@ -35,6 +36,10 @@ func _init(id: StringName, def: PropDef, palette: PaletteDef, rules: ExploreRule
 	lid.mesh = PropMesh.mesh(def, palette, LID_GROUP)
 	lid.position = -def.lid_hinge
 	hinge.add_child(lid)
+	if GameState.flags.get(Chests.flag(id), false):
+		is_open = true
+		_lid_t = 1.0
+		hinge.rotation.x = -_open_angle
 
 
 func _can_interact() -> bool:

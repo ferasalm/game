@@ -14,6 +14,9 @@ var sim: BattleSim
 var fighters: BattleFighters
 var hud: BattleHud
 var camera: Camera3D
+## When set, the battle camera renders with this Environment instead of the scene's WorldEnvironment (the Router
+## gives the arena its own, so the exploring area's environment is overridden).
+var environment: Environment
 ## The cinematic rig that moves `camera` (swoop in, drift, push, shake, victory pose).
 var camera_rig: BattleCamera
 var vfx: VfxPlayer
@@ -53,7 +56,7 @@ func start(battle: BattleSim, anchor: Vector3) -> void:
 	_player.attach(_actions, juice, vfx)
 	_busy = true
 	if sim.ambush == 1:
-		_turn_zayd_away()
+		_turn_wielder_away()
 	await _player.play(sim.opening(), instant)
 	_busy = false
 	_check_end()
@@ -139,10 +142,10 @@ func _on_target_focused(unit_id: StringName) -> void:
 		fighters.point_at(unit_id)
 
 
-func _turn_zayd_away() -> void:
-	var zayd: CharacterVisual = fighters.visual(&"zayd")
-	if zayd != null:
-		zayd.face(-1.0)
+func _turn_wielder_away() -> void:
+	var wielder: CharacterVisual = fighters.visual(Djanbeyyah.WIELDER)
+	if wielder != null:
+		wielder.face(-1.0)
 
 
 func _add_camera(anchor: Vector3) -> void:
@@ -150,13 +153,13 @@ func _add_camera(anchor: Vector3) -> void:
 	if look == null:
 		look = ContentDB.get_def("look", &"v1") as LookDef
 	var def := ContentDB.get_def("battle_camera", &"default") as BattleCameraDef
-	var previous: Camera3D = get_viewport().get_camera_3d()
 	camera = Diorama.make_camera(look if look != null else LookDef.new())
+	camera.environment = environment
 	add_child(camera)
 	camera_rig = BattleCamera.new()
 	add_child(camera_rig)
 	camera_rig.setup(camera, def if def != null else BattleCameraDef.new(), look if look != null else LookDef.new(),
-		anchor, previous, instant)
+		anchor, null, instant)  # no previous camera: the arena is far from the exploring area
 	camera.current = true
 
 

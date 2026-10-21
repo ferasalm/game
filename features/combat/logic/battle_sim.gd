@@ -15,32 +15,40 @@ var _opened: bool = false
 var actions: Dictionary[StringName, ActionDef] = {}
 var statuses: Dictionary[StringName, StatusDef] = {}
 var _resolver: BattleResolver
+var setup: BattleSetup
+## The consumables the party carries; battle casts reserve and consume from it (Bag).
+var bag: Bag
 
 
-## Party units use their def id; enemies use "<def id>_<n>" counting from 1. Slots pair with the units in order.
-## Units start at seeded random timeline positions from the rules' ranges. ambush: 0 none, 1 the party was
-## ambushed (the two ranges swap), 2 the party ambushed the enemy (enemies start at 0).
-## actions / statuses map ids to the Defs the fighters refer to (from ContentDB).
-static func create(
-		battle_rules: BattleRulesDef, party: Array[CombatantDef], party_slots: Array[int],
-		enemies: Array[CombatantDef], enemy_slots: Array[int], battle_seed: int, ambush: int,
-		action_defs: Dictionary[StringName, ActionDef], status_defs: Dictionary[StringName, StatusDef]) -> BattleSim:
+## Builds the battle from a BattleSetup. Party units use their def id; enemies use "<def id>_<n>" counting from
+## 1. Slots pair with the units in order. Units start at seeded random timeline positions from the rules' ranges
+## (ambush: 0 none, 1 the party was ambushed and the two ranges swap, 2 the party ambushed the enemy and the
+## enemies start at 0). Heroes start with their carried HP/SP (Vitals; missing means full).
+static func create_from(battle: BattleSetup) -> BattleSim:
 	var sim := BattleSim.new()
-	sim.rules = battle_rules
-	sim.actions = action_defs
-	sim.statuses = status_defs
-	sim.rng.seed = battle_seed
-	sim.ambush = ambush
-	for i: int in party.size():
-		sim.timeline.units.append(UnitState.create(party[i], party[i].id, 0, party_slots[i]))
-		sim.timeline.units[-1].pos = sim._start_pos(0, ambush, party[i])
+	sim.setup = battle
+	sim.rules = battle.rules
+	sim.actions = battle.actions
+	sim.statuses = battle.statuses
+	sim.bag = Bag.from_counts(battle.bag)
+	sim.rng.seed = battle.seed
+	sim.ambush = battle.ambush
+	for i: int in battle.party.size():
+		var hero: CombatantDef = battle.party[i]
+		var unit := UnitState.create(hero, hero.id, 0, battle.party_slots[i], battle.rules)
+		unit.hp = Vitals.hp_of(battle.vitals, hero.id, hero.max_hp)
+		unit.sp = Vitals.sp_of(battle.vitals, hero.id, hero.max_sp)
+		unit.pos = sim._start_pos(0, battle.ambush, hero)
+		sim.timeline.units.append(unit)
 	var counts: Dictionary[StringName, int] = {}
-	for i: int in enemies.size():
-		counts[enemies[i].id] = counts.get(enemies[i].id, 0) + 1
-		var unit_id := StringName("%s_%d" % [enemies[i].id, counts[enemies[i].id]])
-		sim.timeline.units.append(UnitState.create(enemies[i], unit_id, 1, enemy_slots[i]))
-		sim.timeline.units[-1].pos = sim._start_pos(1, ambush, enemies[i])
-	sim._resolver = BattleResolver.new(battle_rules, sim.rng, sim.timeline, status_defs)
+	for i: int in battle.enemies.size():
+		var foe: CombatantDef = battle.enemies[i]
+		counts[foe.id] = counts.get(foe.id, 0) + 1
+		var unit := UnitState.create(
+			foe, StringName("%s_%d" % [foe.id, counts[foe.id]]), 1, battle.enemy_slots[i], battle.rules)
+		unit.pos = sim._start_pos(1, battle.ambush, foe)
+		sim.timeline.units.append(unit)
+	sim._resolver = BattleResolver.new(battle.rules, sim.rng, sim.timeline, battle.statuses)
 	return sim
 
 
@@ -59,9 +67,9 @@ func lands_before(actor: UnitState, action: ActionDef, target: UnitState) -> boo
 ## when there is no ambush, no Zayd or no such action. step() calls it first if the view did not.
 func opening() -> Array[TimelineEvent]:
 	var out: Array[TimelineEvent] = []
-	var zayd: UnitState = timeline.find(&"zayd")
+	var wielder: UnitState = timeline.find(Djanbeyyah.WIELDER)
 	var stab: ActionDef = actions.get(&"reverse_stab") as ActionDef
-	if _opened or ambush != 1 or zayd == null or stab == null:
+	if _opened or ambush != 1 or wielder == null or stab == null:
 		_opened = true
 		return out
 	_opened = true
@@ -71,8 +79,8 @@ func opening() -> Array[TimelineEvent]:
 			target = unit
 	if target == null:
 		return out
-	out.append(TimelineEvent.new(&"reverse_stab", zayd.unit_id, 0, stab.id))
-	out.append_array(_resolver.strike(zayd, stab, target))
+	out.append(TimelineEvent.new(&"reverse_stab", wielder.unit_id, 0, stab.id))
+	out.append_array(_resolver.strike(wielder, stab, target))
 	if BattleTargets.side_is_down(timeline, 1):
 		_end(&"victory", out)
 	return out
