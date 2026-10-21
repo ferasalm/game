@@ -184,3 +184,11 @@ func float_list(key: String, min_value: float, max_value: float) -> Array[float]
 ## True when the key is present (for optional nested objects and lists).
 func has(key: String) -> bool:
 	return _data.has(key)
+
+
+## A nested JSON object as its own reader (errors name it, e.g. "file[0].light.color").
+func child(key: String) -> DefReader:
+	if _data.has(key) and _data[key] is Dictionary:
+		return DefReader.new(_data[key] as Dictionary, "%s.%s" % [_where, key], _errors)
+	_fail(key, "not an object")
+	return DefReader.new({}, _where, _errors)
