@@ -1,11 +1,9 @@
 class_name Rooftop
 extends Node3D
-## The rooftop exploration scene. Builds the night diorama from content (look, sky, mist, area, tiles), walks Zayd
-## with Bilqis in tow, runs a Concession patrol and the workshop bench, and moves the camera through an ExploreCamera
-## (follow, vista zone, opening shot).
-## Battle and menu scenes use only the public API: encounter_touched, workshop_opened, set_exploring,
-## reset_patrol, battle_anchor, restore_camera, play_intro, last_safe_position, teleport_party, place_party.
-## Actors are direct children, so their positions are area positions.
+## The rooftop exploration scene: builds the night diorama from content, walks Zayd with Bilqis in tow, runs a
+## Concession patrol and the workshop bench, moves the camera through an ExploreCamera. Battle and menu scenes use
+## only the public API (signals, set_exploring, reset_patrol, battle_anchor, restore_camera, play_intro,
+## last_safe_position, teleport_party, place_party). Actors are direct children: their positions are area positions.
 
 ## The patrol touched the player. from_behind: it came from behind the way he faces (the ambush rule).
 signal encounter_touched(encounter_id: StringName, from_behind: bool)
@@ -32,6 +30,7 @@ var camera_rig: ExploreCamera
 
 var _rules: ExploreRulesDef
 var _look: LookDef
+var _env: WorldEnvironment
 var _area: AreaDef
 var _floor_y: float = 0.0
 var _anchor: Vector3 = Vector3.ZERO
@@ -45,7 +44,7 @@ var _debug: RooftopDebug
 
 func _ready() -> void:
 	_rules = ContentDB.get_def("explore_rules", &"default") as ExploreRulesDef
-	_look = ContentDB.get_def("look", look_id) as LookDef
+	_look = ContentDB.get_def("look", PaintedLook.pick(look_id)) as LookDef
 	_area = ContentDB.get_def("area", area_id) as AreaDef
 	_flow = ContentDB.get_def("flow_rules", &"default") as FlowRulesDef
 	var rig := ContentDB.get_def("camera_rig", RIG_ID) as CameraRigDef
@@ -60,6 +59,7 @@ func _ready() -> void:
 	_debug = RooftopDebug.new()
 	_debug.setup(_flow, tr(_area.name_key))
 	add_child(_debug)
+	PaintedLook.finish(self, _look, _env.environment, camera, player)
 	_anchor = player.position
 	_safe = SafeSpot.new(_flow.safe_idle_seconds, _flow.safe_still_radius, player.position)
 
@@ -137,7 +137,9 @@ func _process(delta: float) -> void:
 
 
 func _build_world(rig: CameraRigDef) -> void:
-	add_child(Diorama.make_environment(_look))
+	PaintedLook.begin(_look)
+	_env = Diorama.make_environment(_look)
+	add_child(_env)
 	add_child(Diorama.make_sun(_look))
 	blocks = AreaBuilder.build(_area, _rules)
 	add_child(blocks)
@@ -184,8 +186,7 @@ func _marker(marker: String) -> Vector3:
 
 
 func _on_touched(from_behind: bool) -> void:
-	if _locked:
-		return
+	if _locked: return
 	_locked = true
 	_ambush = _ambush_side(from_behind)
 	_anchor = player.position.lerp(patrol.position, 0.5)
@@ -195,6 +196,5 @@ func _on_touched(from_behind: bool) -> void:
 func _ambush_side(from_behind: bool) -> int:
 	if from_behind:
 		return 1
-	var to_player: Vector3 = player.position - patrol.position
-	to_player.y = 0.0
+	var to_player: Vector3 = (player.position - patrol.position) * Vector3(1.0, 0.0, 1.0)
 	return 2 if to_player.dot(patrol.facing()) < 0.0 else 0

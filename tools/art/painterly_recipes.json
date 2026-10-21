@@ -1,0 +1,6 @@
+{
+  "wash": {"tile_scale": 4, "facade_scale": 2, "radius": 6, "sectors": 8, "q": 8, "passes": 1,
+           "grain": 0.025, "grain_length": 9, "saturation": 1.05, "quality": 90},
+  "oil": {"tile_scale": 4, "facade_scale": 2, "radius": 9, "sectors": 8, "q": 12, "passes": 1,
+          "grain": 0.04, "grain_length": 13, "saturation": 1.15, "quality": 90}
+}

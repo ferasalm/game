@@ -17,8 +17,8 @@ class Pose extends RefCounted:
 	var dof: float = 1.0
 
 var _camera: Camera3D
-var _look: LookDef
 var _rig: CameraRigDef
+var _base: CameraRigDef.Preset
 var _zone: Rect2 = Rect2()
 var _smoothing: float = 6.0
 var _focus: Vector3 = Vector3.ZERO
@@ -33,8 +33,12 @@ var _last: Pose = Pose.new()
 ## zone: the vista zone on the floor (x, z); focus: where the camera starts looking.
 func setup(camera: Camera3D, look: LookDef, rig: CameraRigDef, zone: Rect2, smoothing: float, focus: Vector3) -> void:
 	_camera = camera
-	_look = look
 	_rig = rig
+	_base = rig.pose_for(look)
+	var attributes := camera.attributes as CameraAttributesPractical
+	if attributes != null:
+		attributes.dof_blur_near_distance = _base.dof_near
+		attributes.dof_blur_far_distance = _base.dof_far
 	_zone = zone
 	_smoothing = smoothing
 	_focus = focus
@@ -118,9 +122,9 @@ func _is_press(event: InputEvent) -> bool:
 func _explore_pose() -> Pose:
 	var pose := Pose.new()
 	var vista_offset := Vector3(0.0, _rig.vista_offset_y, _rig.vista_offset_z)
-	pose.pos = _focus + _look.camera_offset.lerp(vista_offset, _vista)
-	pose.target = _focus + Vector3(0.0, lerpf(_look.look_height, _rig.vista_look_height, _vista), 0.0)
-	pose.fov = lerpf(_look.fov, _rig.vista_fov, _vista)
+	pose.pos = _focus + _base.offset.lerp(vista_offset, _vista)
+	pose.target = _focus + Vector3(0.0, lerpf(_base.look_height, _rig.vista_look_height, _vista), 0.0)
+	pose.fov = lerpf(_base.fov, _rig.vista_fov, _vista)
 	pose.dof = lerpf(1.0, _rig.vista_dof_scale, _vista)
 	return pose
 
@@ -130,9 +134,9 @@ func _intro_pose(t: float) -> Pose:
 	var keys: Array[CameraRigDef.Shot] = _rig.keys.duplicate()
 	var last := CameraRigDef.Shot.new()
 	last.at = _rig.intro_duration
-	last.pos = _look.camera_offset
-	last.target = Vector3(0.0, _look.look_height, 0.0)
-	last.fov = _look.fov
+	last.pos = _base.offset
+	last.target = Vector3(0.0, _base.look_height, 0.0)
+	last.fov = _base.fov
 	last.dof_scale = 1.0
 	keys.append(last)
 	var i: int = 0
@@ -166,4 +170,4 @@ func _apply(pose: Pose) -> void:
 	_camera.position = pose.pos
 	_camera.look_at(pose.target)
 	_camera.fov = pose.fov
-	(_camera.attributes as CameraAttributesPractical).dof_blur_amount = _look.dof_amount * pose.dof
+	(_camera.attributes as CameraAttributesPractical).dof_blur_amount = _base.dof_amount * pose.dof
