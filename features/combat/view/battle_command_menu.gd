@@ -88,6 +88,7 @@ func show_notice(content: String) -> void:
 ## Back from the target list to the move list.
 func back() -> void:
 	if _open and _move != null:
+		AudioDirector.play_ui(&"menu_cancel")
 		var previous: ActionDef = _move
 		target_focused.emit(&"")
 		_show_moves(previous)
@@ -164,6 +165,8 @@ func _add_button(content: String) -> Button:
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	_list.add_child(button)
 	_buttons.append(button)
+	button.focus_entered.connect(AudioDirector.play_ui.bind(&"menu_move"))
+	button.pressed.connect(AudioDirector.play_ui.bind(&"menu_confirm"))
 	button.mouse_entered.connect(func() -> void: if not button.disabled: button.grab_focus())
 	return button
 

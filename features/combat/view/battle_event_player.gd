@@ -76,6 +76,7 @@ func _on_damage(event: TimelineEvent) -> void:
 	_shown_hp[event.unit_id] = maxi(0, before - event.value)
 	if _skip:
 		return
+	AudioDirector.play_hit(_sim.actions.get(event.detail) as ActionDef, event.value)
 	var target: CharacterVisual = _fighters.visual(event.unit_id)
 	if target != null:
 		target.flash()
@@ -86,12 +87,15 @@ func _on_damage(event: TimelineEvent) -> void:
 func _on_interrupted() -> void:
 	if _skip:
 		return
+	AudioDirector.play_sfx(&"interrupt")
 	_hud.show_banner(BattleStyle.text("UI_INTERRUPTED"))
 	await _wait(_view.hit_stop)
 
 
 func _on_down(event: TimelineEvent) -> void:
 	_shown_hp[event.unit_id] = 0
+	if not _skip:
+		AudioDirector.play_sfx(&"knock_out")
 	_fighters.clear_intent(event.unit_id)
 	var target: CharacterVisual = _fighters.visual(event.unit_id)
 	if target != null:
@@ -100,6 +104,7 @@ func _on_down(event: TimelineEvent) -> void:
 
 func _float_status(event: TimelineEvent, content: String) -> void:
 	if not _skip:
+		AudioDirector.play_sfx(&"status_apply")
 		_fighters.float_text(event.unit_id, content)
 
 

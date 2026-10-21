@@ -43,6 +43,7 @@ func open() -> void:
 		choice.mark_current(_worn.has(choice_id))
 		choice.mark_staged(_staged.has(choice_id))
 	_preview(_staged)
+	AudioDirector.play_ui(&"menu_open")
 	visible = true
 	_opened_frame = Engine.get_process_frames()
 	_choices[_worn[0]].grab_focus()
@@ -65,6 +66,7 @@ func select_blade(blade_id: StringName) -> void:
 func confirm() -> void:
 	if not visible:
 		return
+	AudioDirector.play_ui(&"menu_confirm")
 	GameState.equipment[&"hilt"] = _staged[0]
 	GameState.equipment[&"blade"] = _staged[1]
 	_close()
@@ -73,6 +75,7 @@ func confirm() -> void:
 ## Closes without changing anything.
 func cancel() -> void:
 	if visible:
+		AudioDirector.play_ui(&"menu_cancel")
 		_close()
 
 
@@ -119,6 +122,7 @@ func _stage(slot: int, item_id: StringName, table: Dictionary) -> void:
 func _on_pressed(choice: WorkshopChoice) -> void:
 	if Engine.get_process_frames() == _opened_frame:
 		return
+	AudioDirector.play_ui(&"menu_confirm")
 	if _hilts.has(choice.item_id):
 		select_hilt(choice.item_id)
 	else:
@@ -126,6 +130,7 @@ func _on_pressed(choice: WorkshopChoice) -> void:
 
 
 func _on_focused(choice: WorkshopChoice) -> void:
+	AudioDirector.play_ui(&"menu_move")
 	var pair: Array[StringName] = _staged.duplicate()
 	pair[0 if _hilts.has(choice.item_id) else 1] = choice.item_id
 	_preview(pair)

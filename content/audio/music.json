@@ -1,0 +1,17 @@
+{
+ "kind": "music",
+ "items": [
+  {
+   "id": "night_rooftops",
+   "path": "res://assets/audio/music/night_rooftops.ogg",
+   "volume_db": -6.0,
+   "loop": true
+  },
+  {
+   "id": "battle",
+   "path": "res://assets/audio/music/battle.ogg",
+   "volume_db": -6.0,
+   "loop": true
+  }
+ ]
+}

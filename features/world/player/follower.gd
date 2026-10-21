@@ -9,6 +9,7 @@ var _visual: CharacterVisual
 var _trail: Array[Vector3] = []
 var _keep_from: int = 0
 var _active: bool = true
+var _step_clock: float = 0.0
 
 
 func _init(rules: ExploreRulesDef, leader: Node3D) -> void:
@@ -45,6 +46,7 @@ func _physics_process(delta: float) -> void:
 		position += to_target * (1.0 - exp(-_rules.follower_lag * delta))
 		_visual.face(to_target.x)
 	_visual.set_moving(moving)
+	_step_clock = AudioDirector.step(_step_clock, delta, moving, &"footstep_follower")
 	_prune()
 
 

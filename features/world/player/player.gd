@@ -9,6 +9,7 @@ var facing: Vector3 = Vector3(0.0, 0.0, 1.0)
 var _rules: ExploreRulesDef
 var _visual: CharacterVisual
 var _active: bool = true
+var _step_clock: float = 0.0
 
 
 func _init(rules: ExploreRulesDef) -> void:
@@ -46,6 +47,7 @@ func _physics_process(delta: float) -> void:
 		facing = direction.normalized()
 		_visual.face(direction.x)
 	_visual.set_moving(moving)
+	_step_clock = AudioDirector.step(_step_clock, delta, moving, &"footstep_zayd")
 
 
 ## Moves by this much, sliding along a solid tile instead of stopping dead (own delta, so tests can drive it).

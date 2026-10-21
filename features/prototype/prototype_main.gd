@@ -11,6 +11,8 @@ const ROOFTOP_SCENE: PackedScene = preload("res://features/world/rooftop/rooftop
 const WORKSHOP_DIALOGUE: StringName = &"workshop_first"
 const WORKSHOP_FLAG: StringName = &"workshop_talk_done"
 const START_LOADOUT: StringName = &"zayd_start"
+const EXPLORE_MUSIC: StringName = &"night_rooftops"
+const BATTLE_MUSIC: StringName = &"battle"
 
 var rooftop: Rooftop
 var dialogue: DialogueBox
@@ -33,6 +35,7 @@ func _ready() -> void:
 	rooftop.encounter_touched.connect(_on_encounter_touched)
 	dialogue.finished.connect(_on_dialogue_finished)
 	menu.closed.connect(_on_menu_closed)
+	AudioDirector.play_music(EXPLORE_MUSIC)
 
 
 func _on_workshop_opened() -> void:
@@ -67,6 +70,7 @@ func _start_battle() -> void:
 	var start := ContentDB.get_def("loadout", START_LOADOUT) as LoadoutDef
 	var pair: Array[StringName] = Loadout.current(GameState.equipment, start)
 	_battles += 1
+	AudioDirector.play_music(BATTLE_MUSIC)
 	var battle_seed: int = hash([_battles, Time.get_ticks_usec()])
 	stage = BattleStage.new()
 	add_child(stage)
@@ -87,6 +91,7 @@ func _on_battle_ended(result: StringName) -> void:
 		_start_battle()
 		return
 	EventBus.battle_ended.emit(_encounter_id, result == &"victory")
+	AudioDirector.play_music(EXPLORE_MUSIC)
 	rooftop.reset_patrol()
 	rooftop.restore_camera()
 	rooftop.set_exploring(true)
