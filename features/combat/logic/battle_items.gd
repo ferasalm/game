@@ -26,7 +26,7 @@ func _init(bag: Bag, timeline: Timeline, consumables: Dictionary[StringName, Con
 func listed() -> Array[ConsumableDef]:
 	var out: Array[ConsumableDef] = []
 	var ids: Array = _consumables.keys()
-	ids.sort()
+	ids.sort_custom(func(a: StringName, b: StringName) -> bool: return String(a) < String(b))  # StringName < compares addresses
 	for item_id: StringName in ids:
 		var def: ConsumableDef = _consumables[item_id]
 		if def.usable_in_battle() and _bag.count(item_id) > 0:
