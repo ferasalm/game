@@ -48,3 +48,4 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-21 | Rarity: Common, Uncommon, Rare, Epic, Legendary (white, green, blue, purple, gold) on hand-made fixed items, plus a story-only Heirloom tier | Feras | Feras
 - 2026-10-21 | Music: Yemeni fusion (qanbus oud, hand drums, synth bass and pads): a night rooftops theme and a battle theme, made in Google Flow (Feras logs in) | Feras (recommended) | Feras
 - 2026-10-21 | Free online assets (CC0 / OFL) allowed where the game doesn't need unique art; each gets a manifest entry; downloads confirmed with the owner | Feras | Feras
+- 2026-10-21 | Haiku subagents take the mechanical work (cleanup, audits, doc updates) next to the Sonnet builders | Feras: "Involve Haiku subagent too" | Feras

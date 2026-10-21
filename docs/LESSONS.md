@@ -39,10 +39,24 @@
   regenerate after `git add`. Check CI (`gh run list`) after merging to main.
 - A side chat editing the same checkout blocked a merge -> one session owns git; others message it.
 - Python's write_text on Windows writes CRLF -> pass newline="
-".
+" (python is `python` here, not python3).
 - The Read(**/*.import) deny also blocks an agent's Write to an existing .import -> the lead writes new
   "keep" .import files before Godot's import runs.
+- Builders missed the session's commits: Agent worktrees branch from main, not the lead's branch -> every brief
+  starts with `git merge --ff-only <session branch>`; resume a builder with SendMessage (its worktree keeps work).
+- After a merge adds class_names, tests fail with "Could not find type" -> `tools/run_godot.sh --import` first.
+- The 5-hour limit kills background builders mid-edit -> ask for WIP commits early; resume them after the reset.
 
-## 5. Cheaper routes
+## 5. Art, browser, night look (2026-10-21)
+- Owner saw "3 FPS": that was a --write-movie render (each frame goes to disk) -> real FPS only via fps_probe.gd.
+- The built-in browser pane's downloads are invisible to Claude and Flow image links need the owner's cookies
+  -> the owner downloads Flow / Flow Music files into inbox/ (git-ignored); read pages with get_page_text/find,
+  fill with form_input (the pane is tiny; emulate 1280x800 only to reveal hidden buttons).
+- Painted Flow art pixelized flat and muddy -> pixelize.py --contrast 1.3 --saturation 1.5 --outline; green-screen
+  fringe snaps to G/L (replace with k on subjects without green); check facing before mirroring (art faces right).
+- At night, billboards with the moon behind them go black -> a min_light floor in the character shader; Label3D
+  text goes muddy in fog and leaves a dark outline when fading -> label_energy > 1, no alpha cut, fade outline too.
+
+## 6. Cheaper routes
 - One test file: `tools/run_godot.sh -s res://tests/runner.gd -- timeline`.
 - Where is X: grep docs/MAP.md (generated), not `ls -R`.
