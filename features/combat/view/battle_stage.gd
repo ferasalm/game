@@ -17,6 +17,10 @@ var camera: Camera3D
 ## When set, the battle camera renders with this Environment instead of the scene's WorldEnvironment (the Router
 ## gives the arena its own, so the exploring area's environment is overridden).
 var environment: Environment
+## The arena's look (the runner sets it before start); null falls back to the night look.
+var look: LookDef
+## The frame the area showed when the fight began, for the shatter warp in (null: no warp).
+var warp_frame: Image
 ## The cinematic rig that moves `camera` (swoop in, drift, push, shake, victory pose).
 var camera_rig: BattleCamera
 var vfx: VfxPlayer
@@ -42,12 +46,14 @@ func start(battle: BattleSim, anchor: Vector3) -> void:
 	fighters = BattleFighters.new()
 	add_child(fighters)
 	fighters.build(sim, _view, anchor)
-	_add_camera(anchor)
+	BattleCameraRig.add_to(self, anchor)
 	_add_show()
 	hud = BattleHud.new()
 	add_child(hud)
 	hud.setup(sim, _view, shown_hp)
+	BattleCameraRig.paint(self)
 	hud.move_chosen.connect(_on_move_chosen)
+	hud.item_chosen.connect(_on_item_chosen)
 	hud.target_focused.connect(_on_target_focused)
 	hud.end_chosen.connect(_finish)
 	_player = BattleEventPlayer.new()
@@ -57,6 +63,8 @@ func start(battle: BattleSim, anchor: Vector3) -> void:
 	_busy = true
 	if sim.ambush == 1:
 		_turn_wielder_away()
+	if not instant and BattleShatter.can_play(warp_frame):
+		await _warp_in()
 	await _player.play(sim.opening(), instant)
 	_busy = false
 	_check_end()
@@ -110,18 +118,32 @@ func _check_end() -> void:
 	if sim.result == &"victory":
 		camera_rig.victory()
 		fighters.cheer()
+	if sim.result == &"defeat" and not auto_play and BattleEnding.open_defeat(_finish):
+		return
 	hud.show_end(sim.result)
 	if auto_play:
 		if not instant:
-			await get_tree().create_timer(_view.end_delay + _view.banner_seconds).timeout
+			await PauseWait.seconds(self, _view.end_delay + _view.banner_seconds)
 		_finish(sim.result)
 
 
+## The fight is over with this answer: &"victory" / &"defeat" (back to the rooftop, after the light wash), &"retry",
+## &"load" or &"title" (the Defeat screen's picks).
 func _finish(result: StringName) -> void:
 	if _finished:
 		return
 	_finished = true
-	ended.emit(result)
+	if instant or auto_play or not BattleEnding.washes(result):
+		ended.emit(result)
+	else:
+		BattleEnding.wash(self, ended.emit.bind(result))
+
+
+## The area's last frame breaks into glass over the arena (the opening waits for it).
+func _warp_in() -> void:
+	var shatter := BattleShatter.new()
+	add_child(shatter)
+	await shatter.play(warp_frame, juice.def)
 
 
 func _on_move_chosen(action: ActionDef, target_id: StringName) -> void:
@@ -135,6 +157,17 @@ func _on_move_chosen(action: ActionDef, target_id: StringName) -> void:
 		hud.menu.show_notice(reason)
 
 
+func _on_item_chosen(item_id: StringName, target_id: StringName) -> void:
+	var hero: UnitState = sim.waiting_hero()
+	if hero == null:
+		return
+	var reason: String = sim.choose_item(hero.unit_id, item_id, target_id)
+	if reason.is_empty():
+		hud.close_menu()
+	else:
+		hud.item_menu.show_notice(reason)
+
+
 func _on_target_focused(unit_id: StringName) -> void:
 	if unit_id == &"":
 		fighters.hide_marker()
@@ -143,24 +176,7 @@ func _on_target_focused(unit_id: StringName) -> void:
 
 
 func _turn_wielder_away() -> void:
-	var wielder: CharacterVisual = fighters.visual(Djanbeyyah.WIELDER)
-	if wielder != null:
-		wielder.face(-1.0)
-
-
-func _add_camera(anchor: Vector3) -> void:
-	var look := ContentDB.get_def("look", &"night") as LookDef
-	if look == null:
-		look = ContentDB.get_def("look", &"v1") as LookDef
-	var def := ContentDB.get_def("battle_camera", &"default") as BattleCameraDef
-	camera = Diorama.make_camera(look if look != null else LookDef.new())
-	camera.environment = environment
-	add_child(camera)
-	camera_rig = BattleCamera.new()
-	add_child(camera_rig)
-	camera_rig.setup(camera, def if def != null else BattleCameraDef.new(), look if look != null else LookDef.new(),
-		anchor, null, instant)  # no previous camera: the arena is far from the exploring area
-	camera.current = true
+	fighters.face_foes(Djanbeyyah.WIELDER, true)
 
 
 ## The effect painter, the hitstop / shake node and the move player that drives them.

@@ -1,11 +1,14 @@
 class_name BattleOutcome
 extends RefCounted
-## What a finished battle hands back: result (victory, defeat, retry), the party's vitals and bag after the fight,
+## What a finished battle hands back: result (victory, defeat, retry, load, title), the party's vitals and bag after the fight,
 ## and the rewards (money, equippable items, consumables) still to be applied to GameState by the Router.
 
 const VICTORY: StringName = &"victory"
 const DEFEAT: StringName = &"defeat"
 const RETRY: StringName = &"retry"
+## The Defeat screen's other picks: leave the fight for the last save, or for the title.
+const LOAD: StringName = &"load"
+const TITLE: StringName = &"title"
 
 var encounter_id: StringName = &""
 var result: StringName = &""

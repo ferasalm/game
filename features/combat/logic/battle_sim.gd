@@ -18,6 +18,8 @@ var _resolver: BattleResolver
 var setup: BattleSetup
 ## The consumables the party carries; battle casts reserve and consume from it (Bag).
 var bag: Bag
+## The Items command: reservations, casts and effects of the herbs in the bag.
+var items: BattleItems
 
 
 ## Builds the battle from a BattleSetup. Party units use their def id; enemies use "<def id>_<n>" counting from
@@ -49,6 +51,7 @@ static func create_from(battle: BattleSetup) -> BattleSim:
 		unit.pos = sim._start_pos(1, battle.ambush, foe)
 		sim.timeline.units.append(unit)
 	sim._resolver = BattleResolver.new(battle.rules, sim.rng, sim.timeline, battle.statuses)
+	sim.items = BattleItems.new(sim.bag, sim.timeline, battle.consumables)
 	return sim
 
 
@@ -88,6 +91,13 @@ func opening() -> Array[TimelineEvent]:
 
 ## One tick. Returns what happened, in order; [] while a hero waits for a choice or once the battle is over.
 func step() -> Array[TimelineEvent]:
+	var out: Array[TimelineEvent] = _step()
+	if items != null:
+		items.sync()
+	return out
+
+
+func _step() -> Array[TimelineEvent]:
 	var out: Array[TimelineEvent] = []
 	if result != &"" or timeline.waiting_for != null:
 		return out
@@ -137,6 +147,14 @@ func choose(unit_id: StringName, action: ActionDef, target_id: StringName) -> St
 	return timeline.choose(unit_id, action, target_ids)
 
 
+## Commits the waiting hero to a herb of the bag (target &"" for the party herb). Returns "" or why it was refused.
+func choose_item(unit_id: StringName, item_id: StringName, target_id: StringName) -> String:
+	var unit: UnitState = timeline.waiting_for
+	if unit == null or unit.unit_id != unit_id or unit.side != 0 or items.consumable(item_id) == null:
+		return "'%s' cannot use '%s' now" % [unit_id, item_id]
+	return items.choose(unit, items.consumable(item_id), target_id)
+
+
 ## BattleAI chooses for this waiting unit (enemies always; the harness and the view's auto-play for heroes).
 func auto_choose(unit: UnitState) -> void:
 	var choice: BattleAI.Choice = BattleAI.pick(self, unit)
@@ -163,6 +181,9 @@ func _handle(event: TimelineEvent, out: Array[TimelineEvent]) -> void:
 		out.append(event)
 		if unit.side == 1:
 			auto_choose(unit)
+	elif event.kind == &"act" and unit.acted is ItemAction:
+		out.append(event)
+		out.append_array(items.resolve(unit))
 	elif event.kind == &"act":
 		out.append(event)
 		out.append_array(_resolver.resolve(unit))

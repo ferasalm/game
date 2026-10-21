@@ -1,7 +1,22 @@
 {
   "kind": "arena",
   "items": [
-    {"id": "rooftop_arena", "origin": [0, 0, 300], "look": "night", "floor_size": [24, 0.5, 24],
-     "floor_color": "#c7b38c"}
+    {"id": "rooftop_arena", "origin": [0, 0, 300], "look": "painted_b", "floor_size": [24, 0.5, 24],
+     "floor_color": "#c7b38c", "floor_tile": "roof_floor", "parapet_tile": "parapet", "parapet_inset": 0.5,
+     "parapet_thickness": 0.5, "skyline": "arena_city", "light_budget": 4, "light_fade": 3.0,
+     "props": [
+       {"ref": "water_tank", "x": -8.5, "z": -8.5, "yaw": 25},
+       {"ref": "crates", "x": 8.0, "z": -9.0, "yaw": -15},
+       {"ref": "dish", "x": 4.5, "z": -10.0, "yaw": 0},
+       {"ref": "antenna_red", "x": -4.0, "z": -10.2, "yaw": 0},
+       {"ref": "lantern_post", "x": -6.2, "z": -2.5, "yaw": 0},
+       {"ref": "lantern_post", "x": 6.4, "z": -3.0, "yaw": 180},
+       {"ref": "basil_pot", "x": -2.5, "z": -9.6, "yaw": 0},
+       {"ref": "laundry_line", "x": 0.0, "z": -9.0, "yaw": 0}
+     ],
+     "lights": [
+       {"x": -0.3, "y": 2.8, "z": 3.0, "color": "#ffb070", "energy": 1.1, "range": 11.0, "pool": 7.5, "pool_energy": 0.5, "pool_y": 0.03, "flicker": 0.05, "flicker_speed": 3.0},
+       {"x": -0.3, "y": 1.6, "z": -3.0, "color": "#ff9a50", "energy": 0.7, "range": 9.0, "pool": 6.0, "pool_energy": 0.35, "pool_y": 0.03, "real": false}
+     ]}
   ]
 }

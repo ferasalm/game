@@ -2,10 +2,14 @@ class_name BattleSession
 extends RefCounted
 ## One battle from the Router's side: launches a BattleRunner beside the area, and when the stage ends turns its result
 ## into GameState changes. Victory carries vitals and herbs and pays the rewards once; defeat restores the pre-battle
-## snapshot; Retry restores it and launches the fight again with a new seed. `finished` fires for victory and defeat.
+## snapshot; Retry restores it and launches the fight again with a new seed. The Defeat screen's other picks leave the
+## fight: Load goes to the last save (Router.load_slot), Title to the title (Router.go_to_title). `finished` fires for
+## victory and a plain defeat (back to the area); Load and Title rebuild the whole game instead.
 
 signal stage_created(new_stage: BattleStage)
 signal finished(outcome: BattleOutcome)
+
+const SAVE_SLOT: int = 1  ## the one save slot of v0.3 (the sabil writes it)
 
 var request: BattleRequest
 var _host: Node
@@ -54,6 +58,13 @@ func _on_stage_ended(result: StringName) -> void:
 		request.retry_count += 1
 		launch()
 		return
+	if result == BattleOutcome.TITLE:
+		Router.go_to_title()
+		return
+	if result == BattleOutcome.LOAD:
+		if Router.load_slot(SAVE_SLOT).is_empty():
+			return
+		outcome.result = BattleOutcome.DEFEAT  # the save could not be read: back to the area, as after a defeat
 	if result == BattleOutcome.VICTORY:
 		_win(outcome)
 	else:

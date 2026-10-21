@@ -6,7 +6,7 @@ extends Node
 ## with no waiting; the call then finishes synchronously.
 
 const MOVE_KINDS: Array[StringName] = [&"act", &"reverse_stab", &"command"]
-const TARGET_KINDS: Array[StringName] = [&"damage", &"healed", &"status", &"revived"]
+const TARGET_KINDS: Array[StringName] = [&"damage", &"healed", &"status", &"revived", &"sp_restored"]
 const BREAK_VFX: StringName = &"break"
 
 var _sim: BattleSim
@@ -68,6 +68,10 @@ func _play_one(events: Array[TimelineEvent], i: int) -> void:
 			_on_healed(event)
 		&"revived":
 			_on_revived(event)
+		&"sp_restored":
+			_on_sp_restored(event)
+		&"fizzled":
+			_float_status(event, BattleStyle.text("BATTLE_ITEM_FIZZLED"))
 
 
 func _on_command(event: TimelineEvent) -> void:
@@ -82,9 +86,7 @@ func _on_reverse_stab(event: TimelineEvent, targets: Array[StringName]) -> void:
 	if not _skip:
 		_hud.show_banner(BattleStyle.text("UI_REVERSE_STAB"))
 		await _wait(_view.banner_seconds * 0.5)
-	var stabber: CharacterVisual = _fighters.visual(event.unit_id)
-	if stabber != null:
-		stabber.face(1.0)
+	_fighters.face_foes(event.unit_id)
 	await _on_move(event.unit_id, _sim.actions.get(event.detail) as ActionDef, targets)
 
 
@@ -102,7 +104,7 @@ func _on_damage(event: TimelineEvent) -> void:
 	var target: CharacterVisual = _fighters.visual(event.unit_id)
 	if target != null:
 		_fighters.float_number(event.unit_id, event.value)
-		await _actions.on_hit(target)
+		await _actions.on_hit(target, event.value)
 	await _wait(_view.damage_gap)
 
 
@@ -127,8 +129,12 @@ func _on_down(event: TimelineEvent) -> void:
 		AudioDirector.play_sfx(&"knock_out")
 	_fighters.clear_intent(event.unit_id)
 	var target: CharacterVisual = _fighters.visual(event.unit_id)
-	if target != null:
-		target.set_down(true, not _skip)
+	if target == null:
+		return
+	if _skip:
+		target.set_down(true, false)
+	else:
+		target.play(&"ko")  # collapses and drains of colour (a model plays its ko clip)
 
 
 func _on_healed(event: TimelineEvent) -> void:
@@ -138,10 +144,18 @@ func _on_healed(event: TimelineEvent) -> void:
 		_fighters.float_heal(event.unit_id, BattleStyle.text("UI_HEALED") % event.value)
 
 
+func _on_sp_restored(event: TimelineEvent) -> void:
+	if not _skip:
+		_fighters.float_heal(event.unit_id, BattleStyle.text("BATTLE_SP_RESTORED") % event.value)
+
+
 func _on_revived(event: TimelineEvent) -> void:
 	var target: CharacterVisual = _fighters.visual(event.unit_id)
 	if target != null:
-		target.set_down(false, not _skip)
+		if _skip:
+			target.set_down(false, false)
+		else:
+			target.play(&"idle")  # moving again from ko stands the character back up
 	if not _skip:
 		_fighters.float_text(event.unit_id, BattleStyle.text("UI_REVIVED"))
 

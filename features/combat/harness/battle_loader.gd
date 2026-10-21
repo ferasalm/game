@@ -9,12 +9,15 @@ var economy: EconomyRulesDef
 var encounter: EncounterDef
 var actions: Dictionary[StringName, ActionDef] = {}
 var statuses: Dictionary[StringName, StatusDef] = {}
+var consumables: Dictionary[StringName, ConsumableDef] = {}
 var combatants: Dictionary[StringName, CombatantDef] = {}
 var hilts: Dictionary[StringName, HiltDef] = {}
 var blades: Dictionary[StringName, BladeDef] = {}
 var prosthetics: Dictionary[StringName, ProstheticDef] = {}
 var perks: Dictionary[StringName, PerkDef] = {}
 var loadouts: Dictionary[StringName, LoadoutDef] = {}
+## Herbs {consumable id: count} every fight made here starts with (the balance harness sets it).
+var start_bag: Dictionary = {}
 
 
 static func from_db(db: Node, encounter_id: StringName = &"rooftop_patrol") -> BattleLoader:
@@ -26,6 +29,8 @@ static func from_db(db: Node, encounter_id: StringName = &"rooftop_patrol") -> B
 		loader.actions[action_id] = db.call("get_def", "action", action_id) as ActionDef
 	for status_id: StringName in db.call("ids", "status"):
 		loader.statuses[status_id] = db.call("get_def", "status", status_id) as StatusDef
+	for item_id: StringName in db.call("ids", "consumable"):
+		loader.consumables[item_id] = db.call("get_def", "consumable", item_id) as ConsumableDef
 	for combatant_id: StringName in db.call("ids", "combatant"):
 		loader.combatants[combatant_id] = db.call("get_def", "combatant", combatant_id) as CombatantDef
 	for hilt_id: StringName in db.call("ids", "hilt"):
@@ -91,6 +96,8 @@ func make_setup(party: Array[CombatantDef], battle_seed: int, ambush: int = 0) -
 	setup.enemy_slots = encounter.enemy_slots
 	setup.actions = actions
 	setup.statuses = statuses
+	setup.consumables = consumables
+	setup.bag = start_bag.duplicate()
 	setup.seed = battle_seed
 	setup.ambush = ambush
 	setup.encounter_id = encounter.id
@@ -99,14 +106,15 @@ func make_setup(party: Array[CombatantDef], battle_seed: int, ambush: int = 0) -
 	return setup
 
 
-## Plays a battle to its end with BattleAI choosing for the heroes too. Returns every event, in order.
-static func autoplay(sim: BattleSim) -> Array[TimelineEvent]:
+## Plays a battle to its end with BattleAI choosing for the heroes too (use_items: ItemPolicy may spend herbs
+## first). Returns every event, in order.
+static func autoplay(sim: BattleSim, use_items: bool = false) -> Array[TimelineEvent]:
 	var trace: Array[TimelineEvent] = []
 	var guard: int = sim.rules.max_ticks * 4
 	while sim.result == &"" and guard > 0:
 		guard -= 1
 		var hero: UnitState = sim.waiting_hero()
-		if hero != null:
+		if hero != null and not (use_items and ItemPolicy.try_use(sim, hero)):
 			sim.auto_choose(hero)
 		trace.append_array(sim.step())
 	return trace

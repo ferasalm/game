@@ -5,6 +5,9 @@
      "break_size": 120, "break_color": "#ffe36a", "pop_scale": 1.7, "pop_time": 0.12, "bounce_height": 0.5,
      "bounce_time": 0.35, "heavy_damage": 30, "heavy_scale": 1.5, "number_jitter": 0.3,
      "damage_color": "#ffe9a8", "heal_color": "#7dffb0", "shake_decay": 9.0, "shake_speed": 55.0,
-     "anticipate_pause": 0.04, "cast_hold": 0.18}
+     "anticipate_pause": 0.04, "cast_hold": 0.18,
+     "shatter_columns": 10, "shatter_fall": 1.2, "shatter_spread": 1.0, "shatter_spin": 2.5, "shatter_stagger": 0.45,
+     "shatter_glass": 0.35, "shatter_crack": 0.02, "hit_pause": 0.07, "hit_pause_heavy": 0.11, "clip_timeout": 2.0,
+     "contact_gap": 0.1}
   ]
 }

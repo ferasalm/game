@@ -25,4 +25,4 @@ func _process(delta: float) -> void:
 	_started = true
 	_main.rooftop.camera_rig.skip_intro(true)
 	_main.rooftop.patrol.position = _main.rooftop.player.position + PATROL_GAP
-	_main.rooftop._on_touched(false)
+	_main.rooftop._on_touched(false, _main.rooftop.patrol)

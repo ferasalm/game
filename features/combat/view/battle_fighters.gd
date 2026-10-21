@@ -15,7 +15,7 @@ var _marker_time: float = 0.0
 var _rng := RandomNumberGenerator.new()
 
 
-## Party on the left facing right, enemies on the right facing left, around the anchor.
+## Party on the right facing left, enemies on the left facing right, around the anchor.
 func build(sim: BattleSim, view: BattleViewDef, anchor: Vector3) -> void:
 	_view = view
 	_juice = ContentDB.get_def("battle_juice", &"default") as JuiceDef
@@ -29,8 +29,8 @@ func build(sim: BattleSim, view: BattleViewDef, anchor: Vector3) -> void:
 		visual.set_sprite(unit.def.id)
 		add_child(visual)
 		visual.position = anchor + Vector3(spot.x, 0.0, spot.y)
-		visual.face(1.0 if unit.side == 0 else -1.0)
 		_visuals[unit.unit_id] = visual
+		visual.face_dir(facing_of(unit.side))
 		if unit.side == 0:
 			_party.append(unit.unit_id)
 	_marker = BattleLabels.marker(view)
@@ -38,6 +38,21 @@ func build(sim: BattleSim, view: BattleViewDef, anchor: Vector3) -> void:
 	add_child(_marker)
 	set_process(false)
 	_warm_text(anchor)
+
+
+## The way a side faces on the ground: the party toward the enemies on its left (-x), the enemies toward +x, both
+## leaning toward the camera by the view's face_bias (a sprite only mirrors on x; a model turns by yaw).
+func facing_of(side: int) -> Vector3:
+	return Vector3(-1.0 if side == 0 else 1.0, 0.0, _view.face_bias).normalized()
+
+
+## Turns a unit to face the other side (its foes) or, with away, the way it came.
+func face_foes(unit_id: StringName, away: bool = false) -> void:
+	var unit: CharacterVisual = visual(unit_id)
+	if unit == null:
+		return
+	var side: int = 0 if _party.has(unit_id) else 1
+	unit.face_dir(facing_of(1 - side if away else side))
 
 
 func visual(unit_id: StringName) -> CharacterVisual:
@@ -53,6 +68,7 @@ func cheer() -> void:
 	for unit_id: StringName in _party:
 		var hero: CharacterVisual = visual(unit_id)
 		if hero != null and not hero.is_down():
+			hero.play(&"victory")
 			hero.victory_hop()
 
 
@@ -63,7 +79,7 @@ func show_intent(unit_id: StringName, content: String) -> void:
 		return
 	var label: Label3D = BattleLabels.floating(content, _view.text_font_size, _view.enemy_color, _view)
 	target.add_child(label)
-	label.position = Vector3(0.0, target.height() + _view.intent_offset, 0.0)
+	label.position = target.anchor_position(&"head") - target.global_position + Vector3(0.0, _view.intent_offset, 0.0)
 	_intents[unit_id] = label
 
 
@@ -129,7 +145,7 @@ func _place_marker() -> void:
 	if target == null:
 		return
 	var bounce: float = absf(sin(_marker_time)) * _view.marker_bounce
-	_marker.position = target.position + Vector3(0.0, target.height() + _view.marker_offset + bounce, 0.0)
+	_marker.position = target.anchor_position(&"head") + Vector3(0.0, _view.marker_offset + bounce, 0.0)
 
 
 func _pop(unit_id: StringName, content: String, size: int, color: Color, size_factor: float) -> void:
@@ -151,8 +167,8 @@ func _warm_text(anchor: Vector3) -> void:
 		label.scale = Vector3.ONE * 0.001
 		add_child(label)
 		label.position = anchor
-		get_tree().create_timer(0.5).timeout.connect(label.queue_free)
+		PauseWait.seconds(self, _juice.break_seconds).connect(label.queue_free)
 
 
 func _head(target: CharacterVisual, extra: float) -> Vector3:
-	return target.position + Vector3(0.0, target.height() + extra, 0.0)
+	return target.anchor_position(&"head") + Vector3(0.0, extra, 0.0)
