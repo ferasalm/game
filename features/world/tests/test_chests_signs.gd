@@ -75,7 +75,7 @@ func test_ease_out_runs_from_zero_to_one() -> void:
 
 func test_signs_use_localization_and_arabic() -> void:
 	var area := ContentDB.get_def("area", &"souq_rooftops") as AreaDef
-	var wanted: Array[String] = ["Souq al-Milh", "Zubairi St.", "Bab al-Yaman", "Haddah", "Qishr"]
+	var wanted: Array[String] = ["Souq al-Milh", "Zubairi St.", "Sabil", "Haddah", "Qishr"]
 	check_eq(area.signs.size(), wanted.size(), "five neon signs")
 	for i: int in area.signs.size():
 		var text: String = TranslationServer.translate(area.signs[i].key)

@@ -94,14 +94,6 @@ func tall_steps(cells: Dictionary[Vector2i, bool], max_step: float) -> PackedStr
 	return out
 
 
-## How many cells of column x are in `cells` (the bridge width test counts the reachable bridge cells of a column).
-func column_count(cells: Dictionary[Vector2i, bool], column: int, rows: Array[int]) -> int:
-	var count: int = 0
-	for z: int in rows:
-		count += 1 if cells.has(Vector2i(column, z)) else 0
-	return count
-
-
 func _in(mask: PackedByteArray, cell: Vector2i) -> bool:
 	return cell.x >= 0 and cell.y >= 0 and cell.x < width and cell.y < depth and mask[cell.y * width + cell.x] == 1
 

@@ -5,6 +5,7 @@ extends TestCase
 
 func _make() -> Rooftop:
 	var rooftop := (load("res://features/world/rooftop/rooftop.tscn") as PackedScene).instantiate() as Rooftop
+	rooftop.look_id = &"night"  # the plain follow camera; the painted look and its limits have their own tests
 	tree.root.add_child(rooftop)
 	return rooftop
 
