@@ -1,0 +1,7 @@
+{
+  "kind": "economy_rules",
+  "items": [
+    {"id": "default", "start_money": 100, "start_bag": {"pink_herb": 1}, "money_cap": 9999,
+     "repeat_payout": 0.5, "ko_stand_hp": 1, "grace_seconds": 3.0, "spawn_min_distance_m": 10.0}
+  ]
+}

@@ -41,6 +41,15 @@ const KINDS: Dictionary = {
 	"battle_juice": preload("res://features/combat/defs/juice_def.gd"),
 	"battle_camera": preload("res://features/combat/defs/battle_camera_def.gd"),
 	"ui_style": preload("res://features/ui/defs/ui_style_def.gd"),
+	"consumable": preload("res://features/items/defs/consumable_def.gd"),
+	"economy_rules": preload("res://features/items/defs/economy_rules_def.gd"),
+	"shop": preload("res://features/items/defs/shop_def.gd"),
+	"arena": preload("res://features/combat/defs/arena_def.gd"),
+	"transition": preload("res://core/defs/transition_def.gd"),
+	"puppet": preload("res://features/art/defs/puppet_def.gd"),
+	"clip": preload("res://features/art/defs/clip_def.gd"),
+	"camera_preset": preload("res://features/world/defs/camera_preset_def.gd"),
+	"place": preload("res://features/world/defs/place_def.gd"),
 }
 ## Equippable kinds share one id namespace; get_def("item", id) finds any of them.
 const ITEM_KINDS: Array[String] = ["hilt", "blade", "prosthetic"]

@@ -57,3 +57,13 @@ UI_TARGET_SELF,self
 UI_TARGET_ALLY,ally
 UI_HEALED,+%d
 UI_REVIVED,Back up
+ITEM_PINK_HERB,Pink-feather herb
+ITEM_DESC_PINK_HERB,"Restores HP. Dried on the roof and bundled by hand; it smells of rain on dust."
+ITEM_YELLOW_HERB,Yellow-feather herb
+ITEM_DESC_YELLOW_HERB,"Restores SP. Bitter enough to wake a tired courier before a bad climb."
+ITEM_WHITE_HERB,White-feather herb
+ITEM_DESC_WHITE_HERB,"Revives a fallen ally at 30% HP. Kept for the worst night of the year."
+ITEM_QISHR_CUP,Qishr cup
+ITEM_DESC_QISHR_CUP,"Small heal for the whole party. Husk coffee and ginger, poured from a brass pot."
+ENCOUNTER_PATROL_SCOUTS,Scout patrol
+ENCOUNTER_PATROL_GATE,Gate patrol

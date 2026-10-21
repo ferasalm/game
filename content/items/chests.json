@@ -3,7 +3,7 @@
   "items": [
     {"id": "bench_hilt", "item": "swift_hilt", "place": "workshop"},
     {"id": "bench_blade", "item": "keen_blade", "place": "workshop"},
-    {"id": "chest_saila", "item": "arc_arm", "place": "rooftop"},
-    {"id": "chest_mafraj", "item": "lens_array", "place": "rooftop"}
+    {"id": "chest_saila", "item": "arc_arm", "money": 25, "consumables": {"yellow_herb": 1}, "place": "rooftop"},
+    {"id": "chest_mafraj", "item": "lens_array", "money": 25, "consumables": {"pink_herb": 1}, "place": "rooftop"}
   ]
 }
