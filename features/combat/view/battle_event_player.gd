@@ -104,7 +104,7 @@ func _on_damage(event: TimelineEvent) -> void:
 	var target: CharacterVisual = _fighters.visual(event.unit_id)
 	if target != null:
 		_fighters.float_number(event.unit_id, event.value)
-		await _actions.on_hit(target)
+		await _actions.on_hit(target, event.value)
 	await _wait(_view.damage_gap)
 
 
@@ -129,8 +129,12 @@ func _on_down(event: TimelineEvent) -> void:
 		AudioDirector.play_sfx(&"knock_out")
 	_fighters.clear_intent(event.unit_id)
 	var target: CharacterVisual = _fighters.visual(event.unit_id)
-	if target != null:
-		target.set_down(true, not _skip)
+	if target == null:
+		return
+	if _skip:
+		target.set_down(true, false)
+	else:
+		target.play(&"ko")  # collapses and drains of colour (a model plays its ko clip)
 
 
 func _on_healed(event: TimelineEvent) -> void:
@@ -148,7 +152,10 @@ func _on_sp_restored(event: TimelineEvent) -> void:
 func _on_revived(event: TimelineEvent) -> void:
 	var target: CharacterVisual = _fighters.visual(event.unit_id)
 	if target != null:
-		target.set_down(false, not _skip)
+		if _skip:
+			target.set_down(false, false)
+		else:
+			target.play(&"idle")  # moving again from ko stands the character back up
 	if not _skip:
 		_fighters.float_text(event.unit_id, BattleStyle.text("UI_REVIVED"))
 

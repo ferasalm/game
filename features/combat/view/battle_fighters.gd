@@ -68,6 +68,7 @@ func cheer() -> void:
 	for unit_id: StringName in _party:
 		var hero: CharacterVisual = visual(unit_id)
 		if hero != null and not hero.is_down():
+			hero.play(&"victory")
 			hero.victory_hop()
 
 
@@ -78,7 +79,7 @@ func show_intent(unit_id: StringName, content: String) -> void:
 		return
 	var label: Label3D = BattleLabels.floating(content, _view.text_font_size, _view.enemy_color, _view)
 	target.add_child(label)
-	label.position = Vector3(0.0, target.height() + _view.intent_offset, 0.0)
+	label.position = target.anchor_position(&"head") - target.global_position + Vector3(0.0, _view.intent_offset, 0.0)
 	_intents[unit_id] = label
 
 
@@ -144,7 +145,7 @@ func _place_marker() -> void:
 	if target == null:
 		return
 	var bounce: float = absf(sin(_marker_time)) * _view.marker_bounce
-	_marker.position = target.position + Vector3(0.0, target.height() + _view.marker_offset + bounce, 0.0)
+	_marker.position = target.anchor_position(&"head") + Vector3(0.0, _view.marker_offset + bounce, 0.0)
 
 
 func _pop(unit_id: StringName, content: String, size: int, color: Color, size_factor: float) -> void:
@@ -166,8 +167,8 @@ func _warm_text(anchor: Vector3) -> void:
 		label.scale = Vector3.ONE * 0.001
 		add_child(label)
 		label.position = anchor
-		get_tree().create_timer(0.5).timeout.connect(label.queue_free)
+		PauseWait.seconds(self, _juice.break_seconds).connect(label.queue_free)
 
 
 func _head(target: CharacterVisual, extra: float) -> Vector3:
-	return target.position + Vector3(0.0, target.height() + extra, 0.0)
+	return target.anchor_position(&"head") + Vector3(0.0, extra, 0.0)

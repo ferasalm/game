@@ -3,6 +3,9 @@ extends Node3D
 ## Paints a VfxDef: turns each layer into pooled VfxSprites around the actor and the target(s) and moves them
 ## every frame (no tweens, no allocation once the pool is warm). Keep this node at the world origin.
 
+const FEET_LIFT: float = 0.08  ## metres above the floor for effects at the feet
+const HEAD_LIFT: float = 0.1  ## and above the head for effects over it
+
 var _rng := RandomNumberGenerator.new()
 var _free: Array[VfxSprite] = []
 var _active: Array[VfxSprite] = []
@@ -69,7 +72,7 @@ func _spawn(layer: VfxLayer, actor: CharacterVisual, source: CharacterVisual, ta
 		index: int) -> void:
 	for n: int in layer.count:
 		var sprite: VfxSprite = _acquire()
-		var start: Vector3 = _point(layer.from, actor, source, target, dir) + _flat(layer.offset, dir)
+		var start: Vector3 = _point(layer.from, actor, source, target) + _flat(layer.offset, dir)
 		if layer.chain and source != actor:
 			start = _middle(source) + _flat(layer.offset, dir)
 		start += _scatter(layer)
@@ -79,7 +82,7 @@ func _spawn(layer: VfxLayer, actor: CharacterVisual, source: CharacterVisual, ta
 			angle = TAU * (float(n) + _rng.randf()) / float(layer.count)
 			finish = start + Vector3(cos(angle), sin(angle), 0.0) * layer.move.x
 		if layer.to != &"":
-			finish = _point(layer.to, actor, source, target, dir) + _flat(layer.to_offset, dir)
+			finish = _point(layer.to, actor, source, target) + _flat(layer.to_offset, dir)
 		var delay: float = layer.delay + layer.stagger * float(n + index)
 		var straight: bool = layer.span or layer.aim
 		if layer.span:
@@ -104,25 +107,25 @@ func _orient(sprite: VfxSprite, layer: VfxLayer, start: Vector3, finish: Vector3
 	sprite.set_roll(roll, roll + spin)
 
 
-## World point of a named anchor: the middle of a unit, its feet or head, its front hand, or halfway.
-func _point(anchor: StringName, actor: CharacterVisual, source: CharacterVisual, target: CharacterVisual,
-		dir: float) -> Vector3:
+## World point of a named anchor, from the characters' own anchors (a sprite and a model both answer): the middle of
+## a unit, its feet or head, the actor's front hand, or halfway.
+func _point(anchor: StringName, actor: CharacterVisual, source: CharacterVisual, target: CharacterVisual) -> Vector3:
 	match anchor:
 		&"actor":
 			return _middle(source)
 		&"hand":
-			return actor.global_position + Vector3(dir * 0.55, actor.height() * 0.55, 0.0)
+			return actor.anchor_position(&"hand")
 		&"feet":
-			return target.global_position + Vector3(0.0, 0.08, 0.0)
+			return target.anchor_position(&"feet") + Vector3(0.0, FEET_LIFT, 0.0)
 		&"head":
-			return target.global_position + Vector3(0.0, target.height() + 0.1, 0.0)
+			return target.anchor_position(&"head") + Vector3(0.0, HEAD_LIFT, 0.0)
 		&"mid":
 			return (_middle(source) + _middle(target)) * 0.5
 	return _middle(target)
 
 
 func _middle(unit: CharacterVisual) -> Vector3:
-	return unit.global_position + Vector3(0.0, unit.height() * 0.5, 0.0)
+	return (unit.anchor_position(&"feet") + unit.anchor_position(&"head")) * 0.5
 
 
 func _flat(offset: Vector2, dir: float) -> Vector3:
