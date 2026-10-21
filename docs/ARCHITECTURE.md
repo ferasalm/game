@@ -19,15 +19,18 @@ are marked (enforced). Decisions behind this file: docs/DECISIONS.md, 2026-10-19
 - Target: Windows first (Steam later if the owner decides). Linux and Steam Deck cost little later.
 - Window 1920x1080, scales down; 60 fps on integrated GPUs (Intel Iris Xe / AMD Radeon 600M class).
 
-## 3. The HD-2D render model (owner's choice: true HD-2D)
-- **World = 3D diorama.** Ground and buildings are modular blocks on a GridMap (a 3D tile map) plus prop scenes.
-  Blocks are low-poly models made in Blockbench with pixel-art textures, exported as glTF.
-- **Characters = 2D pixel-art sprites standing in 3D**: Sprite3D/AnimatedSprite3D, billboard on the Y axis only,
-  nearest filtering, alpha cut, lit by the scene (shaded) and casting shadows. A `CharacterVisual` component hides
-  the technique, so it can change (e.g. to a quad with a normal-mapped shader) without touching gameplay.
-- **One texel density everywhere: 32 px = 1 m** (sprites and textures; was 16, DECISIONS 2026-10-21). Characters
-  about 64 px tall. One locked
-  palette (art bible, M1). These keep AI-made art consistent.
+## 3. The render model (owner's choice: painted 3D diorama, live 3D characters)
+- **World = painted 3D diorama.** Ground and buildings are modular blocks on a GridMap (a 3D tile map) plus prop
+  scenes. Blocks are low-poly models made in Blockbench with painted textures, exported as glTF.
+- **Characters = live 3D skinned models** (decided 2026-10-21; spec: docs/design/characters-3d.md). Each uses a
+  painted skin shader that shares `painted_light.gdshaderinc` with the world, a screen-space ink outline, and a blob
+  contact shadow. Moon shadows only, never lamp shadows. A `CharacterVisual` facade hides the technique: it plays
+  either a `PixelSource` (the old pixel sprites, kept as fallback) or a `ModelSource` (a skinned model from
+  `content/art/models.json`, kind `model`, ModelDef). `visual_rules.default_source` picks the default. Gameplay
+  never touches either.
+- **Painted textures, one palette.** One painted albedo per model (AI pictures go through
+  `tools/art/painterly_bake.py`); the world and characters share one light model and one locked palette (art
+  bible). Characters are 2 m tall; budgets are in characters-3d.md section 6.
 - **Camera:** perspective, narrow FOV (25-35°), raised 30-40°, smooth follow; per-area limits come from level data.
 - **The look:** CameraAttributesPractical depth of field (near + far blur = the tilt-shift miniature look), glow,
   filmic tonemapping, a low warm sun with shadows, a few point lights. Static light baked (LightmapGI) to spare the
@@ -132,7 +135,12 @@ docs/           ARCHITECTURE BRIEFING EFFICIENCY DECISIONS LESSONS MAP USAGE des
 - Raw generations (Gemini, Flow) stay in the owner's Google Drive, not in git.
 - `tools/art/` (Python): downscale to the target size, lock to the palette, key out the background, trim, pack
   sprite sheets, split a Flow video into frames for animation reference. Output goes to `assets/`.
-- `assets/manifest.json`: id, path, source (gemini, flow, kenney-cc0, own), licence, prompt reference. Code asks
+- 3D characters (spec: docs/design/characters-3d.md): stand-in bodies and moves are CC0 (Quaternius Universal Base
+  Characters and Universal Animation Library; KayKit as fallback). Feras downloads the zips into `inbox/stand_in/`
+  (git-ignored). Godot retargets them at import (BoneMap, humanoid profile): no Blender for the stand-ins, and no
+  Mixamo (the repo is public). Later: Feras's Flow A-pose picture -> TRELLIS.2 (image to 3D) -> Blender cleanup
+  (Claude, after the owner's OK to install) -> auto-rig (AccuRIG or Meshy). The ModelDef points at the new scene.
+- `assets/manifest.json`: id, path, source (gemini, flow, kenney-cc0, quaternius-cc0, own), licence, prompt reference. Code asks
   for assets by id and gets a placeholder if missing; a check fails on any asset without a licence entry; the
   credits screen is generated from it.
 

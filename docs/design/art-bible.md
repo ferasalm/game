@@ -3,11 +3,15 @@ Pixel sprites are data: rows of palette letters in `content/art/sprites.json` ('
 textures at runtime by PixelArt. Palette: `content/art/palette.json` (id "main", 32 colours, never add one casually).
 
 ## Scale and light
-- 32 px = 1 m (sprites and textures). Humans about 64 px tall (Feras 2026-10-21). Today's sprites are
-  Claude's stand-ins at the old scale (16 px = 1 m, humans 32 px); real ones replace them one by one.
-- Feet on the bottom row. Art faces right (CharacterVisual mirrors it). Light comes from the upper left.
-- 3 tones per material (dark / mid / light) plus a dark selective outline (`k`). No anti-aliasing, no gradients.
-- Faces and visors get 1-2 pixel highlights. Neon is for accents only (a lens, a rig, a stripe), never big areas.
+- Godot units are metres. Characters are live 3D models, 2 m tall (Feras 2026-10-21; characters-3d.md).
+  The pixel sprites are Claude's stand-ins, kept only as the fallback source.
+- Feet on the model origin (the ground). Characters turn to face their move (`CharacterVisual.face_dir`); never
+  mirror a model with a negative scale. Light comes from the upper left.
+- Painted surfaces: one albedo per model with soft light and cavity darkening baked in. The shader bands the light
+  into 3 tones (indigo shadow, mid, lit) with a rim and a `min_light` floor. Ink outline from screen-space depth and
+  normals. No normal or roughness maps, low specular.
+- Faces and visors get a painted highlight. Neon is for accents only (a lens, a rig, a stripe), never big areas;
+  it comes from the emission mask.
 
 ## Palette (letter = colour)
 - Outline and night: k #1a1420 outline, n #2b2540 deep indigo, i #3d3a73 indigo, j #5d5fa8 light indigo.
@@ -23,16 +27,22 @@ Skin s/m/l. Gypsum h/g/w. Brick r/b/t. Indigo cloth n/i/j. Leather o/p/q. Steel 
 plus x for the glint. Glow: C or M with a on top.
 
 ## Silhouettes (readable at 1x)
+- Each model must read as a dark silhouette with its ink outline alone: a bulky or long shape, one big prop
+  (djanbeyyah, baton, satchel) and one glow accent. Budgets: hero 15k triangles, enemy 10k, NPC 7k.
 - Zayd: lean, light jacket over a brick futa wrap, red scarf at the neck, djanbeyyah at the belt (brass hilt, steel tip).
 - Bilqis: hooded headscarf (indigo) with goggles (cyan) on the brow, long indigo coat with a magenta seam, a
   tool satchel behind the hip, a glowing cyan wrist rig on the front arm.
 - Concession enforcer: bulky, wide pauldrons, visor helmet (cyan slit), water-drop emblem (u/a) on the chest, baton.
-- Survey drone: round body, two rotor pods, one big lens (cyan and white glint), orange thruster.
+- Survey drone: round body, two rotor pods, one big lens (cyan and white glint), orange thruster. A rigid
+  three-part model animated in code, not a skinned body.
 - Workshop bench: low table, a glowing screen, tools, a brass-hilted blade.
 
 ## Pipeline
-Gemini/Flow picture to sprite entry: `python tools/art/pixelize.py --in PIC.png --id ID [--height 64] [--out content/art/sprites.json]`; Zayd and Bilqis (2026-10-21) used `--contrast 1.3 --saturation 1.5 --outline` (soft painted art loses its hues when snapped; the outline is the dark 'k' ring).
-Real sprites: Feras's Gemini picture -> pixelize.py -> touch-up in Pixelorama (free). Edit any sprite:
+Characters (docs/design/characters-3d.md): CC0 stand-in bodies and moves (Quaternius) now, retargeted at import.
+The owner's own later: Flow A-pose picture -> TRELLIS.2 -> Blender cleanup -> auto-rig. Painted textures go through
+`tools/art/painterly_bake.py`. Every file gets a manifest entry with its source and licence.
+Pixel fallback only (PixelSource, until a model exists). Gemini/Flow picture to sprite entry: `python tools/art/pixelize.py --in PIC.png --id ID [--height 64] [--out content/art/sprites.json]`; Zayd and Bilqis (2026-10-21) used `--contrast 1.3 --saturation 1.5 --outline` (soft painted art loses its hues when snapped; the outline is the dark 'k' ring).
+Fallback sprites: Feras's Gemini picture -> pixelize.py -> touch-up in Pixelorama (free). Edit any sprite:
 `python tools/art/sprite_png.py export --id ID --png ID.png`, paint, then `... import --id ID --png ID.png`
 (lossless; refuses colours outside the palette). `... palette --out main.gpl` gives Pixelorama the palette.
 Self-test: `python tools/art/test_sprite_png.py`.
@@ -60,15 +70,20 @@ Look "night" (content/world/look.json) + sky "sanaa_night" (sky.json) + mist.jso
   Opening shot = `keys` in camera.json (positions relative to Zayd, `dof` scales the blur so stars stay sharp); any key/click skips.
 
 ## Motion and VFX
-- Characters (`CharacterVisual`, numbers in content/art/visual.json): lit billboard shader (character.gdshader) with a
-  guaranteed `min_light` share of the albedo plus a cool rim, so figures never go black against the moon. Idle breath,
-  walk bob with squash and lean, dust puffs, turn squash, blob shadow; battle: anticipation, lunge with afterimages,
-  hurt (flash, shake, slide), KO collapse + desaturate, revive glow, victory hop. Nearest filtering, no resampling.
+- Characters (`CharacterVisual`; ModelDef and ClipDef in content/art/models.json and clips.json; every number is a
+  placeholder tuned on renders): live 3D models with the painted skin shader and ink outline. Locomotion blends
+  idle, walk and run by speed, with playback rate = speed / stride so feet do not slide. Battle moves play in
+  segments: wind-up (about 0.7x), a hold (about 80 ms), the strike (about 1.8x), then recovery. The impact frame
+  fires an event and battle waits on it, never on a timer. Hit-stop: a 60-90 ms freeze on attacker and target
+  (`CharacterVisual.hit_stop`). The weapon has a ribbon trail from hilt to tip and an arc smear on the strike.
+  Squash is on the body node; lean 6-8 degrees from acceleration; turns about 900 deg/s. Idle breath, dust, hurt
+  flash and shake, KO collapse and desaturate, revive glow, victory hop, blob contact shadow.
 - Effects (`content/combat/vfx.json`, one entry per ActionDef vfx kind plus "break"): layers of pooled additive quads
   (tex, anchors actor/target/feet/head/hand/mid, size, colour x energy, delay, time, drift, spin, span/chain/radial).
   Textures are painted in code (VfxTextures), hard-edged core + rim. Energy > 1 so the night bloom picks them up.
 - Juice: per-move `impact`, `hitstop`, `shake`, `zoom`, `knock` in vfx.json; global numbers in juice.json (freeze scale,
-  BREAK stamp, number pop and bounce, heavy threshold). Hitstop = Engine.time_scale dip for real time, always restored.
+  BREAK stamp, number pop and bounce, heavy threshold). Character hit-stop is the per-model freeze above, never
+  Engine.time_scale; the global dip in juice.json is the old path and must not be used for models.
 - Camera (content/combat/camera.json): ~1 s swoop from the exploration camera to a low pose (12.5 deg down), idle drift,
   leans toward the actor, pushes in on big moves, shakes, victory pose. After the battle the exploration camera cuts back.
 - Look at every effect: `tools/shot_scene.gd` with `tools/vfx_gallery.gd`; the whole battle: `tools/shot_battle.gd`.
