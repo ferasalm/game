@@ -77,10 +77,10 @@ Every number below lives in content JSON; code reads it from Defs. Each rule her
 ## Starting content (final numbers, tuned by the harness)
 | Who | HP | SP | Atk | Def | Agi | Wt | Moves |
 |---|---|---|---|---|---|---|---|
-| Zayd | 400 | 24 | 20 | 14 | 40 | 3 | djanbeyyah_strike, breaker (+ hilt ability) |
-| Bilqis | 280 | 36 | 16 | 9 | 44 | 1 | spark_shot, static_net |
-| Concession enforcer (x2) | 420 | 0 | 28 | 14 | 30 | 6 | baton_slam (interrupt resist 0.2) |
-| Survey drone | 180 | 12 | 20 | 6 | 48 | 0 | laser_ping, overcharge_beam |
+| Zayd | 400 | 24 | 20 | 14 | 40 | 3 | djanbeyyah_strike, breaker (+ hilt ability, + prosthetic moves) |
+| Bilqis | 280 | 36 | 16 | 9 | 44 | 1 | spark_shot, static_net (+ prosthetic moves) |
+| Concession enforcer (x2) | 450 | 0 | 31 | 14 | 30 | 6 | baton_slam (interrupt resist 0.2) |
+| Survey drone | 180 | 12 | 23 | 6 | 48 | 0 | laser_ping, overcharge_beam |
 
 | Move | SP | Power x hits | Melee | Cast | Recovery | Knockback | Notes |
 |---|---|---|---|---|---|---|---|
@@ -94,20 +94,17 @@ Every number below lives in content JSON; code reads it from Defs. Each rule her
 | reverse_stab (ambush) | 0 | 24 | yes | 1.0 | 0 | 3000 | opening only, not choosable |
 | quick_slash (swift hilt) | 5 | 6 | yes | 1.8 | 200 | 600 | cancels |
 | crushing_blow (anvil hilt) | 6 | 58 | yes | 0.7 | 900 | 2500 | |
-Status jammed: 2 turns, wait_speed 0.6, cast_speed 0.6.
-Hilts: swift (agility +2, cast x1.03, weight 0.5, quick_slash); anvil (agility -1, cast x0.95, weight 1.5,
-crushing_blow). Blades: keen (attack +8, knockback +0, weight 1); broad (attack +5, knockback +1500, weight 2).
+Tech moves (prosthetics; table and numbers in docs/design/prosthetics.md): elder_cut, piston_jab, arc_discharge,
+reactive_guard, nanite_mend, overclock_link, overload_lance, reboot_pulse. Every action has a vfx kind (slash,
+heavy_slash, stab, piston, beam, bolt, arc_all, burst, heal, shield, overclock, net, drone_shot, baton).
+Status jammed: 2 turns, wait_speed 0.6, cast_speed 0.6. guarded: 2 turns, damage_taken 0.6. overclocked: 3 turns,
+wait_speed 1.25, cast_speed 1.15. Rules add heal_attack_factor 0.5, ai_heal_below 0.4, ai_big_cast_power 25.
+Hilts: grandfather (Heirloom, start), swift, anvil; blades: rustwire (start), keen, broad (stats in
+docs/design/prosthetics.md). The old four-pairing table below is superseded by that file's harness table.
 Battle rules: defense_factor 0.5, damage_variance 0.1, sp_per_act 3, max_ticks 20000, start ranges as above.
 Balance target (harness, auto-play): each pairing wins 60-95%, max gap 25 points, battles 40-90 s of game time.
 
-## Balance (harness, 2026-10-21)
-1,000 seeded battles per pairing, BattleAI playing both sides, ambush 0 (tools/run_godot.sh -s
-res://features/combat/harness/balance.gd).
-```
-pairing                     win %   mean secs   interrupts/battle
-swift_hilt + keen_blade     83.4        57.3               10.69
-swift_hilt + broad_blade    84.5        60.3               10.69
-anvil_hilt + keen_blade     73.8        56.8                8.95
-anvil_hilt + broad_blade    69.3        60.2                9.30
-```
-Target met: all pairings 60-95%, widest gap 15.2 points, battles 57-60 s.
+## Balance
+The harness (features/combat/harness/balance.gd) now covers hilt x blade x prosthetic; the current table is in
+docs/design/prosthetics.md. Target: every obtainable pairing wins 65-90%, battles 40-90 s of game time.
+Before prosthetics (2026-10-21) the four hilt + blade pairings won 69-85% in 57-60 s.

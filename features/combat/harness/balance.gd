@@ -1,12 +1,13 @@
 extends SceneTree
 ## Balance harness: seeded battles per gear pairing with BattleAI playing both sides, one table.
-## Run: GODOT_TIMEOUT=1800 tools/run_godot.sh -s res://features/combat/harness/balance.gd -- [battles] [all]
+## Run: GODOT_TIMEOUT=1800 tools/run_godot.sh -s res://features/combat/harness/balance.gd -- [battles] [all|obtainable] [name filter]
 ## Default 1000 battles per row and only the items the prototype hands out; "all" adds every item in the data.
 ## Rows: Zayd's hilt x blade x prosthetic (Bilqis in her start rig), then Bilqis's prosthetics (Zayd in his
 ## start gear). Tune content/*.json, not code.
 
 var _battles: int = 1000
 var _all: bool = false
+var _filter: String = ""
 var _loader: BattleLoader
 
 
@@ -15,6 +16,7 @@ func _process(_delta: float) -> bool:
 	if args.size() > 0:
 		_battles = maxi(1, args[0].to_int())
 	_all = args.size() > 1 and args[1] == "all"
+	_filter = args[2] if args.size() > 2 else ""
 	var db: Node = load("res://core/content_db.gd").new()
 	var problems: PackedStringArray = db.call("load_all")
 	if not problems.is_empty():
@@ -59,6 +61,8 @@ func _worn_by(hero_id: StringName) -> Array[StringName]:
 
 
 func _row(label: String, hilt_id: StringName, blade_id: StringName, arm_id: StringName, rig_id: StringName) -> String:
+	if not _filter.is_empty() and not label.contains(_filter):
+		return "(skipped) " + label
 	var wins: int = 0
 	var ticks: int = 0
 	var interrupts: int = 0

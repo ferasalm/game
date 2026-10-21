@@ -86,4 +86,4 @@ func test_start_party_wears_the_start_gear_and_saved_gear_overrides() -> void:
 	party = loader.party_from_equipment(saved)
 	check(party[1].actions.has(&"reboot_pulse") and not party[1].actions.has(&"nanite_mend"), "the saved Dawn Lens replaces the rig")
 	check(party[0].actions.has(&"reactive_guard") and not party[0].actions.has(&"piston_jab"), "and Zayd's saved spine the arm")
-	check_eq(party[0].hp_regen, 10 + 0, "the Cradle Spine's mender_loop (the heirloom hilt adds no regen)")
+	check_eq(party[0].hp_regen, 8, "the Cradle Spine's mender_loop (the heirloom hilt adds no regen)")
