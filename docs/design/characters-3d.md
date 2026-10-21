@@ -46,9 +46,13 @@ items marked (unverified) were not confirmed on the source page.
 - Every number above is a [PLACEHOLDER] in content/art JSON, tuned on renders.
 
 ## 5. Data
-- `content/art/models.json`, kind `model` (ModelDef): `scene`, `height_m`, `radius`, `anchors` (hand, head, hilt,
-  tip as bone names; feet = origin), `states` (each of the 9 facade states -> an animation), `stride_m`,
-  `turn_speed`, `tint`, `outline_hull`.
+- `content/art/models.json`, kind `model` (ModelDef): `scene`, `height_m`, `radius`, `anchors` (hand, head, belt,
+  hilt, tip as bone names; feet = origin), `states` (each of the 9 facade states -> an animation), `stride_m`,
+  `turn_speed`, `tint`, `outline_hull`, `attachments` (parts worn on an anchor: a mesh scene each).
+- **Zayd's default skin always wears his grandfather's djanbeyyah hilt** (owner, 2026-10-21): a separate attachment
+  (`grandfather_hilt`, the Heirloom item) sheathed at the front of his belt while exploring, moved to the hand anchor
+  for strikes and back after. One part, modelled once; a stand-in mesh until Feras's picture (section 8).
+  Heirloom accent: carnelian red #d9503f (rarities.json).
 - `content/art/clips.json`, kind `clip` (ClipDef): per animation `seconds`, `loops`, `impact_t`, wind-up/hold/strike.
 - `visual_rules.default_source`: "pixel" or "model". `set_sprite(id)` picks per character: a ModelDef with that id
   swaps in a ModelSource; otherwise the pixel sprite stays.
@@ -67,7 +71,9 @@ Hero 15k triangles, enemy 10k, NPC 7k; at most 90k character triangles on screen
 1. A Flow picture per hero: full body, front view, camera at chest height, little perspective; **A-pose** (arms
    30-45 degrees down, not a T-pose), fingers apart, legs slightly apart, feet visible; flat even light, no cast
    shadows or rim light, plain grey background (no green); scarf and coat close to the body; the weapon in a
-   separate picture. Matching side and back views if the tool takes more than one.
+   separate picture. Matching side and back views if the tool takes more than one. Zayd's picture shows the
+   grandfather's hilt sheathed at the front of his belt, and a separate close picture of that hilt (front and side)
+   becomes its own 3D part.
 2. Image-to-3D: TRELLIS.2 (MIT licence) on its Hugging Face Space (Feras logs in; free quota unverified). Fallback:
    Meshy free tier (outputs CC BY 4.0: credit in the manifest). Hunyuan3D-2.1's licence excludes the EU, UK and South
    Korea: avoid.

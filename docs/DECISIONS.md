@@ -60,3 +60,4 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - ~~2026-10-21 | 3D motion: free CC0 packs or Mixamo (Feras logs in), retargeted, plus Claude's Hades-style polish (wind-ups, holds, fast strikes, hit pauses) | Feras (recommended) | Feras~~ superseded 2026-10-21: CC0 moves only
 - 2026-10-21 | Feras's model pictures for image-to-3D: A-pose (arms 30-45 deg down), not T-pose; flat light, grey background, weapon apart (characters-3d.md 8) | what image-to-3D and auto-rig need | Claude (owner may veto)
 - 2026-10-21 | 3D motion: CC0 moves only (Quaternius library; Claude keys missing attack/cast clips), retargeted, plus Hades-style polish; no Mixamo | Mixamo files can't sit in the public repo | Feras
+- 2026-10-21 | Zayd's default skin always wears his grandfather's djanbeyyah hilt (Heirloom grandfather_hilt): a separate part at the front of his belt, drawn in hand to strike | Feras: the hilt was missing from his model | Feras
