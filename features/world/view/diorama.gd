@@ -101,7 +101,10 @@ static func aim(camera: Camera3D, focus: Vector3, look: LookDef) -> void:
 	camera.look_at(focus + Vector3(0.0, look.look_height, 0.0))
 
 
-static func material(color: Color, glow: float = 0.0) -> StandardMaterial3D:
+## A flat block colour (painted while a painted look is in use, unless it glows).
+static func material(color: Color, glow: float = 0.0) -> Material:
+	if PaintedMaterials.paint != null and glow <= 0.0:
+		return PaintedMaterials.flat(color)
 	var mat := StandardMaterial3D.new()
 	mat.albedo_color = color
 	mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST

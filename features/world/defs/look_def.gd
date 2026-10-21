@@ -3,7 +3,9 @@ extends Def
 ## The HD-2D look as data: camera offset and field of view, tilt-shift depth of field, key light, ambient light,
 ## background and bloom. Look v1 is the accepted daytime look-test picture; look "night" adds a sky (sky_id),
 ## tonemapping, depth and height fog, an optional volumetric fog (quality flag) and a cool fill light.
-## Every key after glow_bloom is optional: its default keeps the v1 behaviour.
+## Every key after glow_bloom is optional: its default keeps the v1 behaviour. A "paint" object makes it a painted
+## diorama look (PaintDef); camera_preset names a pose in the explore camera rig (camera.json) that replaces the
+## camera offset, field of view and depth of field.
 
 const TONEMAPS: Array[StringName] = [&"linear", &"reinhard", &"filmic", &"aces", &"agx"]
 
@@ -46,6 +48,9 @@ var volumetric_fog: bool = false
 var volumetric_density: float = 0.01
 var volumetric_albedo: Color = Color.WHITE
 var volumetric_length: float = 40.0
+## Painted diorama recipe; null = the unpainted look.
+var paint: PaintDef = null
+var camera_preset: StringName = &""
 
 
 func read(r: DefReader) -> void:
@@ -65,6 +70,10 @@ func read(r: DefReader) -> void:
 	glow_bloom = r.number("glow_bloom", 0.0, 1.0)
 	_read_night(r)
 	_read_fog(r)
+	camera_preset = StringName(r.text("camera_preset", "", false))
+	if r.has("paint"):
+		paint = PaintDef.new()
+		paint.read(r.child("paint"))
 
 
 func references() -> Array[Array]:

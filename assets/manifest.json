@@ -2610,6 +2610,370 @@
       "source": "flow music (flowmusic.app, Lyria), owner-generated",
       "licence": "Google Flow Music output, owner-generated; check Flow Music terms before a commercial release",
       "prompt": "Concession Clash"
+    },
+    {
+      "id": "painted_oil_facade_house_a",
+      "path": "textures/painted/oil/facade_house_a.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_house_a_emit",
+      "path": "textures/painted/oil/facade_house_a_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_a",
+      "path": "textures/painted/oil/facade_tower_a.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_a_emit",
+      "path": "textures/painted/oil/facade_tower_a_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_b",
+      "path": "textures/painted/oil/facade_tower_b.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_b_emit",
+      "path": "textures/painted/oil/facade_tower_b_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_c",
+      "path": "textures/painted/oil/facade_tower_c.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_c_emit",
+      "path": "textures/painted/oil/facade_tower_c_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_d",
+      "path": "textures/painted/oil/facade_tower_d.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_d_emit",
+      "path": "textures/painted/oil/facade_tower_d_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_e",
+      "path": "textures/painted/oil/facade_tower_e.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_e_emit",
+      "path": "textures/painted/oil/facade_tower_e_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_f",
+      "path": "textures/painted/oil/facade_tower_f.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_f_emit",
+      "path": "textures/painted/oil/facade_tower_f_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_g",
+      "path": "textures/painted/oil/facade_tower_g.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_g_emit",
+      "path": "textures/painted/oil/facade_tower_g_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_h",
+      "path": "textures/painted/oil/facade_tower_h.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_h_emit",
+      "path": "textures/painted/oil/facade_tower_h_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_tile_basalt",
+      "path": "textures/painted/oil/tile_basalt.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_tile_brick",
+      "path": "textures/painted/oil/tile_brick.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_tile_gypsum",
+      "path": "textures/painted/oil/tile_gypsum.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_tile_paving",
+      "path": "textures/painted/oil/tile_paving.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_tile_planks",
+      "path": "textures/painted/oil/tile_planks.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_tile_plaster_worn",
+      "path": "textures/painted/oil/tile_plaster_worn.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_tile_roof_plaster",
+      "path": "textures/painted/oil/tile_roof_plaster.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_bake",
+      "path": "textures/painted/oil/bake.json",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_house_a",
+      "path": "textures/painted/wash/facade_house_a.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_house_a_emit",
+      "path": "textures/painted/wash/facade_house_a_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_a",
+      "path": "textures/painted/wash/facade_tower_a.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_a_emit",
+      "path": "textures/painted/wash/facade_tower_a_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_b",
+      "path": "textures/painted/wash/facade_tower_b.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_b_emit",
+      "path": "textures/painted/wash/facade_tower_b_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_c",
+      "path": "textures/painted/wash/facade_tower_c.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_c_emit",
+      "path": "textures/painted/wash/facade_tower_c_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_d",
+      "path": "textures/painted/wash/facade_tower_d.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_d_emit",
+      "path": "textures/painted/wash/facade_tower_d_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_e",
+      "path": "textures/painted/wash/facade_tower_e.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_e_emit",
+      "path": "textures/painted/wash/facade_tower_e_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_f",
+      "path": "textures/painted/wash/facade_tower_f.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_f_emit",
+      "path": "textures/painted/wash/facade_tower_f_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_g",
+      "path": "textures/painted/wash/facade_tower_g.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_g_emit",
+      "path": "textures/painted/wash/facade_tower_g_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_h",
+      "path": "textures/painted/wash/facade_tower_h.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_h_emit",
+      "path": "textures/painted/wash/facade_tower_h_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_tile_basalt",
+      "path": "textures/painted/wash/tile_basalt.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_tile_brick",
+      "path": "textures/painted/wash/tile_brick.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_tile_gypsum",
+      "path": "textures/painted/wash/tile_gypsum.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_tile_paving",
+      "path": "textures/painted/wash/tile_paving.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_tile_planks",
+      "path": "textures/painted/wash/tile_planks.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_tile_plaster_worn",
+      "path": "textures/painted/wash/tile_plaster_worn.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_tile_roof_plaster",
+      "path": "textures/painted/wash/tile_roof_plaster.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_bake",
+      "path": "textures/painted/wash/bake.json",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
     }
   ]
 }
