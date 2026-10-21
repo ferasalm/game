@@ -9,3 +9,6 @@ __pycache__/
 /Godot_v*_win64*.exe
 # Claude Code agent worktrees (local only)
 /.claude/worktrees/
+
+# Owner drop folder for raw Gemini/Flow pictures (raw generations stay out of git: ARCHITECTURE 13)
+/inbox/

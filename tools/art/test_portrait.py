@@ -32,6 +32,11 @@ def main() -> int:
         assert img.getpixel((0, 0))[3] == 0, "background corner must be transparent"
         assert img.getpixel((img.width // 2, img.height // 2))[3] == 255, "figure centre must be opaque"
         assert 40 <= img.width <= 100, f"trimmed width off: {img.width}"
+        strip = Image.new("RGBA", (9, 1), (90, 160, 80, 255))
+        strip.putpixel((0, 0), (30, 200, 60, 0))
+        spill = portrait.despill(strip, (30, 200, 60), 2)
+        assert spill.getpixel((2, 0))[:3] == (90, 90, 80), "a pixel near the cut-out edge must lose the green cast"
+        assert spill.getpixel((8, 0))[:3] == (90, 160, 80), "a pixel deep inside the figure keeps its green"
         assert pathlib.Path(str(out) + ".import").read_text() == '[remap]\n\nimporter="keep"\n'
         portrait.run(args_for(src, assets, licence="second licence"))  # replaces, not duplicates
         manifest = json.loads((assets / "manifest.json").read_text())["assets"]

@@ -8,10 +8,11 @@ or replaces the entry in assets/manifest.json. See docs/design/portrait-prompts.
   python tools/art/portrait.py --in gemini.png --speaker zayd --expression happy --licence "Gemini, owner-generated" --prompt-id zayd_happy_v1
 """
 import argparse, json, pathlib, sys
-from PIL import Image, ImageChops
+from PIL import Image, ImageChops, ImageFilter
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent.parent
 EXPRESSIONS = ("neutral", "happy", "angry", "surprised")
+DESPILL_REACH = 6  # pixels from the cut-out edge that lose the background colour cast
 
 
 def corner_colour(img: Image.Image) -> tuple[int, int, int]:
@@ -31,7 +32,18 @@ def key_out(img: Image.Image, tolerance: int) -> Image.Image:
     alpha = distance.point(lambda d: 0 if d <= tolerance else min(255, (d - tolerance) * 255 // span))
     out = rgb.convert("RGBA")
     out.putalpha(alpha)
-    return out
+    return despill(out, corner_colour(rgb), DESPILL_REACH)
+
+
+def despill(img: Image.Image, bg: tuple[int, int, int], reach: int) -> Image.Image:
+    """Near the cut-out edge, clamps the background's strongest channel to the larger of the other two, so hair
+    strands lose the green (or blue) fringe; colours deeper inside the figure (green eyes) are untouched."""
+    c = bg.index(max(bg))
+    near = img.getchannel("A").filter(ImageFilter.MinFilter(2 * reach + 1)).point(lambda a: 255 if a < 255 else 0)
+    bands = list(img.split())
+    others = ImageChops.lighter(*[bands[i] for i in range(3) if i != c])
+    bands[c] = Image.composite(ImageChops.darker(bands[c], others), bands[c], near)
+    return Image.merge("RGBA", bands)
 
 
 def make_portrait(img: Image.Image, tolerance: int, height: int) -> Image.Image:
