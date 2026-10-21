@@ -13,12 +13,15 @@ static var _cache: Dictionary[String, Material] = {}
 static var _textures: Dictionary[String, Texture2D] = {}
 
 
-## Starts (or, with null, ends) building with a painted recipe; clears every cached world material.
+## Starts (or, with null, ends) building with a painted recipe; clears every cached world material and the cached
+## meshes that hold them (a tower or prop mesh built under another look would keep its old material).
 static func use(recipe: PaintDef) -> void:
 	paint = recipe
 	_cache.clear()
 	_textures.clear()
 	SurfaceMaterials.clear()
+	TowerHouse.clear()
+	PropMesh.clear()
 
 
 ## A tile pattern, world-space triplanar with one repeat every metres (SurfaceMaterials caches it).

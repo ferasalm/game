@@ -51,6 +51,16 @@ func test_materials_switch_only_while_painted() -> void:
 	check(Diorama.material(Color.RED) is StandardMaterial3D, "unpainted flat colour")
 
 
+func test_look_switch_rebuilds_cached_meshes() -> void:
+	var palette := ContentDB.get_def("palette", &"main") as PaletteDef
+	var def := ContentDB.get_def("building", &"tower_b") as BuildingDef
+	PaintedMaterials.use(_look(&"painted_a").paint)
+	check(TowerHouse.mesh(def, palette).surface_get_material(0) is ShaderMaterial, "painted tower facade")
+	PaintedMaterials.use(null)
+	check_eq(TowerHouse.mesh(def, palette).surface_get_material(0), SurfaceMaterials.facade(def, palette),
+		"after the switch the tower mesh holds the current facade material")
+
+
 func test_baked_textures_load_and_fall_back() -> void:
 	for bake: StringName in [&"wash", &"oil"]:
 		var image: Image = PaintedMaterials.load_baked(bake, "tile_brick")

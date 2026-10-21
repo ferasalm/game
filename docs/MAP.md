@@ -6,6 +6,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 
 ## (root)
 - `.godot-version`
+- `WIP_NOTES.md`
 - `project.godot`
 
 ## .agents
@@ -49,7 +50,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/world/buildings.json`: content: building x9
 - `content/world/camera.json`: content: camera_rig x1
 - `content/world/explore.json`: content: explore_rules x1
-- `content/world/look.json`: content: look x2
+- `content/world/look.json`: content: look x5
 - `content/world/mist.json`: content: mist x3
 - `content/world/props.json`: content: prop x23
 - `content/world/sky.json`: content: sky x1
@@ -249,6 +250,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/defs/light_spec.gd`: One practical light: where it is, its colour, a real OmniLight (energy, range; only the nearest few are alive at once) and a fake light pool (an additive quad on the floor or a wall, radius in metres, cheap and always on)
 - `features/world/defs/look_def.gd`: The HD-2D look as data: camera offset and field of view, tilt-shift depth of field, key light, ambient light, background and bloom
 - `features/world/defs/mist_def.gd`: One drifting mist layer (content/world/mist.json): a flat transparent plane at a height, scrolling noise between two thresholds, faded where it meets geometry, near the camera and at the plane's edges
+- `features/world/defs/paint_def.gd`: The painted-diorama recipe of a look (the "paint" object of a look entry): the shared painted light (bands, tints, rim, min_light floor), which offline painterly bake the world textures use, the ink outline pass, the grade (a colour LUT made from split tones, vignette, canvas grain), anti-aliasing and the painted figure
 - `features/world/defs/placement.gd`: Where one building or prop stands in an area: the content id (ref), an optional name for it (chests), the position (x, z on the floor; y absolute, or the floor height when absent) and a yaw in degrees
 - `features/world/defs/prop_def.gd`: A rooftop prop as data (content/world/props.json): a list of simple parts (PropPart), an optional practical light it carries, an optional box that blocks walking (collide = width, height, depth, centred on the prop's base) and, for a chest, the lid's hinge (lid_hinge x, y, z) so the "lid" part group can swing open
 - `features/world/defs/prop_part.gd`: One solid piece of a prop: a box (size = width, height, depth; at = centre) or a frustum (size = bottom radius, top radius, height; at = base centre), a palette letter, an optional yaw/tilt (degrees), and how it is drawn: glow (unshaded, boosted, blooms), blink (a glow that pulses), pattern (a painted tile texture instead of the letter), group (a named sub-mesh that can move, such as a chest lid)
@@ -285,6 +287,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/tests/test_facade.gd`: Night Sana'a textures: the facade painter (size, determinism, lit windows and qamariya glass in the emission map, a door, every pixel painted), the surface patterns (tile 4 m, deterministic, tileable) and the tile content
 - `features/world/tests/test_look_test.gd`: The look-test scene builds without errors (headless: no pixels are drawn, but every node and resource is made)
 - `features/world/tests/test_night.gd`: Night look: the sky def feeds every shader uniform, look "night" builds a sky environment with fog and a fill light while "v1" stays the flat daytime look, bad look keys are caught, the vista zone and mist layers load
+- `features/world/tests/test_painted.gd`: Painted diorama look spike: the three painted looks read and differ, their camera presets put the camera at the preset pitch, world materials switch to the painted shader only while a painted look is in use, the baked textures load (and fall back when missing), every bake matches the current painter inputs (re-bake when this fails), the grade LUT is the identity at amount 0, and a painted rooftop gets its outline, screen pass and figure
 - `features/world/tests/test_rooftop.gd`: The rooftop scene builds headless; walking, the follower, the patrol touch, the ambush direction, the exploring switch, the patrol respawn, the workshop prompt and the camera
 - `features/world/tests/test_skyline.gd`: Night Sana'a city: building and skyline content, the layout rules (outside the area, out of the al-Saila corridor, inside the band, deterministic), the tower-house mesh, the landmarks and the draw-call budget
 - `features/world/view/area_builder.gd`: Builds an area's blocks: one MultiMeshInstance3D per tile type (bodies, and caps drawn with the cap tile's material; tiles with a pattern get its painted triplanar texture), plus one StaticBody3D holding a box per run of solid tiles and walls that close the area's edges
@@ -297,13 +300,22 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/view/landmark_builder.gd`: Builds all landmarks of a SkylineDef into one ArrayMesh with two surfaces: 0 lit (minarets, Bab al-Yaman: vertex colours shaded by the scene lights) and 1 glow (ridge, megacity, village: unshaded, boosted above 1 so neon and lit windows bloom)
 - `features/world/view/mist_builder.gd`: Builds one mist layer from a MistDef: a big flat plane over the area at the def's height, with the scrolling noise shader and a seamless noise texture made once here
 - `features/world/view/neon_sign.gd`: One neon sign: a dark board, a glowing frame and the text (Label3D in Reem Kufi, unshaded and boosted above 1 so it blooms)
+- `features/world/view/painted_atlases.gd`: The code-painted world atlases that the offline painterly bake repaints, by atlas id: tile_<pattern> for every playable surface pattern and facade_<building> / facade_<building>_emit for every tower-house
+- `features/world/view/painted_figure.gd`: Look spike: a static painted billboard of Zayd (assets/textures/painted/figures/zayd.webp, cut from the owner's Flow picture by tools/art/figure_cut.py) with the shared painted light and an alpha-edge ink line
+- `features/world/view/painted_look.gd`: Turns a scene painted when its look has a "paint" recipe (PaintDef): begin() before the world is built (world materials go through PaintedMaterials), finish() once it stands: the ink outline quad on the camera, the grade (split-tone LUT, contrast and saturation on the Environment; vignette and canvas grain on screen), the anti-aliasing mode, the shared light on every character, and the painted figure in place of the player's sprite
+- `features/world/view/painted_materials.gd`: World materials of a painted look (painted_world.gdshader + the shared painted light): tiles, facades, trim and flat colours
 - `features/world/view/prop_builder.gd`: Places an area's props and tower-houses from its placement lists
 - `features/world/view/prop_mesh.gd`: Builds one prop's ArrayMesh from its PropDef parts (palette-letter vertex colours, flat shaded)
 - `features/world/view/roof_extras.gd`: The 2150 clutter on a tower-house roof: water tank, satellite dish, antenna with a red beacon, small solar panel
 - `features/world/view/shaders/blink.gdshader`
+- `features/world/view/shaders/ink_outline.gdshader`
 - `features/world/view/shaders/light_pool.gdshader`
 - `features/world/view/shaders/mist.gdshader`
 - `features/world/view/shaders/night_sky.gdshader`
+- `features/world/view/shaders/painted_figure.gdshader`
+- `features/world/view/shaders/painted_light.gdshaderinc`
+- `features/world/view/shaders/painted_screen.gdshader`
+- `features/world/view/shaders/painted_world.gdshader`
 - `features/world/view/sky_builder.gd`: Builds the night Sky resource from a SkyDef: the sky shader with every uniform filled from the def, and the three direction vectors (moon, city glow, milky way normal) computed from its angles
 - `features/world/view/skyline_builder.gd`: Builds the old city of Sana'a around a play area from the "skyline" content: tower-houses in depth bands (one MultiMeshInstance3D per building type, shared meshes and materials), far unshaded silhouettes (one MultiMesh), the landmarks (one mesh), the street-level ground and the al-Saila street
 - `features/world/view/skyline_demo.gd`: Skyline demo: the rooftop area inside the old city, seen from a chosen camera
@@ -331,14 +343,19 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tests/runner.gd`: Headless test runner: runs every test_* method of every res://**/tests/test_*.gd file
 
 ## tools
+- `tools/art/figure_cut.py`: Cut one painted full-body figure out of a Flow picture on green (look spike: a static painted billboard).
+- `tools/art/painterly_bake.py`: Offline painterly bake: repaint the code-painted world atlases as brush strokes (numpy + Pillow, deterministic).
+- `tools/art/painterly_recipes.json`: content: ? x0
 - `tools/art/pixelize.py`: Turn a Gemini/Flow PNG into a palette-locked pixel sprite entry for content/art/sprites.json.
 - `tools/art/portrait.py`: Turn a Gemini portrait (flat background colour) into a game portrait.
 - `tools/art/sprite_png.py`: Edit a sprite in a pixel editor (Pixelorama): export it to PNG, paint, import it back, losslessly.
+- `tools/art/test_painterly_bake.py`: Self-test for painterly_bake.py and figure_cut.py on synthetic pictures in a temp dir; exit 1 on any failure.
 - `tools/art/test_pixelize.py`: Self-test for pixelize.py: python tools/art/test_pixelize.py (plain asserts, exits non-zero on failure).
 - `tools/art/test_portrait.py`: Self-test for portrait.py on a synthetic picture in a temp dir; exit 1 on any failure.
 - `tools/art/test_sprite_png.py`: Self-test for sprite_png.py: python tools/art/test_sprite_png.py (plain asserts, exits non-zero on failure).
 - `tools/check.sh`: One command for every check (docs, lint, Godot import, tests). One ok/FAIL line per step; logs in .check/.
 - `tools/doc_check.py`: Keeps the always-loaded notes small and well-formed (docs/EFFICIENCY.md); exit 1 on any failure.
+- `tools/export_atlases.gd`: Exports the code-painted world atlases (PaintedAtlases) to PNG for the offline painterly bake
 - `tools/fps_probe.gd`: FPS probe: plays a scene with vsync off and prints the average and worst frames per second after a warm-up
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.
 - `tools/lint_gd.py`: GDScript rules Godot itself doesn't enforce (docs/ARCHITECTURE.md, "Code rules"); exit 1 on any break.

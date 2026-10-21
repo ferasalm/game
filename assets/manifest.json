@@ -2974,6 +2974,13 @@
       "source": "own",
       "licence": "own",
       "prompt": "painterly_bake"
+    },
+    {
+      "id": "zayd",
+      "path": "textures/painted/figures/zayd.webp",
+      "source": "google flow, owner-generated",
+      "licence": "Google Flow output, owner-generated; check Flow terms before a commercial release",
+      "prompt": "flow_zayd_full_a.png"
     }
   ]
 }
