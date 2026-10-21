@@ -83,6 +83,21 @@ func from_dict(raw: Dictionary) -> String:
 	return ""
 
 
+## A working copy of purse and bag that shares the inventory and flags; pay rewards into it, then take() it back.
+func holdings() -> Holdings:
+	var held := Holdings.new()
+	held.money = money
+	held.bag = Bag.from_counts(bag)
+	held.inventory = inventory
+	held.flags = flags
+	return held
+
+
+func take(held: Holdings) -> void:
+	money = held.money
+	bag = held.bag.snapshot()
+
+
 ## What a slot list shows, from the live state.
 func summary() -> Dictionary:
 	return SaveCodec.summary(to_dict())

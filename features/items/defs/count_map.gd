@@ -9,10 +9,11 @@ static func read(r: DefReader, key: String) -> Dictionary[StringName, int]:
 		return out
 	var raw: Dictionary[String, String] = r.text_map(key)
 	for item_id: String in raw:
-		if not raw[item_id].is_valid_int() or int(raw[item_id]) < 1:
+		var count: float = raw[item_id].to_float()  # JSON numbers arrive as floats
+		if not raw[item_id].is_valid_float() or count < 1.0 or count != floorf(count):
 			r.problem(key, "'%s' needs a whole count of 1 or more" % item_id)
 		else:
-			out[StringName(item_id)] = int(raw[item_id])
+			out[StringName(item_id)] = roundi(count)
 	return out
 
 
