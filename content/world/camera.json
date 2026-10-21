@@ -8,11 +8,11 @@
        {"at": 4.4, "px": 0.4, "py": 3.4, "pz": 8.0, "tx": 3.2, "ty": -0.1, "tz": -31.8, "fov": 38.0, "dof": 0.7}],
      "vista_offset_y": 1.5, "vista_offset_z": 9.0, "vista_look_height": 2.8, "vista_fov": 40.0, "vista_dof": 0.4, "vista_ease": 2.0,
      "presets": [
-       {"id": "diorama", "pitch": 35.0, "distance": 27.0, "look_height": 0.8, "fov": 30.0,
-        "dof_near": 19.0, "dof_far": 36.0, "dof_amount": 0.08},
-       {"id": "high", "pitch": 45.0, "distance": 27.0, "look_height": 0.8, "fov": 30.0,
-        "dof_near": 20.0, "dof_far": 35.0, "dof_amount": 0.08},
-       {"id": "hades", "pitch": 55.0, "distance": 26.0, "look_height": 0.8, "fov": 30.0,
-        "dof_near": 20.0, "dof_far": 33.0, "dof_amount": 0.07}]}
+       {"id": "diorama", "pitch": 35.0, "distance": 23.0, "look_height": 0.8, "fov": 30.0,
+        "dof_near": 16.0, "dof_far": 31.0, "dof_amount": 0.08},
+       {"id": "high", "pitch": 45.0, "distance": 20.0, "look_height": 0.8, "fov": 30.0,
+        "dof_near": 14.0, "dof_far": 27.0, "dof_amount": 0.08},
+       {"id": "hades", "pitch": 55.0, "distance": 16.5, "look_height": 0.8, "fov": 30.0,
+        "dof_near": 11.0, "dof_far": 23.0, "dof_amount": 0.07}]}
   ]
 }
