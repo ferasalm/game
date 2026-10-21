@@ -52,7 +52,17 @@ static func sim(
 	var statuses: Dictionary[StringName, StatusDef] = {}
 	for status: StatusDef in status_list:
 		statuses[status.id] = status
-	return BattleSim.create(rules, heroes, hero_slots, foes, foe_slots, 1, ambush, actions, statuses)
+	var setup := BattleSetup.new()
+	setup.rules = rules
+	setup.party = heroes
+	setup.party_slots = hero_slots
+	setup.enemies = foes
+	setup.enemy_slots = foe_slots
+	setup.actions = actions
+	setup.statuses = statuses
+	setup.seed = 1
+	setup.ambush = ambush
+	return BattleSim.create_from(setup)
 
 
 ## Steps until an event of this kind is returned (that step's events are included), the battle ends, or

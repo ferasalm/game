@@ -5,6 +5,8 @@ extends Def
 
 var start_money: int = 0
 var start_bag: Dictionary[StringName, int] = {}
+## Who is in the party at the start of a new game, in party order.
+var start_party: Array[StringName] = []
 var money_cap: int = 9999
 var repeat_payout: float = 0.5
 var ko_stand_hp: int = 1
@@ -21,7 +23,13 @@ func read(r: DefReader) -> void:
 	grace_seconds = r.number("grace_seconds", 0.0, 60.0)
 	spawn_min_distance_m = r.number("spawn_min_distance_m", 0.0, 100.0)
 	start_bag = CountMap.read(r, "start_bag")
+	start_party = r.id_list("start_party")
+	if start_party.is_empty():
+		r.problem("start_party", "needs at least one hero")
 
 
 func references() -> Array[Array]:
-	return CountMap.references(start_bag)
+	var out: Array[Array] = CountMap.references(start_bag)
+	for hero: StringName in start_party:
+		out.append(["combatant", hero])
+	return out

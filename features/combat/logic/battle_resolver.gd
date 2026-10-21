@@ -75,7 +75,7 @@ func _hit_target(actor: UnitState, action: ActionDef, target: UnitState, events:
 
 func _damage(actor: UnitState, action: ActionDef, target: UnitState) -> int:
 	var raw: float = action.power + actor.def.attack - target.def.defense * rules.defense_factor
-	var row: float = Formation.melee_multiplier(actor.slot, target.slot) if action.is_melee else 1.0
+	var row: float = Formation.melee_multiplier(actor.slot, target.slot, rules) if action.is_melee else 1.0
 	var variance: float = rng.randf_range(1.0 - rules.damage_variance, 1.0 + rules.damage_variance)
 	return maxi(1, roundi(raw * row * variance * target.damage_taken_mult()))
 

@@ -3,6 +3,8 @@
   "items": [
     {"id": "default", "defense_factor": 0.5, "damage_variance": 0.1, "sp_per_act": 3, "max_ticks": 20000,
      "party_start_min": 3000, "party_start_max": 4500, "enemy_start_min": 1000, "enemy_start_max": 3000,
-     "heal_attack_factor": 0.5, "ai_heal_below": 0.4, "ai_big_cast_power": 25}
+     "heal_attack_factor": 0.5, "ai_heal_below": 0.4, "ai_big_cast_power": 25,
+     "speed_weight_factor": 0.015, "speed_min_mult": 0.5, "melee_front_bonus": 0.15, "melee_back_penalty": 0.15,
+     "melee_min": 0.5, "melee_max": 1.5}
   ]
 }

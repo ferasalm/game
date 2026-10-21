@@ -49,6 +49,7 @@ func start_new() -> void:
 	if rules != null:
 		money = rules.start_money
 		bag = rules.start_bag.duplicate()
+		party = rules.start_party.duplicate()
 
 
 func to_dict() -> Dictionary:
