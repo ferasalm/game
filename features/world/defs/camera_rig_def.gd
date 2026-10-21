@@ -2,7 +2,8 @@ class_name CameraRigDef
 extends Def
 ## Camera language for exploring (content/world/camera.json): the opening establishing shot as keyframes (camera
 ## and target positions relative to the player, field of view, depth-of-field scale, seconds) and the "vista" pose the camera eases to
-## inside a vista zone. The ordinary exploring pose is the look's camera_offset / look_height / fov.
+## inside a vista zone. The ordinary exploring pose is the look's camera_offset / look_height / fov, or one of the
+## named presets (a look's camera_preset): pitch down to the target, distance, field of view and its own depth of field.
 
 ## One keyframe of the opening shot. pos and target are offsets from the player.
 class Shot extends RefCounted:
@@ -11,6 +12,25 @@ class Shot extends RefCounted:
 	var target: Vector3 = Vector3.ZERO
 	var fov: float = 30.0
 	var dof_scale: float = 1.0
+
+## The ordinary exploring pose: camera offset from the player, look height, field of view and depth of field.
+class Preset extends RefCounted:
+	var offset: Vector3 = Vector3.ZERO
+	var look_height: float = 0.8
+	var fov: float = 30.0
+	var dof_near: float = 5.0
+	var dof_far: float = 12.0
+	var dof_amount: float = 0.1
+
+	static func from_look(look: LookDef) -> Preset:
+		var p := Preset.new()
+		p.offset = look.camera_offset
+		p.look_height = look.look_height
+		p.fov = look.fov
+		p.dof_near = look.dof_near
+		p.dof_far = look.dof_far
+		p.dof_amount = look.dof_amount
+		return p
 
 var intro_duration: float = 6.0
 var intro_skip_blend: float = 0.4
@@ -21,6 +41,7 @@ var vista_look_height: float = 4.0
 var vista_fov: float = 30.0
 var vista_dof_scale: float = 1.0
 var vista_ease: float = 2.0
+var presets: Dictionary[StringName, Preset] = {}
 
 
 func read(r: DefReader) -> void:
@@ -42,6 +63,26 @@ func read(r: DefReader) -> void:
 	vista_fov = r.number("vista_fov", 5.0, 120.0)
 	vista_dof_scale = r.number("vista_dof", 0.0, 4.0)
 	vista_ease = r.number("vista_ease", 0.1, 20.0)
+	for pr: DefReader in r.optional_objects("presets"):
+		presets[pr.id()] = _read_preset(pr)
 	for i: int in keys.size():
 		if keys[i].at >= intro_duration or (i > 0 and keys[i].at <= keys[i - 1].at):
 			r.problem("keys", "key %d: times must rise and stay under intro_duration" % i)
+
+
+## The exploring pose for a look: its camera_preset when it names one of ours, else the look's own numbers.
+func pose_for(look: LookDef) -> Preset:
+	return presets.get(look.camera_preset, Preset.from_look(look)) as Preset
+
+
+func _read_preset(r: DefReader) -> Preset:
+	var p := Preset.new()
+	var pitch: float = deg_to_rad(r.number("pitch", 5.0, 89.0))
+	var distance: float = r.number("distance", 1.0, 100.0)
+	p.look_height = r.number("look_height", 0.0, 5.0)
+	p.offset = Vector3(0.0, p.look_height + sin(pitch) * distance, cos(pitch) * distance)
+	p.fov = r.number("fov", 5.0, 120.0)
+	p.dof_near = r.number("dof_near", 0.0, 100.0)
+	p.dof_far = r.number("dof_far", 0.0, 200.0)
+	p.dof_amount = r.number("dof_amount", 0.0, 1.0)
+	return p

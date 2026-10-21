@@ -12,3 +12,4 @@ __pycache__/
 
 # Owner drop folder for raw Gemini/Flow pictures (raw generations stay out of git: ARCHITECTURE 13)
 /inbox/
+/.bake/

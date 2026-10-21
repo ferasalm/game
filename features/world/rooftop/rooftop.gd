@@ -29,6 +29,7 @@ var camera_rig: ExploreCamera
 
 var _rules: ExploreRulesDef
 var _look: LookDef
+var _env: WorldEnvironment
 var _area: AreaDef
 var _floor_y: float = 0.0
 var _anchor: Vector3 = Vector3.ZERO
@@ -41,7 +42,7 @@ var _debug_layer: CanvasLayer  ## FPS + area name; hidden until F3 (the area car
 
 func _ready() -> void:
 	_rules = ContentDB.get_def("explore_rules", &"default") as ExploreRulesDef
-	_look = ContentDB.get_def("look", look_id) as LookDef
+	_look = ContentDB.get_def("look", PaintedLook.pick(look_id)) as LookDef
 	_area = ContentDB.get_def("area", area_id) as AreaDef
 	var rig := ContentDB.get_def("camera_rig", RIG_ID) as CameraRigDef
 	if _rules == null or _look == null or _area == null or rig == null:
@@ -53,6 +54,7 @@ func _ready() -> void:
 	_build_world(rig)
 	_build_actors()
 	_build_ui()
+	PaintedLook.finish(self, _look, _env.environment, camera, player)
 	_anchor = player.position
 
 
@@ -106,7 +108,9 @@ func _process(delta: float) -> void:
 
 
 func _build_world(rig: CameraRigDef) -> void:
-	add_child(Diorama.make_environment(_look))
+	PaintedLook.begin(_look)
+	_env = Diorama.make_environment(_look)
+	add_child(_env)
 	add_child(Diorama.make_sun(_look))
 	blocks = AreaBuilder.build(_area, _rules)
 	add_child(blocks)

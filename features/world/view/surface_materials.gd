@@ -3,7 +3,8 @@ extends RefCounted
 ## Cached textures and materials for the painted world, so 100+ buildings share a handful of draw materials:
 ## tile patterns (world-space triplanar, so texels stay square across tiles), tower-house facades (front and
 ## side painted side by side in one atlas, lit windows in an emission map), vertex-coloured trim, unshaded
-## HDR glow, and the dotted far silhouettes.
+## HDR glow, and the dotted far silhouettes. While a painted look is in use (PaintedMaterials.paint), tiles, facades
+## and trim come from PaintedMaterials instead (same images, painted light, baked textures).
 
 const GLOW_BOOST: float = 1.6
 const BLINK_SHADER: Shader = preload("res://features/world/view/shaders/blink.gdshader")
@@ -14,41 +15,54 @@ static func clear() -> void:
 	_cache.clear()
 
 
-static func tile(pattern: StringName, palette: PaletteDef, tint: Color = Color.WHITE) -> StandardMaterial3D:
+static func tile(pattern: StringName, palette: PaletteDef, tint: Color = Color.WHITE) -> Material:
 	var key: String = "tile:%s:%s" % [pattern, tint.to_html()]
+	var metres: float = float(SurfacePainter.SIZE) / FacadePainter.PX_PER_M
+	if PaintedMaterials.paint != null and not _cache.has(key):
+		_cache[key] = PaintedMaterials.tile(pattern, SurfacePainter.paint(pattern, palette.colors)[0], tint, metres)
 	if not _cache.has(key):
 		var mat := _base(ImageTexture.create_from_image(SurfacePainter.paint(pattern, palette.colors)[0]))
 		mat.albedo_color = tint
-		_triplanar(mat, float(SurfacePainter.SIZE) / FacadePainter.PX_PER_M)
+		_triplanar(mat, metres)
 		_cache[key] = mat
-	return _cache[key] as StandardMaterial3D
+	return _cache[key]
 
 
 ## The facade atlas material of a building: front on the left, side on the right (see atlas_split).
-static func facade(def: BuildingDef, palette: PaletteDef) -> StandardMaterial3D:
+static func facade(def: BuildingDef, palette: PaletteDef) -> Material:
 	var key: String = "facade:" + def.id
+	if PaintedMaterials.paint != null and not _cache.has(key):
+		_cache[key] = PaintedMaterials.facade(def.id, facade_images(def, palette), def.glow)
 	if not _cache.has(key):
-		var front: Array[Image] = FacadePainter.paint(def.facade_spec(false), palette.colors)
-		var side: Array[Image] = FacadePainter.paint(def.facade_spec(true), palette.colors)
-		var mat := _base(ImageTexture.create_from_image(_atlas(front[0], side[0])))
+		var images: Array[Image] = facade_images(def, palette)
+		var mat := _base(ImageTexture.create_from_image(images[0]))
 		mat.emission_enabled = true
-		mat.emission_texture = ImageTexture.create_from_image(_atlas(front[1], side[1]))
+		mat.emission_texture = ImageTexture.create_from_image(images[1])
 		mat.emission_energy_multiplier = def.glow
 		mat.vertex_color_use_as_albedo = true
 		mat.vertex_color_is_srgb = true
 		_cache[key] = mat
-	return _cache[key] as StandardMaterial3D
+	return _cache[key]
+
+
+## A building's facade atlas images: [albedo, emission], front on the left, side on the right.
+static func facade_images(def: BuildingDef, palette: PaletteDef) -> Array[Image]:
+	var front: Array[Image] = FacadePainter.paint(def.facade_spec(false), palette.colors)
+	var side: Array[Image] = FacadePainter.paint(def.facade_spec(true), palette.colors)
+	return [_atlas(front[0], side[0]), _atlas(front[1], side[1])]
 
 
 ## Vertex-coloured gypsum, roofs and roof extras; lit by the scene.
-static func trim() -> StandardMaterial3D:
+static func trim() -> Material:
+	if PaintedMaterials.paint != null:
+		return PaintedMaterials.trim()
 	if not _cache.has("trim"):
 		var mat := StandardMaterial3D.new()
 		mat.vertex_color_use_as_albedo = true
 		mat.vertex_color_is_srgb = true
 		mat.roughness = 1.0
 		_cache["trim"] = mat
-	return _cache["trim"] as StandardMaterial3D
+	return _cache["trim"]
 
 
 ## Unshaded vertex colours boosted above 1 so neon and lit windows bloom; for far landmarks and beacons.

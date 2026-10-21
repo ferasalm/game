@@ -3,6 +3,8 @@ shader_type spatial;
 // shadow), turned toward the camera around the vertical axis (a tilted node leans the figure as a shear).
 // Extras over a plain sprite: hit flash, desaturation (knocked out), glow (revive), tint, mirroring.
 render_mode cull_disabled, diffuse_lambert, specular_disabled;
+// The shared painted light (paint_mix 0 = plain Lambert, the unpainted look).
+#include "res://features/world/view/shaders/painted_light.gdshaderinc"
 
 uniform sampler2D albedo_tex : source_color, filter_nearest, repeat_disable;
 uniform vec4 tint : source_color = vec4(1.0);
@@ -43,4 +45,8 @@ void fragment() {
 	EMISSION = colour * min_light * (1.0 - flash) + rim_color * rim_amount * open_edge
 		+ glow_color * glow + flash_color * flash * 0.8;
 	ROUGHNESS = 1.0;
+}
+
+void light() {
+	painted_light(NORMAL, LIGHT, VIEW, LIGHT_COLOR, ATTENUATION, LIGHT_IS_DIRECTIONAL, DIFFUSE_LIGHT);
 }
