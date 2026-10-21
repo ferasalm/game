@@ -143,8 +143,8 @@ func start_battle(request: BattleRequest) -> void:
 	_request = request
 	_capture_frame()
 	_set_state(STATE_BATTLE)
-	EventBus.battle_started.emit(request.encounter_id)
 	_port.suspend()
+	EventBus.battle_started.emit(request.encounter_id)
 	AudioDirector.play_music(flow.battle_music)
 	_launch()
 

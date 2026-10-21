@@ -85,6 +85,8 @@ func _show_title() -> void:
 
 
 func _on_intro_finished() -> void:
+	if Router.state != Router.STATE_TITLE:
+		return  # a fight cut the opening short
 	Router.enter_exploring()
 	area_card.show_card(AREA_CARD[0], AREA_CARD[1], AREA_CARD[2])
 
