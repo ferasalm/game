@@ -3,10 +3,10 @@ Owner: Feras. Writer: Narrative Designer. Rows go to localization/<file>.csv as 
 Facts used: water is power; the Concession rations it; currency riyal; Zayd carries his grandfather's djanbeyyah;
 Bilqis runs a coffee stall as cover. Invented names and lines are marked for owner review.
 
-## Herb seller (invented: Umm Nabil)
-Personality: older woman who has run the roof stairs' herb stall for decades. Dry humour, no small talk about the
-Concession, sells fairly and will not haggle over water. Calls young customers by their fathers' names. She is not
-a mother figure to the hero; she is a shopkeeper who has already decided he is trouble.
+## Herb seller (invented: Abu Nabil; name decided by the owner, 2026-10-21)
+Personality: a 40-year-old man who has run the roof stairs' herb stall for years. Dry humour, no small talk about the
+Concession, sells fairly and will not haggle over water. Calls young customers by their fathers' names. He is not
+a father figure to the hero; he is a shopkeeper who has already decided he is trouble.
 
 Greeting, first visit: "You climbed four flights with that face. Sit. Dry mint first, then business."
 Greeting, return: "Back already. The herbs haven't changed, and neither have my prices."
@@ -15,7 +15,7 @@ Greeting, after a battle: "Your sleeve is torn and your hand is shaking. Sit, dr
 ## Rows for shop.csv
 ```
 keys,en
-shop_name,Umm Nabil
+shop_name,Abu Nabil
 shop_epithet,Herbs from the roof stairs
 shop_heading,Herb stall
 shop_greet_first,"You climbed four flights with that face. Sit. Dry mint first, then business."
@@ -102,10 +102,10 @@ pause_confirm_no,No
 Arabic lines get a native review later (Respect notes). The sabil inscription's Arabic original is not written here.
 
 ## Respect and review notes
-- Umm Nabil is a shopkeeper, not a symbol of hospitality. Her warmth is in her bluntness and her fair weights.
+- Abu Nabil is a shopkeeper, not a symbol of hospitality. His warmth is in his bluntness and his fair weights.
 - The sabil is a public good, so the save and refill are a gift, not a shop transaction. The inscription is invented.
 - Qishr and ginger serving: (check) against Yemeni practice. The brass pot is a detail to confirm.
-- How a young customer addresses an elder shopkeeper: (check) before the Arabic is written. The English uses no
+- How a young customer addresses an older shopkeeper: (check) before the Arabic is written. The English uses no
   honorific, so the shop lines avoid one.
 - The Concession is the only villain in the text. No line blames a neighbourhood or a people.
-- Owner decision needed: the herb seller's name and epithet (Umm Nabil is an invented kunya).
+- Decided by the owner (2026-10-21): the herb seller is Abu Nabil, a 40-year-old man; the epithet is unchanged.

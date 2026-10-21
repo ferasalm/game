@@ -54,3 +54,4 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-21 | Save spot: sabil fountain (save + full refill; patrols return); HP/SP carry over between fights, losing offers retry (supersedes slice.md refill) | Feras (recommended) | Feras
 - 2026-10-21 | Currency riyal; party right, enemies left in battle; camera picked by Feras from spike renders | defaults | Claude (owner may veto)
 - 2026-10-21 | Norm: big asks start in plan mode (Opus xhigh), audit with agents, then orchestrate; every installed agent at a fitting model and effort | Feras: "This should be the norm" | Feras
+- 2026-10-21 | Herb seller: Abu Nabil, a 40-year-old man (replaces the invented Umm Nabil) | Feras | Feras
