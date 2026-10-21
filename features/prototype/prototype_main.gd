@@ -1,17 +1,15 @@
 class_name PrototypeMain
 extends Node3D
-## The playable prototype: the rooftop, the workshop (talk once, then the equipment screen), the patrol battle,
-## the title overlay, area title card and loot banners, wired through the other features' public signals. Children are built in code; a BattleStage lives only while
-## a battle runs.
+## The playable prototype's composition root: builds the rooftop, the workshop dialogue and menu, the title overlay,
+## area title card and loot banners, registers the rooftop with the Router and wires the features' public signals.
+## Battles, rewards, saves and the flow state belong to the Router; this node only asks.
 
-## A battle stage was just made, before start(); tests use it to switch on auto_play / instant.
+## A battle stage was just made, before start(); tests use it to switch on auto_play / instant (Router's signal).
 signal stage_created(new_stage: BattleStage)
 
 const ROOFTOP_SCENE: PackedScene = preload("res://features/world/rooftop/rooftop.tscn")
 const WORKSHOP_DIALOGUE: StringName = &"workshop_first"
 const WORKSHOP_FLAG: StringName = &"workshop_talk_done"
-const EXPLORE_MUSIC: StringName = &"night_rooftops"
-const BATTLE_MUSIC: StringName = &"battle"
 const BENCH_PLACE: StringName = &"workshop"
 const AREA_CARD: Array[String] = ["AREA_SOUQ_NAME", "AREA_SOUQ_NAME_AR", "AREA_SUBTITLE"]
 
@@ -22,14 +20,17 @@ var menu: EquipmentScreen
 var title: TitleOverlay
 var area_card: AreaTitleCard
 var loot_popup: LootPopup
-## The running battle's stage, null while exploring.
-var stage: BattleStage
-var _encounter_id: StringName = &""
-var _ambush: int = 0
+## The running battle's stage (the Router's), null while exploring.
+var stage: BattleStage:
+	get:
+		return Router.stage
+var _port: RooftopPort
 var _battles: int = 0
 
 
 func _ready() -> void:
+	if GameState.party.is_empty():
+		GameState.start_new()
 	_grant_start_gear()
 	rooftop = ROOFTOP_SCENE.instantiate() as Rooftop
 	add_child(rooftop)
@@ -46,7 +47,29 @@ func _ready() -> void:
 	rooftop.chest_opened.connect(_on_chest_opened)
 	dialogue.finished.connect(_on_dialogue_finished)
 	menu.closed.connect(_on_menu_closed)
-	AudioDirector.play_music(EXPLORE_MUSIC)
+	GameState.area_id = rooftop.area_id
+	_port = RooftopPort.new(rooftop)
+	Router.register_area(_port)
+	Router.stage_created.connect(_on_stage_created)
+	EventBus.battle_started.connect(_on_battle_started)
+	_begin()
+
+
+func _exit_tree() -> void:
+	Router.unregister_area(_port)
+	Router.stage_created.disconnect(_on_stage_created)
+	EventBus.battle_started.disconnect(_on_battle_started)
+
+
+## A fresh start plays the opening shot under the title; a new game or a load goes straight to the party's spot.
+func _begin() -> void:
+	var flow := ContentDB.get_def("flow_rules", &"default") as FlowRulesDef
+	AudioDirector.play_music(flow.explore_music)
+	if Router.take_skip_title():
+		_port.place_party(GameState.save_point)
+		Router.enter_exploring()
+		return
+	Router.enter_title()
 	rooftop.play_intro()
 	_show_title()
 
@@ -62,12 +85,14 @@ func _show_title() -> void:
 
 
 func _on_intro_finished() -> void:
+	Router.enter_exploring()
 	area_card.show_card(AREA_CARD[0], AREA_CARD[1], AREA_CARD[2])
 
 
 func _on_workshop_opened() -> void:
 	rooftop.set_exploring(false)
-	_open_chests(BENCH_PLACE)  # the bench stock; chests already opened give nothing
+	Router.set_busy(true)
+	RewardApplier.chests_at(BENCH_PLACE)  # the bench stock; chests already opened give nothing
 	if GameState.flags.get(WORKSHOP_FLAG, false):
 		menu.open()
 	else:
@@ -82,50 +107,31 @@ func _on_dialogue_finished(dialogue_id: StringName) -> void:
 
 
 func _on_menu_closed() -> void:
+	Router.set_busy(false)
 	rooftop.set_exploring(true)
 
 
 func _on_encounter_touched(encounter_id: StringName, _from_behind: bool) -> void:
-	_encounter_id = encounter_id
-	_ambush = rooftop.last_touch_ambush()
-	rooftop.set_exploring(false)
-	EventBus.battle_started.emit(encounter_id)
-	_start_battle()
-
-
-func _start_battle() -> void:
-	area_card.dismiss()
-	var loader: BattleLoader = BattleLoader.from_db(ContentDB, _encounter_id)
-	var party: Array[CombatantDef] = loader.party_from_equipment(GameState.equipment)
 	_battles += 1
-	AudioDirector.play_music(BATTLE_MUSIC)
-	var battle_seed: int = hash([_battles, Time.get_ticks_usec()])
-	stage = BattleStage.new()
-	add_child(stage)
-	stage.ended.connect(_on_battle_ended)
-	stage_created.emit(stage)
-	stage.start(loader.make_sim_for(party, battle_seed, _ambush), rooftop.battle_anchor())
-	stage.hud.end_panel.set_loot(loader.encounter.loot)
+	var request := BattleRequest.new()
+	request.encounter_id = encounter_id
+	request.ambush = rooftop.last_touch_ambush()
+	request.seed = hash([_battles, Time.get_ticks_usec()])
+	request.party = GameState.party.duplicate()
+	Router.start_battle(request)
 
 
-func _drop_stage() -> void:
-	remove_child(stage)
-	stage.queue_free()
-	stage = null
+func _on_stage_created(new_stage: BattleStage) -> void:
+	stage_created.emit(new_stage)
 
 
-func _on_battle_ended(result: StringName) -> void:
-	_drop_stage()
-	if result == &"retry":
-		_start_battle()
-		return
-	EventBus.battle_ended.emit(_encounter_id, result == &"victory")
-	AudioDirector.play_music(EXPLORE_MUSIC)
-	if result == &"victory":
-		_grant((ContentDB.get_def("encounter", _encounter_id) as EncounterDef).loot)
-	rooftop.reset_patrol()
-	rooftop.restore_camera()
-	rooftop.set_exploring(true)
+func _on_battle_started(_encounter_id: StringName) -> void:
+	area_card.dismiss()
+
+
+## A chest on the map was opened: its ChestDef (same id) pays out once.
+func _on_chest_opened(chest_id: StringName) -> void:
+	RewardApplier.chest(chest_id)
 
 
 ## A new game owns each hero's starting gear (they wear it through the loadout fallback).
@@ -134,31 +140,3 @@ func _grant_start_gear() -> void:
 		return
 	for loadout_id: StringName in ContentDB.ids("loadout"):
 		Inventory.add_all(GameState.inventory, (ContentDB.get_def("loadout", loadout_id) as LoadoutDef).item_ids())
-
-
-## Opens every chest of this place that is still closed.
-func _open_chests(place: StringName) -> void:
-	var chests: Array[ChestDef] = []
-	for chest_id: StringName in ContentDB.ids("chest"):
-		chests.append(ContentDB.get_def("chest", chest_id) as ChestDef)
-	for chest: ChestDef in Chests.at_place(chests, place):
-		var given: StringName = Chests.open(chest, GameState.inventory, GameState.flags)
-		if given != &"":
-			EventBus.item_obtained.emit(given)
-
-
-## A chest on the map was opened: its ChestDef (same id) gives its item once.
-func _on_chest_opened(chest_id: StringName) -> void:
-	var chest := ContentDB.get_def("chest", chest_id) as ChestDef
-	if chest == null:
-		push_warning("PrototypeMain: no chest '%s' in content/items/chests.json" % chest_id)
-		return
-	var given: StringName = Chests.open(chest, GameState.inventory, GameState.flags)
-	if given != &"":
-		EventBus.item_obtained.emit(given)
-
-
-## Adds guaranteed loot to the inventory and announces each new item.
-func _grant(item_ids: Array[StringName]) -> void:
-	for item_id: StringName in Inventory.add_all(GameState.inventory, item_ids):
-		EventBus.item_obtained.emit(item_id)

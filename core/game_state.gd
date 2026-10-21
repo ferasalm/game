@@ -99,6 +99,21 @@ func take(held: Holdings) -> void:
 	bag = held.bag.snapshot()
 
 
+## Replaces the carried vitals with a copy of src ({hero id: {"hp", "sp"}}).
+func set_vitals(src: Dictionary) -> void:
+	vitals.clear()
+	for hero: Variant in src:
+		vitals[StringName(str(hero))] = (src[hero] as Dictionary).duplicate()
+
+
+## Replaces the bag with src ({consumable id: count}); counts of 0 or less are dropped.
+func set_bag(src: Dictionary) -> void:
+	bag.clear()
+	for item_id: Variant in src:
+		if int(src[item_id]) > 0:
+			bag[StringName(str(item_id))] = int(src[item_id])
+
+
 ## What a slot list shows, from the live state.
 func summary() -> Dictionary:
 	return SaveCodec.summary(to_dict())

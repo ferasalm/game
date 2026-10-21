@@ -1,0 +1,8 @@
+{
+  "kind": "flow_rules",
+  "items": [
+    {"id": "default", "arena_id": "rooftop_arena", "explore_music": "night_rooftops", "battle_music": "battle",
+     "safe_idle_seconds": 2.0, "safe_still_radius": 1.5, "debug_font_size": 28,
+     "debug_fps_pos": [16, 16], "debug_name_pos": [16, 56]}
+  ]
+}

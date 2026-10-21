@@ -1,50 +1,247 @@
 extends Node
-## Game flow owner (autoload Router): title -> area -> battle arena -> area, transitions, new game, load, can_save.
-## Contract stub from the v0.3 plan: the foundation builder (P1a) fills in the bodies; screens and menus call only
-## these methods and signals (docs/ARCHITECTURE.md section 9).
+## Game flow owner (autoload Router): title -> area -> battle arena -> area, new game, save and load, unstuck, and the
+## play-time clock. Screens and menus call only these methods and signals (docs/ARCHITECTURE.md section 9).
+## The area registers an AreaPort; a battle hides and stops the area (it stays in the tree), builds the arena as its
+## sibling, and on the way back pays the rewards, restores the snapshot on Retry or defeat, and shows the area again.
 
 signal battle_finished(outcome: BattleOutcome)
 signal flow_changed(state: StringName)
+## A battle stage was just made, before start(); tests use it to switch on auto_play / instant.
+signal stage_created(new_stage: BattleStage)
 
 const STATE_TITLE: StringName = &"title"
 const STATE_EXPLORING: StringName = &"exploring"
 const STATE_BATTLE: StringName = &"battle"
 const STATE_BUSY: StringName = &"busy"
+const MIN_TIME_SCALE: float = 0.001  ## guards the real-time division
 
 var state: StringName = STATE_TITLE
+## Where saves live; tests point this at a scratch folder.
+var save_dir: String = SaveService.DEFAULT_DIR
+## Replaces reloading the current scene on new game / load / title (tests set a recording Callable).
+var scene_reloader: Callable = Callable()
+## The frame on screen when the last battle began, for the shatter transition (null when headless).
+var last_frame: Image
+## The running battle's stage, null while exploring.
+var stage: BattleStage:
+	get:
+		return _runner.stage if _runner != null else null
+
+var _port: AreaPort
+var _runner: BattleRunner
+var _request: BattleRequest
+var _skip_title: bool = false
+
+
+func _process(delta: float) -> void:
+	tick(delta)
+
+
+## Adds game time while the game runs and is not paused. Real seconds: a hitstop's low time scale does not count.
+func tick(delta: float) -> void:
+	if state == STATE_TITLE or get_tree().paused:
+		return
+	GameState.play_seconds += delta / maxf(Engine.time_scale, MIN_TIME_SCALE)
+
+
+func register_area(port: AreaPort) -> void:
+	_port = port
+
+
+func unregister_area(port: AreaPort) -> void:
+	if _port == port:
+		_port = null
 
 
 func is_exploring() -> bool:
 	return state == STATE_EXPLORING
 
 
+func enter_title() -> void:
+	_set_state(STATE_TITLE)
+
+
+func enter_exploring() -> void:
+	_set_state(STATE_EXPLORING)
+
+
+## Dialogue or a workshop menu is up: the pause menu and saving wait (on) or are allowed again (off).
+func set_busy(on: bool) -> void:
+	if on and state == STATE_EXPLORING:
+		_set_state(STATE_BUSY)
+	elif not on and state == STATE_BUSY:
+		_set_state(STATE_EXPLORING)
+
+
+## True only while exploring with no screen open.
 func can_save() -> bool:
-	return false
+	return state == STATE_EXPLORING and not Screens.is_open()
 
 
-func has_save(_slot: int) -> bool:
-	return false
+func has_save(slot: int) -> bool:
+	return SaveService.new(save_dir).exists(slot)
+
+
+## Writes the game to a slot. Returns "" or the reason it failed. The caller checks can_save (the sabil saves
+## from its own screen).
+func save_slot(slot: int) -> String:
+	var service := SaveService.new(save_dir)
+	return "" if service.write(slot, GameState.to_dict()) else service.last_error
+
+
+## Loads a slot (its backup when the file is damaged) and restarts the area from it. Returns "" or the reason.
+func load_slot(slot: int) -> String:
+	var service := SaveService.new(save_dir)
+	var data: Dictionary = service.read(slot)
+	if data.is_empty():
+		var why: String = service.last_error
+		data = service.read_backup(slot)
+		if data.is_empty():
+			return why
+		push_warning("Router: slot %d was damaged, loaded its backup" % slot)
+	var problem: String = GameState.from_dict(data)
+	if problem.is_empty():
+		_restart(true, STATE_BUSY)
+	return problem
 
 
 func new_game() -> void:
-	pass
-
-
-func load_slot(_slot: int) -> String:
-	return "not implemented"
+	GameState.start_new()
+	_restart(true, STATE_BUSY)
 
 
 func go_to_title() -> void:
-	pass
+	GameState.reset()
+	_restart(false, STATE_TITLE)
 
 
+## The party goes back to the last spot where the player stood still.
 func unstuck() -> void:
-	pass
+	if _port != null:
+		_port.teleport_party(_port.last_safe_position())
 
 
 func quit_game() -> void:
 	get_tree().quit()
 
 
-func start_battle(_request: BattleRequest) -> void:
-	pass
+## True once after a restart that skips the title (new game, load): the area asks at startup.
+func take_skip_title() -> bool:
+	var skip: bool = _skip_title
+	_skip_title = false
+	return skip
+
+
+func start_battle(request: BattleRequest) -> void:
+	if _port == null or state == STATE_BATTLE:
+		push_warning("Router: no area registered or a battle is already running")
+		return
+	var flow := ContentDB.get_def("flow_rules", &"default") as FlowRulesDef
+	if request.arena_id == &"":
+		request.arena_id = flow.arena_id
+	request.take_snapshot(GameState.vitals, GameState.bag, GameState.money)
+	_request = request
+	_capture_frame()
+	_set_state(STATE_BATTLE)
+	EventBus.battle_started.emit(request.encounter_id)
+	_port.suspend()
+	AudioDirector.play_music(flow.battle_music)
+	_launch()
+
+
+func _launch() -> void:
+	_runner = BattleRunner.new()
+	_runner.name = "BattleRunner"
+	_port.world().get_parent().add_child(_runner)
+	_runner.stage_created.connect(stage_created.emit)
+	_runner.ended.connect(_on_stage_ended)
+	if not _runner.begin(_request):
+		var failed := BattleOutcome.new()
+		failed.encounter_id = _request.encounter_id
+		failed.result = BattleOutcome.DEFEAT
+		_free_runner()
+		_restore_snapshot()
+		_return_to_area(failed)
+
+
+func _on_stage_ended(result: StringName) -> void:
+	var outcome: BattleOutcome = BattleOutcome.from_sim(_runner.stage.sim, result)
+	_free_runner()
+	if result == BattleOutcome.RETRY:
+		_restore_snapshot()
+		_request.retry_count += 1
+		_launch()
+		return
+	if result == BattleOutcome.VICTORY:
+		_win(outcome)
+	else:
+		_restore_snapshot()
+	_return_to_area(outcome)
+
+
+## Carries the fight's vitals and herbs into the game and pays the encounter's rewards once.
+func _win(outcome: BattleOutcome) -> void:
+	GameState.set_vitals(outcome.vitals)
+	GameState.set_bag(outcome.bag)
+	var reward: RewardResult = RewardApplier.victory(outcome.encounter_id)
+	outcome.money = reward.money
+	outcome.items = reward.items
+	outcome.consumables = reward.consumables.duplicate()
+	outcome.rewarded = true
+	if not GameState.cleared_patrols.has(outcome.encounter_id):
+		GameState.cleared_patrols.append(outcome.encounter_id)
+
+
+func _restore_snapshot() -> void:
+	GameState.set_vitals(_request.vitals_before)
+	GameState.set_bag(_request.bag_before)
+	GameState.money = _request.money_before
+
+
+func _return_to_area(outcome: BattleOutcome) -> void:
+	var flow := ContentDB.get_def("flow_rules", &"default") as FlowRulesDef
+	AudioDirector.play_music(flow.explore_music)
+	_port.resume()
+	_port.reset_patrol()
+	_port.restore_camera()
+	_request = null
+	_set_state(STATE_EXPLORING)
+	EventBus.battle_ended.emit(outcome.encounter_id, outcome.result == BattleOutcome.VICTORY)
+	battle_finished.emit(outcome)
+
+
+func _free_runner() -> void:
+	if _runner == null:
+		return
+	if _runner.get_parent() != null:
+		_runner.get_parent().remove_child(_runner)
+	_runner.queue_free()
+	_runner = null
+
+
+func _capture_frame() -> void:
+	last_frame = null
+	if DisplayServer.get_name() != "headless":
+		last_frame = get_viewport().get_texture().get_image()
+
+
+## Ends any fight and closes every screen, then rebuilds the area from GameState (the new scene reads it).
+func _restart(skip_title: bool, next_state: StringName) -> void:
+	_free_runner()
+	_request = null
+	Screens.clear()
+	get_tree().paused = false
+	_skip_title = skip_title
+	_set_state(next_state)
+	if scene_reloader.is_valid():
+		scene_reloader.call()
+	elif get_tree().current_scene != null:
+		get_tree().reload_current_scene()
+	else:
+		push_warning("Router: no current scene to reload")
+
+
+func _set_state(next: StringName) -> void:
+	if next != state:
+		state = next
+		flow_changed.emit(state)

@@ -4,7 +4,8 @@ extends Node3D
 ## with Bilqis in tow, runs a Concession patrol and the workshop bench, and moves the camera through an ExploreCamera
 ## (follow, vista zone, opening shot).
 ## Battle and menu scenes use only the public API: encounter_touched, workshop_opened, set_exploring,
-## reset_patrol, battle_anchor, restore_camera, play_intro. Actors are direct children, so their positions are area positions.
+## reset_patrol, battle_anchor, restore_camera, play_intro, last_safe_position, teleport_party, place_party.
+## Actors are direct children, so their positions are area positions.
 
 ## The patrol touched the player. from_behind: it came from behind the way he faces (the ambush rule).
 signal encounter_touched(encounter_id: StringName, from_behind: bool)
@@ -14,6 +15,8 @@ signal workshop_opened
 signal chest_opened(chest_id: StringName)
 
 const RIG_ID: StringName = &"explore"
+## A frame length long enough that the camera's smoothing finishes in one update (a jump cut).
+const SNAP_SECONDS: float = 100.0
 
 @export var area_id: StringName = &"souq_rooftops"
 @export var look_id: StringName = &"night"
@@ -33,32 +36,38 @@ var _area: AreaDef
 var _floor_y: float = 0.0
 var _anchor: Vector3 = Vector3.ZERO
 var _locked: bool = false
+var _exploring: bool = true
 var _ambush: int = 0
-var _fps_label: Label
-var _name_label: Label
-var _debug_layer: CanvasLayer  ## FPS + area name; hidden until F3 (the area card shows the name to players)
+var _flow: FlowRulesDef
+var _safe: SafeSpot
+var _debug: RooftopDebug
 
 
 func _ready() -> void:
 	_rules = ContentDB.get_def("explore_rules", &"default") as ExploreRulesDef
 	_look = ContentDB.get_def("look", look_id) as LookDef
 	_area = ContentDB.get_def("area", area_id) as AreaDef
+	_flow = ContentDB.get_def("flow_rules", &"default") as FlowRulesDef
 	var rig := ContentDB.get_def("camera_rig", RIG_ID) as CameraRigDef
-	if _rules == null or _look == null or _area == null or rig == null:
-		push_error("Rooftop: missing explore rules, look, area or camera content")
+	if _rules == null or _look == null or _area == null or rig == null or _flow == null:
+		push_error("Rooftop: missing explore rules, flow rules, look, area or camera content")
 		return
 	var spawn: Vector2i = _area.find_marker(AreaDef.SPAWN)
 	var floor_tile := ContentDB.get_def("tile", _area.tile_id_at(spawn.x, spawn.y)) as TileDef
 	_floor_y = floor_tile.height
 	_build_world(rig)
 	_build_actors()
-	_build_ui()
+	_debug = RooftopDebug.new()
+	_debug.setup(_flow, tr(_area.name_key))
+	add_child(_debug)
 	_anchor = player.position
+	_safe = SafeSpot.new(_flow.safe_idle_seconds, _flow.safe_still_radius, player.position)
 
 
 ## Off: player, follower and patrol stop and hide, input is ignored. On: everything shows and resumes, and a new
 ## touch can fire.
 func set_exploring(on: bool) -> void:
+	_exploring = on
 	if on:
 		_locked = false
 	else:
@@ -68,7 +77,7 @@ func set_exploring(on: bool) -> void:
 	patrol.set_active(on)
 	workshop.set_active(on)
 	dressing.set_active(on)
-	_name_label.visible = on
+	_debug.set_name_visible(on)
 
 
 ## The opening establishing shot (moon and clouds, then down to Zayd). The actors stand frozen until it ends or any
@@ -99,10 +108,32 @@ func restore_camera() -> void:
 	camera.make_current()
 
 
+## Where "unstuck" puts the party: the newest spot the player stood still at that is not where he is now.
+func last_safe_position() -> Vector3:
+	return _safe.last_safe(player.position)
+
+
+## Moves Zayd to pos and Bilqis beside him (her trail restarts there) and the camera jumps to follow.
+func teleport_party(pos: Vector3) -> void:
+	player.position = pos
+	follower.stand_by_player()
+	if not camera_rig.is_intro_playing():
+		camera_rig.update(SNAP_SECONDS, pos)
+
+
+## Puts the party at a save point (a PlaceDef id); an unknown or empty id means the spawn.
+func place_party(save_point: StringName) -> void:
+	var place := ContentDB.get_def("place", save_point) as PlaceDef
+	if place == null or place.area != area_id:
+		teleport_party(_marker(AreaDef.SPAWN))
+	else:
+		teleport_party(AreaBuilder.cell_center(place.cell) + Vector3(0.0, _floor_y, 0.0))
+
+
 func _process(delta: float) -> void:
-	if _debug_layer.visible:
-		_fps_label.text = tr("UI_FPS") % Engine.get_frames_per_second()
 	camera_rig.update(delta, player.position)
+	if _exploring and not _locked:
+		_safe.update(player.position, delta)
 
 
 func _build_world(rig: CameraRigDef) -> void:
@@ -146,30 +177,6 @@ func _build_actors() -> void:
 	for chest: Chest in dressing.chests:
 		chest.opened.connect(chest_opened.emit)
 	add_child(dressing)
-
-
-func _build_ui() -> void:
-	var layer := CanvasLayer.new()
-	layer.visible = false
-	_debug_layer = layer
-	_fps_label = _label(layer, Vector2(16.0, 16.0))
-	_name_label = _label(layer, Vector2(16.0, 56.0))
-	_name_label.text = tr(_area.name_key)
-	add_child(layer)
-
-
-func _unhandled_key_input(event: InputEvent) -> void:
-	var key := event as InputEventKey
-	if key != null and key.pressed and not key.echo and key.keycode == KEY_F3:
-		_debug_layer.visible = not _debug_layer.visible
-
-
-func _label(layer: CanvasLayer, pos: Vector2) -> Label:
-	var label := Label.new()
-	label.position = pos
-	label.add_theme_font_size_override("font_size", 28)
-	layer.add_child(label)
-	return label
 
 
 func _marker(marker: String) -> Vector3:

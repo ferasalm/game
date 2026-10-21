@@ -50,6 +50,7 @@ const KINDS: Dictionary = {
 	"clip": preload("res://features/art/defs/clip_def.gd"),
 	"camera_preset": preload("res://features/world/defs/camera_preset_def.gd"),
 	"place": preload("res://features/world/defs/place_def.gd"),
+	"flow_rules": preload("res://core/defs/flow_rules_def.gd"),
 }
 ## Equippable kinds share one id namespace; get_def("item", id) finds any of them.
 const ITEM_KINDS: Array[String] = ["hilt", "blade", "prosthetic"]
