@@ -33,6 +33,7 @@ const KINDS: Dictionary = {
 	"audio_rules": preload("res://features/audio/defs/audio_rules_def.gd"),
 	"building": preload("res://features/world/defs/building_def.gd"),
 	"skyline": preload("res://features/world/defs/skyline_def.gd"),
+	"prop": preload("res://features/world/defs/prop_def.gd"),
 	"rarity": preload("res://features/items/defs/rarity_def.gd"),
 	"perk": preload("res://features/items/defs/perk_def.gd"),
 	"chest": preload("res://features/items/defs/chest_def.gd"),

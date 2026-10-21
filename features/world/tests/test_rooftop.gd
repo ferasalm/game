@@ -39,7 +39,7 @@ func test_builds_with_actors() -> void:
 	for child: Node in rooftop.blocks.get_children():
 		multimeshes += 1 if child is MultiMeshInstance3D else 0
 		bodies += 1 if child is StaticBody3D else 0
-	check(multimeshes >= 8, "one MultiMeshInstance3D per tile type (%d)" % multimeshes)
+	check(multimeshes >= 5, "one MultiMeshInstance3D per drawn tile type (%d)" % multimeshes)
 	check_eq(bodies, 1, "one static body for all collision")
 	check(rooftop.camera.current, "the follow camera is current")
 	rooftop.free()

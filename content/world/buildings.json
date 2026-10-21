@@ -24,6 +24,9 @@
      "parapet": "stepped", "roof_extras": ["antenna"], "seed": 71},
     {"id": "tower_h", "footprint_w": 5, "footprint_d": 4, "floors": 6, "stone_floors": 1, "columns_front": 2, "columns_side": 1,
      "frieze": "rosettes", "qamariya": ["B", "G", "V"], "lit_ratio": 0.2, "shutter_ratio": 0.3,
-     "parapet": "horned", "roof_extras": [], "seed": 89}
+     "parapet": "horned", "roof_extras": [], "seed": 89},
+    {"id": "house_a", "footprint_w": 4, "footprint_d": 3, "floors": 4, "stone_floors": 1, "columns_front": 2, "columns_side": 1,
+     "frieze": "zigzag", "qamariya": ["R", "Y", "G"], "lit_ratio": 0.5, "shutter_ratio": 0.2,
+     "parapet": "crenellated", "roof_extras": ["water_tank"], "seed": 101}
   ]
 }

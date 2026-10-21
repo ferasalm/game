@@ -29,6 +29,8 @@ static func _groups(area: AreaDef) -> Dictionary[StringName, Array]:
 	for z: int in area.depth():
 		for x: int in area.width():
 			var tile := ContentDB.get_def("tile", area.tile_id_at(x, z)) as TileDef
+			if tile.hidden:
+				continue
 			_add(out, tile.id, _box(x, z, 0.0, tile.height))
 			var cap := ContentDB.get_def("tile", tile.cap) as TileDef
 			if cap != null:
@@ -50,7 +52,7 @@ static func _multimesh(tile: TileDef, palette: PaletteDef, transforms: Array) ->
 	var mesh := BoxMesh.new()
 	mesh.size = Vector3.ONE
 	if tile.pattern != &"":
-		mesh.material = SurfaceMaterials.tile(tile.pattern, palette)
+		mesh.material = SurfaceMaterials.tile(tile.pattern, palette, tile.tint)
 	else:
 		mesh.material = Diorama.material(tile.to_color(palette), tile.glow)
 	var multi := MultiMesh.new()

@@ -96,8 +96,11 @@ func test_vista_zone_and_mist_content() -> void:
 	broken.vista = Rect2i(20, 15, 10, 10)
 	check(not broken.problems().is_empty(), "a vista zone outside the area is caught")
 	var mist: Node3D = MistBuilder.build_area(area)
-	check_eq(mist.get_child_count(), area.mist.size(), "one plane per listed mist layer")
-	check(area.mist.size() >= 2, "street and roof mist are listed")
+	var planes: int = 0
+	for mist_id: StringName in area.mist:
+		planes += (ContentDB.get_def("mist", mist_id) as MistDef).stack
+	check_eq(mist.get_child_count(), planes, "one plane per sheet of each listed mist layer")
+	check(area.mist.size() >= 2, "street fog and edge wisps are listed")
 	var street := mist.get_child(0) as MeshInstance3D
 	check(street.material_override is ShaderMaterial and street.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_OFF,
 		"the mist plane is a shaderd, shadowless mesh")
