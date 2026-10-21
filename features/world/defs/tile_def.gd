@@ -12,6 +12,8 @@ var cap: StringName = &""
 var pattern: StringName = &""
 ## An invisible block: it only blocks walking (a building or prop stands on these cells and draws itself).
 var hidden: bool = false
+## A colour the pattern texture is multiplied by (moonlit blue-grey plaster); white = as painted.
+var tint: Color = Color.WHITE
 
 
 func read(r: DefReader) -> void:
@@ -23,6 +25,7 @@ func read(r: DefReader) -> void:
 	cap = StringName(r.text("cap", "", false))
 	pattern = StringName(r.text("pattern", "", false))
 	hidden = r.flag("hidden")
+	tint = r.color("tint", Color.WHITE, false)
 	if pattern != &"" and not SurfacePainter.PATTERNS.has(pattern):
 		push_error("tile '%s': unknown pattern '%s'" % [id, pattern])
 	if color.length() != 1 and not Color.html_is_valid(color):

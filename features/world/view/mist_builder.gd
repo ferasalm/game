@@ -15,17 +15,34 @@ static func build_area(area: AreaDef) -> Node3D:
 	for mist_id: StringName in area.mist:
 		var def := ContentDB.get_def("mist", mist_id) as MistDef
 		if def != null:
-			root.add_child(build(def, Vector2(area.width(), area.depth())))
+			for layer: MeshInstance3D in build_stack(def, Vector2(area.width(), area.depth())):
+				root.add_child(layer)
 	return root
+
+
+## The def's planes (stack of them, step metres apart), each with its own noise offset.
+static func build_stack(def: MistDef, area_size: Vector2) -> Array[MeshInstance3D]:
+	var out: Array[MeshInstance3D] = []
+	for i: int in def.stack:
+		var plane: MeshInstance3D = build(def, area_size)
+		plane.position.y += def.step * i
+		var mat := plane.material_override as ShaderMaterial
+		mat.set_shader_parameter(&"offset", Vector2(0.37, 0.61) * i)
+		out.append(plane)
+	return out
 
 
 ## area_size is the area's width and depth in metres (its corner is the world origin).
 static func build(def: MistDef, area_size: Vector2) -> MeshInstance3D:
 	var mesh := PlaneMesh.new()
+	var centre: Vector2 = area_size / 2.0
 	mesh.size = area_size + Vector2.ONE * def.margin * 2.0
+	if def.rect.has_area():
+		mesh.size = def.rect.size
+		centre = def.rect.get_center()
 	var instance := MeshInstance3D.new()
 	instance.mesh = mesh
-	instance.position = Vector3(area_size.x / 2.0, def.height, area_size.y / 2.0)
+	instance.position = Vector3(centre.x, def.height, centre.y)
 	instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	instance.material_override = material(def)
 	return instance
@@ -44,6 +61,8 @@ static func material(def: MistDef) -> ShaderMaterial:
 	mat.set_shader_parameter(&"depth_fade", def.depth_fade)
 	mat.set_shader_parameter(&"near_fade", def.near_fade)
 	mat.set_shader_parameter(&"edge_fade", def.edge_fade)
+	mat.set_shader_parameter(&"hole", Vector4(def.hole.position.x, def.hole.position.y, def.hole.end.x, def.hole.end.y))
+	mat.set_shader_parameter(&"hole_fade", def.hole_fade)
 	return mat
 
 

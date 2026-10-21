@@ -10,6 +10,8 @@ extends Node3D
 signal encounter_touched(encounter_id: StringName, from_behind: bool)
 ## The player pressed interact at the workshop bench.
 signal workshop_opened
+## The player opened a chest (named in the area's props); nothing is saved here, the owner of the inventory listens.
+signal chest_opened(chest_id: StringName)
 
 const RIG_ID: StringName = &"explore"
 
@@ -20,6 +22,7 @@ var player: Player
 var follower: Follower
 var patrol: Patrol
 var workshop: WorkshopSpot
+var dressing: AreaDressing
 var camera: Camera3D
 var blocks: Node3D
 var camera_rig: ExploreCamera
@@ -63,6 +66,7 @@ func set_exploring(on: bool) -> void:
 	follower.set_active(on)
 	patrol.set_active(on)
 	workshop.set_active(on)
+	dressing.set_active(on)
 	_name_label.visible = on
 
 
@@ -119,6 +123,8 @@ func _freeze_actors(frozen: bool) -> void:
 	var mode: Node.ProcessMode = Node.PROCESS_MODE_DISABLED if frozen else Node.PROCESS_MODE_INHERIT
 	for actor: Node in [player, follower, patrol, workshop]:
 		actor.process_mode = mode
+	for chest: Chest in dressing.chests:
+		chest.process_mode = mode
 
 
 func _build_actors() -> void:
@@ -134,6 +140,10 @@ func _build_actors() -> void:
 	workshop.position = _marker(AreaDef.WORKSHOP)
 	workshop.opened.connect(workshop_opened.emit)
 	add_child(workshop)
+	dressing = AreaDressing.build(_area, _rules, player, _floor_y)
+	for chest: Chest in dressing.chests:
+		chest.opened.connect(chest_opened.emit)
+	add_child(dressing)
 
 
 func _build_ui() -> void:

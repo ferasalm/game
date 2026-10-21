@@ -22,6 +22,8 @@ var buildings: Array[Placement] = []
 var props: Array[Placement] = []
 var lights: Array[LightSpec] = []
 var signs: Array[SignSpec] = []
+## The sunken street under the roofs (null = none).
+var canyon: CanyonSpec = null
 ## At most this many real OmniLights near the player; they fade in or out light_fade per second.
 var light_budget: int = 8
 var light_fade: float = 3.0
@@ -56,6 +58,9 @@ func references() -> Array[Array]:
 
 
 func _read_dressing(r: DefReader) -> void:
+	if r.has("canyon"):
+		canyon = CanyonSpec.new()
+		canyon.read(r.child("canyon"))
 	light_budget = r.integer("light_budget", 0, 8, 8, false)
 	light_fade = r.number("light_fade", 0.1, 20.0, 3.0, false)
 	for reader: DefReader in r.optional_objects("buildings"):

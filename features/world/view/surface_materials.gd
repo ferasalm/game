@@ -14,10 +14,11 @@ static func clear() -> void:
 	_cache.clear()
 
 
-static func tile(pattern: StringName, palette: PaletteDef) -> StandardMaterial3D:
-	var key: String = "tile:" + pattern
+static func tile(pattern: StringName, palette: PaletteDef, tint: Color = Color.WHITE) -> StandardMaterial3D:
+	var key: String = "tile:%s:%s" % [pattern, tint.to_html()]
 	if not _cache.has(key):
 		var mat := _base(ImageTexture.create_from_image(SurfacePainter.paint(pattern, palette.colors)[0]))
+		mat.albedo_color = tint
 		_triplanar(mat, float(SurfacePainter.SIZE) / FacadePainter.PX_PER_M)
 		_cache[key] = mat
 	return _cache[key] as StandardMaterial3D

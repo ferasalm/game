@@ -1,16 +1,13 @@
 {
   "kind": "tile",
   "items": [
-    {"id": "roof_floor", "height": 0.5, "color": "q", "solid": false, "pattern": "roof_plaster"},
-    {"id": "roof_worn", "height": 0.5, "color": "p", "solid": false, "pattern": "plaster_worn"},
-    {"id": "bridge", "height": 0.5, "color": "o", "solid": false, "pattern": "planks"},
-    {"id": "street", "height": 0.05, "color": "n", "solid": true, "pattern": "paving"},
-    {"id": "parapet", "height": 1.2, "color": "g", "solid": true, "pattern": "gypsum"},
-    {"id": "kerb", "height": 0.35, "color": "h", "solid": true, "pattern": "basalt"},
+    {"id": "roof_floor", "height": 0.5, "color": "q", "solid": false, "pattern": "roof_plaster", "tint": "#8e9ccc"},
+    {"id": "roof_worn", "height": 0.5, "color": "p", "solid": false, "pattern": "plaster_worn", "tint": "#8a96c4"},
+    {"id": "bridge", "height": 0.5, "color": "o", "solid": false, "pattern": "planks", "tint": "#9aa0c8"},
+    {"id": "street", "height": 0.05, "color": "n", "solid": true, "hidden": true},
+    {"id": "parapet", "height": 1.2, "color": "g", "solid": true, "pattern": "gypsum", "tint": "#8a98cc"},
+    {"id": "kerb", "height": 0.45, "color": "g", "solid": true, "pattern": "gypsum", "tint": "#8a98cc"},
     {"id": "gypsum_trim", "height": 0.3, "color": "w", "solid": false, "pattern": "gypsum"},
-    {"id": "tower_brick", "height": 4.0, "color": "b", "solid": true, "cap": "gypsum_trim", "pattern": "brick"},
-    {"id": "glass_amber", "height": 4.0, "color": "Y", "solid": true, "glow": 0.35, "cap": "gypsum_trim"},
-    {"id": "glass_blue", "height": 4.0, "color": "B", "solid": true, "glow": 0.35, "cap": "gypsum_trim"},
-    {"id": "glass_violet", "height": 4.0, "color": "V", "solid": true, "glow": 0.35, "cap": "gypsum_trim"}
+    {"id": "footprint", "height": 1.0, "color": "b", "solid": true, "hidden": true}
   ]
 }

@@ -16,6 +16,8 @@ static func build(area: AreaDef, rules: ExploreRulesDef, player: Player, floor_y
 	dressing.name = "Dressing"
 	var palette := ContentDB.get_def("palette", PALETTE_ID) as PaletteDef
 	dressing.add_child(PropBuilder.build(area, palette, floor_y))
+	if area.canyon != null:
+		dressing.add_child(CanyonBuilder.build(area.canyon))
 	dressing._add_chests(area, rules, palette, player, floor_y)
 	for spec: SignSpec in area.signs:
 		var sign_node := NeonSign.new(spec, palette)
