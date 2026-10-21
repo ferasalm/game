@@ -247,7 +247,7 @@
        {"at": [0.3526711513754838, 2.441803398874989, 1.52], "size": [0.2, 0.17, 0.04], "color": "B", "glow": true},
        {"at": [0.570633909777092, 2.341803398874989, 1.52], "size": [0.2, 0.17, 0.04], "color": "V", "glow": true}
      ]},
-    {"id": "sabil", "collide": [1.8, 1.4, 1.0], "light": {"x": 0.0, "y": 1.6, "z": 0.5, "color": "#9fe8ff", "energy": 1.1, "range": 6.0, "pool": 3.2, "pool_energy": 0.34, "pool_y": 0.03, "flicker": 0.06, "flicker_speed": 3.0}, "splash": {"at": [0, 0.64, -0.01], "count": 14, "color": "#bff0ff", "energy": 2.2, "size": 0.05, "speed": 1.2, "lifetime": 0.5, "radius": 0.05, "gravity": 5.0},
+    {"id": "sabil", "collide": [1.8, 1.4, 1.0], "splash": {"at": [0, 0.64, -0.01], "count": 14, "color": "#bff0ff", "energy": 2.2, "size": 0.05, "speed": 1.2, "lifetime": 0.5, "radius": 0.05, "gravity": 5.0},
      "parts": [
        {"at": [0, 0.06, 0], "size": [1.8, 0.12, 1.0], "color": "h"},
        {"at": [-0.7, 0.41, 0.05], "size": [0.1, 0.58, 0.7], "color": "g"},
@@ -285,7 +285,7 @@
        {"at": [-0.132, 1.62, 0.38], "size": [0.02, 0.18, 0.18], "color": "Y", "glow": true},
        {"at": [0, 1.46, 0.38], "size": [0.01, 0.07, 0.07], "color": "y", "shape": "frustum", "sides": 8}
      ]},
-    {"id": "herb_stall", "collide": [2.2, 1.2, 1.0], "light": {"x": 0.0, "y": 1.7, "z": 0.8, "color": "#ffa04a", "energy": 1.0, "range": 5.5, "pool": 3.2, "pool_energy": 0.34, "pool_y": 0.03, "flicker": 0.08, "flicker_speed": 4.0},
+    {"id": "herb_stall", "collide": [2.2, 1.2, 1.0],
      "parts": [
        {"at": [0, 0.45, 0.1], "size": [2.0, 0.9, 0.8], "color": "s", "pattern": "planks"},
        {"at": [0, 0.93, 0.1], "size": [2.2, 0.06, 0.95], "color": "p"},

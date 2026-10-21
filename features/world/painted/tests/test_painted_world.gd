@@ -1,7 +1,7 @@
 extends TestCase
 ## The painted world rules: the game look (painted_b) uses the hades camera and a brighter night, the cut-away
 ## globals exist, painted glow replaces the plain glow only while a painted look is in use, neon text is never
-## alpha-cut, the sabil and the herb stall are painted (water, five qamariya panes, lights, splash, stall awning
+## alpha-cut, the sabil and the herb stall are painted (water, five qamariya panes, splash, stall awning
 ## and herbs), the arena look is usable, and switching looks clears every cached material.
 
 
@@ -56,7 +56,7 @@ func test_sabil_is_painted_water_and_qamariya_glass() -> void:
 	check(water >= 2, "a basin surface and a stream")
 	for hue: String in ["R", "Y", "G", "B", "V"]:
 		check(panes.has(hue), "a qamariya pane in %s" % hue)
-	check(sabil.light != null and sabil.light.color.b > sabil.light.color.r, "a cool lamp light")
+	check(sabil.light == null, "its light is an area light (rooftop-v3 lists it), never doubled here")
 	check(sabil.splash != null and sabil.splash.count > 0, "drops where the stream lands")
 	check(sabil.collide.x >= 1.5 and sabil.collide.y > 1.0, "it blocks walking")
 	var palette := ContentDB.get_def("palette", &"main") as PaletteDef
@@ -65,7 +65,7 @@ func test_sabil_is_painted_water_and_qamariya_glass() -> void:
 	check(last is ShaderMaterial and (last as ShaderMaterial).shader == SurfaceMaterials.WATER_SHADER, "the water surface is drawn last")
 
 
-func test_herb_stall_has_awning_herbs_and_a_warm_light() -> void:
+func test_herb_stall_has_awning_and_herbs() -> void:
 	var stall: PropDef = _prop(&"herb_stall")
 	var awning: int = 0
 	var herbs: Dictionary = {}
@@ -75,7 +75,7 @@ func test_herb_stall_has_awning_herbs_and_a_warm_light() -> void:
 			herbs[part.color] = true
 	check(awning >= 2, "a striped awning")
 	check_eq(herbs.size(), 4, "pink, yellow, white and green herb bundles")
-	check(stall.light != null and stall.light.color.r > stall.light.color.b, "a warm light")
+	check(stall.light == null, "its warm light is an area light, never doubled here")
 	check(stall.collide.x >= 2.0, "the counter blocks walking")
 
 
