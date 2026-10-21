@@ -58,3 +58,17 @@ Look "night" (content/world/look.json) + sky "sanaa_night" (sky.json) + mist.jso
 - Mist (`mist.json`): 2 planes (street y 0.32, roofs y 0.62), 1 noise + 1 depth sample, about 5-7 FPS together.
 - Camera: exploring pitch ~26 deg (v1 was 31). Vista zone (`vista` cells in areas.json) eases to a low, wide pose that shows sky.
   Opening shot = `keys` in camera.json (positions relative to Zayd, `dof` scales the blur so stars stay sharp); any key/click skips.
+
+## Motion and VFX
+- Characters (`CharacterVisual`, numbers in content/art/visual.json): lit billboard shader (character.gdshader) with a
+  guaranteed `min_light` share of the albedo plus a cool rim, so figures never go black against the moon. Idle breath,
+  walk bob with squash and lean, dust puffs, turn squash, blob shadow; battle: anticipation, lunge with afterimages,
+  hurt (flash, shake, slide), KO collapse + desaturate, revive glow, victory hop. Nearest filtering, no resampling.
+- Effects (`content/combat/vfx.json`, one entry per ActionDef vfx kind plus "break"): layers of pooled additive quads
+  (tex, anchors actor/target/feet/head/hand/mid, size, colour x energy, delay, time, drift, spin, span/chain/radial).
+  Textures are painted in code (VfxTextures), hard-edged core + rim. Energy > 1 so the night bloom picks them up.
+- Juice: per-move `impact`, `hitstop`, `shake`, `zoom`, `knock` in vfx.json; global numbers in juice.json (freeze scale,
+  BREAK stamp, number pop and bounce, heavy threshold). Hitstop = Engine.time_scale dip for real time, always restored.
+- Camera (content/combat/camera.json): ~1 s swoop from the exploration camera to a low pose (12.5 deg down), idle drift,
+  leans toward the actor, pushes in on big moves, shakes, victory pose. After the battle the exploration camera cuts back.
+- Look at every effect: `tools/shot_scene.gd` with `tools/vfx_gallery.gd`; the whole battle: `tools/shot_battle.gd`.

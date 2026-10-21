@@ -1,6 +1,6 @@
 extends SceneTree
 ## FPS probe: plays a scene with vsync off and prints the average and worst frames per second after a warm-up.
-## Run on the target laptop (not headless): "$(tools/godot.sh)" --path . -s res://tools/fps_probe.gd -- <scene> [seconds]
+## Run on the target laptop (not headless): "$(tools/godot.sh)" --path . -s res://tools/fps_probe.gd -- <scene or Node script> [seconds]
 
 const WARMUP_FRAMES: int = 60
 var _times: PackedFloat64Array = []
@@ -14,7 +14,14 @@ func _initialize() -> void:
 	if args.size() > 1:
 		_seconds = float(args[1])
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
-	root.add_child((load(scene_path) as PackedScene).instantiate())
+	var inst: Node
+	if scene_path.ends_with(".gd"):
+		inst = (load(scene_path) as GDScript).new() as Node
+	else:
+		inst = (load(scene_path) as PackedScene).instantiate()
+	if &"auto_play" in inst:
+		inst.set(&"auto_play", true)  # a battle demo plays itself so the probe sees the effects
+	root.add_child(inst)
 
 
 func _process(_delta: float) -> bool:

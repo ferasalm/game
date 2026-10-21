@@ -9,6 +9,7 @@ signal opened
 func _init(rules: ExploreRulesDef, player: Player) -> void:
 	var bench := CharacterVisual.new()
 	bench.set_sprite(&"workshop_bench")
+	bench.set_prop(true)
 	super(rules, player, "WORLD_PROMPT_WORKSHOP", bench.height() + rules.prompt_height)
 	add_child(bench)
 

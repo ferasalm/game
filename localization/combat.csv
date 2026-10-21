@@ -41,3 +41,4 @@ BLADE_BROAD_DESC,A wide blade that shoves foes back on every hit.
 ACTION_REVERSE_STAB,Reverse stab
 UI_REVERSE_STAB,Reverse stab!
 MOVE_DESC_REVERSE_STAB,The hooked blade answers an attack from behind.
+UI_BREAK,BREAK!

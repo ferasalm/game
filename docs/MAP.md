@@ -26,10 +26,13 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/audio/rules.json`: content: audio_rules x1
 - `content/audio/sounds.json`: content: sound x30
 - `content/combat/actions.json`: content: action x18
+- `content/combat/camera.json`: content: battle_camera x1
 - `content/combat/combatants.json`: content: combatant x4
 - `content/combat/encounters.json`: content: encounter x1
+- `content/combat/juice.json`: content: battle_juice x1
 - `content/combat/rules.json`: content: battle_rules x1
 - `content/combat/statuses.json`: content: status x3
+- `content/combat/vfx.json`: content: vfx x15
 - `content/combat/view.json`: content: battle_view x1
 - `content/dialogue/box.json`: content: dialogue_style x1
 - `content/dialogue/dialogues.json`: content: dialogue x1
@@ -80,10 +83,15 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 ## features
 - `features/art/defs/palette_def.gd`: The locked colour palette: one letter per colour ("." is transparent and never listed here)
 - `features/art/defs/sprite_def.gd`: One pixel sprite: rows of palette letters ('.' = transparent), all the same width, feet on the last row
-- `features/art/defs/visual_rules_def.gd`: Numbers for how a CharacterVisual looks and moves (art scale, walking bob, lunge, hit flash, knocked out)
+- `features/art/defs/visual_rules_def.gd`: Numbers for how a CharacterVisual looks and moves: art scale, idle breathing, walking (bob, squash and stretch, lean, dust), turning, the blob shadow, and the battle motions (anticipation, lunge with afterimages, recoil, hurt, knocked out, revive, victory hop)
 - `features/art/logic/pixel_art.gd`: Turns a palette-indexed sprite (rows of letters) into an Image or texture
+- `features/art/tests/test_character_motion.gd`: CharacterVisual motion: the shader material carries the data (minimum light, rim), knocked out / revived snap to the right look, the battle motions and the little effects (dust, afterimages, shadow) run without errors, and the sprite stays crisp (nearest filtering)
 - `features/art/tests/test_sprites.gd`: Prototype T7: every sprite is well formed and uses only palette letters; PixelArt and CharacterVisual work
-- `features/art/view/character_visual.gd`: A pixel-art character standing in the 3D world: a billboard Sprite3D (feet on the node's origin) plus its small animations (walking bob, lunge, hit flash, knocked out)
+- `features/art/view/character.gdshader`
+- `features/art/view/character_fx.gd`: The small effects around one CharacterVisual: a soft blob shadow on the floor, dust puffs at the feet and the fading afterimages of a lunge
+- `features/art/view/character_ghost.gdshader`
+- `features/art/view/character_motion.gd`: The tweened motions of a CharacterVisual: turn squash, anticipation (pull back and squash), the lunge with afterimages, impact and recoil, hurt (flash, shake, knockback slide), knocked out, revive and the victory hop
+- `features/art/view/character_visual.gd`: A pixel-art character standing in the 3D world: a lit, billboarded quad (feet on the node's origin) with idle breathing, a walk bob with squash and stretch, a lean into the move, dust at the feet, a blob shadow, and the battle motions (see CharacterMotion)
 - `features/audio/defs/audio_rules_def.gd`: Mixer and behaviour numbers of the AudioDirector (content/audio/rules.json): bus volumes, voice pools, music fade and duck, hit weight, text blip rate, item chime boost per rarity, and which sound each move uses
 - `features/audio/defs/music_def.gd`: One music track (content/audio/music.json): its file, volume and whether it loops
 - `features/audio/defs/sound_def.gd`: One sound effect (content/audio/sounds.json): file variants (one is picked each play), the bus it plays on, its volume, a random pitch range so repeats differ, an optional repeat interval (footsteps) and whether it ducks the music (stingers)
@@ -91,11 +99,15 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/audio/tests/test_audio.gd`: Audio: every sound and music entry is well formed, every sfx file exists, every vfx id has a sound, the pure sound rules hold, and the AudioDirector builds its buses, plays headless and skips missing music
 - `features/audio/view/music_deck.gd`: The music side of the AudioDirector: two players so one track crossfades into the next, and a duck of the Music bus under stingers
 - `features/combat/defs/action_def.gd`: One battle technique: its cost, power, who it targets, and what it does to the timeline (cast speed, recovery, knockback, cancel)
+- `features/combat/defs/battle_camera_def.gd`: The cinematic battle camera (content/combat/camera.json): the low pose it swoops to from the exploration camera, the gentle idle drift, how far it follows the acting side, the push-in on big moves and the victory pose
 - `features/combat/defs/battle_rules_def.gd`: The tunable numbers of one battle ruleset: damage and heal formula factors, SP gain, the stall guard, start ranges and the two thresholds BattleAI uses for heals and guards
 - `features/combat/defs/battle_view_def.gd`: Layout and pacing numbers of the battle screen (content/combat/view.json): camera, where each formation slot stands, ticks per frame, hit-stop and banner times, floating-text sizes, HUD sizes and colours
 - `features/combat/defs/combatant_def.gd`: One kind of fighter (a party member or an enemy type): base stats and the actions it can use
 - `features/combat/defs/encounter_def.gd`: One battle setup: which enemies stand in which formation slots, which slots the party takes, and the guaranteed loot (item ids, no randomness) granted after a win
+- `features/combat/defs/juice_def.gd`: The "feel" numbers of a battle (content/combat/juice.json): how hard hitstop freezes, how the BREAK flash and the damage numbers pop and bounce, how a camera shake decays
 - `features/combat/defs/status_def.gd`: One status effect: how long it lasts and how it changes timeline speed, interrupt immunity and the damage the afflicted unit takes (guarded: 0.6 means 40% less)
+- `features/combat/defs/vfx_def.gd`: One battle effect kind (content/combat/vfx.json, id = an ActionDef.VFX_KINDS entry): when the hit lands, the hitstop and camera shake / push it earns, and the layers of pooled sprites it paints
+- `features/combat/defs/vfx_layer.gd`: One layer of a VfxDef: `count` sprites of one texture that start at an anchor (plus an offset), grow from size to size_end, drift or travel, spin and fade
 - `features/combat/harness/balance.gd`: Balance harness: seeded battles per gear pairing with BattleAI playing both sides, one table
 - `features/combat/harness/battle_loader.gd`: Gathers the battle content from a loaded ContentDB (passed in as a Node) and builds ready-to-run BattleSims for the default encounter
 - `features/combat/logic/battle_ai.gd`: The one battle policy (enemies in play, both sides in the balance harness), in this order: 1
@@ -109,6 +121,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/tests/battle_probe.gd`: Test helper (not a test): hand-made fighters, moves and battles with exact numbers, and loops that play a BattleSim until an event kind appears
 - `features/combat/tests/test_action_def.gd`: ActionDef new fields: target, heal, revive, vfx (validated on load), and the shipped actions: every one has a vfx from the agreed list, and the tech moves have the shape the design asks for
 - `features/combat/tests/test_battle_ai_support.gd`: BattleAI with support moves: heal an ally under 40% HP, revive the fallen, guard before a big enemy cast, and never waste a heal or buff when nobody needs it
+- `features/combat/tests/test_battle_camera.gd`: The cinematic battle camera: it frames the stage from a low angle (12-16 degrees down), starts at the exploration camera and swoops to the battle pose, then drifts, follows, pushes in, shakes and glides to the victory pose, all from content/combat/camera.json
 - `features/combat/tests/test_battle_hud_style.gd`: The restyled battle HUD keeps its behaviour and gains: tags on the command buttons, gradient bars in the party panel, the brass timeline track, and rarity-coloured spoils on the victory panel (only items not owned yet)
 - `features/combat/tests/test_battle_interrupt.gd`: T4: a cancel move landing on a casting enemy interrupts it (back to INTERRUPT_POS) inside BattleSim
 - `features/combat/tests/test_battle_menu_support.gd`: The command menu with tech moves: an ally move lists the allies (not the foes), self and all-moves skip the target list and commit at once, and the party is built from saved gear
@@ -122,20 +135,29 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/tests/test_formation.gd`: Formation rows: cover and melee multipliers
 - `features/combat/tests/test_reverse_stab.gd`: The reverse stab: only when the party was ambushed, Zayd strikes the lowest-slot living enemy first
 - `features/combat/tests/test_timeline.gd`: Timeline rules: command pause, cast and act, interrupts, knockback limits, determinism
+- `features/combat/tests/test_vfx.gd`: Battle effects: every ActionDef vfx kind has data, every texture paints, the effect player builds and plays each kind (single target and all foes) without errors and gives its sprites back to the pool, and the juice numbers (hitstop, shake, zoom) come from data and rank heavy above light
+- `features/combat/view/battle_action_player.gd`: Plays the swing of one move: the camera leans toward the actor, a melee actor anticipates and dashes (a caster crouches and rises), the move's effect plays, and the call returns when the hit lands
+- `features/combat/view/battle_camera.gd`: The cinematic battle camera
 - `features/combat/view/battle_command_menu.gd`: The command menu (bottom left) for the hero waiting at COMMAND: first one Button per move (unaffordable ones disabled; name, SP cost, a "cancels" / target tag; the focused move's description below), then one Button per valid target (foes or allies; self and all-moves skip this list)
 - `features/combat/view/battle_demo.gd`: Battle view demo: a plain floor in the accepted HD-2D look and a BattleStage fighting the rooftop patrol (swift hilt, keen blade, seed 7, ambushed so the reverse stab shows)
 - `features/combat/view/battle_demo.tscn`: scene
 - `features/combat/view/battle_end_panel.gd`: The end-of-battle panel in the middle of the screen
-- `features/combat/view/battle_event_player.gd`: Plays a batch of TimelineEvents one after another with the animation each one deserves (lunge, flash and rising number, banner and hit-stop, shake, status text, knocked out)
-- `features/combat/view/battle_fighters.gd`: The 3D side of a battle: one CharacterVisual per unit on the stage, floating damage numbers and status text, intent labels over casting enemies, and the bouncing target marker
+- `features/combat/view/battle_event_player.gd`: Plays a batch of TimelineEvents one after another with the animation each one deserves: the swing and its effect (BattleActionPlayer), the flinch, hitstop and popping numbers of a hit, the BREAK! stamp of a cut cast, collapses and revives
+- `features/combat/view/battle_fighters.gd`: The 3D side of a battle: one CharacterVisual per unit on the stage, popping damage / heal numbers and status text, the BREAK! stamp, intent labels over casting enemies, and the bouncing target marker
 - `features/combat/view/battle_hud.gd`: The battle HUD, built in code: timeline bar (top) with the one-time tip under it, party panel (bottom right), command menu (bottom left), the banner text and the end panel
+- `features/combat/view/battle_juice.gd`: Hitstop and camera shake for the battle view
 - `features/combat/view/battle_labels.gd`: Builders for the 3D bits of the battle screen: billboard text (damage numbers, status text, enemy intent) and the target marker
 - `features/combat/view/battle_menu_chips.gd`: The small tags on the right edge of a command-menu button: SP cost (cyan), "cancels" (magenta), the target scope of a self / all move, and for a target the HP and a "will interrupt" warning
+- `features/combat/view/battle_numbers.gd`: The pop-up text of a battle: damage and heal numbers that pop in with an overshoot, bounce up and fade (bigger for heavy hits, green for heals), and the BREAK! stamp over a unit whose cast was cut
 - `features/combat/view/battle_party_panel.gd`: The party panel (bottom right, compact): per hero an ornate name plate beside an HP bar (red to orange) and an SP bar (blue to cyan), each with its numbers in Reem Kufi
 - `features/combat/view/battle_stage.gd`: The battle screen (wait mode): places the fighters and the camera, runs the HUD, steps a BattleSim a few ticks per physics frame and plays the resulting events
 - `features/combat/view/battle_style.gd`: Small builders for the battle screen's look (labels, bars, names, head icons)
 - `features/combat/view/battle_timeline_bar.gd`: The timeline along the top: an ornate brass track from 0 to ACT_POINT with a COMMAND mark and a tinted cast zone (BattleTrackArt), and one framed head icon per living unit at its timeline position (enemies above the track, the party below it, a small pointer in the team colour toward the track)
 - `features/combat/view/battle_track_art.gd`: The painted brass track of the timeline bar: dark glass, brass rails, tick marks, the tinted cast zone, a gypsum zigzag frieze along the bottom, the COMMAND mark (a brass line with diamonds) and an end cap at ACT
+- `features/combat/view/vfx_player.gd`: Paints a VfxDef: turns each layer into pooled VfxSprites around the actor and the target(s) and moves them every frame (no tweens, no allocation once the pool is warm)
+- `features/combat/view/vfx_sprite.gd`: One pooled effect quad
+- `features/combat/view/vfx_sprite.gdshader`
+- `features/combat/view/vfx_textures.gd`: Procedurally painted effect textures (no files): crisp hard-edged pixel shapes (a bright core and a darker rim, one-bit alpha) plus one soft glow
 - `features/dialogue/defs/dialogue_def.gd`: A conversation: an ordered list of lines (speaker, expression, text key)
 - `features/dialogue/defs/dialogue_line.gd`: One spoken line: who says it, with which expression, and the localization key of the text
 - `features/dialogue/defs/dialogue_style_def.gd`: Look and timing of the dialogue box (fractions of the screen, pixels, colours, speed) and the pixel marks (brows, mouth) that make the stand-in portraits show an expression
@@ -296,3 +318,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/lint_gd.py`: GDScript rules Godot itself doesn't enforce (docs/ARCHITECTURE.md, "Code rules"); exit 1 on any break.
 - `tools/map.py`: Writes docs/MAP.md from each file's purpose line, so the map never drifts. --check: exit 1 if stale.
 - `tools/run_godot.sh`: Runs the pinned Godot headless on this project with the given arguments; fails on a non-zero exit or on
+- `tools/shot_battle.gd`: Starts the prototype and, after a moment of walking, makes the patrol touch the player so the battle (camera swoop, effects) can be filmed with the movie writer
+- `tools/shot_scene.gd`: Plays a scene (or a Node script) for the movie writer (frames to a folder): the battle demo with its heroes on auto_play, or any scene
+- `tools/vfx_gallery.gd`: Effect gallery: plays every battle effect kind one after another (one per second) on a night stage, for the movie writer
