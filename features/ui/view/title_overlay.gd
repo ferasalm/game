@@ -16,7 +16,7 @@ var _pulse: Tween = null
 
 
 func _ready() -> void:
-	layer = 30
+	layer = UiLayers.TITLE
 	_root = Ui.screen_root()
 	add_child(_root)
 	_block = VBoxContainer.new()

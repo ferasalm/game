@@ -11,7 +11,7 @@ var _tween: Tween = null
 
 
 func _ready() -> void:
-	layer = 25
+	layer = UiLayers.CARD
 	_root = Ui.screen_root()
 	add_child(_root)
 

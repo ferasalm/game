@@ -43,7 +43,7 @@ func setup(sim: BattleSim, view: BattleViewDef) -> void:
 	box.add_child(Ui.divider())
 	_desc = BattleStyle.label("", &"MutedLabel")
 	_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_desc.custom_minimum_size = Vector2(view.menu_width - view.margin * 2.0, view.margin * 2.4)
+	_desc.custom_minimum_size = Vector2(view.menu_width - view.margin * 2.0, Ui.style().size(&"s_cmd_desc_h"))
 	box.add_child(_desc)
 	_notice = BattleStyle.label("", &"SmallLabel", Ui.style().colour(&"c_bad"))
 	box.add_child(_notice)
