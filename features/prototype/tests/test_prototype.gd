@@ -38,6 +38,19 @@ func _talk_through(main: PrototypeMain) -> int:
 	return presses
 
 
+func test_map_chests_give_their_items_once() -> void:
+	var main: PrototypeMain = _make()
+	for chest_id: StringName in [&"chest_saila", &"chest_mafraj"]:
+		var chest := ContentDB.get_def("chest", chest_id) as ChestDef
+		check(chest != null and chest.place == &"rooftop", "map chest %s has a rooftop ChestDef" % chest_id)
+		main.rooftop.chest_opened.emit(chest_id)
+		check(GameState.inventory.has(chest.item), "opening %s gives %s" % [chest_id, chest.item])
+		var count := GameState.inventory.size()
+		main.rooftop.chest_opened.emit(chest_id)
+		check_eq(GameState.inventory.size(), count, "a chest gives its item only once")
+	main.free()
+
+
 func test_builds_headless() -> void:
 	var main: PrototypeMain = _make()
 	check(main.rooftop != null and main.rooftop.player != null, "the rooftop is built")

@@ -34,6 +34,7 @@ func _ready() -> void:
 	add_child(menu)
 	rooftop.workshop_opened.connect(_on_workshop_opened)
 	rooftop.encounter_touched.connect(_on_encounter_touched)
+	rooftop.chest_opened.connect(_on_chest_opened)
 	dialogue.finished.connect(_on_dialogue_finished)
 	menu.closed.connect(_on_menu_closed)
 	AudioDirector.play_music(EXPLORE_MUSIC)
@@ -118,6 +119,17 @@ func _open_chests(place: StringName) -> void:
 		var given: StringName = Chests.open(chest, GameState.inventory, GameState.flags)
 		if given != &"":
 			EventBus.item_obtained.emit(given)
+
+
+## A chest on the map was opened: its ChestDef (same id) gives its item once.
+func _on_chest_opened(chest_id: StringName) -> void:
+	var chest := ContentDB.get_def("chest", chest_id) as ChestDef
+	if chest == null:
+		push_warning("PrototypeMain: no chest '%s' in content/items/chests.json" % chest_id)
+		return
+	var given: StringName = Chests.open(chest, GameState.inventory, GameState.flags)
+	if given != &"":
+		EventBus.item_obtained.emit(given)
 
 
 ## Adds guaranteed loot to the inventory and announces each new item.
