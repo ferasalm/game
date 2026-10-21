@@ -8,20 +8,20 @@ Each prompt is one block. Save each result under the name given, in the repo's i
 ```
 Painted digital illustration, detailed brushwork, full-body portrait of a 40-year-old Yemeni man, a herb seller at a rooftop stall in cyberpunk Sana'a, year 2150. Forties, warm tan skin with fine lines at the eyes, short dark hair with a little grey at the temples, under a layered indigo head wrap. Practical layered clothing: an indigo wrap garment over a brick-red shirt and dark trousers, a brick-red shawl over his shoulders. A woven basket of pink- and yellow-feathered herbs hangs from his hip. He holds a small brass oil lamp in one hand. A subtle glowing cyan earpiece on one ear. Front view, camera at chest height, little perspective. A-pose: arms 30-45 degrees down from the body, not a T-pose, fingers apart, legs slightly apart, feet visible. Flat even light, no cast shadows, no rim light. Calm expression. Head to feet, 768x1376 portrait. Background: one plain mid-grey colour, no green, no gradient, no shadow on the background, no text, no frame, no logo.
 ```
-Save as `inbox/flow_herbseller_full_a.png`.
+Save as `inbox/flow_abunabil_model_front.png`.
 
 ## 2a. Zayd model picture (Flow, image)
 ```
 Painted digital illustration, detailed brushwork, full-body model reference of Zayd al-Sana'ani, 28, a courier-fixer of the souq guild in cyberpunk night Sana'a, year 2150. Practical coat and a scarf worn close to the body. He wears his grandfather's djanbeyyah sheathed at the front of his belt, Yemeni style, its hilt clearly visible: old horn and silver, with a carnelian-red accent. Front view, camera at chest height, little perspective. A-pose: arms 30-45 degrees down from the body, not a T-pose, fingers apart, legs slightly apart, feet visible. Flat even light, no cast shadows, no rim light. Head to feet, 768x1376 portrait. Background: one plain mid-grey colour, no green, no gradient, no shadow on the background, no text, no frame, no logo.
 ```
-Save as `inbox/flow_zayd_full_a.png`. Then ask for matching side and back views as separate pictures, same prompt
-with "Side view" or "Back view" in place of "Front view", saved as `inbox/flow_zayd_side_a.png` and `inbox/flow_zayd_back_a.png`.
+Save as `inbox/flow_zayd_model_front.png`. Then ask for matching side and back views as separate pictures, same prompt
+with "Side view" or "Back view" in place of "Front view", saved as `inbox/flow_zayd_model_side.png` and `inbox/flow_zayd_model_back.png`.
 
 ## 2b. Bilqis model picture (Flow, image; attach the Bilqis full-body picture as the reference)
 ```
 Painted digital illustration, detailed brushwork, full-body model reference of this same character, Bilqis, as the attached picture. Keep her colours, outfit, headscarf, long coat and cyan visor exactly as in the reference. She carries no djanbeyyah. Front view, camera at chest height, little perspective. A-pose: arms 30-45 degrees down from the body, not a T-pose, fingers apart, legs slightly apart, feet visible. Flat even light, no cast shadows, no rim light. Head to feet, 768x1376 portrait. Background: one plain mid-grey colour, no green, no gradient, no shadow on the background, no text, no frame, no logo.
 ```
-Save as `inbox/flow_bilqis_full_a.png`. Then side and back views the same way as 2a.
+Save as `inbox/flow_bilqis_model_front.png`. Then side and back views the same way as 2a.
 
 ## 2c. Grandfather's djanbeyyah hilt (Flow, image)
 ```
