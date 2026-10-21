@@ -59,6 +59,8 @@ func _build_plate(root: Control, style: DialogueStyleDef) -> void:
 	plate.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	name_label = Ui.label("", &"NameLabel")
 	name_label.add_theme_font_size_override("font_size", style.name_size)
+	name_label.custom_minimum_size.x = style.name_size * 5.0
+	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	plate.add_child(name_label)
 	root.add_child(plate)
 

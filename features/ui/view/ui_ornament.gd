@@ -79,8 +79,9 @@ static func _corners(img: Image, style: UiStyleDef, at: int, side: int) -> void:
 					paint = style.colour(&"c_glass_deep")
 				if reach <= radius - 5:
 					paint = style.colour(&"c_gypsum")
-				if paint.a > 0.0:
-					img.set_pixel(centre.x + dx, centre.y + dy, paint)
+				var at_pixel := Vector2i(centre.x + dx, centre.y + dy)
+				if paint.a > 0.0 and Rect2i(Vector2i.ZERO, img.get_size()).has_point(at_pixel):
+					img.set_pixel(at_pixel.x, at_pixel.y, paint)
 
 
 static func _paint_frieze(style: UiStyleDef) -> Image:

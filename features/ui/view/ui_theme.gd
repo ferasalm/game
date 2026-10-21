@@ -33,6 +33,7 @@ static func font(style: UiStyleDef, key: StringName) -> Font:
 		return base
 	var variation := FontVariation.new()
 	variation.base_font = base
+	variation.spacing_space = style.size(&"s_title_space")
 	variation.fallbacks = [load(style.fonts[&"font_body"]) as Font]
 	return variation
 

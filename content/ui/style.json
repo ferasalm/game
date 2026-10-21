@@ -15,8 +15,8 @@
 
      "s_font_body": 26, "s_font_small": 20, "s_font_name": 28, "s_font_title": 38, "s_font_big": 72,
      "s_font_number": 22, "s_margin": 24, "s_pad": 14, "s_gap": 10,
-     "s_frame_cell": 22, "s_frame_line": 2, "s_frame_gap": 4, "s_ornament": 7, "s_frieze_h": 12, "s_frieze_period": 16,
-     "s_button_h": 46, "s_bar_h": 18, "s_icon": 60, "s_focus_glow": 10, "s_outline": 6,
+     "s_frame_cell": 22, "s_frame_line": 2, "s_frame_gap": 4, "s_ornament": 10, "s_frieze_h": 12, "s_frieze_period": 16,
+     "s_button_h": 46, "s_bar_h": 18, "s_icon": 60, "s_focus_glow": 10, "s_outline": 6, "s_title_space": 8,
 
      "t_loot_fade": 0.35, "t_loot_hold": 2.2, "t_loot_shine": 0.9,
      "t_title_fade": 0.9, "t_pulse": 1.6, "t_card_in": 0.9, "t_card_hold": 2.8, "t_card_out": 1.1}

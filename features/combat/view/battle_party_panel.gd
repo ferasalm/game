@@ -25,6 +25,7 @@ var _rows: Array[Row] = []
 func setup(sim: BattleSim, view: BattleViewDef, shown_hp: Dictionary[StringName, int]) -> void:
 	_sim = sim
 	_view = view
+	_shown_hp = shown_hp
 	anchor_left = 1.0
 	anchor_right = 1.0
 	anchor_top = 1.0

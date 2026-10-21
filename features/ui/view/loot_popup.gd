@@ -86,6 +86,7 @@ func _build_banner(rarity: StringName) -> PanelContainer:
 	banner.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	banner.offset_top = get_viewport().get_visible_rect().size.y * 0.18
 	banner.offset_bottom = banner.offset_top
+	banner.custom_minimum_size.x = Ui.style().size(&"s_button_h") * 12.0
 	var box := VBoxContainer.new()
 	box.alignment = BoxContainer.ALIGNMENT_CENTER
 	banner.add_child(box)

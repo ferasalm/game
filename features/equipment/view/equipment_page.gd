@@ -72,9 +72,13 @@ func _build_detail() -> Control:
 	frame.theme_type_variation = &"InsetPanel"
 	frame.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	frame.size_flags_stretch_ratio = 1.1
+	var scroll := ScrollContainer.new()
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	frame.add_child(scroll)
 	detail = EquipmentDetail.new()
 	detail.build()
-	frame.add_child(detail)
+	detail.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(detail)
 	return frame
 
 

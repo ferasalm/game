@@ -39,6 +39,7 @@ func build() -> void:
 	_grid = GridContainer.new()
 	_grid.columns = COLUMNS
 	_grid.add_theme_constant_override("h_separation", style.size(&"s_margin"))
+	_grid.add_theme_constant_override("v_separation", 0)
 	add_child(_grid)
 
 

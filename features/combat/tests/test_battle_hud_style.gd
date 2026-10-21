@@ -37,6 +37,9 @@ func test_move_buttons_carry_their_tags() -> void:
 
 func test_party_bars_use_the_gradient_variations() -> void:
 	var stage: BattleStage = _stage()
+	stage.hud.party_panel._process(0.0)
+	var numbers: PackedStringArray = _labels(stage.hud.party_panel)
+	check(numbers.has("400/400") and numbers.has("24/24"), "Zayd's HP and SP numbers show: %s" % [numbers])
 	var kinds: Array[StringName] = []
 	for bar: Node in NodeWalk.all(stage.hud.party_panel):
 		if bar is ProgressBar:

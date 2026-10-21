@@ -10,6 +10,9 @@ func _ready() -> void:
 		Inventory.add(GameState.inventory, item_id)
 	screen.closed.connect(_on_closed)
 	screen.open()
+	var popup := LootPopup.new()
+	add_child(popup)
+	EventBus.item_obtained.emit(&"dawn_lens")  # shows the Legendary banner over the screen
 
 
 func _on_closed() -> void:

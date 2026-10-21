@@ -180,7 +180,7 @@ func _build() -> void:
 	root.add_child(scrim)
 	_page = EquipmentPage.new()
 	_page.build()
-	_page.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, Ui.style().size(&"s_margin") * 2)
+	_page.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, Ui.style().size(&"s_margin"))
 	root.add_child(_page)
 	for hero: StringName in _data.heroes:
 		var base := ContentDB.get_def("combatant", hero) as CombatantDef

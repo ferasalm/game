@@ -4,7 +4,7 @@
     {"id": "default",
      "box_height": 0.26, "box_margin": 24, "box_color": "#1a1420", "box_alpha": 0.92,
      "portrait_height": 0.6, "portrait_width": 0.34, "text_left": 0.33, "pad": 24,
-     "name_size": 30, "text_size": 26, "text_color": "#f2ead8", "chars_per_second": 70,
+     "name_size": 32, "text_size": 31, "text_color": "#f2ead8", "chars_per_second": 70,
      "arrow_size": 18, "arrow_bob": 5, "arrow_speed": 6, "arrow_color": "#f0b83a",
      "standin_rows": 16, "standin_scale": 16, "backdrop_alpha": 0.85, "mark_color": "#1a1420",
      "brows_neutral": [".....", "##.##", "....."], "mouth_neutral": [".....", ".###.", "....."],
