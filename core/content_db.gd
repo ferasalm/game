@@ -25,6 +25,9 @@ const KINDS: Dictionary = {
 	"blade": preload("res://features/djanbeyyah/defs/blade_def.gd"),
 	"loadout": preload("res://features/djanbeyyah/defs/loadout_def.gd"),
 	"workshop_style": preload("res://features/djanbeyyah/defs/workshop_style_def.gd"),
+	"sound": preload("res://features/audio/defs/sound_def.gd"),
+	"music": preload("res://features/audio/defs/music_def.gd"),
+	"audio_rules": preload("res://features/audio/defs/audio_rules_def.gd"),
 }
 
 var _defs: Dictionary[String, Dictionary] = {}

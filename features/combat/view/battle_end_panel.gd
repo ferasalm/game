@@ -34,6 +34,7 @@ func setup(view: BattleViewDef) -> void:
 
 func show_result(result: StringName) -> void:
 	visible = true
+	AudioDirector.play_sfx(result)
 	_title.text = BattleStyle.text("UI_VICTORY" if result == &"victory" else "UI_DEFEAT")
 	for button: Button in _buttons:
 		_row.remove_child(button)

@@ -22,6 +22,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/art/palette.json`: content: palette x1
 - `content/art/sprites.json`: content: sprite x5
 - `content/art/visual.json`: content: visual_rules x1
+- `content/audio/music.json`: content: music x2
+- `content/audio/rules.json`: content: audio_rules x1
+- `content/audio/sounds.json`: content: sound x30
 - `content/combat/actions.json`: content: action x10
 - `content/combat/combatants.json`: content: combatant x4
 - `content/combat/encounters.json`: content: encounter x1
@@ -42,6 +45,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 
 ## core
 - `core/asset_manifest.gd`: Checks assets/manifest.json: every file under the assets folder (except *.import, .gdignore, *.md and the manifest itself) has an entry with a non-empty source and licence
+- `core/audio_director.gd`: All game audio (autoload AudioDirector)
 - `core/content_db.gd`: All authored game data (autoload ContentDB)
 - `core/defs/def.gd`: Base of every content definition: an id, how it reads itself from JSON, and which other ids it needs
 - `core/defs/def_reader.gd`: Typed, validated reads from one JSON object
@@ -70,6 +74,12 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/art/logic/pixel_art.gd`: Turns a palette-indexed sprite (rows of letters) into an Image or texture
 - `features/art/tests/test_sprites.gd`: Prototype T7: every sprite is well formed and uses only palette letters; PixelArt and CharacterVisual work
 - `features/art/view/character_visual.gd`: A pixel-art character standing in the 3D world: a billboard Sprite3D (feet on the node's origin) plus its small animations (walking bob, lunge, hit flash, knocked out)
+- `features/audio/defs/audio_rules_def.gd`: Mixer and behaviour numbers of the AudioDirector (content/audio/rules.json): bus volumes, voice pools, music fade and duck, hit weight, text blip rate, item chime boost per rarity, and which sound each move uses
+- `features/audio/defs/music_def.gd`: One music track (content/audio/music.json): its file, volume and whether it loops
+- `features/audio/defs/sound_def.gd`: One sound effect (content/audio/sounds.json): file variants (one is picked each play), the bus it plays on, its volume, a random pitch range so repeats differ, an optional repeat interval (footsteps) and whether it ducks the music (stingers)
+- `features/audio/logic/sound_logic.gd`: Pure sound rules: which variant to play, which sound a move uses, when the next footstep is due, and the item chime boost for a rarity
+- `features/audio/tests/test_audio.gd`: Audio: every sound and music entry is well formed, every sfx file exists, every vfx id has a sound, the pure sound rules hold, and the AudioDirector builds its buses, plays headless and skips missing music
+- `features/audio/view/music_deck.gd`: The music side of the AudioDirector: two players so one track crossfades into the next, and a duck of the Music bus under stingers
 - `features/combat/defs/action_def.gd`: One battle technique: its cost, power, and what it does to the timeline (cast speed, recovery, knockback, cancel)
 - `features/combat/defs/battle_rules_def.gd`: The tunable numbers of one battle ruleset: damage formula factors, SP gain and the stall guard
 - `features/combat/defs/battle_view_def.gd`: Layout and pacing numbers of the battle screen (content/combat/view.json): camera, where each formation slot stands, ticks per frame, hit-stop and banner times, floating-text sizes, HUD sizes and colours

@@ -1,0 +1,40 @@
+{
+ "kind": "audio_rules",
+ "items": [
+  {
+   "id": "default",
+   "master_db": 0.0,
+   "music_db": -4.0,
+   "ambience_db": -6.0,
+   "sfx_db": 0.0,
+   "ui_db": -2.0,
+   "voices": 12,
+   "music_fade": 1.5,
+   "duck_db": -9.0,
+   "duck_attack": 0.05,
+   "duck_seconds": 2.5,
+   "heavy_hit_damage": 20,
+   "blip_every": 2,
+   "item_rarity_db": [
+    0,
+    3,
+    6,
+    9
+   ],
+   "fallback_melee": "vfx_slash",
+   "fallback_ranged": "vfx_bolt",
+   "action_vfx": {
+    "djanbeyyah_strike": "slash",
+    "reverse_stab": "stab",
+    "breaker": "piston",
+    "quick_slash": "slash",
+    "crushing_blow": "heavy_slash",
+    "spark_shot": "bolt",
+    "static_net": "net",
+    "baton_slam": "baton",
+    "laser_ping": "drone_shot",
+    "overcharge_beam": "beam"
+   }
+  }
+ ]
+}

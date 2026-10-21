@@ -15,6 +15,7 @@ EventBus="*res://core/event_bus.gd"
 GameState="*res://core/game_state.gd"
 ContentDB="*res://core/content_db.gd"
 TextDB="*res://core/text_db.gd"
+AudioDirector="*res://core/audio_director.gd"
 
 [debug]
 

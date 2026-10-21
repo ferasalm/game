@@ -53,6 +53,7 @@ func is_playing() -> bool:
 func advance() -> void:
 	if _run == null:
 		return
+	AudioDirector.play_ui(&"dialogue_advance")
 	if not _complete:
 		_type_all()
 	elif _run.advance():
@@ -76,6 +77,7 @@ func _process(delta: float) -> void:
 	if not _complete:
 		_typed += delta * _style.chars_per_second
 		_layout.text_label.visible_characters = int(_typed)
+		AudioDirector.text_blip(int(_typed))
 		if int(_typed) >= _total:
 			_type_all()
 	_layout.arrow.position.y = sin(_clock * _style.arrow_speed) * _style.arrow_bob
