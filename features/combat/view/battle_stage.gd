@@ -46,12 +46,12 @@ func start(battle: BattleSim, anchor: Vector3) -> void:
 	fighters = BattleFighters.new()
 	add_child(fighters)
 	fighters.build(sim, _view, anchor)
-	_add_camera(anchor)
+	BattleCameraRig.add_to(self, anchor)
 	_add_show()
 	hud = BattleHud.new()
 	add_child(hud)
 	hud.setup(sim, _view, shown_hp)
-	_paint()
+	BattleCameraRig.paint(self)
 	hud.move_chosen.connect(_on_move_chosen)
 	hud.target_focused.connect(_on_target_focused)
 	hud.end_chosen.connect(_finish)
@@ -165,27 +165,6 @@ func _on_target_focused(unit_id: StringName) -> void:
 
 func _turn_wielder_away() -> void:
 	fighters.face_foes(Djanbeyyah.WIELDER, true)
-
-
-func _add_camera(anchor: Vector3) -> void:
-	if look == null:
-		look = ContentDB.get_def("look", &"night") as LookDef
-	if look == null:
-		look = LookDef.new()
-	var def := ContentDB.get_def("battle_camera", &"default") as BattleCameraDef
-	camera = Diorama.make_camera(look)
-	camera.environment = environment
-	add_child(camera)
-	camera_rig = BattleCamera.new()
-	add_child(camera_rig)
-	camera_rig.setup(camera, def if def != null else BattleCameraDef.new(), look, anchor, null, instant)
-	camera.current = true  # no previous camera: the arena is far from the exploring area
-
-
-## A painted look gives the fight its ink outline, grade and vignette, like the area it left.
-func _paint() -> void:
-	if environment != null and look != null and look.paint != null:
-		PaintedLook.finish(self, look, environment, camera, null)
 
 
 ## The effect painter, the hitstop / shake node and the move player that drives them.

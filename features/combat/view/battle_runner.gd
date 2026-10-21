@@ -32,6 +32,8 @@ func begin(request: BattleRequest) -> bool:
 	stage_created.emit(stage)
 	stage.start(BattleSim.create_from(setup), setup.anchor)
 	stage.hud.end_panel.set_loot(_loot_shown(loader.encounter))
+	var reward: RewardResult = _reward_preview(loader)
+	stage.hud.end_panel.set_rewards(reward.money, reward.consumables)
 	return true
 
 
@@ -54,3 +56,11 @@ func _loot_shown(encounter: EncounterDef) -> Array[StringName]:
 	if GameState.flags.get(Rewards.paid_flag(encounter.id), false):
 		return []
 	return encounter.loot
+
+
+## What a win would pay right now (riyal, herbs), worked out on a copy so nothing is paid or flagged yet.
+func _reward_preview(loader: BattleLoader) -> RewardResult:
+	var held: Holdings = GameState.holdings()
+	held.inventory = held.inventory.duplicate()
+	held.flags = held.flags.duplicate()
+	return Rewards.victory(loader.encounter, held, loader.economy, loader.consumables)

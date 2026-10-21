@@ -12,6 +12,8 @@ var enemies: Array[CombatantDef] = []
 var enemy_slots: Array[int] = []
 var actions: Dictionary[StringName, ActionDef] = {}
 var statuses: Dictionary[StringName, StatusDef] = {}
+## Every consumable by id (the Items command reads the battle-usable ones).
+var consumables: Dictionary[StringName, ConsumableDef] = {}
 ## Carried HP/SP per hero id (Vitals); a missing hero starts at full.
 var vitals: Dictionary = {}
 ## Consumable counts {id: count} the party carries into the fight.

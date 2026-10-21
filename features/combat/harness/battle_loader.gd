@@ -9,6 +9,7 @@ var economy: EconomyRulesDef
 var encounter: EncounterDef
 var actions: Dictionary[StringName, ActionDef] = {}
 var statuses: Dictionary[StringName, StatusDef] = {}
+var consumables: Dictionary[StringName, ConsumableDef] = {}
 var combatants: Dictionary[StringName, CombatantDef] = {}
 var hilts: Dictionary[StringName, HiltDef] = {}
 var blades: Dictionary[StringName, BladeDef] = {}
@@ -26,6 +27,8 @@ static func from_db(db: Node, encounter_id: StringName = &"rooftop_patrol") -> B
 		loader.actions[action_id] = db.call("get_def", "action", action_id) as ActionDef
 	for status_id: StringName in db.call("ids", "status"):
 		loader.statuses[status_id] = db.call("get_def", "status", status_id) as StatusDef
+	for item_id: StringName in db.call("ids", "consumable"):
+		loader.consumables[item_id] = db.call("get_def", "consumable", item_id) as ConsumableDef
 	for combatant_id: StringName in db.call("ids", "combatant"):
 		loader.combatants[combatant_id] = db.call("get_def", "combatant", combatant_id) as CombatantDef
 	for hilt_id: StringName in db.call("ids", "hilt"):
@@ -91,6 +94,7 @@ func make_setup(party: Array[CombatantDef], battle_seed: int, ambush: int = 0) -
 	setup.enemy_slots = encounter.enemy_slots
 	setup.actions = actions
 	setup.statuses = statuses
+	setup.consumables = consumables
 	setup.seed = battle_seed
 	setup.ambush = ambush
 	setup.encounter_id = encounter.id

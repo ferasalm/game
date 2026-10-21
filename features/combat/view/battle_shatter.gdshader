@@ -67,10 +67,11 @@ void fragment() {
 					best_t = t;
 					vec3 src = texture(frame, (centre + p) / cells).rgb;
 					vec4 tint = glass_of(seed);
-					float wash = glass_amount * smoothstep(0.0, 0.5, t);
+					float wash = glass_amount * max(smoothstep(0.0, 0.5, t), 0.6 * smoothstep(0.0, 0.2, progress));
 					vec3 col = mix(src, src * 0.55 + tint.rgb * 0.6, wash);
-					col = mix(crack_color.rgb, col, smoothstep(gap, gap + 0.05, edge));
-					best = vec4(col, 1.0 - smoothstep(0.55, 1.0, t));
+					float line = 0.05 * smoothstep(0.0, 0.15, progress);
+					col = mix(crack_color.rgb, col, smoothstep(gap, gap + line + 0.001, edge));
+					best = vec4(col, 1.0 - smoothstep(0.35, 0.8, t));
 				}
 			}
 		}
