@@ -1,25 +1,33 @@
-# Art prompts v0.3: herb seller, parts sheets, item icons, sabil concept
-Owner-made art (Google Flow and Gemini, $0). Same style as the character pictures: painted, semi-realistic, full body,
-three-quarter view facing slightly right, even soft light from the upper left, flat #00FF00 background, 768x1376 portrait.
+# Art prompts v0.3: herb seller, model pictures, hilt, item icons, sabil concept
+Owner-made art (Google Flow and Gemini, $0). Character model pictures (sections 1, 2a, 2b, 2c) are for image-to-3D
+(characters-3d.md section 8): painted, semi-realistic, full body, A-pose, front view, even flat light, plain mid-grey
+background, 768x1376 portrait. Icons and the sabil concept keep the flat #00FF00 background.
 Each prompt is one block. Save each result under the name given, in the repo's inbox/ folder (git-ignored).
 
 ## 1. Herb seller, full body (Flow, image)
 ```
-Painted digital illustration, detailed brushwork, full-body portrait of a 40-year-old Yemeni man, a herb seller at a rooftop stall in cyberpunk Sana'a, year 2150. Forties, warm tan skin with fine lines at the eyes, short dark hair with a little grey at the temples, under a layered indigo head wrap. Practical layered clothing: an indigo wrap garment over a brick-red shirt and dark trousers, a brick-red shawl over his shoulders. A woven basket of pink- and yellow-feathered herbs hangs from his hip. He holds a small brass oil lamp in one hand. A subtle glowing cyan earpiece on one ear. Three-quarter view, body turned slightly right. Lighting from the upper left, even and soft. Standing, calm expression. Head to feet, 768x1376 portrait. Background: one flat plain bright green (#00FF00) colour, no gradient, no shadow on the background, no text, no frame, no logo.
+Painted digital illustration, detailed brushwork, full-body portrait of a 40-year-old Yemeni man, a herb seller at a rooftop stall in cyberpunk Sana'a, year 2150. Forties, warm tan skin with fine lines at the eyes, short dark hair with a little grey at the temples, under a layered indigo head wrap. Practical layered clothing: an indigo wrap garment over a brick-red shirt and dark trousers, a brick-red shawl over his shoulders. A woven basket of pink- and yellow-feathered herbs hangs from his hip. He holds a small brass oil lamp in one hand. A subtle glowing cyan earpiece on one ear. Front view, camera at chest height, little perspective. A-pose: arms 30-45 degrees down from the body, not a T-pose, fingers apart, legs slightly apart, feet visible. Flat even light, no cast shadows, no rim light. Calm expression. Head to feet, 768x1376 portrait. Background: one plain mid-grey colour, no green, no gradient, no shadow on the background, no text, no frame, no logo.
 ```
 Save as `inbox/flow_herbseller_full_a.png`.
 
-## 2a. Zayd parts sheet (Gemini, image edit; attach inbox/flow_zayd_full_a.png)
+## 2a. Zayd model picture (Flow, image)
 ```
-Using the attached picture as the exact reference, make a cut-out animation parts sheet of this same character. Redraw him as separate body parts laid out on a flat plain bright green (#00FF00) background, with clear gaps between every part and no overlaps. Parts: head with neck; torso with jacket; futa skirt; front upper arm; front forearm; front hand; back upper arm; back forearm; back hand; front thigh; front shin; front foot; back thigh; back shin; back foot; the djanbeyyah dagger. Paint in the hidden areas where a part is covered, such as the back of the torso and inner limbs. Same scale, colours, lighting from the upper left and painted style as the reference. Every part faces the same way as in the reference. No labels, no text, no shadows on the background.
+Painted digital illustration, detailed brushwork, full-body model reference of Zayd al-Sana'ani, 28, a courier-fixer of the souq guild in cyberpunk night Sana'a, year 2150. Practical coat and a scarf worn close to the body. He wears his grandfather's djanbeyyah sheathed at the front of his belt, Yemeni style, its hilt clearly visible: old horn and silver, with a carnelian-red accent. Front view, camera at chest height, little perspective. A-pose: arms 30-45 degrees down from the body, not a T-pose, fingers apart, legs slightly apart, feet visible. Flat even light, no cast shadows, no rim light. Head to feet, 768x1376 portrait. Background: one plain mid-grey colour, no green, no gradient, no shadow on the background, no text, no frame, no logo.
 ```
-Save as `inbox/parts_zayd.png`.
+Save as `inbox/flow_zayd_full_a.png`. Then ask for matching side and back views as separate pictures, same prompt
+with "Side view" or "Back view" in place of "Front view", saved as `inbox/flow_zayd_side_a.png` and `inbox/flow_zayd_back_a.png`.
 
-## 2b. Bilqis parts sheet (Gemini, image edit; attach the Bilqis full-body picture)
+## 2b. Bilqis model picture (Flow, image; attach the Bilqis full-body picture as the reference)
 ```
-Using the attached picture as the exact reference, make a cut-out animation parts sheet of this same character. Redraw her as separate body parts laid out on a flat plain bright green (#00FF00) background, with clear gaps between every part and no overlaps. Parts: head with neck and headscarf; torso (top body, without the coat); long coat skirt as one separate piece; front upper arm; front forearm; front hand; back upper arm; back forearm; back hand; front thigh; front shin; front foot; back thigh; back shin; back foot; the cyan visor. Paint in the hidden areas where a part is covered, such as the back of the torso and the inside of the coat. Same scale, colours, lighting from the upper left and painted style as the reference. Every part faces the same way as in the reference. No labels, no text, no shadows on the background.
+Painted digital illustration, detailed brushwork, full-body model reference of this same character, Bilqis, as the attached picture. Keep her colours, outfit, headscarf, long coat and cyan visor exactly as in the reference. She carries no djanbeyyah. Front view, camera at chest height, little perspective. A-pose: arms 30-45 degrees down from the body, not a T-pose, fingers apart, legs slightly apart, feet visible. Flat even light, no cast shadows, no rim light. Head to feet, 768x1376 portrait. Background: one plain mid-grey colour, no green, no gradient, no shadow on the background, no text, no frame, no logo.
 ```
-Save as `inbox/parts_bilqis.png`.
+Save as `inbox/flow_bilqis_full_a.png`. Then side and back views the same way as 2a.
+
+## 2c. Grandfather's djanbeyyah hilt (Flow, image)
+```
+Painted digital illustration, detailed brushwork, a Yemeni djanbeyyah dagger hilt and its sheath, shown alone. Old horn and silver hilt, with a carnelian-red accent on the grip and a worn, hand-polished finish. The sheath is dark leather with silver fittings. Front view and side view, both in the same picture, the hilt centred and nothing cropped. Flat even light, no cast shadows, no rim light. Background: one plain mid-grey colour, no green, no gradient, no shadow on the background, no text, no frame, no logo.
+```
+Save as `inbox/flow_hilt_grandfather_a.png`.
 
 ## 3. Item icons, 2x2 grid (Gemini, no attachment)
 ```
@@ -35,5 +43,6 @@ Save as `inbox/concept_sabil.png`.
 
 ## How to use
 1. Flow and Gemini prompts above: paste, generate, download to C:\dev\game\inbox\ with the name shown.
-2. Use the attached-picture prompts (2a, 2b) only after the matching full-body picture is saved; keep that picture attached.
-3. Tell Claude the file names when they are ready; it will pixelize or import them and log the source in the manifest.
+2. Model pictures (1, 2a, 2b, 2c) go into inbox/ for the image-to-3D step (characters-3d.md section 8), not for cutting
+   parts. Keep the reference picture attached for 2b.
+3. Tell Claude the file names when they are ready; it will run the image-to-3D step or import them and log the source in the manifest.
