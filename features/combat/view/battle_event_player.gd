@@ -171,4 +171,4 @@ func _targets_after(events: Array[TimelineEvent], i: int) -> Array[StringName]:
 
 func _wait(seconds: float) -> void:
 	if not _skip and seconds > 0.0:
-		await get_tree().create_timer(seconds).timeout
+		await PauseWait.seconds(self, seconds)
