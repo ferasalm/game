@@ -52,9 +52,9 @@ func test_character_visual_builds_with_real_and_missing_ids() -> void:
 	real.set_sprite(&"zayd")
 	check_eq(real.height(), 2.0, "Zayd's real 64 px sprite at the default 32 px = 1 m")
 	var standin := CharacterVisual.new()
-	standin.set_sprite(&"concession_enforcer")
-	var enforcer := ContentDB.get_def("sprite", &"concession_enforcer") as SpriteDef
-	check_eq(standin.height(), float(enforcer.height()) / enforcer.pixels_per_metre, "a stand-in keeps its own density (16 px = 1 m)")
+	standin.set_sprite(&"workshop_bench")
+	var bench := ContentDB.get_def("sprite", &"workshop_bench") as SpriteDef
+	check_eq(standin.height(), float(bench.height()) / bench.pixels_per_metre, "a stand-in keeps its own density (16 px = 1 m)")
 	standin.free()
 	var missing := CharacterVisual.new()
 	missing.set_sprite(&"no_such_sprite")
