@@ -17,7 +17,7 @@ const SIZES: Array[StringName] = [
 	&"s_sweep_h", &"s_slide", &"s_loot_top", &"s_loot_w", &"s_end_button_w", &"s_end_button_h", &"s_cmd_desc_h",
 	&"s_head_icon", &"s_timeline_w", &"s_timeline_top", &"s_prompt_near", &"s_prompt_far", &"s_toast_top",
 	&"s_strip_bottom", &"s_defeat_w", &"s_defeat_h", &"s_portrait_x", &"s_portrait_slide", &"s_dialog_right",
-	&"s_dialog_bottom", &"s_plate_w", &"s_plate_lift", &"s_dialog_inset", &"s_icon_pip", &"s_money_pad"]
+	&"s_dialog_bottom", &"s_plate_w", &"s_plate_lift", &"s_dialog_inset", &"s_area_x", &"s_area_y", &"s_area_w"]
 const TIMES: Array[StringName] = [
 	&"t_loot_fade", &"t_loot_hold", &"t_loot_shine", &"t_title_fade", &"t_pulse", &"t_card_in", &"t_card_hold",
 	&"t_card_out",

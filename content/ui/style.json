@@ -27,7 +27,7 @@
      "s_head_icon": 44, "s_timeline_w": 1200, "s_timeline_top": 24, "s_prompt_near": 3, "s_prompt_far": 7,
      "s_toast_top": 96, "s_strip_bottom": 40, "s_defeat_w": 640, "s_defeat_h": 420, "s_portrait_x": 60,
      "s_portrait_slide": 80, "s_dialog_right": 80, "s_dialog_bottom": 80, "s_plate_w": 420, "s_plate_lift": 40,
-     "s_dialog_inset": 40, "s_icon_pip": 14, "s_money_pad": 18,
+     "s_dialog_inset": 40, "s_area_x": 160, "s_area_y": 420, "s_area_w": 900,
 
      "t_loot_fade": 0.35, "t_loot_hold": 2.2, "t_loot_shine": 0.9,
      "t_title_fade": 0.9, "t_pulse": 1.6, "t_card_in": 0.9, "t_card_hold": 2.8, "t_card_out": 1.1,

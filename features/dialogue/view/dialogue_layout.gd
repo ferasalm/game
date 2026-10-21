@@ -9,6 +9,7 @@ var name_label: Label
 var epithet_label: Label
 var text_label: Label
 var arrow: Control
+var frame: Control
 var portrait_rest_x: float = 0.0
 
 
@@ -23,6 +24,7 @@ func build(root: Control, style: DialogueStyleDef) -> void:
 	box.offset_top = box.offset_bottom - ui.size(&"s_dialog_h")
 	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(box)
+	frame = box
 	var glass := PanelContainer.new()
 	glass.set_anchors_preset(Control.PRESET_FULL_RECT)
 	glass.mouse_filter = Control.MOUSE_FILTER_IGNORE
