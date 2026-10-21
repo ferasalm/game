@@ -24,6 +24,7 @@ var _smoothing: float = 6.0
 var _focus: Vector3 = Vector3.ZERO
 var _vista: float = 0.0
 var _intro_time: float = -1.0
+var _held: bool = false
 var _skip_time: float = -1.0
 var _skip_from: Pose = null
 var _last: Pose = Pose.new()
@@ -46,6 +47,16 @@ func play_intro() -> void:
 	_intro_time = 0.0
 	_skip_time = -1.0
 	_apply(_intro_pose(0.0))
+
+
+## While held, the opening shot waits on its first frame (the moon) and key presses do not skip it. A title
+## overlay holds it until the player presses a key, then releases it.
+func hold_intro(on: bool) -> void:
+	_held = on
+
+
+func is_intro_held() -> bool:
+	return _held
 
 
 func is_intro_playing() -> bool:
@@ -75,7 +86,7 @@ func update(delta: float, subject: Vector3) -> void:
 	_vista = lerpf(_vista, inside, 1.0 - exp(-_rig.vista_ease * delta))
 	var pose: Pose = _explore_pose()
 	if is_intro_playing():
-		_intro_time += delta
+		_intro_time += 0.0 if _held else delta
 		if _intro_time >= _rig.intro_duration:
 			_intro_time = -1.0
 			intro_finished.emit()
@@ -91,7 +102,7 @@ func update(delta: float, subject: Vector3) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if is_intro_playing() and _is_press(event):
+	if is_intro_playing() and not _held and _is_press(event):
 		skip_intro()
 		get_viewport().set_input_as_handled()
 

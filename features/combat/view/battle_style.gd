@@ -1,44 +1,26 @@
 class_name BattleStyle
 extends RefCounted
-## Small builders for the battle screen's look (panels, labels, bars, names, head icons) from a BattleViewDef.
-## Pure view helpers: no rules are decided here.
+## Small builders for the battle screen's look (labels, bars, names, head icons). The look itself comes from the
+## shared UI style (features/ui); the BattleViewDef only sizes the layout. Pure view helpers: no rules here.
 
 
 ## A translated player-facing string (static code cannot call tr()).
 static func text(key: String) -> String:
-	return String(TranslationServer.translate(StringName(key)))
+	return Ui.text(key)
 
 
-static func panel(view: BattleViewDef, border: Color = Color.TRANSPARENT) -> StyleBoxFlat:
-	var box := StyleBoxFlat.new()
-	box.bg_color = view.panel_color
-	box.border_color = border
-	var edge: int = roundi(view.margin / 8.0)
-	box.set_border_width_all(edge)
-	box.set_corner_radius_all(edge)
-	box.set_content_margin_all(roundi(view.margin / 2.0))
-	return box
+static func label(content: String, variant: StringName = &"", colour: Color = Color.TRANSPARENT) -> Label:
+	return Ui.label(content, variant, colour)
 
 
-static func label(content: String, color: Color = Color.WHITE) -> Label:
-	var out := Label.new()
-	out.text = content
-	out.add_theme_color_override("font_color", color)
-	return out
-
-
-static func bar(view: BattleViewDef, fill: Color) -> ProgressBar:
+## kind: &"HpBar" (red to orange) or &"SpBar" (blue to cyan).
+static func bar(view: BattleViewDef, kind: StringName) -> ProgressBar:
 	var out := ProgressBar.new()
+	out.theme_type_variation = kind
 	out.show_percentage = false
 	out.custom_minimum_size = Vector2(0.0, view.bar_height)
 	out.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	out.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	var back := StyleBoxFlat.new()
-	back.bg_color = view.panel_color.darkened(0.5)
-	var front := StyleBoxFlat.new()
-	front.bg_color = fill
-	out.add_theme_stylebox_override("background", back)
-	out.add_theme_stylebox_override("fill", front)
 	return out
 
 

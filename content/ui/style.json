@@ -1,0 +1,24 @@
+{
+  "kind": "ui_style",
+  "items": [
+    {"id": "default",
+     "font_body": "res://assets/fonts/amiri_regular.ttf",
+     "font_bold": "res://assets/fonts/amiri_bold.ttf",
+     "font_title": "res://assets/fonts/reem_kufi.ttf",
+
+     "c_glass": "#161230ea", "c_glass_deep": "#0d0a1ef0", "c_indigo": "#2b2540", "c_indigo_lit": "#3d3a73",
+     "c_brass": "#e8c070", "c_brass_dim": "#9a7a3c", "c_gypsum": "#f2ead8", "c_gypsum_dim": "#a89d88",
+     "c_text": "#f2ead8", "c_muted": "#b8aecb", "c_cyan": "#3df0e0", "c_magenta": "#ff3d9a",
+     "c_hp_a": "#b8282e", "c_hp_b": "#ff8a2a", "c_sp_a": "#2f78c8", "c_sp_b": "#3df0e0",
+     "c_good": "#6ed08a", "c_bad": "#ff8e78", "c_party": "#4ad0ff", "c_enemy": "#ff5a4a",
+     "c_cast": "#ff3d9a38", "c_shadow": "#000000b0", "c_scrim": "#06040f99",
+
+     "s_font_body": 26, "s_font_small": 20, "s_font_name": 28, "s_font_title": 38, "s_font_big": 72,
+     "s_font_number": 22, "s_margin": 24, "s_pad": 14, "s_gap": 10,
+     "s_frame_cell": 22, "s_frame_line": 2, "s_frame_gap": 4, "s_ornament": 10, "s_frieze_h": 12, "s_frieze_period": 16,
+     "s_button_h": 46, "s_bar_h": 18, "s_icon": 60, "s_focus_glow": 10, "s_outline": 6, "s_title_space": 8,
+
+     "t_loot_fade": 0.35, "t_loot_hold": 2.2, "t_loot_shine": 0.9,
+     "t_title_fade": 0.9, "t_pulse": 1.6, "t_card_in": 0.9, "t_card_hold": 2.8, "t_card_out": 1.1}
+  ]
+}

@@ -37,11 +37,11 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/djanbeyyah/blades.json`: content: blade x3
 - `content/djanbeyyah/hilts.json`: content: hilt x3
 - `content/djanbeyyah/loadouts.json`: content: loadout x2
-- `content/djanbeyyah/menu.json`: content: workshop_style x1
 - `content/items/chests.json`: content: chest x4
 - `content/items/perks.json`: content: perk x6
 - `content/items/rarities.json`: content: rarity x6
 - `content/prosthetics/prosthetics.json`: content: prosthetic x6
+- `content/ui/style.json`: content: ui_style x1
 - `content/world/areas.json`: content: area x1
 - `content/world/buildings.json`: content: building x9
 - `content/world/camera.json`: content: camera_rig x1
@@ -109,6 +109,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/tests/battle_probe.gd`: Test helper (not a test): hand-made fighters, moves and battles with exact numbers, and loops that play a BattleSim until an event kind appears
 - `features/combat/tests/test_action_def.gd`: ActionDef new fields: target, heal, revive, vfx (validated on load), and the shipped actions: every one has a vfx from the agreed list, and the tech moves have the shape the design asks for
 - `features/combat/tests/test_battle_ai_support.gd`: BattleAI with support moves: heal an ally under 40% HP, revive the fallen, guard before a big enemy cast, and never waste a heal or buff when nobody needs it
+- `features/combat/tests/test_battle_hud_style.gd`: The restyled battle HUD keeps its behaviour and gains: tags on the command buttons, gradient bars in the party panel, the brass timeline track, and rarity-coloured spoils on the victory panel (only items not owned yet)
 - `features/combat/tests/test_battle_interrupt.gd`: T4: a cancel move landing on a casting enemy interrupts it (back to INTERRUPT_POS) inside BattleSim
 - `features/combat/tests/test_battle_menu_support.gd`: The command menu with tech moves: an ally move lists the allies (not the foes), self and all-moves skip the target list and commit at once, and the party is built from saved gear
 - `features/combat/tests/test_battle_perks.gd`: Perks in battle (sp_per_act, hp_regen, start_bonus, bonus_knockback), Perks.apply on a fighter copy, and the rarity rule that only Rare and above may carry a perk
@@ -129,10 +130,12 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/view/battle_fighters.gd`: The 3D side of a battle: one CharacterVisual per unit on the stage, floating damage numbers and status text, intent labels over casting enemies, and the bouncing target marker
 - `features/combat/view/battle_hud.gd`: The battle HUD, built in code: timeline bar (top) with the one-time tip under it, party panel (bottom right), command menu (bottom left), the banner text and the end panel
 - `features/combat/view/battle_labels.gd`: Builders for the 3D bits of the battle screen: billboard text (damage numbers, status text, enemy intent) and the target marker
-- `features/combat/view/battle_party_panel.gd`: The party panel (bottom right, compact): per hero the name beside an HP bar and an SP bar, each with numbers
+- `features/combat/view/battle_menu_chips.gd`: The small tags on the right edge of a command-menu button: SP cost (cyan), "cancels" (magenta), the target scope of a self / all move, and for a target the HP and a "will interrupt" warning
+- `features/combat/view/battle_party_panel.gd`: The party panel (bottom right, compact): per hero an ornate name plate beside an HP bar (red to orange) and an SP bar (blue to cyan), each with its numbers in Reem Kufi
 - `features/combat/view/battle_stage.gd`: The battle screen (wait mode): places the fighters and the camera, runs the HUD, steps a BattleSim a few ticks per physics frame and plays the resulting events
-- `features/combat/view/battle_style.gd`: Small builders for the battle screen's look (panels, labels, bars, names, head icons) from a BattleViewDef
-- `features/combat/view/battle_timeline_bar.gd`: The timeline along the top: a track from 0 to ACT_POINT with a COMMAND mark and a tinted cast zone, and one head icon per living unit at its timeline position (enemies above the track, the party below it)
+- `features/combat/view/battle_style.gd`: Small builders for the battle screen's look (labels, bars, names, head icons)
+- `features/combat/view/battle_timeline_bar.gd`: The timeline along the top: an ornate brass track from 0 to ACT_POINT with a COMMAND mark and a tinted cast zone (BattleTrackArt), and one framed head icon per living unit at its timeline position (enemies above the track, the party below it, a small pointer in the team colour toward the track)
+- `features/combat/view/battle_track_art.gd`: The painted brass track of the timeline bar: dark glass, brass rails, tick marks, the tinted cast zone, a gypsum zigzag frieze along the bottom, the COMMAND mark (a brass line with diamonds) and an end cap at ACT
 - `features/dialogue/defs/dialogue_def.gd`: A conversation: an ordered list of lines (speaker, expression, text key)
 - `features/dialogue/defs/dialogue_line.gd`: One spoken line: who says it, with which expression, and the localization key of the text
 - `features/dialogue/defs/dialogue_style_def.gd`: Look and timing of the dialogue box (fractions of the screen, pixels, colours, speed) and the pixel marks (brows, mouth) that make the stand-in portraits show an expression
@@ -140,7 +143,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/dialogue/logic/dialogue_run.gd`: Steps through a DialogueDef one line at a time
 - `features/dialogue/logic/standin_portrait.gd`: Builds a stand-in portrait Image from a speaker's pixel sprite: head-and-chest rows cropped, scaled up with nearest filtering, over a soft backdrop in the speaker colour, plus brow and mouth marks per expression
 - `features/dialogue/tests/test_dialogue.gd`: Dialogue: T8 (every line has a known speaker, one of 4 expressions, a translating text key), DialogueRun stepping, the object-list reader, the stand-in portraits, and DialogueBox playing to the end once
-- `features/dialogue/view/dialogue_box.gd`: The dialogue box: a chest-up portrait at the left overlapping a dark text box along the bottom, with the speaker's name in their colour and the line typed out quickly
+- `features/dialogue/view/dialogue_box.gd`: The dialogue box: a chest-up portrait at the left overlapping an ornate text frame along the bottom, with the speaker's name on a plate in their colour and the line typed out quickly
 - `features/dialogue/view/dialogue_demo.gd`: Manual check: plays the workshop_first dialogue over a plain background (F6 in the editor)
 - `features/dialogue/view/dialogue_demo.tscn`: scene
 - `features/dialogue/view/dialogue_layout.gd`: Builds the dialogue box's controls in code (no scene file, no path lookups) and keeps references to them
@@ -148,19 +151,21 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/djanbeyyah/defs/blade_def.gd`: A djanbeyyah blade: adds to attack, adds knockback to every hit the wielder lands, adds weight
 - `features/djanbeyyah/defs/hilt_def.gd`: A djanbeyyah hilt: adds to agility, multiplies cast speed, adds weight, and grants exactly one move
 - `features/djanbeyyah/defs/loadout_def.gd`: A hero's starting gear: which hilt, blade and prosthetic they own and wear at the start (each optional)
-- `features/djanbeyyah/defs/workshop_style_def.gd`: Layout (pixels at 1920x1080), font sizes and colours of the workshop menu, and which fighter it compares
 - `features/djanbeyyah/logic/djanbeyyah.gd`: Builds Zayd's fighter from a base CombatantDef plus one hilt and one blade (docs/design/combat.md)
 - `features/djanbeyyah/logic/loadout.gd`: Which gear a hero wears: the saved choice per slot ("<hero>.<part>" in GameState.equipment), else the starting gear
 - `features/djanbeyyah/logic/stat_row.gd`: One line of the workshop comparison: label key, value now (base) and value with the chosen pair
-- `features/djanbeyyah/logic/workshop_stats.gd`: The comparison rows the workshop shows: base fighter against the fighter built by Djanbeyyah.equip
+- `features/djanbeyyah/logic/workshop_stats.gd`: The comparison rows the equipment screen shows: base fighter against the fighter built by Djanbeyyah.equip
 - `features/djanbeyyah/tests/test_djanbeyyah.gd`: T3: every hilt + blade pairing gives a different Zayd stat sets, inside the timeline caps; each hilt adds exactly one move; the shared base definition is never changed
-- `features/djanbeyyah/tests/test_workshop.gd`: The loadout fallback, saved equipment, and the workshop menu: it builds headless with every hilt and blade but shows only owned ones, selecting anvil + broad and confirming saves "zayd.hilt" / "zayd.blade" and closes once, back changes nothing, the panel shows merged numbers
-- `features/djanbeyyah/view/workshop_choice.gd`: One hilt or blade on the bench: its name and a short description on a panel
-- `features/djanbeyyah/view/workshop_demo.gd`: Manual check: opens the workshop menu over a plain background (F6 in the editor)
-- `features/djanbeyyah/view/workshop_demo.tscn`: scene
-- `features/djanbeyyah/view/workshop_menu.gd`: The djanbeyyah bench: pick one owned hilt and one owned blade, see how Zayd's numbers change, Confirm to save the pair in GameState.equipment ("zayd.hilt" / "zayd.blade")
-- `features/djanbeyyah/view/workshop_page.gd`: The workshop layout: title, a hilt column, a blade column, the stats panel, and the Confirm button with the back hint
-- `features/djanbeyyah/view/workshop_stats_panel.gd`: The right-hand panel of the workshop: one line per stat (name, base value, value with the chosen pair, an up/down arrow in green or red) and below them the hilt's move with its description
+- `features/djanbeyyah/tests/test_loadout.gd`: The loadout fallback: a hero wears the saved item per slot, else the start loadout
+- `features/equipment/logic/equipment_options.gd`: Pure rules of the equipment screen: which slots a hero has, which OWNED items fit a slot (best rarity first), which items a hero wears now, the fighter built from a staged set of items, and writing a staged set into the saved equipment through Inventory.equip
+- `features/equipment/tests/test_equipment.gd`: The equipment screen: the pure options rules (owned items only, rarer first, per hero and slot), the screen listing only owned items in rarity colours, staging, Confirm writing every slot through Inventory.equip, back changing nothing, and the stat comparison
+- `features/equipment/view/equipment_data.gd`: What the equipment screen needs from ContentDB, read once: every equippable by id, the perks, the rarity order, and each hero's start loadout (heroes in loadout order)
+- `features/equipment/view/equipment_demo.gd`: Manual check: opens the equipment screen over a plain background (F6 in the editor) with a few owned items
+- `features/equipment/view/equipment_demo.tscn`: scene
+- `features/equipment/view/equipment_detail.gd`: The right-hand side of the equipment screen: the focused item (name in its rarity colour, tag, text, perk and the tech moves it teaches) above the stat comparison (base, with the staged kit, an up / down arrow)
+- `features/equipment/view/equipment_item_button.gd`: Builds one owned item as a menu button: its name in the rarity colour, the rarity tag and an "Equipped" mark on the right
+- `features/equipment/view/equipment_page.gd`: The equipment layout: title and hero tabs on top, the slot lists on the left, the item detail and stat comparison on the right, Confirm with the back hint at the bottom
+- `features/equipment/view/equipment_screen.gd`: The equipment screen (the bench): a tab per hero (Zayd: hilt, blade, prosthetic; Bilqis: prosthetic), the OWNED items of each slot with rarity colours and tags, the perk and tech moves of the focused item, and the stat comparison base vs
 - `features/items/defs/chest_def.gd`: A chest holding one item (an id of a hilt, blade or prosthetic)
 - `features/items/defs/equip_def.gd`: Shared base of everything a hero can wear or wield (hilt, blade, prosthetic): names, a rarity tier and an optional perk (Rare and above only; rules in docs/design/prosthetics.md)
 - `features/items/defs/perk_def.gd`: One perk an item can carry: a kind that battle logic implements and an amount
@@ -176,9 +181,21 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/prosthetics/defs/prosthetic_def.gd`: A high-tech prosthetic: one slot per hero
 - `features/prosthetics/logic/prosthetics.gd`: Merges a prosthetic into a fighter (docs/design/prosthetics.md), like Djanbeyyah.equip: stat adds, then the granted moves, then the caps
 - `features/prosthetics/tests/test_prosthetics.gd`: Prosthetics: the merge (base -> hilt -> blade -> prosthetic -> perks -> caps) builds new fighters and never touches the shared defs; each hero's prosthetics grant 1-2 tech moves; a prosthetic fits only its wearer
-- `features/prototype/prototype_main.gd`: The playable prototype: the rooftop, the workshop (talk once, then the bench menu) and the patrol battle, wired through the other features' public signals
+- `features/prototype/prototype_main.gd`: The playable prototype: the rooftop, the workshop (talk once, then the equipment screen), the patrol battle, the title overlay, area title card and loot banners, wired through the other features' public signals
 - `features/prototype/prototype_main.tscn`: scene
 - `features/prototype/tests/test_prototype.gd`: T6: the prototype main scene builds headless with rooftop, dialogue box and workshop menu; a simulated patrol touch starts a battle and stops exploring; an auto-played battle ends and walking resumes with the patrol reset; retry starts a fresh battle; the first workshop visit plays the talk, then the menu; later visits skip the talk
+- `features/ui/defs/ui_style_def.gd`: The look of every menu and HUD (content/ui/style.json): three font files, named colours (c_*), sizes in pixels at 1920x1080 (s_*) and times in seconds (t_*)
+- `features/ui/tests/node_walk.gd`: Test helper (not a test): every descendant of a node, depth first
+- `features/ui/tests/test_popups.gd`: The loot popup (queues item_obtained in order, skippable), the area title card, the title overlay (any key dismisses it once) and the opening shot held on the moon until then
+- `features/ui/tests/test_ui.gd`: The shared UI look: the style loads completely, the theme builds with all three fonts (Arabic glyphs included), every rarity has a colour, the painted frames have the right size, and the text server can shape right-to-left Arabic
+- `features/ui/view/area_title_card.gd`: The area title card that fades in when the opening shot ends: the area's name in Latin and Arabic in Reem Kufi, a zigzag divider and a subtitle (place and year), then fades out
+- `features/ui/view/loot_popup.gd`: The "Obtained" banner: listens to EventBus.item_obtained and shows each new item centred high on the screen with its name in the rarity colour, a light sweep for Rare and above and a rarity jingle (AudioDirector.play_item)
+- `features/ui/view/title_overlay.gd`: The game's title over the opening sky: "Qarnaw" in Latin and Arabic in Reem Kufi with a pulsing "Press any key"
+- `features/ui/view/ui.gd`: Entry point of the shared UI look: the style (content/ui/style.json), the one cached Theme, and small builders (labels, screen roots, the zigzag divider)
+- `features/ui/view/ui_boxes.gd`: StyleBox builders for the UI theme: ornate panels (painted nine-patch frames), button states with the warm brass focus glow, and progress-bar tracks and gradient fills
+- `features/ui/view/ui_ornament.gd`: Procedurally painted UI textures from the UiStyleDef (no image files): the nine-patch frames (a thin brass line, a thin gypsum line inside it and a small diamond in each corner, like the carved plaster of a Sana'a tower-house), and the zigzag frieze band that divides sections
+- `features/ui/view/ui_rarity.gd`: Rarity helpers for every screen: the tier colour (from RarityDef), coloured item names and the small rarity tag
+- `features/ui/view/ui_theme.gd`: Builds the one Godot Theme every menu and HUD uses: Amiri for reading, Reem Kufi for titles, names and numbers, ornate panels, brass-focus buttons, gradient bars
 - `features/world/defs/area_def.gd`: A level as data: equal-width rows of tile characters, a legend (character -> tile id) and four markers (S spawn, W workshop bench, P patrol start, Q patrol end) that each appear once and stand on floor
 - `features/world/defs/building_def.gd`: One Sana'a tower-house as data: footprint (metres), floors (the lowest stone_floors are basalt), window columns per facade, frieze style, qamariya glass letters, lit-window ratio, parapet style and roof extras
 - `features/world/defs/camera_rig_def.gd`: Camera language for exploring (content/world/camera.json): the opening establishing shot as keyframes (camera and target positions relative to the player, field of view, depth-of-field scale, seconds) and the "vista" pose the camera eases to inside a vista zone
@@ -256,6 +273,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `localization/combat.csv`
 - `localization/dialogue.csv`
 - `localization/items.csv`
+- `localization/screens.csv`
 - `localization/ui.csv`
 - `localization/workshop.csv`
 - `localization/world.csv`
