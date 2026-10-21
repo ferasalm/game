@@ -19,6 +19,8 @@ var camera: Camera3D
 var environment: Environment
 ## The arena's look (the runner sets it before start); null falls back to the night look.
 var look: LookDef
+## The frame the area showed when the fight began, for the shatter warp in (null: no warp).
+var warp_frame: Image
 ## The cinematic rig that moves `camera` (swoop in, drift, push, shake, victory pose).
 var camera_rig: BattleCamera
 var vfx: VfxPlayer
@@ -60,6 +62,8 @@ func start(battle: BattleSim, anchor: Vector3) -> void:
 	_busy = true
 	if sim.ambush == 1:
 		_turn_wielder_away()
+	if not instant and BattleShatter.can_play(warp_frame):
+		await _warp_in()
 	await _player.play(sim.opening(), instant)
 	_busy = false
 	_check_end()
@@ -113,18 +117,32 @@ func _check_end() -> void:
 	if sim.result == &"victory":
 		camera_rig.victory()
 		fighters.cheer()
+	if sim.result == &"defeat" and not auto_play and BattleEnding.open_defeat(_finish):
+		return
 	hud.show_end(sim.result)
 	if auto_play:
 		if not instant:
-			await get_tree().create_timer(_view.end_delay + _view.banner_seconds).timeout
+			await PauseWait.seconds(self, _view.end_delay + _view.banner_seconds)
 		_finish(sim.result)
 
 
+## The fight is over with this answer: &"victory" / &"defeat" (back to the rooftop, after the light wash), &"retry",
+## &"load" or &"title" (the Defeat screen's picks).
 func _finish(result: StringName) -> void:
 	if _finished:
 		return
 	_finished = true
-	ended.emit(result)
+	if instant or auto_play or not BattleEnding.washes(result):
+		ended.emit(result)
+	else:
+		BattleEnding.wash(self, ended.emit.bind(result))
+
+
+## The area's last frame breaks into glass over the arena (the opening waits for it).
+func _warp_in() -> void:
+	var shatter := BattleShatter.new()
+	add_child(shatter)
+	await shatter.play(warp_frame, juice.def)
 
 
 func _on_move_chosen(action: ActionDef, target_id: StringName) -> void:

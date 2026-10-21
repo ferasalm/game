@@ -26,6 +26,7 @@ func begin(request: BattleRequest) -> bool:
 	stage = BattleStage.new()
 	stage.environment = ArenaBuilder.environment(def)
 	stage.look = ArenaBuilder.look_of(def)
+	stage.warp_frame = Router.last_frame if request.retry_count == 0 else null  # a retry has no frame to break
 	add_child(stage)
 	stage.ended.connect(ended.emit)
 	stage_created.emit(stage)

@@ -1,7 +1,8 @@
 class_name BattleEndPanel
 extends PanelContainer
-## The end-of-battle panel in the middle of the screen. Victory: the spoils (new items in their rarity colours,
-## from set_loot) and Continue. Defeat: Retry or Back to the rooftop.
+## The end-of-battle panel in the middle of the screen. Victory: the spoils (the riyal the fight pays, herbs, and new
+## items in their rarity colours, from set_loot / set_rewards) and Continue. Defeat: Retry or Back to the rooftop
+## (the arena normally opens the Defeat screen instead; the panel is the fallback).
 
 ## The player's pick: &"victory" (continue), &"retry" or &"defeat" (back to the rooftop).
 signal picked(result: StringName)
@@ -13,6 +14,8 @@ var _row: HBoxContainer
 var _buttons: Array[Button] = []
 var _loot: Array[StringName] = []
 var _shown_loot: Array[StringName] = []
+var _money: int = 0
+var _herbs: Dictionary = {}
 
 
 func setup(view: BattleViewDef) -> void:
@@ -40,6 +43,17 @@ func setup(view: BattleViewDef) -> void:
 ## The guaranteed loot of this fight (item ids); on a victory the ones not owned yet are listed.
 func set_loot(item_ids: Array[StringName]) -> void:
 	_loot = item_ids
+
+
+## What the win pays: riyal and herbs {consumable id: count}, listed above the new items.
+func set_rewards(money: int, herbs: Dictionary) -> void:
+	_money = money
+	_herbs = herbs
+
+
+## The riyal line the panel shows right now (0 when none: a defeat, or a fight that pays nothing).
+func shown_money() -> int:
+	return _money if _loot_box.visible and _money > 0 else 0
 
 
 ## The item ids the panel lists right now (victory only).
@@ -78,16 +92,31 @@ func _fill_loot(won: bool) -> void:
 		for item_id: StringName in _loot:
 			if not GameState.inventory.has(item_id):
 				_shown_loot.append(item_id)
-	_loot_box.visible = not _shown_loot.is_empty()
-	if _shown_loot.is_empty():
+	var rewards: bool = won and (_money > 0 or not _herbs.is_empty())
+	_loot_box.visible = not _shown_loot.is_empty() or rewards
+	if not _loot_box.visible:
 		return
 	_loot_box.add_child(BattleStyle.label(BattleStyle.text("UI_SPOILS"), &"CaptionLabel"))
+	if rewards:
+		_add_rewards()
 	for item_id: StringName in _shown_loot:
 		var line := HBoxContainer.new()
 		line.add_theme_constant_override("separation", _view.margin)
 		line.add_child(UiRarity.item_label(item_id))
 		line.add_child(UiRarity.tag(UiRarity.of_item(item_id)))
 		_loot_box.add_child(line)
+
+
+## The riyal line and one line per herb stack.
+func _add_rewards() -> void:
+	if _money > 0:
+		_loot_box.add_child(BattleStyle.label(BattleStyle.text("BATTLE_REWARD_MONEY") % _money, &"NameLabel",
+			Ui.style().colour(&"c_brass")))
+	for herb_id: Variant in _herbs:
+		var def := ContentDB.get_def("consumable", StringName(str(herb_id))) as ConsumableDef
+		if def != null:
+			_loot_box.add_child(BattleStyle.label(BattleStyle.text("BATTLE_REWARD_HERB") % [
+				BattleStyle.text(def.name_key), int(_herbs[herb_id])], &"NameLabel"))
 
 
 func _add(key: String, result: StringName) -> void:

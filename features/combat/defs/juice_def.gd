@@ -24,6 +24,22 @@ var shake_decay: float = 8.0
 var shake_speed: float = 60.0
 var anticipate_pause: float = 0.05
 var cast_hold: float = 0.18
+## The qamariya-glass shatter into the fight: cells across the screen, how far (screen heights) and sideways (cells)
+## the shards drop, their spin (radians), the stagger share of the time, glass tint amount and crack width (cells).
+var shatter_columns: int = 10
+var shatter_fall: float = 1.5
+var shatter_spread: float = 1.0
+var shatter_spin: float = 2.5
+var shatter_stagger: float = 0.45
+var shatter_glass: float = 0.35
+var shatter_crack: float = 0.02
+## Per-character hit pause (CharacterVisual.hit_stop) on attacker and target at impact, light and heavy (seconds).
+var hit_pause: float = 0.07
+var hit_pause_heavy: float = 0.11
+## How long a clip wait may last before the battle goes on without its event (a source that sends none), seconds.
+var clip_timeout: float = 2.0
+## Gap kept between two fighters at the end of a lunge, metres.
+var contact_gap: float = 0.1
 
 
 func read(r: DefReader) -> void:
@@ -47,3 +63,14 @@ func read(r: DefReader) -> void:
 	shake_speed = r.number("shake_speed", 1.0, 200.0)
 	anticipate_pause = r.number("anticipate_pause", 0.0, 1.0)
 	cast_hold = r.number("cast_hold", 0.0, 2.0)
+	shatter_columns = r.integer("shatter_columns", 3, 40)
+	shatter_fall = r.number("shatter_fall", 0.0, 4.0)
+	shatter_spread = r.number("shatter_spread", 0.0, 4.0)
+	shatter_spin = r.number("shatter_spin", 0.0, 12.0)
+	shatter_stagger = r.number("shatter_stagger", 0.0, 0.9)
+	shatter_glass = r.number("shatter_glass", 0.0, 1.0)
+	shatter_crack = r.number("shatter_crack", 0.0, 0.2)
+	hit_pause = r.number("hit_pause", 0.0, 0.5)
+	hit_pause_heavy = r.number("hit_pause_heavy", 0.0, 0.5)
+	clip_timeout = r.number("clip_timeout", 0.2, 10.0)
+	contact_gap = r.number("contact_gap", 0.0, 2.0)
