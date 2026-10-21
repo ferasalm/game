@@ -7,7 +7,7 @@
     {"id": "saila_floor", "height": -17.4, "stack": 2, "step": 0.5, "color": "#8ea0d8", "opacity": 0.32, "noise_scale": 0.12,
      "speed_x": 0.0, "speed_z": -0.12, "low": 0.25, "high": 0.75, "depth_fade": 0.6, "near_fade": 3.0,
      "edge_fade": 0.35, "margin": 0.0, "noise_seed": 11, "noise_size": 256, "rect": [16.9, -30.0, 19.1, 48.0]},
-    {"id": "wisps", "height": -6.0, "stack": 3, "step": 3.5, "color": "#5f70b8", "opacity": 0.12, "noise_scale": 0.05,
+    {"id": "wisps", "height": -6.0, "stack": 3, "step": 3.5, "color": "#5f70b8", "opacity": 0.08, "noise_scale": 0.05,
      "speed_x": -0.15, "speed_z": 0.05, "low": 0.4, "high": 0.95, "depth_fade": 2.0, "near_fade": 6.0,
      "edge_fade": 0.12, "margin": 34.0, "noise_seed": 21, "noise_size": 256, "hole": [-1.0, -1.0, 27.0, 19.0], "hole_fade": 5.0}
   ]

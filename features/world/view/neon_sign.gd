@@ -8,6 +8,8 @@ const FONT: FontFile = preload("res://assets/fonts/reem_kufi.ttf")
 const FONT_PX: int = 64
 const FRAME: float = 0.07
 const BOARD_DEPTH: float = 0.12
+## The text may fill this much of the board's width.
+const FIT: float = 0.88
 
 var label: Label3D
 var spec: SignSpec
@@ -37,7 +39,7 @@ func _init(sign_spec: SignSpec, palette: PaletteDef) -> void:
 	label.shaded = false
 	label.double_sided = false
 	label.text_direction = TextServer.DIRECTION_LTR
-	label.modulate = _hot()
+	label.modulate = _hot(spec.text_energy)
 	label.outline_size = 0
 	label.position = Vector3(0.0, 0.0, z + 0.02)
 	add_child(label)
@@ -45,6 +47,9 @@ func _init(sign_spec: SignSpec, palette: PaletteDef) -> void:
 
 func _ready() -> void:
 	label.text = tr(spec.key)
+	var width_px: float = FONT.get_string_size(label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, FONT_PX).x
+	var fit: float = spec.board.x * FIT / maxf(width_px, 1.0)
+	label.pixel_size = minf(spec.size / FONT_PX, fit)
 
 
 func _process(delta: float) -> void:
@@ -55,19 +60,19 @@ func _process(delta: float) -> void:
 	var dip: float = LightPick.flicker(spec.flicker, 9.0, phase, _time)
 	if fmod(_time + phase, 7.0) < 0.25:
 		dip *= 0.25
-	label.modulate = _hot(dip)
-	_frame_mat.albedo_color = _hot(dip)
+	label.modulate = _hot(spec.text_energy * dip)
+	_frame_mat.albedo_color = _hot(spec.energy * dip)
 
 
-func _hot(scale_by: float = 1.0) -> Color:
+func _hot(energy: float) -> Color:
 	var c: Color = spec.color
-	return Color(c.r * spec.energy * scale_by, c.g * spec.energy * scale_by, c.b * spec.energy * scale_by, 1.0)
+	return Color(c.r * energy, c.g * energy, c.b * energy, 1.0)
 
 
 func _glow_material() -> StandardMaterial3D:
 	var mat := StandardMaterial3D.new()
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	mat.albedo_color = _hot()
+	mat.albedo_color = _hot(spec.energy)
 	return mat
 
 

@@ -10,6 +10,7 @@ var size: float = 0.5
 var board: Vector2 = Vector2(4.0, 1.0)
 var color: Color = Color.WHITE
 var energy: float = 2.5
+var text_energy: float = 1.3
 var flicker: float = 0.0
 
 
@@ -23,4 +24,5 @@ func read(r: DefReader) -> void:
 		board = Vector2(b[0], b[1])
 	color = r.color("color")
 	energy = r.number("energy", 0.5, 16.0, 2.5, false)
+	text_energy = r.number("text_energy", 0.2, 16.0, 1.3, false)
 	flicker = r.number("flicker", 0.0, 1.0, 0.0, false)

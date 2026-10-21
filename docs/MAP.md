@@ -39,14 +39,15 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/djanbeyyah/loadouts.json`: content: loadout x1
 - `content/djanbeyyah/menu.json`: content: workshop_style x1
 - `content/world/areas.json`: content: area x1
-- `content/world/buildings.json`: content: building x8
+- `content/world/buildings.json`: content: building x9
 - `content/world/camera.json`: content: camera_rig x1
 - `content/world/explore.json`: content: explore_rules x1
 - `content/world/look.json`: content: look x2
-- `content/world/mist.json`: content: mist x2
+- `content/world/mist.json`: content: mist x3
+- `content/world/props.json`: content: prop x23
 - `content/world/sky.json`: content: sky x1
 - `content/world/skyline.json`: content: skyline x1
-- `content/world/tiles.json`: content: tile x11
+- `content/world/tiles.json`: content: tile x8
 
 ## core
 - `core/asset_manifest.gd`: Checks assets/manifest.json: every file under the assets folder (except *.import, .gdignore, *.md and the manifest itself) has an entry with a non-empty source and licence
@@ -157,17 +158,26 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/defs/area_def.gd`: A level as data: equal-width rows of tile characters, a legend (character -> tile id) and four markers (S spawn, W workshop bench, P patrol start, Q patrol end) that each appear once and stand on floor
 - `features/world/defs/building_def.gd`: One Sana'a tower-house as data: footprint (metres), floors (the lowest stone_floors are basalt), window columns per facade, frieze style, qamariya glass letters, lit-window ratio, parapet style and roof extras
 - `features/world/defs/camera_rig_def.gd`: Camera language for exploring (content/world/camera.json): the opening establishing shot as keyframes (camera and target positions relative to the player, field of view, depth-of-field scale, seconds) and the "vista" pose the camera eases to inside a vista zone
+- `features/world/defs/canyon_spec.gd`: The sunken street (al-Saila) under the area: two walls from bottom_y up to top_y between x0 and x1 (the street's width) over the area's z range z0..z1, continued extend metres beyond both ends up to ext_top_y only, with a stone base of base_height under a brick upper wall and a thin water channel down the middle
 - `features/world/defs/explore_rules_def.gd`: Numbers for walking around an area: player speed and size, follower, camera, patrol, touch and interact ranges, collision wall height and the workshop prompt
+- `features/world/defs/light_spec.gd`: One practical light: where it is, its colour, a real OmniLight (energy, range; only the nearest few are alive at once) and a fake light pool (an additive quad on the floor or a wall, radius in metres, cheap and always on)
 - `features/world/defs/look_def.gd`: The HD-2D look as data: camera offset and field of view, tilt-shift depth of field, key light, ambient light, background and bloom
 - `features/world/defs/mist_def.gd`: One drifting mist layer (content/world/mist.json): a flat transparent plane at a height, scrolling noise between two thresholds, faded where it meets geometry, near the camera and at the plane's edges
+- `features/world/defs/placement.gd`: Where one building or prop stands in an area: the content id (ref), an optional name for it (chests), the position (x, z on the floor; y absolute, or the floor height when absent) and a yaw in degrees
+- `features/world/defs/prop_def.gd`: A rooftop prop as data (content/world/props.json): a list of simple parts (PropPart), an optional practical light it carries, an optional box that blocks walking (collide = width, height, depth, centred on the prop's base) and, for a chest, the lid's hinge (lid_hinge x, y, z) so the "lid" part group can swing open
+- `features/world/defs/prop_part.gd`: One solid piece of a prop: a box (size = width, height, depth; at = centre) or a frustum (size = bottom radius, top radius, height; at = base centre), a palette letter, an optional yaw/tilt (degrees), and how it is drawn: glow (unshaded, boosted, blooms), blink (a glow that pulses), pattern (a painted tile texture instead of the letter), group (a named sub-mesh that can move, such as a chest lid)
+- `features/world/defs/sign_spec.gd`: One neon sign: a localization key (Arabic proper nouns and English together), a dark board with a glowing frame, the glow colour, a position and yaw, the text height in metres (size) and how much it flickers
 - `features/world/defs/sky_def.gd`: The night sky as data (content/world/sky.json): gradient, stars, milky way, moon, two cloud layers and the megacity glow
 - `features/world/defs/skyline_band.gd`: One depth band of the skyline: city blocks on a jittered grid between min_dist and max_dist metres from the play area's edge
 - `features/world/defs/skyline_def.gd`: The city around the play area as data: the ground level (y of the street, far below the rooftops), the al-Saila street (a sunken street along z at saila_x), depth bands of buildings and the landmarks
 - `features/world/defs/skyline_landmark.gd`: One landmark placed by data: kind, position on the ground (x east, z south; the play area is x 0..26, z 0..18 and -Z is north), facing in degrees, main size (height or length in metres), a part count, a seed and a radius kept free of ordinary city blocks
-- `features/world/defs/tile_def.gd`: One kind of block: height in metres, colour (an art-bible palette letter or #hex), whether it blocks walking, an optional glow, an optional cap tile drawn on top of it (gypsum trim on a tower) and an optional surface pattern (a SurfacePainter texture painted over the colour, 4 m repeat, 32 px = 1 m)
+- `features/world/defs/tile_def.gd`: One kind of block: height in metres, colour (an art-bible palette letter or #hex), whether it blocks walking, an optional glow, an optional cap tile drawn on top of it (gypsum trim on a tower) and an optional surface pattern (a SurfacePainter texture painted over the colour, 4 m repeat, 32 px = 1 m), or hidden (blocks only)
+- `features/world/interact/chest.gd`: A treasure chest: the prop's body and a lid that swings open on a hinge when the player interacts
+- `features/world/interact/interact_spot.gd`: Something the player can press interact next to: a floating prompt (a localization key) that shows while he is within the interact radius, and a virtual _interact() that runs on the key press
 - `features/world/logic/facade_details.gd`: Sana'a facade parts painted with palette letters at 32 px/m: gypsum friezes (zigzag, triangles, rosettes), windows with thick white gypsum frames, the qamariya (a semicircle of coloured glass over the window) and arched wooden doors
 - `features/world/logic/facade_painter.gd`: Paints one Sana'a tower-house facade at 32 px/m from a FacadeSpec: basalt stone floors at the bottom (door on the ground floor), fired-brick floors above, a gypsum frieze at the top of each brick floor, and on every brick floor windows with gypsum frames under qamariya arches
 - `features/world/logic/facade_spec.gd`: What one painted facade needs: width in metres, floors (the lowest stone_floors are basalt, the rest brick), window columns, frieze style, qamariya glass letters, lit and shutter ratios, a door, floor height in pixels and the seed
+- `features/world/logic/light_pick.gd`: Which practical lights get a real OmniLight: the nearest few to a focus point (the rest keep only their fake light pool), plus the fade and flicker maths
 - `features/world/logic/masonry.gd`: Brick courses and stone slabs painted with palette letters
 - `features/world/logic/pixel_canvas.gd`: A pixel canvas painted with palette letters, with an optional emission layer (black = no glow)
 - `features/world/logic/skyline_layout.gd`: Where the city blocks stand: for each band a jittered grid of cells between the band's distances from the play area, minus the al-Saila corridor and the landmark clearings, thinned by the band's fill
@@ -179,8 +189,12 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/player/player.gd`: Zayd: 8-way walking from the move_* actions (up = -Z), stopped by solid tiles
 - `features/world/rooftop/rooftop.gd`: The rooftop exploration scene
 - `features/world/rooftop/rooftop.tscn`: scene
+- `features/world/rooftop/rooftop_shot.gd`: Frame tool: the rooftop with Zayd put at chosen floor coordinates (and an optional free camera), for rendering pictures
+- `features/world/rooftop/rooftop_shot.tscn`: scene
 - `features/world/tests/test_ambush.gd`: Which side struck first: the patrol's walking direction, and last_touch_ambush() after a touch (0 nobody, 1 the patrol caught the player from behind, 2 the player caught the patrol from behind)
 - `features/world/tests/test_area.gd`: Area, tile and look content: the rooftop layout is well formed and every probe of a broken layout is caught
+- `features/world/tests/test_chests_signs.gd`: Chests (prompt, one-time opening, the lid animation, the Rooftop signal) and the neon signs (localization keys, Arabic text from the CSV, text fitted to the board)
+- `features/world/tests/test_dressing.gd`: Rooftop dressing as data: props and building placements are valid and stand on solid cells, prop parts use palette letters, the light maths (nearest few, fades, flicker), the real-light budget and the fake pools, the canyon and the nested DefReader reads
 - `features/world/tests/test_explore_camera.gd`: ExploreCamera on the rooftop: follow offset, the vista pose inside the zone (lower pitch, eases back out), the opening shot (keyframes, frozen actors, skip by key, ends on the exploring pose) and the DoF scale
 - `features/world/tests/test_facade.gd`: Night Sana'a textures: the facade painter (size, determinism, lit windows and qamariya glass in the emission map, a door, every pixel painted), the surface patterns (tile 4 m, deterministic, tileable) and the tile content
 - `features/world/tests/test_look_test.gd`: The look-test scene builds without errors (headless: no pixels are drawn, but every node and resource is made)
@@ -188,12 +202,20 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/tests/test_rooftop.gd`: The rooftop scene builds headless; walking, the follower, the patrol touch, the ambush direction, the exploring switch, the patrol respawn, the workshop prompt and the camera
 - `features/world/tests/test_skyline.gd`: Night Sana'a city: building and skyline content, the layout rules (outside the area, out of the al-Saila corridor, inside the band, deterministic), the tower-house mesh, the landmarks and the draw-call budget
 - `features/world/view/area_builder.gd`: Builds an area's blocks: one MultiMeshInstance3D per tile type (bodies, and caps drawn with the cap tile's material; tiles with a pattern get its painted triplanar texture), plus one StaticBody3D holding a box per run of solid tiles and walls that close the area's edges
+- `features/world/view/area_dressing.gd`: Everything an area has on top of its tiles: tower-houses and props (PropBuilder), neon signs, the practical lights with their fake pools (AreaLights) and the chests (one Chest each, interactive)
+- `features/world/view/area_lights.gd`: The area's practical lights
+- `features/world/view/canyon_builder.gd`: Builds the sunken street's walls (a stone base under brick, one box each, world-space textured so the courses line up) and the water channel in its middle
 - `features/world/view/diorama.gd`: Static helpers that build the HD-2D look from a LookDef: WorldEnvironment, low sun, tilt-shift camera, and the nearest-filtered block material
 - `features/world/view/explore_camera.gd`: The exploration camera and its language: it follows the player at the look's offset, eases to a low "vista" pose while the player stands in the area's vista zone (so the sky and moon show above the skyline), and can play the opening establishing shot (keyframes from CameraRigDef; any key, click or button skips it)
 - `features/world/view/far_landmarks.gd`: The far landmarks, built into an unshaded buffer (faces are shaded by a fake light so low-poly facets read): the ridge of Jabal Nuqum, the Haddah megacity of 2150 (slim towers with cyan and magenta neon edges) and the village of Bayt Baws on its rocky crag
 - `features/world/view/landmark_builder.gd`: Builds all landmarks of a SkylineDef into one ArrayMesh with two surfaces: 0 lit (minarets, Bab al-Yaman: vertex colours shaded by the scene lights) and 1 glow (ridge, megacity, village: unshaded, boosted above 1 so neon and lit windows bloom)
 - `features/world/view/mist_builder.gd`: Builds one mist layer from a MistDef: a big flat plane over the area at the def's height, with the scrolling noise shader and a seamless noise texture made once here
+- `features/world/view/neon_sign.gd`: One neon sign: a dark board, a glowing frame and the text (Label3D in Reem Kufi, unshaded and boosted above 1 so it blooms)
+- `features/world/view/prop_builder.gd`: Places an area's props and tower-houses from its placement lists
+- `features/world/view/prop_mesh.gd`: Builds one prop's ArrayMesh from its PropDef parts (palette-letter vertex colours, flat shaded)
 - `features/world/view/roof_extras.gd`: The 2150 clutter on a tower-house roof: water tank, satellite dish, antenna with a red beacon, small solar panel
+- `features/world/view/shaders/blink.gdshader`
+- `features/world/view/shaders/light_pool.gdshader`
 - `features/world/view/shaders/mist.gdshader`
 - `features/world/view/shaders/night_sky.gdshader`
 - `features/world/view/sky_builder.gd`: Builds the night Sky resource from a SkyDef: the sky shader with every uniform filled from the def, and the three direction vectors (moon, city glow, milky way normal) computed from its angles
@@ -203,7 +225,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/view/surface_buffer.gd`: Collects flat-shaded, vertex-coloured faces (boxes, prisms, polygons) for one surface of an ArrayMesh
 - `features/world/view/surface_materials.gd`: Cached textures and materials for the painted world, so 100+ buildings share a handful of draw materials: tile patterns (world-space triplanar, so texels stay square across tiles), tower-house facades (front and side painted side by side in one atlas, lit windows in an emission map), vertex-coloured trim, unshaded HDR glow, and the dotted far silhouettes
 - `features/world/view/tower_house.gd`: Builds one Sana'a tower-house mesh from a BuildingDef: four textured facades (one atlas), a roof, a white gypsum parapet with merlons and stepped or horned corners, and roof extras
-- `features/world/workshop/workshop_spot.gd`: The workshop bench: its sprite, and a floating prompt that shows while the player is within the interact radius
+- `features/world/workshop/workshop_spot.gd`: The workshop bench: its sprite, and the interact prompt
 
 ## localization
 - `localization/battle.csv`

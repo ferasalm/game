@@ -58,8 +58,10 @@ func test_look_v1_keeps_the_accepted_numbers() -> void:
 	check_eq(look.sun_rotation, Vector3(-50.0, -35.0, 0.0), "sun rotation")
 
 
-func test_tower_tiles_have_trim_caps() -> void:
-	var tower := ContentDB.get_def("tile", &"tower_brick") as TileDef
-	check(tower != null and tower.solid and tower.cap == &"gypsum_trim", "towers are solid with a gypsum cap")
+func test_building_footprints_block_walking_but_draw_nothing() -> void:
+	var footprint := ContentDB.get_def("tile", &"footprint") as TileDef
+	check(footprint != null and footprint.solid and footprint.hidden, "a building's cells are solid and invisible")
+	var street := ContentDB.get_def("tile", &"street") as TileDef
+	check(street.solid and street.hidden, "the sunken street's cells are solid and invisible (al-Saila shows below)")
 	var floor_tile := ContentDB.get_def("tile", &"roof_floor") as TileDef
 	check(floor_tile != null and not floor_tile.solid, "the roof floor is walkable")
