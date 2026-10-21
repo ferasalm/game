@@ -2,8 +2,8 @@
   "kind": "speaker",
   "items": [
     {"id": "zayd", "name_key": "NAME_ZAYD", "color": "#e8a860", "sprite": "zayd",
-     "face_x": 8, "brow_y": 4, "mouth_y": 6, "portrait_flip": false},
+     "face_x": 8, "brow_y": 4, "mouth_y": 6, "portrait_flip": false, "epithet_key": "EPITHET_ZAYD"},
     {"id": "bilqis", "name_key": "NAME_BILQIS", "color": "#5ad0ff", "sprite": "bilqis",
-     "face_x": 8, "brow_y": 5, "mouth_y": 7, "portrait_flip": true}
+     "face_x": 8, "brow_y": 5, "mouth_y": 7, "portrait_flip": true, "epithet_key": "EPITHET_BILQIS"}
   ]
 }

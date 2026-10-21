@@ -150,6 +150,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/tests/test_battle_ai_support.gd`: BattleAI with support moves: heal an ally under 40% HP, revive the fallen, guard before a big enemy cast, and never waste a heal or buff when nobody needs it
 - `features/combat/tests/test_battle_camera.gd`: The cinematic battle camera: it frames the stage from a low angle (12-16 degrees down), starts at the exploration camera and swoops to the battle pose, then drifts, follows, pushes in, shakes and glides to the victory pose, all from content/combat/camera.json
 - `features/combat/tests/test_battle_hud_style.gd`: The restyled battle HUD keeps its behaviour and gains: tags on the command buttons, gradient bars in the party panel, the brass timeline track, and rarity-coloured spoils on the victory panel (only items not owned yet)
+- `features/combat/tests/test_battle_hud_v2.gd`: Battle HUD v2: the timeline sits on top at the style's size and its icons come from content (disc fallback), the party shows as PartyCards at the bottom right with the acting hero framed, and the hint strip is there
 - `features/combat/tests/test_battle_interrupt.gd`: T4: a cancel move landing on a casting enemy interrupts it (back to INTERRUPT_POS) inside BattleSim
 - `features/combat/tests/test_battle_menu_support.gd`: The command menu with tech moves: an ally move lists the allies (not the foes), self and all-moves skip the target list and commit at once, and the party is built from saved gear
 - `features/combat/tests/test_battle_outcome.gd`: The battle contract: BattleSetup carries carried vitals and the bag into units, hero ids come from the party list, BattleOutcome reports vitals after (a downed hero stands at ko_stand_hp after a victory only) and the bag, and the speed / melee numbers come from the battle rules
@@ -179,7 +180,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/view/battle_labels.gd`: Builders for the 3D bits of the battle screen: billboard text (damage numbers, status text, enemy intent) and the target marker
 - `features/combat/view/battle_menu_chips.gd`: The small tags on the right edge of a command-menu button: SP cost (cyan), "cancels" (magenta), the target scope of a self / all move, and for a target the HP and a "will interrupt" warning
 - `features/combat/view/battle_numbers.gd`: The pop-up text of a battle: damage and heal numbers that pop in with an overshoot, bounce up and fade (bigger for heavy hits, green for heals), and the BREAK! stamp over a unit whose cast was cut
-- `features/combat/view/battle_party_panel.gd`: The party panel (bottom right, compact): per hero an ornate name plate beside an HP bar (red to orange) and an SP bar (blue to cyan), each with its numbers in Reem Kufi
+- `features/combat/view/battle_party_panel.gd`: The party cards (bottom right): per hero a PartyCard with the portrait icon, name, HP bar (red to orange) and SP bar (blue to cyan) with numbers
 - `features/combat/view/battle_runner.gd`: One fight, away from the exploring area: builds the arena from the request, the sim from content and the saved gear, the BattleStage beside it, and reports the stage's result
 - `features/combat/view/battle_stage.gd`: The battle screen (wait mode): places the fighters and the camera, runs the HUD, steps a BattleSim a few ticks per physics frame and plays the resulting events
 - `features/combat/view/battle_style.gd`: Small builders for the battle screen's look (labels, bars, names, head icons)
@@ -193,15 +194,16 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/dialogue/defs/dialogue_def.gd`: A conversation: an ordered list of lines (speaker, expression, text key)
 - `features/dialogue/defs/dialogue_line.gd`: One spoken line: who says it, with which expression, and the localization key of the text
 - `features/dialogue/defs/dialogue_style_def.gd`: Look and timing of the dialogue box (fractions of the screen, pixels, colours, speed) and the pixel marks (brows, mouth) that make the stand-in portraits show an expression
-- `features/dialogue/defs/speaker_def.gd`: One speaking character: name key, name colour, the pixel sprite used for the stand-in portrait, and where the face sits on that sprite (sprite pixels) so the stand-in can draw brows and a mouth
+- `features/dialogue/defs/speaker_def.gd`: One speaking character: name key, name colour, the pixel sprite id, and where the face sits on that sprite (sprite pixels)
 - `features/dialogue/logic/dialogue_run.gd`: Steps through a DialogueDef one line at a time
-- `features/dialogue/logic/standin_portrait.gd`: Builds a stand-in portrait Image from a speaker's pixel sprite: head-and-chest rows cropped, scaled up with nearest filtering, over a soft backdrop in the speaker colour, plus brow and mouth marks per expression
+- `features/dialogue/logic/standin_portrait.gd`: Builds a stand-in portrait Image for a speaker without painted art: a soft glow in the speaker colour, a disc in that colour and brow and mouth marks per expression
 - `features/dialogue/tests/test_dialogue.gd`: Dialogue: T8 (every line has a known speaker, one of 4 expressions, a translating text key), DialogueRun stepping, the object-list reader, the stand-in portraits, and DialogueBox playing to the end once
-- `features/dialogue/view/dialogue_box.gd`: The dialogue box: a chest-up portrait at the left overlapping an ornate text frame along the bottom, with the speaker's name on a plate in their colour and the line typed out quickly
+- `features/dialogue/tests/test_dialogue_v2.gd`: Dialogue v2 (Hades II style): nameplate with epithet, typed text, portrait slide on a speaker change, Cease, the layout sizes from the UI style, and stand-in portraits that no longer touch sprite pixels
+- `features/dialogue/view/dialogue_box.gd`: The dialogue box, Hades II style: a big portrait slides in when the speaker changes, a nameplate with the speaker's name and epithet sits on the box, the line is typed out (confirm finishes it, then moves on)
 - `features/dialogue/view/dialogue_demo.gd`: Manual check: plays the workshop_first dialogue over a plain background (F6 in the editor)
 - `features/dialogue/view/dialogue_demo.tscn`: scene
-- `features/dialogue/view/dialogue_layout.gd`: Builds the dialogue box's controls in code (no scene file, no path lookups) and keeps references to them
-- `features/dialogue/view/portraits.gd`: Finds the portrait texture for (speaker, expression): res://assets/portraits/<speaker>_<expression>.png when it exists (loaded straight from the file, the "keep" importer needs no import step), else a stand-in built from the speaker's pixel sprite (StandinPortrait)
+- `features/dialogue/view/dialogue_layout.gd`: Builds the dialogue box's controls in code (Hades II style; sizes from the UI style, laid out for 1920x1080): a big portrait at the left that slides in, an ornate glass text box at the bottom right with a frieze, a nameplate tab on the box's top edge (name in brass, epithet under it) and the button hints
+- `features/dialogue/view/portraits.gd`: Finds the portrait texture for (speaker, expression): res://assets/portraits/<speaker>_<expression>.png when it exists (loaded straight from the file, the "keep" importer needs no import step), else a stand-in disc with the expression's brows and mouth (StandinPortrait)
 - `features/djanbeyyah/defs/blade_def.gd`: A djanbeyyah blade: adds to attack, adds knockback to every hit the wielder lands, adds weight
 - `features/djanbeyyah/defs/hilt_def.gd`: A djanbeyyah hilt: adds to agility, multiplies cast speed, adds weight, and grants exactly one move
 - `features/djanbeyyah/defs/loadout_def.gd`: A hero's starting gear: which hilt, blade and prosthetic they own and wear at the start (each optional)
@@ -264,23 +266,37 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/prototype/tests/test_smoke_flow.gd`: Smoke test of the whole flow, headless through the Router: a new game, a fight on auto-play, the outcome applied to GameState, a save, a load that restores exactly that state
 - `features/ui/defs/ui_style_def.gd`: The look of every menu and HUD (content/ui/style.json): three font files, named colours (c_*), sizes in pixels at 1920x1080 (s_*) and times in seconds (t_*)
 - `features/ui/logic/pause_logic.gd`: Pure rules of the pause menu: which entries show and in what order, which ask "are you sure", the vitals of a hero with a missing record (= full), and the play-time clock text
+- `features/ui/logic/prompt_glyph.gd`: Pure: the localization key of the button glyph for an action on keyboard or gamepad ("accept" -> Enter / A), and the fade of a world-space interaction prompt with distance
+- `features/ui/logic/toast_queue.gd`: Pure: toasts wait in order and are shown one at a time
 - `features/ui/tests/node_walk.gd`: Test helper (not a test): every descendant of a node, depth first
 - `features/ui/tests/test_items_shop.gd`: The Items and Shop screens on the Screens stack, and the riyal banner of the loot popup
 - `features/ui/tests/test_pause_menu.gd`: The pause menu rules (PauseLogic) and the screen built from them
 - `features/ui/tests/test_popups.gd`: The loot popup (queues item_obtained in order, skippable), the area title card, the title overlay (any key dismisses it once) and the opening shot held on the moon until then
+- `features/ui/tests/test_sabil_defeat.gd`: The Sabil question and the Defeat screen: registered ids, focus order, results, back handling
 - `features/ui/tests/test_screens.gd`: The Screens stack: push/pop pause the tree and emit game_paused, focus returns to the control that had it, back goes to the top screen, an unhandled menu opens pause only while exploring with nothing open, screens open by id
 - `features/ui/tests/test_ui.gd`: The shared UI look: the style loads completely, the theme builds with all three fonts (Arabic glyphs included), every rarity has a colour, the painted frames have the right size, and the text server can shape right-to-left Arabic
-- `features/ui/view/area_title_card.gd`: The area title card that fades in when the opening shot ends: the area's name in Latin and Arabic in Reem Kufi, a zigzag divider and a subtitle (place and year), then fades out
+- `features/ui/tests/test_ui_helpers.gd`: UI v2 helpers: list_row, party_card, money_counter, prompt_strip and its glyph keys, toast queue and host, interaction prompt fade, typed text, the qamariya transition sweep, and the head icons with their disc fallback
+- `features/ui/view/area_title_card.gd`: The area title card (centre left, no panel) that fades in when the opening shot ends: the Arabic name big over the English name, a gypsum frieze drawing left to right, a subtitle (place and year), then fading out
+- `features/ui/view/character_icons.gd`: Head icons for timeline medallions and party cards
+- `features/ui/view/interaction_prompt.gd`: A small glass pill above an object in the world: the interact glyph and a verb ("Drink", "Talk", "Open")
+- `features/ui/view/list_row.gd`: One row of a menu list: icon | name (rarity colour) | "x3" count | tag chip on the right
 - `features/ui/view/loot_popup.gd`: The "Obtained" banner: listens to EventBus.item_obtained and shows each new item centred high on the screen with its name in the rarity colour, a light sweep for Rare and above and a rarity jingle (AudioDirector.play_item)
+- `features/ui/view/money_counter.gd`: A pill with the riyal amount in brass
+- `features/ui/view/party_card.gd`: A hero card: portrait icon, name, HP and SP bars with numbers
+- `features/ui/view/prompt_strip.gd`: The Hades-style button hints along the bottom: "[Enter] Select   [Esc] Back"
+- `features/ui/view/screens/choice_screen.gd`: Base of the small centred "pick one" screens (Sabil, Defeat): a framed panel with the Arabic + English title pair and a column of buttons in focus order
 - `features/ui/view/screens/confirm_dialog.gd`: A centred Yes/No question over the scrim
+- `features/ui/view/screens/defeat_screen.gd`: The defeat screen (Screens id &"defeat"): the arena darkens over t_defeat_fade, then DEFEATED offers Retry fight (default), Load last save (greyed with no save) and Title (asks first)
 - `features/ui/view/screens/equipment_host.gd`: Puts the existing EquipmentScreen (the bench, a CanvasLayer with its own open()/closed API) on the Screens stack as the screen &"equipment"
 - `features/ui/view/screens/items_screen.gd`: The Items screen (Screens id &"items", opened from the pause menu): the bag on the left, the chosen item's description and effect on the right, and under it the hero picker
 - `features/ui/view/screens/items_text.gd`: Item screen wording: the effect line ("HP +120") and a hero's "HP 200 -> 320" preview
 - `features/ui/view/screens/pause_menu.gd`: The pause screen (opened by Screens on the menu action while exploring): the entries on the left (Resume, Items, Equipment, Load last save or Restart, Unstuck, Title, Quit), the party on the right
-- `features/ui/view/screens/pause_party.gd`: The right half of the pause screen: a card per hero (name, HP and SP bars with numbers, KO tag), the worn gear of each hero, and under a frieze the area name, play time and riyal
+- `features/ui/view/screens/pause_party.gd`: The right half of the pause screen: a PartyCard per hero (portrait, name, HP and SP bars, KO tag), the worn gear of each hero, and under a frieze the area name, play time and riyal
+- `features/ui/view/screens/sabil_screen.gd`: The sabil fountain question (Screens id &"sabil"): "Drink to rest? This saves your game and restores everyone." Closes with &"drink" (default) or &"leave" (Not now, or back)
 - `features/ui/view/screens/shop_detail.gd`: The right half of the shop: the riyal counter, the focused item's name, description and effect, then price, owned count, "money after" (red when the trade is not affordable) and the quantity
 - `features/ui/view/screens/shop_screen.gd`: The herb stall (Screens id &"shop"; open with Screens.open(&"shop", {"shop": &"herb_stall"}), optional "after_battle": true for the keeper's other greeting)
 - `features/ui/view/title_overlay.gd`: The game's title over the opening sky: "Qarnaw" in Latin and Arabic in Reem Kufi with a pulsing "Press any key"
+- `features/ui/view/toast_host.gd`: Shows toasts top-centre one at a time (ToastQueue order): fade in, hold t_toast_hold, fade out, next
 - `features/ui/view/ui.gd`: Entry point of the shared UI look: the style (content/ui/style.json), the one cached Theme, and small builders (labels, screen roots, the zigzag divider)
 - `features/ui/view/ui_boxes.gd`: StyleBox builders for the UI theme: ornate panels (painted nine-patch frames), button states with the warm brass focus glow, and progress-bar tracks and gradient fills
 - `features/ui/view/ui_layers.gd`: The one table of CanvasLayer layers (engine draw-order values, so named constants are allowed here)
@@ -292,6 +308,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/ui_stack.gd`: Screen stack (autoload Screens): push/pop UiScreens (each on its own UiLayers layer), pause the tree while one wants it, restore focus when one closes, route `back` / `menu` input, and open the pause menu on `menu` when the game is exploring and nothing is open
 - `features/ui/view/ui_sweep.gd`: The qamariya focus sweep: a thin line under a focused control runs red, amber, green, blue, violet (stained glass) from left to right, then rests on brass
 - `features/ui/view/ui_theme.gd`: Builds the one Godot Theme every menu and HUD uses: Amiri for reading, Reem Kufi for titles, names and numbers, ornate panels, brass-focus buttons, gradient bars
+- `features/ui/view/ui_transition.gd`: The qamariya screen wipe: five stained-glass shards (red, amber, green, blue, violet) drop over the screen one after another, cover it, then lift away
+- `features/ui/view/ui_type.gd`: Typed text: a label reveals one character per t_text_char with the typing blip; confirm finishes the line
 - `features/world/defs/area_def.gd`: A level as data: equal-width rows of tile characters, a legend (character -> tile id) and four markers (S spawn, W workshop bench, P patrol start, Q patrol end) that each appear once and stand on floor
 - `features/world/defs/building_def.gd`: One Sana'a tower-house as data: footprint (metres), floors (the lowest stone_floors are basalt), window columns per facade, frieze style, qamariya glass letters, lit-window ratio, parapet style and roof extras
 - `features/world/defs/camera_preset_def.gd`: Stub (v0.3 registry, filled by the level builder): one named camera pose with its own field of view and depth of field, e.g

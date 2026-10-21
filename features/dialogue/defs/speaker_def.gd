@@ -1,7 +1,7 @@
 class_name SpeakerDef
 extends Def
-## One speaking character: name key, name colour, the pixel sprite used for the stand-in portrait, and where
-## the face sits on that sprite (sprite pixels) so the stand-in can draw brows and a mouth.
+## One speaking character: name key, name colour, the pixel sprite id, and where
+## the face sits on that sprite (sprite pixels). Stand-in portraits no longer use the sprite.
 
 var name_key: String = ""
 var color: Color = Color.WHITE
@@ -11,6 +11,8 @@ var brow_y: int = 0
 var mouth_y: int = 0
 ## Mirror the real portrait so it faces the text box (art that faces away needs it; stand-ins already face it).
 var portrait_flip: bool = false
+## Localization key of the nameplate epithet under the name ("" = none).
+var epithet_key: String = ""
 
 
 func read(r: DefReader) -> void:
@@ -26,6 +28,7 @@ func read(r: DefReader) -> void:
 	brow_y = r.integer("brow_y", 0, 63)
 	mouth_y = r.integer("mouth_y", 0, 63)
 	portrait_flip = r.flag("portrait_flip")
+	epithet_key = r.text("epithet_key", "", false)
 
 
 func references() -> Array[Array]:

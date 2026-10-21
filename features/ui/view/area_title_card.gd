@@ -1,13 +1,14 @@
 class_name AreaTitleCard
 extends CanvasLayer
-## The area title card that fades in when the opening shot ends: the area's name in Latin and Arabic in Reem Kufi,
-## a zigzag divider and a subtitle (place and year), then fades out. It never takes input.
+## The area title card (centre left, no panel) that fades in when the opening shot ends: the Arabic name big over the
+## English name, a gypsum frieze drawing left to right, a subtitle (place and year), then fading out. It takes no input.
 
 signal finished
 
 var _root: Control
 var _block: VBoxContainer = null
 var _tween: Tween = null
+var _latin: Label = null
 
 
 func _ready() -> void:
@@ -24,28 +25,27 @@ func show_card(name_key: String, arabic_key: String, subtitle_key: String) -> vo
 		_block.queue_free()
 	var style: UiStyleDef = Ui.style()
 	_block = VBoxContainer.new()
-	_block.set_anchors_preset(Control.PRESET_CENTER_TOP)
-	_block.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	_block.offset_top = get_viewport().get_visible_rect().size.y * 0.16
-	_block.offset_bottom = _block.offset_top
+	_block.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	_block.position = Vector2(style.size(&"s_area_x"), style.size(&"s_area_y"))
+	_block.custom_minimum_size.x = style.size(&"s_area_w")
 	_block.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var latin: Label = Ui.label(Ui.text(name_key), &"TitleLabel")
-	var arabic: Label = Ui.label(Ui.text(arabic_key), &"TitleLabel", style.colour(&"c_gypsum"))
+	var latin: Label = Ui.label(Ui.text(name_key), &"TitleLabel", style.colour(&"c_gypsum"))
+	var arabic: Label = Ui.label(Ui.text(arabic_key), &"BannerLabel")
 	arabic.language = "ar"
 	var subtitle: Label = Ui.label(Ui.text(subtitle_key), &"CaptionLabel", style.colour(&"c_muted"))
-	for line: Label in [latin, arabic, subtitle]:
-		line.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_block.add_child(latin)
+	_latin = latin
 	_block.add_child(arabic)
+	_block.add_child(latin)
 	var band: TextureRect = Ui.divider()
-	band.custom_minimum_size.x = style.size(&"s_frieze_period") * 16.0
-	band.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	band.custom_minimum_size.x = 0.0
+	band.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	_block.add_child(band)
 	_block.add_child(subtitle)
 	_block.modulate.a = 0.0
 	_root.add_child(_block)
 	_tween = create_tween()
 	_tween.tween_property(_block, "modulate:a", 1.0, style.time(&"t_card_in"))
+	_tween.parallel().tween_property(band, "custom_minimum_size:x", float(style.size(&"s_area_w")), style.time(&"t_card_in"))
 	_tween.tween_interval(style.time(&"t_card_hold"))
 	_tween.tween_property(_block, "modulate:a", 0.0, style.time(&"t_card_out"))
 	_tween.tween_callback(_done)
@@ -65,7 +65,7 @@ func is_showing() -> bool:
 
 ## The English name line now showing ("" when idle).
 func name_text() -> String:
-	return "" if _block == null else (_block.get_child(0) as Label).text
+	return "" if _block == null else _latin.text
 
 
 func _done() -> void:

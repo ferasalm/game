@@ -1,19 +1,22 @@
 class_name StandinPortrait
 extends RefCounted
-## Builds a stand-in portrait Image from a speaker's pixel sprite: head-and-chest rows cropped, scaled up with
-## nearest filtering, over a soft backdrop in the speaker colour, plus brow and mouth marks per expression.
-## Pure: images only, no nodes. Used until the real painted portraits exist.
+## Builds a stand-in portrait Image for a speaker without painted art: a soft glow in the speaker colour, a disc in
+## that colour and brow and mouth marks per expression. It no longer crops sprite pixels (characters are live 3D
+## models now). The image is standin_rows pixels square, scaled up by standin_scale with nearest filtering. Pure.
+
+const DISC_RADIUS: float = 0.34  ## disc radius as a fraction of the side
+const BROW_ROW: float = 0.4  ## where the brow mark is centred, fraction of the side from the top
+const MOUTH_ROW: float = 0.6  ## where the mouth mark is centred
 
 
-static func image(speaker: SpeakerDef, expression: StringName, sprite: SpriteDef, palette: PaletteDef,
-		style: DialogueStyleDef) -> Image:
-	var base: Image = PixelArt.image(sprite, palette)
-	var rows: int = mini(style.standin_rows, base.get_height())
-	var crop: Image = base.get_region(Rect2i(0, 0, base.get_width(), rows))
-	_draw_marks(crop, speaker, expression, style)
-	crop.resize(crop.get_width() * style.standin_scale, crop.get_height() * style.standin_scale, Image.INTERPOLATE_NEAREST)
-	var out: Image = _backdrop(crop.get_size(), speaker.color, style.backdrop_alpha)
-	out.blend_rect(crop, Rect2i(Vector2i.ZERO, crop.get_size()), Vector2i.ZERO)
+static func image(speaker: SpeakerDef, expression: StringName, style: DialogueStyleDef) -> Image:
+	var side: int = style.standin_rows
+	var out: Image = _backdrop(Vector2i(side, side), speaker.color, style.backdrop_alpha)
+	_disc(out, speaker.color)
+	var middle: int = side / 2
+	_stamp(out, style.brows.get(expression, PackedStringArray()), Vector2i(middle, roundi(side * BROW_ROW)), style.mark_color)
+	_stamp(out, style.mouths.get(expression, PackedStringArray()), Vector2i(middle, roundi(side * MOUTH_ROW)), style.mark_color)
+	out.resize(side * style.standin_scale, side * style.standin_scale, Image.INTERPOLATE_NEAREST)
 	return out
 
 
@@ -29,12 +32,16 @@ static func _backdrop(size: Vector2i, color: Color, alpha: float) -> Image:
 	return out
 
 
-static func _draw_marks(crop: Image, speaker: SpeakerDef, expression: StringName, style: DialogueStyleDef) -> void:
-	_stamp(crop, style.brows.get(expression, PackedStringArray()), Vector2i(speaker.face_x, speaker.brow_y), style.mark_color)
-	_stamp(crop, style.mouths.get(expression, PackedStringArray()), Vector2i(speaker.face_x, speaker.mouth_y), style.mark_color)
+static func _disc(target: Image, color: Color) -> void:
+	var side: int = target.get_width()
+	var centre := Vector2(side, side) * 0.5
+	for y: int in side:
+		for x: int in side:
+			if Vector2(x + 0.5, y + 0.5).distance_to(centre) <= side * DISC_RADIUS:
+				target.set_pixel(x, y, color.lightened(0.1))
 
 
-## Draws the '#' cells of a mark; its centre column and middle row land on anchor (sprite pixels).
+## Draws the '#' cells of a mark; its centre column and middle row land on anchor.
 static func _stamp(target: Image, mark: PackedStringArray, anchor: Vector2i, color: Color) -> void:
 	for row: int in mark.size():
 		for col: int in mark[row].length():

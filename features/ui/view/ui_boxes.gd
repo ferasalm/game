@@ -34,8 +34,7 @@ static func button(style: UiStyleDef, state: StringName) -> StyleBoxFlat:
 			box.border_color = style.colour(&"c_brass")
 			box.border_width_left = line * 3
 		&"focus":
-			box.bg_color = style.colour(&"c_indigo_lit")
-			box.bg_color.a = 0.75
+			box.bg_color = style.colour(&"c_glass_lit")
 			box.border_color = style.colour(&"c_brass")
 			box.border_width_left = line * 3
 			box.set_border_width(SIDE_BOTTOM, line)
@@ -43,7 +42,7 @@ static func button(style: UiStyleDef, state: StringName) -> StyleBoxFlat:
 			box.shadow_color.a = 0.35
 			box.shadow_size = style.size(&"s_focus_glow")
 		&"disabled":
-			box.border_color = style.colour(&"c_indigo_lit")
+			box.border_color = style.colour(&"c_disabled")
 	box.set_corner_radius_all(0)
 	return box
 

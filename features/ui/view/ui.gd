@@ -103,3 +103,43 @@ static func confirm(title_key: String, body_key: String, default_yes: bool = fal
 	dialog.setup(title_key, body_key, default_yes)
 	Screens.push(dialog)
 	return dialog.answered
+
+
+## Full-screen five-colour wipe over `on`; at_cover runs when the screen is fully covered (battle warp, scene swap).
+static func transition_sweep(on: Control, at_cover: Callable = Callable()) -> Tween:
+	return UiTransition.sweep(on, at_cover)
+
+
+## A menu list row: icon (or null) | name | "x<count>" (count < 0 hides it) | tag chip, with the focus sweep.
+static func list_row(icon: Texture2D, item_name: String, count: int, colour: Color, tag: String = "") -> Button:
+	return ListRow.new().setup(icon, item_name, count, colour, tag)
+
+
+## A hero card (portrait, name, HP/SP bars) showing the saved vitals; call update(hp, sp) to change them.
+static func party_card(hero_id: StringName) -> PartyCard:
+	return PartyCard.new().setup(hero_id)
+
+
+## The riyal pill; set_amount(n, animate) counts there.
+static func money_counter() -> MoneyCounter:
+	return MoneyCounter.new()
+
+
+## Button hints along the bottom: pairs of {"key": action, "text": localization key}.
+static func prompt_strip(pairs: Array) -> PromptStrip:
+	return PromptStrip.new().setup(pairs)
+
+
+## Queues a toast (top-centre) on the toast layer; kind is info, good or bad.
+static func toast(text_key: String, kind: StringName = &"info") -> void:
+	Screens.toast(text_key, kind)
+
+
+## The world-space "[E] Verb" pill; call bind_world(target, viewer, lift) and add it under a HUD root.
+static func interaction_prompt(verb_key: String) -> InteractionPrompt:
+	return InteractionPrompt.new().setup(verb_key)
+
+
+## Reveals the label's text one character at a time (null when the label is not in the tree: shown at once).
+static func type_text(label: Label, content: String) -> Tween:
+	return UiType.start(label, content)

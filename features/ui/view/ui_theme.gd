@@ -71,7 +71,7 @@ static func _buttons(theme: Theme, style: UiStyleDef) -> void:
 		theme.set_color(&"font_focus_color", type_name, style.colour(&"c_brass"))
 		theme.set_color(&"font_pressed_color", type_name, style.colour(&"c_brass"))
 		theme.set_color(&"font_hover_pressed_color", type_name, style.colour(&"c_brass"))
-		theme.set_color(&"font_disabled_color", type_name, style.colour(&"c_gypsum_dim").darkened(0.35))
+		theme.set_color(&"font_disabled_color", type_name, style.colour(&"c_disabled"))
 		theme.set_constant(&"h_separation", type_name, style.size(&"s_gap"))
 		for state: StringName in [&"normal", &"hover", &"pressed", &"focus", &"disabled"]:
 			theme.set_stylebox(state, type_name, UiBoxes.button(style, state))

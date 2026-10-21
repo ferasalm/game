@@ -1,95 +1,97 @@
 class_name DialogueLayout
 extends RefCounted
-## Builds the dialogue box's controls in code (no scene file, no path lookups) and keeps references to them.
-## Layout is anchored to the screen: an ornate text frame along the bottom, a name plate straddling its top edge,
-## the portrait at the left overlapping it.
+## Builds the dialogue box's controls in code (Hades II style; sizes from the UI style, laid out for 1920x1080): a big
+## portrait at the left that slides in, an ornate glass text box at the bottom right with a frieze, a nameplate tab
+## on the box's top edge (name in brass, epithet under it) and the button hints. No scene file, no path lookups.
 
 var portrait: TextureRect
 var name_label: Label
+var epithet_label: Label
 var text_label: Label
 var arrow: Control
+var frame: Control
+var portrait_rest_x: float = 0.0
 
 
 func build(root: Control, style: DialogueStyleDef) -> void:
-	var box := Panel.new()
-	box.anchor_top = 1.0 - style.box_height
-	box.anchor_right = 1.0
-	box.anchor_bottom = 1.0
-	box.offset_left = style.box_margin
-	box.offset_right = -style.box_margin
-	box.offset_bottom = -style.box_margin
+	var ui: UiStyleDef = Ui.style()
+	_build_portrait(root, ui)
+	var box := Control.new()
+	box.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
+	box.offset_right = -ui.size(&"s_dialog_right")
+	box.offset_bottom = -ui.size(&"s_dialog_bottom")
+	box.offset_left = box.offset_right - ui.size(&"s_dialog_w")
+	box.offset_top = box.offset_bottom - ui.size(&"s_dialog_h")
+	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(box)
-	_build_texts(box, style)
-	_build_arrow(box, style)
-	_build_portrait(root, style)
-	_build_plate(root, style)
-
-
-func _build_texts(box: Control, style: DialogueStyleDef) -> void:
+	frame = box
+	var glass := PanelContainer.new()
+	glass.set_anchors_preset(Control.PRESET_FULL_RECT)
+	glass.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	box.add_child(glass)
 	var column := VBoxContainer.new()
-	column.anchor_left = style.text_left
-	column.anchor_right = 1.0
-	column.anchor_bottom = 1.0
-	column.offset_left = style.pad
-	column.offset_top = style.pad * 2.0
-	column.offset_right = -style.pad * 2.0
-	column.offset_bottom = -style.pad
-	box.add_child(column)
+	glass.add_child(column)
 	text_label = Ui.label("")
-	text_label.add_theme_font_size_override("font_size", style.text_size)
-	text_label.add_theme_color_override("font_color", style.text_color)
 	text_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	text_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	text_label.add_theme_color_override("font_color", style.text_color)
 	column.add_child(text_label)
 	column.add_child(Ui.divider())
+	_build_arrow(box, style, ui)
+	_build_plate(box, ui)
+	var strip: PromptStrip = Ui.prompt_strip([{"key": "accept", "text": "PROMPT_CONTINUE"},
+			{"key": "skip", "text": "PROMPT_SKIP"}, {"key": "cease", "text": "PROMPT_CEASE"}])
+	strip.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	strip.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	strip.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	strip.offset_bottom = -ui.size(&"s_strip_bottom")
+	root.add_child(strip)
 
 
-## The speaker's name on a plate that straddles the top edge of the frame, above the text column.
-func _build_plate(root: Control, style: DialogueStyleDef) -> void:
+func _build_portrait(root: Control, ui: UiStyleDef) -> void:
+	portrait = TextureRect.new()
+	portrait.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+	portrait_rest_x = ui.size(&"s_portrait_x")
+	portrait.offset_left = portrait_rest_x
+	portrait.offset_right = portrait_rest_x + ui.size(&"s_portrait_w")
+	portrait.offset_top = -ui.size(&"s_portrait_h")
+	portrait.offset_bottom = 0.0
+	portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	portrait.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	root.add_child(portrait)
+
+
+## The nameplate: a raised tab on the box's top edge (its bottom dips s_plate_lift into the box), name over epithet.
+func _build_plate(box: Control, ui: UiStyleDef) -> void:
 	var plate := PanelContainer.new()
 	plate.theme_type_variation = &"PlatePanel"
-	plate.anchor_left = style.text_left
-	plate.anchor_right = style.text_left
-	plate.anchor_top = 1.0 - style.box_height
-	plate.anchor_bottom = 1.0 - style.box_height
-	plate.offset_left = style.pad
-	plate.offset_top = style.box_margin * 0.5
-	plate.grow_horizontal = Control.GROW_DIRECTION_END
-	plate.grow_vertical = Control.GROW_DIRECTION_BOTH
+	plate.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	plate.offset_left = ui.size(&"s_dialog_inset")
+	plate.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	plate.offset_top = ui.size(&"s_plate_lift")
+	plate.offset_bottom = plate.offset_top
+	plate.custom_minimum_size = Vector2(ui.size(&"s_plate_w"), ui.size(&"s_plate_h"))
 	plate.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	name_label = Ui.label("", &"NameLabel")
-	name_label.add_theme_font_size_override("font_size", style.name_size)
-	name_label.custom_minimum_size.x = style.name_size * 5.0
-	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	plate.add_child(name_label)
-	root.add_child(plate)
+	var stack := VBoxContainer.new()
+	plate.add_child(stack)
+	name_label = Ui.label("", &"NameLabel", ui.colour(&"c_brass"))
+	epithet_label = Ui.label("", &"MutedLabel", ui.colour(&"c_epithet"))
+	stack.add_child(name_label)
+	stack.add_child(epithet_label)
+	box.add_child(plate)
 
 
-func _build_arrow(box: Control, style: DialogueStyleDef) -> void:
+func _build_arrow(box: Control, style: DialogueStyleDef, ui: UiStyleDef) -> void:
 	arrow = Control.new()
-	arrow.anchor_left = 1.0
-	arrow.anchor_top = 1.0
-	arrow.anchor_right = 1.0
-	arrow.anchor_bottom = 1.0
-	arrow.offset_left = -style.pad * 2.0 - style.arrow_size
-	arrow.offset_top = -style.pad * 2.0 - style.arrow_size
+	arrow.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
+	arrow.offset_left = -ui.size(&"s_margin") - style.arrow_size
+	arrow.offset_top = -ui.size(&"s_margin") - style.arrow_size
 	var triangle := Polygon2D.new()
 	var s: float = style.arrow_size
 	triangle.polygon = PackedVector2Array([Vector2(0.0, 0.0), Vector2(s, 0.0), Vector2(s * 0.5, s * 0.7)])
-	triangle.color = style.arrow_color
+	triangle.color = ui.colour(&"c_brass")
 	arrow.add_child(triangle)
 	arrow.visible = false
 	box.add_child(arrow)
-
-
-func _build_portrait(root: Control, style: DialogueStyleDef) -> void:
-	portrait = TextureRect.new()
-	portrait.anchor_top = 1.0 - style.portrait_height
-	portrait.anchor_right = style.portrait_width
-	portrait.anchor_bottom = 1.0
-	portrait.offset_left = style.box_margin
-	portrait.offset_bottom = -style.box_margin
-	portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	portrait.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	root.add_child(portrait)

@@ -23,3 +23,8 @@ PAUSE_CONFIRM_TITLE,Return to the title? Unsaved progress is lost.
 PAUSE_CONFIRM_QUIT,Quit the game? Unsaved progress is lost.
 PAUSE_YES,Yes
 PAUSE_NO,No
+DEFEAT_TITLE,Defeated
+DEFEAT_TITLE_AR,هُزمتم
+DEFEAT_RETRY,Retry fight
+DEFEAT_LOAD,Load last save
+DEFEAT_TITLE_MENU,Title
