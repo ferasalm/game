@@ -92,6 +92,7 @@ func _build_world() -> void:
 	add_child(Diorama.make_sun(_look))
 	blocks = AreaBuilder.build(_area, _rules)
 	add_child(blocks)
+	add_child(SkylineBuilder.build(_area))
 	camera = Diorama.make_camera(_look)
 	add_child(camera)
 	_focus = _marker(AreaDef.SPAWN)

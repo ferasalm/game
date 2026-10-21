@@ -36,8 +36,10 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/djanbeyyah/loadouts.json`: content: loadout x1
 - `content/djanbeyyah/menu.json`: content: workshop_style x1
 - `content/world/areas.json`: content: area x1
+- `content/world/buildings.json`: content: building x8
 - `content/world/explore.json`: content: explore_rules x1
 - `content/world/look.json`: content: look x1
+- `content/world/skyline.json`: content: skyline x1
 - `content/world/tiles.json`: content: tile x11
 
 ## core
@@ -140,9 +142,20 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/prototype/prototype_main.tscn`: scene
 - `features/prototype/tests/test_prototype.gd`: T6: the prototype main scene builds headless with rooftop, dialogue box and workshop menu; a simulated patrol touch starts a battle and stops exploring; an auto-played battle ends and walking resumes with the patrol reset; retry starts a fresh battle; the first workshop visit plays the talk, then the menu; later visits skip the talk
 - `features/world/defs/area_def.gd`: A level as data: equal-width rows of tile characters, a legend (character -> tile id) and four markers (S spawn, W workshop bench, P patrol start, Q patrol end) that each appear once and stand on floor
+- `features/world/defs/building_def.gd`: One Sana'a tower-house as data: footprint (metres), floors (the lowest stone_floors are basalt), window columns per facade, frieze style, qamariya glass letters, lit-window ratio, parapet style and roof extras
 - `features/world/defs/explore_rules_def.gd`: Numbers for walking around an area: player speed and size, follower, camera, patrol, touch and interact ranges, collision wall height and the workshop prompt
 - `features/world/defs/look_def.gd`: The HD-2D look as data: camera offset and field of view, tilt-shift depth of field, sun, ambient light, background and bloom
-- `features/world/defs/tile_def.gd`: One kind of block: height in metres, colour (an art-bible palette letter or #hex), whether it blocks walking, an optional glow, and an optional cap tile drawn on top of it (gypsum trim on a tower)
+- `features/world/defs/skyline_band.gd`: One depth band of the skyline: city blocks on a jittered grid between min_dist and max_dist metres from the play area's edge
+- `features/world/defs/skyline_def.gd`: The city around the play area as data: the ground level (y of the street, far below the rooftops), the al-Saila street (a sunken street along z at saila_x), depth bands of buildings and the landmarks
+- `features/world/defs/skyline_landmark.gd`: One landmark placed by data: kind, position on the ground (x east, z south; the play area is x 0..26, z 0..18 and -Z is north), facing in degrees, main size (height or length in metres), a part count, a seed and a radius kept free of ordinary city blocks
+- `features/world/defs/tile_def.gd`: One kind of block: height in metres, colour (an art-bible palette letter or #hex), whether it blocks walking, an optional glow, an optional cap tile drawn on top of it (gypsum trim on a tower) and an optional surface pattern (a SurfacePainter texture painted over the colour, 4 m repeat, 32 px = 1 m)
+- `features/world/logic/facade_details.gd`: Sana'a facade parts painted with palette letters at 32 px/m: gypsum friezes (zigzag, triangles, rosettes), windows with thick white gypsum frames, the qamariya (a semicircle of coloured glass over the window) and arched wooden doors
+- `features/world/logic/facade_painter.gd`: Paints one Sana'a tower-house facade at 32 px/m from a FacadeSpec: basalt stone floors at the bottom (door on the ground floor), fired-brick floors above, a gypsum frieze at the top of each brick floor, and on every brick floor windows with gypsum frames under qamariya arches
+- `features/world/logic/facade_spec.gd`: What one painted facade needs: width in metres, floors (the lowest stone_floors are basalt, the rest brick), window columns, frieze style, qamariya glass letters, lit and shutter ratios, a door, floor height in pixels and the seed
+- `features/world/logic/masonry.gd`: Brick courses and stone slabs painted with palette letters
+- `features/world/logic/pixel_canvas.gd`: A pixel canvas painted with palette letters, with an optional emission layer (black = no glow)
+- `features/world/logic/skyline_layout.gd`: Where the city blocks stand: for each band a jittered grid of cells between the band's distances from the play area, minus the al-Saila corridor and the landmark clearings, thinned by the band's fill
+- `features/world/logic/surface_painter.gd`: Seamless 128x128 surface textures (4 m at 32 px/m) for the playable tiles, painted with palette letters: lime-plaster roof floor, worn plaster, white gypsum, wooden planks, stone paving (al-Saila), basalt, brick, and the dotted window texture of far silhouettes
 - `features/world/look_test/look_test.gd`: HD-2D look test (the M1 rendering spike): a block diorama, a pixel-art billboard hero (CharacterVisual), tilt-shift depth of field, bloom and a low sun with shadows
 - `features/world/look_test/look_test.tscn`: scene
 - `features/world/patrol/patrol.gd`: A Concession enforcer walking between two points with pauses at the ends
@@ -152,10 +165,21 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/rooftop/rooftop.tscn`: scene
 - `features/world/tests/test_ambush.gd`: Which side struck first: the patrol's walking direction, and last_touch_ambush() after a touch (0 nobody, 1 the patrol caught the player from behind, 2 the player caught the patrol from behind)
 - `features/world/tests/test_area.gd`: Area, tile and look content: the rooftop layout is well formed and every probe of a broken layout is caught
+- `features/world/tests/test_facade.gd`: Night Sana'a textures: the facade painter (size, determinism, lit windows and qamariya glass in the emission map, a door, every pixel painted), the surface patterns (tile 4 m, deterministic, tileable) and the tile content
 - `features/world/tests/test_look_test.gd`: The look-test scene builds without errors (headless: no pixels are drawn, but every node and resource is made)
 - `features/world/tests/test_rooftop.gd`: The rooftop scene builds headless; walking, the follower, the patrol touch, the ambush direction, the exploring switch, the patrol respawn, the workshop prompt and the camera
-- `features/world/view/area_builder.gd`: Builds an area's blocks: one MultiMeshInstance3D per tile type (bodies, and caps drawn with the cap tile's material), plus one StaticBody3D holding a box per run of solid tiles and walls that close the area's edges
+- `features/world/tests/test_skyline.gd`: Night Sana'a city: building and skyline content, the layout rules (outside the area, out of the al-Saila corridor, inside the band, deterministic), the tower-house mesh, the landmarks and the draw-call budget
+- `features/world/view/area_builder.gd`: Builds an area's blocks: one MultiMeshInstance3D per tile type (bodies, and caps drawn with the cap tile's material; tiles with a pattern get its painted triplanar texture), plus one StaticBody3D holding a box per run of solid tiles and walls that close the area's edges
 - `features/world/view/diorama.gd`: Static helpers that build the HD-2D look from a LookDef: WorldEnvironment, low sun, tilt-shift camera, and the nearest-filtered block material
+- `features/world/view/far_landmarks.gd`: The far landmarks, built into an unshaded buffer (faces are shaded by a fake light so low-poly facets read): the ridge of Jabal Nuqum, the Haddah megacity of 2150 (slim towers with cyan and magenta neon edges) and the village of Bayt Baws on its rocky crag
+- `features/world/view/landmark_builder.gd`: Builds all landmarks of a SkylineDef into one ArrayMesh with two surfaces: 0 lit (minarets, Bab al-Yaman: vertex colours shaded by the scene lights) and 1 glow (ridge, megacity, village: unshaded, boosted above 1 so neon and lit windows bloom)
+- `features/world/view/roof_extras.gd`: The 2150 clutter on a tower-house roof: water tank, satellite dish, antenna with a red beacon, small solar panel
+- `features/world/view/skyline_builder.gd`: Builds the old city of Sana'a around a play area from the "skyline" content: tower-houses in depth bands (one MultiMeshInstance3D per building type, shared meshes and materials), far unshaded silhouettes (one MultiMesh), the landmarks (one mesh), the street-level ground and the al-Saila street
+- `features/world/view/skyline_demo.gd`: Skyline demo: the rooftop area inside the old city, seen from a chosen camera
+- `features/world/view/skyline_demo.tscn`: scene
+- `features/world/view/surface_buffer.gd`: Collects flat-shaded, vertex-coloured faces (boxes, prisms, polygons) for one surface of an ArrayMesh
+- `features/world/view/surface_materials.gd`: Cached textures and materials for the painted world, so 100+ buildings share a handful of draw materials: tile patterns (world-space triplanar, so texels stay square across tiles), tower-house facades (front and side painted side by side in one atlas, lit windows in an emission map), vertex-coloured trim, unshaded HDR glow, and the dotted far silhouettes
+- `features/world/view/tower_house.gd`: Builds one Sana'a tower-house mesh from a BuildingDef: four textured facades (one atlas), a roof, a white gypsum parapet with merlons and stepped or horned corners, and roof extras
 - `features/world/workshop/workshop_spot.gd`: The workshop bench: its sprite, and a floating prompt that shows while the player is within the interact radius
 
 ## localization
@@ -179,6 +203,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/art/test_sprite_png.py`: Self-test for sprite_png.py: python tools/art/test_sprite_png.py (plain asserts, exits non-zero on failure).
 - `tools/check.sh`: One command for every check (docs, lint, Godot import, tests). One ok/FAIL line per step; logs in .check/.
 - `tools/doc_check.py`: Keeps the always-loaded notes small and well-formed (docs/EFFICIENCY.md); exit 1 on any failure.
+- `tools/fps_probe.gd`: FPS probe: plays a scene with vsync off and prints the average and worst frames per second after a warm-up
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.
 - `tools/lint_gd.py`: GDScript rules Godot itself doesn't enforce (docs/ARCHITECTURE.md, "Code rules"); exit 1 on any break.
 - `tools/map.py`: Writes docs/MAP.md from each file's purpose line, so the map never drifts. --check: exit 1 if stale.
