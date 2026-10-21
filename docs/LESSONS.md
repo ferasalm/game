@@ -57,10 +57,8 @@
 - lint_gd linted .claude/worktrees, so builders' unfinished code failed the lead's check -> lint skips .claude/
   (2026-10-21).
 - `cd` into a worktree in the Bash tool moved the session's working directory -> use `git -C <path>` (2026-10-21).
-- A crash cut a builder off one unit from done -> a small fresh agent working in that worktree (no isolation,
-  absolute paths) finished it cheaper than resuming the long transcript (2026-10-21).
-- Two WIP branches, one done: merge the done one first so the other's fresh agent builds against real APIs
-  (2026-10-21).
+- A crash cut a builder off one unit from done -> a small fresh agent in that worktree (no isolation) finished it
+  cheaper than resuming the long transcript (2026-10-21).
 
 ## 5. Art, browser, night look (2026-10-21)
 - Owner saw "3 FPS": that was a --write-movie render (each frame goes to disk) -> real FPS only via fps_probe.gd.

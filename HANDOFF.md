@@ -4,14 +4,8 @@ Plan: docs/design/v03-plan.md (B4 replaced by 3D characters). 3D spec: docs/desi
 
 ## Status
 - On claude/night-sanaa, pushed, checked: check.sh all passed, 498 tests. Merged into main at this handoff.
-- Merged: Phase 1 (P1a Router/save/items/battle contract, P1b UiStack/pause/PauseWait/CharacterVisual facade), the
-  look spike, B1 items + shop (Abu Nabil), B2 battle arena (painted arena, shatter in / wash out, Items command,
-  defeat flow, riyal, 3D-ready battle view), B3 painted world (look B is the game look, cut-away dither, painted
-  sabil + stall), B5 level (v3 layout, walk graph, camera limits, places, sabil save/refill, 3 patrols, follower
-  body), B6 UI v2 (theme, Hades II dialogue, sabil + defeat screens, battle HUD, helpers).
-- Owner decisions this session (DECISIONS): Abu Nabil (40-year-old man); live 3D characters (Hades-like), CC0
-  stand-ins then his Flow A-pose pictures -> TRELLIS.2; CC0 moves only (no Mixamo, public repo); Zayd's default
-  skin always wears his grandfather's hilt (belt attachment); Checkpoint 1 = look B warm lantern + hades camera.
+- Merged: Phase 1 (P1a, P1b), the look spike, B1 items + shop, B2 battle arena, B3 painted world (look B),
+  B5 level (v3 layout, sabil, stall, 3 patrols), B6 UI v2. Details: git log and the builders' commit messages.
 - Contract stubs for B4 are on the branch: ModelSource, ModelDef (kind `model`), `face_dir`, `hit_stop`,
   `visual_rules.default_source`. Characters are still the old pixel sprites (fallback source).
 - Not seen by the owner yet: v0.3 in play. Renders: inbox/b3/ (world), inbox/spike/ (looks).
