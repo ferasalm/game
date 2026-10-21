@@ -20,6 +20,9 @@
   importer and TextDB loads them at startup; a test enforces "keep" for every CSV (2026-10-21).
 - `move_and_slide` moves nothing when `_physics_process` is called by hand in tests -> `move_and_collide` plus a
   slide on the remainder (2026-10-21).
+- Item menu rows flipped order between runs -> sorting StringNames compares addresses -> sort by String
+  (2026-10-21).
+- Headless MultiMesh returns identity instance transforms -> keep them in node meta for tests (2026-10-21).
 - See a scene without the owner: non-headless `"$(tools/godot.sh)" --path . --write-movie DIR/f.png --fixed-fps 60
   --quit-after N [scene]`, then view 1-2 frames scaled to 640x360 with Pillow (2026-10-21).
 
@@ -49,6 +52,15 @@
   WIP_NOTES.md + commit, the lead hands off; after the reset start a NEW chat and FRESH agents from the notes
   (resuming a long chat or agent re-sends its whole transcript uncached once the cache TTL expired) (2026-10-21).
 - Four agents died at once on API errors (ECONNRESET/timeout) -> SendMessage resumed them with work intact (2026-10-21).
+- Entering plan mode in the lead paused every background builder (no edits, no commits) -> enter plan mode only
+  while no builders run, or have them WIP-commit first (2026-10-21).
+- lint_gd linted .claude/worktrees, so builders' unfinished code failed the lead's check -> lint skips .claude/
+  (2026-10-21).
+- `cd` into a worktree in the Bash tool moved the session's working directory -> use `git -C <path>` (2026-10-21).
+- A crash cut a builder off one unit from done -> a small fresh agent working in that worktree (no isolation,
+  absolute paths) finished it cheaper than resuming the long transcript (2026-10-21).
+- Two WIP branches, one done: merge the done one first so the other's fresh agent builds against real APIs
+  (2026-10-21).
 
 ## 5. Art, browser, night look (2026-10-21)
 - Owner saw "3 FPS": that was a --write-movie render (each frame goes to disk) -> real FPS only via fps_probe.gd.
