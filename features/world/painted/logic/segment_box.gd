@@ -38,12 +38,14 @@ static func any_hit(from: Vector3, to: Vector3, boxes: Array[AABB], pad: float =
 
 
 ## World boxes of the mesh instances that stand at least min_height above floor_y (the lower ones can never stand
-## between a high camera and the party, so they are not tested every frame).
-static func boxes_of(local_box: AABB, transforms: Array[Transform3D], floor_y: float, min_height: float) -> Array[AABB]:
+## between a high camera and the party, so they are not tested every frame; a box longer than max_size is a merged
+## mesh, not one block, and is left out).
+static func boxes_of(local_box: AABB, transforms: Array[Transform3D], floor_y: float, min_height: float,
+		max_size: float = 100000.0) -> Array[AABB]:
 	var out: Array[AABB] = []
 	for xf: Transform3D in transforms:
 		var box: AABB = xf * local_box
-		if box.end.y - floor_y >= min_height:
+		if box.end.y - floor_y >= min_height and box.size.length() <= max_size:
 			out.append(box)
 	return out
 

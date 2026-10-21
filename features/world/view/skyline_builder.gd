@@ -43,13 +43,17 @@ static func _houses(root: Node3D, def: SkylineDef, palette: PaletteDef, blocks: 
 		var list: Array = groups[key]
 		var building := ContentDB.get_def("building", StringName(key.split("|")[0])) as BuildingDef
 		var multi := _multi(TowerHouse.mesh(building, palette), list.size())
+		var placed: Array[Transform3D] = []
 		for i: int in list.size():
 			var block := list[i] as SkylineLayout.Block
 			var at := Vector3(block.position.x, def.ground_y, block.position.z)
-			multi.set_instance_transform(i, Transform3D(Basis(Vector3.UP, block.yaw), at))
+			placed.append(Transform3D(Basis(Vector3.UP, block.yaw), at))
+			multi.set_instance_transform(i, placed[i])
 			var shade: float = 0.85 + 0.2 * float(hash(Vector2(block.position.x, block.position.z)) % 100) / 100.0
 			multi.set_instance_color(i, Color(shade, shade, shade))
-		_add(root, _multi_node(multi))
+		var node: MultiMeshInstance3D = _multi_node(multi)
+		node.set_meta(OcclusionFade.META, placed)
+		_add(root, node)
 
 
 static func _far(root: Node3D, def: SkylineDef, palette: PaletteDef, blocks: Array[SkylineLayout.Block]) -> void:

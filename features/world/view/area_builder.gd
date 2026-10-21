@@ -63,6 +63,7 @@ static func _multimesh(tile: TileDef, palette: PaletteDef, transforms: Array) ->
 		multi.set_instance_transform(i, transforms[i] as Transform3D)
 	var node := MultiMeshInstance3D.new()
 	node.multimesh = multi
+	node.set_meta(OcclusionFade.META, transforms)
 	return node
 
 

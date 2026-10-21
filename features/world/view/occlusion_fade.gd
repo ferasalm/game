@@ -9,6 +9,8 @@ extends Node
 const G_CAM: StringName = &"occ_cam"
 const G_TARGET: StringName = &"occ_target"
 const G_SHAPE: StringName = &"occ_shape"
+const META: StringName = &"occlusion_transforms"  ## builders keep each MultiMesh's instance transforms here
+const MAX_SIZE: float = 40.0  ## a merged mesh (the landmarks) would be one box over the whole city: not a blocker
 const SHADER: Shader = preload("res://features/world/view/shaders/painted_world.gdshader")
 
 var amount: float = 0.0
@@ -48,13 +50,15 @@ static func collect_boxes(root: Node, floor_y: float, min_height: float) -> Arra
 		if node is MultiMeshInstance3D:
 			var multi: MultiMesh = (node as MultiMeshInstance3D).multimesh
 			mesh = multi.mesh
+			var own: Array = node.get_meta(META, [])
 			for i: int in multi.instance_count:
-				transforms.append((node as Node3D).global_transform * multi.get_instance_transform(i))
+				var local: Transform3D = (own[i] as Transform3D) if i < own.size() else multi.get_instance_transform(i)
+				transforms.append((node as Node3D).global_transform * local)
 		elif node is MeshInstance3D:
 			mesh = (node as MeshInstance3D).mesh
 			transforms.append((node as Node3D).global_transform)
 		if mesh != null and _is_painted(mesh):
-			out.append_array(SegmentBox.boxes_of(mesh.get_aabb(), transforms, floor_y, min_height))
+			out.append_array(SegmentBox.boxes_of(mesh.get_aabb(), transforms, floor_y, min_height, MAX_SIZE))
 	return out
 
 

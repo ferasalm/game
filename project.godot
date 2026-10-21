@@ -83,5 +83,5 @@ occ_target={
 }
 occ_shape={
 "type": "vec4",
-"value": Vector4(1.4, 2.5, 0, 0)
+"value": Vector4(1.4, 0.6, 0, 0)
 }

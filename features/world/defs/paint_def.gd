@@ -50,7 +50,7 @@ var mist_tint: float = 0.0
 # above the floor that counts as a blocker, and the point on the party the camera looks at.
 var occlude_radius: float = 2.4
 var occlude_soft: float = 1.4
-var occlude_margin: float = 2.5
+var occlude_margin: float = 0.6
 var occlude_speed: float = 6.0
 var occlude_min_height: float = 1.2
 var occlude_focus: float = 1.2
