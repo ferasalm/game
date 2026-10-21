@@ -36,6 +36,7 @@ func _ready() -> void:
 	dialogue.finished.connect(_on_dialogue_finished)
 	menu.closed.connect(_on_menu_closed)
 	AudioDirector.play_music(EXPLORE_MUSIC)
+	rooftop.play_intro()
 
 
 func _on_workshop_opened() -> void:

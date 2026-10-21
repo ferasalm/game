@@ -145,3 +145,14 @@ static func _num(value: float) -> String:
 
 func _fail(key: String, problem: String) -> void:
 	_errors.append("%s.%s: %s" % [_where, key, problem])
+
+
+## A "#rrggbb" string as a Color (magenta, plus a problem, when it is wrong or required and missing).
+func color(key: String, default: Color = Color.MAGENTA, required: bool = true) -> Color:
+	if not required and not _data.has(key):
+		return default
+	var value: String = text(key)
+	if not Color.html_is_valid(value):
+		_fail(key, "'%s' is not a colour" % value)
+		return Color.MAGENTA
+	return Color.html(value)

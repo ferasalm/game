@@ -43,3 +43,18 @@ Dialogue portraits are chest-up painted pictures, one per speaker and expression
 facing right toward the text box, lit from the upper left, on a flat plain colour so the background can be keyed out.
 Until the real ones exist the game draws pixel stand-ins from the sprites. Gemini prompts and the exact steps
 (save, run tools/art/portrait.py, check in the game): docs/design/portrait-prompts.md. Files: assets/portraits/.
+
+## Night sky, fog and camera
+Look "night" (content/world/look.json) + sky "sanaa_night" (sky.json) + mist.json + camera.json. FPS on the Latitude
+(Iris Xe, vsync off, noisy because other Godot runs share it): v1 daytime 157; night 128-135 walking, ~130 in the opening shot.
+- Sky (`night_sky.gdshader`): zenith -> violet horizon + teal haze; stars = hash grid (`star_scale` cells per radian,
+  `star_density` share of cells lit, `star_size` in cell units); milky way band; moon (`moon_size` in radians, `moon_energy` > 1
+  so it blooms, two halos); 2 cloud layers (`coverage` up = more sky covered, `opacity` < 1 keeps stars visible); city glow
+  toward `glow_yaw` (orange low, magenta high). Only costs pixels where sky shows (~0-10 FPS at full sky; radiance 32, rendered once).
+- Light: moon = `sun_*` (cool, soft shadows), fill = `fill_*` (camera side, no shadows, keeps sprites readable). Ambient = sky mixed
+  with an indigo tint (`ambient_sky_mix`). AgX + `exposure`; `glow_threshold` < 1 makes windows and the moon bloom.
+- Fog: `fog_density` (depth, tinted by `fog_color` and the sky through `fog_aerial`), `fog_height*` pools it below y = 0.45
+  (the street al-Saila). `volumetric_fog` is off: it is expensive on the Iris Xe (not measured); turn it on only for a "high quality" option.
+- Mist (`mist.json`): 2 planes (street y 0.32, roofs y 0.62), 1 noise + 1 depth sample, about 5-7 FPS together.
+- Camera: exploring pitch ~26 deg (v1 was 31). Vista zone (`vista` cells in areas.json) eases to a low, wide pose that shows sky.
+  Opening shot = `keys` in camera.json (positions relative to Zayd, `dof` scales the blur so stars stay sharp); any key/click skips.

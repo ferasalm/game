@@ -2,6 +2,7 @@
   "kind": "area",
   "items": [
     {"id": "souq_rooftops", "name_key": "WORLD_ROOFTOP_NAME", "encounter": "rooftop_patrol",
+     "mist": ["street_mist", "roof_mist"], "vista": [5, 1, 15, 3],
      "rows": [
        "%%%%%%%%%%%%%%%%%%%%%%%%%%",
        "%TTTT...TTTT....%__%.TTTT%",
