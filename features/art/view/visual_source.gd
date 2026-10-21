@@ -1,7 +1,7 @@
 class_name VisualSource
 extends RefCounted
 ## What draws a CharacterVisual. The facade owns the node tree and the world position; a source owns the picture:
-## PixelSource (a lit pixel-art quad, today's look) or PuppetSource (cut painted parts, later). Every method here
+## PixelSource (a lit pixel-art quad, today's look) or ModelSource (a live 3D model). Every method here
 ## is a harmless no-op so a source only overrides what it can do. A source never touches the scene outside the
 ## nodes it adds under visual.body.
 
@@ -17,13 +17,23 @@ func attach(owner_visual: CharacterVisual, owner_rules: VisualRulesDef) -> void:
 	rules = owner_rules
 
 
-## Shows the picture with this content id (a pixel sprite id; a puppet id later).
+## Shows the picture with this content id (a pixel sprite id, or a model id).
 func set_sprite(_sprite_id: StringName) -> void:
 	pass
 
 
 ## 1.0 faces right, -1.0 faces left.
 func set_flip(_facing: float) -> void:
+	pass
+
+
+## Eases the facing toward a direction on the ground (a model turns by yaw; a sprite only mirrors, via set_flip).
+func face_dir(_dir: Vector3) -> void:
+	pass
+
+
+## Freezes the current clip for `seconds`, then lets it run on.
+func hit_stop(_seconds: float) -> void:
 	pass
 
 

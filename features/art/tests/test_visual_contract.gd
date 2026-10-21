@@ -86,11 +86,11 @@ func test_pulse_flag_turns_the_squash_off() -> void:
 	visual.free()
 
 
-func test_puppet_stub_is_a_valid_empty_character() -> void:
+func test_model_stub_is_a_valid_empty_character() -> void:
 	var visual := CharacterVisual.new()
-	visual.use_source(PuppetSource.new())
+	visual.use_source(ModelSource.new())
 	tree.root.add_child(visual)
-	check(visual.material == null, "a puppet has no pixel material")
+	check(visual.material == null, "a model has no pixel material")
 	visual.set_sprite(&"zayd")
 	for state: StringName in CharacterVisual.STATES:
 		visual.play(state, Vector2.LEFT)
@@ -100,6 +100,18 @@ func test_puppet_stub_is_a_valid_empty_character() -> void:
 	visual.free()
 
 
-func test_rules_def_reads_the_puppet_flags() -> void:
+func test_rules_def_reads_the_source_flags() -> void:
 	var rules := ContentDB.get_def("visual_rules", &"default") as VisualRulesDef
-	check(not rules.puppet and rules.pulse_squash, "pixel characters squash")
+	check(rules.default_source == &"pixel" and rules.pulse_squash, "pixel characters squash")
+
+
+func test_face_dir_turns_toward_a_ground_direction() -> void:
+	var visual := CharacterVisual.new()
+	tree.root.add_child(visual)
+	visual.set_sprite(&"zayd")
+	visual.face_dir(Vector3(-1.0, 0.0, 0.4))
+	check_eq(visual._facing, -1.0, "a sprite mirrors toward -x")
+	visual.face_dir(Vector3(0.0, 0.0, 1.0))
+	check_eq(visual._facing, -1.0, "a pure z direction keeps the sprite's facing")
+	visual.hit_stop(0.08)
+	visual.free()

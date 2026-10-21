@@ -21,8 +21,8 @@ Opus red-team of this draft. All of their fixes are folded in.
    - From Octopath: tilt-shift depth and side-view battles.
    - Our twist: qamariya stained-glass colour and white gypsum ornament in the light, the effects and the UI.
    - The 3D diorama world stays. This supersedes the pixel-art billboard characters and the 32 px = 1 m pixel rule.
-2. Characters: **painted puppets**, cut from his painted full-body Flow pictures on green (inbox/flow_*_full_*.png,
-   enemy*.jpg) and animated in code (Vanillaware / Darkest Dungeon style).
+2. Characters: ~~painted puppets~~ superseded 2026-10-21: **live 3D models** (2.5D, Hades-like), painted shader +
+   ink outline; CC0 stand-ins now, Feras's own models later (spec: docs/design/characters-3d.md).
 3. Save spot: **the sabil fountain.** Drinking saves and fully refills, and the Concession re-sends its patrols.
 4. **HP/SP carry over between fights.** This supersedes slice.md's "refill after each". Losing offers "retry the fight".
 
@@ -106,7 +106,7 @@ Opus red-team of this draft. All of their fixes are folded in.
 8. Defeat offers Retry fight, Load or Title.
 9. The pause menu works at any time: Resume, Items, Equipment, Load last save, Unstuck, Title, Quit.
 10. Two or three patrols, two chests, one stall, one sabil, one workshop, one vista.
-11. 60 FPS or more on the Latitude; target 90 or more in fps_probe with all puppets live.
+11. 60 FPS or more on the Latitude; target 90 or more in fps_probe with all characters live.
 
 ## Phase 0: lead (this chat, Opus xhigh)
 **Sync and docs**
@@ -126,7 +126,7 @@ Opus red-team of this draft. All of their fixes are folded in.
 | Narrative Designer | Haiku, low | herb seller and sabil lines, item descriptions, nameplate epithets, as CSV rows |
 | Image Prompt Engineer | Haiku, low | Flow prompt for the herb seller's full-body picture; Gemini prompts for parts sheets and herb icons (all optional for Feras) |
 
-**Look spike** (Technical Artist, Opus, high, in a worktree), on one rooftop corner and one puppet:
+**Look spike** (Technical Artist, Opus, high, in a worktree), on one rooftop corner and one painted figure (a scale stand-in):
 - painted_light.gdshaderinc: banded light, indigo shadow tint, rim, a min_light floor.
 - The offline painterly bake (see Look below).
 - The ink outline pass.
@@ -197,16 +197,16 @@ Opus red-team of this draft. All of their fixes are folded in.
    - BattleOutcome carries: result, vitals, bag, money, items.
    - Hero ids come from the party list.
 6. **Registries owned here.** This prevents merge breakage at content_db.gd:7.
-   - Every new ContentDB kind, with a stub Def: consumable, shop, arena, transition, puppet, clip, camera_preset, place.
+   - Every new ContentDB kind, with a stub Def: consumable, shop, arena, transition, puppet (now model), clip, camera_preset, place.
    - Empty per-builder CSVs (shop, arena, pause, sabil) with "keep" .import files.
    - project.godot: the `menu` action, the Router autoload, the AA settings.
    - The new style.json keys from the UI spec.
 7. **CharacterVisual split and contract.**
    - The split: facade, CharacterMotion (root moves only: lunge, dash, hurt push), PixelSource (legacy stand-in),
-     PuppetSource (stub).
+     PuppetSource (stub; now ModelSource).
    - API: `play(state, facing)`. States: idle, walk, run, attack, cast, hurt, ko, victory, item.
    - Anchors: feet, hand, head. Clip events (the impact frame) are what the battle player waits on.
-   - The `_pulse` squash is off for puppets.
+   - The `_pulse` squash is off for puppets (now models).
 8. Hard-coded numbers move into content.
 
 ## Phase 2: parallel builders (Sonnet, one worktree each)
@@ -216,29 +216,13 @@ asks for a report of at most 300 words.
 | Builder | Agent, effort | Owns | Builds |
 |---|---|---|---|
 | B1 Items and shop | Gameplay Scripter, medium | features/items, ui screens items/shop | ShopDef + Shop buy/sell (no money, full stack), money in Rewards and the loot popup, Items screen (use on a hero), Shop screen, the stall interaction |
-| B2 Battle arena | Gameplay Scripter, high | features/combat, **sole owner of battle_stage.gd** | arena_builder + arenas.json (painted roof floor, parapet and props, skyline backdrop cards + sky, "battle_night" look), side camera (low, about 12 deg, its own DoF), qamariya shatter in / light wash out, carried vitals, Items command in a new file, defeat flow, riyal on the end panel |
+| B2 Battle arena | Gameplay Scripter, high | features/combat, **sole owner of battle_stage.gd** | arena_builder + arenas.json (painted roof floor, parapet and props, skyline backdrop cards + sky, "battle_night" look), side camera (low, about 12 deg, its own DoF), qamariya shatter in / light wash out, carried vitals, Items command in a new file, defeat flow, riyal on the end panel; 3D: `face_dir` yaw with a 3/4 camera bias, waits on clip_event (not VfxDef timers), `hit_stop` on impact, VFX/projectiles/labels from `anchor_position`, lunge spacing from model width, KO plays its clip; P1b leftover: create_timer -> PauseWait |
 | B3 Painted world | Godot Shader Developer, high | features/world/view, look/sky/mist JSON, the occlusion dither shader | spike rules on tiles, facades, props, skyline, mist and signs; sabil and stall props (water VFX, qamariya lamp); the arena look; FPS before and after each pass |
-| B4 Puppets | Technical Artist, high | features/art, tools/art, content/art | puppet_cut.py (see Puppets below), PuppetRig, gait and clips for Zayd, Bilqis, enforcer and drone, plus a herb-seller stand-in |
-| B5 Level | Gameplay Scripter, medium | features/world/logic + interact, areas.json, **camera.json and camera limits** | walk graph + reachability and occlusion tests, stuck fix, typed `places`, sabil (save + refill + patrols return), stall, 3 patrols, Bilqis as a CharacterBody3D, dialogue camera framing |
-| B6 UI v2 | Gameplay Scripter, medium | features/ui, content/ui, dialogue | theme v2, Hades II-style dialogue, pause/items/shop/save/defeat styling, battle HUD files only (timeline on top, party cards with portraits bottom right), interaction prompts |
+| B4 3D characters | Technical Artist (Sonnet), high | features/art, tools/art, content/art, assets/characters | docs/design/characters-3d.md: ModelDef + models.json, pure clip_timing / locomotion / yaw_turn, ModelSource (retargeted Quaternius clips, BlendSpace1D, anchors, hit-stop), painted skin shader, weapon trail and smear, fx.trail/fx.sync fix for non-pixel sources, stand-ins for Zayd, Bilqis, enforcer, Abu Nabil and the drone; PixelSource stays as the fallback |
+| B5 Level | Gameplay Scripter, medium | features/world/logic + interact, areas.json, **camera.json and camera limits** | walk graph + reachability and occlusion tests, stuck fix, typed `places`, sabil (save + refill + patrols return), stall, 3 patrols, Bilqis as a CharacterBody3D, dialogue camera framing; 3D: player, follower and patrol pass (x, z) velocity to `face_dir`, capsules from ModelDef, dialogue framing on the head anchor, the workshop bench as a mesh |
+| B6 UI v2 | Gameplay Scripter, medium | features/ui, content/ui, dialogue | theme v2, Hades II-style dialogue, pause/items/shop/save/defeat styling, battle HUD files only (timeline on top, party cards with portraits bottom right), interaction prompts; `head_icon` and stand-in portraits use per-character PNG icons, not sprite crops |
 
-**B4 Puppets: how they work**
-- `puppet_cut.py`:
-  - keys the green, cuts parts by the polygons in content/art/puppets.json
-  - makes darker back-limb copies
-  - paints an ink stroke on each part, because inner edges won't be outlined
-  - writes a preview sheet and manifest entries
-- PuppetRig: 2D parts (Polygon2D/Skeleton2D for coats) in one SubViewport per character.
-  - Updates only when visible.
-  - The viewport is about 2x the character's on-screen height in the camera preset (a viewport texture has no
-    mipmaps), shown on the existing billboard with the painted light include.
-- Pure gait logic: stride follows speed, so feet never slide; arm swing; bob without leaving the floor; coat and
-  scarf lag; foot height smoothed on steps.
-- Paper-turn flip clip that swaps the front and back limbs.
-- Keyframed battle clips (content/art/clips.json) with impact events.
-- A contact/blob decal instead of a billboard shadow.
-- Idle breathing and blinking for NPCs.
-- Headless tests check rig transforms and clip events, never pixels.
+**B4 3D characters:** the spec is docs/design/characters-3d.md (sources, import and retargeting, shading, motion polish, data, budgets, tests). The contract stubs are on the session branch: `CharacterVisual.face_dir(dir)`, `hit_stop(seconds)`, ModelSource, ModelDef (kind `model`), `visual_rules.default_source`.
 
 **Helpers**
 - Haiku helpers (medium): CSV rows, the manifest, MAP, docs.
@@ -294,7 +278,7 @@ asks for a report of at most 300 words.
 - Router battle round trip: the Rooftop is restored, the patrol reset, the camera restored.
 - Walk-graph reachability and camera occlusion on every shipped area.
 - Gait no-slide.
-- Puppet def and clip validation.
+- Model def, clip timing and budget validation (characters-3d.md section 7).
 - The bake hash.
 
 **Smoke play-through** (headless, via Router)
@@ -307,7 +291,7 @@ asks for a report of at most 300 words.
 **Renders and FPS**
 - Renders at 640x360 (shot_scene, shot_battle, rooftop_shot): wide and close exploration, the stall, the sabil,
   mid-warp, arena battle, each menu. The lead views 1-2 frames per change.
-- fps_probe (prototype + arena, puppets live), before and after each pass.
+- fps_probe (prototype + arena, every model live), before and after each pass.
 
 **Review and push**
 - Code Reviewer (Opus, high) reviews the integrated diff. Builders fix their own parts (resumed via SendMessage).

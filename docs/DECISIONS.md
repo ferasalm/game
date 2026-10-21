@@ -56,5 +56,7 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-21 | Norm: big asks start in plan mode (Opus xhigh), audit with agents, then orchestrate; every installed agent at a fitting model and effort | Feras: "This should be the norm" | Feras
 - 2026-10-21 | Herb seller: Abu Nabil, a 40-year-old man (replaces the invented Umm Nabil) | Feras | Feras
 - 2026-10-21 | Characters: live 3D models in the 3D world (2.5D, aiming at Hades quality, motion and design), painted shader + ink outline; not pre-rendered frames | Feras: "exactly like Hades" (recommended) | Feras
-- 2026-10-21 | 3D models: CC0 stand-in bodies now; later Feras's Flow T-pose pictures -> free image-to-3D (he logs in) -> Claude rigs and paints | Feras (recommended) | Feras
-- 2026-10-21 | 3D motion: free CC0 packs or Mixamo (Feras logs in), retargeted, plus Claude's Hades-style polish (wind-ups, holds, fast strikes, hit pauses) | Feras (recommended) | Feras
+- 2026-10-21 | 3D models: CC0 stand-in bodies now; later Feras's Flow model pictures -> free image-to-3D (he logs in) -> Claude rigs and paints | Feras (recommended) | Feras
+- ~~2026-10-21 | 3D motion: free CC0 packs or Mixamo (Feras logs in), retargeted, plus Claude's Hades-style polish (wind-ups, holds, fast strikes, hit pauses) | Feras (recommended) | Feras~~ superseded 2026-10-21: CC0 moves only
+- 2026-10-21 | Feras's model pictures for image-to-3D: A-pose (arms 30-45 deg down), not T-pose; flat light, grey background, weapon apart (characters-3d.md 8) | what image-to-3D and auto-rig need | Claude (owner may veto)
+- 2026-10-21 | 3D motion: CC0 moves only (Quaternius library; Claude keys missing attack/cast clips), retargeted, plus Hades-style polish; no Mixamo | Mixamo files can't sit in the public repo | Feras

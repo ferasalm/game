@@ -1,7 +1,7 @@
 class_name ClipDef
 extends Def
-## Stub (v0.3 registry, filled by the puppet builder): one keyframed puppet clip (attack, cast, hurt...) with its
-## length in seconds and whether it loops.
+## Stub (v0.3 registry, filled by B4): the timing of one model clip (attack, cast, hurt...): its length in seconds
+## and whether it loops; B4 adds the wind-up / hold / strike retiming and impact_t.
 
 var seconds: float = 1.0
 var loops: bool = false

@@ -46,7 +46,7 @@ const KINDS: Dictionary = {
 	"shop": preload("res://features/items/defs/shop_def.gd"),
 	"arena": preload("res://features/combat/defs/arena_def.gd"),
 	"transition": preload("res://core/defs/transition_def.gd"),
-	"puppet": preload("res://features/art/defs/puppet_def.gd"),
+	"model": preload("res://features/art/defs/model_def.gd"),
 	"clip": preload("res://features/art/defs/clip_def.gd"),
 	"camera_preset": preload("res://features/world/defs/camera_preset_def.gd"),
 	"place": preload("res://features/world/defs/place_def.gd"),

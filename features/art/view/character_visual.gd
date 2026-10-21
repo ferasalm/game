@@ -3,7 +3,7 @@ extends Node3D
 ## A character standing in the 3D world (feet on the node's origin). This is the facade the game talks to:
 ## `play(state, facing)` with the states idle, walk, run, attack, cast, hurt, ko, victory, item; the anchors
 ## feet / hand / head; and the signal clip_event the battle view can wait on. What draws it is a VisualSource
-## behind the facade (PixelSource today, PuppetSource later; the rules def picks). The root moves (lunge, dash,
+## behind the facade (PixelSource today, ModelSource for live 3D; the rules def picks). The root moves (lunge, dash,
 ## hurt push) are CharacterMotion's. Numbers come from content/art/visual.json. The art faces right.
 
 ## A one-shot clip reached a named frame: &"impact" (the hit lands) or &"end" (the clip is over).
@@ -20,7 +20,7 @@ var down_scale: Vector2 = Vector2.ONE
 ## Everything that slides (lunge, knockback, shake) lives under `root`; `body` pivots at the feet.
 var root: Node3D
 var body: Node3D
-## The pixel source's shader material (null for a puppet).
+## The pixel source's shader material (null for a model).
 var material: ShaderMaterial
 var fx: CharacterFx
 var rules: VisualRulesDef
@@ -47,7 +47,7 @@ func _init() -> void:
 	fx.setup(rules)
 	motion = CharacterMotion.new()
 	motion.setup(self, rules)
-	use_source(PuppetSource.new() if rules.puppet else PixelSource.new())
+	use_source(ModelSource.new() if rules.default_source == &"model" else PixelSource.new())
 
 
 ## Swaps what draws the character (before the first picture is set).
@@ -104,6 +104,17 @@ func face(dir_x: float) -> void:
 	_facing = facing
 	source.set_flip(facing)
 	fx.set_flip(facing)
+
+
+## Turns toward a direction on the ground (x, z): a model eases its yaw toward it, a sprite mirrors on x.
+func face_dir(dir: Vector3) -> void:
+	face(dir.x)
+	source.face_dir(dir)
+
+
+## Freezes this character's clip for `seconds` (the hit pause on attacker and target); never Engine.time_scale.
+func hit_stop(seconds: float) -> void:
+	source.hit_stop(seconds)
 
 
 func set_moving(on: bool) -> void:

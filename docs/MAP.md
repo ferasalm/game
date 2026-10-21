@@ -96,9 +96,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `core/text_db.gd`: Player text (autoload TextDB): loads every res://localization/*.csv (header "keys,<lang>,...") into the TranslationServer at startup, so tr("KEY") works
 
 ## features
-- `features/art/defs/clip_def.gd`: Stub (v0.3 registry, filled by the puppet builder): one keyframed puppet clip (attack, cast, hurt...) with its length in seconds and whether it loops
+- `features/art/defs/clip_def.gd`: Stub (v0.3 registry, filled by B4): the timing of one model clip (attack, cast, hurt...): its length in seconds and whether it loops; B4 adds the wind-up / hold / strike retiming and impact_t
+- `features/art/defs/model_def.gd`: Stub (v0.3 registry, filled by B4; docs/design/characters-3d.md): one live 3D character model: its glTF scene and height now; later the state -> animation map, clip timing, anchors (bone names), stride and turn speed
 - `features/art/defs/palette_def.gd`: The locked colour palette: one letter per colour ("." is transparent and never listed here)
-- `features/art/defs/puppet_def.gd`: Stub (v0.3 registry, filled by the puppet builder): one painted puppet, cut into parts from a full-body picture and animated in code
 - `features/art/defs/sprite_def.gd`: One pixel sprite: rows of palette letters ('.' = transparent), all the same width, feet on the last row
 - `features/art/defs/visual_rules_def.gd`: Numbers for how a CharacterVisual looks and moves: art scale, idle breathing, walking (bob, squash and stretch, lean, dust), turning, the blob shadow, and the battle motions (anticipation, lunge with afterimages, recoil, hurt, knocked out, revive, victory hop)
 - `features/art/logic/pixel_art.gd`: Turns a palette-indexed sprite (rows of letters) into an Image or texture
@@ -110,9 +110,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/art/view/character_ghost.gdshader`
 - `features/art/view/character_motion.gd`: The root moves of a CharacterVisual: they slide `root` and nothing else (the picture and its squash belong to the VisualSource)
 - `features/art/view/character_visual.gd`: A character standing in the 3D world (feet on the node's origin)
+- `features/art/view/model_source.gd`: Stub for the live 3D model source (B4 fills it in; docs/design/characters-3d.md): a skinned glTF from a ModelDef, clips retargeted at import, yaw facing, BoneAttachment3D anchors, clip events from ModelDef timing
 - `features/art/view/pixel_motion.gd`: The body-shape motions of a pixel character (PixelSource): whole-body squash and stretch (`pulse`), the cast crouch, the victory hop, the hit flash, knocked out and revive
 - `features/art/view/pixel_source.gd`: The pixel-art source of a CharacterVisual (today's look, unchanged): a lit, billboarded quad with the sprite's texture (nearest filtering), idle breathing, the walk bob with squash and stretch, the lean into the move and dust at the feet
-- `features/art/view/puppet_source.gd`: Stub for the painted-puppet source (the puppet builder fills it in): cut parts on a rig, gait clips, clip events
 - `features/art/view/visual_source.gd`: What draws a CharacterVisual
 - `features/audio/defs/audio_rules_def.gd`: Mixer and behaviour numbers of the AudioDirector (content/audio/rules.json): bus volumes, voice pools, music fade and duck, hit weight, text blip rate, item chime boost per rarity, and which sound each move uses
 - `features/audio/defs/music_def.gd`: One music track (content/audio/music.json): its file, volume and whether it loops
