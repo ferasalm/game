@@ -39,7 +39,7 @@ func test_builds_with_actors() -> void:
 	for child: Node in rooftop.blocks.get_children():
 		multimeshes += 1 if child is MultiMeshInstance3D else 0
 		bodies += 1 if child is StaticBody3D else 0
-	check(multimeshes >= 8, "one MultiMeshInstance3D per tile type (%d)" % multimeshes)
+	check(multimeshes >= 5, "one MultiMeshInstance3D per drawn tile type (%d)" % multimeshes)
 	check_eq(bodies, 1, "one static body for all collision")
 	check(rooftop.camera.current, "the follow camera is current")
 	rooftop.free()
@@ -182,4 +182,17 @@ func test_camera_follows_and_can_be_restored() -> void:
 	check(not rooftop.camera.current, "another camera took over")
 	rooftop.restore_camera()
 	check(rooftop.camera.current, "restore_camera makes the follow camera current again")
+	rooftop.free()
+
+
+func test_debug_overlay_is_hidden_until_f3() -> void:
+	var rooftop: Rooftop = _make()
+	check(not rooftop._debug_layer.visible, "players never see the FPS/debug overlay by default")
+	var f3 := InputEventKey.new()
+	f3.keycode = KEY_F3
+	f3.pressed = true
+	rooftop._unhandled_key_input(f3)
+	check(rooftop._debug_layer.visible, "F3 shows it")
+	rooftop._unhandled_key_input(f3)
+	check(not rooftop._debug_layer.visible, "F3 again hides it")
 	rooftop.free()

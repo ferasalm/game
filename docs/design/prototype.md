@@ -55,3 +55,16 @@ Balance target (harness, auto-play policy): each pairing wins 60-95% of battles,
 by more than 25 points. Battles last 40-90 seconds of game time.
 Owner (Feras on the Latitude): walk, set a pairing, fight, win or lose, return without help; >= 60 FPS;
 the 4 pairings feel different. Verdict logged in DECISIONS.
+
+## v0.2 additions (2026-10-21)
+- The rooftop is old Sana'a at night: basalt-base tower-houses, glowing qamariya, moon, stars, clouds and fog.
+- The 2150 megacity shows on the horizon. Real place names: Souq al-Milh, al-Saila, Bab al-Yaman, Zubairi, Haddah, Bayt Baws.
+- Rooftop dressing: moonlit tile tints, warm light only at lamps and doorways, and neon signs with glow and blink.
+- Area data lives in content/world (areas, buildings, props, lights, signs); a light budget caps real lights at 8.
+- Prosthetics: one slot per hero. A prosthetic grants tech moves paid from SP. The djanbeyyah stays the physical weapon.
+- Rarity: common, uncommon, rare, epic, legendary (white, green, blue, purple, gold), plus a story-only heirloom tier.
+- Loot: the patrol drops anvil_hilt. Two chests on the roofs (Saila and Mafraj) give arc_arm and lens_array, once each.
+- Music: two tracks, night_rooftops while exploring and battle in fights. The owner made both in Google Flow.
+- Dialogue: the owner's Gemini portraits, 4 expressions each for Zayd and Bilqis (assets/portraits/).
+- Sprites: real 64 px Zayd, Bilqis and enforcer (68 px) and the drone, from the owner's Flow pictures via
+  tools/art/pixelize.py --outline; his Pixelorama touch-up can replace them through the same ids.

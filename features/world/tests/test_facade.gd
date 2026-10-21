@@ -102,7 +102,7 @@ func test_every_tile_pattern_is_known() -> void:
 		if tile.pattern != &"":
 			patterned += 1
 			check(SurfacePainter.PATTERNS.has(tile.pattern), "tile %s pattern %s exists" % [id, tile.pattern])
-	check(patterned >= 7, "the walkable and wall tiles are patterned")
+	check(patterned >= 6, "the walkable and wall tiles are patterned")
 
 
 func test_area_builder_textures_patterned_tiles() -> void:
@@ -116,4 +116,4 @@ func test_area_builder_textures_patterned_tiles() -> void:
 		if mat != null and mat.albedo_texture != null and mat.uv1_world_triplanar:
 			textured += 1
 	root.free()
-	check(textured >= 7, "textured tile batches: %d" % textured)
+	check(textured >= 5, "textured tile batches: %d" % textured)

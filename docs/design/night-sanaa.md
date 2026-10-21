@@ -34,3 +34,17 @@ features/world/logic/, builders in features/world/view/. Demo: `skyline_demo.tsc
 - Landmarks: 1 mesh, 2 surfaces. Ground and street: 2. No skyline node casts shadows.
 - FPS: 157 before, 139-147 with the skyline (probe, 5 s). Build time about 0.5 s (painting at load; cache later if needed).
 - Rule for more content: new building = one JSON item (one more mesh and atlas); keep near blocks <= 120.
+
+## Rooftop dressing
+- Night values: look "night" (moon #7f9bff 0.7, fill 0.16, ambient 0.3, exposure 0.9) plus per-tile `tint` in tiles.json
+  (moonlit blue-grey plaster); warm light only where a lamp, lantern or doorway is.
+- Area data (areas.json): `buildings` and `props` = [{ref, x, z, y?, yaw?, id?}], `lights` (LightSpec), `signs` (SignSpec),
+  `canyon` (al-Saila walls + channel), `light_budget` (real OmniLights, max 8) and `light_fade`. Footprint cells use the hidden
+  solid tile "footprint"; "street" is hidden too, so the sunken street shows below. Props: content/world/props.json, parts =
+  box/frustum + palette letter (glow, blink, pattern, group), optional `light`, `collide`, `chest`.
+- Lights: every light with `pool` gets a fake additive pool (one MultiMesh); only the nearest few get an OmniLight3D (no shadows).
+- Signs: Label3D in Reem Kufi, text from localization/world.csv (Arabic and English on one line, Arabic runs read right to left),
+  fitted to the board, HDR so they bloom; `flicker` dips one like a failing tube.
+- Chests: props with `chest: true` (ids chest_saila, chest_mafraj); `Rooftop.chest_opened(chest_id)` fires once per chest.
+- Fog: mist defs take `rect`, `stack`/`step` (sheets forming a volume in the canyon) and `hole` (wisps never over the roof).
+- Frame tool: `rooftop_shot.tscn -- <x> <z> [cam x y z, target x y z, fov]`. FPS on the Latitude: ~100 (probe).

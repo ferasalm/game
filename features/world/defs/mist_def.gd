@@ -17,11 +17,19 @@ var edge_fade: float = 0.2
 var margin: float = 10.0
 var noise_seed: int = 1
 var noise_size: int = 256
+## Optional footprint in metres (x0, z0, x1, z1); empty = the whole area plus margin. A hole (same form) is a rectangle
+## the mist keeps clear (the walkable roof), faded over hole_fade metres.
+var rect: Rect2 = Rect2()
+var hole: Rect2 = Rect2()
+var hole_fade: float = 2.0
+## stack planes, step metres apart upwards from height: thin sheets that read as a fog volume.
+var stack: int = 1
+var step: float = 0.0
 
 
 func read(r: DefReader) -> void:
 	id = r.id()
-	height = r.number("height", -5.0, 50.0)
+	height = r.number("height", -50.0, 50.0)
 	color = r.color("color")
 	opacity = r.number("opacity", 0.0, 1.0)
 	noise_scale = r.number("noise_scale", 0.005, 5.0)
@@ -36,3 +44,17 @@ func read(r: DefReader) -> void:
 	noise_size = r.integer("noise_size", 32, 1024)
 	if high <= low:
 		r.problem("high", "must be above low")
+	rect = _rect(r, "rect")
+	hole = _rect(r, "hole")
+	hole_fade = r.number("hole_fade", 0.1, 20.0, 2.0, false)
+	stack = r.integer("stack", 1, 12, 1, false)
+	step = r.number("step", 0.0, 20.0, 0.0, false)
+
+
+func _rect(r: DefReader, key: String) -> Rect2:
+	var v: Array[float] = r.float_list(key, -2000.0, 2000.0)
+	if v.size() == 4:
+		return Rect2(v[0], v[1], v[2] - v[0], v[3] - v[1])
+	if not v.is_empty():
+		r.problem(key, "needs 4 numbers: x0, z0, x1, z1")
+	return Rect2()

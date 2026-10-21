@@ -16,7 +16,7 @@ static func paint(pattern: StringName, colors: Dictionary[String, Color], seed_v
 	rng.seed = seed_value + hash(String(pattern))
 	match pattern:
 		&"roof_plaster":
-			_plaster(c, rng, "q", "p", "l", 26, 5)
+			_plaster(c, rng, "q", "p", "l", 16, 2)
 		&"plaster_worn":
 			_plaster(c, rng, "p", "q", "o", 34, 7)
 			_bare_patches(c, rng)
@@ -45,7 +45,7 @@ static func _plaster(c: PixelCanvas, rng: RandomNumberGenerator, base: String, s
 		c.disc(rng.randi_range(0, SIZE - 1), rng.randi_range(0, SIZE - 1), rng.randi_range(3, 11),
 			rng.randi_range(2, 7), stain)
 	_speckle(c, rng, spot, 90)
-	_speckle(c, rng, "o" if base == "q" else "k", 24)
+	_speckle(c, rng, "o" if base == "q" else "k", 10)
 	for i: int in cracks:
 		_crack(c, rng, "o")
 

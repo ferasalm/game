@@ -37,20 +37,21 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/djanbeyyah/blades.json`: content: blade x3
 - `content/djanbeyyah/hilts.json`: content: hilt x3
 - `content/djanbeyyah/loadouts.json`: content: loadout x2
-- `content/djanbeyyah/menu.json`: content: workshop_style x1
 - `content/items/chests.json`: content: chest x4
 - `content/items/perks.json`: content: perk x6
 - `content/items/rarities.json`: content: rarity x6
 - `content/prosthetics/prosthetics.json`: content: prosthetic x6
+- `content/ui/style.json`: content: ui_style x1
 - `content/world/areas.json`: content: area x1
-- `content/world/buildings.json`: content: building x8
+- `content/world/buildings.json`: content: building x9
 - `content/world/camera.json`: content: camera_rig x1
 - `content/world/explore.json`: content: explore_rules x1
 - `content/world/look.json`: content: look x2
-- `content/world/mist.json`: content: mist x2
+- `content/world/mist.json`: content: mist x3
+- `content/world/props.json`: content: prop x23
 - `content/world/sky.json`: content: sky x1
 - `content/world/skyline.json`: content: skyline x1
-- `content/world/tiles.json`: content: tile x11
+- `content/world/tiles.json`: content: tile x8
 
 ## core
 - `core/asset_manifest.gd`: Checks assets/manifest.json: every file under the assets folder (except *.import, .gdignore, *.md and the manifest itself) has an entry with a non-empty source and licence
@@ -108,6 +109,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/tests/battle_probe.gd`: Test helper (not a test): hand-made fighters, moves and battles with exact numbers, and loops that play a BattleSim until an event kind appears
 - `features/combat/tests/test_action_def.gd`: ActionDef new fields: target, heal, revive, vfx (validated on load), and the shipped actions: every one has a vfx from the agreed list, and the tech moves have the shape the design asks for
 - `features/combat/tests/test_battle_ai_support.gd`: BattleAI with support moves: heal an ally under 40% HP, revive the fallen, guard before a big enemy cast, and never waste a heal or buff when nobody needs it
+- `features/combat/tests/test_battle_hud_style.gd`: The restyled battle HUD keeps its behaviour and gains: tags on the command buttons, gradient bars in the party panel, the brass timeline track, and rarity-coloured spoils on the victory panel (only items not owned yet)
 - `features/combat/tests/test_battle_interrupt.gd`: T4: a cancel move landing on a casting enemy interrupts it (back to INTERRUPT_POS) inside BattleSim
 - `features/combat/tests/test_battle_menu_support.gd`: The command menu with tech moves: an ally move lists the allies (not the foes), self and all-moves skip the target list and commit at once, and the party is built from saved gear
 - `features/combat/tests/test_battle_perks.gd`: Perks in battle (sp_per_act, hp_regen, start_bonus, bonus_knockback), Perks.apply on a fighter copy, and the rarity rule that only Rare and above may carry a perk
@@ -128,10 +130,12 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/view/battle_fighters.gd`: The 3D side of a battle: one CharacterVisual per unit on the stage, floating damage numbers and status text, intent labels over casting enemies, and the bouncing target marker
 - `features/combat/view/battle_hud.gd`: The battle HUD, built in code: timeline bar (top) with the one-time tip under it, party panel (bottom right), command menu (bottom left), the banner text and the end panel
 - `features/combat/view/battle_labels.gd`: Builders for the 3D bits of the battle screen: billboard text (damage numbers, status text, enemy intent) and the target marker
-- `features/combat/view/battle_party_panel.gd`: The party panel (bottom right, compact): per hero the name beside an HP bar and an SP bar, each with numbers
+- `features/combat/view/battle_menu_chips.gd`: The small tags on the right edge of a command-menu button: SP cost (cyan), "cancels" (magenta), the target scope of a self / all move, and for a target the HP and a "will interrupt" warning
+- `features/combat/view/battle_party_panel.gd`: The party panel (bottom right, compact): per hero an ornate name plate beside an HP bar (red to orange) and an SP bar (blue to cyan), each with its numbers in Reem Kufi
 - `features/combat/view/battle_stage.gd`: The battle screen (wait mode): places the fighters and the camera, runs the HUD, steps a BattleSim a few ticks per physics frame and plays the resulting events
-- `features/combat/view/battle_style.gd`: Small builders for the battle screen's look (panels, labels, bars, names, head icons) from a BattleViewDef
-- `features/combat/view/battle_timeline_bar.gd`: The timeline along the top: a track from 0 to ACT_POINT with a COMMAND mark and a tinted cast zone, and one head icon per living unit at its timeline position (enemies above the track, the party below it)
+- `features/combat/view/battle_style.gd`: Small builders for the battle screen's look (labels, bars, names, head icons)
+- `features/combat/view/battle_timeline_bar.gd`: The timeline along the top: an ornate brass track from 0 to ACT_POINT with a COMMAND mark and a tinted cast zone (BattleTrackArt), and one framed head icon per living unit at its timeline position (enemies above the track, the party below it, a small pointer in the team colour toward the track)
+- `features/combat/view/battle_track_art.gd`: The painted brass track of the timeline bar: dark glass, brass rails, tick marks, the tinted cast zone, a gypsum zigzag frieze along the bottom, the COMMAND mark (a brass line with diamonds) and an end cap at ACT
 - `features/dialogue/defs/dialogue_def.gd`: A conversation: an ordered list of lines (speaker, expression, text key)
 - `features/dialogue/defs/dialogue_line.gd`: One spoken line: who says it, with which expression, and the localization key of the text
 - `features/dialogue/defs/dialogue_style_def.gd`: Look and timing of the dialogue box (fractions of the screen, pixels, colours, speed) and the pixel marks (brows, mouth) that make the stand-in portraits show an expression
@@ -139,7 +143,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/dialogue/logic/dialogue_run.gd`: Steps through a DialogueDef one line at a time
 - `features/dialogue/logic/standin_portrait.gd`: Builds a stand-in portrait Image from a speaker's pixel sprite: head-and-chest rows cropped, scaled up with nearest filtering, over a soft backdrop in the speaker colour, plus brow and mouth marks per expression
 - `features/dialogue/tests/test_dialogue.gd`: Dialogue: T8 (every line has a known speaker, one of 4 expressions, a translating text key), DialogueRun stepping, the object-list reader, the stand-in portraits, and DialogueBox playing to the end once
-- `features/dialogue/view/dialogue_box.gd`: The dialogue box: a chest-up portrait at the left overlapping a dark text box along the bottom, with the speaker's name in their colour and the line typed out quickly
+- `features/dialogue/view/dialogue_box.gd`: The dialogue box: a chest-up portrait at the left overlapping an ornate text frame along the bottom, with the speaker's name on a plate in their colour and the line typed out quickly
 - `features/dialogue/view/dialogue_demo.gd`: Manual check: plays the workshop_first dialogue over a plain background (F6 in the editor)
 - `features/dialogue/view/dialogue_demo.tscn`: scene
 - `features/dialogue/view/dialogue_layout.gd`: Builds the dialogue box's controls in code (no scene file, no path lookups) and keeps references to them
@@ -147,19 +151,21 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/djanbeyyah/defs/blade_def.gd`: A djanbeyyah blade: adds to attack, adds knockback to every hit the wielder lands, adds weight
 - `features/djanbeyyah/defs/hilt_def.gd`: A djanbeyyah hilt: adds to agility, multiplies cast speed, adds weight, and grants exactly one move
 - `features/djanbeyyah/defs/loadout_def.gd`: A hero's starting gear: which hilt, blade and prosthetic they own and wear at the start (each optional)
-- `features/djanbeyyah/defs/workshop_style_def.gd`: Layout (pixels at 1920x1080), font sizes and colours of the workshop menu, and which fighter it compares
 - `features/djanbeyyah/logic/djanbeyyah.gd`: Builds Zayd's fighter from a base CombatantDef plus one hilt and one blade (docs/design/combat.md)
 - `features/djanbeyyah/logic/loadout.gd`: Which gear a hero wears: the saved choice per slot ("<hero>.<part>" in GameState.equipment), else the starting gear
 - `features/djanbeyyah/logic/stat_row.gd`: One line of the workshop comparison: label key, value now (base) and value with the chosen pair
-- `features/djanbeyyah/logic/workshop_stats.gd`: The comparison rows the workshop shows: base fighter against the fighter built by Djanbeyyah.equip
+- `features/djanbeyyah/logic/workshop_stats.gd`: The comparison rows the equipment screen shows: base fighter against the fighter built by Djanbeyyah.equip
 - `features/djanbeyyah/tests/test_djanbeyyah.gd`: T3: every hilt + blade pairing gives a different Zayd stat sets, inside the timeline caps; each hilt adds exactly one move; the shared base definition is never changed
-- `features/djanbeyyah/tests/test_workshop.gd`: The loadout fallback, saved equipment, and the workshop menu: it builds headless with every hilt and blade but shows only owned ones, selecting anvil + broad and confirming saves "zayd.hilt" / "zayd.blade" and closes once, back changes nothing, the panel shows merged numbers
-- `features/djanbeyyah/view/workshop_choice.gd`: One hilt or blade on the bench: its name and a short description on a panel
-- `features/djanbeyyah/view/workshop_demo.gd`: Manual check: opens the workshop menu over a plain background (F6 in the editor)
-- `features/djanbeyyah/view/workshop_demo.tscn`: scene
-- `features/djanbeyyah/view/workshop_menu.gd`: The djanbeyyah bench: pick one owned hilt and one owned blade, see how Zayd's numbers change, Confirm to save the pair in GameState.equipment ("zayd.hilt" / "zayd.blade")
-- `features/djanbeyyah/view/workshop_page.gd`: The workshop layout: title, a hilt column, a blade column, the stats panel, and the Confirm button with the back hint
-- `features/djanbeyyah/view/workshop_stats_panel.gd`: The right-hand panel of the workshop: one line per stat (name, base value, value with the chosen pair, an up/down arrow in green or red) and below them the hilt's move with its description
+- `features/djanbeyyah/tests/test_loadout.gd`: The loadout fallback: a hero wears the saved item per slot, else the start loadout
+- `features/equipment/logic/equipment_options.gd`: Pure rules of the equipment screen: which slots a hero has, which OWNED items fit a slot (best rarity first), which items a hero wears now, the fighter built from a staged set of items, and writing a staged set into the saved equipment through Inventory.equip
+- `features/equipment/tests/test_equipment.gd`: The equipment screen: the pure options rules (owned items only, rarer first, per hero and slot), the screen listing only owned items in rarity colours, staging, Confirm writing every slot through Inventory.equip, back changing nothing, and the stat comparison
+- `features/equipment/view/equipment_data.gd`: What the equipment screen needs from ContentDB, read once: every equippable by id, the perks, the rarity order, and each hero's start loadout (heroes in loadout order)
+- `features/equipment/view/equipment_demo.gd`: Manual check: opens the equipment screen over a plain background (F6 in the editor) with a few owned items
+- `features/equipment/view/equipment_demo.tscn`: scene
+- `features/equipment/view/equipment_detail.gd`: The right-hand side of the equipment screen: the focused item (name in its rarity colour, tag, text, perk and the tech moves it teaches) above the stat comparison (base, with the staged kit, an up / down arrow)
+- `features/equipment/view/equipment_item_button.gd`: Builds one owned item as a menu button: its name in the rarity colour, the rarity tag and an "Equipped" mark on the right
+- `features/equipment/view/equipment_page.gd`: The equipment layout: title and hero tabs on top, the slot lists on the left, the item detail and stat comparison on the right, Confirm with the back hint at the bottom
+- `features/equipment/view/equipment_screen.gd`: The equipment screen (the bench): a tab per hero (Zayd: hilt, blade, prosthetic; Bilqis: prosthetic), the OWNED items of each slot with rarity colours and tags, the perk and tech moves of the focused item, and the stat comparison base vs
 - `features/items/defs/chest_def.gd`: A chest holding one item (an id of a hilt, blade or prosthetic)
 - `features/items/defs/equip_def.gd`: Shared base of everything a hero can wear or wield (hilt, blade, prosthetic): names, a rarity tier and an optional perk (Rare and above only; rules in docs/design/prosthetics.md)
 - `features/items/defs/perk_def.gd`: One perk an item can carry: a kind that battle logic implements and an amount
@@ -175,23 +181,44 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/prosthetics/defs/prosthetic_def.gd`: A high-tech prosthetic: one slot per hero
 - `features/prosthetics/logic/prosthetics.gd`: Merges a prosthetic into a fighter (docs/design/prosthetics.md), like Djanbeyyah.equip: stat adds, then the granted moves, then the caps
 - `features/prosthetics/tests/test_prosthetics.gd`: Prosthetics: the merge (base -> hilt -> blade -> prosthetic -> perks -> caps) builds new fighters and never touches the shared defs; each hero's prosthetics grant 1-2 tech moves; a prosthetic fits only its wearer
-- `features/prototype/prototype_main.gd`: The playable prototype: the rooftop, the workshop (talk once, then the bench menu) and the patrol battle, wired through the other features' public signals
+- `features/prototype/prototype_main.gd`: The playable prototype: the rooftop, the workshop (talk once, then the equipment screen), the patrol battle, the title overlay, area title card and loot banners, wired through the other features' public signals
 - `features/prototype/prototype_main.tscn`: scene
 - `features/prototype/tests/test_prototype.gd`: T6: the prototype main scene builds headless with rooftop, dialogue box and workshop menu; a simulated patrol touch starts a battle and stops exploring; an auto-played battle ends and walking resumes with the patrol reset; retry starts a fresh battle; the first workshop visit plays the talk, then the menu; later visits skip the talk
+- `features/ui/defs/ui_style_def.gd`: The look of every menu and HUD (content/ui/style.json): three font files, named colours (c_*), sizes in pixels at 1920x1080 (s_*) and times in seconds (t_*)
+- `features/ui/tests/node_walk.gd`: Test helper (not a test): every descendant of a node, depth first
+- `features/ui/tests/test_popups.gd`: The loot popup (queues item_obtained in order, skippable), the area title card, the title overlay (any key dismisses it once) and the opening shot held on the moon until then
+- `features/ui/tests/test_ui.gd`: The shared UI look: the style loads completely, the theme builds with all three fonts (Arabic glyphs included), every rarity has a colour, the painted frames have the right size, and the text server can shape right-to-left Arabic
+- `features/ui/view/area_title_card.gd`: The area title card that fades in when the opening shot ends: the area's name in Latin and Arabic in Reem Kufi, a zigzag divider and a subtitle (place and year), then fades out
+- `features/ui/view/loot_popup.gd`: The "Obtained" banner: listens to EventBus.item_obtained and shows each new item centred high on the screen with its name in the rarity colour, a light sweep for Rare and above and a rarity jingle (AudioDirector.play_item)
+- `features/ui/view/title_overlay.gd`: The game's title over the opening sky: "Qarnaw" in Latin and Arabic in Reem Kufi with a pulsing "Press any key"
+- `features/ui/view/ui.gd`: Entry point of the shared UI look: the style (content/ui/style.json), the one cached Theme, and small builders (labels, screen roots, the zigzag divider)
+- `features/ui/view/ui_boxes.gd`: StyleBox builders for the UI theme: ornate panels (painted nine-patch frames), button states with the warm brass focus glow, and progress-bar tracks and gradient fills
+- `features/ui/view/ui_ornament.gd`: Procedurally painted UI textures from the UiStyleDef (no image files): the nine-patch frames (a thin brass line, a thin gypsum line inside it and a small diamond in each corner, like the carved plaster of a Sana'a tower-house), and the zigzag frieze band that divides sections
+- `features/ui/view/ui_rarity.gd`: Rarity helpers for every screen: the tier colour (from RarityDef), coloured item names and the small rarity tag
+- `features/ui/view/ui_theme.gd`: Builds the one Godot Theme every menu and HUD uses: Amiri for reading, Reem Kufi for titles, names and numbers, ornate panels, brass-focus buttons, gradient bars
 - `features/world/defs/area_def.gd`: A level as data: equal-width rows of tile characters, a legend (character -> tile id) and four markers (S spawn, W workshop bench, P patrol start, Q patrol end) that each appear once and stand on floor
 - `features/world/defs/building_def.gd`: One Sana'a tower-house as data: footprint (metres), floors (the lowest stone_floors are basalt), window columns per facade, frieze style, qamariya glass letters, lit-window ratio, parapet style and roof extras
 - `features/world/defs/camera_rig_def.gd`: Camera language for exploring (content/world/camera.json): the opening establishing shot as keyframes (camera and target positions relative to the player, field of view, depth-of-field scale, seconds) and the "vista" pose the camera eases to inside a vista zone
+- `features/world/defs/canyon_spec.gd`: The sunken street (al-Saila) under the area: two walls from bottom_y up to top_y between x0 and x1 (the street's width) over the area's z range z0..z1, continued extend metres beyond both ends up to ext_top_y only, with a stone base of base_height under a brick upper wall and a thin water channel down the middle
 - `features/world/defs/explore_rules_def.gd`: Numbers for walking around an area: player speed and size, follower, camera, patrol, touch and interact ranges, collision wall height and the workshop prompt
+- `features/world/defs/light_spec.gd`: One practical light: where it is, its colour, a real OmniLight (energy, range; only the nearest few are alive at once) and a fake light pool (an additive quad on the floor or a wall, radius in metres, cheap and always on)
 - `features/world/defs/look_def.gd`: The HD-2D look as data: camera offset and field of view, tilt-shift depth of field, key light, ambient light, background and bloom
 - `features/world/defs/mist_def.gd`: One drifting mist layer (content/world/mist.json): a flat transparent plane at a height, scrolling noise between two thresholds, faded where it meets geometry, near the camera and at the plane's edges
+- `features/world/defs/placement.gd`: Where one building or prop stands in an area: the content id (ref), an optional name for it (chests), the position (x, z on the floor; y absolute, or the floor height when absent) and a yaw in degrees
+- `features/world/defs/prop_def.gd`: A rooftop prop as data (content/world/props.json): a list of simple parts (PropPart), an optional practical light it carries, an optional box that blocks walking (collide = width, height, depth, centred on the prop's base) and, for a chest, the lid's hinge (lid_hinge x, y, z) so the "lid" part group can swing open
+- `features/world/defs/prop_part.gd`: One solid piece of a prop: a box (size = width, height, depth; at = centre) or a frustum (size = bottom radius, top radius, height; at = base centre), a palette letter, an optional yaw/tilt (degrees), and how it is drawn: glow (unshaded, boosted, blooms), blink (a glow that pulses), pattern (a painted tile texture instead of the letter), group (a named sub-mesh that can move, such as a chest lid)
+- `features/world/defs/sign_spec.gd`: One neon sign: a localization key (Arabic proper nouns and English together), a dark board with a glowing frame, the glow colour, a position and yaw, the text height in metres (size) and how much it flickers
 - `features/world/defs/sky_def.gd`: The night sky as data (content/world/sky.json): gradient, stars, milky way, moon, two cloud layers and the megacity glow
 - `features/world/defs/skyline_band.gd`: One depth band of the skyline: city blocks on a jittered grid between min_dist and max_dist metres from the play area's edge
 - `features/world/defs/skyline_def.gd`: The city around the play area as data: the ground level (y of the street, far below the rooftops), the al-Saila street (a sunken street along z at saila_x), depth bands of buildings and the landmarks
 - `features/world/defs/skyline_landmark.gd`: One landmark placed by data: kind, position on the ground (x east, z south; the play area is x 0..26, z 0..18 and -Z is north), facing in degrees, main size (height or length in metres), a part count, a seed and a radius kept free of ordinary city blocks
-- `features/world/defs/tile_def.gd`: One kind of block: height in metres, colour (an art-bible palette letter or #hex), whether it blocks walking, an optional glow, an optional cap tile drawn on top of it (gypsum trim on a tower) and an optional surface pattern (a SurfacePainter texture painted over the colour, 4 m repeat, 32 px = 1 m)
+- `features/world/defs/tile_def.gd`: One kind of block: height in metres, colour (an art-bible palette letter or #hex), whether it blocks walking, an optional glow, an optional cap tile drawn on top of it (gypsum trim on a tower) and an optional surface pattern (a SurfacePainter texture painted over the colour, 4 m repeat, 32 px = 1 m), or hidden (blocks only)
+- `features/world/interact/chest.gd`: A treasure chest: the prop's body and a lid that swings open on a hinge when the player interacts
+- `features/world/interact/interact_spot.gd`: Something the player can press interact next to: a floating prompt (a localization key) that shows while he is within the interact radius, and a virtual _interact() that runs on the key press
 - `features/world/logic/facade_details.gd`: Sana'a facade parts painted with palette letters at 32 px/m: gypsum friezes (zigzag, triangles, rosettes), windows with thick white gypsum frames, the qamariya (a semicircle of coloured glass over the window) and arched wooden doors
 - `features/world/logic/facade_painter.gd`: Paints one Sana'a tower-house facade at 32 px/m from a FacadeSpec: basalt stone floors at the bottom (door on the ground floor), fired-brick floors above, a gypsum frieze at the top of each brick floor, and on every brick floor windows with gypsum frames under qamariya arches
 - `features/world/logic/facade_spec.gd`: What one painted facade needs: width in metres, floors (the lowest stone_floors are basalt, the rest brick), window columns, frieze style, qamariya glass letters, lit and shutter ratios, a door, floor height in pixels and the seed
+- `features/world/logic/light_pick.gd`: Which practical lights get a real OmniLight: the nearest few to a focus point (the rest keep only their fake light pool), plus the fade and flicker maths
 - `features/world/logic/masonry.gd`: Brick courses and stone slabs painted with palette letters
 - `features/world/logic/pixel_canvas.gd`: A pixel canvas painted with palette letters, with an optional emission layer (black = no glow)
 - `features/world/logic/skyline_layout.gd`: Where the city blocks stand: for each band a jittered grid of cells between the band's distances from the play area, minus the al-Saila corridor and the landmark clearings, thinned by the band's fill
@@ -203,8 +230,12 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/player/player.gd`: Zayd: 8-way walking from the move_* actions (up = -Z), stopped by solid tiles
 - `features/world/rooftop/rooftop.gd`: The rooftop exploration scene
 - `features/world/rooftop/rooftop.tscn`: scene
+- `features/world/rooftop/rooftop_shot.gd`: Frame tool: the rooftop with Zayd put at chosen floor coordinates (and an optional free camera), for rendering pictures
+- `features/world/rooftop/rooftop_shot.tscn`: scene
 - `features/world/tests/test_ambush.gd`: Which side struck first: the patrol's walking direction, and last_touch_ambush() after a touch (0 nobody, 1 the patrol caught the player from behind, 2 the player caught the patrol from behind)
 - `features/world/tests/test_area.gd`: Area, tile and look content: the rooftop layout is well formed and every probe of a broken layout is caught
+- `features/world/tests/test_chests_signs.gd`: Chests (prompt, one-time opening, the lid animation, the Rooftop signal) and the neon signs (localization keys, Arabic text from the CSV, text fitted to the board)
+- `features/world/tests/test_dressing.gd`: Rooftop dressing as data: props and building placements are valid and stand on solid cells, prop parts use palette letters, the light maths (nearest few, fades, flicker), the real-light budget and the fake pools, the canyon and the nested DefReader reads
 - `features/world/tests/test_explore_camera.gd`: ExploreCamera on the rooftop: follow offset, the vista pose inside the zone (lower pitch, eases back out), the opening shot (keyframes, frozen actors, skip by key, ends on the exploring pose) and the DoF scale
 - `features/world/tests/test_facade.gd`: Night Sana'a textures: the facade painter (size, determinism, lit windows and qamariya glass in the emission map, a door, every pixel painted), the surface patterns (tile 4 m, deterministic, tileable) and the tile content
 - `features/world/tests/test_look_test.gd`: The look-test scene builds without errors (headless: no pixels are drawn, but every node and resource is made)
@@ -212,12 +243,20 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/tests/test_rooftop.gd`: The rooftop scene builds headless; walking, the follower, the patrol touch, the ambush direction, the exploring switch, the patrol respawn, the workshop prompt and the camera
 - `features/world/tests/test_skyline.gd`: Night Sana'a city: building and skyline content, the layout rules (outside the area, out of the al-Saila corridor, inside the band, deterministic), the tower-house mesh, the landmarks and the draw-call budget
 - `features/world/view/area_builder.gd`: Builds an area's blocks: one MultiMeshInstance3D per tile type (bodies, and caps drawn with the cap tile's material; tiles with a pattern get its painted triplanar texture), plus one StaticBody3D holding a box per run of solid tiles and walls that close the area's edges
+- `features/world/view/area_dressing.gd`: Everything an area has on top of its tiles: tower-houses and props (PropBuilder), neon signs, the practical lights with their fake pools (AreaLights) and the chests (one Chest each, interactive)
+- `features/world/view/area_lights.gd`: The area's practical lights
+- `features/world/view/canyon_builder.gd`: Builds the sunken street's walls (a stone base under brick, one box each, world-space textured so the courses line up) and the water channel in its middle
 - `features/world/view/diorama.gd`: Static helpers that build the HD-2D look from a LookDef: WorldEnvironment, low sun, tilt-shift camera, and the nearest-filtered block material
 - `features/world/view/explore_camera.gd`: The exploration camera and its language: it follows the player at the look's offset, eases to a low "vista" pose while the player stands in the area's vista zone (so the sky and moon show above the skyline), and can play the opening establishing shot (keyframes from CameraRigDef; any key, click or button skips it)
 - `features/world/view/far_landmarks.gd`: The far landmarks, built into an unshaded buffer (faces are shaded by a fake light so low-poly facets read): the ridge of Jabal Nuqum, the Haddah megacity of 2150 (slim towers with cyan and magenta neon edges) and the village of Bayt Baws on its rocky crag
 - `features/world/view/landmark_builder.gd`: Builds all landmarks of a SkylineDef into one ArrayMesh with two surfaces: 0 lit (minarets, Bab al-Yaman: vertex colours shaded by the scene lights) and 1 glow (ridge, megacity, village: unshaded, boosted above 1 so neon and lit windows bloom)
 - `features/world/view/mist_builder.gd`: Builds one mist layer from a MistDef: a big flat plane over the area at the def's height, with the scrolling noise shader and a seamless noise texture made once here
+- `features/world/view/neon_sign.gd`: One neon sign: a dark board, a glowing frame and the text (Label3D in Reem Kufi, unshaded and boosted above 1 so it blooms)
+- `features/world/view/prop_builder.gd`: Places an area's props and tower-houses from its placement lists
+- `features/world/view/prop_mesh.gd`: Builds one prop's ArrayMesh from its PropDef parts (palette-letter vertex colours, flat shaded)
 - `features/world/view/roof_extras.gd`: The 2150 clutter on a tower-house roof: water tank, satellite dish, antenna with a red beacon, small solar panel
+- `features/world/view/shaders/blink.gdshader`
+- `features/world/view/shaders/light_pool.gdshader`
 - `features/world/view/shaders/mist.gdshader`
 - `features/world/view/shaders/night_sky.gdshader`
 - `features/world/view/sky_builder.gd`: Builds the night Sky resource from a SkyDef: the sky shader with every uniform filled from the def, and the three direction vectors (moon, city glow, milky way normal) computed from its angles
@@ -227,13 +266,14 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/view/surface_buffer.gd`: Collects flat-shaded, vertex-coloured faces (boxes, prisms, polygons) for one surface of an ArrayMesh
 - `features/world/view/surface_materials.gd`: Cached textures and materials for the painted world, so 100+ buildings share a handful of draw materials: tile patterns (world-space triplanar, so texels stay square across tiles), tower-house facades (front and side painted side by side in one atlas, lit windows in an emission map), vertex-coloured trim, unshaded HDR glow, and the dotted far silhouettes
 - `features/world/view/tower_house.gd`: Builds one Sana'a tower-house mesh from a BuildingDef: four textured facades (one atlas), a roof, a white gypsum parapet with merlons and stepped or horned corners, and roof extras
-- `features/world/workshop/workshop_spot.gd`: The workshop bench: its sprite, and a floating prompt that shows while the player is within the interact radius
+- `features/world/workshop/workshop_spot.gd`: The workshop bench: its sprite, and the interact prompt
 
 ## localization
 - `localization/battle.csv`
 - `localization/combat.csv`
 - `localization/dialogue.csv`
 - `localization/items.csv`
+- `localization/screens.csv`
 - `localization/ui.csv`
 - `localization/workshop.csv`
 - `localization/world.csv`

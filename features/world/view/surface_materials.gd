@@ -6,6 +6,7 @@ extends RefCounted
 ## HDR glow, and the dotted far silhouettes.
 
 const GLOW_BOOST: float = 1.6
+const BLINK_SHADER: Shader = preload("res://features/world/view/shaders/blink.gdshader")
 static var _cache: Dictionary[String, Material] = {}
 
 
@@ -13,10 +14,11 @@ static func clear() -> void:
 	_cache.clear()
 
 
-static func tile(pattern: StringName, palette: PaletteDef) -> StandardMaterial3D:
-	var key: String = "tile:" + pattern
+static func tile(pattern: StringName, palette: PaletteDef, tint: Color = Color.WHITE) -> StandardMaterial3D:
+	var key: String = "tile:%s:%s" % [pattern, tint.to_html()]
 	if not _cache.has(key):
 		var mat := _base(ImageTexture.create_from_image(SurfacePainter.paint(pattern, palette.colors)[0]))
+		mat.albedo_color = tint
 		_triplanar(mat, float(SurfacePainter.SIZE) / FacadePainter.PX_PER_M)
 		_cache[key] = mat
 	return _cache[key] as StandardMaterial3D
@@ -59,6 +61,18 @@ static func glow() -> StandardMaterial3D:
 		mat.albedo_color = Color(GLOW_BOOST, GLOW_BOOST, GLOW_BOOST)
 		_cache["glow"] = mat
 	return _cache["glow"] as StandardMaterial3D
+
+
+## Unshaded vertex colours that pulse on and off rate times a second, each instance at its own phase (beacons).
+static func blink(rate: float) -> ShaderMaterial:
+	var key: String = "blink:%s" % rate
+	if not _cache.has(key):
+		var mat := ShaderMaterial.new()
+		mat.shader = BLINK_SHADER
+		mat.set_shader_parameter(&"rate", rate)
+		mat.set_shader_parameter(&"boost", GLOW_BOOST * 1.5)
+		_cache[key] = mat
+	return _cache[key] as ShaderMaterial
 
 
 ## Far city blocks: unshaded, window dots in world space, tinted per instance.

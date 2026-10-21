@@ -27,12 +27,12 @@ const KINDS: Dictionary = {
 	"hilt": preload("res://features/djanbeyyah/defs/hilt_def.gd"),
 	"blade": preload("res://features/djanbeyyah/defs/blade_def.gd"),
 	"loadout": preload("res://features/djanbeyyah/defs/loadout_def.gd"),
-	"workshop_style": preload("res://features/djanbeyyah/defs/workshop_style_def.gd"),
 	"sound": preload("res://features/audio/defs/sound_def.gd"),
 	"music": preload("res://features/audio/defs/music_def.gd"),
 	"audio_rules": preload("res://features/audio/defs/audio_rules_def.gd"),
 	"building": preload("res://features/world/defs/building_def.gd"),
 	"skyline": preload("res://features/world/defs/skyline_def.gd"),
+	"prop": preload("res://features/world/defs/prop_def.gd"),
 	"rarity": preload("res://features/items/defs/rarity_def.gd"),
 	"perk": preload("res://features/items/defs/perk_def.gd"),
 	"chest": preload("res://features/items/defs/chest_def.gd"),
@@ -40,6 +40,7 @@ const KINDS: Dictionary = {
 	"vfx": preload("res://features/combat/defs/vfx_def.gd"),
 	"battle_juice": preload("res://features/combat/defs/juice_def.gd"),
 	"battle_camera": preload("res://features/combat/defs/battle_camera_def.gd"),
+	"ui_style": preload("res://features/ui/defs/ui_style_def.gd"),
 }
 ## Equippable kinds share one id namespace; get_def("item", id) finds any of them.
 const ITEM_KINDS: Array[String] = ["hilt", "blade", "prosthetic"]

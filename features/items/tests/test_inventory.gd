@@ -43,7 +43,7 @@ func test_equip_checks_ownership_slot_and_wearer() -> void:
 
 
 func test_chest_opens_once_and_the_flag_is_saved() -> void:
-	var chest := ContentDB.get_def("chest", &"roof_arc_arm") as ChestDef
+	var chest := ContentDB.get_def("chest", &"chest_saila") as ChestDef
 	var owned: Array[StringName] = []
 	var flags: Dictionary[StringName, bool] = {}
 	check(not Chests.is_open(chest, flags), "closed at first")
@@ -61,7 +61,7 @@ func test_chest_opens_once_and_the_flag_is_saved() -> void:
 
 
 func test_a_chest_with_an_owned_item_still_counts_as_opened() -> void:
-	var chest := ContentDB.get_def("chest", &"roof_lens") as ChestDef
+	var chest := ContentDB.get_def("chest", &"chest_mafraj") as ChestDef
 	var owned: Array[StringName] = [&"lens_array"]
 	var flags: Dictionary[StringName, bool] = {}
 	check_eq(Chests.open(chest, owned, flags), &"", "nothing new to give")
