@@ -29,7 +29,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/combat/arenas.json`: content: arena x1
 - `content/combat/camera.json`: content: battle_camera x1
 - `content/combat/combatants.json`: content: combatant x4
-- `content/combat/encounters.json`: content: encounter x3
+- `content/combat/encounters.json`: content: encounter x5
 - `content/combat/juice.json`: content: battle_juice x1
 - `content/combat/rules.json`: content: battle_rules x1
 - `content/combat/statuses.json`: content: status x3
@@ -52,12 +52,12 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/ui/style.json`: content: ui_style x1
 - `content/ui/transitions.json`: content: transition x3
 - `content/world/areas.json`: content: area x1
-- `content/world/buildings.json`: content: building x9
+- `content/world/buildings.json`: content: building x10
 - `content/world/camera.json`: content: camera_rig x1
 - `content/world/explore.json`: content: explore_rules x1
 - `content/world/look.json`: content: look x5
 - `content/world/mist.json`: content: mist x3
-- `content/world/props.json`: content: prop x23
+- `content/world/props.json`: content: prop x25
 - `content/world/sky.json`: content: sky x1
 - `content/world/skyline.json`: content: skyline x1
 - `content/world/tiles.json`: content: tile x8
@@ -310,7 +310,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/ui_theme.gd`: Builds the one Godot Theme every menu and HUD uses: Amiri for reading, Reem Kufi for titles, names and numbers, ornate panels, brass-focus buttons, gradient bars
 - `features/ui/view/ui_transition.gd`: The qamariya screen wipe: five stained-glass shards (red, amber, green, blue, violet) drop over the screen one after another, cover it, then lift away
 - `features/ui/view/ui_type.gd`: Typed text: a label reveals one character per t_text_char with the typing blip; confirm finishes the line
-- `features/world/defs/area_def.gd`: A level as data: equal-width rows of tile characters, a legend (character -> tile id) and four markers (S spawn, W workshop bench, P patrol start, Q patrol end) that each appear once and stand on floor
+- `features/world/defs/area_def.gd`: A level as data: equal-width rows of tile characters, a legend (character -> tile id), two markers (S spawn, W workshop bench) that each appear once and stand on floor, and typed places (PlaceDef: stall, sabil, patrols...)
 - `features/world/defs/building_def.gd`: One Sana'a tower-house as data: footprint (metres), floors (the lowest stone_floors are basalt), window columns per facade, frieze style, qamariya glass letters, lit-window ratio, parapet style and roof extras
 - `features/world/defs/camera_preset_def.gd`: Stub (v0.3 registry, filled by the level builder): one named camera pose with its own field of view and depth of field, e.g
 - `features/world/defs/camera_rig_def.gd`: Camera language for exploring (content/world/camera.json): the opening establishing shot as keyframes (camera and target positions relative to the player, field of view, depth-of-field scale, seconds) and the "vista" pose the camera eases to inside a vista zone
@@ -320,7 +320,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/defs/look_def.gd`: The HD-2D look as data: camera offset and field of view, tilt-shift depth of field, key light, ambient light, background and bloom
 - `features/world/defs/mist_def.gd`: One drifting mist layer (content/world/mist.json): a flat transparent plane at a height, scrolling noise between two thresholds, faded where it meets geometry, near the camera and at the plane's edges
 - `features/world/defs/paint_def.gd`: The painted-diorama recipe of a look (the "paint" object of a look entry): the shared painted light (bands, tints, rim, min_light floor), which offline painterly bake the world textures use, the ink outline pass, the grade (a colour LUT made from split tones, vignette, canvas grain), anti-aliasing and the painted figure
-- `features/world/defs/place_def.gd`: Stub (v0.3 registry, filled by the level builder): a named spot in an area (sabil, stall, workshop, vista) at a grid cell, so code finds it by id instead of by node path
+- `features/world/defs/place_def.gd`: A named spot in an area (areas.json "places"): where the player stands to use it, or the patrol lane, so code finds it by id instead of by node path
 - `features/world/defs/placement.gd`: Where one building or prop stands in an area: the content id (ref), an optional name for it (chests), the position (x, z on the floor; y absolute, or the floor height when absent) and a yaw in degrees
 - `features/world/defs/prop_def.gd`: A rooftop prop as data (content/world/props.json): a list of simple parts (PropPart), an optional practical light it carries, an optional box that blocks walking (collide = width, height, depth, centred on the prop's base) and, for a chest, the lid's hinge (lid_hinge x, y, z) so the "lid" part group can swing open
 - `features/world/defs/prop_part.gd`: One solid piece of a prop: a box (size = width, height, depth; at = centre) or a frustum (size = bottom radius, top radius, height; at = base centre), a palette letter, an optional yaw/tilt (degrees), and how it is drawn: glow (unshaded, boosted, blooms), blink (a glow that pulses), pattern (a painted tile texture instead of the letter), group (a named sub-mesh that can move, such as a chest lid)
@@ -332,27 +332,44 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/defs/tile_def.gd`: One kind of block: height in metres, colour (an art-bible palette letter or #hex), whether it blocks walking, an optional glow, an optional cap tile drawn on top of it (gypsum trim on a tower) and an optional surface pattern (a SurfacePainter texture painted over the colour, 4 m repeat, 32 px = 1 m), or hidden (blocks only)
 - `features/world/interact/chest.gd`: A treasure chest: the prop's body and a lid that swings open on a hinge when the player interacts
 - `features/world/interact/interact_spot.gd`: Something the player can press interact next to: a floating prompt (a localization key) that shows while he is within the interact radius, and a virtual _interact() that runs on the key press
+- `features/world/interact/pill_spot.gd`: An interact spot whose prompt is the UI's glass pill ("[E] Verb", Ui.interaction_prompt) instead of a 3D label: the pill follows the spot through the camera and shows while the player is in range
+- `features/world/interact/sabil_drink.gd`: What drinking at the sabil does to the game: the whole party is refilled (no carried vitals = full), the cleared patrols are forgotten (they return), the save point is the sabil and the game is written to a slot
+- `features/world/interact/sabil_spot.gd`: The sabil fountain: interact opens the "Drink to rest?" screen
+- `features/world/interact/stall_spot.gd`: The herb stall: stand at the counter and press interact to open the shop screen (Screens id &"shop")
+- `features/world/logic/camera_limits.gd`: The exploration camera's frame rules: the camera target is the player clamped into the area's limits (x and z ranges from camera.json), so the camera never leaves the commons even when the player walks to the east roof
 - `features/world/logic/facade_details.gd`: Sana'a facade parts painted with palette letters at 32 px/m: gypsum friezes (zigzag, triangles, rosettes), windows with thick white gypsum frames, the qamariya (a semicircle of coloured glass over the window) and arched wooden doors
 - `features/world/logic/facade_painter.gd`: Paints one Sana'a tower-house facade at 32 px/m from a FacadeSpec: basalt stone floors at the bottom (door on the ground floor), fired-brick floors above, a gypsum frieze at the top of each brick floor, and on every brick floor windows with gypsum frames under qamariya arches
 - `features/world/logic/facade_spec.gd`: What one painted facade needs: width in metres, floors (the lowest stone_floors are basalt, the rest brick), window columns, frieze style, qamariya glass letters, lit and shutter ratios, a door, floor height in pixels and the seed
+- `features/world/logic/follow_guard.gd`: Keeps the follower from sticking: it asks to be put back on the leader's trail when it is farther than the leash, or when it wanted to move but barely got closer to the target (wedged on a corner) for stuck_seconds
 - `features/world/logic/light_pick.gd`: Which practical lights get a real OmniLight: the nearest few to a focus point (the rest keep only their fake light pool), plus the fade and flicker maths
 - `features/world/logic/masonry.gd`: Brick courses and stone slabs painted with palette letters
+- `features/world/logic/patrol_safety.gd`: Where the party may stand with respect to the patrols: distance to a patrol lane (a segment, flat on the floor), the spot to stand on after a battle (the old one if it is clear, else the nearest clear cell) and the spot "Unstuck" picks (the newest remembered spot that is clear and not where the player is wedged, else the nearest safe place)
 - `features/world/logic/pixel_canvas.gd`: A pixel canvas painted with palette letters, with an optional emission layer (black = no glow)
 - `features/world/logic/safe_spot.gd`: Remembers where the player last stood still (the "unstuck" targets)
 - `features/world/logic/skyline_layout.gd`: Where the city blocks stand: for each band a jittered grid of cells between the band's distances from the play area, minus the al-Saila corridor and the landmark clearings, thinned by the band's fill
 - `features/world/logic/surface_painter.gd`: Seamless 128x128 surface textures (4 m at 32 px/m) for the playable tiles, painted with palette letters: lime-plaster roof floor, worn plaster, white gypsum, wooden planks, stone paving (al-Saila), basalt, brick, and the dotted window texture of far silhouettes
+- `features/world/logic/walk_graph.gd`: The walk graph of an area: which one-metre cells can be stood on, which can be reached from a start, which belong to a free 2 x 2 block (a corridor under 2 m has none), where the cells are traps and where a step is too high
 - `features/world/look_test/look_test.gd`: HD-2D look test (the M1 rendering spike): a block diorama, a pixel-art billboard hero (CharacterVisual), tilt-shift depth of field, bloom and a low sun with shadows
 - `features/world/look_test/look_test.tscn`: scene
-- `features/world/patrol/patrol.gd`: A Concession enforcer walking between two points with pauses at the ends
+- `features/world/patrol/patrol.gd`: A Concession patrol walking its lane (two floor points, a pause at each end)
+- `features/world/player/bystander.gd`: A person who stands where the level puts him (the herb seller): an idle picture turned the way the place says
 - `features/world/player/follower.gd`: Bilqis: trails the leader along the path he recently walked, at the follower distance, closing in with a little lag
 - `features/world/player/player.gd`: Zayd: 8-way walking from the move_* actions (up = -Z), stopped by solid tiles
-- `features/world/rooftop/rooftop.gd`: The rooftop exploration scene: builds the night diorama from content, walks Zayd with Bilqis in tow, runs a Concession patrol and the workshop bench, moves the camera through an ExploreCamera
+- `features/world/rooftop/actor_body.gd`: The collision capsule of a walking actor (Zayd, Bilqis): radius and height come from ExploreRulesDef (explore.json; builder B4 later reads them from the ModelDef instead)
+- `features/world/rooftop/area_actors.gd`: The living things of an area, built from its markers and places: Zayd, Bilqis, one Patrol per patrol place, the workshop bench, the herb stall and its seller, and the sabil
+- `features/world/rooftop/area_walk.gd`: The walk graph of an area built from content: a cell can be stood on when its tile is not solid and no prop's collide box (turned by its yaw, grown by the capsule radius) covers the cell centre at the height Zayd stands
+- `features/world/rooftop/patrol_director.gd`: The rules for the patrols of an area: those beaten since the last sabil drink (GameState.cleared_patrols) stay gone, the one that fought goes back to its lane start after a battle, nobody can touch for touch_grace seconds after a battle, a drink or an unstuck, and a drink brings every patrol back (docs/design/economy.md section 6)
+- `features/world/rooftop/rooftop.gd`: The rooftop exploration scene: builds the diorama (RooftopWorld), the actors (AreaActors) and the patrol rules (PatrolDirector); battle and menu scenes use only the public API below
 - `features/world/rooftop/rooftop.tscn`: scene
+- `features/world/rooftop/rooftop_camera.gd`: What the exploration camera looks at: the player clamped into the rig's limits (so it never leaves the commons), or, during dialogue, the speaker's head
 - `features/world/rooftop/rooftop_debug.gd`: The F3 debug labels of an area: frames per second and the area name
+- `features/world/rooftop/rooftop_safety.gd`: Where the party may be put by the game: after a battle (the old spot if it is clear of every patrol, else the nearest clear walkable cell) and by "Unstuck" (the newest remembered still spot that is clear, else the nearest `safe` place)
 - `features/world/rooftop/rooftop_shot.gd`: Frame tool: the rooftop with Zayd put at chosen floor coordinates (and an optional free camera), for rendering pictures
 - `features/world/rooftop/rooftop_shot.tscn`: scene
+- `features/world/rooftop/rooftop_world.gd`: Builds the still world of the rooftop scene under a host node: environment, sun, the area's blocks, mist, skyline, the camera and its ExploreCamera
 - `features/world/tests/test_ambush.gd`: Which side struck first: the patrol's walking direction, and last_touch_ambush() after a touch (0 nobody, 1 the patrol caught the player from behind, 2 the player caught the patrol from behind)
 - `features/world/tests/test_area.gd`: Area, tile and look content: the rooftop layout is well formed and every probe of a broken layout is caught
+- `features/world/tests/test_camera_limits.gd`: The exploration camera frame (docs/design/rooftop-v3.md section 2): CameraLimits maths, the limits in camera.json, and on the shipped rooftop for every walkable cell: the camera (pitch 35/45/55 x distance 14/17/20, and the shipped hades preset) never stands inside a building, a prop or a skyline tower of the near and mid bands
 - `features/world/tests/test_chests_signs.gd`: Chests (prompt, one-time opening, the lid animation, the Rooftop signal) and the neon signs (localization keys, Arabic text from the CSV, text fitted to the board)
 - `features/world/tests/test_dressing.gd`: Rooftop dressing as data: props and building placements are valid and stand on solid cells, prop parts use palette letters, the light maths (nearest few, fades, flicker), the real-light budget and the fake pools, the canyon and the nested DefReader reads
 - `features/world/tests/test_explore_camera.gd`: ExploreCamera on the rooftop: follow offset, the vista pose inside the zone (lower pitch, eases back out), the opening shot (keyframes, frozen actors, skip by key, ends on the exploring pose) and the DoF scale
@@ -360,9 +377,13 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/tests/test_look_test.gd`: The look-test scene builds without errors (headless: no pixels are drawn, but every node and resource is made)
 - `features/world/tests/test_night.gd`: Night look: the sky def feeds every shader uniform, look "night" builds a sky environment with fog and a fill light while "v1" stays the flat daytime look, bad look keys are caught, the vista zone and mist layers load
 - `features/world/tests/test_painted.gd`: Painted diorama look spike: the three painted looks read and differ, their camera presets put the camera at the preset pitch, world materials switch to the painted shader only while a painted look is in use, the baked textures load (and fall back when missing), every bake matches the current painter inputs (re-bake when this fails), the grade LUT is the identity at amount 0, and a painted rooftop gets its outline, screen pass and figure
+- `features/world/tests/test_places.gd`: The typed places of the rooftop (docs/design/rooftop-v3.md section 3): valid ids and references, every standing point and patrol end reachable, the props they use stand next to them, and the patrol lanes keep away from the commons; PatrolSafety's lane maths and the unstuck and return picks
 - `features/world/tests/test_rooftop.gd`: The rooftop scene builds headless; walking, the follower, the patrol touch, the ambush direction, the exploring switch, the patrol respawn, the workshop prompt and the camera
+- `features/world/tests/test_rooftop_actors.gd`: Rooftop actors: the workshop bench is a mesh, dialogue framing aims at the speaker's head, and Bilqis never sticks
+- `features/world/tests/test_sabil_patrols.gd`: The rooftop's living rules: the sabil drink (save, refill, patrols return), beaten patrols and the grace time, the party's safe return and unstuck, the stall, the bench mesh, dialogue framing, and Bilqis never sticking
 - `features/world/tests/test_safe_spot.gd`: SafeSpot: a place counts after standing still, walking resets the clock, the newest spot is skipped when the player is wedged right there, and only the two newest spots are kept
 - `features/world/tests/test_skyline.gd`: Night Sana'a city: building and skyline content, the layout rules (outside the area, out of the al-Saila corridor, inside the band, deterministic), the tower-house mesh, the landmarks and the draw-call budget
+- `features/world/tests/test_walk_graph.gd`: WalkGraph rules on small grids (reachability, diagonals, 2 x 2 width, traps, steps) and on every shipped area (docs/design/rooftop-v3.md section 5): everything is reachable from the spawn, no corridor is under 2 m, no cell is a trap, no step is too tall, and the bridge keeps three rows
 - `features/world/view/area_builder.gd`: Builds an area's blocks: one MultiMeshInstance3D per tile type (bodies, and caps drawn with the cap tile's material; tiles with a pattern get its painted triplanar texture), plus one StaticBody3D holding a box per run of solid tiles and walls that close the area's edges
 - `features/world/view/area_dressing.gd`: Everything an area has on top of its tiles: tower-houses and props (PropBuilder), neon signs, the practical lights with their fake pools (AreaLights) and the chests (one Chest each, interactive)
 - `features/world/view/area_lights.gd`: The area's practical lights
@@ -396,7 +417,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/view/surface_buffer.gd`: Collects flat-shaded, vertex-coloured faces (boxes, prisms, polygons) for one surface of an ArrayMesh
 - `features/world/view/surface_materials.gd`: Cached textures and materials for the painted world, so 100+ buildings share a handful of draw materials: tile patterns (world-space triplanar, so texels stay square across tiles), tower-house facades (front and side painted side by side in one atlas, lit windows in an emission map), vertex-coloured trim, unshaded HDR glow, and the dotted far silhouettes
 - `features/world/view/tower_house.gd`: Builds one Sana'a tower-house mesh from a BuildingDef: four textured facades (one atlas), a roof, a white gypsum parapet with merlons and stepped or horned corners, and roof extras
-- `features/world/workshop/workshop_spot.gd`: The workshop bench: its sprite, and the interact prompt
+- `features/world/workshop/workshop_spot.gd`: The workshop bench: a plain box mesh (size and colour from explore.json; it is scenery, not a character) and the interact prompt
 
 ## localization
 - `localization/battle.csv`
@@ -410,6 +431,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `localization/ui.csv`
 - `localization/workshop.csv`
 - `localization/world.csv`
+
+## nonexistent_dir_for_b5
+- `nonexistent_dir_for_b5/deeper/slot_1.json`: content: ? x0
 
 ## tests
 - `tests/base_test.gd`: Base class for test files

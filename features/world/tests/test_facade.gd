@@ -108,6 +108,7 @@ func test_every_tile_pattern_is_known() -> void:
 func test_area_builder_textures_patterned_tiles() -> void:
 	var area := ContentDB.get_def("area", &"souq_rooftops") as AreaDef
 	var rules := ContentDB.get_def("explore_rules", &"default") as ExploreRulesDef
+	PaintedLook.begin(ContentDB.get_def("look", &"night") as LookDef)  # earlier tests may have left a painted look on
 	var root: Node3D = AreaBuilder.build(area, rules)
 	var textured: int = 0
 	for child: Node in root.get_children():

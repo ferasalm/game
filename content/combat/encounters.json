@@ -1,6 +1,12 @@
 {
   "kind": "encounter",
   "items": [
+    {"id": "patrol_pair", "name_key": "ENCOUNTER_PATROL_PAIR",
+     "enemies": ["concession_enforcer", "concession_enforcer"],
+     "enemy_slots": [0, 1], "party_slots": [0, 2], "loot": [], "money": 50},
+    {"id": "patrol_drone", "name_key": "ENCOUNTER_PATROL_DRONE",
+     "enemies": ["survey_drone"],
+     "enemy_slots": [2], "party_slots": [0, 2], "loot": [], "money": 30},
     {"id": "patrol_scouts", "name_key": "ENCOUNTER_PATROL_SCOUTS",
      "enemies": ["concession_enforcer", "survey_drone"],
      "enemy_slots": [0, 2], "party_slots": [0, 2], "loot": [], "money": 40},

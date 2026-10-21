@@ -74,7 +74,8 @@ func test_touch_starts_a_battle_and_it_returns_to_walking() -> void:
 	check(result == &"victory" or result == &"defeat", "the battle ends (%s)" % result)
 	check(main.stage == null, "the stage is gone after the battle")
 	check(main.rooftop.player.visible, "exploring is back on")
-	check(not main.rooftop.patrol.visible, "the patrol was reset (hidden until it respawns)")
+	check_eq(main.rooftop.patrol.visible, not GameState.cleared_patrols.has(main.rooftop.patrol.encounter_id),
+		"a beaten patrol is gone until the sabil; one that won is back at its start")
 	check(main.rooftop.camera.current, "the rooftop camera is current again")
 	check_eq(log.size(), 2, "battle_started and battle_ended, once each")
 	check_eq((log[1] as Array)[2], result == &"victory", "battle_ended carries the outcome")

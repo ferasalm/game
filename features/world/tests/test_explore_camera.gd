@@ -5,6 +5,7 @@ extends TestCase
 
 func _make() -> Rooftop:
 	var rooftop := (load("res://features/world/rooftop/rooftop.tscn") as PackedScene).instantiate() as Rooftop
+	rooftop.look_id = &"night"  # the plain follow camera; the painted look and its limits have their own tests
 	tree.root.add_child(rooftop)
 	return rooftop
 
@@ -12,6 +13,12 @@ func _make() -> Rooftop:
 func _run(rooftop: Rooftop, seconds: float) -> void:
 	for i: int in roundi(seconds * 60.0):
 		rooftop._process(1.0 / 60.0)
+
+
+## The camera follows the player clamped into the rig's limits.
+func _subject(rooftop: Rooftop) -> Vector3:
+	var rig := ContentDB.get_def("camera_rig", &"explore") as CameraRigDef
+	return CameraLimits.clamp_target(rooftop.player.position, rig.limit_x, rig.limit_z)
 
 
 func _pitch(camera: Camera3D) -> float:
@@ -60,7 +67,7 @@ func test_intro_plays_freezes_actors_and_ends_on_the_exploring_pose() -> void:
 	check(not rooftop.camera_rig.is_intro_playing() and finished.size() == 1, "ended once after its duration")
 	check_eq(rooftop.player.process_mode, Node.PROCESS_MODE_INHERIT, "Zayd can walk again")
 	var look := ContentDB.get_def("look", &"night") as LookDef
-	var want: Vector3 = rooftop.player.position + look.camera_offset
+	var want: Vector3 = _subject(rooftop) + look.camera_offset
 	check(rooftop.camera.position.distance_to(want) < 0.1, "the shot ends on the exploring pose")
 	check(is_equal_approx(rooftop.camera.fov, look.fov), "with the look's field of view")
 	rooftop.free()
@@ -78,7 +85,7 @@ func test_any_key_or_click_skips_the_intro() -> void:
 	check_eq(rooftop.player.process_mode, Node.PROCESS_MODE_INHERIT, "actors are released")
 	_run(rooftop, 2.0)
 	var look := ContentDB.get_def("look", &"night") as LookDef
-	check(rooftop.camera.position.distance_to(rooftop.player.position + look.camera_offset) < 0.1,
+	check(rooftop.camera.position.distance_to(_subject(rooftop) + look.camera_offset) < 0.1,
 		"the camera eases to the exploring pose after a skip")
 	rooftop.free()
 	var other: Rooftop = _make()

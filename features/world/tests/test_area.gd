@@ -16,7 +16,7 @@ func test_rooftop_area_is_well_formed() -> void:
 	check(area != null, "area souq_rooftops exists")
 	check(area.problems().is_empty(), "layout problems: " + "; ".join(area.problems()))
 	check(area.width() >= 20 and area.depth() >= 14, "the area is about 26x18 tiles")
-	check_eq(area.encounter, &"rooftop_patrol", "the patrol's encounter id")
+	check_eq(area.places_of(PlaceDef.PATROL).size(), 3, "three patrols")
 
 
 func test_markers_stand_on_floor() -> void:
