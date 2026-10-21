@@ -31,7 +31,7 @@ plus x for the glint. Glow: C or M with a on top.
 - Workshop bench: low table, a glowing screen, tools, a brass-hilted blade.
 
 ## Pipeline
-Gemini/Flow picture to sprite entry: `python tools/art/pixelize.py --in PIC.png --id ID [--height 64] [--out content/art/sprites.json]`.
+Gemini/Flow picture to sprite entry: `python tools/art/pixelize.py --in PIC.png --id ID [--height 64] [--out content/art/sprites.json]`; Zayd and Bilqis (2026-10-21) used `--contrast 1.3 --saturation 1.5 --outline` (soft painted art loses its hues when snapped; the outline is the dark 'k' ring).
 Real sprites: Feras's Gemini picture -> pixelize.py -> touch-up in Pixelorama (free). Edit any sprite:
 `python tools/art/sprite_png.py export --id ID --png ID.png`, paint, then `... import --id ID --png ID.png`
 (lossless; refuses colours outside the palette). `... palette --out main.gpl` gives Pixelorama the palette.

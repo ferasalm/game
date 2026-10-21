@@ -50,8 +50,12 @@ func test_pixel_art_colours() -> void:
 func test_character_visual_builds_with_real_and_missing_ids() -> void:
 	var real := CharacterVisual.new()
 	real.set_sprite(&"zayd")
-	var zayd := ContentDB.get_def("sprite", &"zayd") as SpriteDef
-	check_eq(real.height(), float(zayd.height()) / zayd.pixels_per_metre, "a stand-in keeps its own density (16 px = 1 m)")
+	check_eq(real.height(), 2.0, "Zayd's real 64 px sprite at the default 32 px = 1 m")
+	var standin := CharacterVisual.new()
+	standin.set_sprite(&"concession_enforcer")
+	var enforcer := ContentDB.get_def("sprite", &"concession_enforcer") as SpriteDef
+	check_eq(standin.height(), float(enforcer.height()) / enforcer.pixels_per_metre, "a stand-in keeps its own density (16 px = 1 m)")
+	standin.free()
 	var missing := CharacterVisual.new()
 	missing.set_sprite(&"no_such_sprite")
 	check_eq(missing.height(), 2.0, "placeholder: 64 px at the default 32 px = 1 m")
