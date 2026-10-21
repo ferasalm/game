@@ -47,7 +47,7 @@ func test_pause_screen_builds_and_resume_closes() -> void:
 		return
 	check(menu.button_of(&"resume").has_focus(), "Resume has focus")
 	check(menu.button_of(&"equipment") != null, "Equipment shows (registered)")
-	check(menu.button_of(&"items") == null, "Items hidden until registered")
+	check(menu.button_of(&"items") != null, "Items shows (registered)")
 	check(menu.button_of(&"restart") != null or menu.button_of(&"load_last") != null, "load or restart")
 	menu.button_of(&"resume").pressed.emit()
 	check(not Screens.is_open() and not tree.paused, "Resume closes and unpauses")

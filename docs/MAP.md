@@ -42,6 +42,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/djanbeyyah/hilts.json`: content: hilt x3
 - `content/djanbeyyah/loadouts.json`: content: loadout x2
 - `content/economy/rules.json`: content: economy_rules x1
+- `content/economy/shops.json`: content: shop x1
 - `content/items/chests.json`: content: chest x4
 - `content/items/consumables.json`: content: consumable x4
 - `content/items/perks.json`: content: perk x6
@@ -227,8 +228,10 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/items/defs/perk_def.gd`: One perk an item can carry: a kind that battle logic implements and an amount
 - `features/items/defs/rarity_def.gd`: One rarity tier: its name, display colour, sort order, whether it is story-only (never loot) and whether gear of this tier may carry a perk
 - `features/items/defs/shop_def.gd`: A stall: who keeps it, her greeting and the consumable ids on sale (price and sell come from the ConsumableDef)
+- `features/items/item_service.gd`: Uses a consumable on the party outside battle against GameState: FieldUse does the rules on copies, this writes the bag and the carried vitals back only when the use worked
 - `features/items/logic/bag.gd`: The party's stackable consumables: counts per id plus RESERVATIONS made by pending battle casts
 - `features/items/logic/chests.gd`: Chest rules: opening gives the item once, and the opened state is a saved flag
+- `features/items/logic/field_use.gd`: Using a consumable outside battle, pure: the item must be usable in the field, aimed at living allies, and must change something (a full hero is refused)
 - `features/items/logic/gear.gd`: Builds a hero's fighter from the shared base plus worn gear: base -> hilt -> blade -> prosthetic -> perks (caps are applied by each step)
 - `features/items/logic/holdings.gd`: What rewards are paid into: riyal, the consumable Bag, the unique-item inventory and the flags
 - `features/items/logic/inventory.gd`: Which unique items the party owns and whether a hero may wear one in a slot
@@ -236,14 +239,18 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/items/logic/perks.gd`: Applies perks to a fighter
 - `features/items/logic/reward_result.gd`: What a reward really changed: riyal added (after the cap), the equippables that were new, the consumables that fit in the bag, and riyal that came from herbs which did not fit (sold at their sell price)
 - `features/items/logic/rewards.gd`: Rewards for a won battle or an opened chest, paid straight into a Holdings
+- `features/items/logic/shop.gd`: The herb stall's rules, pure: buy (refused when the stock lacks it, the purse is short or the stack is full) and sell (bag consumables only, never reserved ones; gear is not a consumable so it can never be sold)
+- `features/items/logic/shop_result.gd`: What one buy or sell did (or why it did not): reason is &"" on success, else one of Shop.SHORT_MONEY etc
 - `features/items/logic/vitals.gd`: Carried HP and SP per hero: {hero id: {"hp": int, "sp": int}}
 - `features/items/reward_applier.gd`: Pays rewards (Rewards) into GameState and announces them: item_obtained per new equippable, item_gained per herb stack, money_changed for the riyal
+- `features/items/shop_service.gd`: Runs the stall against GameState: Shop does the rules on a Holdings copy, this takes the copy back and announces it
 - `features/items/tests/fixtures/bad_items/hilts.json`: content: hilt x3
 - `features/items/tests/fixtures/bad_items/rarities.json`: content: rarity x2
 - `features/items/tests/test_bag.gd`: Bag: stack caps with overflow, removal, and reservations (two heroes cannot both claim the last herb; release gives the claim back; consume uses it up)
 - `features/items/tests/test_inventory.gd`: Inventory (unique owned items, equip checks per slot), chests (open once, saved flag) and the item_obtained signal on the EventBus
 - `features/items/tests/test_items.gd`: Rarity tiers and the shipped items: six tiers with the owner's colours, every equippable has a real rarity, ids are unique across hilts / blades / prosthetics, the Heirloom is story-only and never loot, and bad content (an unknown rarity, a bad colour) is reported
 - `features/items/tests/test_rewards.gd`: Rewards: the first win pays everything and sets patrol_paid_<id>, a repeat win pays half the riyal and nothing else, herbs over the stack turn into riyal, the purse has a cap, a chest pays once
+- `features/items/tests/test_shop.gd`: The herb stall: buy and sell rules and their edge cases (economy.md section 9), the ShopService purse signal, and using consumables in the field (FieldUse, ItemService)
 - `features/prosthetics/defs/prosthetic_def.gd`: A high-tech prosthetic: one slot per hero
 - `features/prosthetics/logic/prosthetics.gd`: Merges a prosthetic into a fighter (docs/design/prosthetics.md), like Djanbeyyah.equip: stat adds, then the granted moves, then the caps
 - `features/prosthetics/tests/test_prosthetics.gd`: Prosthetics: the merge (base -> hilt -> blade -> prosthetic -> perks -> caps) builds new fighters and never touches the shared defs; each hero's prosthetics grant 1-2 tech moves; a prosthetic fits only its wearer
@@ -258,6 +265,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/defs/ui_style_def.gd`: The look of every menu and HUD (content/ui/style.json): three font files, named colours (c_*), sizes in pixels at 1920x1080 (s_*) and times in seconds (t_*)
 - `features/ui/logic/pause_logic.gd`: Pure rules of the pause menu: which entries show and in what order, which ask "are you sure", the vitals of a hero with a missing record (= full), and the play-time clock text
 - `features/ui/tests/node_walk.gd`: Test helper (not a test): every descendant of a node, depth first
+- `features/ui/tests/test_items_shop.gd`: The Items and Shop screens on the Screens stack, and the riyal banner of the loot popup
 - `features/ui/tests/test_pause_menu.gd`: The pause menu rules (PauseLogic) and the screen built from them
 - `features/ui/tests/test_popups.gd`: The loot popup (queues item_obtained in order, skippable), the area title card, the title overlay (any key dismisses it once) and the opening shot held on the moon until then
 - `features/ui/tests/test_screens.gd`: The Screens stack: push/pop pause the tree and emit game_paused, focus returns to the control that had it, back goes to the top screen, an unhandled menu opens pause only while exploring with nothing open, screens open by id
@@ -266,8 +274,12 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/loot_popup.gd`: The "Obtained" banner: listens to EventBus.item_obtained and shows each new item centred high on the screen with its name in the rarity colour, a light sweep for Rare and above and a rarity jingle (AudioDirector.play_item)
 - `features/ui/view/screens/confirm_dialog.gd`: A centred Yes/No question over the scrim
 - `features/ui/view/screens/equipment_host.gd`: Puts the existing EquipmentScreen (the bench, a CanvasLayer with its own open()/closed API) on the Screens stack as the screen &"equipment"
+- `features/ui/view/screens/items_screen.gd`: The Items screen (Screens id &"items", opened from the pause menu): the bag on the left, the chosen item's description and effect on the right, and under it the hero picker
+- `features/ui/view/screens/items_text.gd`: Item screen wording: the effect line ("HP +120") and a hero's "HP 200 -> 320" preview
 - `features/ui/view/screens/pause_menu.gd`: The pause screen (opened by Screens on the menu action while exploring): the entries on the left (Resume, Items, Equipment, Load last save or Restart, Unstuck, Title, Quit), the party on the right
 - `features/ui/view/screens/pause_party.gd`: The right half of the pause screen: a card per hero (name, HP and SP bars with numbers, KO tag), the worn gear of each hero, and under a frieze the area name, play time and riyal
+- `features/ui/view/screens/shop_detail.gd`: The right half of the shop: the riyal counter, the focused item's name, description and effect, then price, owned count, "money after" (red when the trade is not affordable) and the quantity
+- `features/ui/view/screens/shop_screen.gd`: The herb stall (Screens id &"shop"; open with Screens.open(&"shop", {"shop": &"herb_stall"}), optional "after_battle": true for the keeper's other greeting)
 - `features/ui/view/title_overlay.gd`: The game's title over the opening sky: "Qarnaw" in Latin and Arabic in Reem Kufi with a pulsing "Press any key"
 - `features/ui/view/ui.gd`: Entry point of the shared UI look: the style (content/ui/style.json), the one cached Theme, and small builders (labels, screen roots, the zigzag divider)
 - `features/ui/view/ui_boxes.gd`: StyleBox builders for the UI theme: ornate panels (painted nine-patch frames), button states with the warm brass focus glow, and progress-bar tracks and gradient fills

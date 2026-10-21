@@ -1,1 +1,34 @@
 keys,en
+SHOP_HERB_STALL,Herb stall
+SHOP_HERB_STALL_AR,دكان الأعشاب
+NPC_HERB_SELLER,Abu Nabil
+SHOP_EPITHET,Herbs from the roof stairs
+SHOP_GREET_FIRST,"You climbed four flights with that face. Sit. Dry mint first, then business."
+SHOP_GREET_RETURN,"Back already. The herbs haven't changed, and neither have my prices."
+SHOP_GREET_AFTER_BATTLE,"Your sleeve is torn and your hand is shaking. Sit, drink something, then tell me who you hit."
+SHOP_LINE_BUY,"Pink feathers for the wound, yellow for the head. Take what you can carry."
+SHOP_BUY_DONE,"Paid in full, the souq way. Good."
+SHOP_LINE_SELL,"Bring me what you don't need. I weigh fairly. I always have."
+SHOP_SELL_DONE,"That's worth a cup of qishr for both of us."
+SHOP_NOT_ENOUGH,"Not enough riyal. Come back when a job pays, or sell me something first."
+SHOP_BAG_FULL,"Your bag is full. Drink what you carry, or leave something here."
+SHOP_PURSE_FULL,"Your purse is full. Spend a little first; I can't weigh coin you can't carry."
+SHOP_NOTHING_TO_SELL,"You have nothing here I can buy."
+SHOP_NOT_STOCKED,"I don't keep that."
+SHOP_FAREWELL,"Go in peace, and come back with your hands full."
+SHOP_TAB_BUY,Buy
+SHOP_TAB_SELL,Sell
+SHOP_PRICE,Price
+SHOP_OWNED,Owned
+SHOP_MONEY_AFTER,Money after
+SHOP_QTY,Quantity
+SHOP_CANT_AFFORD,Not enough riyal
+SHOP_SOLD_OUT,Stack full
+SHOP_BOUGHT,Bought %s
+SHOP_SOLD,Sold %s
+SHOP_PROMPT_QTY,Amount
+SHOP_PROMPT_BUY,Buy
+SHOP_PROMPT_SELL,Sell
+SHOP_PROMPT_LEAVE,Leave
+UI_RIYAL,riyal
+LOOT_MONEY,%s riyal
