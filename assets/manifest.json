@@ -2603,6 +2603,20 @@
       "source": "kenney.nl/assets/sci-fi-sounds",
       "licence": "CC0 1.0",
       "prompt": ""
+    },
+    {
+      "id": "music_night_rooftops",
+      "path": "audio/music/night_rooftops.ogg",
+      "source": "flow music (flowmusic.app, Lyria), owner-generated",
+      "licence": "Google Flow Music output, owner-generated; check Flow Music terms before a commercial release",
+      "prompt": "Night over Souq al-Milh"
+    },
+    {
+      "id": "music_battle",
+      "path": "audio/music/battle.ogg",
+      "source": "flow music (flowmusic.app, Lyria), owner-generated",
+      "licence": "Google Flow Music output, owner-generated; check Flow Music terms before a commercial release",
+      "prompt": "Concession Clash"
     }
   ]
 }
