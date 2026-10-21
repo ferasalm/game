@@ -1,0 +1,103 @@
+{
+  "kind": "vfx",
+  "items": [
+    {"id": "slash", "impact": 0.12, "hitstop": 0.05, "shake": 0.05, "zoom": 0.0, "knock": 0.25, "layers": [
+      {"tex": "arc", "from": "target", "x": -0.1, "y": 0.5, "w": 1.5, "h": 1.5, "w_end": 2.0, "h_end": 2.0, "color": "#e8fbff", "energy": 2.1, "rot": -60, "spin": 80, "time": 0.22, "hold": 0.3},
+      {"tex": "arc", "from": "target", "x": -0.1, "y": 0.5, "w": 1.8, "h": 1.8, "w_end": 2.5, "h_end": 2.5, "color": "#3df0e0", "energy": 1.12, "rot": -60, "spin": 90, "time": 0.28, "delay": 0.02, "hold": 0.2},
+      {"tex": "glow", "from": "target", "w": 0.8, "h": 0.8, "w_end": 1.6, "h_end": 1.6, "color": "#bff8ff", "energy": 0.9, "time": 0.18, "delay": 0.1},
+      {"tex": "spark", "from": "target", "w": 0.28, "h": 0.28, "w_end": 0.0, "h_end": 0.0, "color": "#ffffff", "energy": 2.8, "count": 6, "radial": true, "move_x": 1.0, "time": 0.26, "delay": 0.1, "roll": 45}
+    ]},
+    {"id": "heavy_slash", "impact": 0.2, "hitstop": 0.13, "shake": 0.2, "zoom": 0.12, "knock": 0.7, "layers": [
+      {"tex": "arc", "from": "target", "x": -0.1, "y": 0.6, "w": 2.2, "h": 2.2, "w_end": 3.0, "h_end": 3.0, "color": "#fff0d0", "energy": 2.45, "rot": -70, "spin": 100, "time": 0.28, "hold": 0.3},
+      {"tex": "arc", "from": "target", "x": 0.1, "y": 0.4, "w": 2.2, "h": 2.2, "w_end": 3.0, "h_end": 3.0, "color": "#ff8a2a", "energy": 1.54, "rot": 110, "spin": -100, "time": 0.3, "delay": 0.06, "hold": 0.3},
+      {"tex": "ring", "from": "feet", "w": 0.6, "h": 0.6, "w_end": 3.0, "h_end": 3.0, "color": "#ffb060", "energy": 1.4, "time": 0.3, "delay": 0.1},
+      {"tex": "glow", "from": "target", "w": 1.12, "h": 1.12, "w_end": 2.4, "h_end": 2.4, "color": "#ffd9a0", "energy": 1.12, "time": 0.22, "delay": 0.12},
+      {"tex": "spark", "from": "target", "w": 0.4, "h": 0.4, "w_end": 0.0, "h_end": 0.0, "color": "#ffe0a0", "energy": 2.8, "count": 10, "radial": true, "move_x": 1.6, "time": 0.34, "delay": 0.12, "roll": 45}
+    ]},
+    {"id": "stab", "impact": 0.1, "hitstop": 0.07, "shake": 0.06, "zoom": 0.0, "knock": 0.3, "layers": [
+      {"tex": "streak", "from": "hand", "to": "target", "to_x": 0.1, "span": true, "w": 1.0, "h": 0.14, "h_end": 0.02, "color": "#ffffff", "energy": 2.8, "time": 0.18, "hold": 0.2},
+      {"tex": "streak", "from": "hand", "to": "target", "to_x": 0.1, "span": true, "w": 1.0, "h": 0.4, "h_end": 0.05, "color": "#3df0e0", "energy": 1.26, "time": 0.2, "hold": 0.1},
+      {"tex": "glow", "from": "target", "w": 0.56, "h": 0.56, "w_end": 1.28, "h_end": 1.28, "color": "#d8ffff", "energy": 1.12, "time": 0.16, "delay": 0.08},
+      {"tex": "spark", "from": "target", "w": 0.26, "h": 0.26, "w_end": 0.0, "h_end": 0.0, "color": "#ffffff", "energy": 2.8, "count": 5, "radial": true, "move_x": 0.9, "time": 0.22, "delay": 0.08, "roll": 45}
+    ]},
+    {"id": "piston", "impact": 0.16, "hitstop": 0.1, "shake": 0.14, "zoom": 0.06, "knock": 0.5, "layers": [
+      {"tex": "ring", "from": "target", "w": 0.4, "h": 0.4, "w_end": 2.6, "h_end": 2.6, "color": "#ffc070", "energy": 2.1, "time": 0.3, "hold": 0.1},
+      {"tex": "ring", "from": "target", "w": 0.3, "h": 0.3, "w_end": 3.4, "h_end": 3.4, "color": "#ff8a2a", "energy": 1.4, "time": 0.38, "delay": 0.05, "hold": 0.1},
+      {"tex": "glow", "from": "target", "w": 0.96, "h": 0.96, "w_end": 1.92, "h_end": 1.92, "color": "#ffd9a0", "energy": 1.12, "time": 0.2},
+      {"tex": "mote", "from": "feet", "w": 0.2, "h": 0.2, "w_end": 0.05, "h_end": 0.05, "color": "#d8c8a8", "energy": 0.7, "count": 8, "spread": 0.4, "move_y": 0.5, "move_x": 0.4, "radial": true, "time": 0.45, "hold": 0.1}
+    ]},
+    {"id": "beam", "impact": 0.2, "hitstop": 0.09, "shake": 0.16, "zoom": 0.1, "knock": 0.5, "layers": [
+      {"tex": "glow", "from": "hand", "w": 0.24, "h": 0.24, "w_end": 0.88, "h_end": 0.88, "color": "#7df8ff", "energy": 1.8, "time": 0.2, "hold": 0.8},
+      {"tex": "streak", "from": "hand", "to": "target", "span": true, "w": 1.0, "h": 0.7, "h_end": 0.3, "color": "#3df0e0", "energy": 1.54, "time": 0.4, "delay": 0.18, "hold": 0.5},
+      {"tex": "streak", "from": "hand", "to": "target", "span": true, "w": 1.0, "h": 0.22, "h_end": 0.1, "color": "#ffffff", "energy": 3.5, "time": 0.4, "delay": 0.18, "hold": 0.5},
+      {"tex": "glow", "from": "target", "w": 0.8, "h": 0.8, "w_end": 2.24, "h_end": 2.24, "color": "#aefcff", "energy": 1.35, "time": 0.4, "delay": 0.18, "hold": 0.4},
+      {"tex": "spark", "from": "target", "w": 0.3, "h": 0.3, "w_end": 0.0, "h_end": 0.0, "color": "#ffffff", "energy": 2.8, "count": 8, "radial": true, "move_x": 1.5, "time": 0.4, "delay": 0.2, "roll": 45}
+    ]},
+    {"id": "bolt", "impact": 0.24, "hitstop": 0.06, "shake": 0.08, "zoom": 0.0, "knock": 0.3, "layers": [
+      {"tex": "glow", "from": "hand", "w": 0.32, "h": 0.32, "w_end": 0.72, "h_end": 0.72, "color": "#fff0a0", "energy": 1.35, "time": 0.12},
+      {"tex": "glow", "from": "hand", "to": "target", "w": 0.44, "h": 0.44, "color": "#fff3b0", "energy": 2.25, "time": 0.24, "hold": 1.0},
+      {"tex": "streak", "from": "hand", "to": "target", "aim": true, "w": 0.9, "h": 0.12, "color": "#ffe36a", "energy": 2.45, "time": 0.24, "hold": 1.0, "count": 4, "stagger": 0.012},
+      {"tex": "bolt0", "from": "target", "w": 1.6, "h": 1.0, "w_end": 2.0, "h_end": 1.2, "color": "#ffe36a", "energy": 2.1, "time": 0.2, "delay": 0.24, "roll": 20},
+      {"tex": "glow", "from": "target", "w": 0.64, "h": 0.64, "w_end": 1.6, "h_end": 1.6, "color": "#fff0a0", "energy": 1.35, "time": 0.2, "delay": 0.24},
+      {"tex": "spark", "from": "target", "w": 0.26, "h": 0.26, "w_end": 0.0, "h_end": 0.0, "color": "#ffffff", "energy": 2.8, "count": 6, "radial": true, "move_x": 1.1, "time": 0.28, "delay": 0.24, "roll": 45}
+    ]},
+    {"id": "arc_all", "impact": 0.22, "hitstop": 0.1, "shake": 0.16, "zoom": 0.08, "knock": 0.3, "layers": [
+      {"tex": "glow", "from": "hand", "w": 0.32, "h": 0.32, "w_end": 0.8, "h_end": 0.8, "color": "#c8a0ff", "energy": 1.57, "time": 0.22},
+      {"tex": "bolt0", "from": "hand", "to": "target", "span": true, "chain": true, "w": 1.0, "h": 0.9, "color": "#d8c0ff", "energy": 2.8, "time": 0.3, "delay": 0.18, "stagger": 0.05},
+      {"tex": "bolt1", "from": "hand", "to": "target", "span": true, "chain": true, "w": 1.0, "h": 1.2, "color": "#7df8ff", "energy": 2.1, "time": 0.32, "delay": 0.2, "stagger": 0.05},
+      {"tex": "bolt2", "from": "hand", "to": "target", "span": true, "chain": true, "w": 1.0, "h": 0.7, "color": "#ffffff", "energy": 2.8, "time": 0.22, "delay": 0.24, "stagger": 0.05},
+      {"tex": "glow", "from": "target", "w": 0.64, "h": 0.64, "w_end": 1.76, "h_end": 1.76, "color": "#b890ff", "energy": 1.35, "time": 0.3, "delay": 0.2},
+      {"tex": "spark", "from": "target", "w": 0.28, "h": 0.28, "w_end": 0.0, "h_end": 0.0, "color": "#ffffff", "energy": 2.8, "count": 6, "radial": true, "move_x": 1.2, "time": 0.3, "delay": 0.22, "roll": 45}
+    ]},
+    {"id": "burst", "impact": 0.22, "hitstop": 0.12, "shake": 0.22, "zoom": 0.14, "knock": 0.8, "layers": [
+      {"tex": "glow", "from": "hand", "w": 0.24, "h": 0.24, "w_end": 0.96, "h_end": 0.96, "color": "#ffb060", "energy": 1.8, "time": 0.22},
+      {"tex": "glow", "from": "target", "w": 1.12, "h": 1.12, "w_end": 3.2, "h_end": 3.2, "color": "#ffd090", "energy": 1.57, "time": 0.32, "delay": 0.2},
+      {"tex": "ring", "from": "target", "w": 0.4, "h": 0.4, "w_end": 3.4, "h_end": 3.4, "color": "#ff9a40", "energy": 2.1, "time": 0.36, "delay": 0.2, "hold": 0.1},
+      {"tex": "line", "from": "target", "w": 1.0, "h": 0.12, "w_end": 2.4, "h_end": 0.04, "color": "#ffe0a0", "energy": 2.8, "count": 12, "radial": true, "aim": true, "move_x": 1.4, "time": 0.38, "delay": 0.2},
+      {"tex": "spark", "from": "target", "w": 0.4, "h": 0.4, "w_end": 0.0, "h_end": 0.0, "color": "#ffffff", "energy": 2.8, "count": 8, "radial": true, "move_x": 2.0, "time": 0.4, "delay": 0.2, "roll": 45}
+    ]},
+    {"id": "heal", "impact": 0.2, "hitstop": 0.0, "shake": 0.0, "zoom": 0.0, "knock": 0.0, "layers": [
+      {"tex": "ring", "from": "feet", "w": 0.4, "h": 0.4, "w_end": 1.8, "h_end": 1.8, "color": "#7dffb0", "energy": 1.75, "time": 0.5, "hold": 0.2},
+      {"tex": "mote", "from": "feet", "w": 0.16, "h": 0.16, "w_end": 0.04, "h_end": 0.04, "color": "#9dffd0", "energy": 2.8, "count": 12, "spread": 0.5, "move_y": 1.9, "stagger": 0.05, "time": 0.8, "hold": 0.4},
+      {"tex": "spark", "from": "head", "y": -0.5, "w": 0.4, "h": 0.4, "w_end": 0.1, "h_end": 0.1, "color": "#c8ffe0", "energy": 2.8, "count": 3, "spread": 0.4, "move_y": 0.6, "stagger": 0.12, "time": 0.5, "delay": 0.1},
+      {"tex": "glow", "from": "target", "w": 0.96, "h": 1.76, "w_end": 1.28, "h_end": 2.08, "color": "#40e090", "energy": 0.72, "time": 0.7, "hold": 0.3}
+    ]},
+    {"id": "shield", "impact": 0.15, "hitstop": 0.0, "shake": 0.0, "zoom": 0.0, "knock": 0.0, "layers": [
+      {"tex": "hex", "from": "target", "w": 1.4, "h": 2.4, "w_end": 1.9, "h_end": 2.8, "color": "#6fd8ff", "energy": 1.75, "time": 0.8, "hold": 0.55},
+      {"tex": "hex", "from": "target", "w": 1.2, "h": 2.2, "w_end": 1.7, "h_end": 2.6, "color": "#c8f4ff", "energy": 2.1, "time": 0.6, "delay": 0.08, "hold": 0.4, "rot": 30},
+      {"tex": "glow", "from": "target", "w": 1.12, "h": 1.92, "w_end": 1.6, "h_end": 2.4, "color": "#4aa8ff", "energy": 0.63, "time": 0.7, "hold": 0.3},
+      {"tex": "ring", "from": "feet", "w": 0.4, "h": 0.4, "w_end": 2.0, "h_end": 2.0, "color": "#8fe8ff", "energy": 1.75, "time": 0.4}
+    ]},
+    {"id": "overclock", "impact": 0.15, "hitstop": 0.0, "shake": 0.0, "zoom": 0.0, "knock": 0.0, "layers": [
+      {"tex": "line", "from": "feet", "w": 0.12, "h": 1.0, "w_end": 0.04, "h_end": 1.6, "color": "#ff9a40", "energy": 2.8, "count": 8, "spread": 0.6, "move_y": 1.6, "rot": 90, "stagger": 0.04, "time": 0.5, "hold": 0.2},
+      {"tex": "ring", "from": "feet", "w": 0.4, "h": 0.4, "w_end": 2.2, "h_end": 2.2, "color": "#ffb060", "energy": 2.1, "time": 0.4},
+      {"tex": "glow", "from": "target", "w": 0.96, "h": 1.76, "w_end": 1.44, "h_end": 2.24, "color": "#ff8a2a", "energy": 0.81, "time": 0.7, "hold": 0.3},
+      {"tex": "spark", "from": "target", "w": 0.3, "h": 0.3, "w_end": 0.0, "h_end": 0.0, "color": "#ffe0a0", "energy": 2.8, "count": 5, "spread": 0.7, "move_y": 0.5, "stagger": 0.05, "time": 0.4, "roll": 45}
+    ]},
+    {"id": "net", "impact": 0.26, "hitstop": 0.05, "shake": 0.06, "zoom": 0.0, "knock": 0.1, "layers": [
+      {"tex": "net", "from": "hand", "to": "target", "w": 0.5, "h": 0.5, "w_end": 1.0, "h_end": 1.0, "color": "#7df8ff", "energy": 2.45, "time": 0.26, "spin": 180, "hold": 1.0},
+      {"tex": "net", "from": "target", "w": 1.0, "h": 2.0, "w_end": 1.5, "h_end": 2.2, "color": "#7df8ff", "energy": 2.1, "time": 1.1, "delay": 0.26, "hold": 0.7},
+      {"tex": "bolt1", "from": "target", "w": 1.4, "h": 0.8, "color": "#d8ffff", "energy": 2.8, "time": 0.12, "delay": 0.26, "count": 4, "stagger": 0.12, "spread": 0.5, "roll": 90},
+      {"tex": "glow", "from": "target", "w": 0.8, "h": 1.6, "w_end": 1.28, "h_end": 1.92, "color": "#3df0e0", "energy": 0.63, "time": 1.0, "delay": 0.26, "hold": 0.6}
+    ]},
+    {"id": "drone_shot", "impact": 0.14, "hitstop": 0.04, "shake": 0.05, "zoom": 0.0, "knock": 0.2, "layers": [
+      {"tex": "glow", "from": "hand", "w": 0.4, "h": 0.4, "w_end": 0.12, "h_end": 0.12, "color": "#ff8a5a", "energy": 2.25, "time": 0.1},
+      {"tex": "spark", "from": "hand", "w": 0.4, "h": 0.4, "w_end": 0.1, "h_end": 0.1, "color": "#ffffff", "energy": 3.5, "time": 0.08, "roll": 45},
+      {"tex": "streak", "from": "hand", "to": "target", "aim": true, "w": 0.9, "h": 0.1, "color": "#ff8a5a", "energy": 3.5, "time": 0.14, "hold": 1.0},
+      {"tex": "streak", "from": "hand", "to": "target", "aim": true, "w": 0.4, "h": 0.05, "color": "#ffffff", "energy": 4.2, "time": 0.14, "hold": 1.0},
+      {"tex": "spark", "from": "target", "w": 0.35, "h": 0.35, "w_end": 0.0, "h_end": 0.0, "color": "#ffd0a0", "energy": 2.8, "count": 4, "radial": true, "move_x": 0.8, "time": 0.2, "delay": 0.14, "roll": 45}
+    ]},
+    {"id": "break", "impact": 0.0, "hitstop": 0.0, "shake": 0.0, "zoom": 0.0, "knock": 0.0, "layers": [
+      {"tex": "glow", "from": "head", "y": -0.3, "w": 0.8, "h": 0.8, "w_end": 2.72, "h_end": 2.72, "color": "#fff3b0", "energy": 1.8, "time": 0.3},
+      {"tex": "ring", "from": "head", "y": -0.3, "w": 0.4, "h": 0.4, "w_end": 2.8, "h_end": 2.8, "color": "#ffe36a", "energy": 2.45, "time": 0.34, "hold": 0.1},
+      {"tex": "line", "from": "head", "y": -0.3, "w": 0.8, "h": 0.1, "w_end": 2.0, "h_end": 0.03, "color": "#ffffff", "energy": 3.15, "count": 10, "radial": true, "aim": true, "move_x": 1.5, "time": 0.36},
+      {"tex": "spark", "from": "head", "y": -0.3, "w": 0.36, "h": 0.36, "w_end": 0.0, "h_end": 0.0, "color": "#ffffff", "energy": 2.8, "count": 6, "radial": true, "move_x": 1.8, "time": 0.4, "roll": 45}
+    ]},
+    {"id": "baton", "impact": 0.12, "hitstop": 0.07, "shake": 0.1, "zoom": 0.0, "knock": 0.4, "layers": [
+      {"tex": "arc", "from": "target", "x": -0.1, "y": 0.45, "w": 1.1, "h": 1.1, "w_end": 1.5, "h_end": 1.5, "color": "#ffe9b0", "energy": 2.1, "rot": -50, "spin": 70, "time": 0.18},
+      {"tex": "glow", "from": "target", "w": 0.64, "h": 0.64, "w_end": 1.44, "h_end": 1.44, "color": "#ffe36a", "energy": 1.35, "time": 0.16, "delay": 0.08},
+      {"tex": "spark", "from": "target", "w": 0.3, "h": 0.3, "w_end": 0.0, "h_end": 0.0, "color": "#fff0b0", "energy": 3.5, "count": 9, "radial": true, "move_x": 1.3, "time": 0.28, "delay": 0.1, "roll": 45},
+      {"tex": "bolt2", "from": "target", "w": 1.0, "h": 0.6, "color": "#ffe36a", "energy": 2.1, "time": 0.14, "delay": 0.1, "roll": 60}
+    ]}
+  ]
+}

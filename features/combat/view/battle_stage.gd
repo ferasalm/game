@@ -14,10 +14,15 @@ var sim: BattleSim
 var fighters: BattleFighters
 var hud: BattleHud
 var camera: Camera3D
+## The cinematic rig that moves `camera` (swoop in, drift, push, shake, victory pose).
+var camera_rig: BattleCamera
+var vfx: VfxPlayer
+var juice: BattleJuice
 ## HP as the played events show it (the sim is already one batch ahead).
 var shown_hp: Dictionary[StringName, int] = {}
 var _view: BattleViewDef
 var _player: BattleEventPlayer
+var _actions: BattleActionPlayer
 var _busy: bool = false
 var _ending: bool = false
 var _finished: bool = false
@@ -35,6 +40,7 @@ func start(battle: BattleSim, anchor: Vector3) -> void:
 	add_child(fighters)
 	fighters.build(sim, _view, anchor)
 	_add_camera(anchor)
+	_add_show()
 	hud = BattleHud.new()
 	add_child(hud)
 	hud.setup(sim, _view, shown_hp)
@@ -44,6 +50,7 @@ func start(battle: BattleSim, anchor: Vector3) -> void:
 	_player = BattleEventPlayer.new()
 	add_child(_player)
 	_player.setup(sim, _view, fighters, hud, shown_hp)
+	_player.attach(_actions, juice, vfx)
 	_busy = true
 	if sim.ambush == 1:
 		_turn_zayd_away()
@@ -97,6 +104,9 @@ func _check_end() -> void:
 		return
 	_ending = true
 	fighters.hide_marker()
+	if sim.result == &"victory":
+		camera_rig.victory()
+		fighters.cheer()
 	hud.show_end(sim.result)
 	if auto_play:
 		if not instant:
@@ -136,10 +146,27 @@ func _turn_zayd_away() -> void:
 
 
 func _add_camera(anchor: Vector3) -> void:
-	var look := ContentDB.get_def("look", &"v1") as LookDef
+	var look := ContentDB.get_def("look", &"night") as LookDef
+	if look == null:
+		look = ContentDB.get_def("look", &"v1") as LookDef
+	var def := ContentDB.get_def("battle_camera", &"default") as BattleCameraDef
+	var previous: Camera3D = get_viewport().get_camera_3d()
 	camera = Diorama.make_camera(look if look != null else LookDef.new())
-	camera.fov = _view.camera_fov
 	add_child(camera)
-	camera.position = anchor + _view.camera_offset
-	camera.look_at(anchor + Vector3(0.0, _view.look_height, 0.0))
+	camera_rig = BattleCamera.new()
+	add_child(camera_rig)
+	camera_rig.setup(camera, def if def != null else BattleCameraDef.new(), look if look != null else LookDef.new(),
+		anchor, previous, instant)
 	camera.current = true
+
+
+## The effect painter, the hitstop / shake node and the move player that drives them.
+func _add_show() -> void:
+	vfx = VfxPlayer.new()
+	add_child(vfx)
+	juice = BattleJuice.new()
+	add_child(juice)
+	juice.setup(ContentDB.get_def("battle_juice", &"default") as JuiceDef, camera_rig)
+	_actions = BattleActionPlayer.new()
+	add_child(_actions)
+	_actions.setup(fighters, vfx, camera_rig, juice)

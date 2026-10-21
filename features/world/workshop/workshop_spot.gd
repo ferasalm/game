@@ -19,6 +19,7 @@ func _init(rules: ExploreRulesDef, player: Player) -> void:
 	_player = player
 	var bench := CharacterVisual.new()
 	bench.set_sprite(&"workshop_bench")
+	bench.set_prop(true)
 	add_child(bench)
 	prompt = Label3D.new()
 	prompt.billboard = BaseMaterial3D.BILLBOARD_ENABLED

@@ -1,0 +1,10 @@
+{
+  "kind": "battle_juice",
+  "items": [
+    {"id": "default", "freeze_scale": 0.03, "break_hitstop": 0.2, "break_shake": 0.3, "break_seconds": 0.9,
+     "break_size": 120, "break_color": "#ffe36a", "pop_scale": 1.7, "pop_time": 0.12, "bounce_height": 0.5,
+     "bounce_time": 0.35, "heavy_damage": 30, "heavy_scale": 1.5, "number_jitter": 0.3,
+     "damage_color": "#ffe9a8", "heal_color": "#7dffb0", "shake_decay": 9.0, "shake_speed": 55.0,
+     "anticipate_pause": 0.04, "cast_hold": 0.18}
+  ]
+}

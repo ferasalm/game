@@ -37,6 +37,9 @@ const KINDS: Dictionary = {
 	"perk": preload("res://features/items/defs/perk_def.gd"),
 	"chest": preload("res://features/items/defs/chest_def.gd"),
 	"prosthetic": preload("res://features/prosthetics/defs/prosthetic_def.gd"),
+	"vfx": preload("res://features/combat/defs/vfx_def.gd"),
+	"battle_juice": preload("res://features/combat/defs/juice_def.gd"),
+	"battle_camera": preload("res://features/combat/defs/battle_camera_def.gd"),
 }
 ## Equippable kinds share one id namespace; get_def("item", id) finds any of them.
 const ITEM_KINDS: Array[String] = ["hilt", "blade", "prosthetic"]
