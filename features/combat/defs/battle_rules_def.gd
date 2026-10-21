@@ -17,6 +17,14 @@ var heal_attack_factor: float = 0.0
 var ai_heal_below: float = 0.4
 ## BattleAI guards when a foe is casting a move with power x hits at or above this.
 var ai_big_cast_power: int = 25
+## Timeline speed: weight slows a unit by weight x speed_weight_factor, never below speed_min_mult.
+var speed_weight_factor: float = 0.015
+var speed_min_mult: float = 0.5
+## Melee row bonus/penalty (Formation) and the clamp on the product.
+var melee_front_bonus: float = 0.15
+var melee_back_penalty: float = 0.15
+var melee_min: float = 0.5
+var melee_max: float = 1.5
 
 
 func read(r: DefReader) -> void:
@@ -32,5 +40,11 @@ func read(r: DefReader) -> void:
 	heal_attack_factor = r.number("heal_attack_factor", 0.0, 5.0, 0.0, false)
 	ai_heal_below = r.number("ai_heal_below", 0.0, 1.0, 0.4, false)
 	ai_big_cast_power = r.integer("ai_big_cast_power", 0, 9999, 25, false)
+	speed_weight_factor = r.number("speed_weight_factor", 0.0, 0.1, 0.015, false)
+	speed_min_mult = r.number("speed_min_mult", 0.1, 1.0, 0.5, false)
+	melee_front_bonus = r.number("melee_front_bonus", 0.0, 1.0, 0.15, false)
+	melee_back_penalty = r.number("melee_back_penalty", 0.0, 1.0, 0.15, false)
+	melee_min = r.number("melee_min", 0.1, 1.0, 0.5, false)
+	melee_max = r.number("melee_max", 1.0, 5.0, 1.5, false)
 	if party_start_min > party_start_max or enemy_start_min > enemy_start_max:
 		r.problem("party_start_min", "a start range has min above max")

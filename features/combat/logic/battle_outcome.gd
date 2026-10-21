@@ -14,3 +14,22 @@ var bag: Dictionary = {}
 var money: int = 0
 var items: Array[StringName] = []
 var consumables: Dictionary = {}
+## True once the Router paid money / items / consumables into GameState (so a second apply pays nothing).
+var rewarded: bool = false
+
+
+## The outcome of a finished (or abandoned) sim: result, each hero's HP/SP after (a downed hero stands up at
+## the setup's ko_stand_hp after a victory, never above max) and the bag after. Rewards are filled in by the Router.
+static func from_sim(sim: BattleSim, final_result: StringName = &"") -> BattleOutcome:
+	var out := BattleOutcome.new()
+	out.encounter_id = sim.setup.encounter_id if sim.setup != null else &""
+	out.result = final_result if final_result != &"" else sim.result
+	for unit: UnitState in sim.timeline.units:
+		if unit.side != 0:
+			continue
+		var hp: int = unit.hp
+		if hp <= 0 and out.result == VICTORY:
+			hp = mini(sim.setup.ko_stand_hp, unit.def.max_hp)
+		Vitals.store(out.vitals, unit.unit_id, hp, unit.sp)
+	out.bag = sim.bag.snapshot()
+	return out

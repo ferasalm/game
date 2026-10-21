@@ -9,5 +9,5 @@ func test_cover() -> void:
 
 
 func test_melee_multiplier() -> void:
-	check_eq(Formation.melee_multiplier(0, 0), 1.15, "front hits front")
-	check_eq(Formation.melee_multiplier(3, 3), 0.7, "back hits back")
+	check_eq(Formation.melee_multiplier(0, 0, BattleRulesDef.new()), 1.15, "front hits front")
+	check_eq(Formation.melee_multiplier(3, 3, BattleRulesDef.new()), 0.7, "back hits back")

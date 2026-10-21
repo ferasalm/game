@@ -5,6 +5,7 @@ extends RefCounted
 ## balance harness and the tests.
 
 var rules: BattleRulesDef
+var economy: EconomyRulesDef
 var encounter: EncounterDef
 var actions: Dictionary[StringName, ActionDef] = {}
 var statuses: Dictionary[StringName, StatusDef] = {}
@@ -20,6 +21,7 @@ static func from_db(db: Node, encounter_id: StringName = &"rooftop_patrol") -> B
 	var loader := BattleLoader.new()
 	loader.rules = db.call("get_def", "battle_rules", &"default") as BattleRulesDef
 	loader.encounter = db.call("get_def", "encounter", encounter_id) as EncounterDef
+	loader.economy = db.call("get_def", "economy_rules", &"default") as EconomyRulesDef
 	for action_id: StringName in db.call("ids", "action"):
 		loader.actions[action_id] = db.call("get_def", "action", action_id) as ActionDef
 	for status_id: StringName in db.call("ids", "status"):
@@ -49,10 +51,13 @@ func zayd_with(hilt_id: StringName, blade_id: StringName, prosthetic_id: StringN
 	return fighter(&"zayd", hilt_id, blade_id, prosthetic_id)
 
 
-## Zayd and Bilqis as GameState.equipment says (a missing slot falls back to that hero's start loadout).
-func party_from_equipment(equipment: Dictionary[StringName, StringName]) -> Array[CombatantDef]:
+## The heroes as GameState.equipment says (a missing slot falls back to that hero's start loadout). hero_ids is
+## the party list; empty means the new-game party of content/economy/rules.json.
+func party_from_equipment(
+		equipment: Dictionary[StringName, StringName], hero_ids: Array[StringName] = []) -> Array[CombatantDef]:
 	var party: Array[CombatantDef] = []
-	for hero_id: StringName in [&"zayd", &"bilqis"]:
+	var ids: Array[StringName] = hero_ids if not hero_ids.is_empty() else economy.start_party
+	for hero_id: StringName in ids:
 		var start: LoadoutDef = _start_of(hero_id)
 		party.append(fighter(
 			hero_id, Loadout.worn(equipment, start, &"hilt"), Loadout.worn(equipment, start, &"blade"),
@@ -70,13 +75,28 @@ func make_sim(
 	return make_sim_for(party, battle_seed, ambush)
 
 
-## A fresh battle for an already built party.
+## A fresh battle for an already built party (everyone at full, no herbs).
 func make_sim_for(party: Array[CombatantDef], battle_seed: int, ambush: int = 0) -> BattleSim:
-	var foes: Array[CombatantDef] = []
+	return BattleSim.create_from(make_setup(party, battle_seed, ambush))
+
+
+## The BattleSetup for the encounter and a built party; the caller fills vitals, bag, equipment, arena and anchor.
+func make_setup(party: Array[CombatantDef], battle_seed: int, ambush: int = 0) -> BattleSetup:
+	var setup := BattleSetup.new()
+	setup.rules = rules
+	setup.party = party
+	setup.party_slots = encounter.party_slots
 	for enemy_id: StringName in encounter.enemies:
-		foes.append(combatants[enemy_id])
-	return BattleSim.create(
-		rules, party, encounter.party_slots, foes, encounter.enemy_slots, battle_seed, ambush, actions, statuses)
+		setup.enemies.append(combatants[enemy_id])
+	setup.enemy_slots = encounter.enemy_slots
+	setup.actions = actions
+	setup.statuses = statuses
+	setup.seed = battle_seed
+	setup.ambush = ambush
+	setup.encounter_id = encounter.id
+	if economy != null:
+		setup.ko_stand_hp = economy.ko_stand_hp
+	return setup
 
 
 ## Plays a battle to its end with BattleAI choosing for the heroes too. Returns every event, in order.
