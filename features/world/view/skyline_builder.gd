@@ -76,12 +76,9 @@ static func _far(root: Node3D, def: SkylineDef, palette: PaletteDef, blocks: Arr
 ## The ground at street level and the al-Saila street (paved) running through the whole city along z.
 static func _ground(root: Node3D, def: SkylineDef, palette: PaletteDef, rect: Rect2) -> void:
 	var centre: Vector2 = rect.get_center()
-	var floor_mat := StandardMaterial3D.new()
-	floor_mat.albedo_color = palette.colors["n"]
-	floor_mat.roughness = 1.0
 	var ground := PlaneMesh.new()
 	ground.size = Vector2(GROUND_SIZE, GROUND_SIZE)
-	ground.material = floor_mat
+	ground.material = _floor_material(palette.colors["n"])
 	var ground_node := _mesh_node(ground)
 	ground_node.position = Vector3(centre.x, def.ground_y - 0.05, centre.y)
 	_add(root, ground_node)
@@ -91,6 +88,15 @@ static func _ground(root: Node3D, def: SkylineDef, palette: PaletteDef, rect: Re
 	var street_node := _mesh_node(street)
 	street_node.position = Vector3(def.saila_x, def.ground_y, centre.y)
 	_add(root, street_node)
+
+
+static func _floor_material(color: Color) -> Material:
+	if PaintedMaterials.paint != null:
+		return PaintedMaterials.flat(color)
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = color
+	mat.roughness = 1.0
+	return mat
 
 
 static func _multi(mesh: Mesh, count: int) -> MultiMesh:

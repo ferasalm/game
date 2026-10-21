@@ -37,6 +37,7 @@ func _init(sign_spec: SignSpec, palette: PaletteDef) -> void:
 	label.font_size = FONT_PX
 	label.pixel_size = spec.size / FONT_PX
 	label.shaded = false
+	label.alpha_cut = Label3D.ALPHA_CUT_DISABLED  # neon text is never cut: it must bloom and fade softly in fog
 	label.double_sided = false
 	label.text_direction = TextServer.DIRECTION_LTR
 	label.modulate = _hot(spec.text_energy)
@@ -76,7 +77,9 @@ func _glow_material() -> StandardMaterial3D:
 	return mat
 
 
-func _flat(color: Color) -> StandardMaterial3D:
+func _flat(color: Color) -> Material:
+	if PaintedMaterials.paint != null:
+		return PaintedMaterials.flat(color)
 	var mat := StandardMaterial3D.new()
 	mat.albedo_color = color
 	mat.roughness = 1.0

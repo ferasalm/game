@@ -63,6 +63,10 @@ static func material(def: MistDef) -> ShaderMaterial:
 	mat.set_shader_parameter(&"edge_fade", def.edge_fade)
 	mat.set_shader_parameter(&"hole", Vector4(def.hole.position.x, def.hole.position.y, def.hole.end.x, def.hole.end.y))
 	mat.set_shader_parameter(&"hole_fade", def.hole_fade)
+	if PaintedMaterials.paint != null:  # painted looks: the mist falls in flat steps and leans toward the shadow hue
+		mat.set_shader_parameter(&"bands", PaintedMaterials.paint.mist_bands)
+		mat.set_shader_parameter(&"paint_tint", PaintedMaterials.paint.shadow_tint)
+		mat.set_shader_parameter(&"paint_tint_amount", PaintedMaterials.paint.mist_tint)
 	return mat
 
 

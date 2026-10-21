@@ -42,6 +42,18 @@ var aa: StringName = &"smaa"
 # The painted spike figure (a static painted billboard of Zayd); height in metres.
 var figure: bool = false
 var figure_height: float = 1.8
+# Mist painted in flat brush-stroke steps (0 = smooth) and how far it is pulled toward the shadow tint.
+var mist_bands: float = 0.0
+var mist_tint: float = 0.0
+# Cut-away (OcclusionFade): whatever stands in a tube from the camera to the party dithers away. Radius and soft
+# edge of the tube in metres, how far short of the party it stops, ease speed (per second), the smallest height
+# above the floor that counts as a blocker, and the point on the party the camera looks at.
+var occlude_radius: float = 2.4
+var occlude_soft: float = 1.4
+var occlude_margin: float = 2.5
+var occlude_speed: float = 6.0
+var occlude_min_height: float = 1.2
+var occlude_focus: float = 1.2
 
 
 func read(r: DefReader) -> void:
@@ -56,6 +68,9 @@ func read(r: DefReader) -> void:
 		r.problem("aa", "'%s' is not one of %s" % [aa, AA_MODES])
 	figure = r.flag("figure", figure)
 	figure_height = r.number("figure_height", 0.5, 4.0, figure_height, false)
+	mist_bands = r.number("mist_bands", 0.0, 8.0, mist_bands, false)
+	mist_tint = r.number("mist_tint", 0.0, 1.0, mist_tint, false)
+	_read_occlusion(r)
 
 
 func _read_light(r: DefReader) -> void:
@@ -69,6 +84,15 @@ func _read_light(r: DefReader) -> void:
 	rim_power = r.number("rim_power", 0.5, 8.0, rim_power, false)
 	min_light = r.number("min_light", 0.0, 1.0, min_light, false)
 	figure_min_light = r.number("figure_min_light", 0.0, 1.0, figure_min_light, false)
+
+
+func _read_occlusion(r: DefReader) -> void:
+	occlude_radius = r.number("occlude_radius", 0.1, 20.0, occlude_radius, false)
+	occlude_soft = r.number("occlude_soft", 0.05, 20.0, occlude_soft, false)
+	occlude_margin = r.number("occlude_margin", 0.0, 20.0, occlude_margin, false)
+	occlude_speed = r.number("occlude_speed", 0.1, 60.0, occlude_speed, false)
+	occlude_min_height = r.number("occlude_min_height", 0.0, 20.0, occlude_min_height, false)
+	occlude_focus = r.number("occlude_focus", 0.0, 4.0, occlude_focus, false)
 
 
 func _read_outline(r: DefReader) -> void:
