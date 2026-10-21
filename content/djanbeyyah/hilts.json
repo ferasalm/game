@@ -1,9 +1,11 @@
 {
   "kind": "hilt",
   "items": [
-    {"id": "swift_hilt", "name_key": "HILT_SWIFT", "desc_key": "HILT_SWIFT_DESC", "agility": 2, "cast_speed": 1.03,
-     "weight": 0.5, "ability": "quick_slash"},
-    {"id": "anvil_hilt", "name_key": "HILT_ANVIL", "desc_key": "HILT_ANVIL_DESC", "agility": -1, "cast_speed": 0.95,
-     "weight": 1.5, "ability": "crushing_blow"}
+    {"id": "grandfather_hilt", "name_key": "HILT_GRANDFATHER", "desc_key": "HILT_GRANDFATHER_DESC", "rarity": "heirloom",
+     "perk": "head_start", "agility": 1, "cast_speed": 1.0, "weight": 1.0, "ability": "elder_cut"},
+    {"id": "swift_hilt", "name_key": "HILT_SWIFT", "desc_key": "HILT_SWIFT_DESC", "rarity": "uncommon", "agility": 1,
+     "cast_speed": 1.02, "weight": 0.5, "ability": "quick_slash"},
+    {"id": "anvil_hilt", "name_key": "HILT_ANVIL", "desc_key": "HILT_ANVIL_DESC", "rarity": "rare", "perk": "heavy_hand",
+     "agility": 0, "cast_speed": 1.0, "weight": 1.0, "ability": "crushing_blow"}
   ]
 }

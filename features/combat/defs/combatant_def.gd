@@ -20,6 +20,10 @@ var interrupt_resist: float = 0.0
 var cast_speed: float = 1.0
 ## Added to the knockback of every hit this fighter lands (the djanbeyyah blade sets it).
 var knockback_bonus: int = 0
+## Perks (features/items): extra SP after each act, HP healed after each act, timeline units at battle start.
+var sp_per_act_bonus: int = 0
+var hp_regen: int = 0
+var start_bonus: int = 0
 var actions: Array[StringName] = []
 
 
@@ -35,7 +39,20 @@ func read(r: DefReader) -> void:
 	interrupt_resist = r.number("interrupt_resist", 0.0, 0.9, 0.0, false)
 	cast_speed = r.number("cast_speed", CAST_SPEED_MIN, CAST_SPEED_MAX, 1.0, false)
 	knockback_bonus = r.integer("knockback_bonus", 0, 10000, 0, false)
+	sp_per_act_bonus = r.integer("sp_per_act_bonus", 0, 99, 0, false)
+	hp_regen = r.integer("hp_regen", 0, 9999, 0, false)
+	start_bonus = r.integer("start_bonus", 0, 6999, 0, false)
 	actions = r.id_list("actions")
+
+
+## A new CombatantDef with the same values (gear merges build on a copy, never on the shared def).
+func clone() -> CombatantDef:
+	var out := CombatantDef.new()
+	for prop: Dictionary in get_script().get_script_property_list():
+		if int(prop["usage"]) & PROPERTY_USAGE_SCRIPT_VARIABLE != 0:
+			out.set(str(prop["name"]), get(str(prop["name"])))
+	out.actions = actions.duplicate()
+	return out
 
 
 func references() -> Array[Array]:

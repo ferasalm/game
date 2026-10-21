@@ -1,6 +1,8 @@
 {
   "kind": "status",
   "items": [
-    {"id": "jammed", "name_key": "STATUS_JAMMED", "turns": 2, "wait_speed": 0.6, "cast_speed": 0.6}
+    {"id": "jammed", "name_key": "STATUS_JAMMED", "turns": 2, "wait_speed": 0.6, "cast_speed": 0.6},
+    {"id": "guarded", "name_key": "STATUS_GUARDED", "turns": 2, "damage_taken": 0.6},
+    {"id": "overclocked", "name_key": "STATUS_OVERCLOCKED", "turns": 3, "wait_speed": 1.25, "cast_speed": 1.15}
   ]
 }

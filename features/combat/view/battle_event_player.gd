@@ -51,6 +51,10 @@ func _play_one(events: Array[TimelineEvent], i: int) -> void:
 			_float_status(event, BattleStyle.text("UI_STATUS_ENDED") % _status_name(event.detail))
 		&"down":
 			_on_down(event)
+		&"healed":
+			_on_healed(event)
+		&"revived":
+			_on_revived(event)
 
 
 func _on_command(event: TimelineEvent) -> void:
@@ -100,6 +104,21 @@ func _on_down(event: TimelineEvent) -> void:
 	var target: CharacterVisual = _fighters.visual(event.unit_id)
 	if target != null:
 		target.set_down(true)
+
+
+func _on_healed(event: TimelineEvent) -> void:
+	var unit: UnitState = _sim.timeline.find(event.unit_id)
+	_shown_hp[event.unit_id] = mini(unit.def.max_hp, _shown_hp.get(event.unit_id, 0) + event.value)
+	if not _skip:
+		_fighters.float_text(event.unit_id, BattleStyle.text("UI_HEALED") % event.value)
+
+
+func _on_revived(event: TimelineEvent) -> void:
+	var target: CharacterVisual = _fighters.visual(event.unit_id)
+	if target != null:
+		target.set_down(false)
+	if not _skip:
+		_fighters.float_text(event.unit_id, BattleStyle.text("UI_REVIVED"))
 
 
 func _float_status(event: TimelineEvent, content: String) -> void:

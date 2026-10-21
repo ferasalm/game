@@ -1,0 +1,11 @@
+{
+  "kind": "perk",
+  "items": [
+    {"id": "head_start", "name_key": "PERK_HEAD_START", "desc_key": "PERK_HEAD_START_DESC", "kind": "start_bonus", "amount": 600},
+    {"id": "steady_current", "name_key": "PERK_STEADY_CURRENT", "desc_key": "PERK_STEADY_CURRENT_DESC", "kind": "sp_per_act", "amount": 1},
+    {"id": "surge_current", "name_key": "PERK_SURGE_CURRENT", "desc_key": "PERK_SURGE_CURRENT_DESC", "kind": "sp_per_act", "amount": 2},
+    {"id": "mender_loop", "name_key": "PERK_MENDER_LOOP", "desc_key": "PERK_MENDER_LOOP_DESC", "kind": "hp_regen", "amount": 8},
+    {"id": "deep_mender", "name_key": "PERK_DEEP_MENDER", "desc_key": "PERK_DEEP_MENDER_DESC", "kind": "hp_regen", "amount": 12},
+    {"id": "heavy_hand", "name_key": "PERK_HEAVY_HAND", "desc_key": "PERK_HEAVY_HAND_DESC", "kind": "bonus_knockback", "amount": 700}
+  ]
+}

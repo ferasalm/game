@@ -33,7 +33,13 @@ const KINDS: Dictionary = {
 	"audio_rules": preload("res://features/audio/defs/audio_rules_def.gd"),
 	"building": preload("res://features/world/defs/building_def.gd"),
 	"skyline": preload("res://features/world/defs/skyline_def.gd"),
+	"rarity": preload("res://features/items/defs/rarity_def.gd"),
+	"perk": preload("res://features/items/defs/perk_def.gd"),
+	"chest": preload("res://features/items/defs/chest_def.gd"),
+	"prosthetic": preload("res://features/prosthetics/defs/prosthetic_def.gd"),
 }
+## Equippable kinds share one id namespace; get_def("item", id) finds any of them.
+const ITEM_KINDS: Array[String] = ["hilt", "blade", "prosthetic"]
 
 var _defs: Dictionary[String, Dictionary] = {}
 
@@ -54,6 +60,12 @@ func load_all(root: String = CONTENT_ROOT) -> PackedStringArray:
 
 
 func get_def(kind: String, def_id: StringName) -> Def:
+	if kind == "item":
+		for item_kind: String in ITEM_KINDS:
+			var found: Def = get_def(item_kind, def_id)
+			if found != null:
+				return found
+		return null
 	return (_defs.get(kind, {}) as Dictionary).get(def_id) as Def
 
 

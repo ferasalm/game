@@ -1,7 +1,8 @@
 class_name BattleLoader
 extends RefCounted
 ## Gathers the battle content from a loaded ContentDB (passed in as a Node) and builds ready-to-run BattleSims
-## for the default encounter. Used by the balance harness and the tests; also a model for the battle view.
+## for the default encounter. Fighters come from the pure gear logic (Gear.build). Used by the prototype, the
+## balance harness and the tests.
 
 var rules: BattleRulesDef
 var encounter: EncounterDef
@@ -10,6 +11,9 @@ var statuses: Dictionary[StringName, StatusDef] = {}
 var combatants: Dictionary[StringName, CombatantDef] = {}
 var hilts: Dictionary[StringName, HiltDef] = {}
 var blades: Dictionary[StringName, BladeDef] = {}
+var prosthetics: Dictionary[StringName, ProstheticDef] = {}
+var perks: Dictionary[StringName, PerkDef] = {}
+var loadouts: Dictionary[StringName, LoadoutDef] = {}
 
 
 static func from_db(db: Node, encounter_id: StringName = &"rooftop_patrol") -> BattleLoader:
@@ -26,17 +30,48 @@ static func from_db(db: Node, encounter_id: StringName = &"rooftop_patrol") -> B
 		loader.hilts[hilt_id] = db.call("get_def", "hilt", hilt_id) as HiltDef
 	for blade_id: StringName in db.call("ids", "blade"):
 		loader.blades[blade_id] = db.call("get_def", "blade", blade_id) as BladeDef
+	for prosthetic_id: StringName in db.call("ids", "prosthetic"):
+		loader.prosthetics[prosthetic_id] = db.call("get_def", "prosthetic", prosthetic_id) as ProstheticDef
+	for perk_id: StringName in db.call("ids", "perk"):
+		loader.perks[perk_id] = db.call("get_def", "perk", perk_id) as PerkDef
+	for loadout_id: StringName in db.call("ids", "loadout"):
+		loader.loadouts[loadout_id] = db.call("get_def", "loadout", loadout_id) as LoadoutDef
 	return loader
 
 
-## Zayd with the given hilt and blade equipped (a new CombatantDef).
-func zayd_with(hilt_id: StringName, blade_id: StringName) -> CombatantDef:
-	return Djanbeyyah.equip(combatants[&"zayd"], hilts[hilt_id], blades[blade_id])
+## A hero built from the shared base and the named gear (empty or unknown ids mean none).
+func fighter(hero_id: StringName, hilt_id: StringName, blade_id: StringName, prosthetic_id: StringName) -> CombatantDef:
+	return Gear.build(combatants[hero_id], hilts.get(hilt_id), blades.get(blade_id), prosthetics.get(prosthetic_id), perks)
 
 
-## A fresh battle: Zayd (with the chosen pairing) and Bilqis against the encounter's enemies.
-func make_sim(hilt_id: StringName, blade_id: StringName, battle_seed: int, ambush: int = 0) -> BattleSim:
-	var party: Array[CombatantDef] = [zayd_with(hilt_id, blade_id), combatants[&"bilqis"]]
+## Zayd with the given hilt and blade (and prosthetic, default none) equipped (a new CombatantDef).
+func zayd_with(hilt_id: StringName, blade_id: StringName, prosthetic_id: StringName = &"") -> CombatantDef:
+	return fighter(&"zayd", hilt_id, blade_id, prosthetic_id)
+
+
+## Zayd and Bilqis as GameState.equipment says (a missing slot falls back to that hero's start loadout).
+func party_from_equipment(equipment: Dictionary[StringName, StringName]) -> Array[CombatantDef]:
+	var party: Array[CombatantDef] = []
+	for hero_id: StringName in [&"zayd", &"bilqis"]:
+		var start: LoadoutDef = _start_of(hero_id)
+		party.append(fighter(
+			hero_id, Loadout.worn(equipment, start, &"hilt"), Loadout.worn(equipment, start, &"blade"),
+			Loadout.worn(equipment, start, &"prosthetic")))
+	return party
+
+
+## A fresh battle: Zayd (with the chosen gear) and Bilqis (with her prosthetic, default none) against the
+## encounter's enemies.
+func make_sim(
+		hilt_id: StringName, blade_id: StringName, battle_seed: int, ambush: int = 0,
+		zayd_prosthetic: StringName = &"", bilqis_prosthetic: StringName = &"") -> BattleSim:
+	var party: Array[CombatantDef] = [
+		zayd_with(hilt_id, blade_id, zayd_prosthetic), fighter(&"bilqis", &"", &"", bilqis_prosthetic)]
+	return make_sim_for(party, battle_seed, ambush)
+
+
+## A fresh battle for an already built party.
+func make_sim_for(party: Array[CombatantDef], battle_seed: int, ambush: int = 0) -> BattleSim:
 	var foes: Array[CombatantDef] = []
 	for enemy_id: StringName in encounter.enemies:
 		foes.append(combatants[enemy_id])
@@ -55,3 +90,12 @@ static func autoplay(sim: BattleSim) -> Array[TimelineEvent]:
 			sim.auto_choose(hero)
 		trace.append_array(sim.step())
 	return trace
+
+
+func _start_of(hero_id: StringName) -> LoadoutDef:
+	for start: LoadoutDef in loadouts.values():
+		if start.hero == hero_id:
+			return start
+	var none := LoadoutDef.new()
+	none.hero = hero_id
+	return none
