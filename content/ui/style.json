@@ -26,7 +26,7 @@
 
      "s_head_icon": 44, "s_timeline_w": 1200, "s_timeline_top": 24, "s_prompt_near": 3, "s_prompt_far": 7,
      "s_toast_top": 96, "s_strip_bottom": 40, "s_defeat_w": 640, "s_defeat_h": 420, "s_portrait_x": 60,
-     "s_portrait_slide": 80, "s_dialog_right": 80, "s_dialog_bottom": 80, "s_plate_w": 420, "s_plate_lift": 40,
+     "s_portrait_slide": 80, "s_dialog_right": 80, "s_dialog_bottom": 80, "s_plate_w": 420, "s_plate_lift": 16,
      "s_dialog_inset": 40, "s_area_x": 160, "s_area_y": 420, "s_area_w": 900,
 
      "t_loot_fade": 0.35, "t_loot_hold": 2.2, "t_loot_shine": 0.9,

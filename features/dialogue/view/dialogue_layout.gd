@@ -63,13 +63,15 @@ func _build_portrait(root: Control, ui: UiStyleDef) -> void:
 	root.add_child(portrait)
 
 
-## The nameplate: a raised tab straddling the box's top edge, name over epithet.
+## The nameplate: a raised tab on the box's top edge (its bottom dips s_plate_lift into the box), name over epithet.
 func _build_plate(box: Control, ui: UiStyleDef) -> void:
 	var plate := PanelContainer.new()
 	plate.theme_type_variation = &"PlatePanel"
 	plate.set_anchors_preset(Control.PRESET_TOP_LEFT)
 	plate.offset_left = ui.size(&"s_dialog_inset")
-	plate.offset_top = -ui.size(&"s_plate_lift")
+	plate.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	plate.offset_top = ui.size(&"s_plate_lift")
+	plate.offset_bottom = plate.offset_top
 	plate.custom_minimum_size = Vector2(ui.size(&"s_plate_w"), ui.size(&"s_plate_h"))
 	plate.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var stack := VBoxContainer.new()
