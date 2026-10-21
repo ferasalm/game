@@ -45,7 +45,10 @@
 - Builders missed the session's commits: Agent worktrees branch from main, not the lead's branch -> every brief
   starts with `git merge --ff-only <session branch>`; resume a builder with SendMessage (its worktree keeps work).
 - After a merge adds class_names, tests fail with "Could not find type" -> `tools/run_godot.sh --import` first.
-- The 5-hour limit kills background builders mid-edit -> ask for WIP commits early; resume them after the reset.
+- The 5-hour limit kills background builders mid-edit -> ask for WIP commits early. Near the limit: builders write
+  WIP_NOTES.md + commit, the lead hands off; after the reset start a NEW chat and FRESH agents from the notes
+  (resuming a long chat or agent re-sends its whole transcript uncached once the cache TTL expired) (2026-10-21).
+- Four agents died at once on API errors (ECONNRESET/timeout) -> SendMessage resumed them with work intact (2026-10-21).
 
 ## 5. Art, browser, night look (2026-10-21)
 - Owner saw "3 FPS": that was a --write-movie render (each frame goes to disk) -> real FPS only via fps_probe.gd.
