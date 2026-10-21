@@ -8,6 +8,10 @@ extends PanelContainer
 signal chosen(action: ActionDef, target_id: StringName)
 ## The focused target changed (&"" when leaving the target list); the stage moves the 3D marker.
 signal target_focused(unit_id: StringName)
+## The Items entry was pressed: the HUD opens the item list (BattleItemMenu).
+signal items_requested
+
+const ITEMS_ID: StringName = &"items"  ## the action_id meta of the Items entry (it is not a move)
 
 var _sim: BattleSim
 var _view: BattleViewDef
@@ -19,6 +23,7 @@ var _list: VBoxContainer
 var _desc: Label
 var _notice: Label
 var _buttons: Array[Button] = []
+var _items_button: Button
 
 
 func setup(sim: BattleSim, view: BattleViewDef) -> void:
@@ -74,7 +79,25 @@ func close() -> void:
 
 ## The move buttons (empty while the target list shows). Each has meta "action_id".
 func move_buttons() -> Array[Button]:
-	return _buttons if _open and _move == null else ([] as Array[Button])
+	var out: Array[Button] = []
+	if _open and _move == null:
+		for button: Button in _buttons:
+			if button != _items_button:
+				out.append(button)
+	return out
+
+
+## The Items entry (null while the target list shows).
+func items_button() -> Button:
+	return _items_button if _open and _move == null else null
+
+
+## Back from the item list: the move list shows again with the cursor on Items.
+func return_from_items() -> void:
+	if _open:
+		_show_moves(null)
+		if _items_button != null and not _items_button.disabled:
+			_items_button.grab_focus()
 
 
 ## The target buttons (empty while the move list shows). Each has meta "unit_id".
@@ -115,7 +138,15 @@ func _show_moves(focus_move: ActionDef) -> void:
 		button.disabled = not affordable.has(action)
 		button.pressed.connect(_pick_move.bind(action))
 		button.focus_entered.connect(_describe.bind(action))
+	_add_items_entry()
 	_focus(focus_move.id if focus_move != null else &"", "action_id")
+
+
+func _add_items_entry() -> void:
+	_items_button = _add_button(BattleStyle.text("BATTLE_ITEMS"), BattleMenuChips.for_items(_sim.items.free_count()))
+	_items_button.set_meta("action_id", ITEMS_ID)
+	_items_button.disabled = not _sim.items.any_available()
+	_items_button.pressed.connect(items_requested.emit)
 
 
 func _pick_move(action: ActionDef) -> void:
@@ -148,27 +179,13 @@ func _describe(action: ActionDef) -> void:
 
 
 func _add_button(content: String, chips: Array[Control]) -> Button:
-	var button := Button.new()
-	button.text = content
-	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	button.custom_minimum_size.y = Ui.style().size(&"s_button_h")
-	button.add_child(Ui.chip_row(chips))
-	_list.add_child(button)
+	var button: Button = BattleMenuChips.button(_list, content, chips)
 	_buttons.append(button)
-	button.focus_entered.connect(AudioDirector.play_ui.bind(&"menu_move"))
-	button.pressed.connect(AudioDirector.play_ui.bind(&"menu_confirm"))
-	button.mouse_entered.connect(func() -> void: if not button.disabled: button.grab_focus())
 	return button
 
 
 func _focus(preferred_id: StringName, meta_key: String) -> void:
-	var first: Button = null
-	for button: Button in _buttons:
-		if button.disabled:
-			continue
-		first = first if first != null else button
-		if preferred_id != &"" and button.get_meta(meta_key) == preferred_id:
-			first = button
+	var first: Button = BattleMenuChips.first_enabled(_buttons, preferred_id, meta_key)
 	if first != null:
 		first.grab_focus()
 
@@ -178,5 +195,6 @@ func _clear() -> void:
 		_list.remove_child(button)
 		button.queue_free()
 	_buttons.clear()
+	_items_button = null
 	_desc.text = ""
 	_notice.text = ""

@@ -5,12 +5,15 @@ extends CanvasLayer
 
 ## The player committed a move on a target in the command menu.
 signal move_chosen(action: ActionDef, target_id: StringName)
+## The player committed a herb (and a target; &"" for the party herb) in the Items list.
+signal item_chosen(item_id: StringName, target_id: StringName)
 ## The target picker's focus moved (&"" when it closed).
 signal target_focused(unit_id: StringName)
 ## The end panel's pick: &"victory", &"retry" or &"defeat".
 signal end_chosen(result: StringName)
 
 var menu: BattleCommandMenu
+var item_menu: BattleItemMenu
 var timeline_bar: BattleTimelineBar
 var party_panel: BattlePartyPanel
 var end_panel: BattleEndPanel
@@ -38,6 +41,13 @@ func setup(sim: BattleSim, view: BattleViewDef, shown_hp: Dictionary[StringName,
 	menu.setup(sim, view)
 	menu.chosen.connect(move_chosen.emit)
 	menu.target_focused.connect(target_focused.emit)
+	menu.items_requested.connect(_open_items)
+	item_menu = BattleItemMenu.new()
+	_root.add_child(item_menu)
+	item_menu.setup(sim, view)
+	item_menu.chosen.connect(item_chosen.emit)
+	item_menu.target_focused.connect(target_focused.emit)
+	item_menu.closed.connect(_close_items)
 	_build_texts()
 	end_panel = BattleEndPanel.new()
 	_root.add_child(end_panel)
@@ -51,8 +61,20 @@ func open_menu(hero: UnitState) -> void:
 
 
 func close_menu() -> void:
+	item_menu.close()
+	menu.visible = false
 	menu.close()
 	target_focused.emit(&"")
+
+
+func _open_items() -> void:
+	menu.visible = false
+	item_menu.open(menu.hero())
+
+
+func _close_items() -> void:
+	menu.visible = true
+	menu.return_from_items()
 
 
 func show_end(result: StringName) -> void:

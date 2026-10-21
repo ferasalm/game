@@ -6,7 +6,7 @@ extends Node
 ## with no waiting; the call then finishes synchronously.
 
 const MOVE_KINDS: Array[StringName] = [&"act", &"reverse_stab", &"command"]
-const TARGET_KINDS: Array[StringName] = [&"damage", &"healed", &"status", &"revived"]
+const TARGET_KINDS: Array[StringName] = [&"damage", &"healed", &"status", &"revived", &"sp_restored"]
 const BREAK_VFX: StringName = &"break"
 
 var _sim: BattleSim
@@ -68,6 +68,10 @@ func _play_one(events: Array[TimelineEvent], i: int) -> void:
 			_on_healed(event)
 		&"revived":
 			_on_revived(event)
+		&"sp_restored":
+			_on_sp_restored(event)
+		&"fizzled":
+			_float_status(event, BattleStyle.text("BATTLE_ITEM_FIZZLED"))
 
 
 func _on_command(event: TimelineEvent) -> void:
@@ -134,6 +138,11 @@ func _on_healed(event: TimelineEvent) -> void:
 	_shown_hp[event.unit_id] = mini(unit.def.max_hp, _shown_hp.get(event.unit_id, 0) + event.value)
 	if not _skip:
 		_fighters.float_heal(event.unit_id, BattleStyle.text("UI_HEALED") % event.value)
+
+
+func _on_sp_restored(event: TimelineEvent) -> void:
+	if not _skip:
+		_fighters.float_heal(event.unit_id, BattleStyle.text("BATTLE_SP_RESTORED") % event.value)
 
 
 func _on_revived(event: TimelineEvent) -> void:

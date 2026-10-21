@@ -53,6 +53,7 @@ func start(battle: BattleSim, anchor: Vector3) -> void:
 	hud.setup(sim, _view, shown_hp)
 	BattleCameraRig.paint(self)
 	hud.move_chosen.connect(_on_move_chosen)
+	hud.item_chosen.connect(_on_item_chosen)
 	hud.target_focused.connect(_on_target_focused)
 	hud.end_chosen.connect(_finish)
 	_player = BattleEventPlayer.new()
@@ -154,6 +155,17 @@ func _on_move_chosen(action: ActionDef, target_id: StringName) -> void:
 		hud.close_menu()
 	else:
 		hud.menu.show_notice(reason)
+
+
+func _on_item_chosen(item_id: StringName, target_id: StringName) -> void:
+	var hero: UnitState = sim.waiting_hero()
+	if hero == null:
+		return
+	var reason: String = sim.choose_item(hero.unit_id, item_id, target_id)
+	if reason.is_empty():
+		hud.close_menu()
+	else:
+		hud.item_menu.show_notice(reason)
 
 
 func _on_target_focused(unit_id: StringName) -> void:

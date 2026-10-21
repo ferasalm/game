@@ -44,6 +44,14 @@ func consumable(item_id: StringName) -> ConsumableDef:
 	return _consumables.get(item_id)
 
 
+## Herbs of every listed kind that are not claimed.
+func free_count() -> int:
+	var total: int = 0
+	for def: ConsumableDef in listed():
+		total += _bag.available(def.id)
+	return total
+
+
 func available(item_id: StringName) -> int:
 	return _bag.available(item_id)
 
