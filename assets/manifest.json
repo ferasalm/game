@@ -2080,13 +2080,6 @@
       "prompt": ""
     },
     {
-      "id": "sfx_rpg_audio_Preview",
-      "path": "audio/sfx/rpg_audio/Preview.ogg",
-      "source": "kenney.nl/assets/rpg-audio",
-      "licence": "CC0 1.0",
-      "prompt": ""
-    },
-    {
       "id": "sfx_sci_fi_sounds_licence",
       "path": "audio/sfx/sci_fi_sounds/license.txt",
       "source": "kenney.nl/assets/sci-fi-sounds",
