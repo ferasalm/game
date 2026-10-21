@@ -156,3 +156,31 @@ func color(key: String, default: Color = Color.MAGENTA, required: bool = true) -
 		_fail(key, "'%s' is not a colour" % value)
 		return Color.MAGENTA
 	return Color.html(value)
+
+
+## A list of JSON objects that may be absent (then empty); errors name the element like objects().
+func optional_objects(key: String) -> Array[DefReader]:
+	if not _data.has(key):
+		return []
+	return objects(key)
+
+
+## A list of numbers that may be absent (then empty), each inside min_value..max_value.
+func float_list(key: String, min_value: float, max_value: float) -> Array[float]:
+	var out: Array[float] = []
+	if not _data.has(key):
+		return out
+	if not (_data[key] is Array):
+		_fail(key, "not a list")
+		return out
+	for item: Variant in (_data[key] as Array):
+		if not (item is float or item is int) or float(item) < min_value or float(item) > max_value:
+			_fail(key, "'%s' is not a number in %s..%s" % [str(item), _num(min_value), _num(max_value)])
+		else:
+			out.append(float(item))
+	return out
+
+
+## True when the key is present (for optional nested objects and lists).
+func has(key: String) -> bool:
+	return _data.has(key)
