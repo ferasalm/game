@@ -12,12 +12,13 @@ Plan (approved by Feras): docs/design/v03-plan.md. Architecture: docs/ARCHITECTU
   EventBus money_changed/game_paused, `menu` input, localization shop/sabil/pause.csv. check.sh: 273 tests ok.
 - In flight when the 5-h limit hit (local worktree branches; each should have a WIP commit + WIP_NOTES.md at its
   root; if a note is missing, read `git -C <worktree> log` and `diff`):
-  - P1a flow/state/items/battle contract: .claude/worktrees/agent-a6fa1b1bce014b0a4 (worktree-agent-a6fa1b1bce014b0a4)
   - P1b DONE (143bc79, check.sh ok, 307 tests; APIs + leftovers in its WIP_NOTES.md): merge as is:
     worktree-agent-a053ea400a3633839. Leftover: create_timer in battle_action_player/battle_stage/fighters.
-  - P1a partial (3f22d3e: items 1-4 done; Router, chest fix, PrototypeMain, smoke test left).
+  - P1a partial (3f22d3e: items 1-4 done; Router, chest fix, PrototypeMain, smoke test left; test_battle_outcome
+    unrun): worktree-agent-a6fa1b1bce014b0a4.
   - Look spike (painted light, bake, outlines, grade, camera presets, 3 variants): .claude/worktrees/
-    agent-a4e91f85045597ede (worktree-agent-a4e91f85045597ede); renders go to inbox/spike/.
+    agent-a4e91f85045597ede (worktree-agent-a4e91f85045597ede), 9cb5b23: shaders, bake (WebP), outline, grade/AA,
+    presets, 3 looks built; left: painted Zayd, checks, renders to inbox/spike/, FPS.
 - Herb seller name "Umm Nabil" (Narrative Designer); Feras may rename.
 
 ## Waiting on the owner
