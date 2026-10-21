@@ -94,6 +94,7 @@ func _on_encounter_touched(encounter_id: StringName, _from_behind: bool) -> void
 
 
 func _start_battle() -> void:
+	area_card.dismiss()
 	var loader: BattleLoader = BattleLoader.from_db(ContentDB, _encounter_id)
 	var party: Array[CombatantDef] = loader.party_from_equipment(GameState.equipment)
 	_battles += 1

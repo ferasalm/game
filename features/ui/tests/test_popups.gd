@@ -49,6 +49,8 @@ func test_area_title_card_shows_the_name() -> void:
 	card.show_card("AREA_SOUQ_NAME", "AREA_SOUQ_NAME_AR", "AREA_SUBTITLE")
 	check(card.is_showing(), "showing")
 	check_eq(card.name_text(), "Souq al-Milh Rooftops", "the English name")
+	card.dismiss()
+	check(not card.is_showing(), "a battle starting under the card ends it at once")
 	card.free()
 
 

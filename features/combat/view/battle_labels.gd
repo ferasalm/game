@@ -4,16 +4,27 @@ extends RefCounted
 ## the target marker. Sizes and colours come from the BattleViewDef.
 
 
+## Fades the text and its outline together, then frees the label.
+static func fade_out(tween: Tween, label: Label3D, seconds: float) -> void:
+	tween.tween_property(label, "modulate:a", 0.0, seconds)
+	tween.parallel().tween_property(label, "outline_modulate:a", 0.0, seconds)
+	tween.tween_callback(label.queue_free)
+
+
 static func floating(content: String, size: int, color: Color, view: BattleViewDef) -> Label3D:
 	var label := Label3D.new()
 	label.text = content
 	label.font_size = size
 	label.pixel_size = view.label_pixel_size
-	label.modulate = color
+	label.modulate = Color(color.r * view.label_energy, color.g * view.label_energy, color.b * view.label_energy, color.a)
 	label.outline_size = roundi(size * 0.2)
 	label.outline_modulate = Color.BLACK
 	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	label.alpha_cut = Label3D.ALPHA_CUT_OPAQUE_PREPASS
+	# blended, drawn over the scenery: a fading number must fade as a whole (an alpha-cut fill drops out first and
+	# leaves a dark outline) and never hide behind a stall or a tower
+	label.alpha_cut = Label3D.ALPHA_CUT_DISABLED
+	label.no_depth_test = true
+	label.render_priority = 10
 	label.shaded = false
 	return label
 

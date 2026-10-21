@@ -52,6 +52,13 @@ func show_card(name_key: String, arabic_key: String, subtitle_key: String) -> vo
 
 
 ## True while the card is on screen (fading in, holding or fading out).
+## Ends the card at once (a battle starting under it).
+func dismiss() -> void:
+	if _block != null:
+		_tween.kill()
+		_done()
+
+
 func is_showing() -> bool:
 	return _block != null
 

@@ -25,8 +25,7 @@ static func pop(parent: Node3D, content: String, at: Vector3, size: int, color: 
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	look.tween_property(label, "scale", Vector3.ONE * size_factor, juice.pop_time).set_trans(Tween.TRANS_BACK)
 	look.tween_interval(maxf(view.number_seconds * 0.45 - juice.pop_time * 2.0, 0.0))
-	look.tween_property(label, "modulate:a", 0.0, view.number_seconds * 0.4)
-	look.tween_callback(label.queue_free)
+	BattleLabels.fade_out(look, label, view.number_seconds * 0.4)
 	return label
 
 
@@ -43,6 +42,5 @@ static func stamp(parent: Node3D, content: String, at: Vector3, view: BattleView
 		tween.tween_property(label, "position:x", at.x + side * 0.06, 0.03)
 	tween.tween_property(label, "position:x", at.x, 0.03)
 	tween.tween_interval(juice.break_seconds * 0.4)
-	tween.tween_property(label, "modulate:a", 0.0, juice.break_seconds * 0.4)
-	tween.tween_callback(label.queue_free)
+	BattleLabels.fade_out(tween, label, juice.break_seconds * 0.4)
 	return label

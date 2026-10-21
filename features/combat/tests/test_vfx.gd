@@ -132,3 +132,13 @@ func test_targets_of_a_move() -> void:
 	check_eq(player._targets_after(events, 0), [&"e1", &"e2"] as Array[StringName], "damage and status name the targets once")
 	check_eq(player._targets_after(events, 6), [&"zayd"] as Array[StringName], "the next move has its own")
 	player.free()
+
+
+func test_3d_text_is_boosted_to_read_through_the_night_fog() -> void:
+	var view := ContentDB.get_def("battle_view", &"default") as BattleViewDef
+	check(view.label_energy > 1.0, "damage numbers and BREAK! are brighter than 1 so fog and tonemapping keep them legible")
+	var label: Label3D = BattleLabels.floating("33", 40, Color(1.0, 0.9, 0.6), view)
+	check(is_equal_approx(label.modulate.r, view.label_energy), "the label colour is multiplied by label_energy")
+	check(label.no_depth_test and label.alpha_cut == Label3D.ALPHA_CUT_DISABLED,
+		"numbers draw over the scenery and fade as a whole (no dark outline left behind)")
+	label.free()
