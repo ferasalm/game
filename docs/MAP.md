@@ -88,11 +88,16 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/art/logic/pixel_art.gd`: Turns a palette-indexed sprite (rows of letters) into an Image or texture
 - `features/art/tests/test_character_motion.gd`: CharacterVisual motion: the shader material carries the data (minimum light, rim), knocked out / revived snap to the right look, the battle motions and the little effects (dust, afterimages, shadow) run without errors, and the sprite stays crisp (nearest filtering)
 - `features/art/tests/test_sprites.gd`: Prototype T7: every sprite is well formed and uses only palette letters; PixelArt and CharacterVisual work
+- `features/art/tests/test_visual_contract.gd`: The CharacterVisual contract: play(state, facing), the anchors, clip events, the pixel and puppet sources behind the facade, and the pulse flag that switches the whole-body squash off for puppets
 - `features/art/view/character.gdshader`
 - `features/art/view/character_fx.gd`: The small effects around one CharacterVisual: a soft blob shadow on the floor, dust puffs at the feet and the fading afterimages of a lunge
 - `features/art/view/character_ghost.gdshader`
-- `features/art/view/character_motion.gd`: The tweened motions of a CharacterVisual: turn squash, anticipation (pull back and squash), the lunge with afterimages, impact and recoil, hurt (flash, shake, knockback slide), knocked out, revive and the victory hop
-- `features/art/view/character_visual.gd`: A pixel-art character standing in the 3D world: a lit, billboarded quad (feet on the node's origin) with idle breathing, a walk bob with squash and stretch, a lean into the move, dust at the feet, a blob shadow, and the battle motions (see CharacterMotion)
+- `features/art/view/character_motion.gd`: The root moves of a CharacterVisual: they slide `root` and nothing else (the picture and its squash belong to the VisualSource)
+- `features/art/view/character_visual.gd`: A character standing in the 3D world (feet on the node's origin)
+- `features/art/view/pixel_motion.gd`: The body-shape motions of a pixel character (PixelSource): whole-body squash and stretch (`pulse`), the cast crouch, the victory hop, the hit flash, knocked out and revive
+- `features/art/view/pixel_source.gd`: The pixel-art source of a CharacterVisual (today's look, unchanged): a lit, billboarded quad with the sprite's texture (nearest filtering), idle breathing, the walk bob with squash and stretch, the lean into the move and dust at the feet
+- `features/art/view/puppet_source.gd`: Stub for the painted-puppet source (the puppet builder fills it in): cut parts on a rig, gait clips, clip events
+- `features/art/view/visual_source.gd`: What draws a CharacterVisual
 - `features/audio/defs/audio_rules_def.gd`: Mixer and behaviour numbers of the AudioDirector (content/audio/rules.json): bus volumes, voice pools, music fade and duck, hit weight, text blip rate, item chime boost per rarity, and which sound each move uses
 - `features/audio/defs/music_def.gd`: One music track (content/audio/music.json): its file, volume and whether it loops
 - `features/audio/defs/sound_def.gd`: One sound effect (content/audio/sounds.json): file variants (one is picked each play), the bus it plays on, its volume, a random pitch range so repeats differ, an optional repeat interval (footsteps) and whether it ducks the music (stingers)
@@ -136,6 +141,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/tests/test_battle_status.gd`: T5 (statuses): applied by a move, refreshed on re-apply, one turn lost per act of the afflicted unit, and the cast-speed / knockback-bonus numbers of a CombatantDef
 - `features/combat/tests/test_battle_tech.gd`: Tech moves: ally / self / all-target moves, heals (never above max HP, downed allies stay down unless the move revives), the guarded and overclocked statuses, and the damage-taken multiplier
 - `features/combat/tests/test_formation.gd`: Formation rows: cover and melee multipliers
+- `features/combat/tests/test_pause_safety.gd`: Pausing the game stops battle waits and cancels a hitstop (a SceneTreeTimer would keep running during a pause)
 - `features/combat/tests/test_reverse_stab.gd`: The reverse stab: only when the party was ambushed, Zayd strikes the lowest-slot living enemy first
 - `features/combat/tests/test_timeline.gd`: Timeline rules: command pause, cast and act, interrupts, knockback limits, determinism
 - `features/combat/tests/test_vfx.gd`: Battle effects: every ActionDef vfx kind has data, every texture paints, the effect player builds and plays each kind (single target and all foes) without errors and gives its sprites back to the pool, and the juice numbers (hitstop, shake, zoom) come from data and rank heavy above light
@@ -157,6 +163,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/view/battle_style.gd`: Small builders for the battle screen's look (labels, bars, names, head icons)
 - `features/combat/view/battle_timeline_bar.gd`: The timeline along the top: an ornate brass track from 0 to ACT_POINT with a COMMAND mark and a tinted cast zone (BattleTrackArt), and one framed head icon per living unit at its timeline position (enemies above the track, the party below it, a small pointer in the team colour toward the track)
 - `features/combat/view/battle_track_art.gd`: The painted brass track of the timeline bar: dark glass, brass rails, tick marks, the tinted cast zone, a gypsum zigzag frieze along the bottom, the COMMAND mark (a brass line with diamonds) and an end cap at ACT
+- `features/combat/view/pause_wait.gd`: The one pause-safe wait of the battle view
 - `features/combat/view/vfx_player.gd`: Paints a VfxDef: turns each layer into pooled VfxSprites around the actor and the target(s) and moves them every frame (no tweens, no allocation once the pool is warm)
 - `features/combat/view/vfx_sprite.gd`: One pooled effect quad
 - `features/combat/view/vfx_sprite.gdshader`
@@ -210,17 +217,29 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/prototype/prototype_main.tscn`: scene
 - `features/prototype/tests/test_prototype.gd`: T6: the prototype main scene builds headless with rooftop, dialogue box and workshop menu; a simulated patrol touch starts a battle and stops exploring; an auto-played battle ends and walking resumes with the patrol reset; retry starts a fresh battle; the first workshop visit plays the talk, then the menu; later visits skip the talk
 - `features/ui/defs/ui_style_def.gd`: The look of every menu and HUD (content/ui/style.json): three font files, named colours (c_*), sizes in pixels at 1920x1080 (s_*) and times in seconds (t_*)
+- `features/ui/logic/pause_logic.gd`: Pure rules of the pause menu: which entries show and in what order, which ask "are you sure", the vitals of a hero with a missing record (= full), and the play-time clock text
 - `features/ui/tests/node_walk.gd`: Test helper (not a test): every descendant of a node, depth first
+- `features/ui/tests/test_pause_menu.gd`: The pause menu rules (PauseLogic) and the screen built from them
 - `features/ui/tests/test_popups.gd`: The loot popup (queues item_obtained in order, skippable), the area title card, the title overlay (any key dismisses it once) and the opening shot held on the moon until then
+- `features/ui/tests/test_screens.gd`: The Screens stack: push/pop pause the tree and emit game_paused, focus returns to the control that had it, back goes to the top screen, an unhandled menu opens pause only while exploring with nothing open, screens open by id
 - `features/ui/tests/test_ui.gd`: The shared UI look: the style loads completely, the theme builds with all three fonts (Arabic glyphs included), every rarity has a colour, the painted frames have the right size, and the text server can shape right-to-left Arabic
 - `features/ui/view/area_title_card.gd`: The area title card that fades in when the opening shot ends: the area's name in Latin and Arabic in Reem Kufi, a zigzag divider and a subtitle (place and year), then fades out
 - `features/ui/view/loot_popup.gd`: The "Obtained" banner: listens to EventBus.item_obtained and shows each new item centred high on the screen with its name in the rarity colour, a light sweep for Rare and above and a rarity jingle (AudioDirector.play_item)
+- `features/ui/view/screens/confirm_dialog.gd`: A centred Yes/No question over the scrim
+- `features/ui/view/screens/equipment_host.gd`: Puts the existing EquipmentScreen (the bench, a CanvasLayer with its own open()/closed API) on the Screens stack as the screen &"equipment"
+- `features/ui/view/screens/pause_menu.gd`: The pause screen (opened by Screens on the menu action while exploring): the entries on the left (Resume, Items, Equipment, Load last save or Restart, Unstuck, Title, Quit), the party on the right
+- `features/ui/view/screens/pause_party.gd`: The right half of the pause screen: a card per hero (name, HP and SP bars with numbers, KO tag), the worn gear of each hero, and under a frieze the area name, play time and riyal
 - `features/ui/view/title_overlay.gd`: The game's title over the opening sky: "Qarnaw" in Latin and Arabic in Reem Kufi with a pulsing "Press any key"
 - `features/ui/view/ui.gd`: Entry point of the shared UI look: the style (content/ui/style.json), the one cached Theme, and small builders (labels, screen roots, the zigzag divider)
 - `features/ui/view/ui_boxes.gd`: StyleBox builders for the UI theme: ornate panels (painted nine-patch frames), button states with the warm brass focus glow, and progress-bar tracks and gradient fills
+- `features/ui/view/ui_layers.gd`: The one table of CanvasLayer layers (engine draw-order values, so named constants are allowed here)
+- `features/ui/view/ui_motion.gd`: UI tweens: they ignore Engine.time_scale (a battle hitstop must not slow a menu) and, bound to a node whose process mode is ALWAYS (every UiScreen), keep running while the tree is paused
 - `features/ui/view/ui_ornament.gd`: Procedurally painted UI textures from the UiStyleDef (no image files): the nine-patch frames (a thin brass line, a thin gypsum line inside it and a small diamond in each corner, like the carved plaster of a Sana'a tower-house), and the zigzag frieze band that divides sections
+- `features/ui/view/ui_panel.gd`: A framed night-glass panel: gypsum tracery frame (the theme's panel box), an optional title pair (English left in Reem Kufi, Arabic right in brass) with a frieze under it, and a `body` column for the content
 - `features/ui/view/ui_rarity.gd`: Rarity helpers for every screen: the tier colour (from RarityDef), coloured item names and the small rarity tag
-- `features/ui/view/ui_stack.gd`: Screen stack (autoload Screens): push/pop UiScreens, pause the tree while one is open, restore focus, route back/menu input, open the pause menu when nothing is open
+- `features/ui/view/ui_screen.gd`: Base of every full menu (pause, items, shop, confirm, defeat)
+- `features/ui/view/ui_stack.gd`: Screen stack (autoload Screens): push/pop UiScreens (each on its own UiLayers layer), pause the tree while one wants it, restore focus when one closes, route `back` / `menu` input, and open the pause menu on `menu` when the game is exploring and nothing is open
+- `features/ui/view/ui_sweep.gd`: The qamariya focus sweep: a thin line under a focused control runs red, amber, green, blue, violet (stained glass) from left to right, then rests on brass
 - `features/ui/view/ui_theme.gd`: Builds the one Godot Theme every menu and HUD uses: Amiri for reading, Reem Kufi for titles, names and numbers, ornate panels, brass-focus buttons, gradient bars
 - `features/world/defs/area_def.gd`: A level as data: equal-width rows of tile characters, a legend (character -> tile id) and four markers (S spawn, W workshop bench, P patrol start, Q patrol end) that each appear once and stand on floor
 - `features/world/defs/building_def.gd`: One Sana'a tower-house as data: footprint (metres), floors (the lowest stone_floors are basalt), window columns per facade, frieze style, qamariya glass letters, lit-window ratio, parapet style and roof extras

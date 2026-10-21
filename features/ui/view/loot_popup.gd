@@ -15,7 +15,7 @@ var _clip: Control = null
 
 
 func _ready() -> void:
-	layer = 20
+	layer = UiLayers.LOOT
 	_root = Ui.screen_root()
 	add_child(_root)
 	EventBus.item_obtained.connect(enqueue)
@@ -84,9 +84,9 @@ func _build_banner(rarity: StringName) -> PanelContainer:
 	banner.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	banner.set_anchors_preset(Control.PRESET_CENTER_TOP)
 	banner.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	banner.offset_top = get_viewport().get_visible_rect().size.y * 0.18
+	banner.offset_top = Ui.style().size(&"s_loot_top")
 	banner.offset_bottom = banner.offset_top
-	banner.custom_minimum_size.x = Ui.style().size(&"s_button_h") * 12.0
+	banner.custom_minimum_size.x = Ui.style().size(&"s_loot_w")
 	var box := VBoxContainer.new()
 	box.alignment = BoxContainer.ALIGNMENT_CENTER
 	banner.add_child(box)

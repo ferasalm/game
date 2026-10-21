@@ -12,13 +12,21 @@
      "c_hp_a": "#b8282e", "c_hp_b": "#ff8a2a", "c_sp_a": "#2f78c8", "c_sp_b": "#3df0e0",
      "c_good": "#6ed08a", "c_bad": "#ff8e78", "c_party": "#4ad0ff", "c_enemy": "#ff5a4a",
      "c_cast": "#ff3d9a38", "c_shadow": "#000000b0", "c_scrim": "#06040f99",
+     "c_glass_lit": "#241d4aee", "c_epithet": "#7fc9c4", "c_disabled": "#6f6784",
+     "c_qam_red": "#e0443c", "c_qam_amber": "#f2a93a", "c_qam_green": "#4fbf7a", "c_qam_blue": "#3f8fe0", "c_qam_violet": "#8a5ad8",
 
      "s_font_body": 26, "s_font_small": 20, "s_font_name": 28, "s_font_title": 38, "s_font_big": 72,
      "s_font_number": 22, "s_margin": 24, "s_pad": 14, "s_gap": 10,
      "s_frame_cell": 22, "s_frame_line": 2, "s_frame_gap": 4, "s_ornament": 10, "s_frieze_h": 12, "s_frieze_period": 16,
      "s_button_h": 46, "s_bar_h": 18, "s_icon": 60, "s_focus_glow": 10, "s_outline": 6, "s_title_space": 8,
+     "s_list_row_h": 64, "s_card_w": 360, "s_card_h": 120, "s_card_portrait": 88, "s_money_h": 48, "s_prompt_h": 44,
+     "s_key_icon": 34, "s_confirm_w": 720, "s_toast_w": 520, "s_pause_w": 560, "s_dialog_w": 1140, "s_dialog_h": 260,
+     "s_plate_h": 56, "s_portrait_w": 620, "s_portrait_h": 960, "s_sweep_h": 4, "s_slide": 24, "s_pause_h": 640, "s_party_w": 1040,
+     "s_loot_top": 194, "s_loot_w": 552, "s_end_button_w": 206, "s_end_button_h": 55, "s_cmd_desc_h": 58,
 
      "t_loot_fade": 0.35, "t_loot_hold": 2.2, "t_loot_shine": 0.9,
-     "t_title_fade": 0.9, "t_pulse": 1.6, "t_card_in": 0.9, "t_card_hold": 2.8, "t_card_out": 1.1}
+     "t_title_fade": 0.9, "t_pulse": 1.6, "t_card_in": 0.9, "t_card_hold": 2.8, "t_card_out": 1.1,
+     "t_focus_sweep": 0.35, "t_screen_in": 0.22, "t_screen_out": 0.16, "t_portrait_in": 0.4, "t_text_char": 0.025,
+     "t_money_count": 0.5, "t_toast_hold": 2.0, "t_toast_fade": 0.3, "t_transition_sweep": 0.6, "t_defeat_fade": 1.2}
   ]
 }

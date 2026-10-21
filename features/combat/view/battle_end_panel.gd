@@ -93,7 +93,7 @@ func _fill_loot(won: bool) -> void:
 func _add(key: String, result: StringName) -> void:
 	var button := Button.new()
 	button.text = BattleStyle.text(key)
-	button.custom_minimum_size = Vector2(_view.menu_width / 3.0, Ui.style().size(&"s_button_h") * 1.2)
+	button.custom_minimum_size = Vector2(Ui.style().size(&"s_end_button_w"), Ui.style().size(&"s_end_button_h"))
 	button.pressed.connect(_pick.bind(result))
 	_row.add_child(button)
 	_buttons.append(button)

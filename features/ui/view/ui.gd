@@ -72,3 +72,34 @@ static func chip_row(chips: Array[Control]) -> HBoxContainer:
 	for chip: Control in chips:
 		line.add_child(chip)
 	return line
+
+
+## A framed glass panel with an English + Arabic title pair and a frieze (empty English = no title bar).
+static func panel(title_en: String = "", title_ar: String = "") -> UiPanel:
+	return UiPanel.new().setup(title_en, title_ar)
+
+
+## A title row: English left in Reem Kufi, Arabic right in dim brass.
+static func title_pair(english: String, arabic: String) -> Control:
+	var row := HBoxContainer.new()
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var left: Label = label(english, &"TitleLabel")
+	left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(left)
+	if not arabic.is_empty():
+		row.add_child(label(arabic, &"TitleLabel", style().colour(&"c_brass_dim")))
+	return row
+
+
+## The qamariya focus sweep under a control (see UiSweep).
+static func sweep(target: Control) -> Tween:
+	return UiSweep.start(target)
+
+
+## Pushes a Yes/No dialog on the Screens stack; the returned signal emits true (yes) or false (no / back).
+## Use: if await Ui.confirm("PAUSE_TITLE_MENU", "PAUSE_CONFIRM_TITLE", false): ...
+static func confirm(title_key: String, body_key: String, default_yes: bool = false) -> Signal:
+	var dialog := ConfirmDialog.new()
+	dialog.setup(title_key, body_key, default_yes)
+	Screens.push(dialog)
+	return dialog.answered

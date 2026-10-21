@@ -6,6 +6,7 @@ extends Node
 var def: JuiceDef
 var _camera: BattleCamera
 var _freezes: int = 0
+var _epoch: int = 0  ## grows when a pause cancels the freezes in flight
 
 
 func setup(juice: JuiceDef, camera: BattleCamera) -> void:
@@ -13,13 +14,20 @@ func setup(juice: JuiceDef, camera: BattleCamera) -> void:
 	_camera = camera
 
 
-## Freeze frames for `seconds` of real time. Callers await it.
+func _ready() -> void:
+	EventBus.game_paused.connect(_on_game_paused)
+
+
+## Freeze frames for `seconds` of real time. Callers await it. A pause cancels the freeze (the wait is pause-safe).
 func hitstop(seconds: float) -> void:
 	if seconds <= 0.0 or not is_inside_tree():
 		return
 	_freezes += 1
+	var epoch: int = _epoch
 	Engine.time_scale = def.freeze_scale
-	await get_tree().create_timer(seconds, true, false, true).timeout
+	await PauseWait.seconds(self, seconds, true)
+	if epoch != _epoch:
+		return  # cancelled by a pause while waiting: the state was already reset
 	_freezes = maxi(_freezes - 1, 0)
 	if _freezes == 0:
 		Engine.time_scale = 1.0
@@ -36,5 +44,12 @@ func is_frozen() -> bool:
 
 func _exit_tree() -> void:
 	if _freezes > 0:
+		_freezes = 0
+		Engine.time_scale = 1.0
+
+
+func _on_game_paused(paused: bool) -> void:
+	if paused:
+		_epoch += 1
 		_freezes = 0
 		Engine.time_scale = 1.0

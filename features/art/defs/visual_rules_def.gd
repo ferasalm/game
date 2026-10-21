@@ -4,6 +4,10 @@ extends Def
 ## stretch, lean, dust), turning, the blob shadow, and the battle motions (anticipation, lunge with afterimages,
 ## recoil, hurt, knocked out, revive, victory hop).
 
+## True: a painted puppet draws this character (PuppetSource) instead of a pixel sprite.
+var puppet: bool = false
+## False for puppets: their limbs move, so the whole-body squash and stretch (CharacterVisual.pulse) stays off.
+var pulse_squash: bool = true
 var pixels_per_metre: float = 16.0
 var placeholder_width: int = 16
 var placeholder_height: int = 32
@@ -56,6 +60,8 @@ var hop_count: int = 1
 
 func read(r: DefReader) -> void:
 	id = r.id()
+	puppet = r.flag("puppet")
+	pulse_squash = r.flag("pulse_squash", true)
 	pixels_per_metre = r.number("pixels_per_metre", 1.0, 64.0)
 	placeholder_width = r.integer("placeholder_width", 1, 128)
 	placeholder_height = r.integer("placeholder_height", 1, 128)

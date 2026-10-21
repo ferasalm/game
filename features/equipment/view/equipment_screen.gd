@@ -21,7 +21,7 @@ var _opened_frame: int = -1
 
 
 func _ready() -> void:
-	layer = 10
+	layer = UiLayers.SCREEN
 	visible = false
 	_data = EquipmentData.new()
 	_build()
