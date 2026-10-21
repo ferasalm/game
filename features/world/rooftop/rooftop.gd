@@ -136,11 +136,11 @@ func teleport_party(pos: Vector3, grace: bool = true) -> void:
 		camera_rig.update(SNAP_SECONDS, _aim.subject(pos))
 
 
-## Puts the party at a save point (a place id of this area); an unknown or empty id means the spawn.
+## Puts the party at a save point (a place id of this area); an unknown or empty id means the spawn (no grace).
 func place_party(save_point: StringName) -> void:
 	var place: PlaceDef = _area.place(save_point)
 	if place == null:
-		teleport_party(AreaActors.marker_of(_area, AreaDef.SPAWN, _floor_y))
+		teleport_party(AreaActors.marker_of(_area, AreaDef.SPAWN, _floor_y), false)
 	else:
 		teleport_party(Vector3(place.pos.x, _floor_y, place.pos.z))
 

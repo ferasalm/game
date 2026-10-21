@@ -68,9 +68,10 @@ func _physics_process(delta: float) -> void:
 	if moving:
 		var step: Vector3 = to_target * (1.0 - exp(-_rules.follower_lag * delta))
 		wanted = step.length()
-		var before: Vector3 = position
 		_move(step)
-		moved = position.distance_to(before)
+		var after: Vector3 = target - position
+		after.y = 0.0
+		moved = to_target.length() - after.length()
 		_visual.face_dir(Vector3(to_target.x, 0.0, to_target.z))
 	if _guard.update(delta, to_target.length(), wanted, moved):
 		position = Vector3(target.x, position.y, target.z)

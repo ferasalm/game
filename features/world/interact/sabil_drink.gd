@@ -6,14 +6,15 @@ extends RefCounted
 
 
 ## Returns "" on success or the reason the save failed (the state is then as it was).
-static func apply(place_id: StringName, slot: int) -> String:
+## saver: replaces Router.save_slot (tests use it to fake a full disk); it takes the slot and returns "" or a reason.
+static func apply(place_id: StringName, slot: int, saver: Callable = Router.save_slot) -> String:
 	var vitals_before: Dictionary = GameState.vitals.duplicate(true)
 	var cleared_before: Array = GameState.cleared_patrols.duplicate()
 	var point_before: StringName = GameState.save_point
 	GameState.vitals.clear()
 	GameState.cleared_patrols.clear()
 	GameState.save_point = place_id
-	var problem: String = Router.save_slot(slot)
+	var problem: String = saver.call(slot)
 	if not problem.is_empty():
 		GameState.set_vitals(vitals_before)
 		GameState.cleared_patrols.assign(cleared_before)

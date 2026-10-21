@@ -1,0 +1,22 @@
+{
+	"bag": {
+		"pink_herb": 1
+	},
+	"cleared_patrols": [],
+	"counters": {},
+	"equipment": {},
+	"flags": {},
+	"inventory": [],
+	"money": 100,
+	"party": [
+		"zayd",
+		"bilqis"
+	],
+	"place": {
+		"area": "",
+		"save_point": "sabil"
+	},
+	"play_seconds": 0.0,
+	"version": 4,
+	"vitals": {}
+}
