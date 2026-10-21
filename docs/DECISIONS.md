@@ -50,8 +50,11 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-21 | Free online assets (CC0 / OFL) allowed where the game doesn't need unique art; each gets a manifest entry; downloads confirmed with the owner | Feras | Feras
 - 2026-10-21 | Haiku subagents take the mechanical work (cleanup, audits, doc updates) next to the Sonnet builders | Feras: "Involve Haiku subagent too" | Feras
 - 2026-10-21 | Look: painted diorama: Hades-like painted surfaces, ink outlines, painted light; Octopath tilt-shift and side-view battles; our twist = qamariya glass colour + gypsum ornament in light, VFX, UI | Feras (recommended over Octopath pixel, flat 2D) | Feras
-- 2026-10-21 | Characters: painted puppets cut from Feras's Flow pictures, animated in code (gait, clips); battles in a separate arena scene (warp in) | Feras (recommended over Flow frames, 3D models) | Feras
+- ~~2026-10-21 | Characters: painted puppets cut from Feras's Flow pictures, animated in code (gait, clips); battles in a separate arena scene (warp in) | Feras (recommended over Flow frames, 3D models) | Feras~~ superseded 2026-10-21: live 3D characters (the separate battle arena stays)
 - 2026-10-21 | Save spot: sabil fountain (save + full refill; patrols return); HP/SP carry over between fights, losing offers retry (supersedes slice.md refill) | Feras (recommended) | Feras
 - 2026-10-21 | Currency riyal; party right, enemies left in battle; camera picked by Feras from spike renders | defaults | Claude (owner may veto)
 - 2026-10-21 | Norm: big asks start in plan mode (Opus xhigh), audit with agents, then orchestrate; every installed agent at a fitting model and effort | Feras: "This should be the norm" | Feras
 - 2026-10-21 | Herb seller: Abu Nabil, a 40-year-old man (replaces the invented Umm Nabil) | Feras | Feras
+- 2026-10-21 | Characters: live 3D models in the 3D world (2.5D, aiming at Hades quality, motion and design), painted shader + ink outline; not pre-rendered frames | Feras: "exactly like Hades" (recommended) | Feras
+- 2026-10-21 | 3D models: CC0 stand-in bodies now; later Feras's Flow T-pose pictures -> free image-to-3D (he logs in) -> Claude rigs and paints | Feras (recommended) | Feras
+- 2026-10-21 | 3D motion: free CC0 packs or Mixamo (Feras logs in), retargeted, plus Claude's Hades-style polish (wind-ups, holds, fast strikes, hit pauses) | Feras (recommended) | Feras
