@@ -53,6 +53,8 @@ func read(r: DefReader) -> void:
 		var coords: Array[float] = r.float_list("rect", -500.0, 500.0)
 		if coords.size() == 4:
 			zone_rect = Rect2(coords[0], coords[1], coords[2] - coords[0], coords[3] - coords[1])
+			pos = Vector3(coords[0], 0.0, coords[1])
+			cell = Vector2i(floori(pos.x), floori(pos.z))
 		else:
 			r.problem("rect", "needs 4 numbers: x0, z0, x1, z1")
 		yaw = r.number("yaw", -360.0, 360.0, 0.0, false)

@@ -55,6 +55,10 @@ func test_every_use_point_is_reachable() -> void:
 			for z: int in range(p.rect.position.y, p.rect.end.y):
 				for x: int in range(p.rect.position.x, p.rect.end.x):
 					check(reach.has(Vector2i(x, z)), "vista cell (%d, %d) is reachable" % [x, z])
+		elif p.kind == PlaceDef.CAMERA_ZONE:
+			for z: int in range(floori(p.zone_rect.position.y), ceili(p.zone_rect.end.y)):
+				for x: int in range(floori(p.zone_rect.position.x), ceili(p.zone_rect.end.x)):
+					check(reach.has(Vector2i(x, z)), "%s cell (%d, %d) is reachable" % [p.id, x, z])
 		elif p.kind == PlaceDef.CHEST or p.kind == PlaceDef.NPC:
 			check(_near_reachable(reach, p.pos, _rules().interact_radius), "%s: a reachable cell within reach" % p.id)
 		else:

@@ -1,35 +1,19 @@
 class_name FollowCameraRig
-extends Node
+extends ExploreCamera
 ## Drives Camera3D in follow mode (FollowCam), framed mode (FramedShots), or legacy fixed mode (ExploreCamera).
 
-signal intro_finished
-
-var _camera: Camera3D
-var _rig: CameraRigDef
-var _look: LookDef
-var _smoothing: float = 6.0
-var _focus: Vector3 = Vector3.ZERO
 var _player: Player = null
 var _follower: Follower = null
 var _camera_zones: Array[PlaceDef] = []
 var _follow_cam: FollowCam = null
 var _framed_shots: FramedShots = null
-var _explore_cam: ExploreCamera = null
 var _mode: StringName = &"follow"
 
 
 func setup(camera: Camera3D, look: LookDef, rig: CameraRigDef, zone: Rect2, smoothing: float,
 		focus: Vector3) -> void:
-	_camera = camera
-	_look = look
-	_rig = rig
-	_smoothing = smoothing
-	_focus = focus
+	super.setup(camera, look, rig, zone, smoothing, focus)
 	_mode = rig.mode
-	_explore_cam = ExploreCamera.new()
-	add_child(_explore_cam)
-	_explore_cam.setup(camera, look, rig, zone, smoothing, focus)
-	_explore_cam.intro_finished.connect(func() -> void: intro_finished.emit())
 	_follow_cam = FollowCam.new(rig)
 	if _mode == &"follow":
 		_follow_cam.update(_focus, Vector3.ZERO, 0.0)
@@ -59,48 +43,16 @@ func set_zones(zones: Array[PlaceDef]) -> void:
 	_camera_zones = zones
 
 
-func play_intro() -> void:
-	if _explore_cam != null:
-		_explore_cam.play_intro()
-
-
-func skip_intro(instant: bool = false) -> void:
-	if _explore_cam != null:
-		_explore_cam.skip_intro(instant)
-
-
-func is_intro_playing() -> bool:
-	return _explore_cam != null and _explore_cam.is_intro_playing()
-
-
-func is_intro_held() -> bool:
-	return _explore_cam != null and _explore_cam.is_intro_held()
-
-
-func hold_intro(on: bool) -> void:
-	if _explore_cam != null:
-		_explore_cam.hold_intro(on)
-
-
-func vista_amount() -> float:
-	return _explore_cam.vista_amount() if _explore_cam != null else 0.0
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if _explore_cam != null and _explore_cam.is_intro_playing():
-		_explore_cam._unhandled_input(event)
-
-
 func update(delta: float, subject: Vector3) -> void:
-	if _explore_cam != null and _explore_cam.is_intro_playing():
-		_explore_cam.update(delta, subject)
+	if is_intro_playing() or _skip_time >= 0.0:
+		super.update(delta, subject)
 		return
 	if _mode == &"follow":
 		_update_follow(delta, subject)
 	elif _mode == &"framed":
 		_update_framed(delta)
-	elif _explore_cam != null:
-		_explore_cam.update(delta, subject)
+	else:
+		super.update(delta, subject)
 
 
 func _update_follow(delta: float, subject: Vector3) -> void:
