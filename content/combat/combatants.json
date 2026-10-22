@@ -7,10 +7,10 @@
      "agility": 44, "weight": 1.0, "actions": ["spark_shot", "static_net"]},
     {"id": "concession_enforcer", "name_key": "NAME_CONCESSION_ENFORCER", "max_hp": 450, "max_sp": 0, "attack": 31,
      "defense": 14, "agility": 30, "weight": 6.0, "interrupt_resist": 0.2, "actions": ["baton_slam"]},
-    {"id": "survey_drone", "name_key": "NAME_SURVEY_DRONE", "max_hp": 180, "max_sp": 12, "attack": 23,
+    {"id": "survey_drone", "name_key": "NAME_SURVEY_DRONE", "max_hp": 1200, "max_sp": 12, "attack": 45,
      "defense": 6, "agility": 48, "weight": 0.0, "actions": ["laser_ping", "overcharge_beam"]},
-    {"id": "abu_nabil", "name_key": "NPC_HERB_SELLER", "max_hp": 1300, "max_sp": 12, "attack": 24,
-     "defense": 10, "agility": 34, "weight": 5.0, "interrupt_resist": 0.0,
+    {"id": "abu_nabil", "name_key": "NPC_HERB_SELLER", "max_hp": 1200, "max_sp": 12, "attack": 45,
+     "defense": 10, "agility": 60, "weight": 5.0, "interrupt_resist": 0.7,
      "actions": ["pot_swing", "spice_cloud", "feather_snack"]}
   ]
 }

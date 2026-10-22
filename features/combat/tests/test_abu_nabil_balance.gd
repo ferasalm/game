@@ -11,7 +11,7 @@ func test_abu_nabil_duel_balance_harness() -> void:
 	var wins: int = 0
 	var seconds_list: Array[float] = []
 	var hp_shares: Array[float] = []
-	var total_battles: int = 30
+	var total_battles: int = 200
 	for seed_val: int in range(1, total_battles + 1):
 		var sim: BattleSim = loader.make_sim(
 			&"grandfather_hilt", &"rustwire_blade", seed_val, 0, &"salvage_arm", &"wrist_rig")
