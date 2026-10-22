@@ -138,6 +138,13 @@ docs/           ARCHITECTURE BRIEFING EFFICIENCY DECISIONS LESSONS MAP USAGE des
   (layers), instead of hand-written crossfades. Separately generated AI tracks don't line up as layers: layers
   must come from one track split into stems (Demucs, free) or be switched, not stacked.
 
+### Music contexts
+Menus and places each have their own track identity (`docs/design/music.md`). `content/audio/screen_music.json` maps
+screen ids to music ids. A pure stack (`MusicStack` in `features/audio/logic/`) resolves the active track: top screen wins,
+unmapped screens keep what is playing, and an empty stack returns to the base exploration or combat track. `MusicDeck`
+crossfades, remembers playback positions to resume base tracks after closing menus, starts battle tracks from the top,
+runs with `process_mode = PROCESS_MODE_ALWAYS` across pauses, and resolves missing audio files through fallback chains.
+
 ## 13. Art pipeline at $0 (M1 spike, M6 production)
 - Raw generations (Gemini, Flow) stay in the owner's Google Drive, not in git.
 - `tools/art/` (Python): downscale to the target size, lock to the palette, key out the background, trim, pack

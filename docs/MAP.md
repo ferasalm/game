@@ -25,8 +25,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/art/palette.json`: content: palette x1
 - `content/art/sprites.json`: content: sprite x5
 - `content/art/visual.json`: content: visual_rules x1
-- `content/audio/music.json`: content: music x2
+- `content/audio/music.json`: content: music x9
 - `content/audio/rules.json`: content: audio_rules x1
+- `content/audio/screen_music.json`: content: screen_music x7
 - `content/audio/sounds.json`: content: sound x34
 - `content/combat/actions.json`: content: action x18
 - `content/combat/arena_skyline.json`: content: skyline x1
@@ -144,12 +145,16 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/art/view/weapon_smear.gdshader`
 - `features/art/view/weapon_trail.gd`: The weapon's swing in the air: a ribbon between two tracked points (hilt and the blade's point) that fades along its age, and an arc smear card (a crescent) flashed on the strike frame
 - `features/audio/defs/audio_rules_def.gd`: Mixer and behaviour numbers of the AudioDirector (content/audio/rules.json): bus volumes, voice pools, music fade and duck, hit weight, text blip rate, item chime boost per rarity, and which sound each move uses
-- `features/audio/defs/music_def.gd`: One music track (content/audio/music.json): its file, volume and whether it loops
+- `features/audio/defs/music_def.gd`: One music track (content/audio/music.json): its file, volume, whether it loops, and an optional fallback track
+- `features/audio/defs/screen_music_def.gd`: Maps one screen id (from the Screens stack) to the music track id it plays while open
 - `features/audio/defs/sound_def.gd`: One sound effect (content/audio/sounds.json): file variants (one is picked each play), the bus it plays on, its volume, a random pitch range so repeats differ, an optional repeat interval (footsteps) and whether it ducks the music (stingers)
+- `features/audio/logic/music_logic.gd`: Pure rules for music playback: fallback resolution when audio files are missing, and mapping screen ids
+- `features/audio/logic/music_stack.gd`: Pure stack of open screen ids deciding which music track plays (content/audio/screen_music.json)
 - `features/audio/logic/sound_logic.gd`: Pure sound rules: which variant to play, which sound a move uses, when the next footstep is due, and the item chime boost for a rarity
 - `features/audio/tests/test_audio.gd`: Audio: every sound and music entry is well formed, every sfx file exists, every vfx id has a sound, the pure sound rules hold, and the AudioDirector builds its buses, plays headless and skips missing music
+- `features/audio/tests/test_music_contexts.gd`: Tests for music contexts: pure stack resolution across all branches, missing file fallback resolution, validation of screen_music definitions, pause process mode, and track resume positions
 - `features/audio/tests/test_sound_ids.gd`: Sound ids: every id the code asks the AudioDirector for exists in sounds.json with existing files, and the synthesized Arc Discharge files are 44.1 kHz mono, 0.6-0.9 s long and peak under -1 dBFS
-- `features/audio/view/music_deck.gd`: The music side of the AudioDirector: two players so one track crossfades into the next, and a duck of the Music bus under stingers
+- `features/audio/view/music_deck.gd`: The music side of the AudioDirector: two players so one track crossfades into the next, a duck under stingers, and a pure stack of screen music contexts (content/audio/screen_music.json)
 - `features/combat/defs/action_def.gd`: One battle technique: its cost, power, who it targets, and what it does to the timeline (cast speed, recovery, knockback, cancel)
 - `features/combat/defs/arena_def.gd`: A battle arena: a painted roof built as a sibling of the exploring area, far from it (origin), so the fight never shares space with the rooftop
 - `features/combat/defs/battle_camera_def.gd`: The cinematic battle camera (content/combat/camera.json): the low pose it swoops to from the exploration camera, the gentle idle drift, how far it follows the acting side, the push-in on big moves and the victory pose

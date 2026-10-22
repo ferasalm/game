@@ -28,6 +28,7 @@ var _blip_last: int = 0
 
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	_rng.randomize()
 	_rules = ContentDB.get_def("audio_rules", RULES_ID) as AudioRulesDef
 	if _rules == null:
@@ -36,6 +37,7 @@ func _ready() -> void:
 	for i: int in _rules.voices:
 		_pool.append(_new_player())
 	_deck = MusicDeck.new()
+	_deck.silent = silent
 	_deck.setup(_rules)
 	add_child(_deck)
 	EventBus.item_gained.connect(_on_item_gained)
@@ -124,18 +126,17 @@ func text_blip(shown: int) -> void:
 	_blip_last = shown
 
 
-## Crossfades to a music track by id. Same track again does nothing; a missing file leaves the music as it was
-## (silence at the start) and the track starts the next time this is called once the file exists.
-func play_music(music_id: StringName) -> void:
-	var def := ContentDB.get_def("music", music_id) as MusicDef
-	if def != null:
-		play_music_def(def)
+## Crossfades to a music track by id. Same track again does nothing; a missing file falls back or keeps what plays.
+func play_music(music_id: StringName, from_top: bool = false) -> void:
+	if _deck != null:
+		_deck.silent = silent
+		_deck.set_base(music_id, from_top)
 
 
 func play_music_def(def: MusicDef) -> void:
-	if _rules != null and ResourceLoader.exists(def.path):
+	if _deck != null and _rules != null:
 		_deck.silent = silent
-		_deck.play(def, _stream(def.path))
+		_deck.play_def(def)
 
 
 func stop_music() -> void:
@@ -146,6 +147,10 @@ func stop_music() -> void:
 ## The id of the music now playing (&"" when none).
 func current_music() -> StringName:
 	return _deck.current if _deck != null else &""
+
+
+func music_deck() -> MusicDeck:
+	return _deck
 
 
 ## The move's own vfx field when ActionDef has one (added by the VFX builder), else empty.
@@ -179,8 +184,8 @@ func _new_player() -> AudioStreamPlayer:
 
 
 func _build_buses() -> void:
-	var volumes: Dictionary[StringName, float] = {BUS_MUSIC: _rules.music_db, BUS_AMBIENCE: _rules.ambience_db,
-		BUS_SFX: _rules.sfx_db, BUS_UI: _rules.ui_db}
+	var volumes: Dictionary[StringName, float] = {
+		BUS_MUSIC: _rules.music_db, BUS_AMBIENCE: _rules.ambience_db, BUS_SFX: _rules.sfx_db, BUS_UI: _rules.ui_db}
 	for bus_name: StringName in volumes:
 		if AudioServer.get_bus_index(bus_name) == -1:
 			AudioServer.add_bus()

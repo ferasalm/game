@@ -96,6 +96,7 @@ func _on_workshop_opened() -> void:
 	Router.set_busy(true)
 	RewardApplier.chests_at(BENCH_PLACE)  # the bench stock; chests already opened give nothing
 	if GameState.flags.get(WORKSHOP_FLAG, false):
+		Screens.notify_opened(&"workshop")
 		menu.open()
 	else:
 		dialogue.play(WORKSHOP_DIALOGUE)
@@ -105,10 +106,12 @@ func _on_dialogue_finished(dialogue_id: StringName) -> void:
 	if dialogue_id != WORKSHOP_DIALOGUE:
 		return
 	GameState.flags[WORKSHOP_FLAG] = true
+	Screens.notify_opened(&"workshop")
 	menu.open()
 
 
 func _on_menu_closed() -> void:
+	Screens.notify_closed(&"workshop")
 	Router.set_busy(false)
 	rooftop.set_exploring(true)
 

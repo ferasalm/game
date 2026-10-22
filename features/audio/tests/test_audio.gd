@@ -50,9 +50,12 @@ func test_every_move_has_a_sound() -> void:
 
 
 func test_music_entries_are_well_formed() -> void:
-	for music_id: StringName in [&"night_rooftops", &"battle"]:
+	var music_ids: Array[StringName] = ContentDB.ids("music")
+	check(music_ids.size() >= 8, "at least 8 music tracks loaded")
+	for music_id: StringName in music_ids:
 		var def := ContentDB.get_def("music", music_id) as MusicDef
-		check(def != null and def.loop, "music " + music_id)
+		var want_loop: bool = (music_id != &"victory")
+		check(def != null and def.loop == want_loop, "music " + music_id)
 
 
 func test_bad_sound_content_is_reported() -> void:
