@@ -41,7 +41,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/combat/vfx.json`: content: vfx x15
 - `content/combat/view.json`: content: battle_view x1
 - `content/dialogue/box.json`: content: dialogue_style x1
-- `content/dialogue/dialogues.json`: content: dialogue x9
+- `content/dialogue/dialogues.json`: content: dialogue x16
 - `content/dialogue/speakers.json`: content: speaker x3
 - `content/dialogue/talks.json`: content: talk x1
 - `content/economy/rules.json`: content: economy_rules x1
@@ -80,6 +80,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `core/defs/transition_def.gd`: A screen transition between flow states: a plain fade or the qamariya-glass shatter, how long it runs and the colour it fades through (content/ui/transitions.json)
 - `core/event_bus.gd`: Global signals between features (autoload EventBus)
 - `core/game_state.gd`: Everything a save file holds (autoload GameState)
+- `core/save/router_saves.gd`: Helper for Router save operations: slot checks and file I/O delegates
 - `core/save/save_codec.gd`: Pure save format: migrate() lifts any old save dictionary to the current version one step at a time (_v1_to_v2, _v2_to_v3, _v3_to_v4), and sanitize() drops content ids the game no longer knows
 - `core/save/save_service.gd`: Save slots on disk: <dir>/slot_N.json, written atomically (tmp file, then rename over the old one, with the previous save kept as slot_N.json.bak)
 - `core/scene_router.gd`: Game flow owner (autoload Router): title -> area -> battle arena -> area, new game, save and load, unstuck, and the play-time clock
@@ -195,6 +196,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/tests/fake_clip_source.gd`: A stand-in VisualSource for battle view tests: a model-like source of a known size that sends clip events only when the test says so, and records what the battle asked of it (clips, facings, hit pauses, collapses)
 - `features/combat/tests/test_abu_nabil_balance.gd`: Balance harness for Abu Nabil duel: 200 seeded battles with policy AI on both sides
 - `features/combat/tests/test_abu_nabil_combat.gd`: Abu Nabil combat rules: miss rolls for confused units, status cures, uses per battle, and boss AI policy
+- `features/combat/tests/test_abu_nabil_spar.gd`: Abu Nabil Spar tests: practice BattleRequest flags, reverse_stab suppression on duels, snapshot restoration on win/loss with zero payout, and spar defeat without defeat screen
 - `features/combat/tests/test_action_def.gd`: ActionDef new fields: target, heal, revive, vfx (validated on load), and the shipped actions: every one has a vfx from the agreed list, and the tech moves have the shape the design asks for
 - `features/combat/tests/test_arena.gd`: The painted arena: the def points at real content, the builder makes the roof, the parapet, the props, the lights and the city, the arena camera sits low with its own depth of field, and the party stands right, the enemies left
 - `features/combat/tests/test_battle_ai_support.gd`: BattleAI with support moves: heal an ally under 40% HP, revive the fallen, guard before a big enemy cast, and never waste a heal or buff when nobody needs it
@@ -263,19 +265,24 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/view/vfx_sprite.gd`: One pooled effect quad
 - `features/combat/view/vfx_sprite.gdshader`
 - `features/combat/view/vfx_textures.gd`: Procedurally painted effect textures (no files): crisp hard-edged pixel shapes (a bright core and a darker rim, one-bit alpha) plus one soft glow
+- `features/dialogue/defs/dialogue_choice.gd`: A player choice at the end of a dialogue line: text key, next dialogue (or "end"), and effects
 - `features/dialogue/defs/dialogue_def.gd`: A conversation: an ordered list of lines (speaker, expression, text key)
-- `features/dialogue/defs/dialogue_line.gd`: One spoken line: who says it, with which expression, and the localization key of the text
+- `features/dialogue/defs/dialogue_line.gd`: One spoken line: who says it, with which expression, localization key, and optional choices
 - `features/dialogue/defs/dialogue_style_def.gd`: Look and timing of the dialogue box (fractions of the screen, pixels, colours, speed) and the pixel marks (brows, mouth) that make the stand-in portraits show an expression
 - `features/dialogue/defs/speaker_def.gd`: One speaking character: name key, name colour, the pixel sprite id, and where the face sits on that sprite (sprite pixels)
 - `features/dialogue/defs/talk_def.gd`: Maps a place id to its first dialogue, after-battle dialogue and ordered chats
+- `features/dialogue/dialogue_effects.gd`: Applies side effects from dialogue choices: set_flag, open_shop, start_battle, give_item
 - `features/dialogue/logic/dialogue_run.gd`: Steps through a DialogueDef one line at a time
 - `features/dialogue/logic/standin_portrait.gd`: Builds a stand-in portrait Image for a speaker without painted art: a soft glow in the speaker colour, a disc in that colour and brow and mouth marks per expression
 - `features/dialogue/logic/talk_picker.gd`: Pure picker that selects the next dialogue for a talk place from saved flags: 1
+- `features/dialogue/tests/test_abu_nabil_haggle.gd`: Abu Nabil Haggle and Shop tests: Haggle dialogue branches A/B/C/D, flag side effects, walk-away safety, win dialogue, post-win menu gating, and shop prices before/after win
 - `features/dialogue/tests/test_dialogue.gd`: Dialogue: T8 (every line has a known speaker, one of 4 expressions, a translating text key), DialogueRun stepping, the object-list reader, the stand-in portraits, and DialogueBox playing to the end once
+- `features/dialogue/tests/test_dialogue_choices.gd`: Dialogue choices test: DialogueChoice def parsing, DialogueRun choice exposure and advance blocking, DialogueEffects execution, and DialogueBox button selection
 - `features/dialogue/tests/test_dialogue_v2.gd`: Dialogue v2 (Hades II style): nameplate with epithet, typed text, portrait slide on a speaker change, Cease, the layout sizes from the UI style, and stand-in portraits that no longer touch sprite pixels
 - `features/dialogue/tests/test_talk_defs.gd`: Checks that talks.json is well formed and all referenced dialogue ids exist in ContentDB
 - `features/dialogue/tests/test_talk_picker.gd`: Tests for TalkPicker: first dialogue, after-battle dialogue on victory, chat sequence and wrapping, battle interruption resuming chats, and defensive fallbacks
-- `features/dialogue/view/dialogue_box.gd`: The dialogue box, Hades II style: a big portrait slides in when the speaker changes, a nameplate with the speaker's name and epithet sits on the box, the line is typed out (confirm finishes it, then moves on)
+- `features/dialogue/view/dialogue_box.gd`: The dialogue box, Hades II style: a big portrait slides in when the speaker changes, a nameplate sits on the box, lines are typed out, and choice buttons offer branching dialogue
+- `features/dialogue/view/dialogue_choice_list.gd`: Manages the focusable button list for dialogue choices
 - `features/dialogue/view/dialogue_demo.gd`: Manual check: plays the workshop_first dialogue over a plain background (F6 in the editor)
 - `features/dialogue/view/dialogue_demo.tscn`: scene
 - `features/dialogue/view/dialogue_layout.gd`: Builds the dialogue box's controls in code (Hades II style; sizes from the UI style, laid out for 1920x1080): a big portrait at the left that slides in, an ornate glass text box at the bottom right with a frieze, a nameplate tab on the box's top edge (name in brass, epithet under it) and the button hints
@@ -332,6 +339,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/prosthetics/defs/prosthetic_def.gd`: A high-tech prosthetic: one slot per hero
 - `features/prosthetics/logic/prosthetics.gd`: Merges a prosthetic into a fighter (docs/design/prosthetics.md), like Jambiyah.equip: stat adds, then the granted moves, then the caps
 - `features/prosthetics/tests/test_prosthetics.gd`: Prosthetics: the merge (base -> hilt -> blade -> prosthetic -> perks -> caps) builds new fighters and never touches the shared defs; each hero's prosthetics grant 1-2 tech moves; a prosthetic fits only its wearer
+- `features/prototype/prototype_battle_flow.gd`: Handles battle conclusion effects for the prototype (patrol wins, Abu Nabil boss and spar)
 - `features/prototype/prototype_main.gd`: The playable prototype's composition root: builds the rooftop, the workshop dialogue and menu, the title overlay, area title card and loot banners, registers the rooftop with the Router and wires the features' public signals
 - `features/prototype/prototype_main.tscn`: scene
 - `features/prototype/rooftop_port.gd`: The rooftop as the Router sees it: hide and disable it during a battle (it stays in the tree, so its awaits, signals and camera keep working), bring it back, and move the party for unstuck and loading

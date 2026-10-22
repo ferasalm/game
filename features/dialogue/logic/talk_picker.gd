@@ -39,6 +39,11 @@ static func current_chat_index(place_id: StringName, flags: Dictionary, count: i
 static func pick(talk: TalkDef, flags: Dictionary) -> StringName:
 	if talk == null:
 		return &""
+	if talk.id == &"herb_seller":
+		if not bool(flags.get(&"abu_nabil_beaten", false)):
+			flags[flag_first(talk.id)] = true
+			return talk.first
+		return &"abu_nabil_menu"
 	if not talk.first.is_empty() and not bool(flags.get(flag_first(talk.id), false)):
 		flags[flag_first(talk.id)] = true
 		return talk.first
@@ -53,6 +58,13 @@ static func pick(talk: TalkDef, flags: Dictionary) -> StringName:
 	if talk.chats.is_empty():
 		return &""
 
+	return pick_chat(talk, flags)
+
+
+## Advances and returns the next chat dialogue from the talk's chat list.
+static func pick_chat(talk: TalkDef, flags: Dictionary) -> StringName:
+	if talk == null or talk.chats.is_empty():
+		return &""
 	var idx: int = current_chat_index(talk.id, flags, talk.chats.size())
 	for i: int in talk.chats.size():
 		flags.erase(flag_chat(talk.id, i))
@@ -64,6 +76,10 @@ static func pick(talk: TalkDef, flags: Dictionary) -> StringName:
 static func peek(talk: TalkDef, flags: Dictionary) -> StringName:
 	if talk == null:
 		return &""
+	if talk.id == &"herb_seller":
+		if not bool(flags.get(&"abu_nabil_beaten", false)):
+			return talk.first
+		return &"abu_nabil_menu"
 	if not talk.first.is_empty() and not bool(flags.get(flag_first(talk.id), false)):
 		return talk.first
 	var won_flag: StringName = flag_battle_won(talk.id)
