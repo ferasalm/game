@@ -68,7 +68,8 @@
           "id": "workshop",
           "x": 28.5,
           "z": 14.5,
-          "yaw": 270
+          "yaw": 270,
+          "prop": "workbench"
         },
         {
           "kind": "npc",

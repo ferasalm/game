@@ -66,7 +66,7 @@ func test_every_use_point_is_reachable() -> void:
 func test_stall_and_sabil_stand_beside_their_props() -> void:
 	var area: AreaDef = _area()
 	for p: PlaceDef in area.places:
-		if p.prop == &"":
+		if p.prop == &"" or p.kind == PlaceDef.WORKSHOP:
 			continue
 		var found: bool = false
 		for placed: Placement in area.props:

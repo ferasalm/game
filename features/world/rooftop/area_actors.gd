@@ -26,8 +26,13 @@ static func build(parent: Node3D, area: AreaDef, rules: ExploreRulesDef, floor_y
 		var patrol := Patrol.new(rules, place, floor_y, out.player)
 		out.patrols.append(patrol)
 		parent.add_child(patrol)
-	out.workshop = WorkshopSpot.new(rules, out.player)
-	out.workshop.position = marker_of(area, AreaDef.WORKSHOP, floor_y)
+	var workshop_place: PlaceDef = area.place(&"workshop")
+	out.workshop = WorkshopSpot.new(rules, out.player, workshop_place)
+	if workshop_place != null:
+		out.workshop.position = _at(workshop_place, floor_y)
+		out.workshop.rotation.y = deg_to_rad(workshop_place.yaw)
+	else:
+		out.workshop.position = marker_of(area, AreaDef.WORKSHOP, floor_y)
 	parent.add_child(out.workshop)
 	out._add_places(parent, area, rules, floor_y)
 	return out
