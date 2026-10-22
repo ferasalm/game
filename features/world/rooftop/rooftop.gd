@@ -138,7 +138,8 @@ func teleport_party(pos: Vector3, grace: bool = true) -> void:
 
 ## Puts the party at a save point (a place id of this area); an unknown, empty or unwalkable id lands on spawn_start.
 func place_party(save_point: StringName) -> void:
-	var valid: bool = save_point != &"" and _area.place(save_point) != null and _area.is_walkable(_area.place(save_point).cell.x, _area.place(save_point).cell.y)
+	var place: PlaceDef = _area.place(save_point)
+	var valid: bool = place != null and _area.is_walkable(place.cell.x, place.cell.y)
 	teleport_party(_area.spawn_position_for(save_point, _floor_y), valid)
 
 
