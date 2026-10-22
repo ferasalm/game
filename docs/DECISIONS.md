@@ -15,7 +15,6 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-19 | Laptop (Dell Latitude 5520, i7-1185G7, 16 GB, Iris Xe, 60 FPS look test) is the minimum target: Forward+ stays, effects must hold 60 FPS here | measured by owner | Claude
 - 2026-10-19 | World: cyberpunk futuristic Sana'a, Yemen (replaces pre-Islamic South Arabia and the Malik/Thurya/Dharib cast) | Feras BRIEFING q2 | Feras
 - 2026-10-19 | Cast: Claude invents it (docs/design/world.md), owner reviews | Feras: "come up with them" | Feras
-- 2026-10-19 | Combat core: Grandia-style timeline with interrupts (default), may change later | Feras BRIEFING q3 | Feras
 - 2026-10-19 | Language: English first, Arabic later | Feras BRIEFING q4 | Feras
 - 2026-10-19 | Standing OK: each session merges its checked work into main at the end | Feras BRIEFING q5 "ok to merge" | Feras
 - 2026-10-19 | Title stays "Qarnaw" for now, may change later | Feras BRIEFING q6 | Feras
@@ -33,7 +32,6 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-21 | Prototype v0 gains one dialogue: Bilqis and Zayd at the workshop, 3-4 lines, stand-in portraits until Feras's Gemini art | Feras chose it over "build at M4" | Feras
 - 2026-10-21 | Slice: medium difficulty; Hamoud joins at beat 5; Idris escapes mid-fight; both a stealth walk and the sluice puzzle | Feras (slice.md questions) | Feras
 - 2026-10-21 | Ambush from behind: the hero answers with a djanbeyyah reverse stab (its hooked blade is made to strike behind, game fiction) before battle; first used in slice beat 3 | Feras's idea | Feras
-- 2026-10-21 | Game Designer review applied: show enemy intent + "will interrupt" preview, Bilqis's static_net cancels, blade knockback on the first hit only, seeded start positions (party ahead), downed units lose their cast, first-time tips, battles 40-90 s | readable interrupts are the fun hypothesis | Claude (Game Designer skill)
 - 2026-10-21 | The reverse-stab ambush goes into prototype v0 (patrol touch from behind; party head start when Zayd reaches it from behind) | Feras (recommended) | Feras
 - 2026-10-21 | Prototype look: old Sana'a at night (tower-houses, glowing qamariya, moon, stars, clouds, fog) with neon accents and the 2150 megacity on the horizon; real place names (Souq al-Milh, al-Saila, Bab al-Yaman, Zubairi, Haddah, Bayt Baws) | Feras (recommended) | Feras
 - 2026-10-21 | Prosthetics: one slot per hero; it grants the tech moves (attacks, heals, shields, debuffs) paid from SP; the djanbeyyah stays the physical weapon | Feras (recommended) | Feras
@@ -48,14 +46,11 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-21 | Feras's model pictures for image-to-3D: A-pose (arms 30-45 deg down), not T-pose; flat light, grey background, weapon apart (characters-3d.md 8) | what image-to-3D and auto-rig need | Claude (owner may veto)
 - 2026-10-21 | 3D motion: CC0 moves only (Quaternius library; Claude keys missing attack/cast clips), retargeted, plus Hades-style polish; no Mixamo | Mixamo files can't sit in the public repo | Feras
 - 2026-10-21 | Zayd's default skin always wears his grandfather's djanbeyyah hilt (Heirloom grandfather_hilt): a separate part at the front of his belt, drawn in hand to strike | Feras: the hilt was missing from his model | Feras
-- 2026-10-21 | Checkpoint 1: look B (warm oil lantern: amber light pools, purple-brown shadows, 5 soft bands) with the "hades" camera preset (55 deg, ~20 m); SMAA, not MSAA (-20% FPS) | Feras (recommended; spike renders inbox/spike/) | Feras
 - 2026-10-22 | Spelling: "Jambiyah" replaces "djanbeyyah" in code, content, text and docs (saves migrate the old key) | simpler | Feras
 - 2026-10-22 | Signature motif: the jambiyah hook; smoke, steam, dust, slashes, UI corners and the logo curl into it (like Naruto's spiral) | Feras (recommended) | Feras
 - 2026-10-22 | Writing in Sana'a 2150 is Musnad only (Noto Sans Old South Arabian, OFL): world signs Musnad only; HUD/UI English; menu headings and logo carry Musnad where Arabic was; no Arabic script in game | past meets future | Feras
-- 2026-10-22 | Battle HUD minimal: thin timeline + small HP/SP strip per hero; full cards and commands only on a hero's turn or on hover; all fighters always visible; the chosen target's name shows on the top bar | Feras (recommended) | Feras
 - 2026-10-22 | Hook motif: pointed tip; party hooks curl left, enemy hooks curl right (docs/design/identity.md); logo letter chosen from renders later | Feras (recommended) | Feras
 - 2026-10-22 | Hilt stone slots: the Heirloom grandfather hilt has 3, other hilts fewer by rarity (Common 0); stones add passives or stats; Zayd's moves each get a distinct combat job (redesign by Game Designer, owner reviews) | Feras | Feras
-- 2026-10-22 | Zayd kit (docs/design/zayd-moves.md): one job per move; heirloom gives the counter stance, not elder_cut; no enemy interrupts in v0.3 | Feras (recommended) | Feras
 - 2026-10-22 | Hilt stones (docs/design/hilt-stones.md): heirloom slots open with the story 1 -> 2 -> 3, no resonance; stones bought at the bench and found; free removal | Feras | Feras
 - 2026-10-22 | One task per chat, done directly; subagents only for big isolated builds or read-only audits, at most 2 at once | 7 parallel agents used 83% of the 5-h window in under an hour | Feras
 - 2026-10-22 | Gemini 3.8 Flash (agy) builds well-specified tasks from Claude's briefs in its own branch/worktree (rules: GEMINI.md); Claude reviews, runs check.sh, merges | Gemini usage is outside the Claude limit | Feras
@@ -68,3 +63,8 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-22 | LESSONS may grow to 100 lines before it is condensed back to ~70; always-loaded notes <= 27 KB (was 24); still one task, one model and effort per chat; /handoff every session | fewer condensing passes | Feras
 - 2026-10-22 | Music: Yemeni fusion from Google Flow (Feras makes it); 3 battle themes (battle, battle_2, battle_3); no menu or merchant tracks: menus and Abu Nabil's stall keep the area music (explore_souq) | Feras (supersedes the 2026-10-21 music line) | Feras
 - 2026-10-22 | Abu Nabil (docs/design/abu-nabil-boss.md): optional haggle (greedy x10 prices, branching talk choices with different outcomes), easy fight with spice-cloud confusion that qishr cures, then fair prices + a qishr gift he tries to charge for; risk-free rematches after the first win; sells only the feather herbs | Feras | Feras
+- 2026-10-23 | Combat becomes action (light/heavy attack, dodge, parry, counter, lock-on) in a battle arena; built after the environment work | Feras | Feras
+- 2026-10-23 | Priority: environment and levels (level 1, the cyberpunk rooftop souq), turning the prototype into a demo | Feras | Feras
+- 2026-10-23 | Camera: close third-person follow with a wide view outdoors (Brothers: A Tale of Two Sons), semi-fixed framed shots indoors (refs inbox/camera-refs/) | Feras | Feras
+- 2026-10-23 | Builders: opencode free models (GLM 5.3 Flash, DeepSeek V4.1 Flash) join agy (Gemini 3.8 Flash) for briefable work and research; Claude manages, briefs, reviews | save the Claude limit | Feras
+- 2026-10-23 | Painted look: render the 3 routes (screen filter, repainted textures, Hades-style sprite frames) side by side before choosing; live 3D stands until then | Feras wants to see them | Feras

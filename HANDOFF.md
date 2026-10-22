@@ -1,5 +1,5 @@
 # HANDOFF (current state only; rewritten by /handoff; max 60 lines)
-Last updated: 2026-10-23, session 12 (Opus 5.5, `claude-opus-5-5`, side session of 11, medium): v0.3 "Painted Rooftops",
+Last updated: 2026-10-23, session 12b (Opus 5.5, `claude-opus-5-5`): new direction logged (DECISIONS 2026-10-23),
 Phase 2. Specs in docs/design/: v03-plan, characters-3d (8 = Rodin pipeline), identity, zayd-moves, hilt-stones, music.
 
 ## Status
@@ -26,21 +26,21 @@ Phase 2. Specs in docs/design/: v03-plan, characters-3d (8 = Rodin pipeline), id
 ## Waiting on the owner
 - Play-check the bug fixes: the softer footsteps (carpet samples; other CC0 sets need his OK to download) and Abu
   Nabil at the stall's end (behind the counter the awning hid him).
-- Pick the look and camera from the spike renders (step 2), then the level work can start.
-- Combat style: keep the timeline or move to an action JRPG (he is considering it; settle before more combat work).
+- Pick a painted route from the step 1 renders.
+- Settled 2026-10-23: action combat later (arena kept); environment and levels first; Brothers-style camera outdoors,
+  semi-fixed indoors (inbox/camera-refs/); opencode free models join agy as builders.
 
-## Next steps (one per chat; the owner's playtest of 2026-10-23: docs/design/playtest-2026-10-23.md)
-1. Abu Nabil: review + merge agy part A (`bash tools/agy_review.sh abu-nabil-combat`), then brief and run part B
-   (dialogue choices, haggle talk, greedy prices, spar) per the spec's build split. Model: Opus. Effort: medium.
-2. Look v2 spike: render the camera options (isometric ortho, front 3/4 ortho, telephoto perspective) with a painted
-   pass (painterly filter, repainted textures) side by side into inbox/; owner picks. Model: Opus. Effort: high.
-3. Level redesign after step 2 (Level Designer): two roofs and a bridge from rooftop-v3.md, a tayramana with a majlis
-   to enter and drink qishr with Bilqis, the designed workshop (bench prop WIP). Model: Opus. Effort: high.
-4. After the combat-style decision: Zayd kit (zayd-moves.md), hilt stones. Model: Opus. Effort: medium.
-5. Architecture fixes via agy (audit top 5); balance (WIP branch). Model: Sonnet. Effort: medium.
+## Next steps (one per chat; playtest 2026-10-23: docs/design/playtest-2026-10-23.md)
+1. Demo push (new chat, Opus high, managing cheap builders): set up opencode (GLM 5.3 Flash, DeepSeek V4.1 Flash)
+   beside agy; render the 3 painted routes side by side for Feras; the Brothers-style camera; design level 1 and the
+   cyberpunk rooftop souq (docs/design/level-1.md); a demo plan. Model: Opus. Effort: high.
+2. agy's abu-nabil-combat (timeline combat, ../game-wt/abu-nabil-combat): review only if Feras still wants it, since
+   combat turns action later; else close it. Model: Sonnet. Effort: medium.
+3. Action combat overhaul (parry, counter, dodge, light/heavy, lock-on) after the environment. Model: Opus. Effort: high.
+4. Architecture fixes via agy/opencode (audit top 5); balance (WIP branch). Model: Sonnet. Effort: medium.
 
 ## Paste-ready prompt
 ```
-Continue the game repo (ferasalm/game), v0.3. Read HANDOFF.md. Do Next step 1 only: review and merge the agy run
-abu-nabil-combat, then write and run part B of docs/design/abu-nabil-boss.md via agy; check.sh, /handoff.
+Continue the game repo (ferasalm/game). Read HANDOFF.md. Do Next step 1 (the demo push), as manager of cheap
+builders (agy, opencode); check.sh, /handoff.
 ```
