@@ -6,7 +6,7 @@ extends RefCounted
 var env: WorldEnvironment
 var blocks: Node3D
 var camera: Camera3D
-var camera_rig: ExploreCamera
+var camera_rig: FollowCameraRig
 
 
 static func build(host: Node3D, area: AreaDef, rules: ExploreRulesDef, look: LookDef, rig: CameraRigDef,
@@ -23,7 +23,7 @@ static func build(host: Node3D, area: AreaDef, rules: ExploreRulesDef, look: Loo
 	out.camera = Diorama.make_camera(look)
 	host.add_child(out.camera)
 	out.camera.make_current()
-	out.camera_rig = ExploreCamera.new()
+	out.camera_rig = FollowCameraRig.new()
 	host.add_child(out.camera_rig)
 	out.camera_rig.setup(out.camera, look, rig, area.vista_world(), rules.camera_smoothing, spawn)
 	return out

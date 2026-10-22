@@ -14,13 +14,19 @@ const CHEST: StringName = &"chest"
 const VISTA: StringName = &"vista"
 const PATROL: StringName = &"patrol"
 const SAFE: StringName = &"safe"
-const KINDS: Array[StringName] = [SPAWN, WORKSHOP, NPC, SHOP, SAVE, CHEST, VISTA, PATROL, SAFE]
+const CAMERA_ZONE: StringName = &"camera_zone"
+const KINDS: Array[StringName] = [SPAWN, WORKSHOP, NPC, SHOP, SAVE, CHEST, VISTA, PATROL, SAFE, CAMERA_ZONE]
 
 var area: StringName = &""
 var kind: StringName = &""
 ## The floor point (x, z; y is 0, callers add the floor height).
 var pos: Vector3 = Vector3.ZERO
 var yaw: float = 0.0
+var pitch: float = 0.0
+var distance: float = 0.0
+var fov: float = 0.0
+## camera_zone: active x/z rect in metres.
+var zone_rect: Rect2 = Rect2()
 ## vista: the zone in cells (x0, z0, x1, z1 inclusive).
 var rect: Rect2i = Rect2i()
 ## patrol: the far end of the lane (x, z) and the encounter it starts.
@@ -42,6 +48,17 @@ func read(r: DefReader) -> void:
 			rect = Rect2i(cells[0], cells[1], cells[2] - cells[0] + 1, cells[3] - cells[1] + 1)
 		else:
 			r.problem("rect", "needs 4 numbers: x0, z0, x1, z1")
+		return
+	if kind == CAMERA_ZONE:
+		var coords: Array[float] = r.float_list("rect", -500.0, 500.0)
+		if coords.size() == 4:
+			zone_rect = Rect2(coords[0], coords[1], coords[2] - coords[0], coords[3] - coords[1])
+		else:
+			r.problem("rect", "needs 4 numbers: x0, z0, x1, z1")
+		yaw = r.number("yaw", -360.0, 360.0, 0.0, false)
+		pitch = r.number("pitch", -89.0, 89.0, 0.0, false)
+		distance = r.number("distance", 0.1, 100.0, 6.5, false)
+		fov = r.number("fov", 5.0, 120.0, 50.0, false)
 		return
 	pos = Vector3(r.number("x", -500.0, 500.0), 0.0, r.number("z", -500.0, 500.0))
 	yaw = r.number("yaw", -360.0, 360.0, 0.0, false)

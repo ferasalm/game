@@ -163,7 +163,7 @@ func _place_problems() -> PackedStringArray:
 			out.append("place %s appears twice" % p.id)
 		seen[p.id] = true
 		var points: Array[Vector3] = []
-		if p.kind != PlaceDef.VISTA:
+		if p.kind != PlaceDef.VISTA and p.kind != PlaceDef.CAMERA_ZONE:
 			points.append(p.pos)
 		if p.kind == PlaceDef.PATROL:
 			points.append(p.end)

@@ -5,6 +5,8 @@ extends CharacterBody3D
 
 ## The walking direction he last had, flat on the floor and unit length. Starts facing the camera.
 var facing: Vector3 = Vector3(0.0, 0.0, 1.0)
+## Camera yaw in radians for camera-relative movement.
+var camera_yaw: float = 0.0
 
 var _rules: ExploreRulesDef
 var _visual: CharacterVisual
@@ -39,7 +41,7 @@ func _physics_process(delta: float) -> void:
 	if not _active:
 		return
 	var input: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	var direction := Vector3(input.x, 0.0, input.y)
+	var direction := FollowCam.rotate_input(input, camera_yaw)
 	_move(direction * _rules.walk_speed * delta)
 	var moving: bool = not direction.is_zero_approx()
 	if moving:
