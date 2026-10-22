@@ -5,11 +5,15 @@ extends CanvasLayer
 
 ## Emitted when the number of open screens changes (HUDs can hide while a menu is up).
 signal stack_changed(depth: int)
+signal screen_opened(screen_id: StringName)
+signal screen_closed(screen_id: StringName)
 
 const PAUSE_ID: StringName = &"pause"
 const EQUIPMENT_ID: StringName = &"equipment"
 const SABIL_ID: StringName = &"sabil"  ## closes with &"drink" or &"leave"
 const DEFEAT_ID: StringName = &"defeat"  ## closes with &"retry", &"load" or &"title"
+const WORKSHOP_ID: StringName = &"workshop"
+const TITLE_ID: StringName = &"title"
 
 var _stack: Array[UiScreen] = []
 var _hosts: Dictionary[int, CanvasLayer] = {}
@@ -28,6 +32,8 @@ func _ready() -> void:
 	register(ShopScreen.ID, func() -> Control: return ShopScreen.new())
 	register(SABIL_ID, func() -> Control: return SabilScreen.new())
 	register(DEFEAT_ID, func() -> Control: return DefeatScreen.new())
+	register(WORKSHOP_ID, func() -> Control: return EquipmentHost.new())
+	register(TITLE_ID, func() -> Control: return UiScreen.new())
 	Router.flow_changed.connect(_on_flow_changed)
 
 
@@ -101,6 +107,14 @@ func toast(text_key: String, kind: StringName = &"info") -> void:
 	_toasts.show_toast(text_key, kind)
 
 
+func notify_opened(id: StringName) -> void:
+	screen_opened.emit(id)
+
+
+func notify_closed(id: StringName) -> void:
+	screen_closed.emit(id)
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_open():
 		if event.is_action_pressed(&"menu") and Router.is_exploring():
@@ -135,6 +149,8 @@ func _push(screen: UiScreen, args: Dictionary) -> void:
 	screen.closed.connect(_on_closed.bind(screen))
 	_refresh_pause()
 	screen.open(args)
+	var screen_id: StringName = screen.get_meta(&"screen_id", &"")
+	screen_opened.emit(screen_id)
 	stack_changed.emit(_stack.size())
 
 
@@ -155,6 +171,8 @@ func _on_closed(_result: Variant, screen: UiScreen) -> void:
 	elif now != null:
 		now.focus_default()
 	_refresh_pause()
+	var screen_id: StringName = screen.get_meta(&"screen_id", &"")
+	screen_closed.emit(screen_id)
 	stack_changed.emit(_stack.size())
 
 

@@ -12,6 +12,54 @@
    "path": "res://assets/audio/music/battle.ogg",
    "volume_db": -6.0,
    "loop": true
+  },
+  {
+   "id": "explore_souq",
+   "path": "res://assets/audio/music/explore_souq.ogg",
+   "volume_db": -6.0,
+   "loop": true,
+   "fallback": "night_rooftops"
+  },
+  {
+   "id": "menu_bag",
+   "path": "res://assets/audio/music/menu_bag.ogg",
+   "volume_db": -6.0,
+   "loop": true,
+   "fallback": "night_rooftops"
+  },
+  {
+   "id": "sabil_serenity",
+   "path": "res://assets/audio/music/sabil_serenity.ogg",
+   "volume_db": -6.0,
+   "loop": true,
+   "fallback": "night_rooftops"
+  },
+  {
+   "id": "merchant_stall",
+   "path": "res://assets/audio/music/merchant_stall.ogg",
+   "volume_db": -6.0,
+   "loop": true,
+   "fallback": "night_rooftops"
+  },
+  {
+   "id": "workshop_bench",
+   "path": "res://assets/audio/music/workshop_bench.ogg",
+   "volume_db": -6.0,
+   "loop": true,
+   "fallback": "night_rooftops"
+  },
+  {
+   "id": "title_theme",
+   "path": "res://assets/audio/music/title_theme.ogg",
+   "volume_db": -6.0,
+   "loop": true,
+   "fallback": "night_rooftops"
+  },
+  {
+   "id": "victory",
+   "path": "res://assets/audio/music/victory.ogg",
+   "volume_db": -6.0,
+   "loop": false
   }
  ]
 }

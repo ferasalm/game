@@ -29,6 +29,13 @@ func _ready() -> void:
 	_root.add_child(_shade())
 	_root.add_child(_block)
 	_fill()
+	Screens.notify_opened(&"title")
+
+
+func _exit_tree() -> void:
+	if not _done:
+		_done = true
+		Screens.notify_closed(&"title")
 
 
 func is_showing() -> bool:
@@ -39,6 +46,7 @@ func dismiss() -> void:
 	if _done:
 		return
 	_done = true
+	Screens.notify_closed(&"title")
 	if _pulse != null:
 		_pulse.kill()
 	dismissed.emit()

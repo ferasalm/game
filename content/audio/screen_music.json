@@ -1,0 +1,33 @@
+{
+ "kind": "screen_music",
+ "items": [
+  {
+   "id": "pause",
+   "music": "menu_bag"
+  },
+  {
+   "id": "items",
+   "music": "menu_bag"
+  },
+  {
+   "id": "equipment",
+   "music": "menu_bag"
+  },
+  {
+   "id": "shop",
+   "music": "merchant_stall"
+  },
+  {
+   "id": "sabil",
+   "music": "sabil_serenity"
+  },
+  {
+   "id": "workshop",
+   "music": "workshop_bench"
+  },
+  {
+   "id": "title",
+   "music": "title_theme"
+  }
+ ]
+}

@@ -118,6 +118,7 @@ func _check_end() -> void:
 	if sim.result == &"victory":
 		camera_rig.victory()
 		fighters.cheer()
+		AudioDirector.play_music(&"victory")
 	if sim.result == &"defeat" and not auto_play and BattleEnding.open_defeat(_finish):
 		return
 	hud.show_end(sim.result)
