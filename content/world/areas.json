@@ -1,145 +1,619 @@
 {
   "kind": "area",
   "items": [
-    {"id": "souq_rooftops", "name_key": "WORLD_ROOFTOP_NAME",
-     "mist": ["saila_fog", "saila_floor", "wisps"], "vista": [5, 1, 15, 3], "light_budget": 8, "light_fade": 3.0,
-     "rows": [
-       "%%%%%%%%%%%%%%%%%__%%%%%%%",
-       "%TTTT...........%__%TTTTT%",
-       "%TTTT...........%__%TTTTT%",
-       "%TTTT...........%__%TTTTT%",
-       "%TTTT..,,,,,....%__%TTTTT%",
-       "%TTTT...........====.....%",
-       "%...............====.....%",
-       "%...............====.....%",
-       "%......,,,,,,...%__%.....%",
-       "%...............%__%.....%",
-       "%TTTT......TTTT%%__%.,,,.%",
-       "%TTTT......TTTT%%__%.....%",
-       "%TTTT......TTTT%%__%..TTT%",
-       "%.W..%..........%__%..TTT%",
-       "%...............%__%..TTT%",
-       "%....S..........%__%.....%",
-       "%...............%__%.....%",
-       "%kkkkkkkkkkkkkkkk__kkkkkk%"],
-     "legend": {".": "roof_floor", ",": "roof_worn", "=": "bridge", "_": "street", "%": "parapet", "k": "kerb",
-       "T": "footprint", "S": "roof_floor", "W": "roof_floor"},
-     "places": [
-       {"kind": "spawn", "id": "spawn_start", "x": 5.5, "z": 15.5, "yaw": 180},
-       {"kind": "workshop", "id": "workshop", "x": 2.5, "z": 13.5, "yaw": 180},
-       {"kind": "npc", "id": "herb_seller", "x": 9.0, "z": 13.3, "yaw": 0, "sprite": "abu_nabil"},
-       {"kind": "shop", "id": "shop_herbs", "x": 9.0, "z": 15.6, "yaw": 180, "shop": "herb_stall", "prop": "herb_stall"},
-       {"kind": "save", "id": "sabil", "x": 13.0, "z": 15.5, "yaw": 180, "prop": "sabil"},
-       {"kind": "chest", "id": "chest_mafraj", "x": 2.0, "z": 16.45, "yaw": 0},
-       {"kind": "chest", "id": "chest_saila", "x": 22.4, "z": 16.45, "yaw": 0},
-       {"kind": "vista", "id": "vista_north", "rect": [5, 1, 15, 3]},
-       {"kind": "patrol", "id": "patrol_c", "encounter": "rooftop_patrol", "x": 21.0, "z": 10.5, "bx": 23.8, "bz": 10.5, "sprite": "concession_enforcer"},
-       {"kind": "patrol", "id": "patrol_a", "encounter": "patrol_pair", "x": 7.5, "z": 8.2, "bx": 12.5, "bz": 8.2, "sprite": "concession_enforcer"},
-       {"kind": "patrol", "id": "patrol_b", "encounter": "patrol_drone", "x": 7.0, "z": 4.2, "bx": 11.5, "bz": 4.2, "sprite": "survey_drone"},
-       {"kind": "safe", "id": "safe_spawn", "x": 5.5, "z": 15.5},
-       {"kind": "safe", "id": "safe_court", "x": 9.0, "z": 11.8},
-       {"kind": "safe", "id": "safe_sabil", "x": 13.0, "z": 15.6},
-       {"kind": "safe", "id": "safe_bridge_w", "x": 15.5, "z": 6.5},
-       {"kind": "safe", "id": "safe_bridge_e", "x": 20.5, "z": 6.5},
-       {"kind": "safe", "id": "safe_vista", "x": 14.5, "z": 2.5},
-       {"kind": "safe", "id": "safe_alcove", "x": 21.0, "z": 15.6}],
-     "canyon": {"x0": 17, "x1": 19, "z0": 0, "z1": 18, "bottom_y": -18, "top_y": 0, "ext_top_y": -4, "extend": 24, "base_height": 7, "wall_pattern": "brick", "base_pattern": "basalt", "channel_width": 0.3, "channel_color": "#5ad0ff", "channel_glow": 0.7},
-     "buildings": [
-       {"ref": "tower_e", "x": 3.0, "z": 3.5},
-       {"ref": "tower_h", "x": 22.5, "z": 3.0},
-       {"ref": "house_a", "x": 24.0, "z": 13.5},
-       {"ref": "house_b", "x": 13.0, "z": 11.5}
-     ],
-     "props": [
-       {"ref": "mafraj", "x": 3.0, "z": 11.5},
-       {"ref": "water_tank", "x": 24.5, "z": 5.5},
-       {"ref": "dish", "x": 24.4, "z": 11.5, "yaw": -90},
-       {"ref": "solar_panel", "x": 22.2, "z": 8.6},
-       {"ref": "ac_unit", "x": 5.5, "z": 13.5, "y": 1.2},
-       {"ref": "ac_unit", "x": 0.5, "z": 14.5, "y": 1.2, "yaw": 90},
-       {"ref": "antenna_red", "x": 7.5, "z": 0.5, "y": 1.2},
-       {"ref": "antenna_red", "x": 14.6, "z": 0.5, "y": 1.2},
-       {"ref": "laundry_line", "x": 9.8, "z": 2.4},
-       {"ref": "laundry_line", "x": 22.4, "z": 6.0},
-       {"ref": "basil_pot", "x": 0.5, "z": 13.4, "y": 1.2},
-       {"ref": "basil_pot", "x": 5.5, "z": 12.5},
-       {"ref": "basil_pot", "x": 6.5, "z": 13.5},
-       {"ref": "basil_pot", "x": 4.5, "z": 13.6},
-       {"ref": "basil_pot", "x": 7.4, "z": 13.5},
-       {"ref": "cushions", "x": 4.0, "z": 14.8, "yaw": 10},
-       {"ref": "dallah", "x": 3.9, "z": 14.35},
-       {"ref": "crates", "x": 24.4, "z": 16.4, "yaw": 90},
-       {"ref": "cables", "x": 8.5, "z": 14.2},
-       {"ref": "cables", "x": 13.0, "z": 6.8, "yaw": 20},
-       {"ref": "cables", "x": 21.6, "z": 11.6},
-       {"ref": "pigeon_coop", "x": 0.5, "z": 15.6, "y": 1.2, "yaw": 90},
-       {"ref": "pipes", "x": 22.5, "z": 5.15},
-       {"ref": "coffee_stall", "x": 6.9, "z": 12.4},
-       {"ref": "herb_stall", "x": 9.0, "z": 14.4},
-       {"ref": "sabil", "x": 13.0, "z": 13.9},
-       {"ref": "lantern_post", "x": 19.5, "z": 4.6, "y": 1.2},
-       {"ref": "lantern_post", "x": 19.5, "z": 8.4, "y": 1.2, "yaw": 180},
-       {"ref": "chest", "id": "chest_mafraj", "x": 2.0, "z": 16.45},
-       {"ref": "chest", "id": "chest_saila", "x": 22.4, "z": 16.45},
-       {"ref": "lantern_post", "x": 5.2, "z": 8.0},
-       {"ref": "lantern_post", "x": 20.6, "z": 8.7},
-       {"ref": "lantern_post", "x": 16.5, "z": 4.6, "y": 1.2},
-       {"ref": "lantern_post", "x": 16.5, "z": 8.4, "y": 1.2, "yaw": 180},
-       {"ref": "lantern_hang", "x": 1.6, "z": 13.2, "y": 2.7},
-       {"ref": "lantern_hang", "x": 4.4, "z": 13.2, "y": 2.7},
-       {"ref": "string_lights", "x": 6.5, "z": 6.8},
-       {"ref": "string_lights", "x": 11.5, "z": 14.0},
-       {"ref": "string_lights", "x": 20.8, "z": 9.2, "yaw": 90},
-       {"ref": "street_lamp", "x": 17.25, "z": 1.5, "y": -18},
-       {"ref": "street_lamp", "x": 17.25, "z": 7.5, "y": -18},
-       {"ref": "street_lamp", "x": 17.25, "z": 11.0, "y": -18},
-       {"ref": "street_lamp", "x": 17.25, "z": 15.5, "y": -18},
-       {"ref": "street_lamp", "x": 18.75, "z": 3.5, "y": -18, "yaw": 180},
-       {"ref": "street_lamp", "x": 18.75, "z": 9.0, "y": -18, "yaw": 180},
-       {"ref": "street_lamp", "x": 18.75, "z": 13.5, "y": -18, "yaw": 180},
-       {"ref": "slit_window", "x": 16.98, "z": 2.0, "y": -5.0, "yaw": 90},
-       {"ref": "slit_window_blue", "x": 19.02, "z": 3.7, "y": -6.3, "yaw": -90},
-       {"ref": "slit_window_blue", "x": 16.98, "z": 4.5, "y": -8.0, "yaw": 90},
-       {"ref": "slit_window_blue", "x": 19.02, "z": 6.2, "y": -9.3, "yaw": -90},
-       {"ref": "slit_window", "x": 16.98, "z": 8.0, "y": -4.0, "yaw": 90},
-       {"ref": "slit_window_blue", "x": 19.02, "z": 9.7, "y": -5.3, "yaw": -90},
-       {"ref": "slit_window", "x": 16.98, "z": 7.0, "y": -10.5, "yaw": 90},
-       {"ref": "slit_window_blue", "x": 19.02, "z": 8.7, "y": -11.8, "yaw": -90},
-       {"ref": "slit_window_blue", "x": 16.98, "z": 11.5, "y": -6.5, "yaw": 90},
-       {"ref": "slit_window_blue", "x": 19.02, "z": 13.2, "y": -7.8, "yaw": -90},
-       {"ref": "slit_window", "x": 16.98, "z": 13.0, "y": -12.0, "yaw": 90},
-       {"ref": "slit_window_blue", "x": 19.02, "z": 14.7, "y": -13.3, "yaw": -90},
-       {"ref": "slit_window", "x": 16.98, "z": 15.5, "y": -4.5, "yaw": 90},
-       {"ref": "slit_window_blue", "x": 19.02, "z": 17.2, "y": -5.8, "yaw": -90},
-       {"ref": "slit_window_blue", "x": 16.98, "z": 16.5, "y": -9.0, "yaw": 90},
-       {"ref": "slit_window_blue", "x": 19.02, "z": 18.2, "y": -10.3, "yaw": -90},
-       {"ref": "slit_window", "x": 16.98, "z": 2.5, "y": -14.0, "yaw": 90},
-       {"ref": "slit_window_blue", "x": 19.02, "z": 4.2, "y": -15.3, "yaw": -90},
-       {"ref": "slit_window", "x": 16.98, "z": 10.0, "y": -14.5, "yaw": 90},
-       {"ref": "slit_window_blue", "x": 19.02, "z": 11.7, "y": -15.8, "yaw": -90}
-     ],
-     "lights": [
-       {"x": 2.2, "z": 7.0, "y": 0.0, "color": "#c8383a", "pool": 2.6, "pool_energy": 0.33, "pool_y": 0.52, "real": false},
-       {"x": 3.5, "z": 7.4, "color": "#8a4fb8", "pool": 2.6, "pool_energy": 0.36, "pool_y": 0.52, "real": false},
-       {"x": 4.5, "z": 6.8, "color": "#f0b83a", "pool": 2.2, "pool_energy": 0.3, "pool_y": 0.52, "real": false},
-       {"x": 21.4, "z": 6.2, "color": "#2f78c8", "pool": 2.8, "pool_energy": 0.36, "pool_y": 0.52, "real": false},
-       {"x": 23.6, "z": 6.0, "color": "#2f9e6a", "pool": 2.4, "pool_energy": 0.3, "pool_y": 0.52, "real": false},
-       {"x": 22.0, "z": 16.0, "color": "#c8383a", "pool": 2.4, "pool_energy": 0.3, "pool_y": 0.52, "real": false},
-       {"x": 3.0, "y": 2.4, "z": 7.4, "color": "#ff3d9a", "energy": 0.91, "range": 6.5, "pool": 3.4, "pool_energy": 0.27, "pool_y": 0.52, "flicker": 0.25, "flicker_speed": 9.0},
-       {"x": 22.5, "y": 2.4, "z": 6.4, "color": "#3df0e0", "energy": 0.84, "range": 6.5, "pool": 3.2, "pool_energy": 0.24, "pool_y": 0.52},
-       {"x": 6.9, "y": 2.4, "z": 13.4, "color": "#ff8a2a", "energy": 0.7, "range": 5.0, "pool": 2.4, "pool_energy": 0.24, "pool_y": 0.52},
-       {"x": 24.0, "y": 2.4, "z": 16.2, "color": "#ff3d9a", "energy": 0.7, "range": 5.0, "pool": 2.4, "pool_energy": 0.24, "pool_y": 0.52},
-       {"x": 13.0, "y": 2.2, "z": 13.9, "color": "#9fe8ff", "energy": 0.8, "range": 5.5, "pool": 3.2, "pool_energy": 0.3, "pool_y": 0.52},
-       {"x": 13.0, "y": 2.0, "z": 12.8, "color": "#ffb764", "energy": 0.7, "range": 4.5, "pool": 2.4, "pool_energy": 0.24, "pool_y": 0.52},
-       {"x": 9.0, "y": 2.0, "z": 14.9, "color": "#ffa04a", "energy": 0.75, "range": 4.5, "pool": 2.6, "pool_energy": 0.26, "pool_y": 0.52}
-     ],
-     "signs": [
-       {"key": "WORLD_SIGN_SOUQ", "x": 3.0, "y": 2.8, "z": 6.12, "board": [3.6, 0.95], "size": 0.5, "color": "#ff3d9a", "energy": 2.6, "flicker": 0.35},
-       {"key": "WORLD_SIGN_ZUBAIRI", "x": 22.5, "y": 2.7, "z": 5.12, "board": [3.6, 0.9], "size": 0.44, "color": "#3df0e0", "energy": 2.4},
-       {"key": "WORLD_SIGN_SABIL", "x": 13.0, "y": 4.4, "z": 13.12, "board": [3.0, 0.8], "size": 0.4, "color": "#9fe8ff", "energy": 2.0},
-       {"key": "WORLD_SIGN_HADDAH", "x": 24.0, "y": 2.3, "z": 15.12, "board": [2.4, 0.7], "size": 0.45, "color": "#ff3d9a", "energy": 2.4},
-       {"key": "WORLD_SIGN_QISHR", "x": 6.9, "y": 2.75, "z": 12.2, "board": [1.8, 0.55], "size": 0.4, "color": "#ff8a2a", "energy": 2.4}
-     ]
+    {
+      "id": "souq_rooftops",
+      "name_key": "WORLD_ROOFTOP_NAME",
+      "mist": [
+        "saila_fog",
+        "saila_floor",
+        "wisps"
+      ],
+      "vista": [
+        6,
+        1,
+        14,
+        3
+      ],
+      "light_budget": 8,
+      "light_fade": 3.0,
+      "rows": [
+        "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+        "%TTTT........................TTTT%",
+        "%TTTT........................TTTT%",
+        "%TTTT........................TTTT%",
+        "%............................TTTT%",
+        "%............................TTTT%",
+        "%................................%",
+        "%................................%",
+        "%...........,,,,,,,,,,.....TTTT..%",
+        "%....................,.....TTTT..%",
+        "%....................,.....TTTT..%",
+        "%....................,...........%",
+        "%....................,...........%",
+        "%....................,.....===...%",
+        "%....................,.....=W=...%",
+        "%...........,,,,,,,,,,.....===...%",
+        "%................................%",
+        "%................................%",
+        "%................................%",
+        "%................................%",
+        "%......S.........................%",
+        "%................................%",
+        "%TTTT............................%",
+        "%TTTT............................%",
+        "%TTTT............................%",
+        "%kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk%"
+      ],
+      "legend": {
+        ".": "roof_floor",
+        ",": "roof_worn",
+        "=": "bridge",
+        "%": "parapet",
+        "k": "kerb",
+        "T": "footprint",
+        "S": "roof_floor",
+        "W": "roof_floor"
+      },
+      "places": [
+        {
+          "kind": "spawn",
+          "id": "spawn_start",
+          "x": 7.5,
+          "z": 20.5,
+          "yaw": 0
+        },
+        {
+          "kind": "workshop",
+          "id": "workshop",
+          "x": 28.5,
+          "z": 14.5,
+          "yaw": 270
+        },
+        {
+          "kind": "npc",
+          "id": "herb_seller",
+          "x": 5.0,
+          "z": 12.5,
+          "yaw": 90,
+          "sprite": "abu_nabil"
+        },
+        {
+          "kind": "shop",
+          "id": "shop_herbs",
+          "x": 7.2,
+          "z": 12.5,
+          "yaw": 270,
+          "shop": "herb_stall",
+          "prop": "herb_stall"
+        },
+        {
+          "kind": "save",
+          "id": "sabil",
+          "x": 17.0,
+          "z": 5.1,
+          "yaw": 180,
+          "prop": "sabil"
+        },
+        {
+          "kind": "chest",
+          "id": "chest_mafraj",
+          "x": 6.5,
+          "z": 4.5,
+          "yaw": 135
+        },
+        {
+          "kind": "chest",
+          "id": "chest_saila",
+          "x": 27.5,
+          "z": 21.5,
+          "yaw": 315
+        },
+        {
+          "kind": "vista",
+          "id": "vista_north",
+          "rect": [
+            6,
+            1,
+            14,
+            3
+          ]
+        },
+        {
+          "kind": "patrol",
+          "id": "patrol_c",
+          "encounter": "rooftop_patrol",
+          "x": 12.0,
+          "z": 15.5,
+          "bx": 20.0,
+          "bz": 15.5,
+          "sprite": "concession_enforcer"
+        },
+        {
+          "kind": "patrol",
+          "id": "patrol_a",
+          "encounter": "patrol_pair",
+          "x": 12.0,
+          "z": 8.5,
+          "bx": 21.0,
+          "bz": 8.5,
+          "sprite": "concession_enforcer"
+        },
+        {
+          "kind": "patrol",
+          "id": "patrol_b",
+          "encounter": "patrol_drone",
+          "x": 21.0,
+          "z": 9.5,
+          "bx": 21.0,
+          "bz": 15.5,
+          "sprite": "survey_drone"
+        },
+        {
+          "kind": "safe",
+          "id": "safe_spawn",
+          "x": 7.5,
+          "z": 20.5
+        },
+        {
+          "kind": "safe",
+          "id": "safe_court",
+          "x": 8.5,
+          "z": 8.5
+        },
+        {
+          "kind": "safe",
+          "id": "safe_sabil",
+          "x": 17.0,
+          "z": 5.1
+        },
+        {
+          "kind": "safe",
+          "id": "safe_workshop",
+          "x": 28.5,
+          "z": 14.5
+        },
+        {
+          "kind": "safe",
+          "id": "safe_herbs",
+          "x": 8.5,
+          "z": 12.5
+        },
+        {
+          "kind": "safe",
+          "id": "safe_vista",
+          "x": 10.0,
+          "z": 2.5
+        },
+        {
+          "kind": "safe",
+          "id": "safe_alcove",
+          "x": 26.5,
+          "z": 21.5
+        }
+      ],
+      "canyon": {
+        "x0": 17,
+        "x1": 19,
+        "z0": -30,
+        "z1": -4,
+        "bottom_y": -18,
+        "top_y": -6,
+        "ext_top_y": -10,
+        "extend": 24,
+        "base_height": 7,
+        "wall_pattern": "brick",
+        "base_pattern": "basalt",
+        "channel_width": 0.3,
+        "channel_color": "#5ad0ff",
+        "channel_glow": 0.7
+      },
+      "buildings": [
+        {
+          "ref": "house_a",
+          "x": 3.0,
+          "z": 23.5
+        },
+        {
+          "ref": "house_b",
+          "x": 3.0,
+          "z": 2.5
+        },
+        {
+          "ref": "tower_e",
+          "x": 31.0,
+          "z": 3.5
+        }
+      ],
+      "props": [
+        {
+          "ref": "mafraj",
+          "x": 28.5,
+          "z": 9.5
+        },
+        {
+          "ref": "herb_stall",
+          "x": 6.0,
+          "z": 12.5
+        },
+        {
+          "ref": "sabil",
+          "x": 17.0,
+          "z": 3.6
+        },
+        {
+          "ref": "water_tank",
+          "x": 2.5,
+          "z": 2.0
+        },
+        {
+          "ref": "water_tank",
+          "x": 31.0,
+          "z": 2.0
+        },
+        {
+          "ref": "dish",
+          "x": 31.0,
+          "z": 5.0,
+          "yaw": -90
+        },
+        {
+          "ref": "solar_panel",
+          "x": 3.0,
+          "z": 2.5,
+          "y": 2.8
+        },
+        {
+          "ref": "ac_unit",
+          "x": 1.0,
+          "z": 21.5,
+          "y": 1.2
+        },
+        {
+          "ref": "ac_unit",
+          "x": 32.5,
+          "z": 11.5,
+          "y": 1.2,
+          "yaw": 90
+        },
+        {
+          "ref": "antenna_red",
+          "x": 1.0,
+          "z": 0.5,
+          "y": 1.2
+        },
+        {
+          "ref": "antenna_red",
+          "x": 32.5,
+          "z": 0.5,
+          "y": 1.2
+        },
+        {
+          "ref": "antenna_red",
+          "x": 1.0,
+          "z": 24.5,
+          "y": 1.2
+        },
+        {
+          "ref": "laundry_line",
+          "x": 11.5,
+          "z": 22.5
+        },
+        {
+          "ref": "laundry_line",
+          "x": 24.5,
+          "z": 6.5
+        },
+        {
+          "ref": "basil_pot",
+          "x": 4.0,
+          "z": 12.0
+        },
+        {
+          "ref": "basil_pot",
+          "x": 4.0,
+          "z": 13.0
+        },
+        {
+          "ref": "basil_pot",
+          "x": 15.5,
+          "z": 3.6
+        },
+        {
+          "ref": "basil_pot",
+          "x": 18.5,
+          "z": 3.6
+        },
+        {
+          "ref": "cushions",
+          "x": 28.5,
+          "z": 11.5,
+          "yaw": 10
+        },
+        {
+          "ref": "dallah",
+          "x": 28.5,
+          "z": 12.0
+        },
+        {
+          "ref": "crates",
+          "x": 26.5,
+          "z": 16.0,
+          "yaw": 90
+        },
+        {
+          "ref": "crates",
+          "x": 4.5,
+          "z": 14.5
+        },
+        {
+          "ref": "cables",
+          "x": 26.5,
+          "z": 11.0
+        },
+        {
+          "ref": "cables",
+          "x": 4.5,
+          "z": 21.5
+        },
+        {
+          "ref": "pigeon_coop",
+          "x": 2.5,
+          "z": 24.5,
+          "y": 1.2,
+          "yaw": 90
+        },
+        {
+          "ref": "pipes",
+          "x": 29.5,
+          "z": 5.5
+        },
+        {
+          "ref": "coffee_stall",
+          "x": 10.5,
+          "z": 19.5
+        },
+        {
+          "ref": "chest",
+          "id": "chest_mafraj",
+          "x": 6.5,
+          "z": 4.5
+        },
+        {
+          "ref": "chest",
+          "id": "chest_saila",
+          "x": 27.5,
+          "z": 21.5
+        },
+        {
+          "ref": "lantern_post",
+          "x": 8.5,
+          "z": 19.5
+        },
+        {
+          "ref": "lantern_post",
+          "x": 8.5,
+          "z": 11.5
+        },
+        {
+          "ref": "lantern_post",
+          "x": 25.5,
+          "z": 13.5
+        },
+        {
+          "ref": "lantern_post",
+          "x": 19.5,
+          "z": 4.5
+        },
+        {
+          "ref": "lantern_post",
+          "x": 10.5,
+          "z": 6.5
+        },
+        {
+          "ref": "lantern_post",
+          "x": 23.5,
+          "z": 17.5
+        },
+        {
+          "ref": "lantern_hang",
+          "x": 26.5,
+          "z": 13.0,
+          "y": 2.7
+        },
+        {
+          "ref": "lantern_hang",
+          "x": 28.5,
+          "z": 10.5,
+          "y": 2.7
+        },
+        {
+          "ref": "string_lights",
+          "x": 14.5,
+          "z": 6.5
+        },
+        {
+          "ref": "string_lights",
+          "x": 26.5,
+          "z": 14.0
+        },
+        {
+          "ref": "string_lights",
+          "x": 8.5,
+          "z": 13.5,
+          "yaw": 90
+        }
+      ],
+      "lights": [
+        {
+          "x": 7.5,
+          "z": 20.5,
+          "color": "#f0b83a",
+          "pool": 2.5,
+          "pool_energy": 0.3,
+          "pool_y": 0.52,
+          "real": false
+        },
+        {
+          "x": 28.5,
+          "z": 14.5,
+          "color": "#f0b83a",
+          "pool": 2.8,
+          "pool_energy": 0.35,
+          "pool_y": 0.52,
+          "real": false
+        },
+        {
+          "x": 17.0,
+          "z": 5.1,
+          "color": "#5ad0ff",
+          "pool": 3.0,
+          "pool_energy": 0.36,
+          "pool_y": 0.52,
+          "real": false
+        },
+        {
+          "x": 6.0,
+          "z": 12.5,
+          "color": "#ffa04a",
+          "pool": 2.8,
+          "pool_energy": 0.32,
+          "pool_y": 0.52,
+          "real": false
+        },
+        {
+          "x": 6.5,
+          "z": 4.5,
+          "color": "#ff3d9a",
+          "pool": 2.4,
+          "pool_energy": 0.28,
+          "pool_y": 0.52,
+          "real": false
+        },
+        {
+          "x": 27.5,
+          "z": 21.5,
+          "color": "#ff3d9a",
+          "pool": 2.4,
+          "pool_energy": 0.28,
+          "pool_y": 0.52,
+          "real": false
+        },
+        {
+          "x": 17.0,
+          "y": 2.2,
+          "z": 4.0,
+          "color": "#9fe8ff",
+          "energy": 0.8,
+          "range": 5.5,
+          "pool": 3.2,
+          "pool_energy": 0.3,
+          "pool_y": 0.52
+        },
+        {
+          "x": 6.0,
+          "y": 2.2,
+          "z": 12.5,
+          "color": "#ffa04a",
+          "energy": 0.75,
+          "range": 4.5,
+          "pool": 2.6,
+          "pool_energy": 0.26,
+          "pool_y": 0.52
+        },
+        {
+          "x": 7.5,
+          "y": 2.2,
+          "z": 20.5,
+          "color": "#ffb764",
+          "energy": 0.7,
+          "range": 5.0,
+          "pool": 2.5,
+          "pool_energy": 0.25,
+          "pool_y": 0.52
+        },
+        {
+          "x": 28.5,
+          "y": 2.4,
+          "z": 14.0,
+          "color": "#ff8a2a",
+          "energy": 0.75,
+          "range": 5.0,
+          "pool": 2.6,
+          "pool_energy": 0.26,
+          "pool_y": 0.52
+        }
+      ],
+      "signs": [
+        {
+          "key": "WORLD_SIGN_SOUQ",
+          "x": 3.0,
+          "y": 2.8,
+          "z": 21.9,
+          "board": [
+            3.6,
+            0.95
+          ],
+          "size": 0.5,
+          "color": "#ff3d9a",
+          "energy": 2.6,
+          "flicker": 0.35
+        },
+        {
+          "key": "WORLD_SIGN_ZUBAIRI",
+          "x": 28.9,
+          "y": 2.7,
+          "z": 3.5,
+          "yaw": 90,
+          "board": [
+            3.6,
+            0.9
+          ],
+          "size": 0.44,
+          "color": "#3df0e0",
+          "energy": 2.4
+        },
+        {
+          "key": "WORLD_SIGN_SABIL",
+          "x": 17.0,
+          "y": 2.8,
+          "z": 0.8,
+          "board": [
+            3.0,
+            0.8
+          ],
+          "size": 0.4,
+          "color": "#9fe8ff",
+          "energy": 2.0
+        },
+        {
+          "key": "WORLD_SIGN_HADDAH",
+          "x": 26.9,
+          "y": 2.3,
+          "z": 9.5,
+          "yaw": 90,
+          "board": [
+            2.4,
+            0.7
+          ],
+          "size": 0.45,
+          "color": "#ff3d9a",
+          "energy": 2.4
+        },
+        {
+          "key": "WORLD_SIGN_QISHR",
+          "x": 6.0,
+          "y": 2.75,
+          "z": 12.0,
+          "board": [
+            1.8,
+            0.55
+          ],
+          "size": 0.4,
+          "color": "#ff8a2a",
+          "energy": 2.4
+        }
+      ]
     }
   ]
 }
