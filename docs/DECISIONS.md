@@ -66,3 +66,4 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-22 | Signature motif: the jambiyah hook; smoke, steam, dust, slashes, UI corners and the logo curl into it (like Naruto's spiral) | Feras (recommended) | Feras
 - 2026-10-22 | Writing in Sana'a 2150 is Musnad only (Noto Sans Old South Arabian, OFL): world signs Musnad only; HUD/UI English; menu headings and logo carry Musnad where Arabic was; no Arabic script in game | past meets future | Feras
 - 2026-10-22 | Battle HUD minimal: thin timeline + small HP/SP strip per hero; full cards and commands only on a hero's turn or on hover; all fighters always visible; the chosen target's name shows on the top bar | Feras (recommended) | Feras
+- 2026-10-22 | Hook motif: pointed tip; party hooks curl left, enemy hooks curl right (docs/design/identity.md); logo letter chosen from renders later | Feras (recommended) | Feras
