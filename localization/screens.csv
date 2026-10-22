@@ -4,6 +4,19 @@ LOOT_OBTAINED,Obtained
 TITLE_GAME,Qarnaw
 TITLE_GAME_MUSNAD,𐩤𐩧𐩬𐩱𐩥
 TITLE_PRESS_KEY,Press any key
+TITLE_NEW_GAME,New Game
+TITLE_CONTINUE,Continue
+TITLE_LOAD,Load
+SLOT_TITLE_SAVE,Save Game
+SLOT_TITLE_SAVE_MUSNAD,𐩦𐩨𐩺𐩡
+SLOT_TITLE_LOAD,Load Game
+SLOT_TITLE_LOAD_MUSNAD,𐩱𐩯𐩩𐩧𐩴𐩱𐩲
+SLOT_EMPTY,Empty
+SLOT_ROW_EMPTY,Slot %d: Empty
+SLOT_ROW_USED,Slot %d: %s  (%s)
+SLOT_CONFIRM_OVERWRITE,Overwrite this save? Progress in that slot will be lost.
+SLOT_PROMPT_SAVE,Save
+SLOT_PROMPT_LOAD,Load
 AREA_SOUQ_NAME,Souq al-Milh Rooftops
 AREA_SOUQ_NAME_MUSNAD,𐩦𐩷𐩥𐩢 𐩦𐩥𐩤 𐩱𐩡𐩣𐩡𐩢
 AREA_SUBTITLE,Old Sana'a - 2150

@@ -346,6 +346,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/tests/test_popups.gd`: The loot popup (queues item_obtained in order, skippable), the area title card, the title overlay (any key dismisses it once) and the opening shot held on the moon until then
 - `features/ui/tests/test_sabil_defeat.gd`: The Sabil question and the Defeat screen: registered ids, focus order, results, back handling
 - `features/ui/tests/test_screens.gd`: The Screens stack: push/pop pause the tree and emit game_paused, focus returns to the control that had it, back goes to the top screen, an unhandled menu opens pause only while exploring with nothing open, screens open by id
+- `features/ui/tests/test_slot_picker.gd`: Slot picker tests: save mode, overwrite confirmation dialog, load mode, empty slots greyed, and back
+- `features/ui/tests/test_title_overlay.gd`: Tests for TitleOverlay: Continue loads the newest slot, Load opens the slot picker, and New Game
 - `features/ui/tests/test_ui.gd`: The shared UI look: the style loads completely, the theme builds with every font (Reem Kufi and Amiri for English, Noto Old South Arabian for Musnad), every rarity has a colour, the painted frames have the right size, and the text server lays Musnad out right to left
 - `features/ui/tests/test_ui_helpers.gd`: UI v2 helpers: list_row, party_card, money_counter, prompt_strip and its glyph keys, toast queue and host, interaction prompt fade, typed text, the qamariya transition sweep, and the head icons with their disc fallback
 - `features/ui/view/area_title_card.gd`: The area title card (centre left, no panel) that fades in when the opening shot ends: the Musnad name big over the English name, a gypsum frieze drawing left to right, a subtitle (place and year), then fading out
@@ -367,6 +369,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/screens/sabil_screen.gd`: The sabil fountain question (Screens id &"sabil"): "Drink to rest? This saves your game and restores everyone." Closes with &"drink" (default) or &"leave" (Not now, or back)
 - `features/ui/view/screens/shop_detail.gd`: The right half of the shop: the riyal counter, the focused item's name, description and effect, then price, owned count, "money after" (red when the trade is not affordable) and the quantity
 - `features/ui/view/screens/shop_screen.gd`: The herb stall (Screens id &"shop"; open with Screens.open(&"shop", {"shop": &"herb_stall"}), optional "after_battle": true for the keeper's other greeting)
+- `features/ui/view/screens/slot_picker_screen.gd`: Slot picker screen: one row per save slot showing summary or Empty
 - `features/ui/view/title_overlay.gd`: The game's title over the opening sky: "Qarnaw" in Musnad (big) and Latin with a pulsing "Press any key"
 - `features/ui/view/toast_host.gd`: Shows toasts top-centre one at a time (ToastQueue order): fade in, hold t_toast_hold, fade out, next
 - `features/ui/view/ui.gd`: Entry point of the shared UI look: the style (content/ui/style.json), the one cached Theme, and small builders (labels, screen roots, the zigzag divider)
@@ -458,6 +461,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/tests/test_rooftop.gd`: The rooftop scene builds headless; walking, the follower, the patrol touch, the ambush direction, the exploring switch, the patrol respawn, the workshop prompt and the camera
 - `features/world/tests/test_rooftop_actors.gd`: Rooftop actors: the workshop bench is a mesh, dialogue framing aims at the speaker's head, and Bilqis never sticks
 - `features/world/tests/test_sabil_patrols.gd`: The rooftop's living rules: the sabil drink (save, refill, patrols return), beaten patrols and the grace time, the party's safe return and unstuck, the stall, the bench mesh, dialogue framing, and Bilqis never sticking
+- `features/world/tests/test_sabil_slots.gd`: Tests for Sabil saving into the slot chosen via the slot picker
 - `features/world/tests/test_safe_spot.gd`: SafeSpot: a place counts after standing still, walking resets the clock, the newest spot is skipped when the player is wedged right there, and only the two newest spots are kept
 - `features/world/tests/test_skyline.gd`: Night Sana'a city: building and skyline content, the layout rules (outside the area, out of the al-Saila corridor, inside the band, deterministic), the tower-house mesh, the landmarks and the draw-call budget
 - `features/world/tests/test_walk_graph.gd`: WalkGraph rules on small grids (reachability, diagonals, 2 x 2 width, traps, steps) and on every shipped area (docs/design/rooftop-v3.md section 5): everything is reachable from the spawn, no corridor is under 2 m, no cell is a trap, no step is too tall, and the bridge keeps three rows
