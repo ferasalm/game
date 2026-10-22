@@ -288,13 +288,14 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/logic/toast_queue.gd`: Pure: toasts wait in order and are shown one at a time
 - `features/ui/tests/node_walk.gd`: Test helper (not a test): every descendant of a node, depth first
 - `features/ui/tests/test_items_shop.gd`: The Items and Shop screens on the Screens stack, and the riyal banner of the loot popup
+- `features/ui/tests/test_musnad.gd`: The written language of Sana'a in 2150 is Musnad only: no Arabic script in any CSV, JSON or script; every *_MUSNAD and WORLD_SIGN_* text holds only Musnad letters, spaces and arrows; the Musnad font draws it
 - `features/ui/tests/test_pause_menu.gd`: The pause menu rules (PauseLogic) and the screen built from them
 - `features/ui/tests/test_popups.gd`: The loot popup (queues item_obtained in order, skippable), the area title card, the title overlay (any key dismisses it once) and the opening shot held on the moon until then
 - `features/ui/tests/test_sabil_defeat.gd`: The Sabil question and the Defeat screen: registered ids, focus order, results, back handling
 - `features/ui/tests/test_screens.gd`: The Screens stack: push/pop pause the tree and emit game_paused, focus returns to the control that had it, back goes to the top screen, an unhandled menu opens pause only while exploring with nothing open, screens open by id
-- `features/ui/tests/test_ui.gd`: The shared UI look: the style loads completely, the theme builds with all three fonts (Arabic glyphs included), every rarity has a colour, the painted frames have the right size, and the text server can shape right-to-left Arabic
+- `features/ui/tests/test_ui.gd`: The shared UI look: the style loads completely, the theme builds with every font (Reem Kufi and Amiri for English, Noto Old South Arabian for Musnad), every rarity has a colour, the painted frames have the right size, and the text server lays Musnad out right to left
 - `features/ui/tests/test_ui_helpers.gd`: UI v2 helpers: list_row, party_card, money_counter, prompt_strip and its glyph keys, toast queue and host, interaction prompt fade, typed text, the qamariya transition sweep, and the head icons with their disc fallback
-- `features/ui/view/area_title_card.gd`: The area title card (centre left, no panel) that fades in when the opening shot ends: the Arabic name big over the English name, a gypsum frieze drawing left to right, a subtitle (place and year), then fading out
+- `features/ui/view/area_title_card.gd`: The area title card (centre left, no panel) that fades in when the opening shot ends: the Musnad name big over the English name, a gypsum frieze drawing left to right, a subtitle (place and year), then fading out
 - `features/ui/view/character_icons.gd`: Head icons for timeline medallions and party cards
 - `features/ui/view/interaction_prompt.gd`: A small glass pill above an object in the world: the interact glyph and a verb ("Drink", "Talk", "Open")
 - `features/ui/view/list_row.gd`: One row of a menu list: icon | name (rarity colour) | "x3" count | tag chip on the right
@@ -302,7 +303,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/money_counter.gd`: A pill with the riyal amount in brass
 - `features/ui/view/party_card.gd`: A hero card: portrait icon, name, HP and SP bars with numbers
 - `features/ui/view/prompt_strip.gd`: The Hades-style button hints along the bottom: "[Enter] Select   [Esc] Back"
-- `features/ui/view/screens/choice_screen.gd`: Base of the small centred "pick one" screens (Sabil, Defeat): a framed panel with the Arabic + English title pair and a column of buttons in focus order
+- `features/ui/view/screens/choice_screen.gd`: Base of the small centred "pick one" screens (Sabil, Defeat): a framed panel with the Musnad + English title pair and a column of buttons in focus order
 - `features/ui/view/screens/confirm_dialog.gd`: A centred Yes/No question over the scrim
 - `features/ui/view/screens/defeat_screen.gd`: The defeat screen (Screens id &"defeat"): the arena darkens over t_defeat_fade, then DEFEATED offers Retry fight (default), Load last save (greyed with no save) and Title (asks first)
 - `features/ui/view/screens/equipment_host.gd`: Puts the existing EquipmentScreen (the bench, a CanvasLayer with its own open()/closed API) on the Screens stack as the screen &"equipment"
@@ -313,14 +314,14 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/screens/sabil_screen.gd`: The sabil fountain question (Screens id &"sabil"): "Drink to rest? This saves your game and restores everyone." Closes with &"drink" (default) or &"leave" (Not now, or back)
 - `features/ui/view/screens/shop_detail.gd`: The right half of the shop: the riyal counter, the focused item's name, description and effect, then price, owned count, "money after" (red when the trade is not affordable) and the quantity
 - `features/ui/view/screens/shop_screen.gd`: The herb stall (Screens id &"shop"; open with Screens.open(&"shop", {"shop": &"herb_stall"}), optional "after_battle": true for the keeper's other greeting)
-- `features/ui/view/title_overlay.gd`: The game's title over the opening sky: "Qarnaw" in Latin and Arabic in Reem Kufi with a pulsing "Press any key"
+- `features/ui/view/title_overlay.gd`: The game's title over the opening sky: "Qarnaw" in Musnad (big) and Latin with a pulsing "Press any key"
 - `features/ui/view/toast_host.gd`: Shows toasts top-centre one at a time (ToastQueue order): fade in, hold t_toast_hold, fade out, next
 - `features/ui/view/ui.gd`: Entry point of the shared UI look: the style (content/ui/style.json), the one cached Theme, and small builders (labels, screen roots, the zigzag divider)
 - `features/ui/view/ui_boxes.gd`: StyleBox builders for the UI theme: ornate panels (painted nine-patch frames), button states with the warm brass focus glow, and progress-bar tracks and gradient fills
 - `features/ui/view/ui_layers.gd`: The one table of CanvasLayer layers (engine draw-order values, so named constants are allowed here)
 - `features/ui/view/ui_motion.gd`: UI tweens: they ignore Engine.time_scale (a battle hitstop must not slow a menu) and, bound to a node whose process mode is ALWAYS (every UiScreen), keep running while the tree is paused
 - `features/ui/view/ui_ornament.gd`: Procedurally painted UI textures from the UiStyleDef (no image files): the nine-patch frames (a thin brass line, a thin gypsum line inside it and a small diamond in each corner, like the carved plaster of a Sana'a tower-house), and the zigzag frieze band that divides sections
-- `features/ui/view/ui_panel.gd`: A framed night-glass panel: gypsum tracery frame (the theme's panel box), an optional title pair (English left in Reem Kufi, Arabic right in brass) with a frieze under it, and a `body` column for the content
+- `features/ui/view/ui_panel.gd`: A framed night-glass panel: gypsum tracery frame (the theme's panel box), an optional title pair (English left in Reem Kufi, Musnad right in dim brass) with a frieze under it, and a `body` column for the content
 - `features/ui/view/ui_rarity.gd`: Rarity helpers for every screen: the tier colour (from RarityDef), coloured item names and the small rarity tag
 - `features/ui/view/ui_screen.gd`: Base of every full menu (pause, items, shop, confirm, defeat)
 - `features/ui/view/ui_stack.gd`: Screen stack (autoload Screens): push/pop UiScreens (each on its own UiLayers layer), pause the tree while one wants it, restore focus when one closes, route `back` / `menu` input, and open the pause menu on `menu` when the game is exploring and nothing is open
@@ -343,7 +344,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/defs/prop_def.gd`: A rooftop prop as data (content/world/props.json): a list of simple parts (PropPart), an optional practical light it carries, an optional box that blocks walking (collide = width, height, depth, centred on the prop's base) and, for a chest, the lid's hinge (lid_hinge x, y, z) so the "lid" part group can swing open
 - `features/world/defs/prop_part.gd`: One solid piece of a prop: a box (size = width, height, depth; at = centre) or a frustum (size = bottom radius, top radius, height; at = base centre), a palette letter, an optional yaw/tilt (degrees), and how it is drawn: glow (unshaded, boosted, blooms), blink (a glow that pulses), water (rippling or falling painted water), pattern (a painted tile texture instead of the letter), group (a named sub-mesh that can move, such as a chest lid)
 - `features/world/defs/prop_splash.gd`: Water drops a prop throws up where its stream lands (the sabil): a small burst of additive quads, drawn from a CPUParticles3D at `at` (prop space)
-- `features/world/defs/sign_spec.gd`: One neon sign: a localization key (Arabic proper nouns and English together), a dark board with a glowing frame, the glow colour, a position and yaw, the text height in metres (size) and how much it flickers
+- `features/world/defs/sign_spec.gd`: One neon sign: a localization key (a place name in Musnad letters only), a dark board with a glowing frame, the glow colour, a position and yaw, the text height in metres (size) and how much it flickers
 - `features/world/defs/sky_def.gd`: The night sky as data (content/world/sky.json): gradient, stars, milky way, moon, two cloud layers and the megacity glow
 - `features/world/defs/skyline_band.gd`: One depth band of the skyline: city blocks on a jittered grid between min_dist and max_dist metres from the play area's edge
 - `features/world/defs/skyline_def.gd`: The city around the play area as data: the ground level (y of the street, far below the rooftops), the al-Saila street (a sunken street along z at saila_x), depth bands of buildings and the landmarks
@@ -392,7 +393,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/tests/test_ambush.gd`: Which side struck first: the patrol's walking direction, and last_touch_ambush() after a touch (0 nobody, 1 the patrol caught the player from behind, 2 the player caught the patrol from behind)
 - `features/world/tests/test_area.gd`: Area, tile and look content: the rooftop layout is well formed and every probe of a broken layout is caught
 - `features/world/tests/test_camera_limits.gd`: The exploration camera frame (docs/design/rooftop-v3.md section 2): CameraLimits maths, the limits in camera.json, and on the shipped rooftop for every walkable cell: the camera (pitch 35/45/55 x distance 14/17/20, and the shipped hades preset) never stands inside a building, a prop or a skyline tower of the near and mid bands
-- `features/world/tests/test_chests_signs.gd`: Chests (prompt, one-time opening, the lid animation, the Rooftop signal) and the neon signs (localization keys, Arabic text from the CSV, text fitted to the board)
+- `features/world/tests/test_chests_signs.gd`: Chests (prompt, one-time opening, the lid animation, the Rooftop signal) and the neon signs (localization keys, Musnad text from the CSV, text fitted to the board)
 - `features/world/tests/test_dressing.gd`: Rooftop dressing as data: props and building placements are valid and stand on solid cells, prop parts use palette letters, the light maths (nearest few, fades, flicker), the real-light budget and the fake pools, the canyon and the nested DefReader reads
 - `features/world/tests/test_explore_camera.gd`: ExploreCamera on the rooftop: follow offset, the vista pose inside the zone (lower pitch, eases back out), the opening shot (keyframes, frozen actors, skip by key, ends on the exploring pose) and the DoF scale
 - `features/world/tests/test_facade.gd`: Night Sana'a textures: the facade painter (size, determinism, lit windows and qamariya glass in the emission map, a door, every pixel painted), the surface patterns (tile 4 m, deterministic, tileable) and the tile content
@@ -415,7 +416,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/view/far_landmarks.gd`: The far landmarks, built into an unshaded buffer (faces are shaded by a fake light so low-poly facets read): the ridge of Jabal Nuqum, the Haddah megacity of 2150 (slim towers with cyan and magenta neon edges) and the village of Bayt Baws on its rocky crag
 - `features/world/view/landmark_builder.gd`: Builds all landmarks of a SkylineDef into one ArrayMesh with two surfaces: 0 lit (minarets, Bab al-Yaman: vertex colours shaded by the scene lights) and 1 glow (ridge, megacity, village: unshaded, boosted above 1 so neon and lit windows bloom)
 - `features/world/view/mist_builder.gd`: Builds one mist layer from a MistDef: a big flat plane over the area at the def's height, with the scrolling noise shader and a seamless noise texture made once here
-- `features/world/view/neon_sign.gd`: One neon sign: a dark board, a glowing frame and the text (Label3D in Reem Kufi, unshaded and boosted above 1 so it blooms)
+- `features/world/view/neon_sign.gd`: One neon sign: a dark board, a glowing frame and the text (Label3D in the Musnad font, unshaded and boosted above 1 so it blooms)
 - `features/world/view/occlusion_fade.gd`: The camera cut-away (painted looks): when a building or prop stands between the camera and the party, a tube from the camera to the party dithers away in the painted world shaders (occlusion_dither.gdshaderinc)
 - `features/world/view/painted_atlases.gd`: The code-painted world atlases that the offline painterly bake repaints, by atlas id: tile_<pattern> for every playable surface pattern and facade_<building> / facade_<building>_emit for every tower-house
 - `features/world/view/painted_figure.gd`: Look spike: a static painted billboard of Zayd (assets/textures/painted/figures/zayd.webp, cut from the owner's Flow picture by tools/art/figure_cut.py) with the shared painted light and an alpha-edge ink line
@@ -485,6 +486,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.
 - `tools/lint_gd.py`: GDScript rules Godot itself doesn't enforce (docs/ARCHITECTURE.md, "Code rules"); exit 1 on any break.
 - `tools/map.py`: Writes docs/MAP.md from each file's purpose line, so the map never drifts. --check: exit 1 if stale.
+- `tools/musnad.py`: Transliterate Arabic to Musnad (Old South Arabian) letter by letter; scan files for Arabic.
 - `tools/run_godot.sh`: Runs the pinned Godot headless on this project with the given arguments; fails on a non-zero exit or on
 - `tools/shot_arena.gd`: Builds one battle arena on its own (no rooftop, no Router): the BattleRunner with the default encounter, heroes on auto-play, the HUD hidden when the user argument "hud=off" is given, so the painted arena can be judged alone
 - `tools/shot_battle.gd`: Starts the prototype and, after a moment of walking, makes the patrol touch the player so the battle (camera swoop, effects) can be filmed with the movie writer
