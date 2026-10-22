@@ -5,8 +5,6 @@ extends Node
 ## collapses and revives. Pass skip_animation to apply only the state changes (shown HP, intent labels, down poses)
 ## with no waiting; the call then finishes synchronously.
 
-const MOVE_KINDS: Array[StringName] = [&"act", &"reverse_stab", &"command"]
-const TARGET_KINDS: Array[StringName] = [&"damage", &"healed", &"status", &"revived", &"sp_restored"]
 const BREAK_VFX: StringName = &"break"
 
 var _sim: BattleSim
@@ -51,11 +49,14 @@ func _play_one(events: Array[TimelineEvent], i: int) -> void:
 			_on_command(event)
 		&"act":
 			_fighters.clear_intent(event.unit_id)
-			await _on_move(event.unit_id, _sim.timeline.find(event.unit_id).acted, _targets_after(events, i))
+			var targets: Array[StringName] = BattleEventTargets.targets_after(_sim, events, i)
+			await _on_move(event.unit_id, _sim.timeline.find(event.unit_id).acted, targets)
 		&"reverse_stab":
-			await _on_reverse_stab(event, _targets_after(events, i))
+			await _on_reverse_stab(event, BattleEventTargets.targets_after(_sim, events, i))
 		&"damage":
 			await _on_damage(event)
+		&"missed":
+			await _on_missed(event)
 		&"interrupted":
 			await _on_interrupted(event)
 		&"status":
@@ -171,16 +172,17 @@ func _status_name(status_id: StringName) -> String:
 	return BattleStyle.text(status.name_key) if status != null else String(status_id)
 
 
-## Who the move after events[i] touches: the units named by its hit, heal and status events (until the next move).
+func _on_missed(event: TimelineEvent) -> void:
+	if not _skip:
+		var actor: UnitState = _sim.timeline.find(event.unit_id)
+		if actor != null:
+			for target_id: StringName in actor.acted_targets:
+				_fighters.float_text(target_id, BattleStyle.text("UI_MISS"))
+		await _wait(_view.damage_gap)
+
+
 func _targets_after(events: Array[TimelineEvent], i: int) -> Array[StringName]:
-	var out: Array[StringName] = []
-	for j: int in range(i + 1, events.size()):
-		var next: TimelineEvent = events[j]
-		if MOVE_KINDS.has(next.kind):
-			break
-		if TARGET_KINDS.has(next.kind) and next.detail != &"regen" and not out.has(next.unit_id):
-			out.append(next.unit_id)
-	return out
+	return BattleEventTargets.targets_after(_sim, events, i)
 
 
 func _wait(seconds: float) -> void:

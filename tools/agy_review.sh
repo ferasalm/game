@@ -2,9 +2,10 @@
 # Shows what an agy task did, cheaply: its completion report, the check result, commits, file stats and the diff of
 # the non-test code only (tests, MAP.md, .uid and localization are listed in the stats, not printed).
 # Usage: tools/agy_review.sh <task-name> [base-ref]   (base defaults to the merge base with the current branch)
+# BRANCH_PREFIX=oc reviews an opencode run instead (tools/oc_review.sh).
 set -euo pipefail
 name="$1"; root="$(git rev-parse --show-toplevel)"
-wt="$(dirname "$root")/game-wt/$name"; log="$(dirname "$root")/game-wt/$name.log"; branch="gemini/$name"
+wt="$(dirname "$root")/game-wt/$name"; log="$(dirname "$root")/game-wt/$name.log"; branch="${BRANCH_PREFIX:-gemini}/$name"
 base="${2:-$(git -C "$root" merge-base HEAD "$branch")}"
 echo "== report"; grep -E "COMPLETION REPORT|Unresolved|Assumptions|tests: |all checks|FAIL" "$log" | tail -8 || true
 echo "== commits"; git -C "$root" log --oneline "$base..$branch"

@@ -22,11 +22,15 @@ Every number below lives in content JSON; code reads it from Defs. Each rule her
   is not casting.
 
 ## Resolving an action
-1. Pay: SP is paid at choose(); a move costing more SP than the unit has can't be chosen.
+1. Pay: SP is paid at choose(); a move costing more SP than the unit has can't be chosen. A move with
+   uses_per_battle > 0 cannot be chosen once its uses are spent; a cancelled cast still spends its use.
 2. Targets (ActionDef "target"): foe (default) and ally moves keep the chosen target while it is still valid,
    else retarget to the first valid one on that side; self hits the actor; all_foes and all_allies hit every
    living unit on that side at act time, once per unit (each gets its own hits and first-hit knockback). No
    valid target: the act fizzles (event "fizzled"). choose() ignores target_id for self and all-moves.
+2b. Miss roll: a confused unit's hostile action rolls once (seeded battle RNG) against the highest miss_chance
+   of its statuses. A miss emits TimelineEvent "missed" (unit = actor, detail = action id) and skips damage,
+   knockback, cancel and status for every hit and target; SP gain and actor status countdown still happen. Friendly moves never miss.
 3. Each hit (hit_count times): damage = max(1, round((power + attack - defense * defense_factor)
    * row_mult * variance)); row_mult = Formation.melee_multiplier for melee moves, else 1.0; variance is a
    seeded random in [1 - damage_variance, 1 + damage_variance]. HP never goes below 0.
@@ -38,7 +42,8 @@ Every number below lives in content JSON; code reads it from Defs. Each rule her
 3b. Heal (friendly moves with heal > 0): restores round(heal + actor attack * heal_attack_factor) HP, never above
    max HP (event "healed", value = HP actually restored). A downed ally is not a valid target and stays down,
    unless the move has revive: then it stands up (event "revived" before "healed"), hp = the heal, phase WAIT,
-   timeline position Timeline.AFTER_ACT_POS, no cast.
+   timeline position Timeline.AFTER_ACT_POS, no cast. Friendly moves with cures remove those statuses from each
+   target reached (event "status_ended").
 5. Status: if the move applies one and the target lives, set it with the status's turns (re-applying refreshes).
 6. The actor gains battle_rules.sp_per_act + its sp_per_act_bonus (perk) SP (capped at max SP) and regains
    hp_regen (perk) HP (event "healed" with detail regen). Each of the actor's statuses loses one turn, except a
@@ -50,7 +55,7 @@ Every number below lives in content JSON; code reads it from Defs. Each rule her
   (downed ones too for a revive); self: the actor; all_allies: every living ally.
 - Perks (features/items): start_bonus adds to the unit's starting timeline position (capped below COMMAND_POINT);
   see docs/design/prosthetics.md.
-- Events (TimelineEvent: kind, unit_id, value, detail), in order: reverse_stab (opening only), command, act (actor), damage (target, amount),
+- Events (TimelineEvent: kind, unit_id, value, detail), in order: reverse_stab (opening only), command, act (actor), missed (actor, action id), damage (target, amount),
   interrupted / knocked_back (target, new position), healed (target, HP restored, detail = action id or regen),
   revived (target), status (target), status_ended, down (target), fizzled, victory, defeat. The view plays them in this order.
 
@@ -58,13 +63,15 @@ Every number below lives in content JSON; code reads it from Defs. Each rule her
 1. If an opposing unit is casting and this unit has an affordable cancel move that can target it: use it on
    the casting unit nearest to ACT.
 2. Else a downed ally and an affordable revive move: stand it up; else a living ally under
-   battle_rules.ai_heal_below (0.4) of max HP and an affordable heal: heal the weakest (lowest share).
+   battle_rules.ai_heal_below (0.4) of max HP and an affordable heal: heal the weakest (lowest share); a self
+   heal counts when the actor is under ai_heal_below and has uses left.
 3. Else, when a foe is casting a hostile move with power x hits >= battle_rules.ai_big_cast_power (25) and
    this side has an affordable guard (a friendly move whose status has damage_taken < 1) on a unit that lacks
    it: guard (itself first).
 4. Else pick a random affordable useful move (seeded) and target: random valid target for hostile moves; for
-   heals the most hurt ally; for buffs a unit lacking the status. Useful = hostile; heal when someone is hurt;
-   buff when someone lacks it. Guard moves are never random picks.
+   heals the most hurt ally; for buffs a unit lacking the status. Useful = hostile (a hostile move with power <= 4
+   whose status every valid target already has is not useful); heal when someone is hurt; buff when someone lacks it.
+   Guard moves are never random picks. Moves with no uses left cannot be picked.
 
 ## The jambiyah (Zayd only; docs/design/world.md)
 - Hilt: agility add, cast_speed multiplier, weight, and exactly one ability (an action id) added to Zayd's moves.

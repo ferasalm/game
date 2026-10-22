@@ -19,7 +19,8 @@ class Choice extends RefCounted:
 
 ## Returns the unit's choice, or null when it has no affordable move with a valid target.
 static func pick(sim: BattleSim, unit: UnitState) -> Choice:
-	var moves: Array[ActionDef] = BattleTargets.affordable_moves(unit, sim.actions)
+	var moves: Array[ActionDef] = BattleTargets.affordable_moves(unit, sim.actions).filter(
+		func(m: ActionDef) -> bool: return sim.can_use(unit, m))
 	var choice: Choice = _cancel_choice(sim.timeline, moves, unit)
 	if choice == null:
 		choice = _heal_choice(sim, moves, unit)
@@ -55,7 +56,11 @@ static func _heal_choice(sim: BattleSim, moves: Array[ActionDef], unit: UnitStat
 			weakest = ally
 	for move: ActionDef in moves:
 		var options: Array[UnitState] = BattleTargets.valid_targets(sim.timeline, unit, move)
-		if move.heal <= 0 or move.target != &"ally":
+		if move.heal <= 0:
+			continue
+		if move.target == &"self" and _hp_share(unit) < sim.rules.ai_heal_below:
+			return Choice.new(move, &"")
+		if move.target != &"ally":
 			continue
 		if move.revive and fallen != null and options.has(fallen):
 			return Choice.new(move, fallen.unit_id)
@@ -109,6 +114,11 @@ static func _is_useful(sim: BattleSim, unit: UnitState, move: ActionDef) -> bool
 	if options.is_empty():
 		return false
 	if move.is_hostile():
+		if move.power <= 4 and move.applies_status != &"":
+			var all_have_status: bool = options.all(
+				func(t: UnitState) -> bool: return t.status_turns.has(move.applies_status))
+			if all_have_status:
+				return false
 		return true
 	if _is_guard(sim, move):
 		return false  # guards wait for a big enemy cast (step 3)

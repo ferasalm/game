@@ -42,11 +42,11 @@ Lines are drafts for the Narrative pass: playful, never cruel; Abu Nabil is gree
 
 | combatant abu_nabil (same id as his model) | value | why |
 |---|---|---|
-| max_hp | 900 [P] | ~ the enforcer pair's 900; his heals add ~240 |
+| max_hp | 1200 | tuned by the harness (2026-10-23); his heals add ~240 |
 | max_sp | 12 | spice cloud once at the start, then about every third act |
-| attack / defense | 24 / 10 [P] | hits a bit softer than an enforcer (31); soft to Zayd's strikes |
-| agility / weight | 34 / 5.0 [P] | slower than the party; heavy, so knockback pushes him less |
-| interrupt_resist | 0 | every cancel works on him: the lesson of the fight |
+| attack / defense | 45 / 10 | hits a bit softer than an enforcer (31); soft to Zayd's strikes |
+| agility / weight | 60 / 5.0 | slower than the party; heavy, so knockback pushes him less |
+| interrupt_resist | 0.7 | at 0 the harness AI chain-interrupted him and he never acted (party ended 99.8% HP) |
 
 | move | target | power | cast | recovery | sp | effect |
 |---|---|---|---|---|---|---|

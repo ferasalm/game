@@ -6,7 +6,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 
 ## (root)
 - `.godot-version`
+- `AGENTS.md`
 - `GEMINI.md`
+- `opencode.json`: content: ? x0
 - `project.godot`
 
 ## .agents
@@ -29,15 +31,15 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/audio/rules.json`: content: audio_rules x1
 - `content/audio/screen_music.json`: content: screen_music x3
 - `content/audio/sounds.json`: content: sound x34
-- `content/combat/actions.json`: content: action x18
+- `content/combat/actions.json`: content: action x21
 - `content/combat/arena_skyline.json`: content: skyline x1
 - `content/combat/arenas.json`: content: arena x1
 - `content/combat/camera.json`: content: battle_camera x1
-- `content/combat/combatants.json`: content: combatant x4
-- `content/combat/encounters.json`: content: encounter x5
+- `content/combat/combatants.json`: content: combatant x5
+- `content/combat/encounters.json`: content: encounter x6
 - `content/combat/juice.json`: content: battle_juice x1
 - `content/combat/rules.json`: content: battle_rules x1
-- `content/combat/statuses.json`: content: status x3
+- `content/combat/statuses.json`: content: status x4
 - `content/combat/vfx.json`: content: vfx x15
 - `content/combat/view.json`: content: battle_view x1
 - `content/dialogue/box.json`: content: dialogue_style x1
@@ -175,6 +177,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/harness/balance.gd`: Balance harness: seeded battles per gear pairing with BattleAI playing both sides, one table
 - `features/combat/harness/battle_loader.gd`: Gathers the battle content from a loaded ContentDB (passed in as a Node) and builds ready-to-run BattleSims for the default encounter
 - `features/combat/harness/item_policy.gd`: The balance harness's opt-in herb use (docs/design/economy.md section 9): a white herb on a downed hero, a pink herb on the living hero below 40% HP, a yellow herb when a hero cannot pay for his cheapest move
+- `features/combat/logic/battle_action_rules.gd`: Move uses per battle, miss roll for confused units, and status cures for BattleSim and BattleResolver
 - `features/combat/logic/battle_ai.gd`: The one battle policy (enemies in play, both sides in the balance harness), in this order: 1
 - `features/combat/logic/battle_items.gd`: The Items command of a battle (docs/design/economy.md section 5)
 - `features/combat/logic/battle_outcome.gd`: What a finished battle hands back: result (victory, defeat, retry, load, title), the party's vitals and bag after the fight, and the rewards (money, equippable items, consumables) still to be applied to GameState by the Router
@@ -192,6 +195,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/logic/unit_state.gd`: One fighter during one battle: the numbers that change (hp, timeline position, the action being cast), built from a read-only CombatantDef
 - `features/combat/tests/battle_probe.gd`: Test helper (not a test): hand-made fighters, moves and battles with exact numbers, and loops that play a BattleSim until an event kind appears
 - `features/combat/tests/fake_clip_source.gd`: A stand-in VisualSource for battle view tests: a model-like source of a known size that sends clip events only when the test says so, and records what the battle asked of it (clips, facings, hit pauses, collapses)
+- `features/combat/tests/test_abu_nabil_balance.gd`: Balance harness for Abu Nabil duel: 200 seeded battles with policy AI on both sides
+- `features/combat/tests/test_abu_nabil_combat.gd`: Abu Nabil combat rules: miss rolls for confused units, status cures, uses per battle, and boss AI policy
 - `features/combat/tests/test_action_def.gd`: ActionDef new fields: target, heal, revive, vfx (validated on load), and the shipped actions: every one has a vfx from the agreed list, and the tech moves have the shape the design asks for
 - `features/combat/tests/test_arena.gd`: The painted arena: the def points at real content, the builder makes the roof, the parapet, the props, the lights and the city, the arena camera sits low with its own depth of field, and the party stands right, the enemies left
 - `features/combat/tests/test_battle_ai_support.gd`: BattleAI with support moves: heal an ally under 40% HP, revive the fallen, guard before a big enemy cast, and never waste a heal or buff when nobody needs it
@@ -231,6 +236,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/view/battle_end_panel.gd`: The end-of-battle panel in the middle of the screen
 - `features/combat/view/battle_ending.gd`: How a fight leaves the screen
 - `features/combat/view/battle_event_player.gd`: Plays a batch of TimelineEvents one after another with the animation each one deserves: the swing and its effect (BattleActionPlayer), the flinch, hitstop and popping numbers of a hit, the BREAK! stamp of a cut cast, collapses and revives
+- `features/combat/view/battle_event_targets.gd`: Finds unit targets touched by a move from the timeline events that follow it (hits, heals, misses)
 - `features/combat/view/battle_fighters.gd`: The 3D side of a battle: one CharacterVisual per unit on the stage, popping damage / heal numbers and status text, the BREAK! stamp, intent labels over casting enemies, and the bouncing target marker
 - `features/combat/view/battle_hero_card.gd`: The acting hero's full card, on top of the turn panel: name, HP and SP with numbers
 - `features/combat/view/battle_hud.gd`: The battle HUD (v3), built in code and minimal at rest: a thin timeline on top (with the chosen target's name), a slim vitals strip under each hero's feet, and nothing else
@@ -506,6 +512,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/view/shaders/painted_light.gdshaderinc`
 - `features/world/view/shaders/painted_screen.gdshader`
 - `features/world/view/shaders/painted_world.gdshader`
+- `features/world/view/shaders/painterly_filter.gdshader`
 - `features/world/view/shaders/prop_water.gdshader`
 - `features/world/view/sky_builder.gd`: Builds the night Sky resource from a SkyDef: the sky shader with every uniform filled from the def, and the three direction vectors (moon, city glow, milky way normal) computed from its angles
 - `features/world/view/skyline_builder.gd`: Builds the old city of Sana'a around a play area from the "skyline" content: tower-houses in depth bands (one MultiMeshInstance3D per building type, shared meshes and materials), far unshaded silhouettes (one MultiMesh), the landmarks (one mesh), the street-level ground and the al-Saila street
@@ -561,6 +568,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/lint_gd.py`: GDScript rules Godot itself doesn't enforce (docs/ARCHITECTURE.md, "Code rules"); exit 1 on any break.
 - `tools/map.py`: Writes docs/MAP.md from each file's purpose line, so the map never drifts. --check: exit 1 if stale.
 - `tools/musnad.py`: Transliterate Arabic to Musnad (Old South Arabian) letter by letter; scan files for Arabic.
+- `tools/oc_review.sh`: Reviews an opencode task (branch oc/<task>) the same cheap way as an agy one: report, check result, commits, stats,
+- `tools/oc_task.sh`: Runs opencode on one task brief inside its own git worktree, never in the main checkout (DECISIONS 2026-10-23).
 - `tools/rodin/rewrite_glb.py`: Rebuild a Rodin glb with new triangle indices (from Godot, winding flipped back; IDX_BIN '-' keeps its own), no
 - `tools/rodin/slim_indices.gd`: Rodin step 1: simplifies a Rodin glb mesh with Godot's LOD generator and writes the index buffer (env SRC, IDX, MAX_TRIS, DST); rewrite_glb.py then builds the slim glb (usage: docs/design/characters-3d.md 8)
 - `tools/run_godot.sh`: Runs the pinned Godot headless on this project with the given arguments; fails on a non-zero exit or on

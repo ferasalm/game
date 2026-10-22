@@ -84,6 +84,20 @@ func apply_status(status: StatusDef) -> void:
 	status_turns[status.id] = status.turns
 
 
+## Removes a status immediately (e.g. cured by an item or action). Returns true if it was present.
+func remove_status(status_id: StringName) -> bool:
+	var found: StatusDef = null
+	for status: StatusDef in statuses:
+		if status.id == status_id:
+			found = status
+			break
+	if found == null:
+		return false
+	statuses.erase(found)
+	status_turns.erase(status_id)
+	return true
+
+
 ## One of this unit's acts has passed: every status loses a turn, except the ids in skip (statuses the unit
 ## just gave itself). Returns the ids that ran out.
 func tick_statuses(skip: Array[StringName] = []) -> Array[StringName]:
