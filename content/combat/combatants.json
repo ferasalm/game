@@ -2,7 +2,7 @@
   "kind": "combatant",
   "items": [
     {"id": "zayd", "name_key": "NAME_ZAYD", "max_hp": 400, "max_sp": 24, "attack": 20, "defense": 14,
-     "agility": 40, "weight": 3.0, "actions": ["djanbeyyah_strike", "breaker"]},
+     "agility": 40, "weight": 3.0, "actions": ["jambiyah_strike", "breaker"]},
     {"id": "bilqis", "name_key": "NAME_BILQIS", "max_hp": 280, "max_sp": 36, "attack": 16, "defense": 9,
      "agility": 44, "weight": 1.0, "actions": ["spark_shot", "static_net"]},
     {"id": "concession_enforcer", "name_key": "NAME_CONCESSION_ENFORCER", "max_hp": 450, "max_sp": 0, "attack": 31,

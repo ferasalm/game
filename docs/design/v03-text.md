@@ -1,6 +1,6 @@
 # v0.3 text: herb seller, sabil, items, nameplates, pause and defeat (draft for owner review)
 Owner: Feras. Writer: Narrative Designer. Rows go to localization/<file>.csv as `keys,en` (keys lowercase, prefixed).
-Facts used: water is power; the Concession rations it; currency riyal; Zayd carries his grandfather's djanbeyyah;
+Facts used: water is power; the Concession rations it; currency riyal; Zayd carries his grandfather's jambiyah;
 Bilqis runs a coffee stall as cover. Invented names and lines are marked for owner review.
 
 ## Herb seller (invented: Abu Nabil; name decided by the owner, 2026-10-21)

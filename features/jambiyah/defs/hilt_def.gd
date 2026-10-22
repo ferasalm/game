@@ -1,6 +1,6 @@
 class_name HiltDef
 extends EquipDef
-## A djanbeyyah hilt: adds to agility, multiplies cast speed, adds weight, and grants exactly one move.
+## A jambiyah hilt: adds to agility, multiplies cast speed, adds weight, and grants exactly one move.
 
 var agility: int = 0
 var cast_speed: float = 1.0

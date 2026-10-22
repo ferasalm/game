@@ -11,7 +11,7 @@ Every number below lives in content JSON; code reads it from Defs. Each rule her
   party_start_max] = [3000, 4500], enemies in [enemy_start_min, enemy_start_max] = [1000, 3000] (battle_rules).
   create(..., seed, ambush, ...): ambush 0 = none; 1 = the party was ambushed (the two ranges swap, and the
   reverse stab below happens); 2 = the party ambushed the enemy (party as normal, enemies start at 0).
-- Reverse stab (ambush 1 only): before the first tick the djanbeyyah answers. Zayd (the party unit with def id
+- Reverse stab (ambush 1 only): before the first tick the jambiyah answers. Zayd (the party unit with def id
   zayd, if present) strikes the lowest-slot living enemy with the action reverse_stab (melee, power 24, one
   hit, knockback 3000, free; in no combatant's move list, so it can't be chosen). Normal damage formula (his
   attack incl. blade, row multiplier, variance) and normal knockback (incl. the blade bonus). BattleSim.opening()
@@ -66,7 +66,7 @@ Every number below lives in content JSON; code reads it from Defs. Each rule her
    heals the most hurt ally; for buffs a unit lacking the status. Useful = hostile; heal when someone is hurt;
    buff when someone lacks it. Guard moves are never random picks.
 
-## The djanbeyyah (Zayd only; docs/design/world.md)
+## The jambiyah (Zayd only; docs/design/world.md)
 - Hilt: agility add, cast_speed multiplier, weight, and exactly one ability (an action id) added to Zayd's moves.
 - Blade: attack add, knockback bonus (added to the first hit of each of Zayd's actions), weight.
 - Merge order: base CombatantDef -> hilt -> blade -> prosthetic -> perks -> caps (Gear.build; the prosthetic
@@ -77,14 +77,14 @@ Every number below lives in content JSON; code reads it from Defs. Each rule her
 ## Starting content (final numbers, tuned by the harness)
 | Who | HP | SP | Atk | Def | Agi | Wt | Moves |
 |---|---|---|---|---|---|---|---|
-| Zayd | 400 | 24 | 20 | 14 | 40 | 3 | djanbeyyah_strike, breaker (+ hilt ability, + prosthetic moves) |
+| Zayd | 400 | 24 | 20 | 14 | 40 | 3 | jambiyah_strike, breaker (+ hilt ability, + prosthetic moves) |
 | Bilqis | 280 | 36 | 16 | 9 | 44 | 1 | spark_shot, static_net (+ prosthetic moves) |
 | Concession enforcer (x2) | 450 | 0 | 31 | 14 | 30 | 6 | baton_slam (interrupt resist 0.2) |
 | Survey drone | 180 | 12 | 23 | 6 | 48 | 0 | laser_ping, overcharge_beam |
 
 | Move | SP | Power x hits | Melee | Cast | Recovery | Knockback | Notes |
 |---|---|---|---|---|---|---|---|
-| djanbeyyah_strike | 0 | 10 x 2 | yes | 1.2 | 500 | 800 | |
+| jambiyah_strike | 0 | 10 x 2 | yes | 1.2 | 500 | 800 | |
 | breaker | 8 | 18 | yes | 0.9 | 1000 | 2000 | cancels |
 | spark_shot | 0 | 14 | no | 1.5 | 300 | 400 | ignores cover |
 | static_net | 6 | 4 | no | 1.3 | 400 | 300 | ignores cover; cancels; applies jammed |

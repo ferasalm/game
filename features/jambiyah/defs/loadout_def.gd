@@ -1,7 +1,7 @@
 class_name LoadoutDef
 extends Def
 ## A hero's starting gear: which hilt, blade and prosthetic they own and wear at the start (each optional).
-## Zayd's loadout is the djanbeyyah pair plus his prosthetic; Bilqis has only a prosthetic.
+## Zayd's loadout is the jambiyah pair plus his prosthetic; Bilqis has only a prosthetic.
 
 var hero: StringName = &"zayd"
 var hilt: StringName = &""

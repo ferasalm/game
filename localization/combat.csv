@@ -12,7 +12,7 @@ NAME_CONCESSION_ENFORCER,Concession Enforcer
 NAME_SURVEY_DRONE,Survey Drone
 ENCOUNTER_ROOFTOP_PATROL,Rooftop patrol
 STATUS_JAMMED,Jammed
-ACTION_DJANBEYYAH_STRIKE,Djanbeyyah Strike
+ACTION_JAMBIYAH_STRIKE,Jambiyah Strike
 ACTION_BREAKER,Breaker
 ACTION_SPARK_SHOT,Spark Shot
 ACTION_STATIC_NET,Static Net
@@ -21,7 +21,7 @@ ACTION_LASER_PING,Laser Ping
 ACTION_OVERCHARGE_BEAM,Overcharge Beam
 ACTION_QUICK_SLASH,Quick Slash
 ACTION_CRUSHING_BLOW,Crushing Blow
-MOVE_DESC_DJANBEYYAH_STRIKE,Two quick cuts with the curved blade.
+MOVE_DESC_JAMBIYAH_STRIKE,Two quick cuts with the curved blade.
 MOVE_DESC_BREAKER,A hard shove that shatters a charging move.
 MOVE_DESC_SPARK_SHOT,A stolen-grid spark that finds anyone.
 MOVE_DESC_STATIC_NET,Jams a target's gear so it crawls.

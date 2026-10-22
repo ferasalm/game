@@ -1,9 +1,9 @@
-class_name Djanbeyyah
+class_name Jambiyah
 extends RefCounted
 ## Builds Zayd's fighter from a base CombatantDef plus one hilt and one blade (docs/design/combat.md).
 ## Merge order: base -> hilt -> blade -> caps. Returns a new CombatantDef; the shared base is never touched.
 
-## The hero who wields the djanbeyyah (hilt and blade slots exist for this combatant only).
+## The hero who wields the jambiyah (hilt and blade slots exist for this combatant only).
 const WIELDER: StringName = &"zayd"
 
 

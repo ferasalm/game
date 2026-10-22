@@ -1,6 +1,6 @@
 class_name Prosthetics
 extends RefCounted
-## Merges a prosthetic into a fighter (docs/design/prosthetics.md), like Djanbeyyah.equip: stat adds, then the
+## Merges a prosthetic into a fighter (docs/design/prosthetics.md), like Jambiyah.equip: stat adds, then the
 ## granted moves, then the caps. Returns a new CombatantDef; the fighter passed in is never touched. A
 ## prosthetic that does not fit this fighter changes nothing.
 

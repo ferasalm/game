@@ -70,7 +70,7 @@ func lands_before(actor: UnitState, action: ActionDef, target: UnitState) -> boo
 ## when there is no ambush, no Zayd or no such action. step() calls it first if the view did not.
 func opening() -> Array[TimelineEvent]:
 	var out: Array[TimelineEvent] = []
-	var wielder: UnitState = timeline.find(Djanbeyyah.WIELDER)
+	var wielder: UnitState = timeline.find(Jambiyah.WIELDER)
 	var stab: ActionDef = actions.get(&"reverse_stab") as ActionDef
 	if _opened or ambush != 1 or wielder == null or stab == null:
 		_opened = true

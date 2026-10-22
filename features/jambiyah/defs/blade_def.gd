@@ -1,6 +1,6 @@
 class_name BladeDef
 extends EquipDef
-## A djanbeyyah blade: adds to attack, adds knockback to every hit the wielder lands, adds weight.
+## A jambiyah blade: adds to attack, adds knockback to every hit the wielder lands, adds weight.
 
 var attack: int = 0
 var knockback: int = 0

@@ -5,7 +5,7 @@ extends Node
 
 var flags: Dictionary[StringName, bool] = {}
 ## Worn gear per hero and part: &"zayd.hilt", &"zayd.blade", &"zayd.prosthetic", &"bilqis.prosthetic" ->
-## content ids. A missing slot means the hero's starting gear (content/djanbeyyah/loadouts.json).
+## content ids. A missing slot means the hero's starting gear (content/jambiyah/loadouts.json).
 var equipment: Dictionary[StringName, StringName] = {}
 ## Unique items the party owns (hilts, blades, prosthetics), each id at most once (Inventory.add).
 var inventory: Array[StringName] = []

@@ -6,7 +6,7 @@ Character looks come from docs/design/world.md; change the look lines below if y
 ```
 Painted digital illustration, detailed brushwork, chest-up portrait of Zayd al-Sana'ani, a 28-year-old Yemeni
 courier-fixer in cyberpunk Sana'a, year 2150. Warm brown skin, short dark hair, trimmed stubble, alert calm eyes.
-Worn indigo jacket with brass details, a curved djanbeyyah hilt at his belt, a faint cyan neon glint on one
+Worn indigo jacket with brass details, a curved jambiyah hilt at his belt, a faint cyan neon glint on one
 shoulder. Three-quarter view, body turned slightly right so he looks toward the right edge. Lighting from the
 upper left, warm key light and a cool cyan rim light. Neutral, calm expression. Background: one flat plain
 bright green (#00FF00) colour, no gradient, no shadow on the background, no text, no frame, no logo.

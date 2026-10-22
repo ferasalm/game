@@ -24,7 +24,7 @@
    "fallback_melee": "vfx_slash",
    "fallback_ranged": "vfx_bolt",
    "action_vfx": {
-    "djanbeyyah_strike": "slash",
+    "jambiyah_strike": "slash",
     "reverse_stab": "stab",
     "breaker": "piston",
     "quick_slash": "slash",

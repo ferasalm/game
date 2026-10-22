@@ -30,7 +30,7 @@ static func add_all(owned: Array[StringName], item_ids: Array[StringName]) -> Ar
 
 
 ## "" when the hero may wear this item in this slot now; else why not. Hilts and blades fit only the
-## djanbeyyah wielder; a prosthetic fits only its own wearer.
+## jambiyah wielder; a prosthetic fits only its own wearer.
 static func equip_problem(owned: Array[StringName], slot: StringName, item: EquipDef) -> String:
 	if item == null:
 		return "no such item"
@@ -42,9 +42,9 @@ static func equip_problem(owned: Array[StringName], slot: StringName, item: Equi
 	var hero := StringName(parts[0])
 	match parts[1]:
 		"hilt":
-			return "" if item is HiltDef and hero == Djanbeyyah.WIELDER else "'%s' is not a hilt for %s" % [item.id, hero]
+			return "" if item is HiltDef and hero == Jambiyah.WIELDER else "'%s' is not a hilt for %s" % [item.id, hero]
 		"blade":
-			return "" if item is BladeDef and hero == Djanbeyyah.WIELDER else "'%s' is not a blade for %s" % [item.id, hero]
+			return "" if item is BladeDef and hero == Jambiyah.WIELDER else "'%s' is not a blade for %s" % [item.id, hero]
 		"prosthetic":
 			var worn := item as ProstheticDef
 			return "" if worn != null and worn.wearer == hero else "'%s' does not fit %s" % [item.id, hero]

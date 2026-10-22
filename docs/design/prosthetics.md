@@ -1,6 +1,6 @@
 # Prosthetics, rarity, items and perks (prototype rules; every number lives in content/)
 Owner decisions 2026-10-21: one prosthetic slot per hero; it grants the tech moves (replacing "magic"), paid
-from SP; the djanbeyyah (hilt + blade) stays Zayd's physical weapon. Five rarities on hand-made fixed items
+from SP; the jambiyah (hilt + blade) stays Zayd's physical weapon. Five rarities on hand-made fixed items
 (no random rolls) plus a story-only Heirloom tier. Code: features/items, features/prosthetics, features/combat.
 
 ## Rules
@@ -12,7 +12,7 @@ from SP; the djanbeyyah (hilt + blade) stays Zayd's physical weapon. Five rariti
 - Item ids are unique across hilts, blades and prosthetics (get_def("item", id)). Inventory (GameState.inventory)
   holds each item at most once. Slots: GameState.equipment "zayd.hilt", "zayd.blade", "zayd.prosthetic",
   "bilqis.prosthetic" (save v3; v2 "hilt"/"blade" migrate to "zayd.*" and worn items count as owned).
-  A missing slot means the hero's start loadout (content/djanbeyyah/loadouts.json).
+  A missing slot means the hero's start loadout (content/jambiyah/loadouts.json).
 - A prosthetic fits only its wearer and grants 1-2 tech moves. Merge: base -> hilt -> blade -> prosthetic ->
   perks -> caps (Gear.build), always on a copy. Tech moves are ActionDefs (target, heal, revive, vfx).
 - Perk kinds (PerkDef, implemented in combat logic): sp_per_act (extra SP per act), hp_regen (HP per act),

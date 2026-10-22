@@ -12,20 +12,20 @@ Save as `inbox/flow_abunabil_model_front.png`.
 
 ## 2a. Zayd model picture (Flow, image)
 ```
-Painted digital illustration, detailed brushwork, full-body model reference of Zayd al-Sana'ani, 28, a courier-fixer of the souq guild in cyberpunk night Sana'a, year 2150. Practical coat and a scarf worn close to the body. He wears his grandfather's djanbeyyah sheathed at the front of his belt, Yemeni style, its hilt clearly visible: old horn and silver, with a carnelian-red accent. Front view, camera at chest height, little perspective. A-pose: arms 30-45 degrees down from the body, not a T-pose, fingers apart, legs slightly apart, feet visible. Flat even light, no cast shadows, no rim light. Head to feet, 768x1376 portrait. Background: one plain mid-grey colour, no green, no gradient, no shadow on the background, no text, no frame, no logo.
+Painted digital illustration, detailed brushwork, full-body model reference of Zayd al-Sana'ani, 28, a courier-fixer of the souq guild in cyberpunk night Sana'a, year 2150. Practical coat and a scarf worn close to the body. He wears his grandfather's jambiyah sheathed at the front of his belt, Yemeni style, its hilt clearly visible: old horn and silver, with a carnelian-red accent. Front view, camera at chest height, little perspective. A-pose: arms 30-45 degrees down from the body, not a T-pose, fingers apart, legs slightly apart, feet visible. Flat even light, no cast shadows, no rim light. Head to feet, 768x1376 portrait. Background: one plain mid-grey colour, no green, no gradient, no shadow on the background, no text, no frame, no logo.
 ```
 Save as `inbox/flow_zayd_model_front.png`. Then ask for matching side and back views as separate pictures, same prompt
 with "Side view" or "Back view" in place of "Front view", saved as `inbox/flow_zayd_model_side.png` and `inbox/flow_zayd_model_back.png`.
 
 ## 2b. Bilqis model picture (Flow, image; attach the Bilqis full-body picture as the reference)
 ```
-Painted digital illustration, detailed brushwork, full-body model reference of this same character, Bilqis, as the attached picture. Keep her colours, outfit, headscarf, long coat and cyan visor exactly as in the reference. She carries no djanbeyyah. Front view, camera at chest height, little perspective. A-pose: arms 30-45 degrees down from the body, not a T-pose, fingers apart, legs slightly apart, feet visible. Flat even light, no cast shadows, no rim light. Head to feet, 768x1376 portrait. Background: one plain mid-grey colour, no green, no gradient, no shadow on the background, no text, no frame, no logo.
+Painted digital illustration, detailed brushwork, full-body model reference of this same character, Bilqis, as the attached picture. Keep her colours, outfit, headscarf, long coat and cyan visor exactly as in the reference. She carries no jambiyah. Front view, camera at chest height, little perspective. A-pose: arms 30-45 degrees down from the body, not a T-pose, fingers apart, legs slightly apart, feet visible. Flat even light, no cast shadows, no rim light. Head to feet, 768x1376 portrait. Background: one plain mid-grey colour, no green, no gradient, no shadow on the background, no text, no frame, no logo.
 ```
 Save as `inbox/flow_bilqis_model_front.png`. Then side and back views the same way as 2a.
 
-## 2c. Grandfather's djanbeyyah hilt (Flow, image)
+## 2c. Grandfather's jambiyah hilt (Flow, image)
 ```
-Painted digital illustration, detailed brushwork, a Yemeni djanbeyyah dagger hilt and its sheath, shown alone. Old horn and silver hilt, with a carnelian-red accent on the grip and a worn, hand-polished finish. The sheath is dark leather with silver fittings. Front view and side view, both in the same picture, the hilt centred and nothing cropped. Flat even light, no cast shadows, no rim light. Background: one plain mid-grey colour, no green, no gradient, no shadow on the background, no text, no frame, no logo.
+Painted digital illustration, detailed brushwork, a Yemeni jambiyah dagger hilt and its sheath, shown alone. Old horn and silver hilt, with a carnelian-red accent on the grip and a worn, hand-polished finish. The sheath is dark leather with silver fittings. Front view and side view, both in the same picture, the hilt centred and nothing cropped. Flat even light, no cast shadows, no rim light. Background: one plain mid-grey colour, no green, no gradient, no shadow on the background, no text, no frame, no logo.
 ```
 Save as `inbox/flow_hilt_grandfather_a.png`.
 

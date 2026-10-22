@@ -1,7 +1,7 @@
 {
   "kind": "action",
   "items": [
-    {"id": "djanbeyyah_strike", "name_key": "ACTION_DJANBEYYAH_STRIKE", "desc_key": "MOVE_DESC_DJANBEYYAH_STRIKE", "sp_cost": 0, "power": 10, "hit_count": 2,
+    {"id": "jambiyah_strike", "name_key": "ACTION_JAMBIYAH_STRIKE", "desc_key": "MOVE_DESC_JAMBIYAH_STRIKE", "sp_cost": 0, "power": 10, "hit_count": 2,
      "cast_speed": 1.2, "recovery": 500, "knockback": 800, "vfx": "slash"},
     {"id": "breaker", "name_key": "ACTION_BREAKER", "desc_key": "MOVE_DESC_BREAKER", "sp_cost": 8, "power": 18,
      "cast_speed": 0.9, "recovery": 1000, "knockback": 2000, "cancels_cast": true, "vfx": "heavy_slash"},

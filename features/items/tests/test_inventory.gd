@@ -31,7 +31,7 @@ func test_equip_checks_ownership_slot_and_wearer() -> void:
 	check_eq(Inventory.equip(worn, owned, &"zayd.hilt", _hilt(&"anvil_hilt")), "", "an owned hilt in the hilt slot")
 	check_eq(worn[&"zayd.hilt"], &"anvil_hilt", "worn")
 	check(Inventory.equip(worn, owned, &"zayd.blade", _hilt(&"anvil_hilt")) != "", "a hilt in the blade slot: refused")
-	check(Inventory.equip(worn, owned, &"bilqis.hilt", _hilt(&"anvil_hilt")) != "", "Bilqis has no djanbeyyah slot")
+	check(Inventory.equip(worn, owned, &"bilqis.hilt", _hilt(&"anvil_hilt")) != "", "Bilqis has no jambiyah slot")
 	var arc := ContentDB.get_def("prosthetic", &"arc_arm") as ProstheticDef
 	var rig := ContentDB.get_def("prosthetic", &"wrist_rig") as ProstheticDef
 	check_eq(Inventory.equip(worn, owned, &"zayd.prosthetic", arc), "", "Zayd's own prosthetic")

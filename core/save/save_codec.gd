@@ -33,7 +33,7 @@ static func _v1_to_v2(data: Dictionary) -> Dictionary:
 	return data
 
 
-## Version 2 saved the djanbeyyah as "hilt" / "blade"; from version 3 slots are "<hero>.<part>" and a worn item is owned.
+## Version 2 saved the jambiyah as "hilt" / "blade"; from version 3 slots are "<hero>.<part>" and a worn item is owned.
 static func _v2_to_v3(data: Dictionary) -> Dictionary:
 	var equipment: Dictionary = {}
 	var owned: Array = (data.get("inventory", []) as Array).duplicate()

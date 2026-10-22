@@ -16,9 +16,9 @@ var defense: int = 0
 var agility: int = 1
 var weight: float = 0.0
 var interrupt_resist: float = 0.0
-## Multiplies every move's cast speed (the djanbeyyah hilt sets it).
+## Multiplies every move's cast speed (the jambiyah hilt sets it).
 var cast_speed: float = 1.0
-## Added to the knockback of every hit this fighter lands (the djanbeyyah blade sets it).
+## Added to the knockback of every hit this fighter lands (the jambiyah blade sets it).
 var knockback_bonus: int = 0
 ## Perks (features/items): extra SP after each act, HP healed after each act, timeline units at battle start.
 var sp_per_act_bonus: int = 0

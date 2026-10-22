@@ -38,7 +38,7 @@ func test_equip_follows_the_merge_order_and_leaves_the_base_alone() -> void:
 	var base: CombatantDef = loader.combatants[&"zayd"]
 	var hilt: HiltDef = loader.hilts[&"swift_hilt"]
 	var blade: BladeDef = loader.blades[&"broad_blade"]
-	var zayd: CombatantDef = Djanbeyyah.equip(base, hilt, blade)
+	var zayd: CombatantDef = Jambiyah.equip(base, hilt, blade)
 	check_eq(zayd.agility, base.agility + hilt.agility, "agility from the hilt")
 	check_eq(zayd.cast_speed, base.cast_speed * hilt.cast_speed, "cast speed multiplied by the hilt")
 	check_eq(zayd.weight, base.weight + hilt.weight + blade.weight, "weights add up")
@@ -58,11 +58,11 @@ func test_caps_clamp_extreme_gear() -> void:
 	hilt.agility = 500
 	hilt.cast_speed = 4.0
 	var blade: BladeDef = loader.blades[&"keen_blade"]
-	var fast: CombatantDef = Djanbeyyah.equip(base, hilt, blade)
+	var fast: CombatantDef = Jambiyah.equip(base, hilt, blade)
 	check_eq(fast.agility, CombatantDef.AGILITY_MAX, "agility capped at 99")
 	check_eq(fast.cast_speed, CombatantDef.CAST_SPEED_MAX, "cast speed capped at 2.0")
 	hilt.agility = -500
 	hilt.cast_speed = 0.1
-	var slow: CombatantDef = Djanbeyyah.equip(base, hilt, blade)
+	var slow: CombatantDef = Jambiyah.equip(base, hilt, blade)
 	check_eq(slow.agility, CombatantDef.AGILITY_MIN, "agility floored at 1")
 	check_eq(slow.cast_speed, CombatantDef.CAST_SPEED_MIN, "cast speed floored at 0.5")

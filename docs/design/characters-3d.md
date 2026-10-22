@@ -28,7 +28,7 @@ items marked (unverified) were not confirmed on the source page.
 - Textures: one painted albedo (soft light and cavity darkening baked in), an emission mask for neon, no normal or
   roughness maps, low specular. AI textures go through `tools/art/painterly_bake.py`.
 - Outline: the spike's screen-space depth+normal pass (models write depth and normals). An optional inverted hull
-  (`next_pass`, flag per model) if silhouettes vanish against walls; thin parts like the djanbeyyah may need it.
+  (`next_pass`, flag per model) if silhouettes vanish against walls; thin parts like the jambiyah may need it.
 - Shadows: characters cast into the moon's directional shadow only, never lamp shadows; a blob contact decal always.
 
 ## 4. Motion (the Hades feel)
@@ -49,7 +49,7 @@ items marked (unverified) were not confirmed on the source page.
 - `content/art/models.json`, kind `model` (ModelDef): `scene`, `height_m`, `radius`, `anchors` (hand, head, belt,
   hilt, tip as bone names; feet = origin), `states` (each of the 9 facade states -> an animation), `stride_m`,
   `turn_speed`, `tint`, `outline_hull`, `attachments` (parts worn on an anchor: a mesh scene each).
-- **Zayd's default skin always wears his grandfather's djanbeyyah hilt** (owner, 2026-10-21): a separate attachment
+- **Zayd's default skin always wears his grandfather's jambiyah hilt** (owner, 2026-10-21): a separate attachment
   (`grandfather_hilt`, the Heirloom item) sheathed at the front of his belt while exploring, moved to the hand anchor
   for strikes and back after. One part, modelled once; a stand-in mesh until Feras's picture (section 8).
   Heirloom accent: carnelian red #d9503f (rarities.json).

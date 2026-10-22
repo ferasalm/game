@@ -39,15 +39,15 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/dialogue/box.json`: content: dialogue_style x1
 - `content/dialogue/dialogues.json`: content: dialogue x1
 - `content/dialogue/speakers.json`: content: speaker x2
-- `content/djanbeyyah/blades.json`: content: blade x3
-- `content/djanbeyyah/hilts.json`: content: hilt x3
-- `content/djanbeyyah/loadouts.json`: content: loadout x2
 - `content/economy/rules.json`: content: economy_rules x1
 - `content/economy/shops.json`: content: shop x1
 - `content/items/chests.json`: content: chest x4
 - `content/items/consumables.json`: content: consumable x4
 - `content/items/perks.json`: content: perk x6
 - `content/items/rarities.json`: content: rarity x6
+- `content/jambiyah/blades.json`: content: blade x3
+- `content/jambiyah/hilts.json`: content: hilt x3
+- `content/jambiyah/loadouts.json`: content: loadout x2
 - `content/prosthetics/prosthetics.json`: content: prosthetic x6
 - `content/prototype/flow.json`: content: flow_rules x1
 - `content/ui/style.json`: content: ui_style x1
@@ -222,15 +222,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/dialogue/view/dialogue_demo.tscn`: scene
 - `features/dialogue/view/dialogue_layout.gd`: Builds the dialogue box's controls in code (Hades II style; sizes from the UI style, laid out for 1920x1080): a big portrait at the left that slides in, an ornate glass text box at the bottom right with a frieze, a nameplate tab on the box's top edge (name in brass, epithet under it) and the button hints
 - `features/dialogue/view/portraits.gd`: Finds the portrait texture for (speaker, expression): res://assets/portraits/<speaker>_<expression>.png when it exists (loaded straight from the file, the "keep" importer needs no import step), else a stand-in disc with the expression's brows and mouth (StandinPortrait)
-- `features/djanbeyyah/defs/blade_def.gd`: A djanbeyyah blade: adds to attack, adds knockback to every hit the wielder lands, adds weight
-- `features/djanbeyyah/defs/hilt_def.gd`: A djanbeyyah hilt: adds to agility, multiplies cast speed, adds weight, and grants exactly one move
-- `features/djanbeyyah/defs/loadout_def.gd`: A hero's starting gear: which hilt, blade and prosthetic they own and wear at the start (each optional)
-- `features/djanbeyyah/logic/djanbeyyah.gd`: Builds Zayd's fighter from a base CombatantDef plus one hilt and one blade (docs/design/combat.md)
-- `features/djanbeyyah/logic/loadout.gd`: Which gear a hero wears: the saved choice per slot ("<hero>.<part>" in GameState.equipment), else the starting gear
-- `features/djanbeyyah/logic/stat_row.gd`: One line of the workshop comparison: label key, value now (base) and value with the chosen pair
-- `features/djanbeyyah/logic/workshop_stats.gd`: The comparison rows the equipment screen shows: base fighter against the fighter built by Djanbeyyah.equip
-- `features/djanbeyyah/tests/test_djanbeyyah.gd`: T3: every hilt + blade pairing gives a different Zayd stat sets, inside the timeline caps; each hilt adds exactly one move; the shared base definition is never changed
-- `features/djanbeyyah/tests/test_loadout.gd`: The loadout fallback: a hero wears the saved item per slot, else the start loadout
 - `features/equipment/logic/equipment_options.gd`: Pure rules of the equipment screen: which slots a hero has, which OWNED items fit a slot (best rarity first), which items a hero wears now, the fighter built from a staged set of items, and writing a staged set into the saved equipment through Inventory.equip
 - `features/equipment/tests/test_equipment.gd`: The equipment screen: the pure options rules (owned items only, rarer first, per hero and slot), the screen listing only owned items in rarity colours, staging, Confirm writing every slot through Inventory.equip, back changing nothing, and the stat comparison
 - `features/equipment/view/equipment_data.gd`: What the equipment screen needs from ContentDB, read once: every equippable by id, the perks, the rarity order, and each hero's start loadout (heroes in loadout order)
@@ -271,8 +262,17 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/items/tests/test_items.gd`: Rarity tiers and the shipped items: six tiers with the owner's colours, every equippable has a real rarity, ids are unique across hilts / blades / prosthetics, the Heirloom is story-only and never loot, and bad content (an unknown rarity, a bad colour) is reported
 - `features/items/tests/test_rewards.gd`: Rewards: the first win pays everything and sets patrol_paid_<id>, a repeat win pays half the riyal and nothing else, herbs over the stack turn into riyal, the purse has a cap, a chest pays once
 - `features/items/tests/test_shop.gd`: The herb stall: buy and sell rules and their edge cases (economy.md section 9), the ShopService purse signal, and using consumables in the field (FieldUse, ItemService)
+- `features/jambiyah/defs/blade_def.gd`: A jambiyah blade: adds to attack, adds knockback to every hit the wielder lands, adds weight
+- `features/jambiyah/defs/hilt_def.gd`: A jambiyah hilt: adds to agility, multiplies cast speed, adds weight, and grants exactly one move
+- `features/jambiyah/defs/loadout_def.gd`: A hero's starting gear: which hilt, blade and prosthetic they own and wear at the start (each optional)
+- `features/jambiyah/logic/jambiyah.gd`: Builds Zayd's fighter from a base CombatantDef plus one hilt and one blade (docs/design/combat.md)
+- `features/jambiyah/logic/loadout.gd`: Which gear a hero wears: the saved choice per slot ("<hero>.<part>" in GameState.equipment), else the starting gear
+- `features/jambiyah/logic/stat_row.gd`: One line of the workshop comparison: label key, value now (base) and value with the chosen pair
+- `features/jambiyah/logic/workshop_stats.gd`: The comparison rows the equipment screen shows: base fighter against the fighter built by Jambiyah.equip
+- `features/jambiyah/tests/test_jambiyah.gd`: T3: every hilt + blade pairing gives a different Zayd stat sets, inside the timeline caps; each hilt adds exactly one move; the shared base definition is never changed
+- `features/jambiyah/tests/test_loadout.gd`: The loadout fallback: a hero wears the saved item per slot, else the start loadout
 - `features/prosthetics/defs/prosthetic_def.gd`: A high-tech prosthetic: one slot per hero
-- `features/prosthetics/logic/prosthetics.gd`: Merges a prosthetic into a fighter (docs/design/prosthetics.md), like Djanbeyyah.equip: stat adds, then the granted moves, then the caps
+- `features/prosthetics/logic/prosthetics.gd`: Merges a prosthetic into a fighter (docs/design/prosthetics.md), like Jambiyah.equip: stat adds, then the granted moves, then the caps
 - `features/prosthetics/tests/test_prosthetics.gd`: Prosthetics: the merge (base -> hilt -> blade -> prosthetic -> perks -> caps) builds new fighters and never touches the shared defs; each hero's prosthetics grant 1-2 tech moves; a prosthetic fits only its wearer
 - `features/prototype/prototype_main.gd`: The playable prototype's composition root: builds the rooftop, the workshop dialogue and menu, the title overlay, area title card and loot banners, registers the rooftop with the Router and wires the features' public signals
 - `features/prototype/prototype_main.tscn`: scene

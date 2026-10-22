@@ -28,8 +28,8 @@ plus x for the glint. Glow: C or M with a on top.
 
 ## Silhouettes (readable at 1x)
 - Each model must read as a dark silhouette with its ink outline alone: a bulky or long shape, one big prop
-  (djanbeyyah, baton, satchel) and one glow accent. Budgets: hero 15k triangles, enemy 10k, NPC 7k.
-- Zayd: lean, light jacket over a brick futa wrap, red scarf at the neck, djanbeyyah at the belt (brass hilt, steel tip).
+  (jambiyah, baton, satchel) and one glow accent. Budgets: hero 15k triangles, enemy 10k, NPC 7k.
+- Zayd: lean, light jacket over a brick futa wrap, red scarf at the neck, jambiyah at the belt (brass hilt, steel tip).
 - Bilqis: hooded headscarf (indigo) with goggles (cyan) on the brow, long indigo coat with a magenta seam, a
   tool satchel behind the hip, a glowing cyan wrist rig on the front arm.
 - Concession enforcer: bulky, wide pauldrons, visor helmet (cyan slit), water-drop emblem (u/a) on the chest, baton.

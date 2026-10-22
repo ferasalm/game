@@ -1,5 +1,5 @@
 # Prototype v0: "Rooftop patrol" (owner answers 2026-10-21; acceptance tests at the end)
-Goal: the smallest loop that feels like the game. Walk the souq rooftops, set Zayd's djanbeyyah at a workshop,
+Goal: the smallest loop that feels like the game. Walk the souq rooftops, set Zayd's jambiyah at a workshop,
 bump into a Concession patrol, win or lose a timeline battle, return. Rules: docs/design/combat.md.
 
 ## What you play (press F5 in the editor)
@@ -11,7 +11,7 @@ bump into a Concession patrol, win or lose a timeline battle, return. Rules: doc
    expression changing per line (stand-ins until Feras's Gemini art). Then pick 1 of 2 hilts and 1 of 2 blades; the menu
    shows how Zayd's numbers change. Esc (pad B) closes it. Default pair: swift hilt + keen blade.
 4. A Concession patrol (one enforcer sprite) walks back and forth. Touching it starts a battle in place. If it
-   catches Zayd from behind: the reverse stab (he spins and stabs backward with the djanbeyyah's hook, damage and
+   catches Zayd from behind: the reverse stab (he spins and stabs backward with the jambiyah's hook, damage and
    stagger on that enemy), and the enemies start ahead. If Zayd reaches it from behind, the party starts ahead.
 5. Battle: the camera moves to the battle view. Zayd stands in front, Bilqis behind him. Enemies: two enforcers
    in front, a survey drone behind them. A timeline bar shows every fighter's icon moving toward COMMAND.
@@ -25,7 +25,7 @@ bump into a Concession patrol, win or lose a timeline battle, return. Rules: doc
    later, so another pairing can be tried.
 
 ## Built from
-- Logic (pure, tested): BattleSim (damage, SP, statuses, deaths, victory), BattleAI, the djanbeyyah merge,
+- Logic (pure, tested): BattleSim (damage, SP, statuses, deaths, victory), BattleAI, the jambiyah merge,
   a balance harness (1,000 seeded battles headless -> one table per pairing).
 - Content (JSON): fighters, moves, statuses, hilts, blades, battle and explore rules, the rooftop layout,
   pixel sprites. Player text through localization keys (English).
@@ -61,7 +61,7 @@ the 4 pairings feel different. Verdict logged in DECISIONS.
 - The 2150 megacity shows on the horizon. Real place names: Souq al-Milh, al-Saila, Bab al-Yaman, Zubairi, Haddah, Bayt Baws.
 - Rooftop dressing: moonlit tile tints, warm light only at lamps and doorways, and neon signs with glow and blink.
 - Area data lives in content/world (areas, buildings, props, lights, signs); a light budget caps real lights at 8.
-- Prosthetics: one slot per hero. A prosthetic grants tech moves paid from SP. The djanbeyyah stays the physical weapon.
+- Prosthetics: one slot per hero. A prosthetic grants tech moves paid from SP. The jambiyah stays the physical weapon.
 - Rarity: common, uncommon, rare, epic, legendary (white, green, blue, purple, gold), plus a story-only heirloom tier.
 - Loot: the patrol drops anvil_hilt. Two chests on the roofs (Saila and Mafraj) give arc_arm and lens_array, once each.
 - Music: two tracks, night_rooftops while exploring and battle in fights. The owner made both in Google Flow.

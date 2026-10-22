@@ -61,7 +61,7 @@ func test_menu_lists_moves_and_targets() -> void:
 	check_eq(_button_ids(stage.hud.menu.move_buttons(), "action_id"), hero.def.actions, "only that hero's moves")
 	check(GameState.flags.get(&"tip_command_seen", false), "the command tip was shown once")
 	check(not stage.hud.tip_text().is_empty(), "the tip text is on screen")
-	var strike: ActionDef = stage.sim.actions[&"djanbeyyah_strike"]
+	var strike: ActionDef = stage.sim.actions[&"jambiyah_strike"]
 	stage.hud.menu.move_buttons()[0].pressed.emit()
 	check_eq(_button_ids(stage.hud.menu.target_buttons(), "unit_id"), _ids(stage.sim.valid_targets(hero, strike)),
 		"the picker lists exactly the valid targets")
@@ -92,7 +92,7 @@ func test_refusal_shows_a_notice() -> void:
 	stage.run_to_end(30000)
 	var hero: UnitState = stage.sim.waiting_hero()
 	stage.hud.menu.move_buttons()[0].pressed.emit()
-	stage.hud.menu.chosen.emit(stage.sim.actions[&"djanbeyyah_strike"], &"nobody")
+	stage.hud.menu.chosen.emit(stage.sim.actions[&"jambiyah_strike"], &"nobody")
 	check(stage.sim.waiting_hero() == hero and stage.hud.menu.is_open(), "a bad target leaves the menu open")
 	stage.free()
 

@@ -176,7 +176,7 @@ func _on_target_focused(unit_id: StringName) -> void:
 
 
 func _turn_wielder_away() -> void:
-	fighters.face_foes(Djanbeyyah.WIELDER, true)
+	fighters.face_foes(Jambiyah.WIELDER, true)
 
 
 ## The effect painter, the hitstop / shake node and the move player that drives them.

@@ -7,7 +7,7 @@ extends RefCounted
 
 ## "zayd" -> hilt, blade, prosthetic; every other hero -> prosthetic only.
 static func parts_for(hero: StringName) -> Array[StringName]:
-	if hero == Djanbeyyah.WIELDER:
+	if hero == Jambiyah.WIELDER:
 		return [&"hilt", &"blade", &"prosthetic"]
 	return [&"prosthetic"]
 

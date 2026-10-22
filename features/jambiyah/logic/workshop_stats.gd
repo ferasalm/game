@@ -1,6 +1,6 @@
 class_name WorkshopStats
 extends RefCounted
-## The comparison rows the equipment screen shows: base fighter against the fighter built by Djanbeyyah.equip. Pure.
+## The comparison rows the equipment screen shows: base fighter against the fighter built by Jambiyah.equip. Pure.
 
 
 static func rows(base: CombatantDef, merged: CombatantDef) -> Array[StatRow]:

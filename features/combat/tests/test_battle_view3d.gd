@@ -30,7 +30,7 @@ func test_a_move_waits_on_the_clip_impact_not_a_timer() -> void:
 	var stage: BattleStage = _stage()
 	var source: FakeClipSource = _fake(stage, &"zayd")
 	var actor: CharacterVisual = stage.fighters.visual(&"zayd")
-	var strike: ActionDef = stage.sim.actions[&"djanbeyyah_strike"]
+	var strike: ActionDef = stage.sim.actions[&"jambiyah_strike"]
 	stage._actions.begin(&"zayd", strike, [&"concession_enforcer_1"] as Array[StringName])
 	check(stage._actions.is_waiting_for_impact(), "the move waits for the impact event")
 	check_eq(source.clips, [&"attack"] as Array[StringName], "the actor plays its attack clip")
@@ -46,7 +46,7 @@ func test_a_move_waits_on_the_clip_impact_not_a_timer() -> void:
 func test_a_source_that_sends_nothing_cannot_hang_the_fight() -> void:
 	var stage: BattleStage = _stage()
 	_fake(stage, &"zayd")
-	var strike: ActionDef = stage.sim.actions[&"djanbeyyah_strike"]
+	var strike: ActionDef = stage.sim.actions[&"jambiyah_strike"]
 	stage._actions.begin(&"zayd", strike, [&"concession_enforcer_1"] as Array[StringName])
 	var wait: PauseWait = _wait_of(stage._actions)
 	check(wait != null, "a pause-safe timeout guards the wait")
@@ -74,7 +74,7 @@ func test_both_fighters_freeze_at_impact() -> void:
 	var stage: BattleStage = _stage()
 	var hit: FakeClipSource = _fake(stage, &"concession_enforcer_1")
 	var swing: FakeClipSource = _fake(stage, &"zayd")
-	var strike: ActionDef = stage.sim.actions[&"djanbeyyah_strike"]
+	var strike: ActionDef = stage.sim.actions[&"jambiyah_strike"]
 	stage._actions.begin(&"zayd", strike, [&"concession_enforcer_1"] as Array[StringName])
 	stage.fighters.visual(&"zayd").clip_event.emit(&"impact")
 	stage._actions.on_hit(stage.fighters.visual(&"concession_enforcer_1"), 5)
