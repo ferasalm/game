@@ -5,7 +5,7 @@ extends Def
 ## through the strike to `strike_end_t` (`impact_t` lands inside it) and eases out. ClipTiming turns this into
 ## time; the numbers are placeholders tuned on renders.
 
-## The animation's name in the library (Quaternius "Universal Animation Library").
+## The animation's name in the library (Quaternius "Universal Animation Library"); empty for a rigid model's timing.
 var animation: String = ""
 var seconds: float = 1.0
 var loops: bool = false
@@ -23,7 +23,7 @@ var blend: float = 0.1
 
 func read(r: DefReader) -> void:
 	id = r.id()
-	animation = r.text("animation")
+	animation = r.text("animation", "", false)
 	seconds = r.number("seconds", 0.05, 30.0, 1.0)
 	loops = r.flag("loops")
 	impact_t = r.number("impact_t", -1.0, 30.0, -1.0, false)

@@ -5,6 +5,7 @@ extends TestCase
 
 func _visual() -> CharacterVisual:
 	var visual := CharacterVisual.new()
+	visual.source_kind = &"pixel"
 	tree.root.add_child(visual)
 	visual.set_sprite(&"zayd")
 	return visual
@@ -75,6 +76,8 @@ func test_clip_timing_comes_from_the_rules() -> void:
 
 func test_pulse_flag_turns_the_squash_off() -> void:
 	var visual: CharacterVisual = _visual()
+	var original: bool = visual.rules.pulse_squash
+	visual.rules.pulse_squash = true
 	var before: int = tree.get_processed_tweens().size()
 	visual.source.cue(&"dash")
 	check(tree.get_processed_tweens().size() > before, "pixel characters squash")
@@ -82,16 +85,16 @@ func test_pulse_flag_turns_the_squash_off() -> void:
 	before = tree.get_processed_tweens().size()
 	visual.source.cue(&"dash")
 	check_eq(tree.get_processed_tweens().size(), before, "no squash tween when the flag is off")
-	visual.rules.pulse_squash = true
+	visual.rules.pulse_squash = original
 	visual.free()
 
 
-func test_model_stub_is_a_valid_empty_character() -> void:
+func test_model_without_a_def_is_a_valid_empty_character() -> void:
 	var visual := CharacterVisual.new()
 	visual.use_source(ModelSource.new())
 	tree.root.add_child(visual)
 	check(visual.material == null, "a model has no pixel material")
-	visual.set_sprite(&"zayd")
+	visual.source.set_sprite(&"no_such_model")
 	for state: StringName in CharacterVisual.STATES:
 		visual.play(state, Vector2.LEFT)
 	visual._process(0.016)
@@ -102,11 +105,12 @@ func test_model_stub_is_a_valid_empty_character() -> void:
 
 func test_rules_def_reads_the_source_flags() -> void:
 	var rules := ContentDB.get_def("visual_rules", &"default") as VisualRulesDef
-	check(rules.default_source == &"pixel" and rules.pulse_squash, "pixel characters squash")
+	check(rules.default_source == &"model" and not rules.pulse_squash, "live 3D models by default, no whole-body squash")
 
 
 func test_face_dir_turns_toward_a_ground_direction() -> void:
 	var visual := CharacterVisual.new()
+	visual.source_kind = &"pixel"
 	tree.root.add_child(visual)
 	visual.set_sprite(&"zayd")
 	visual.face_dir(Vector3(-1.0, 0.0, 0.4))

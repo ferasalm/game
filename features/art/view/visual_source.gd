@@ -17,6 +17,16 @@ func attach(owner_visual: CharacterVisual, owner_rules: VisualRulesDef) -> void:
 	rules = owner_rules
 
 
+## The painted materials of this source: the look feeds the shared light uniforms into each (PaintedLook).
+func materials() -> Array[ShaderMaterial]:
+	return []
+
+
+## The facade swaps to another source: free the nodes this one added under visual.body.
+func detach() -> void:
+	pass
+
+
 ## Shows the picture with this content id (a pixel sprite id, or a model id).
 func set_sprite(_sprite_id: StringName) -> void:
 	pass
