@@ -57,6 +57,8 @@
 - Parallel worktrees share one user:// folder -> save tests flake when two checkouts run tests at once -> per-checkout
   test save dir (brief save-slots) (2026-10-22).
 - `check.sh | tail && git commit` committed a failing run (tail succeeds) -> grep .check/*.log for FAIL first.
+- agy -p stops after 1h30 ("print timeout") mid-turn with no report; its commits stay -> review the commits and run
+  check.sh in the worktree yourself (rooftop-v2, 2026-10-22).
 - agy builds pass check.sh yet miss things a player sees (internal ids in text, no input lock during a talk, fake
   screen registrations for a test) -> GEMINI.md review_misses + tools/agy_review.sh (2026-10-22).
 
