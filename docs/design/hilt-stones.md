@@ -25,10 +25,9 @@ the most slots.
 
 ## 3. How the heirloom lasts
 1. Most slots of any hilt, forever (3 vs at most 2).
-2. Restoration rank I-III: story beats raise it (content/jambiyah/heirloom.json: rank -> story flag; the rank is
-   derived from GameState flags, not saved separately). Stones set in an Heirloom hilt work at the rank's
-   resonance: I x1.0, II x1.25, III x1.5 (numeric amounts only, rounded; on/off passives unchanged). v0.3 is rank I;
-   rank II at the end of Chapter 1.
+2. Restoration rank I-III opens its slots (owner 2026-10-22): rank I = 1 slot (v0.3), rank II = 2 slots (end of
+   Chapter 1), rank III = 3 slots (later story beat). content/jambiyah/heirloom.json: rank -> story flag; the rank is
+   derived from GameState flags, not saved. No resonance multiplier (dropped with this choice).
 3. Only the heirloom takes Heirloom stones (story-only, never sold or looted): the Grandfather's Aqiq is the first.
 
 ## 4. Getting, buying and setting stones (riyal economy: docs/design/economy.md)
@@ -61,9 +60,9 @@ makes Breaker chains affordable; Sab'atayn Glass rewards Bilqis's static_net; th
 counter into a full turn (the late-game heirloom moment; first session ends on that hook).
 
 ## 6. Stacking rules and caps (content/jambiyah/stone_rules.json)
-- Merge order: base -> hilt -> stones (x resonance) -> blade -> prosthetic -> perks -> caps (Gear.build).
+- Merge order: base -> hilt -> stones -> blade -> prosthetic -> perks -> caps (Gear.build).
 - Each stone is unique, so one copy per hilt. Same-kind effects from different stones (and from item perks) add.
-- Caps on the totals from all sources, applied after resonance: sp_per_act bonus <= 3, hp_regen <= 15,
+- Caps on the totals from all sources: sp_per_act bonus <= 3, hp_regen <= 15,
   first-hit knockback bonus <= 1500, start_bonus <= 1500 (4500 + 1500 stays below COMMAND_POINT 7000),
   damage vs jammed <= x1.5, stone Atk <= +8, Def <= +6, HP <= +120. An SP refund never exceeds the move's cost.
   Existing caps stay (agility 1-99, cast_speed 0.5-2.0).
@@ -86,7 +85,7 @@ counter into a full turn (the late-game heirloom moment; first session ends on t
 Worn hilt drawn large with its sockets (empty ring; filled with a gem in its rarity colour; 0-slot hilts say "no
 sockets"). Owned stones list: fits / greyed with the reason ("needs a Rare hilt"). Before/after stat rows
 (WorkshopStats.rows) on hover; passive stones show the changed move's new description with a "changed" tag. A
-"max" marker when a total sits at its cap. The heirloom shows "Restoration I" and its resonance %. One button
+"max" marker when a total sits at its cap. The heirloom shows "Restoration I" and its open slots (1/3). One button
 "Remove" per filled socket; no confirm needed (free and undoable).
 
 ## 9. Save data (GameState, SaveCodec v4 -> v5)
@@ -97,24 +96,13 @@ unowned stone ids are emptied, a stone in two slots keeps the first, arrays are 
 
 ## 10. Tests the builder writes
 Slots per rarity (Common 0, Heirloom 3); fit rule incl. Heirloom-only stones; set, remove, move between hilts;
-a stone in an unworn hilt changes nothing; merge order and resonance rounding (x1.25 of 5 = 6); every cap clamps;
+a stone in an unworn hilt changes nothing; merge order; every cap clamps;
 start_bonus never reaches COMMAND_POINT; each new perk kind in battle (refund on interrupt only, x1.25 vs jammed
 only, ranged counter only with ayn_bead, counter_to_command); save round trip and v4 -> v5 migration; load repairs
 bad sockets; content checks: Heirloom stones never in a shop, chest or loot, every stone has name, effect and flavour
 keys in stones.csv; harness rows for the 3 strongest sets.
 
-## 11. Owner questions
-1. How should the grandfather's hilt grow?
-   a) All 3 slots open now; story beats raise its "resonance" so its stones get stronger (recommended: matches
-      your "it has 3 slots", and it keeps growing late).
-   b) 1 slot open now; the 2nd and 3rd open at story beats (slower; teaches one stone at a time).
-   c) 3 slots, no growth (simplest, but late hilts may catch up).
-2. Taking a stone out of a hilt?
-   a) Free and unlimited at the workshop bench (recommended: trying combinations is the fun; no lost money).
-   b) A small riyal fee each time.
-   c) The stone breaks when removed.
-3. Where do stones come from in the slice?
-   a) Mix: common ones bought at the bench, the trick stones found in chests and patrol loot (recommended: both
-      shopping and exploring pay off).
-   b) All bought.
-   c) All found.
+## 11. Owner decisions (2026-10-22)
+- The heirloom's slots open with the story (1, then 2, then 3), no resonance.
+- Taking a stone out is free and unlimited at the bench.
+- Stones are bought at the bench and found in chests and patrol loot.

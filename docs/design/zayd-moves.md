@@ -101,16 +101,7 @@ reverse_stab; no counter on ranged, on a downed Zayd, or when the attacker died;
 COMMAND_POINT and keeps its action; content check: Zayd's start loadout has exactly one cancel move; harness rows
 for every hilt x prosthetic stay 65-90% and 40-90 s.
 
-## 6. Owner questions
-1. The grandfather's hilt loses its cheap interrupt (elder_cut) and gains the counter stance. OK?
-   a) Yes, counter stance (recommended: the heirloom gets a move no other hilt has, tied to the reverse-stab story).
-   b) Keep the cheap interrupt on the heirloom; give the counter to a new hilt later.
-   c) The heirloom gives both moves (bigger kit, harder to learn).
-2. Should an enemy be able to interrupt Zayd in v0.3, so risky moves like Flash Flood can be broken?
-   a) Not yet: "exposed" (extra damage taken) is the only risk (recommended: smaller build, already readable).
-   b) Yes: give the gate patrol one enemy with an interrupt move.
-3. Move names on screen?
-   a) English name on the button, the Arabic name in the move's description line (recommended: English first, as
-      decided, while keeping the Sana'a flavour).
-   b) Arabic names (transliterated) on the buttons.
-   c) English only.
+## 6. Owner decisions (2026-10-22)
+- The heirloom trades elder_cut for the counter stance (Elder's Patience).
+- No enemy interrupts Zayd in v0.3: "exposed" is Flash Flood's only risk.
+- Buttons show the English name; the description line adds the Yemeni name in Latin letters (no Arabic script).

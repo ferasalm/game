@@ -8,10 +8,8 @@ Plan: docs/design/v03-plan.md; 3D spec: docs/design/characters-3d.md.
 - Contract stubs for B4 are on the branch: ModelSource, ModelDef (kind `model`), `face_dir`, `hit_stop`,
   `visual_rules.default_source`. Characters are still the old pixel sprites (fallback source).
 - Owner has not played v0.3 yet.
-- Open numbers: fps_probe 81.7 on the rooftop with look B (target 90; >= 60 on the Latitude holds). Balance
-  harness: rooftop_patrol 73-88% without herbs but 99-100% with herbs; patrol_pair and patrol_drone 100%
-  (B5's placeholder encounters). Cut-away FPS while active not measured. Title menu (New/Continue/Quit) not built.
-  `Rooftop.frame_speaker` not wired to dialogue. Sounds ui_* missing from sounds.json.
+- Open: fps_probe 81.7 on the rooftop (target 90). Cut-away FPS unmeasured. Title menu not built.
+  `Rooftop.frame_speaker` not wired to dialogue.
 
 ## Waiting on the owner
 - Done: zips, pictures (inbox/).

@@ -68,3 +68,5 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-22 | Battle HUD minimal: thin timeline + small HP/SP strip per hero; full cards and commands only on a hero's turn or on hover; all fighters always visible; the chosen target's name shows on the top bar | Feras (recommended) | Feras
 - 2026-10-22 | Hook motif: pointed tip; party hooks curl left, enemy hooks curl right (docs/design/identity.md); logo letter chosen from renders later | Feras (recommended) | Feras
 - 2026-10-22 | Hilt stone slots: the Heirloom grandfather hilt has 3, other hilts fewer by rarity (Common 0); stones add passives or stats; Zayd's moves each get a distinct combat job (redesign by Game Designer, owner reviews) | Feras | Feras
+- 2026-10-22 | Zayd kit (docs/design/zayd-moves.md): one job per move; heirloom gives the counter stance, not elder_cut; no enemy interrupts in v0.3 | Feras (recommended) | Feras
+- 2026-10-22 | Hilt stones (docs/design/hilt-stones.md): heirloom slots open with the story 1 -> 2 -> 3, no resonance; stones bought at the bench and found; free removal | Feras | Feras
