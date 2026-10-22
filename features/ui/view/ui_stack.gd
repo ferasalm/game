@@ -14,6 +14,7 @@ const SABIL_ID: StringName = &"sabil"  ## closes with &"drink" or &"leave"
 const DEFEAT_ID: StringName = &"defeat"  ## closes with &"retry", &"load" or &"title"
 const WORKSHOP_ID: StringName = &"workshop"
 const TITLE_ID: StringName = &"title"
+const SLOT_PICKER_ID: StringName = &"slot_picker"
 
 var _stack: Array[UiScreen] = []
 var _hosts: Dictionary[int, CanvasLayer] = {}
@@ -34,6 +35,7 @@ func _ready() -> void:
 	register(DEFEAT_ID, func() -> Control: return DefeatScreen.new())
 	register(WORKSHOP_ID, func() -> Control: return EquipmentHost.new())
 	register(TITLE_ID, func() -> Control: return UiScreen.new())
+	register(SLOT_PICKER_ID, func() -> Control: return SlotPickerScreen.new())
 	Router.flow_changed.connect(_on_flow_changed)
 
 
@@ -161,13 +163,13 @@ func _on_closed(_result: Variant, screen: UiScreen) -> void:
 	_hosts.erase(key)
 	if host != null:
 		screen.tree_exited.connect(host.queue_free)
-	var back: Control = _focus_back.get(key)
+	var back: Variant = _focus_back.get(key)
 	_focus_back.erase(key)
 	var now: UiScreen = top()
 	if now != null:
 		now.set_covered(false)
-	if is_instance_valid(back) and back.is_visible_in_tree():
-		back.grab_focus()
+	if back is Control and is_instance_valid(back) and (back as Control).is_visible_in_tree():
+		(back as Control).grab_focus()
 	elif now != null:
 		now.focus_default()
 	_refresh_pause()

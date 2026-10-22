@@ -13,6 +13,9 @@ var _root: Control
 var _block: VBoxContainer
 var _done: bool = false
 var _pulse: Tween = null
+var _btn_continue: Button
+var _btn_new_game: Button
+var _btn_load: Button
 
 
 func _ready() -> void:
@@ -102,9 +105,61 @@ func _fill() -> void:
 	band.custom_minimum_size.x = style.size(&"s_frieze_period") * 22.0
 	band.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	_block.add_child(band)
-	var prompt: Label = Ui.label(Ui.text("TITLE_PRESS_KEY"), &"CaptionLabel")
-	prompt.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_block.add_child(prompt)
-	_pulse = create_tween().set_loops()
-	_pulse.tween_property(prompt, "modulate:a", 0.25, style.time(&"t_pulse"))
-	_pulse.tween_property(prompt, "modulate:a", 1.0, style.time(&"t_pulse"))
+	var menu := VBoxContainer.new()
+	menu.add_theme_constant_override("separation", style.size(&"s_pad"))
+	_block.add_child(menu)
+	var has_saves: bool = Router.has_any_save()
+	_btn_continue = _add_button(menu, "TITLE_CONTINUE", _on_continue, has_saves)
+	_btn_new_game = _add_button(menu, "TITLE_NEW_GAME", _on_new_game, true)
+	_btn_load = _add_button(menu, "TITLE_LOAD", _on_load, has_saves)
+	if has_saves:
+		_btn_continue.grab_focus()
+	else:
+		_btn_new_game.grab_focus()
+
+
+func button_continue() -> Button:
+	return _btn_continue
+
+
+func button_new_game() -> Button:
+	return _btn_new_game
+
+
+func button_load() -> Button:
+	return _btn_load
+
+
+func _add_button(parent: Control, key: String, action: Callable, enabled: bool) -> Button:
+	var btn := Button.new()
+	btn.text = Ui.text(key)
+	btn.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	btn.custom_minimum_size = Vector2(Ui.style().size(&"s_confirm_w"), Ui.style().size(&"s_button_h"))
+	btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	btn.disabled = not enabled
+	btn.pressed.connect(action)
+	btn.mouse_entered.connect(_hover.bind(btn))
+	parent.add_child(btn)
+	return btn
+
+
+func _hover(btn: Button) -> void:
+	if not btn.disabled:
+		btn.grab_focus()
+
+
+func _on_new_game() -> void:
+	dismiss()
+	Router.new_game()
+
+
+func _on_continue() -> void:
+	dismiss()
+	var newest: int = Router.newest_slot()
+	var problem: String = Router.load_slot(newest)
+	if not problem.is_empty():
+		push_warning("Title: continue failed: " + problem)
+
+
+func _on_load() -> void:
+	Screens.open(Screens.SLOT_PICKER_ID, {"mode": SlotPickerScreen.MODE_LOAD})

@@ -4,13 +4,13 @@ extends TestCase
 
 func test_entries_follow_registered_screens_and_saves() -> void:
 	var full: Array[StringName] = PauseLogic.entries(true, true, true)
-	check_eq(full, [&"resume", &"items", &"equipment", &"load_last", &"unstuck", &"title", &"quit"] as Array[StringName], "full")
+	check_eq(full, [&"resume", &"items", &"equipment", &"load", &"unstuck", &"title", &"quit"] as Array[StringName], "full")
 	var bare: Array[StringName] = PauseLogic.entries(false, false, false)
 	check_eq(bare, [&"resume", &"restart", &"unstuck", &"title", &"quit"] as Array[StringName], "no items, no save: Restart")
 
 
 func test_destructive_entries_ask_first() -> void:
-	for id: StringName in [&"load_last", &"restart", &"unstuck", &"title", &"quit"]:
+	for id: StringName in [&"load", &"load_last", &"restart", &"unstuck", &"title", &"quit"]:
 		check(not PauseLogic.confirm_key(id).is_empty(), "%s asks first" % id)
 	for id: StringName in [&"resume", &"items", &"equipment"]:
 		check(PauseLogic.confirm_key(id).is_empty(), "%s acts at once" % id)
@@ -48,7 +48,7 @@ func test_pause_screen_builds_and_resume_closes() -> void:
 	check(menu.button_of(&"resume").has_focus(), "Resume has focus")
 	check(menu.button_of(&"equipment") != null, "Equipment shows (registered)")
 	check(menu.button_of(&"items") != null, "Items shows (registered)")
-	check(menu.button_of(&"restart") != null or menu.button_of(&"load_last") != null, "load or restart")
+	check(menu.button_of(&"restart") != null or menu.button_of(&"load") != null, "load or restart")
 	menu.button_of(&"resume").pressed.emit()
 	check(not Screens.is_open() and not tree.paused, "Resume closes and unpauses")
 	Router.state = Router.STATE_TITLE

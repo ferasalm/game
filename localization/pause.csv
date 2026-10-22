@@ -5,6 +5,7 @@ PAUSE_PARTY,Party
 PAUSE_RESUME,Resume
 PAUSE_ITEMS,Items
 PAUSE_EQUIPMENT,Equipment
+PAUSE_LOAD,Load
 PAUSE_LOAD_LAST,Load last save
 PAUSE_RESTART,Restart
 PAUSE_UNSTUCK,Unstuck
@@ -17,7 +18,7 @@ PAUSE_KO,KO
 PAUSE_PROMPT_SELECT,Select
 PAUSE_PROMPT_RESUME,Resume
 PAUSE_CONFIRM_RESTART,Restart from the last save? Progress since then is lost.
-PAUSE_CONFIRM_LOAD,Load the last save? Progress since then is lost.
+PAUSE_CONFIRM_LOAD,Load a save? Unsaved progress is lost.
 PAUSE_CONFIRM_UNSTUCK,Move back to the last safe spot? Party and items are kept.
 PAUSE_CONFIRM_TITLE,Return to the title? Unsaved progress is lost.
 PAUSE_CONFIRM_QUIT,Quit the game? Unsaved progress is lost.

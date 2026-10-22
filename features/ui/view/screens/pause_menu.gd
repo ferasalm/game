@@ -27,7 +27,7 @@ func build(_args: Dictionary) -> void:
 	menu.custom_minimum_size = Vector2(style.size(&"s_pause_w"), style.size(&"s_pause_h"))
 	row.add_child(menu)
 	_entry_ids = PauseLogic.entries(Screens.has_screen(PauseLogic.ITEMS), Screens.has_screen(PauseLogic.EQUIPMENT),
-			Router.has_save(1))
+			Router.has_any_save())
 	for id: StringName in _entry_ids:
 		_buttons[id] = _add_entry(menu, id)
 	var party_panel: UiPanel = Ui.panel(Ui.text("PAUSE_PARTY"))
@@ -79,9 +79,11 @@ func _run(id: StringName) -> void:
 			close()
 		PauseLogic.ITEMS, PauseLogic.EQUIPMENT:
 			Screens.open(id)
+		PauseLogic.LOAD:
+			Screens.open(Screens.SLOT_PICKER_ID, {"mode": SlotPickerScreen.MODE_LOAD})
 		PauseLogic.LOAD_LAST:
 			close()
-			var problem: String = Router.load_slot(1)
+			var problem: String = Router.load_slot(Router.last_slot)
 			if not problem.is_empty():
 				push_warning("PauseMenu: load failed: " + problem)
 		PauseLogic.RESTART:

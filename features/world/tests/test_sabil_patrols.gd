@@ -3,7 +3,10 @@ extends TestCase
 ## the party's safe return and unstuck, the stall, the bench mesh, dialogue framing, and Bilqis never sticking.
 
 const DT: float = 1.0 / 60.0
-const SAVE_DIR: String = "user://test_b5_saves"
+
+
+func _save_dir() -> String:
+	return SaveService.default_dir.path_join("sabil")
 
 
 func _make() -> Rooftop:
@@ -18,12 +21,12 @@ func _rules() -> ExploreRulesDef:
 
 func _begin() -> void:
 	GameState.start_new()
-	Router.save_dir = SAVE_DIR
+	Router.save_dir = _save_dir()
 
 
 func _end() -> void:
-	SaveService.new(SAVE_DIR).delete(SabilSpot.SAVE_SLOT)
-	Router.save_dir = SaveService.DEFAULT_DIR
+	SaveService.new(_save_dir()).delete(1)
+	Router.save_dir = ""
 	GameState.reset()
 	PaintedMaterials.use(null)
 
@@ -40,10 +43,10 @@ func test_drink_saves_refills_and_brings_the_patrols_back() -> void:
 	check(GameState.vitals.is_empty(), "everyone is refilled (no carried vitals = full)")
 	check(GameState.cleared_patrols.is_empty(), "no patrol stays beaten")
 	check_eq(GameState.save_point, &"sabil", "the sabil is the save point")
-	check(Router.has_save(SabilSpot.SAVE_SLOT), "the game was saved")
+	check(Router.has_save(1), "the game was saved")
 	check(pair.visible and not pair.is_cleared(), "the patrol is back")
 	check_eq(pair.position, pair.lane()[0], "at its lane start")
-	var saved: Dictionary = SaveService.new(SAVE_DIR).read(SabilSpot.SAVE_SLOT)
+	var saved: Dictionary = SaveService.new(_save_dir()).read(1)
 	check((saved["cleared_patrols"] as Array).is_empty() and (saved["vitals"] as Dictionary).is_empty(), "the save holds the refilled state")
 	rooftop.free()
 	_end()

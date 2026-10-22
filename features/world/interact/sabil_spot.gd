@@ -8,8 +8,6 @@ signal drunk
 ## The player pressed interact at the sabil fountain.
 signal opened
 
-const SAVE_SLOT: int = 1
-
 var place_id: StringName = &""
 
 
@@ -35,15 +33,23 @@ func open_screen() -> void:
 		screen.closed.connect(_on_closed)
 
 
-## What the screen's answer does: &"drink" runs the drink, anything else nothing.
+## What the screen's answer does: &"drink" opens the slot picker in Save mode.
 func _on_closed(result: Variant) -> void:
 	if result == SabilScreen.DRINK:
-		drink()
+		var picker := Screens.open(Screens.SLOT_PICKER_ID, {"mode": SlotPickerScreen.MODE_SAVE}) as SlotPickerScreen
+		if picker != null:
+			picker.closed.connect(_on_picker_closed)
+
+
+func _on_picker_closed(result: Variant) -> void:
+	var slot: int = int(result) if result != null else 0
+	if slot > 0:
+		drink(slot)
 
 
 ## The drink itself (public so tests can call it): toasts the outcome, returns true when saved.
-func drink() -> bool:
-	var problem: String = SabilDrink.apply(place_id, SAVE_SLOT)
+func drink(slot: int = 1) -> bool:
+	var problem: String = SabilDrink.apply(place_id, slot)
 	if not problem.is_empty():
 		Ui.toast("SABIL_FAIL", &"bad")
 		return false
