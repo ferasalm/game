@@ -6,7 +6,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 
 ## (root)
 - `.godot-version`
+- `AGENTS.md`
 - `GEMINI.md`
+- `opencode.json`: content: ? x0
 - `project.godot`
 
 ## .agents
@@ -64,6 +66,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/world/look.json`: content: look x5
 - `content/world/mist.json`: content: mist x3
 - `content/world/props.json`: content: prop x25
+- `content/world/props/workbench.json`: content: prop x1
 - `content/world/sky.json`: content: sky x1
 - `content/world/skyline.json`: content: skyline x1
 - `content/world/tiles.json`: content: tile x8
@@ -468,6 +471,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/tests/test_safe_spot.gd`: SafeSpot: a place counts after standing still, walking resets the clock, the newest spot is skipped when the player is wedged right there, and only the two newest spots are kept
 - `features/world/tests/test_skyline.gd`: Night Sana'a city: building and skyline content, the layout rules (outside the area, out of the al-Saila corridor, inside the band, deterministic), the tower-house mesh, the landmarks and the draw-call budget
 - `features/world/tests/test_walk_graph.gd`: WalkGraph rules on small grids (reachability, diagonals, 2 x 2 width, traps, steps) and on every shipped area (docs/design/rooftop-v3.md section 5): everything is reachable from the spawn, no corridor is under 2 m, no cell is a trap, no step is too tall, and the bridge keeps three rows
+- `features/world/tests/test_workbench.gd`: The jambiyah smith's workbench: built from the prop 'workbench' (content/world/props/workbench.json), within the triangle and material budgets, carrying its lamp's light, with the prompt and footprint of the old box
 - `features/world/view/area_builder.gd`: Builds an area's blocks: one MultiMeshInstance3D per tile type (bodies, and caps drawn with the cap tile's material; tiles with a pattern get its painted triplanar texture), plus one StaticBody3D holding a box per run of solid tiles and walls that close the area's edges
 - `features/world/view/area_dressing.gd`: Everything an area has on top of its tiles: tower-houses and props (PropBuilder), neon signs, the practical lights with their fake pools (AreaLights) and the chests (one Chest each, interactive)
 - `features/world/view/area_lights.gd`: The area's practical lights
@@ -498,6 +502,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/view/shaders/painted_light.gdshaderinc`
 - `features/world/view/shaders/painted_screen.gdshader`
 - `features/world/view/shaders/painted_world.gdshader`
+- `features/world/view/shaders/painterly_filter.gdshader`
 - `features/world/view/shaders/prop_water.gdshader`
 - `features/world/view/sky_builder.gd`: Builds the night Sky resource from a SkyDef: the sky shader with every uniform filled from the def, and the three direction vectors (moon, city glow, milky way normal) computed from its angles
 - `features/world/view/skyline_builder.gd`: Builds the old city of Sana'a around a play area from the "skyline" content: tower-houses in depth bands (one MultiMeshInstance3D per building type, shared meshes and materials), far unshaded silhouettes (one MultiMesh), the landmarks (one mesh), the street-level ground and the al-Saila street
@@ -506,7 +511,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/view/surface_buffer.gd`: Collects flat-shaded, vertex-coloured faces (boxes, prisms, polygons) for one surface of an ArrayMesh
 - `features/world/view/surface_materials.gd`: Cached textures and materials for the painted world, so 100+ buildings share a handful of draw materials: tile patterns (world-space triplanar, so texels stay square across tiles), tower-house facades (front and side painted side by side in one atlas, lit windows in an emission map), vertex-coloured trim, unshaded HDR glow, and the dotted far silhouettes
 - `features/world/view/tower_house.gd`: Builds one Sana'a tower-house mesh from a BuildingDef: four textured facades (one atlas), a roof, a white gypsum parapet with merlons and stepped or horned corners, and roof extras
-- `features/world/workshop/workshop_spot.gd`: The workshop bench: a plain box mesh (size and colour from explore.json; it is scenery, not a character) and the interact prompt
+- `features/world/workshop/workshop_spot.gd`: The workshop bench: a jambiyah smith's workbench built from the prop 'workbench' (content/world/props/workbench.json: one mesh in the painted world's materials) with its brass lamp's light, plus the interact prompt
 
 ## localization
 - `localization/arena.csv`
@@ -553,6 +558,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/lint_gd.py`: GDScript rules Godot itself doesn't enforce (docs/ARCHITECTURE.md, "Code rules"); exit 1 on any break.
 - `tools/map.py`: Writes docs/MAP.md from each file's purpose line, so the map never drifts. --check: exit 1 if stale.
 - `tools/musnad.py`: Transliterate Arabic to Musnad (Old South Arabian) letter by letter; scan files for Arabic.
+- `tools/oc_review.sh`: Reviews an opencode task (branch oc/<task>) the same cheap way as an agy one: report, check result, commits, stats,
+- `tools/oc_task.sh`: Runs opencode on one task brief inside its own git worktree, never in the main checkout (DECISIONS 2026-10-23).
 - `tools/rodin/rewrite_glb.py`: Rebuild a Rodin glb with new triangle indices (from Godot, winding flipped back; IDX_BIN '-' keeps its own), no
 - `tools/rodin/slim_indices.gd`: Rodin step 1: simplifies a Rodin glb mesh with Godot's LOD generator and writes the index buffer (env SRC, IDX, MAX_TRIS, DST); rewrite_glb.py then builds the slim glb (usage: docs/design/characters-3d.md 8)
 - `tools/run_godot.sh`: Runs the pinned Godot headless on this project with the given arguments; fails on a non-zero exit or on
@@ -562,4 +569,5 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_models.gd`: Model gallery for renders (docs/design/characters-3d.md): the cast in a row on a floor under the painted look, each doing a state, close enough to judge the stand-ins
 - `tools/shot_scene.gd`: Plays a scene (or a Node script) for the movie writer (frames to a folder): the battle demo with its heroes on auto_play, or any scene
 - `tools/shot_shatter.gd`: Shows the qamariya shatter on a stand-in frame (a stripe pattern) so the glass can be judged without a fight
+- `tools/shot_workbench.gd`: Renders the workbench prop close up and in the rooftop from the play camera to inbox PNGs (960x540)
 - `tools/vfx_gallery.gd`: Effect gallery: plays every battle effect kind one after another (one per second) on a night stage, for the movie writer

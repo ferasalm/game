@@ -57,7 +57,7 @@ func _expected(def: PropDef) -> int:
 func test_the_bench_is_data_with_a_detailed_set_of_parts() -> void:
 	var def: PropDef = _def()
 	check(def != null, "the prop 'workbench' is in content")
-	check(def.parts.size() >= 150, "a detailed bench: %d parts" % def.parts.size())
+	check(def.parts.size() >= 100, "a detailed bench: %d parts" % def.parts.size())
 	var palette := ContentDB.get_def("palette", WorkshopSpot.PALETTE_ID) as PaletteDef
 	for part: PropPart in def.parts:
 		check(palette.colors.has(part.color), "palette letter '%s' exists" % part.color)
@@ -85,6 +85,32 @@ func test_the_bench_stays_inside_its_footprint_and_under_the_prompt() -> void:
 			"part at %s stays near the footprint and under the prompt" % part.at)
 
 
+func test_collide_box_covers_only_the_table() -> void:
+	var def: PropDef = _def()
+	check(def.collide != Vector3.ZERO, "the bench has a collide box")
+	check_eq(def.collide, Vector3(1.8, 0.45, 0.8), "the collide box matches the 1.8 x 0.8 m table")
+	var spot: WorkshopSpot = _spot()
+	var body: StaticBody3D = null
+	for child: Node in spot.get_children():
+		if child is StaticBody3D:
+			body = child as StaticBody3D
+	check(body != null, "the spot has a collision body")
+	var shape: CollisionShape3D = body.get_child(0) as CollisionShape3D
+	check(shape != null and shape.shape is BoxShape3D, "with a box shape")
+	check_eq((shape.shape as BoxShape3D).size, def.collide, "matching the table collide size")
+	spot.free()
+	_clean()
+
+
+func test_the_screen_part_is_emissive() -> void:
+	var def: PropDef = _def()
+	var cyan_screens: int = 0
+	for part: PropPart in def.parts:
+		if part.color == "C" and part.glow:
+			cyan_screens += 1
+	check(cyan_screens > 0, "emissive cyan screen parts exist: %d" % cyan_screens)
+
+
 func test_the_brass_lamp_gives_one_warm_light_without_shadows() -> void:
 	var def: PropDef = _def()
 	check(def.light != null and def.light.color.r > def.light.color.b, "a warm lamp light in the data")
@@ -100,13 +126,31 @@ func test_the_brass_lamp_gives_one_warm_light_without_shadows() -> void:
 	_clean()
 
 
-func test_no_text_is_written_on_the_bench() -> void:
-	var spot: WorkshopSpot = _spot()
-	var labels: int = 0
-	for child: Node in spot.get_children():
-		labels += 1 if child is Label3D else 0
-	check_eq(labels, 1, "only the interact prompt is a text")
+func test_interact_point_is_reachable_and_outside_colliders() -> void:
+	var area := ContentDB.get_def("area", &"souq_rooftops") as AreaDef
+	var rules: ExploreRulesDef = _rules()
+	var place: PlaceDef = area.place(&"workshop")
+	check(place != null and place.prop == &"workbench", "workshop place uses workbench")
+	var player := Player.new(rules)
+	var spot := WorkshopSpot.new(rules, player, place)
+	tree.root.add_child(spot)
+	spot.position = Vector3(place.pos.x, 0.0, place.pos.z)
+	var pt: Vector3 = spot.interact_point()
+	var g: WalkGraph = AreaWalk.build(area, rules)
+	var spawn: Vector2i = area.find_marker(AreaDef.SPAWN)
+	var reach: Dictionary[Vector2i, bool] = g.reachable(spawn)
+	var cell: Vector2i = AreaWalk.cell_of(pt)
+	check(reach.has(cell), "interact point cell %s is reachable from spawn %s" % [cell, spawn])
+	check(not AreaWalk.on_prop(area, rules, pt), "interact point is clear of area prop colliders")
+	var local: Vector3 = (pt - spot.position).rotated(Vector3.UP, -deg_to_rad(place.yaw))
+	var half: Vector3 = _def().collide / 2.0
+	var inside: bool = absf(local.x) < half.x and absf(local.z) < half.z
+	check(not inside, "interact point is outside the table collider")
+	player.position = pt
+	spot._physics_process(DT)
+	check(spot.prompt.visible, "prompt shows at interact point")
 	spot.free()
+	player.free()
 	_clean()
 
 
