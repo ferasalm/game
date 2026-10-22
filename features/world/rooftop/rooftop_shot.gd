@@ -28,10 +28,15 @@ func _ready() -> void:
 func _hide_actors() -> void:
 	var camera: Camera3D = get_viewport().get_camera_3d()
 	camera.cull_mask &= ~(1 << 19)
-	for node: Node in find_children("*", "", true, false):
-		if node is Player or node is Follower or node is Bystander or node is Patrol:
-			for mesh: Node in node.find_children("*", "VisualInstance3D", true, false):
-				(mesh as VisualInstance3D).layers = 1 << 19
+	_hide_under(self, false)
+
+
+func _hide_under(node: Node, inside_actor: bool) -> void:
+	var actor: bool = inside_actor or node is Player or node is Follower or node is Bystander or node is Patrol
+	if actor and node is VisualInstance3D:
+		(node as VisualInstance3D).layers = 1 << 19
+	for child: Node in node.get_children():
+		_hide_under(child, actor)
 
 
 func _build() -> void:
