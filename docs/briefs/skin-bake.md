@@ -1,5 +1,5 @@
 # Brief: skin-bake (<= 60 lines)
-You are in your own worktree on branch oc/skin-bake (made from claude/night-sanaa). Follow GEMINI.md, including
+You are in your own worktree on branch gemini/skin-bake (made from claude/night-sanaa). Follow GEMINI.md, including
 <review_misses>. Python only: no Godot code, no content or scene changes.
 
 ## Why
@@ -33,4 +33,4 @@ runs give equal bytes), bake.json lists both inputs; a model item without "skin"
 
 ## Proof
 `python -m pytest tools/art -q` raw last 5 lines; `bash tools/check.sh` raw last 15 lines; small commits; final
-message ends with `Built-by: <model> (opencode)`.
+message ends with `Built-by: Gemini 3.8 Flash (agy)`.
