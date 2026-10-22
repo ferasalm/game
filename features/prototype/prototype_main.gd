@@ -45,6 +45,10 @@ func _ready() -> void:
 	rooftop.workshop_opened.connect(_on_workshop_opened)
 	rooftop.encounter_touched.connect(_on_encounter_touched)
 	rooftop.chest_opened.connect(_on_chest_opened)
+	if rooftop.sabil != null:
+		rooftop.sabil.opened.connect(_on_sabil_opened)
+	for spot: TalkSpot in rooftop.talk_spots:
+		spot.talked.connect(_on_npc_talked)
 	dialogue.finished.connect(_on_dialogue_finished)
 	menu.closed.connect(_on_menu_closed)
 	GameState.area_id = rooftop.area_id
@@ -52,6 +56,7 @@ func _ready() -> void:
 	Router.register_area(_port)
 	Router.stage_created.connect(_on_stage_created)
 	EventBus.battle_started.connect(_on_battle_started)
+	EventBus.battle_ended.connect(_on_battle_ended)
 	_begin()
 
 
@@ -59,6 +64,7 @@ func _exit_tree() -> void:
 	Router.unregister_area(_port)
 	Router.stage_created.disconnect(_on_stage_created)
 	EventBus.battle_started.disconnect(_on_battle_started)
+	EventBus.battle_ended.disconnect(_on_battle_ended)
 
 
 ## A fresh start plays the opening shot under the title; a new game or a load goes straight to the party's spot.
@@ -102,12 +108,53 @@ func _on_workshop_opened() -> void:
 		dialogue.play(WORKSHOP_DIALOGUE)
 
 
-func _on_dialogue_finished(dialogue_id: StringName) -> void:
-	if dialogue_id != WORKSHOP_DIALOGUE:
+func _on_sabil_opened() -> void:
+	if not GameState.flags.get(&"party_sabil_first_done", false):
+		_talk(&"party_sabil_first")
+
+
+func _on_npc_talked(place_id: StringName) -> void:
+	var talk_def := ContentDB.get_def("talk", place_id) as TalkDef
+	if talk_def == null:
 		return
-	GameState.flags[WORKSHOP_FLAG] = true
-	Screens.notify_opened(&"workshop")
-	menu.open()
+	var dialogue_id: StringName = TalkPicker.pick(talk_def, GameState.flags)
+	if not dialogue_id.is_empty():
+		_talk(dialogue_id)
+
+
+func _on_battle_ended(_encounter_id: StringName, victory: bool) -> void:
+	if victory:
+		TalkPicker.record_battle_won(GameState.flags)
+		if not GameState.flags.get(&"party_after_first_win_done", false):
+			GameState.flags[&"party_after_first_win_done"] = true
+			_talk(&"party_after_first_win")
+
+
+func _on_dialogue_finished(dialogue_id: StringName) -> void:
+	if dialogue_id == WORKSHOP_DIALOGUE:
+		GameState.flags[WORKSHOP_FLAG] = true
+		Screens.notify_opened(&"workshop")
+		menu.open()
+		return
+	if dialogue_id == &"party_sabil_first":
+		GameState.flags[&"party_sabil_first_done"] = true
+		_end_talk()
+		if rooftop.sabil != null:
+			rooftop.sabil.open_screen()
+		return
+	_end_talk()
+
+
+## A conversation on the roof: walking and saving stop until it ends.
+func _talk(dialogue_id: StringName) -> void:
+	rooftop.freeze_actors(true)
+	Router.set_busy(true)
+	dialogue.play(dialogue_id)
+
+
+func _end_talk() -> void:
+	Router.set_busy(false)
+	rooftop.freeze_actors(false)
 
 
 func _on_menu_closed() -> void:

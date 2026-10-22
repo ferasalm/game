@@ -17,6 +17,7 @@ func _make() -> PrototypeMain:
 
 
 func _touch(main: PrototypeMain) -> void:
+	GameState.flags[&"party_after_first_win_done"] = true  # the first-win talk holds walking; test_talk_interact covers it
 	main.rooftop.patrol.position = main.rooftop.player.position + Vector3(0.3, 0.0, 0.0)
 	main.rooftop.patrol._physics_process(DT)
 

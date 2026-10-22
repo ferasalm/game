@@ -49,6 +49,11 @@ func is_playing() -> bool:
 	return _run != null
 
 
+## The id of the currently playing (or last played) dialogue.
+func dialogue_id() -> StringName:
+	return _dialogue_id
+
+
 ## True while the current line is still being typed.
 func is_typing() -> bool:
 	return _run != null and UiType.is_typing(_layout.text_label, _typing)

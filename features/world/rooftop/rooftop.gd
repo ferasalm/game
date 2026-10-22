@@ -26,6 +26,7 @@ var patrols: Array[Patrol] = []
 var workshop: WorkshopSpot
 var stall: StallSpot
 var sabil: SabilSpot
+var talk_spots: Array[TalkSpot] = []
 var dressing: AreaDressing
 var camera: Camera3D
 var blocks: Node3D
@@ -64,7 +65,7 @@ func _ready() -> void:
 	blocks = world.blocks
 	camera = world.camera
 	camera_rig = world.camera_rig
-	camera_rig.intro_finished.connect(_freeze_actors.bind(false))
+	camera_rig.intro_finished.connect(freeze_actors.bind(false))
 	_build_actors()
 	_debug = RooftopDebug.new()
 	_debug.setup(_flow, tr(_area.name_key))
@@ -93,7 +94,7 @@ func set_exploring(on: bool) -> void:
 
 ## The opening establishing shot; the actors stand frozen until it ends or any key or click skips it.
 func play_intro() -> void:
-	_freeze_actors(true)
+	freeze_actors(true)
 	camera_rig.play_intro()
 
 
@@ -161,13 +162,12 @@ func _process(delta: float) -> void:
 		_safety.update(player.position, delta, patrols)
 
 
-func _freeze_actors(frozen: bool) -> void:
+func freeze_actors(frozen: bool) -> void:
 	var mode: Node.ProcessMode = Node.PROCESS_MODE_DISABLED if frozen else Node.PROCESS_MODE_INHERIT
 	for actor: Node in _actors.switchables():
 		actor.process_mode = mode
 	for chest: Chest in dressing.chests:
 		chest.process_mode = mode
-
 
 func _build_actors() -> void:
 	_actors = AreaActors.build(self, _area, _rules, _floor_y)
@@ -179,6 +179,7 @@ func _build_actors() -> void:
 	workshop = _actors.workshop
 	stall = _actors.stalls[0] if not _actors.stalls.is_empty() else null
 	sabil = _actors.sabil
+	talk_spots = _actors.talk_spots
 	for p: Patrol in patrols:
 		p.touched.connect(_on_touched.bind(p))
 	workshop.opened.connect(workshop_opened.emit)
@@ -188,7 +189,6 @@ func _build_actors() -> void:
 	for chest: Chest in dressing.chests:
 		chest.opened.connect(chest_opened.emit)
 	add_child(dressing)
-
 
 func _on_touched(from_behind: bool, source: Patrol) -> void:
 	if _locked:

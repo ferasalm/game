@@ -1,0 +1,16 @@
+{
+  "kind": "talk",
+  "items": [
+    {
+      "id": "herb_seller",
+      "first": "abu_nabil_first",
+      "after_battle": "abu_nabil_after_battle",
+      "chats": [
+        "abu_nabil_chat_1",
+        "abu_nabil_chat_2",
+        "abu_nabil_chat_3",
+        "abu_nabil_chat_4"
+      ]
+    }
+  ]
+}

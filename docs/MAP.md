@@ -41,8 +41,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/combat/vfx.json`: content: vfx x15
 - `content/combat/view.json`: content: battle_view x1
 - `content/dialogue/box.json`: content: dialogue_style x1
-- `content/dialogue/dialogues.json`: content: dialogue x1
-- `content/dialogue/speakers.json`: content: speaker x2
+- `content/dialogue/dialogues.json`: content: dialogue x9
+- `content/dialogue/speakers.json`: content: speaker x3
+- `content/dialogue/talks.json`: content: talk x1
 - `content/economy/rules.json`: content: economy_rules x1
 - `content/economy/shops.json`: content: shop x1
 - `content/items/chests.json`: content: chest x4
@@ -260,10 +261,14 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/dialogue/defs/dialogue_line.gd`: One spoken line: who says it, with which expression, and the localization key of the text
 - `features/dialogue/defs/dialogue_style_def.gd`: Look and timing of the dialogue box (fractions of the screen, pixels, colours, speed) and the pixel marks (brows, mouth) that make the stand-in portraits show an expression
 - `features/dialogue/defs/speaker_def.gd`: One speaking character: name key, name colour, the pixel sprite id, and where the face sits on that sprite (sprite pixels)
+- `features/dialogue/defs/talk_def.gd`: Maps a place id to its first dialogue, after-battle dialogue and ordered chats
 - `features/dialogue/logic/dialogue_run.gd`: Steps through a DialogueDef one line at a time
 - `features/dialogue/logic/standin_portrait.gd`: Builds a stand-in portrait Image for a speaker without painted art: a soft glow in the speaker colour, a disc in that colour and brow and mouth marks per expression
+- `features/dialogue/logic/talk_picker.gd`: Pure picker that selects the next dialogue for a talk place from saved flags: 1
 - `features/dialogue/tests/test_dialogue.gd`: Dialogue: T8 (every line has a known speaker, one of 4 expressions, a translating text key), DialogueRun stepping, the object-list reader, the stand-in portraits, and DialogueBox playing to the end once
 - `features/dialogue/tests/test_dialogue_v2.gd`: Dialogue v2 (Hades II style): nameplate with epithet, typed text, portrait slide on a speaker change, Cease, the layout sizes from the UI style, and stand-in portraits that no longer touch sprite pixels
+- `features/dialogue/tests/test_talk_defs.gd`: Checks that talks.json is well formed and all referenced dialogue ids exist in ContentDB
+- `features/dialogue/tests/test_talk_picker.gd`: Tests for TalkPicker: first dialogue, after-battle dialogue on victory, chat sequence and wrapping, battle interruption resuming chats, and defensive fallbacks
 - `features/dialogue/view/dialogue_box.gd`: The dialogue box, Hades II style: a big portrait slides in when the speaker changes, a nameplate with the speaker's name and epithet sits on the box, the line is typed out (confirm finishes it, then moves on)
 - `features/dialogue/view/dialogue_demo.gd`: Manual check: plays the workshop_first dialogue over a plain background (F6 in the editor)
 - `features/dialogue/view/dialogue_demo.tscn`: scene
@@ -329,6 +334,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/prototype/tests/test_router_area.gd`: The Router outside battles: the play-time clock (not while paused or at the title, real seconds under a slowed time scale), busy and can_save, unstuck to the last place the player stood still, and the saved chest state
 - `features/prototype/tests/test_router_battle.gd`: The Router's battle round trip: the area is hidden and stopped while the arena fights, then restored; Retry and defeat restore the pre-battle snapshot; vitals and herbs carry (a downed hero stands up after a victory); the first win pays everything and a repeat pays half
 - `features/prototype/tests/test_smoke_flow.gd`: Smoke test of the whole flow, headless through the Router: a new game, a fight on auto-play, the outcome applied to GameState, a save, a load that restores exactly that state
+- `features/prototype/tests/test_talk_interact.gd`: Interaction test: walking up to herb_seller and confirming plays abu_nabil_first on the first visit, and abu_nabil_chat_1 on the next visit; sabil plays party_sabil_first before opening screen
 - `features/ui/defs/ui_style_def.gd`: The look of every menu and HUD (content/ui/style.json): three font files, named colours (c_*), sizes in pixels at 1920x1080 (s_*) and times in seconds (t_*)
 - `features/ui/logic/pause_logic.gd`: Pure rules of the pause menu: which entries show and in what order, which ask "are you sure", the vitals of a hero with a missing record (= full), and the play-time clock text
 - `features/ui/logic/prompt_glyph.gd`: Pure: the localization key of the button glyph for an action on keyboard or gamepad ("accept" -> Enter / A), and the fade of a world-space interaction prompt with distance
@@ -403,6 +409,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/interact/sabil_drink.gd`: What drinking at the sabil does to the game: the whole party is refilled (no carried vitals = full), the cleared patrols are forgotten (they return), the save point is the sabil and the game is written to a slot
 - `features/world/interact/sabil_spot.gd`: The sabil fountain: interact opens the "Drink to rest?" screen
 - `features/world/interact/stall_spot.gd`: The herb stall: stand at the counter and press interact to open the shop screen (Screens id &"shop")
+- `features/world/interact/talk_spot.gd`: An interact spot for talking to an NPC (e.g
 - `features/world/logic/camera_limits.gd`: The exploration camera's frame rules: the camera target is the player clamped into the area's limits (x and z ranges from camera.json), so the camera never leaves the commons even when the player walks to the east roof
 - `features/world/logic/facade_details.gd`: Sana'a facade parts painted with palette letters at 32 px/m: gypsum friezes (zigzag, triangles, rosettes), windows with thick white gypsum frames, the qamariya (a semicircle of coloured glass over the window) and arched wooden doors
 - `features/world/logic/facade_painter.gd`: Paints one Sana'a tower-house facade at 32 px/m from a FacadeSpec: basalt stone floors at the bottom (door on the ground floor), fired-brick floors above, a gypsum frieze at the top of each brick floor, and on every brick floor windows with gypsum frames under qamariya arches

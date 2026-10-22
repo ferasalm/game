@@ -6,6 +6,57 @@
       {"speaker": "bilqis", "expression": "happy", "text": "DLG_WORKSHOP_FIRST_2"},
       {"speaker": "zayd", "expression": "neutral", "text": "DLG_WORKSHOP_FIRST_3"},
       {"speaker": "bilqis", "expression": "angry", "text": "DLG_WORKSHOP_FIRST_4"}
+    ]},
+    {"id": "abu_nabil_first", "lines": [
+      {"speaker": "abu_nabil", "expression": "neutral", "text": "DLG_ABU_NABIL_FIRST_1"},
+      {"speaker": "zayd", "expression": "neutral", "text": "DLG_ABU_NABIL_FIRST_2"},
+      {"speaker": "abu_nabil", "expression": "happy", "text": "DLG_ABU_NABIL_FIRST_3"},
+      {"speaker": "bilqis", "expression": "neutral", "text": "DLG_ABU_NABIL_FIRST_4"},
+      {"speaker": "abu_nabil", "expression": "neutral", "text": "DLG_ABU_NABIL_FIRST_5"},
+      {"speaker": "zayd", "expression": "neutral", "text": "DLG_ABU_NABIL_FIRST_6"},
+      {"speaker": "abu_nabil", "expression": "surprised", "text": "DLG_ABU_NABIL_FIRST_7"},
+      {"speaker": "abu_nabil", "expression": "neutral", "text": "DLG_ABU_NABIL_FIRST_8"},
+      {"speaker": "zayd", "expression": "happy", "text": "DLG_ABU_NABIL_FIRST_9"}
+    ]},
+    {"id": "abu_nabil_after_battle", "lines": [
+      {"speaker": "abu_nabil", "expression": "surprised", "text": "DLG_ABU_NABIL_AFTER_BATTLE_1"},
+      {"speaker": "zayd", "expression": "neutral", "text": "DLG_ABU_NABIL_AFTER_BATTLE_2"},
+      {"speaker": "abu_nabil", "expression": "happy", "text": "DLG_ABU_NABIL_AFTER_BATTLE_3"},
+      {"speaker": "bilqis", "expression": "happy", "text": "DLG_ABU_NABIL_AFTER_BATTLE_4"},
+      {"speaker": "abu_nabil", "expression": "neutral", "text": "DLG_ABU_NABIL_AFTER_BATTLE_5"}
+    ]},
+    {"id": "abu_nabil_chat_1", "lines": [
+      {"speaker": "abu_nabil", "expression": "neutral", "text": "DLG_ABU_NABIL_CHAT_1_1"},
+      {"speaker": "zayd", "expression": "neutral", "text": "DLG_ABU_NABIL_CHAT_1_2"},
+      {"speaker": "abu_nabil", "expression": "happy", "text": "DLG_ABU_NABIL_CHAT_1_3"}
+    ]},
+    {"id": "abu_nabil_chat_2", "lines": [
+      {"speaker": "abu_nabil", "expression": "neutral", "text": "DLG_ABU_NABIL_CHAT_2_1"},
+      {"speaker": "zayd", "expression": "neutral", "text": "DLG_ABU_NABIL_CHAT_2_2"},
+      {"speaker": "abu_nabil", "expression": "happy", "text": "DLG_ABU_NABIL_CHAT_2_3"}
+    ]},
+    {"id": "abu_nabil_chat_3", "lines": [
+      {"speaker": "abu_nabil", "expression": "angry", "text": "DLG_ABU_NABIL_CHAT_3_1"},
+      {"speaker": "zayd", "expression": "neutral", "text": "DLG_ABU_NABIL_CHAT_3_2"},
+      {"speaker": "abu_nabil", "expression": "neutral", "text": "DLG_ABU_NABIL_CHAT_3_3"}
+    ]},
+    {"id": "abu_nabil_chat_4", "lines": [
+      {"speaker": "abu_nabil", "expression": "neutral", "text": "DLG_ABU_NABIL_CHAT_4_1"},
+      {"speaker": "zayd", "expression": "neutral", "text": "DLG_ABU_NABIL_CHAT_4_2"},
+      {"speaker": "abu_nabil", "expression": "happy", "text": "DLG_ABU_NABIL_CHAT_4_3"}
+    ]},
+    {"id": "party_after_first_win", "lines": [
+      {"speaker": "zayd", "expression": "neutral", "text": "DLG_PARTY_FIRST_WIN_1"},
+      {"speaker": "bilqis", "expression": "happy", "text": "DLG_PARTY_FIRST_WIN_2"},
+      {"speaker": "zayd", "expression": "surprised", "text": "DLG_PARTY_FIRST_WIN_3"},
+      {"speaker": "bilqis", "expression": "neutral", "text": "DLG_PARTY_FIRST_WIN_4"},
+      {"speaker": "zayd", "expression": "happy", "text": "DLG_PARTY_FIRST_WIN_5"}
+    ]},
+    {"id": "party_sabil_first", "lines": [
+      {"speaker": "bilqis", "expression": "happy", "text": "DLG_PARTY_SABIL_FIRST_1"},
+      {"speaker": "zayd", "expression": "neutral", "text": "DLG_PARTY_SABIL_FIRST_2"},
+      {"speaker": "bilqis", "expression": "neutral", "text": "DLG_PARTY_SABIL_FIRST_3"},
+      {"speaker": "zayd", "expression": "happy", "text": "DLG_PARTY_SABIL_FIRST_4"}
     ]}
   ]
 }
