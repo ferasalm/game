@@ -4,8 +4,8 @@ extends TestCase
 ## commons; PatrolSafety's lane maths and the unstuck and return picks.
 
 const CLEARANCE: float = 3.0
-const COMMONS_X: Vector2 = Vector2(5.0, 16.0)
-const COMMONS_Z_MIN: float = 9.5
+const COMMONS_X: Vector2 = Vector2(5.0, 10.0)
+const COMMONS_Z_MIN: float = 18.0
 
 
 func _area() -> AreaDef:

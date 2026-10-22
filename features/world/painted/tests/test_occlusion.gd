@@ -58,10 +58,10 @@ func test_painted_rooftop_cuts_when_blocked() -> void:
 		rooftop.free()
 		return
 	check(fade.box_count() > 0, "it found tall blocks")
-	var player_at := Vector3(3.0, 0.5, 9.0)
-	var eye := Vector3(3.0, 17.0, 20.5)
+	var player_at := Vector3(28.5, 0.5, 6.5)
+	var eye := Vector3(28.5, 17.0, 18.5)
 	check(fade.is_blocked(eye, player_at + Vector3(0.0, 1.2, 0.0)), "the mafraj stands between a southern camera and its north side")
-	var open := Vector3(9.0, 0.5, 8.0)
+	var open := Vector3(15.0, 0.5, 12.0)
 	check(not fade.is_blocked(open + Vector3(0.0, 16.0, 11.5), open + Vector3(0.0, 1.2, 0.0)), "the open yard is clear")
 	rooftop.free()
 	PaintedMaterials.use(null)

@@ -171,3 +171,25 @@ func _place_problems() -> PackedStringArray:
 			if not bounds.has_point(Vector2(point.x, point.z)):
 				out.append("place %s is outside the area" % p.id)
 	return out
+
+
+## Is this grid cell within bounds and walkable (non-solid tile)?
+func is_walkable(x: int, z: int) -> bool:
+	var tid: StringName = tile_id_at(x, z)
+	if tid == &"":
+		return false
+	var tile := ContentDB.get_def("tile", tid) as TileDef
+	return tile != null and not tile.solid
+
+
+## The world position for a save point, or spawn_start if missing or on an unwalkable cell.
+func spawn_position_for(save_point: StringName, floor_y: float = 0.0) -> Vector3:
+	var target: PlaceDef = place(save_point) if save_point != &"" else null
+	if target != null and is_walkable(target.cell.x, target.cell.y):
+		return Vector3(target.pos.x, floor_y, target.pos.z)
+	var spawn: PlaceDef = place(&"spawn_start")
+	if spawn != null and is_walkable(spawn.cell.x, spawn.cell.y):
+		return Vector3(spawn.pos.x, floor_y, spawn.pos.z)
+	var marker: Vector2i = find_marker(SPAWN)
+	return Vector3(marker.x + 0.5, floor_y, marker.y + 0.5)
+

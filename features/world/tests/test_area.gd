@@ -15,7 +15,7 @@ func test_rooftop_area_is_well_formed() -> void:
 	var area: AreaDef = _area()
 	check(area != null, "area souq_rooftops exists")
 	check(area.problems().is_empty(), "layout problems: " + "; ".join(area.problems()))
-	check(area.width() >= 20 and area.depth() >= 14, "the area is about 26x18 tiles")
+	check(area.width() >= 30 and area.depth() >= 24, "the area is about 34x26 tiles")
 	check_eq(area.places_of(PlaceDef.PATROL).size(), 3, "three patrols")
 
 
@@ -65,3 +65,18 @@ func test_building_footprints_block_walking_but_draw_nothing() -> void:
 	check(street.solid and street.hidden, "the sunken street's cells are solid and invisible (al-Saila shows below)")
 	var floor_tile := ContentDB.get_def("tile", &"roof_floor") as TileDef
 	check(floor_tile != null and not floor_tile.solid, "the roof floor is walkable")
+
+
+func test_unwalkable_save_point_lands_on_spawn_start() -> void:
+	var area: AreaDef = _area()
+	var spawn_pos: Vector3 = area.spawn_position_for(&"spawn_start")
+	check_eq(area.spawn_position_for(&"nonexistent_point"), spawn_pos, "missing save point lands on spawn_start")
+	check_eq(area.spawn_position_for(&""), spawn_pos, "empty save point lands on spawn_start")
+	var bad_place := PlaceDef.new()
+	bad_place.id = &"test_unwalkable"
+	bad_place.pos = Vector3(1.5, 0.0, 1.5)
+	area.places.append(bad_place)
+	check(not area.is_walkable(1, 1), "cell (1,1) is not walkable")
+	check_eq(area.spawn_position_for(&"test_unwalkable"), spawn_pos, "unwalkable save point lands on spawn_start")
+	area.places.erase(bad_place)
+

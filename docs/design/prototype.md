@@ -57,7 +57,7 @@ Owner (Feras on the Latitude): walk, set a pairing, fight, win or lose, return w
 the 4 pairings feel different. Verdict logged in DECISIONS.
 
 ## v0.2 additions (2026-10-21)
-- The rooftop is old Sana'a at night: basalt-base tower-houses, glowing qamariya, moon, stars, clouds and fog.
+- The rooftop (Funduq Roof, Souq al-Milh) is a 34x26 single-terrace guesthouse roof with breathing room, open middle patrol loop, stair head spawn south, Abu Nabil stall west, workshop deck east, sabil north facing the vista, and chests in far corners. Basalt-base tower-houses, glowing qamariya, moon, stars, clouds and fog.
 - The 2150 megacity shows on the horizon. Real place names: Souq al-Milh, al-Saila, Bab al-Yaman, Zubairi, Haddah, Bayt Baws.
 - Rooftop dressing: moonlit tile tints, warm light only at lamps and doorways, and neon signs with glow and blink.
 - Area data lives in content/world (areas, buildings, props, lights, signs); a light budget caps real lights at 8.

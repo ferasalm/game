@@ -41,7 +41,7 @@ func test_the_mafraj_stands_behind_the_workshop_bench() -> void:
 			mafraj = p
 	check(mafraj != null, "a mafraj stands on the roof")
 	var bench: Vector2i = area.find_marker(AreaDef.WORKSHOP)
-	check(absf(mafraj.pos.x - (bench.x + 0.5)) < 2.0 and bench.y + 0.5 - mafraj.pos.z < 3.0, "the bench is at its doorway")
+	check(absf(mafraj.pos.x - (bench.x + 0.5)) < 2.0 and bench.y + 0.5 - mafraj.pos.z < 6.0, "the bench is at its doorway")
 	var def := ContentDB.get_def("prop", &"mafraj") as PropDef
 	check(def.light != null and def.light.pool_radius > 0.0, "the doorway carries a warm light and a floor pool")
 
