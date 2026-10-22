@@ -22,9 +22,8 @@
   slide on the remainder (2026-10-21).
 - Item menu rows flipped order between runs -> sorting StringNames compares addresses -> sort by String
   (2026-10-21).
-- Stand-in lathe garments showed bare bands and swung off like capes: the body poked through narrow waists and a
-  long piece on spine_03 swings with the chest -> torso pieces end at the waist (depth >= 0.9) over hip pieces on
-  pelvis raised 0.15 m; long coats split at the pelvis (2026-10-22).
+- Lathe garments showed skin and swung like capes -> torso pieces end at the waist (depth >= 0.9) over pelvis
+  pieces raised 0.15 m; long coats split at the pelvis (2026-10-22).
 - Headless MultiMesh returns identity instance transforms -> keep them in node meta for tests (2026-10-21).
 - See a scene without the owner: non-headless `"$(tools/godot.sh)" --path . --write-movie DIR/f.png --fixed-fps 60
   --quit-after N [scene]`, then view 1-2 frames scaled to 640x360 with Pillow (2026-10-21).
@@ -60,9 +59,8 @@
 - `cd` into a worktree in the Bash tool moved the session's working directory -> use `git -C <path>` (2026-10-21).
 - A crash cut a builder off one unit from done -> a small fresh agent in that worktree (no isolation) finished it
   cheaper than resuming the long transcript (2026-10-21).
-- HANDOFF said "start a fresh builder" for B4, but check.sh in its worktree plus a grep of the spec's items showed it
-  was one tuning pass from done -> before spawning a finisher, run check.sh there and grep the spec; finish small
-  remainders as the lead (~40k tokens vs 150k+) (2026-10-22).
+- B4 "needed a builder" but was one tuning pass from done -> run check.sh in a WIP worktree and grep its spec
+  first; the lead finishes small remainders (2026-10-22).
 
 ## 5. Art, browser, night look (2026-10-21)
 - Owner saw "3 FPS": that was a --write-movie render (each frame goes to disk) -> real FPS only via fps_probe.gd.
