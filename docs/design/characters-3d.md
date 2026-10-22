@@ -67,16 +67,18 @@ Hero 15k triangles, enemy 10k, NPC 7k; at most 90k character triangles on screen
   `impact_t` lies inside its clip; bone, triangle (index count / 3), surface and texture counts within budget.
 - Battle waits on clip_event, never a timer; facing never uses a negative scale.
 
-## 8. Feras's own models later (not in v0.3's build)
+## 8. Feras's own models (Hyper3D Rodin)
 1. A Flow picture per hero: full body, front view, camera at chest height, little perspective; **A-pose** (arms
    30-45 degrees down, not a T-pose), fingers apart, legs slightly apart, feet visible; flat even light, no cast
    shadows or rim light, plain grey background (no green); scarf and coat close to the body; the weapon in a
    separate picture. Matching side and back views if the tool takes more than one. Zayd's picture shows the
    grandfather's hilt sheathed at the front of his belt, and a separate close picture of that hilt (front and side)
    becomes its own 3D part.
-2. Image-to-3D: TRELLIS.2 (MIT licence) on its Hugging Face Space (Feras logs in; free quota unverified). Fallback:
-   Meshy free tier (outputs CC BY 4.0: credit in the manifest). Hunyuan3D-2.1's licence excludes the EU, UK and South
-   Korea: avoid.
-3. Claude reduces triangles, fixes UVs and repaints in Blender (ask the owner's OK to install it first), then
-   auto-rigs (AccuRIG or Meshy; Feras logs in).
+2. Image-to-3D: Hyper3D Rodin (Feras's Creator plan), driven by Claude through the hyper3d MCP: upload the picture
+   (up to 5 views), `rodin_generate` Gen-2.5-Medium, mesh_mode Quad, about 10-15k faces, glb; then
+   `rodin_generate_rigging` with bone_template `ue` (the Quaternius rig's UE names: pelvis, spine_03, hand_r) and no
+   animations. Claude names the credit cost before each paid call and never retries a timed-out one (check Hyper3D
+   Mine). Before the first manifest entry Claude reads Hyper3D's terms for the output licence.
+3. Claude checks the rigged glb against the budgets and bone names (test_model_defs) and repaints it; Blender only
+   if it fails (ask the owner's OK to install it first).
 4. The ModelDef points at the new scene: no code change.

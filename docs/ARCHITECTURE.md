@@ -145,8 +145,8 @@ docs/           ARCHITECTURE BRIEFING EFFICIENCY DECISIONS LESSONS MAP USAGE des
 - 3D characters (spec: docs/design/characters-3d.md): stand-in bodies and moves are CC0 (Quaternius Universal Base
   Characters and Universal Animation Library; KayKit as fallback). Feras downloads the zips into `inbox/stand_in/`
   (git-ignored). Godot retargets them at import (BoneMap, humanoid profile): no Blender for the stand-ins, and no
-  Mixamo (the repo is public). Later: Feras's Flow A-pose picture -> TRELLIS.2 (image to 3D) -> Blender cleanup
-  (Claude, after the owner's OK to install) -> auto-rig (AccuRIG or Meshy). The ModelDef points at the new scene.
+  Mixamo (the repo is public). Later: Feras's Flow A-pose picture -> Hyper3D Rodin (image to 3D and UE-template rig,
+  characters-3d.md 8) -> Blender cleanup only if needed (Claude, after the owner's OK to install). The ModelDef points at the new scene.
 - `assets/manifest.json`: id, path, source (gemini, flow, kenney-cc0, quaternius-cc0, own), licence, prompt reference. Code asks
   for assets by id and gets a placeholder if missing; a check fails on any asset without a licence entry; the
   credits screen is generated from it.

@@ -13,3 +13,5 @@ __pycache__/
 # Owner drop folder for raw Gemini/Flow pictures (raw generations stay out of git: ARCHITECTURE 13)
 /inbox/
 /.bake/
+# Hyper3D's RodinBridge editor plugin: Feras's local copy, no licence file (DECISIONS 2026-10-22)
+/RodinBridge/

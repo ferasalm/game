@@ -18,9 +18,8 @@ agy builds (DECISIONS 2026-10-22): brief in docs/briefs/<task>.md, then in the b
 `bash tools/agy_task.sh <task> docs/briefs/<task>.md claude/night-sanaa`; review, check.sh there, merge.
 
 ## Next steps (one per chat)
-0. Zayd's own model (characters-3d.md 8): Feras puts TRELLIS.2's inbox/models/zayd.glb; Claude imports, cuts to
-   budget, repaints, rigs onto the 65-bone skeleton, swaps the ModelDef scene, renders. Blender, auto-rig: ask
-   first. Then Bilqis, Abu Nabil, hilt (grey JPGs in inbox). Model: Opus lead. Effort: high.
+0. Zayd's own model (characters-3d.md 8): Claude sends Feras's A-pose picture to Hyper3D Rodin (MCP, cost named
+   first), UE rig; imports, checks bones, repaints, swaps the ModelDef scene, renders. Blender: ask first. Then Bilqis, Abu Nabil, hilt (grey JPGs in inbox). Model: Opus lead. Effort: high.
 1. Zayd kit via agy (zayd-moves.md + hilt-stones.md PerkDef kinds). Model: Opus briefs, reviews. Effort: medium.
 2. Hilt stones via agy (hilt-stones.md), on top of the kit. Model: Opus lead. Effort: medium.
 3. Balance pass on the new kit: agy, on the WIP balance branch. Model: Sonnet. Effort: medium.
@@ -31,6 +30,6 @@ agy builds (DECISIONS 2026-10-22): brief in docs/briefs/<task>.md, then in the b
 
 ## Paste-ready prompt
 ```
-Continue the game repo (ferasalm/game), v0.3. Read HANDOFF.md. Do Next step 0 only: import Zayd's TRELLIS.2
-model from inbox/models/zayd.glb per docs/design/characters-3d.md 8, judge renders, merge, check.sh, /handoff.
+Continue the game repo (ferasalm/game), v0.3. Read HANDOFF.md. Do Next step 0 only: make Zayd's model with
+Hyper3D Rodin from his A-pose picture per docs/design/characters-3d.md 8, judge renders, merge, check.sh, /handoff.
 ```

@@ -39,7 +39,7 @@ plus x for the glint. Glow: C or M with a on top.
 
 ## Pipeline
 Characters (docs/design/characters-3d.md): CC0 stand-in bodies and moves (Quaternius) now, retargeted at import.
-The owner's own later: Flow A-pose picture -> TRELLIS.2 -> Blender cleanup -> auto-rig. Painted textures go through
+The owner's own later: Flow A-pose picture -> Hyper3D Rodin (model and rig) -> Blender only if needed. Painted textures go through
 `tools/art/painterly_bake.py`. Every file gets a manifest entry with its source and licence.
 Pixel fallback only (PixelSource, until a model exists). Gemini/Flow picture to sprite entry: `python tools/art/pixelize.py --in PIC.png --id ID [--height 64] [--out content/art/sprites.json]`; Zayd and Bilqis (2026-10-21) used `--contrast 1.3 --saturation 1.5 --outline` (soft painted art loses its hues when snapped; the outline is the dark 'k' ring).
 Fallback sprites: Feras's Gemini picture -> pixelize.py -> touch-up in Pixelorama (free). Edit any sprite:

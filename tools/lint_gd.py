@@ -47,7 +47,7 @@ def lint(path: pathlib.Path) -> list[str]:
 
 
 def main() -> int:
-    skip = (".godot", "addons", ".claude")
+    skip = (".godot", "addons", ".claude", "RodinBridge")  # RodinBridge: git-ignored third-party plugin
     files = [p for p in sorted(ROOT.rglob("*.gd")) if not any(part in skip for part in p.relative_to(ROOT).parts)]
     problems = [msg for f in files for msg in lint(f)]
     print("\n".join(problems) if problems else f"lint: {len(files)} GDScript files ok")

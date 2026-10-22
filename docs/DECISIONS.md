@@ -51,7 +51,6 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-21 | Norm: big asks start in plan mode (Opus xhigh), audit with agents, then orchestrate; every installed agent at a fitting model and effort | Feras: "This should be the norm" | Feras
 - 2026-10-21 | Herb seller: Abu Nabil, a 40-year-old man (replaces the invented Umm Nabil) | Feras | Feras
 - 2026-10-21 | Characters: live 3D models in the 3D world (2.5D, aiming at Hades quality, motion and design), painted shader + ink outline; not pre-rendered frames | Feras: "exactly like Hades" (recommended) | Feras
-- 2026-10-21 | 3D models: CC0 stand-in bodies now; later Feras's Flow model pictures -> free image-to-3D (he logs in) -> Claude rigs and paints | Feras (recommended) | Feras
 - 2026-10-21 | Feras's model pictures for image-to-3D: A-pose (arms 30-45 deg down), not T-pose; flat light, grey background, weapon apart (characters-3d.md 8) | what image-to-3D and auto-rig need | Claude (owner may veto)
 - 2026-10-21 | 3D motion: CC0 moves only (Quaternius library; Claude keys missing attack/cast clips), retargeted, plus Hades-style polish; no Mixamo | Mixamo files can't sit in the public repo | Feras
 - 2026-10-21 | Zayd's default skin always wears his grandfather's djanbeyyah hilt (Heirloom grandfather_hilt): a separate part at the front of his belt, drawn in hand to strike | Feras: the hilt was missing from his model | Feras
@@ -68,3 +67,4 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-22 | Gemini 3.8 Flash (agy) builds well-specified tasks from Claude's briefs in its own branch/worktree (rules: GEMINI.md); Claude reviews, runs check.sh, merges | Gemini usage is outside the Claude limit | Feras
 - 2026-10-22 | Claude runs agy with skip-permissions only via tools/agy_task.sh (own worktree per task) | faster | Feras
 - 2026-10-22 | Gemini (agy) builds whenever a task can be briefed exactly (code, content, tests, docs); Claude briefs, reviews renders and diffs, merges; Claude agents only where agy can't (art judgment loops, Opus review) | save the Claude limit | Feras
+- 2026-10-22 | Hyper3D Rodin (Feras's paid Creator plan) makes his 3D models: Claude drives its MCP, Gen-2.5-Medium Quad, UE rig, cost named first; RodinBridge plugin git-ignored | Feras (recommended) | Feras
