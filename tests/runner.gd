@@ -15,6 +15,9 @@ func _process(_delta: float) -> bool:
 
 
 func _run() -> void:
+	var test_saves: String = SaveService.test_dir_for(ProjectSettings.globalize_path("res://"))
+	SaveService.default_dir = test_saves
+	SaveService.empty_dir(test_saves)
 	var args: PackedStringArray = OS.get_cmdline_user_args()
 	var filter: String = args[0] if args.size() > 0 else ""
 	var passed: int = 0

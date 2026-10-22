@@ -2,11 +2,12 @@ extends TestCase
 ## SaveService: round trip, summary, an existing slot is replaced (the rename overwrites on Windows too) with
 ## the old save kept as .bak, and corrupt files give a clear error.
 
-const DIR: String = "user://test_saves_service"
+func _dir() -> String:
+	return SaveService.default_dir.path_join("service")
 
 
 func _service() -> SaveService:
-	var service := SaveService.new(DIR)
+	var service := SaveService.new(_dir())
 	for slot: int in [1, 2]:
 		service.delete(slot)
 	return service
@@ -42,7 +43,7 @@ func test_missing_slot_and_corrupt_json_give_clear_errors() -> void:
 	var service: SaveService = _service()
 	check(service.read(2).is_empty(), "an empty slot reads as {}")
 	check_eq(service.last_error, "slot 2 has no save", "and says why")
-	DirAccess.make_dir_recursive_absolute(DIR)
+	DirAccess.make_dir_recursive_absolute(_dir())
 	var file := FileAccess.open(service.path_for(2), FileAccess.WRITE)
 	file.store_string("{\"version\": 4, \"money\": ")
 	file.close()
@@ -54,3 +55,43 @@ func test_missing_slot_and_corrupt_json_give_clear_errors() -> void:
 	file.close()
 	check(service.read(2).is_empty() and service.last_error.contains("not a save"), "an array is not a save")
 	service.delete(2)
+
+
+func test_two_different_res_paths_give_two_different_folders() -> void:
+	var dir_a: String = SaveService.test_dir_for("res://checkout_a")
+	var dir_b: String = SaveService.test_dir_for("res://checkout_b")
+	check(dir_a != dir_b, "different res paths give different folders")
+	check(dir_a.begins_with("user://test_saves/"), "under user://test_saves/: " + dir_a)
+	check(dir_b.begins_with("user://test_saves/"), "under user://test_saves/: " + dir_b)
+
+
+func test_newest_slot_and_has_any_save() -> void:
+	var service: SaveService = _service()
+	check(not service.has_any_save(), "no saves at start")
+	check(service.write(1, _data(100)), "slot 1 written")
+	check(service.has_any_save(), "has save now")
+	check_eq(service.newest_slot(), 1, "slot 1 is newest")
+	check(service.write(2, _data(200)), "slot 2 written later")
+	check_eq(service.newest_slot(), 2, "slot 2 is now newest")
+	service.delete(1)
+	service.delete(2)
+
+
+func test_old_slot_1_loads_as_slot_1() -> void:
+	var service: SaveService = _service()
+	Router.save_dir = _dir()
+	Router.scene_reloader = func() -> void: pass
+	var old_save: Dictionary = {
+		"version": 3,
+		"area_id": "souq_rooftops",
+		"spawn_id": "sabil",
+		"inventory": []
+	}
+	check(service.write(1, old_save), "wrote legacy slot 1")
+	var problem: String = Router.load_slot(1)
+	check(problem.is_empty(), "slot 1 loaded without error")
+	check_eq(Router.last_slot, 1, "Router.last_slot is 1")
+	check_eq(String(GameState.area_id), "souq_rooftops", "area restored")
+	service.delete(1)
+	Router.save_dir = ""
+	Router.scene_reloader = Callable()

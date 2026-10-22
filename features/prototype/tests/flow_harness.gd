@@ -4,21 +4,24 @@ extends RefCounted
 ## patrol touch, a scratch save folder and a Router that records reloads instead of reloading the scene.
 
 const DT: float = 1.0 / 60.0
-const SAVE_DIR: String = "user://test_saves_flow"
 
 var reloads: int = 0
 var outcomes: Array[BattleOutcome] = []
 var _tree: SceneTree
 
 
+func save_dir() -> String:
+	return SaveService.default_dir.path_join("flow")
+
+
 func _init(scene_tree: SceneTree) -> void:
 	_tree = scene_tree
 	GameState.reset()
 	Router.state = Router.STATE_TITLE
-	Router.save_dir = SAVE_DIR
+	Router.save_dir = save_dir()
 	Router.scene_reloader = func() -> void: reloads += 1
 	Router.battle_finished.connect(_on_finished)
-	SaveService.new(SAVE_DIR).delete(1)
+	SaveService.new(save_dir()).delete(1)
 
 
 ## The main scene, with battles on auto_play and instant.
@@ -41,9 +44,9 @@ func touch(main: PrototypeMain) -> void:
 func finish() -> void:
 	Router.battle_finished.disconnect(_on_finished)
 	Router.scene_reloader = Callable()
-	Router.save_dir = SaveService.DEFAULT_DIR
+	Router.save_dir = ""
 	Router.state = Router.STATE_TITLE
-	SaveService.new(SAVE_DIR).delete(1)
+	SaveService.new(save_dir()).delete(1)
 	GameState.reset()
 
 
