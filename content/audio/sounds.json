@@ -50,7 +50,7 @@
     "interface_sounds/confirmation_002.ogg"
    ],
    "bus": "UI",
-   "volume_db": -8.0,
+   "volume_db": -10.0,
    "pitch_min": 0.97,
    "pitch_max": 1.03
   },
@@ -62,7 +62,7 @@
     "interface_sounds/back_003.ogg"
    ],
    "bus": "UI",
-   "volume_db": -9.0,
+   "volume_db": -13.0,
    "pitch_min": 0.97,
    "pitch_max": 1.03
   },
@@ -181,15 +181,14 @@
   {
    "id": "vfx_arc_all",
    "files": [
-    "sci_fi_sounds/computerNoise_000.ogg",
-    "sci_fi_sounds/computerNoise_001.ogg",
-    "sci_fi_sounds/computerNoise_002.ogg",
-    "sci_fi_sounds/computerNoise_003.ogg"
+    "qarnaw/arc_discharge_01.wav",
+    "qarnaw/arc_discharge_02.wav",
+    "qarnaw/arc_discharge_03.wav"
    ],
    "bus": "SFX",
-   "volume_db": -8.0,
-   "pitch_min": 0.9,
-   "pitch_max": 1.1
+   "volume_db": -4.5,
+   "pitch_min": 0.97,
+   "pitch_max": 1.03
   },
   {
    "id": "vfx_burst",
@@ -227,7 +226,7 @@
     "sci_fi_sounds/forceField_004.ogg"
    ],
    "bus": "SFX",
-   "volume_db": -8.0,
+   "volume_db": -11.0,
    "pitch_min": 0.95,
    "pitch_max": 1.05
   },
@@ -384,6 +383,52 @@
    "volume_db": -9.0,
    "pitch_min": 1.1,
    "pitch_max": 1.3
+  },
+  {
+   "id": "ui_confirm",
+   "files": [
+    "interface_sounds/confirmation_003.ogg",
+    "interface_sounds/confirmation_004.ogg"
+   ],
+   "bus": "UI",
+   "volume_db": -9.0,
+   "pitch_min": 0.97,
+   "pitch_max": 1.03
+  },
+  {
+   "id": "ui_portrait_in",
+   "files": [
+    "interface_sounds/maximize_001.ogg",
+    "interface_sounds/maximize_002.ogg",
+    "interface_sounds/maximize_003.ogg"
+   ],
+   "bus": "UI",
+   "volume_db": -12.0,
+   "pitch_min": 0.97,
+   "pitch_max": 1.03
+  },
+  {
+   "id": "ui_toast",
+   "files": [
+    "interface_sounds/pluck_001.ogg",
+    "interface_sounds/pluck_002.ogg"
+   ],
+   "bus": "UI",
+   "volume_db": -11.0,
+   "pitch_min": 0.97,
+   "pitch_max": 1.03
+  },
+  {
+   "id": "ui_sweep",
+   "files": [
+    "interface_sounds/scroll_002.ogg",
+    "interface_sounds/scroll_003.ogg",
+    "interface_sounds/scroll_004.ogg"
+   ],
+   "bus": "UI",
+   "volume_db": -12.0,
+   "pitch_min": 0.97,
+   "pitch_max": 1.03
   }
  ]
 }
