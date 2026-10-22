@@ -20,9 +20,9 @@ func _area() -> AreaDef:
 
 
 func test_clamp_target_keeps_the_frame_in_the_commons() -> void:
-	var x := Vector2(7.5, 18.5)
-	var z := Vector2(3.0, 14.0)
-	check_eq(CameraLimits.clamp_target(Vector3(25.0, 0.5, 1.0), x, z), Vector3(18.5, 0.5, 3.0), "east roof and north strip clamp")
+	var x := Vector2(8.5, 25.5)
+	var z := Vector2(3.0, 20.5)
+	check_eq(CameraLimits.clamp_target(Vector3(30.0, 0.5, 1.0), x, z), Vector3(25.5, 0.5, 3.0), "east roof and north strip clamp")
 	check_eq(CameraLimits.clamp_target(Vector3(10.0, 0.5, 8.0), x, z), Vector3(10.0, 0.5, 8.0), "inside is untouched")
 	check_eq(CameraLimits.clamp_target(Vector3(99.0, 0.5, 99.0), Vector2.ZERO, Vector2.ZERO), Vector3(99.0, 0.5, 99.0),
 		"no limits: nothing clamps")
@@ -44,8 +44,8 @@ func test_inside_box() -> void:
 func test_the_rig_ships_limits_for_the_commons() -> void:
 	var rig: CameraRigDef = _rig()
 	check(rig.has_limits(), "camera.json has limits")
-	check_eq(rig.limit_x, Vector2(7.5, 18.5), "x range")
-	check_eq(rig.limit_z, Vector2(3.0, 14.0), "z range")
+	check_eq(rig.limit_x, Vector2(8.5, 25.5), "x range")
+	check_eq(rig.limit_z, Vector2(3.0, 20.5), "z range")
 
 
 func _boxes(area: AreaDef) -> Array[AABB]:
@@ -137,10 +137,10 @@ func test_the_south_apron_stays_low() -> void:
 	var area: AreaDef = _area()
 	var low: int = 0
 	for box: AABB in _skyline_boxes(area):
-		var in_apron: bool = box.end.x > -2.0 and box.position.x < 28.0 and box.end.z > 18.0 and box.position.z < 36.0
+		var in_apron: bool = box.end.x > -2.0 and box.position.x < 28.0 and box.end.z > 26.0 and box.position.z < 44.0
 		if in_apron and box.end.y > APRON_TOP:
 			low += 1
-	check_eq(low, 0, "skyline towers above %.1f m in the south apron (x -2..28, z 18..36)" % APRON_TOP)
+	check_eq(low, 0, "skyline towers above %.1f m in the south apron (x -2..28, z 26..44)" % APRON_TOP)
 
 
 func test_the_player_stays_in_frame_at_the_limits() -> void:

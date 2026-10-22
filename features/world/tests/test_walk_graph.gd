@@ -115,12 +115,12 @@ func _is_pocket(area: AreaDef, cell: Vector2i, _wide: Dictionary[Vector2i, bool]
 	return false
 
 
-func test_the_bridge_keeps_three_rows() -> void:
+func test_the_terrace_is_continuous_across_columns() -> void:
 	var area := ContentDB.get_def("area", &"souq_rooftops") as AreaDef
 	var g: WalkGraph = AreaWalk.build(area, ContentDB.get_def("explore_rules", &"default") as ExploreRulesDef)
 	var reach: Dictionary[Vector2i, bool] = g.reachable(_spawn_of(area))
-	for column: int in range(16, 20):
+	for column: int in range(12, 22):
 		var count: int = 0
 		for z: int in area.depth():
-			count += 1 if area.tile_id_at(column, z) == &"bridge" and reach.has(Vector2i(column, z)) else 0
-		check(count >= 3, "column %d: %d bridge cells join the roofs (3 wanted)" % [column, count])
+			count += 1 if reach.has(Vector2i(column, z)) else 0
+		check(count >= 15, "column %d: %d walkable cells join the terrace (>= 15 wanted)" % [column, count])

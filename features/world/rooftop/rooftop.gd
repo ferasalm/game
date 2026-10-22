@@ -136,13 +136,10 @@ func teleport_party(pos: Vector3, grace: bool = true) -> void:
 		camera_rig.update(SNAP_SECONDS, _aim.subject(pos))
 
 
-## Puts the party at a save point (a place id of this area); an unknown or empty id means the spawn (no grace).
+## Puts the party at a save point (a place id of this area); an unknown, empty or unwalkable id lands on spawn_start.
 func place_party(save_point: StringName) -> void:
-	var place: PlaceDef = _area.place(save_point)
-	if place == null:
-		teleport_party(AreaActors.marker_of(_area, AreaDef.SPAWN, _floor_y), false)
-	else:
-		teleport_party(Vector3(place.pos.x, _floor_y, place.pos.z))
+	var valid: bool = save_point != &"" and _area.place(save_point) != null and _area.is_walkable(_area.place(save_point).cell.x, _area.place(save_point).cell.y)
+	teleport_party(_area.spawn_position_for(save_point, _floor_y), valid)
 
 
 ## Dialogue framing: the camera looks at this speaker's head (&"zayd", &"bilqis", a bystander's place id or sprite).

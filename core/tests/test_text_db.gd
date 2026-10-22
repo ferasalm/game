@@ -5,7 +5,7 @@ extends TestCase
 func test_shipped_text_loads_and_translates() -> void:
 	var db: Node = load("res://core/text_db.gd").new()
 	check_eq(db.call("load_all"), PackedStringArray(), "no text problems")
-	check_eq(String(TranslationServer.translate("WORLD_ROOFTOP_NAME")), "Souq rooftops", "a key translates")
+	check_eq(String(TranslationServer.translate("WORLD_ROOFTOP_NAME")), "Funduq Roof, Souq al-Milh", "a key translates")
 	db.free()
 
 

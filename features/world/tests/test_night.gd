@@ -93,7 +93,7 @@ func test_vista_zone_and_mist_content() -> void:
 	var broken := AreaDef.new()
 	broken.legend = area.legend
 	broken.rows = area.rows
-	broken.vista = Rect2i(20, 15, 10, 10)
+	broken.vista = Rect2i(30, 20, 10, 10)
 	check(not broken.problems().is_empty(), "a vista zone outside the area is caught")
 	var mist: Node3D = MistBuilder.build_area(area)
 	var planes: int = 0
