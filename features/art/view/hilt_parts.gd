@@ -1,6 +1,7 @@
 class_name HiltParts
 extends RefCounted
-## The grandfather's jambiyah as nodes (HiltMesh draws it): a sheath and the hilt with its blade sit at the belt
+## The grandfather's jambiyah as nodes (the part's Rodin grip and sheath scenes, else HiltMesh's stand-in; the blade
+## is always HiltMesh's): a sheath and the hilt with its blade sit at the belt
 ## (`root`); draw() carries the hilt to the hand bone for a strike (the blade shows, the sheath stays), sheathe() puts it
 ## back. `top` and `tip` mark the hilt and the blade's point for the weapon trail.
 
@@ -18,10 +19,10 @@ var _hand_local: Transform3D = Transform3D.IDENTITY
 func build(rig: ModelRig, part: ModelPartDef) -> Node3D:
 	var made: Dictionary = HiltMesh.build(part)
 	root = Node3D.new()
-	root.add_child(_instance(made[&"sheath"] as Mesh, rig))
+	root.add_child(_piece(part.sheath_scene, part.texture, made[&"sheath"] as Mesh, rig))
 	hilt = Node3D.new()
 	hilt.name = "hilt"
-	hilt.add_child(_instance(made[&"hilt"] as Mesh, rig))
+	hilt.add_child(_piece(part.scene, part.texture, made[&"hilt"] as Mesh, rig))
 	blade = _instance(made[&"blade"] as Mesh, rig)
 	blade.visible = false
 	hilt.add_child(blade)
@@ -58,6 +59,15 @@ func sheathe() -> void:
 	root.add_child(hilt)
 	hilt.transform = Transform3D.IDENTITY
 	blade.visible = false
+
+
+## The Rodin scene when the part names one, else the code mesh.
+func _piece(path: String, texture: String, fallback: Mesh, rig: ModelRig) -> Node3D:
+	if not path.is_empty():
+		var node: Node3D = ModelParts.instance_scene(path, texture, Color.WHITE, true, rig.materials)
+		if node != null:
+			return node
+	return _instance(fallback, rig)
 
 
 func _instance(mesh: Mesh, rig: ModelRig) -> MeshInstance3D:

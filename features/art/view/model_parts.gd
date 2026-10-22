@@ -1,6 +1,6 @@
 class_name ModelParts
 extends RefCounted
-## Puts one ModelPartDef on a rig: hair from its glTF, a lathed garment, a sleeve capsule or the jambiyah, each on a
+## Puts one ModelPartDef on a rig: hair or a rigid mesh from its glTF, a lathed garment, a sleeve capsule or the jambiyah, each on a
 ## BoneAttachment3D so it follows the bone through every animation. The offset and rotation of a part are in model
 ## space at the rest pose (y up, +z forward), converted here into the bone's own frame.
 
@@ -16,8 +16,10 @@ static func make(rig: ModelRig, part: ModelPartDef) -> Node3D:
 	var want := Transform3D(Basis.from_euler(part.rotation * (PI / 180.0)), rest.origin + part.offset)
 	match part.kind:
 		&"hair":
-			node = _hair(rig, part)
+			node = _scene(rig, part.scene, part.texture, part.color)
 			want = Transform3D.IDENTITY  # hair is modelled in model space already
+		&"mesh":
+			node = _scene(rig, part.scene, part.texture, part.color)
 		&"lathe":
 			node = _mesh(GarmentMesh.lathe(part.profile, part.length, part.depth, Color.WHITE, part.sweep), part, rig)
 		&"limb":
@@ -46,13 +48,19 @@ static func _mesh(mesh: Mesh, part: ModelPartDef, rig: ModelRig) -> MeshInstance
 	return instance
 
 
-static func _hair(rig: ModelRig, part: ModelPartDef) -> Node3D:
-	var packed := load(part.scene) as PackedScene
+static func _scene(rig: ModelRig, path: String, texture: String, color: Color) -> Node3D:
+	return instance_scene(path, texture, color, false, rig.materials)
+
+
+## A glTF scene with every mesh in one painted material (added to `materials`); null when the scene is missing.
+static func instance_scene(path: String, texture: String, color: Color, hull: bool,
+		materials: Array[ShaderMaterial]) -> Node3D:
+	var packed := load(path) as PackedScene
 	if packed == null:
 		return null
 	var node := packed.instantiate() as Node3D
-	var mat: ShaderMaterial = ModelMaterials.skin(part.texture, part.color, false)
-	rig.materials.append(mat)
+	var mat: ShaderMaterial = ModelMaterials.skin(texture, color, hull)
+	materials.append(mat)
 	for mesh: Node in NodeScan.of_type(node, &"MeshInstance3D"):
 		(mesh as MeshInstance3D).material_override = mat
 	return node

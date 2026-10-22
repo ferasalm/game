@@ -1,10 +1,10 @@
 class_name ModelPartDef
 extends RefCounted
-## One part worn by a model on a bone (a "part" of a ModelDef): hair or brows from a glTF, a garment lathed around
-## the bone's up axis from a radius profile (skirt, coat, head wrap), a sleeve (capsule from the bone to its child), or
-## the grandfather's jambiyah hilt. Stand-ins are built in code from these numbers; a real scene replaces them later.
+## One part worn by a model on a bone (a "part" of a ModelDef): hair or brows from a glTF, a rigid mesh from a glb
+## (the drone's hull), a garment lathed around the bone's up axis from a radius profile (skirt, coat, head wrap), a
+## sleeve (capsule from the bone to its child), or the grandfather's jambiyah hilt (Rodin grip and sheath scenes).
 
-const KINDS: Array[StringName] = [&"hair", &"lathe", &"limb", &"hilt"]
+const KINDS: Array[StringName] = [&"hair", &"mesh", &"lathe", &"limb", &"hilt"]
 
 var id: StringName = &""
 var kind: StringName = &"lathe"
@@ -12,8 +12,9 @@ var kind: StringName = &"lathe"
 var bone: String = ""
 var offset: Vector3 = Vector3.ZERO
 var rotation: Vector3 = Vector3.ZERO  ## degrees (x, y, z)
-var scene: String = ""  ## hair: the glTF scene
-var texture: String = ""  ## hair: its albedo
+var scene: String = ""  ## hair, mesh: the glTF scene; hilt: the grip's scene (empty = the code stand-in)
+var sheath_scene: String = ""  ## hilt: the sheath's scene, in the grip's frame
+var texture: String = ""  ## hair, mesh, hilt scenes: the albedo
 var color: Color = Color.WHITE
 ## lathe: the radius at evenly spaced stations from top to bottom over `length` metres, with `depth` squashing its z.
 var profile: Array[float] = []
@@ -40,7 +41,8 @@ func read(r: DefReader) -> void:
 	rotation = _vector(r, "rotation", 360.0)
 	draw_offset = _vector(r, "draw_offset", 5.0)
 	draw_rotation = _vector(r, "draw_rotation", 360.0)
-	scene = r.text("scene", "", kind == &"hair")
+	scene = r.text("scene", "", kind == &"hair" or kind == &"mesh")
+	sheath_scene = r.text("sheath_scene", "", false)
 	texture = r.text("texture", "", false)
 	color = r.color("color", Color.WHITE, false)
 	profile = r.float_list("profile", 0.0, 2.0)

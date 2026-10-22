@@ -2,8 +2,8 @@ extends TestCase
 ## The data behind live 3D characters (content/art/models.json, clips.json) against the imported assets: every model
 ## maps all nine states to clips that exist, every clip names a real animation of the shared library with its length and
 ## an impact inside it, the bodies keep the rig's bone names, every anchor and part bone resolves, and the budgets hold
-## (bones, triangles, surfaces, textures). The stand-in bodies are 14.3k and 15.06k triangles: the hero budget, so
-## the enemy and NPC budgets of docs/design/characters-3d.md 6 wait for Feras's own models.
+## (bones, triangles, surfaces, textures). Feras's Rodin bodies: Zayd 12.6k, Bilqis 7.9k, Abu Nabil 8.2k and the
+## enforcer 7.5k triangles, within the hero cap here and the scene cap of docs/design/characters-3d.md 6.
 
 const MAX_BONES: int = 70
 const MAX_TRIS: int = 15100

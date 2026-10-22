@@ -3176,12 +3176,89 @@
       "path": "characters/zayd_rodin.glb",
       "source": "Hyper3D Rodin Gen-2.5-Medium Quad + UE auto-rig (owner's Creator plan), from the owner's Flow picture flow_zayd_full_front_gray_background.png; generations b1a3857f, f08d7cfb",
       "licence": "owner's own output; Creator plan: \"Unlimited export and any use\" (hyper3d.ai/pricing, 2026-10-22)",
-      "prompt": "Godot LOD simplifier to 12.6k triangles, textures and materials stripped, feet lifted to y=0, UE head renamed Head"
+      "prompt": "Godot LOD simplifier to 12.6k triangles, textures and materials stripped, feet lifted to y=0, UE head renamed Head; baked dagger pressed flat (rewrite_glb.py --press)"
     },
     {
       "id": "char_t_zayd",
       "path": "characters/t_zayd.png",
       "source": "Hyper3D Rodin diffuse of char_zayd_rodin",
+      "licence": "owner's own output; Creator plan: \"Unlimited export and any use\" (hyper3d.ai/pricing, 2026-10-22)",
+      "prompt": "2048 diffuse resized to 1024 (Lanczos)"
+    },
+    {
+      "id": "char_bilqis_rodin",
+      "path": "characters/bilqis_rodin.glb",
+      "source": "Hyper3D Rodin Gen-2.5-Medium Quad 7k + UE auto-rig (owner's Creator plan), from the owner's Flow picture; generation d90b8919, rig 2f72e219",
+      "licence": "owner's own output; Creator plan: \"Unlimited export and any use\" (hyper3d.ai/pricing, 2026-10-22)",
+      "prompt": "Godot LOD simplifier to 7901 triangles, textures and materials stripped, feet lifted to y=0, UE head renamed Head"
+    },
+    {
+      "id": "char_t_bilqis",
+      "path": "characters/t_bilqis.png",
+      "source": "Hyper3D Rodin diffuse of char_bilqis_rodin",
+      "licence": "owner's own output; Creator plan: \"Unlimited export and any use\" (hyper3d.ai/pricing, 2026-10-22)",
+      "prompt": "2048 diffuse resized to 1024 (Lanczos)"
+    },
+    {
+      "id": "char_abu_nabil_rodin",
+      "path": "characters/abu_nabil_rodin.glb",
+      "source": "Hyper3D Rodin Gen-2.5-Medium Quad 7k + UE auto-rig (owner's Creator plan), from the owner's Flow picture; generation 9b93333e, rig 0b4067dc",
+      "licence": "owner's own output; Creator plan: \"Unlimited export and any use\" (hyper3d.ai/pricing, 2026-10-22)",
+      "prompt": "Godot LOD simplifier to 8249 triangles, textures and materials stripped, feet lifted to y=0, UE head renamed Head"
+    },
+    {
+      "id": "char_t_abu_nabil",
+      "path": "characters/t_abu_nabil.png",
+      "source": "Hyper3D Rodin diffuse of char_abu_nabil_rodin",
+      "licence": "owner's own output; Creator plan: \"Unlimited export and any use\" (hyper3d.ai/pricing, 2026-10-22)",
+      "prompt": "2048 diffuse resized to 1024 (Lanczos)"
+    },
+    {
+      "id": "char_concession_enforcer_rodin",
+      "path": "characters/concession_enforcer_rodin.glb",
+      "source": "Hyper3D Rodin Gen-2.5-Medium Quad 7k + UE auto-rig (owner's Creator plan), from the owner's Flow picture; generation 334f9930, rig d10e1376",
+      "licence": "owner's own output; Creator plan: \"Unlimited export and any use\" (hyper3d.ai/pricing, 2026-10-22)",
+      "prompt": "Godot LOD simplifier to 7451 triangles, textures and materials stripped, feet lifted to y=0, UE head renamed Head"
+    },
+    {
+      "id": "char_t_concession_enforcer",
+      "path": "characters/t_concession_enforcer.png",
+      "source": "Hyper3D Rodin diffuse of char_concession_enforcer_rodin",
+      "licence": "owner's own output; Creator plan: \"Unlimited export and any use\" (hyper3d.ai/pricing, 2026-10-22)",
+      "prompt": "2048 diffuse resized to 1024 (Lanczos)"
+    },
+    {
+      "id": "char_grandfather_grip",
+      "path": "characters/grandfather_grip.glb",
+      "source": "Hyper3D Rodin Gen-2.5-Medium Quad 3k (owner's Creator plan), from the owner's Flow pictures of the hilt and sheath (front + side); generation 1fd674df",
+      "licence": "owner's own output; Creator plan: \"Unlimited export and any use\" (hyper3d.ai/pricing, 2026-10-22)",
+      "prompt": "tools/rodin/rewrite_glb.py --keep y > 0.235 (the grip), placed: grip base at the origin, turned 90 deg, scale 0.17"
+    },
+    {
+      "id": "char_grandfather_sheath",
+      "path": "characters/grandfather_sheath.glb",
+      "source": "Hyper3D Rodin Gen-2.5-Medium Quad 3k (owner's Creator plan), from the owner's Flow pictures of the hilt and sheath (front + side); generation 1fd674df",
+      "licence": "owner's own output; Creator plan: \"Unlimited export and any use\" (hyper3d.ai/pricing, 2026-10-22)",
+      "prompt": "tools/rodin/rewrite_glb.py --cut y > 0.235 (the sheath), same placement as the grip"
+    },
+    {
+      "id": "char_t_grandfather_hilt",
+      "path": "characters/t_grandfather_hilt.png",
+      "source": "Hyper3D Rodin diffuse of the grandfather hilt generation",
+      "licence": "owner's own output; Creator plan: \"Unlimited export and any use\" (hyper3d.ai/pricing, 2026-10-22)",
+      "prompt": "2048 diffuse resized to 1024 (Lanczos)"
+    },
+    {
+      "id": "char_survey_drone_rodin",
+      "path": "characters/survey_drone_rodin.glb",
+      "source": "Hyper3D Rodin Gen-2.5-Medium Quad 5k (owner's Creator plan), from the owner's Flow picture enemy_and_drone.png; generation ddf72980",
+      "licence": "owner's own output; Creator plan: \"Unlimited export and any use\" (hyper3d.ai/pricing, 2026-10-22)",
+      "prompt": "Godot LOD simplifier to 5156 triangles, centred, scale 0.45, textures stripped"
+    },
+    {
+      "id": "char_t_survey_drone",
+      "path": "characters/t_survey_drone.png",
+      "source": "Hyper3D Rodin diffuse of char_survey_drone_rodin",
       "licence": "owner's own output; Creator plan: \"Unlimited export and any use\" (hyper3d.ai/pricing, 2026-10-22)",
       "prompt": "2048 diffuse resized to 1024 (Lanczos)"
     },

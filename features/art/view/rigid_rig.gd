@@ -1,14 +1,14 @@
 class_name RigidRig
 extends RefCounted
-## A model that is not skinned: a few rigid parts moved by code (the survey drone: a hull, a spinning ring and a lens).
-## The parts come from the ModelDef (lathes, glowing ones for lenses); pose() hovers the whole thing, spins the part
+## A model that is not skinned: a few rigid parts moved by code (the survey drone: its Rodin hull).
+## The parts come from the ModelDef (glb meshes, lathes, glowing ones for lenses); pose() hovers the whole thing, spins the part
 ## named "ring", and plays the state's motion from the clip's progress (0..1): a strike tips it forward, a hit rolls it,
 ## knocked out it drops to the floor and tilts. Numbers: the ModelDef (bob, bob_speed, spin).
 
 var root := Node3D.new()
 var materials: Array[ShaderMaterial] = []
 var _def: ModelDef
-var _parts: Dictionary[StringName, MeshInstance3D] = {}
+var _parts: Dictionary[StringName, Node3D] = {}
 var _clock: float = 0.0
 
 
@@ -16,24 +16,33 @@ func build(def: ModelDef, holder: Node3D) -> void:
 	_def = def
 	holder.add_child(root)
 	for part: ModelPartDef in def.parts:
-		var instance := MeshInstance3D.new()
-		instance.mesh = GarmentMesh.lathe(part.profile, part.length, part.depth, Color.WHITE, part.sweep)
-		var mat: ShaderMaterial = ModelMaterials.skin(part.texture, part.color, def.outline_hull)
-		if part.glow > 0.0:
-			ModelMaterials.make_glow(mat, part.accent, part.glow)
-		materials.append(mat)
-		instance.material_override = mat
+		var instance: Node3D = _part(part)
+		if instance == null:
+			continue
 		instance.position = part.offset
 		instance.rotation_degrees = part.rotation
 		root.add_child(instance)
 		_parts[part.id] = instance
 
 
+func _part(part: ModelPartDef) -> Node3D:
+	if part.kind == &"mesh":
+		return ModelParts.instance_scene(part.scene, part.texture, part.color, _def.outline_hull, materials)
+	var instance := MeshInstance3D.new()
+	instance.mesh = GarmentMesh.lathe(part.profile, part.length, part.depth, Color.WHITE, part.sweep)
+	var mat: ShaderMaterial = ModelMaterials.skin(part.texture, part.color, _def.outline_hull)
+	if part.glow > 0.0:
+		ModelMaterials.make_glow(mat, part.accent, part.glow)
+	materials.append(mat)
+	instance.material_override = mat
+	return instance
+
+
 ## Hover and spin, then the motion of a state at `progress` (0..1 through its clip; 1 holds, as a knocked-out drone).
 func pose(delta: float, state: StringName, progress: float) -> void:
 	_clock += delta
 	root.position.y = sin(_clock * _def.bob_speed) * _def.bob
-	var ring: MeshInstance3D = _parts.get(&"ring")
+	var ring: Node3D = _parts.get(&"ring")
 	if ring != null:
 		ring.rotation.y += delta * _def.spin * TAU
 	var tip: float = 0.0
