@@ -15,7 +15,7 @@ Plan: docs/design/v03-plan.md (B4 replaced by 3D characters). 3D spec: docs/desi
   `Rooftop.frame_speaker` not wired to dialogue. Sounds ui_* missing from sounds.json.
 
 ## Waiting on the owner
-- Done 2026-10-22: Quaternius zips and Flow pictures (inbox/).
+- Done: zips, pictures (inbox/).
 - Optional: Flow model pictures per docs/design/art-prompts-v03.md (Zayd with the hilt, the hilt alone, Bilqis,
    Abu Nabil): A-pose, grey background.
 
