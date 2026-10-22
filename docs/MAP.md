@@ -6,6 +6,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 
 ## (root)
 - `.godot-version`
+- `GEMINI.md`
 - `project.godot`
 
 ## .agents

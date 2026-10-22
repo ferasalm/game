@@ -65,3 +65,5 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-22 | Hilt stone slots: the Heirloom grandfather hilt has 3, other hilts fewer by rarity (Common 0); stones add passives or stats; Zayd's moves each get a distinct combat job (redesign by Game Designer, owner reviews) | Feras | Feras
 - 2026-10-22 | Zayd kit (docs/design/zayd-moves.md): one job per move; heirloom gives the counter stance, not elder_cut; no enemy interrupts in v0.3 | Feras (recommended) | Feras
 - 2026-10-22 | Hilt stones (docs/design/hilt-stones.md): heirloom slots open with the story 1 -> 2 -> 3, no resonance; stones bought at the bench and found; free removal | Feras | Feras
+- 2026-10-22 | One task per chat, done directly; subagents only for big isolated builds or read-only audits, at most 2 at once | 7 parallel agents used 83% of the 5-h window in under an hour | Feras
+- 2026-10-22 | Gemini 3.8 Flash (agy) builds well-specified tasks from Claude's briefs in its own branch/worktree (rules: GEMINI.md); Claude reviews, runs check.sh, merges | Gemini usage is outside the Claude limit | Feras

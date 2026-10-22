@@ -25,6 +25,8 @@ zayd-moves.md (new kit), hilt-stones.md (stones). Owner decisions 2026-10-22: DE
 - Sonnet medium by default; high only for big builds; Opus only for lead, design and review.
 
 ## Next steps (one per chat)
+0. Gemini builder (agy): rules in GEMINI.md (verified loading). Headless commands still blocked (LESSONS 6);
+   first Gemini task = Zayd kit from a Claude brief, run by Feras in an agy terminal in its own worktree.
 1. Finish B4 in its worktree (fresh Technical Artist agent, Sonnet high, no isolation), review renders, merge.
    Model: Opus lead (medium). Effort: high for the builder.
 2. Zayd kit (zayd-moves.md + hilt-stones.md PerkDef kinds), then stones (hilt-stones.md): one Sonnet high
