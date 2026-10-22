@@ -30,7 +30,7 @@ var talk_spots: Array[TalkSpot] = []
 var dressing: AreaDressing
 var camera: Camera3D
 var blocks: Node3D
-var camera_rig: ExploreCamera
+var camera_rig: FollowCameraRig
 
 var _actors: AreaActors
 var _rules: ExploreRulesDef
@@ -67,6 +67,8 @@ func _ready() -> void:
 	camera_rig = world.camera_rig
 	camera_rig.intro_finished.connect(freeze_actors.bind(false))
 	_build_actors()
+	camera_rig.set_actors(player, follower)
+	camera_rig.set_zones(_area.places_of(&"camera_zone"))
 	_debug = RooftopDebug.new()
 	_debug.setup(_flow, tr(_area.name_key))
 	add_child(_debug)

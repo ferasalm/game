@@ -120,6 +120,20 @@
           ]
         },
         {
+          "kind": "camera_zone",
+          "id": "camera_zone_overlook",
+          "rect": [
+            6.0,
+            1.0,
+            14.0,
+            3.0
+          ],
+          "yaw": 0.0,
+          "pitch": 20.0,
+          "distance": 8.0,
+          "fov": 45.0
+        },
+        {
           "kind": "patrol",
           "id": "patrol_c",
           "encounter": "rooftop_patrol",
