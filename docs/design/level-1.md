@@ -92,7 +92,8 @@ walks south (timing). Clearances and lane rules: rooftop-v3 section 3.
 4. tayramana (agy, after 1): interior scene, door fade, sit, the talk (Claude writes the lines), qishr reward.
 5. valve-beat (agy, after 3): valve interact, the water fill (channel shader and sabil overflow), the camera move.
 6. dressing (opencode or agy, after the owner plays 3): the 2150 props of section 5 as prop JSON, horizon life.
-7. look (after the owner picks a painted route): the chosen route applied to all of the above.
+7. look: route B (owner pick 2026-10-23): painted skins (skin-bake, opencode, running), the oil-baked world kept,
+   softer flat light; every new prop and room goes through the same bake.
 Claude: this design, the briefs, the talk lines, every review and render judgment. Owner: the look pick, play checks.
 
 ## 9. Questions for Feras (recommended first)

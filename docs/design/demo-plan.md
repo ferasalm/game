@@ -5,13 +5,13 @@ timeline battle in the arena; the action-combat overhaul replaces it after the d
 
 ## Scope
 In: title -> opening pan -> level 1 (commons, workshop alcove, stall, sabil, tayramana, corridor, vista, bridge, east
-roof, valve) -> end card; the chosen painted look; camera-v2; 3 patrols + optional Abu Nabil; saves; music already in.
+roof, valve) -> end card; painted route B; camera-v2; 3 patrols + optional Abu Nabil; saves; music already in.
 Out: Chapter 1's cistern and station, Hamoud, action combat, Arabic, new characters beyond the Rodin cast.
 
 ## Milestones (each ends with renders for Feras and a play check by him)
 | M | Content | Builders | Gate |
 |---|---|---|---|
-| M1 Foundations | camera-v2; workbench; look pick | agy x2 (running); Feras picks | Feras walks the rooftop with the new camera |
+| M1 Foundations | camera-v2; workbench; skin-bake (route B) | agy x2, opencode (running) | Feras walks the rooftop with the new camera |
 | M2 Grey box | level1-blockout (rooftop-v3 + level-1 deltas) | agy | Feras plays the grey box; layout locks |
 | M3 Beats | tayramana interior + talk; valve beat + water | agy x2; Claude writes the lines | Feras plays both beats |
 | M4 Look and dress | chosen painted route; 2150 dressing; horizon life | Claude (look) + agy/opencode (props) | renders side by side with M2 |
@@ -25,6 +25,5 @@ Out: Chapter 1's cistern and station, Hamoud, action combat, Arabic, new charact
 - Feras: the look pick, play checks at every gate, any download (export templates), art from Gemini/Flow if wanted.
 
 ## Risks
-- The painted route he picks may change how much dressing is worth doing in 3D: M4 waits for the pick.
-- Route C (sprites) would lock the camera angle and undo camera-v2: decide before M2.
+- Route B (picked) stays visibly 3D if the light is not flattened enough: judge M4 renders against route_b.png.
 - A 60 FPS miss on the laptop: fps_probe at every gate, not only at M5.
