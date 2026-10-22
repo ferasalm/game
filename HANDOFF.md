@@ -14,15 +14,14 @@ demo-plan, level-1 (five roofs), valve-puzzles; older: characters-3d, identity, 
   blockout run (old two-terrace layout) was stopped unbuilt; its brief is rewritten for five roofs.
 - opencode CLI 1.19.4 installed (own data folder), tools/oc_task.sh + oc_review.sh, AGENTS.md, opencode.json. Free
   models said "Free usage limit reached"; owner: wait for the reset ($0). No completed opencode run yet.
-- agy running: skin-bake (route B skins, Python). The Abu Nabil session (local_fcbcec7e...) runs agy
-  abu-nabil-world and owns features/combat, dialogue, items, economy, prototype until it merges. Max 3 runs total.
+- skin-bake merged: painted skins in assets/textures/painted/skin/ (not wired into models.json yet). The Abu Nabil session (local_fcbcec7e...) runs agy abu-nabil-world and owns features/combat, dialogue, items, economy, prototype until it merges. Max 3 runs total.
 
 ## Waiting on the owner
 - A Google Flow concept of the five roofs (prompt given in chat 2026-10-23), saved to inbox/.
 - Play the new camera once the blockout is in (M1 gate).
 
 ## Next steps (one per chat)
-1. Review and merge skin-bake; wire the painted skins into content/art/models.json; launch level1-blockout
+1. Wire the painted skins (assets/textures/painted/skin/) into content/art/models.json; launch level1-blockout
    (docs/briefs/level1-blockout.md); review it with renders for Feras; then crossings, tayramana (after the Abu
    Nabil merge), storm, valve-puzzles briefs (level-1.md 8). Retry opencode with a tiny prompt first.
    Model: Opus. Effort: high.
