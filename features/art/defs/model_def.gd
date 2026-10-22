@@ -33,6 +33,8 @@ var run_speed: float = 2.6
 var turn_speed: float = 900.0  ## degrees per second
 var lean_gain: float = 1.2  ## degrees of lean per m/s^2 of acceleration (capped by the rules' lean_degrees)
 var parts: Array[ModelPartDef] = []
+## States played mirrored left-right (a pose_source model): a hero's tech moves cast from the prosthetic right arm.
+var mirror_states: Array[StringName] = []
 ## Rigid models: hover bob (metres, per second) and the speed of the spinning ring (turns per second).
 var bob: float = 0.0
 var bob_speed: float = 0.0
@@ -68,9 +70,21 @@ func read(r: DefReader) -> void:
 		var made := ModelPartDef.new()
 		made.read(part)
 		parts.append(made)
-	bob = r.number("bob", 0.0, 1.0, 0.0, false)
+	mirror_states = r.id_list("mirror_states")
+	for state: StringName in mirror_states:
+		if not CharacterVisual.STATES.has(state):
+			r.problem("mirror_states", "unknown state '%s'" % state)
+	bob =r.number("bob", 0.0, 1.0, 0.0, false)
 	bob_speed = r.number("bob_speed", 0.0, 30.0, 0.0, false)
 	spin = r.number("spin", 0.0, 20.0, 0.0, false)
+
+
+## True when the clip `clip_id` plays for a mirrored state.
+func mirrors(clip_id: StringName) -> bool:
+	for state: StringName in mirror_states:
+		if states.get(String(state), "") == String(clip_id):
+			return true
+	return false
 
 
 func references() -> Array[Array]:

@@ -9,6 +9,7 @@
      "anchors": {"hand": "hand_r", "head": "Head", "belt": "pelvis"},
      "states": {"idle": "idle", "walk": "walk", "run": "run", "attack": "sword_attack", "cast": "spell_cast",
                 "hurt": "hit_chest", "ko": "death", "victory": "dance", "item": "pickup"},
+     "mirror_states": ["cast"],
      "stride_m": 1.4, "run_stride_m": 3.6, "idle_speed": 0.1, "run_speed": 2.6, "turn_speed": 900.0,
      "parts": [
        {"id": "grandfather_hilt", "kind": "hilt", "bone": "pelvis", "offset": [0.0, 0.07, 0.15],

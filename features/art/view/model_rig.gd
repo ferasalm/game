@@ -74,10 +74,11 @@ func build(model_def: ModelDef, holder: Node3D) -> bool:
 	return true
 
 
-## Moves the body to the pose source's current pose (call after every advance; nothing without a pose source).
-func follow() -> void:
+## Moves the body to the pose source's current pose, left-right mirrored when asked (call after every advance; nothing
+## without a pose source).
+func follow(mirrored: bool = false) -> void:
 	if pose != null:
-		pose.apply()
+		pose.apply(mirrored)
 
 
 ## The hidden body that plays the clips for a `pose_source` model; false when its scene or skeleton is missing.

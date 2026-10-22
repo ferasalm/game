@@ -1,7 +1,8 @@
 extends TestCase
 ## Retargeting (PoseMatch, PoseFollow): the swing turns one direction into another, the per-bone offset makes the
 ## target bone point where the source bone points (at rest and after a turn), the hips travel scales with hip height,
-## and a pose_source model's body follows its hidden source (Zayd's Rodin model stands up with the hand below the head).
+## and a pose_source model's body follows its hidden source (Zayd's Rodin model stands up with the hand below the head);
+## mirrored, the other arm does the move (Zayd's cast raises his prosthetic right arm).
 
 
 func test_swing_turns_from_into_to() -> void:
@@ -51,4 +52,37 @@ func test_a_pose_source_body_follows() -> void:
 	var foot: Vector3 = rig.bone_position("foot_l")
 	check(foot.y < hand.y and hand.y < head.y, "feet < hand < head after following (%s, %s, %s)" % [foot.y, hand.y, head.y])
 	check(head.y > rig.native_height * 0.75, "the body stands up (head at %.2f of %.2f)" % [head.y, rig.native_height])
+	holder.free()
+
+
+func test_mirror_names_and_reflection() -> void:
+	check(PoseMatch.mirror_name("hand_l") == "hand_r" and PoseMatch.mirror_name("calf_r") == "calf_l", "l <-> r")
+	check(PoseMatch.mirror_name("spine_02") == "spine_02", "a centre bone is its own mirror")
+	var xf := Transform3D(Basis(Vector3(0, 1, 1).normalized(), 0.7), Vector3(0.3, 1.2, -0.1))
+	var flipped: Transform3D = PoseMatch.reflect(xf)
+	check(flipped.origin.is_equal_approx(Vector3(-0.3, 1.2, -0.1)), "the position mirrors in x")
+	check(is_equal_approx(flipped.basis.determinant(), 1.0), "the reflected rotation is still a rotation")
+	check(PoseMatch.reflect(flipped).is_equal_approx(xf), "reflecting twice gives the start back")
+
+
+func test_a_mirrored_cast_raises_the_other_arm() -> void:
+	var def := ContentDB.get_def("model", &"zayd") as ModelDef
+	if def.pose_source.is_empty():
+		return
+	check(def.mirrors(StringName(def.states["cast"])), "zayd's cast clip plays mirrored")
+	check(not def.mirrors(StringName(def.states["attack"])), "his attack does not")
+	var holder := Node3D.new()
+	tree.root.add_child(holder)
+	var rig := ModelRig.new()
+	rig.build(def, holder)
+	rig.player.play(&"Spell_Simple_Enter")
+	rig.player.advance(0.45)
+	rig.follow(false)
+	var left: float = rig.bone_position("hand_l").y
+	var right: float = rig.bone_position("hand_r").y
+	rig.follow(true)
+	var gap: float = absf(left - right)
+	check(gap > 0.05 * rig.native_height, "the clip raises one hand (gap %.2f)" % gap)
+	check(absf(rig.bone_position("hand_r").y - left) < gap * 0.35, "mirrored, the right hand takes the left's height")
+	check(absf(rig.bone_position("hand_l").y - right) < gap * 0.35, "and the left hand the right's")
 	holder.free()

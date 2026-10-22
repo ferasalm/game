@@ -33,3 +33,18 @@ static func offset(source_rest: Basis, target_rest: Basis, source_dir: Vector3, 
 static func hips(target_rest: Vector3, source_rest: Vector3, source_now: Vector3) -> Vector3:
 	var ratio: float = target_rest.y / source_rest.y if absf(source_rest.y) > 0.001 else 1.0
 	return target_rest + (source_now - source_rest) * ratio
+
+
+## The bone on the other side: `hand_l` <-> `hand_r`; a centre bone (`spine_02`) is its own.
+static func mirror_name(bone: String) -> String:
+	if bone.ends_with("_l"):
+		return bone.left(-2) + "_r"
+	if bone.ends_with("_r"):
+		return bone.left(-2) + "_l"
+	return bone
+
+
+## A model-space transform reflected left-right (x -> -x): a proper rotation again, with the position mirrored.
+static func reflect(xf: Transform3D) -> Transform3D:
+	var flip := Basis(Vector3(-1, 0, 0), Vector3(0, 1, 0), Vector3(0, 0, 1))
+	return Transform3D(flip * xf.basis * flip, flip * xf.origin)
