@@ -2612,6 +2612,62 @@
       "prompt": "Concession Clash"
     },
     {
+      "id": "music_title_theme",
+      "path": "audio/music/title_theme.ogg",
+      "source": "flow music (flowmusic.app, Lyria), owner-generated; owner's .wav converted to Ogg Vorbis (~120 kbps, 48 kHz, libsndfile)",
+      "licence": "Google Flow Music output, owner-generated; check Flow Music terms before a commercial release",
+      "prompt": "docs/design/music.md (title_theme)"
+    },
+    {
+      "id": "music_explore_souq",
+      "path": "audio/music/explore_souq.ogg",
+      "source": "flow music (flowmusic.app, Lyria), owner-generated; owner's .wav converted to Ogg Vorbis (~120 kbps, 48 kHz, libsndfile)",
+      "licence": "Google Flow Music output, owner-generated; check Flow Music terms before a commercial release",
+      "prompt": "docs/design/music.md (explore_souq)"
+    },
+    {
+      "id": "music_sabil_serenity",
+      "path": "audio/music/sabil_serenity.ogg",
+      "source": "flow music (flowmusic.app, Lyria), owner-generated; owner's .wav converted to Ogg Vorbis (~120 kbps, 48 kHz, libsndfile)",
+      "licence": "Google Flow Music output, owner-generated; check Flow Music terms before a commercial release",
+      "prompt": "docs/design/music.md (sabil_serenity)"
+    },
+    {
+      "id": "music_workshop_bench",
+      "path": "audio/music/workshop_bench.ogg",
+      "source": "flow music (flowmusic.app, Lyria), owner-generated; owner's .wav converted to Ogg Vorbis (~120 kbps, 48 kHz, libsndfile)",
+      "licence": "Google Flow Music output, owner-generated; check Flow Music terms before a commercial release",
+      "prompt": "docs/design/music.md (workshop_bench)"
+    },
+    {
+      "id": "music_battle_2",
+      "path": "audio/music/battle_2.ogg",
+      "source": "flow music (flowmusic.app, Lyria), owner-generated; owner's .wav converted to Ogg Vorbis (~120 kbps, 48 kHz, libsndfile)",
+      "licence": "Google Flow Music output, owner-generated; check Flow Music terms before a commercial release",
+      "prompt": "docs/design/music.md (battle_2)"
+    },
+    {
+      "id": "music_battle_3",
+      "path": "audio/music/battle_3.ogg",
+      "source": "flow music (flowmusic.app, Lyria), owner-generated; owner's .wav converted to Ogg Vorbis (~120 kbps, 48 kHz, libsndfile)",
+      "licence": "Google Flow Music output, owner-generated; check Flow Music terms before a commercial release",
+      "prompt": "docs/design/music.md (battle_3)"
+    },
+    {
+      "id": "music_boss_abu_nabil",
+      "path": "audio/music/boss_abu_nabil.ogg",
+      "source": "flow music (flowmusic.app, Lyria), owner-generated; owner's .wav converted to Ogg Vorbis (~120 kbps, 48 kHz, libsndfile)",
+      "licence": "Google Flow Music output, owner-generated; check Flow Music terms before a commercial release",
+      "prompt": "docs/design/music.md (boss_abu_nabil)"
+    },
+    {
+      "id": "music_victory",
+      "path": "audio/music/victory.ogg",
+      "source": "flow music (flowmusic.app, Lyria), owner-generated; owner's .wav converted to Ogg Vorbis (~120 kbps, 48 kHz, libsndfile)",
+      "licence": "Google Flow Music output, owner-generated; check Flow Music terms before a commercial release",
+      "prompt": "docs/design/music.md (victory)"
+    },
+    {
       "id": "zayd",
       "path": "textures/painted/figures/zayd.webp",
       "source": "google flow, owner-generated",

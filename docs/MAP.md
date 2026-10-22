@@ -25,9 +25,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/art/palette.json`: content: palette x1
 - `content/art/sprites.json`: content: sprite x5
 - `content/art/visual.json`: content: visual_rules x1
-- `content/audio/music.json`: content: music x9
+- `content/audio/music.json`: content: music x10
 - `content/audio/rules.json`: content: audio_rules x1
-- `content/audio/screen_music.json`: content: screen_music x7
+- `content/audio/screen_music.json`: content: screen_music x3
 - `content/audio/sounds.json`: content: sound x34
 - `content/combat/actions.json`: content: action x18
 - `content/combat/arena_skyline.json`: content: skyline x1
@@ -157,6 +157,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/audio/logic/music_stack.gd`: Pure stack of open screen ids deciding which music track plays (content/audio/screen_music.json)
 - `features/audio/logic/sound_logic.gd`: Pure sound rules: which variant to play, which sound a move uses, when the next footstep is due, and the item chime boost for a rarity
 - `features/audio/tests/test_audio.gd`: Audio: every sound and music entry is well formed, every sfx file exists, every vfx id has a sound, the pure sound rules hold, and the AudioDirector builds its buses, plays headless and skips missing music
+- `features/audio/tests/test_music_choices.gd`: The owner's music choices (DECISIONS 2026-10-22): menus and the herb stall keep the area music (no screen maps them), every patrol names one of the three battle themes and all three are used, and every track's file exists
 - `features/audio/tests/test_music_contexts.gd`: Tests for music contexts: pure stack resolution across all branches, missing file fallback resolution, validation of screen_music definitions, pause process mode, and track resume positions
 - `features/audio/tests/test_sound_ids.gd`: Sound ids: every id the code asks the AudioDirector for exists in sounds.json with existing files, and the synthesized Arc Discharge files are 44.1 kHz mono, 0.6-0.9 s long and peak under -1 dBFS
 - `features/audio/view/music_deck.gd`: The music side of the AudioDirector: two players so one track crossfades into the next, a duck under stingers, and a pure stack of screen music contexts (content/audio/screen_music.json)
@@ -166,7 +167,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/defs/battle_rules_def.gd`: The tunable numbers of one battle ruleset: damage and heal formula factors, SP gain, the stall guard, start ranges and the two thresholds BattleAI uses for heals and guards
 - `features/combat/defs/battle_view_def.gd`: Layout and pacing numbers of the battle screen (content/combat/view.json): camera, where each formation slot stands, ticks per frame, hit-stop and banner times, floating-text sizes, HUD sizes and colours
 - `features/combat/defs/combatant_def.gd`: One kind of fighter (a party member or an enemy type): base stats and the actions it can use
-- `features/combat/defs/encounter_def.gd`: One battle setup: which enemies stand in which formation slots, which slots the party takes, and the guaranteed rewards (equippable loot ids, riyal and consumables, no randomness) granted after a win
+- `features/combat/defs/encounter_def.gd`: One battle setup: which enemies stand in which formation slots, which slots the party takes, and the guaranteed rewards (equippable loot ids, riyal and consumables, no randomness) granted after a win, and its music
 - `features/combat/defs/juice_def.gd`: The "feel" numbers of a battle (content/combat/juice.json): how hard hitstop freezes, how the BREAK flash and the damage numbers pop and bounce, how a camera shake decays
 - `features/combat/defs/status_def.gd`: One status effect: how long it lasts and how it changes timeline speed, interrupt immunity and the damage the afflicted unit takes (guarded: 0.6 means 40% less)
 - `features/combat/defs/vfx_def.gd`: One battle effect kind (content/combat/vfx.json, id = an ActionDef.VFX_KINDS entry): when the hit lands, the hitstop and camera shake / push it earns, and the layers of pooled sprites it paints

@@ -21,22 +21,8 @@
    "fallback": "night_rooftops"
   },
   {
-   "id": "menu_bag",
-   "path": "res://assets/audio/music/menu_bag.ogg",
-   "volume_db": -6.0,
-   "loop": true,
-   "fallback": "night_rooftops"
-  },
-  {
    "id": "sabil_serenity",
    "path": "res://assets/audio/music/sabil_serenity.ogg",
-   "volume_db": -6.0,
-   "loop": true,
-   "fallback": "night_rooftops"
-  },
-  {
-   "id": "merchant_stall",
-   "path": "res://assets/audio/music/merchant_stall.ogg",
    "volume_db": -6.0,
    "loop": true,
    "fallback": "night_rooftops"
@@ -54,6 +40,27 @@
    "volume_db": -6.0,
    "loop": true,
    "fallback": "night_rooftops"
+  },
+  {
+   "id": "battle_2",
+   "path": "res://assets/audio/music/battle_2.ogg",
+   "volume_db": -6.0,
+   "loop": true,
+   "fallback": "battle"
+  },
+  {
+   "id": "battle_3",
+   "path": "res://assets/audio/music/battle_3.ogg",
+   "volume_db": -6.0,
+   "loop": true,
+   "fallback": "battle"
+  },
+  {
+   "id": "boss_abu_nabil",
+   "path": "res://assets/audio/music/boss_abu_nabil.ogg",
+   "volume_db": -6.0,
+   "loop": true,
+   "fallback": "battle"
   },
   {
    "id": "victory",

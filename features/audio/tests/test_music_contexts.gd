@@ -133,17 +133,13 @@ func test_fallback_resolution_chains_and_missing() -> void:
 
 func test_every_screen_music_entry_names_real_screen_and_music() -> void:
 	var screen_ids: Array[StringName] = ContentDB.ids("screen_music")
-	check(screen_ids.size() >= 6, "at least 6 screen music entries loaded")
+	check(screen_ids.size() >= 3, "sabil, workshop and title have their own music")
 	for sid: StringName in screen_ids:
 		var sm := ContentDB.get_def("screen_music", sid) as ScreenMusicDef
 		check(sm != null, "entry exists: " + sid)
 		check(Screens.has_screen(sm.id), "real screen id: " + sm.id)
 		check(ContentDB.get_def("music", sm.music) != null, "real music id: " + sm.music)
 
-	check_eq((ContentDB.get_def("screen_music", &"pause") as ScreenMusicDef).music, &"menu_bag", "pause -> menu_bag")
-	check_eq((ContentDB.get_def("screen_music", &"items") as ScreenMusicDef).music, &"menu_bag", "items -> menu_bag")
-	check_eq((ContentDB.get_def("screen_music", &"equipment") as ScreenMusicDef).music, &"menu_bag", "equipment -> menu_bag")
-	check_eq((ContentDB.get_def("screen_music", &"shop") as ScreenMusicDef).music, &"merchant_stall", "shop -> merchant_stall")
 	check_eq((ContentDB.get_def("screen_music", &"sabil") as ScreenMusicDef).music, &"sabil_serenity", "sabil -> sabil_serenity")
 	check_eq((ContentDB.get_def("screen_music", &"workshop") as ScreenMusicDef).music, &"workshop_bench", "workshop -> workshop_bench")
 	check_eq((ContentDB.get_def("screen_music", &"title") as ScreenMusicDef).music, &"title_theme", "title -> title_theme")

@@ -153,7 +153,8 @@ func start_battle(request: BattleRequest) -> void:
 	_set_state(STATE_BATTLE)
 	_port.suspend()
 	EventBus.battle_started.emit(request.encounter_id)
-	AudioDirector.play_music(flow.battle_music)
+	var encounter := ContentDB.get_def("encounter", request.encounter_id) as EncounterDef
+	AudioDirector.play_music(encounter.music if encounter != null and encounter.music != &"" else flow.battle_music)
 	_session = BattleSession.new(_port.host(), request)
 	_session.stage_created.connect(stage_created.emit)
 	_session.finished.connect(_return_to_area)

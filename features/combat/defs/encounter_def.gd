@@ -1,7 +1,7 @@
 class_name EncounterDef
 extends Def
 ## One battle setup: which enemies stand in which formation slots, which slots the party takes, and the
-## guaranteed rewards (equippable loot ids, riyal and consumables, no randomness) granted after a win.
+## guaranteed rewards (equippable loot ids, riyal and consumables, no randomness) granted after a win, and its music.
 
 var name_key: String = ""
 var enemies: Array[StringName] = []
@@ -11,6 +11,7 @@ var loot: Array[StringName] = []
 ## Riyal paid for the first win; a repeat win pays rules.repeat_payout of it (items and herbs only the first time).
 var money: int = 0
 var consumables: Dictionary[StringName, int] = {}
+var music: StringName = &""  ## its battle track; empty = the flow's battle_music
 
 
 func read(r: DefReader) -> void:
@@ -22,6 +23,7 @@ func read(r: DefReader) -> void:
 	loot = r.id_list("loot")
 	money = r.integer("money", 0, 9999, 0, false)
 	consumables = CountMap.read(r, "consumables")
+	music = StringName(r.text("music", "", false))
 	if enemies.is_empty() or enemies.size() != enemy_slots.size():
 		r.problem("enemy_slots", "needs one slot per enemy (and at least one enemy)")
 	if party_slots.is_empty():
@@ -34,4 +36,6 @@ func references() -> Array[Array]:
 		out.append(["combatant", enemy_id])
 	for item_id: StringName in loot:
 		out.append(["item", item_id])
+	if music != &"":
+		out.append(["music", music])
 	return out
