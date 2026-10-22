@@ -3184,6 +3184,27 @@
       "source": "github.com/google/fonts (Noto Sans Old South Arabian)",
       "licence": "SIL Open Font Licence 1.1",
       "prompt": ""
+    },
+    {
+      "id": "sfx_qarnaw_arc_discharge_01",
+      "path": "audio/sfx/qarnaw/arc_discharge_01.wav",
+      "source": "made by script tools/audio/arc_synth.py",
+      "licence": "CC0 (own work)",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_qarnaw_arc_discharge_02",
+      "path": "audio/sfx/qarnaw/arc_discharge_02.wav",
+      "source": "made by script tools/audio/arc_synth.py",
+      "licence": "CC0 (own work)",
+      "prompt": ""
+    },
+    {
+      "id": "sfx_qarnaw_arc_discharge_03",
+      "path": "audio/sfx/qarnaw/arc_discharge_03.wav",
+      "source": "made by script tools/audio/arc_synth.py",
+      "licence": "CC0 (own work)",
+      "prompt": ""
     }
   ]
 }
