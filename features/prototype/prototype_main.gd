@@ -122,12 +122,8 @@ func _on_npc_talked(place_id: StringName) -> void:
 		_talk(dialogue_id)
 
 
-func _on_battle_ended(_encounter_id: StringName, victory: bool) -> void:
-	if victory:
-		TalkPicker.record_battle_won(GameState.flags)
-		if not GameState.flags.get(&"party_after_first_win_done", false):
-			GameState.flags[&"party_after_first_win_done"] = true
-			_talk(&"party_after_first_win")
+func _on_battle_ended(encounter_id: StringName, victory: bool) -> void:
+	PrototypeBattleFlow.handle_battle_ended(encounter_id, victory, _talk)
 
 
 func _on_dialogue_finished(dialogue_id: StringName) -> void:

@@ -28,6 +28,9 @@ var last_frame: Image
 var stage: BattleStage:
 	get:
 		return _session.stage() if _session != null else null
+var last_battle_request: BattleRequest:
+	get:
+		return _session.request if _session != null else null
 
 var _port: AreaPort
 var _session: BattleSession  ## the last battle's; it holds no stage once the fight is over
@@ -76,22 +79,21 @@ func can_save() -> bool:
 
 
 func has_save(slot: int) -> bool:
-	return SaveService.new(save_dir).exists(slot)
+	return RouterSaves.has_save(save_dir, slot)
 
 
 func has_any_save() -> bool:
-	return SaveService.new(save_dir).has_any_save()
+	return RouterSaves.has_any_save(save_dir)
 
 
 func newest_slot() -> int:
-	return SaveService.new(save_dir).newest_slot()
+	return RouterSaves.newest_slot(save_dir)
 
 
 ## Writes the game to a slot. Returns "" or the reason it failed. The caller checks can_save (the sabil saves
 ## from its own screen).
 func save_slot(slot: int) -> String:
-	var service := SaveService.new(save_dir)
-	var err: String = "" if service.write(slot, GameState.to_dict()) else service.last_error
+	var err: String = RouterSaves.save_slot(save_dir, slot)
 	if err.is_empty():
 		last_slot = slot
 	return err
@@ -99,14 +101,11 @@ func save_slot(slot: int) -> String:
 
 ## Loads a slot (its backup when the file is damaged) and restarts the area from it. Returns "" or the reason.
 func load_slot(slot: int) -> String:
-	var service := SaveService.new(save_dir)
-	var data: Dictionary = service.read(slot)
-	if data.is_empty():
-		var why: String = service.last_error
-		data = service.read_backup(slot)
-		if data.is_empty():
-			return why
-		push_warning("Router: slot %d was damaged, loaded its backup" % slot)
+	var result: Array = RouterSaves.load_slot_data(save_dir, slot)
+	var data: Dictionary = result[0]
+	var err: String = result[1]
+	if not err.is_empty():
+		return err
 	var problem: String = GameState.from_dict(data)
 	if problem.is_empty():
 		last_slot = slot

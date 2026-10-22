@@ -21,6 +21,7 @@ var environment: Environment
 var look: LookDef
 ## The frame the area showed when the fight began, for the shatter warp in (null: no warp).
 var warp_frame: Image
+var practice: bool = false
 ## The cinematic rig that moves `camera` (swoop in, drift, push, shake, victory pose).
 var camera_rig: BattleCamera
 var vfx: VfxPlayer
@@ -61,7 +62,7 @@ func start(battle: BattleSim, anchor: Vector3) -> void:
 	_player.setup(sim, _view, fighters, hud, shown_hp)
 	_player.attach(_actions, juice, vfx)
 	_busy = true
-	if sim.ambush == 1:
+	if sim.ambush == 1 and sim.actions.has(&"reverse_stab"):
 		_turn_wielder_away()
 	if not instant and BattleShatter.can_play(warp_frame):
 		await _warp_in()
@@ -119,7 +120,7 @@ func _check_end() -> void:
 		camera_rig.victory()
 		fighters.cheer()
 		AudioDirector.play_music(&"victory")
-	if sim.result == &"defeat" and not auto_play and BattleEnding.open_defeat(_finish):
+	if sim.result == &"defeat" and not auto_play and not practice and BattleEnding.open_defeat(_finish):
 		return
 	hud.show_end(sim.result)
 	if auto_play:
