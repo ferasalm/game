@@ -14,6 +14,7 @@ const KINDS: Dictionary = {
 	"speaker": preload("res://features/dialogue/defs/speaker_def.gd"),
 	"dialogue": preload("res://features/dialogue/defs/dialogue_def.gd"),
 	"dialogue_style": preload("res://features/dialogue/defs/dialogue_style_def.gd"),
+	"talk": preload("res://features/dialogue/defs/talk_def.gd"),
 	"look": preload("res://features/world/defs/look_def.gd"),
 	"tile": preload("res://features/world/defs/tile_def.gd"),
 	"area": preload("res://features/world/defs/area_def.gd"),
