@@ -21,17 +21,20 @@ place_def, area_builder, area_dressing, prop_builder, walk_graph, camera_zone (c
    workshop interact (the workshop menu moves inside with the tayramana brief); (d) a place kind "valve"
    {id, x, z} at (21.5, 3.0) (prompt WORLD_PROMPT_TURN, no action yet); (e) four camera_zone places from level-1
    section 2 (spawn, vista strip, bridge, valve) with numbers you choose, then tune from renders.
+   (f) camera (owner 2026-10-23): "follow_side_deg": 32 in camera.json, the lazy yaw settles 32 deg to the right
+   of straight behind (a three-quarter view); camera_zone gains an optional "roll" (deg, eased in and out with the
+   zone, the camera rolls about its view axis); roll 6 in the valve zone and in a new zone at the east roof landing.
 3. Every rooftop-v3 section 5 rule as a test over the new area (reachability, 2 m width, bridge 3 cells, no traps,
    places reachable, patrol clearances >= 3.0). Drop the old camera-safety test (section 5 rule 7): the follow camera
    shortens its arm on walls now; say so in the test file's purpose line.
 
 ## Do NOT edit
-features/combat/, content/combat/, localization/combat.csv, features/world/view/follow_camera_rig.gd and
-features/world/logic/follow_cam.gd / framed_shots.gd (camera-v2's), content/world/props/workbench.json,
+features/combat/, content/combat/, localization/combat.csv, features/world/logic/framed_shots.gd, content/world/props/workbench.json,
 tools/art/, docs/design/, HANDOFF.md, docs/DECISIONS.md.
 
 ## Tests
-One per rule in item 3; the door and valve places parse and are reachable; the four camera zones parse.
+One per rule in item 3; the door and valve places parse and are reachable; the camera zones parse; FollowCam settles
+at the side angle; a zone's roll eases in and back to 0 outside it.
 
 ## Proof
 `bash tools/check.sh` raw last 15 lines; renders (not headless, LESSONS 2) from the play camera at spawn, the
