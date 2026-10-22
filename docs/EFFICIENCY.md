@@ -57,7 +57,12 @@ Claude subagents only where agy can't (art judgment loops, Opus code review), at
 Measured in session 9: 4 agy builds (~1,600 lines + tests) cost the Claude limit only their briefs and reviews; each
 still needed 1-3 small fixes (internal ids in text, a missing input lock, a fake test registration).
 
-## 3b. The agy loop
+## 3b. The builder loop (agy and opencode)
+Builders: agy (Gemini 3.8 Flash; tools/agy_task.sh, branch gemini/<task>) and opencode (free GLM 5.3 Flash or
+DeepSeek V4.1 Flash; tools/oc_task.sh, branch oc/<task>; setup docs/research/opencode-setup.md; rules AGENTS.md +
+opencode.json). Same brief, same review: tools/oc_review.sh mirrors agy_review.sh. Free opencode models may train on
+prompts: only this public repo goes into a brief, never keys or the owner's private files. At most 3 runs at once
+across both builders. Pick: agy for Godot code with tests; opencode for research, docs, content and second opinions.
 1. Brief from docs/briefs/TEMPLATE.md (<= 60 lines, a do-not-edit list so parallel runs never share files).
 2. `bash tools/agy_task.sh <task> docs/briefs/<task>.md claude/night-sanaa` in the background; at most 3 at once.
 3. `bash tools/agy_review.sh <task>`: report, check result, non-test code diff, new player text. Read nothing else
