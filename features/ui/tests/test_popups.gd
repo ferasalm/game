@@ -46,7 +46,7 @@ func test_area_title_card_shows_the_name() -> void:
 	var card := AreaTitleCard.new()
 	tree.root.add_child(card)
 	check(not card.is_showing(), "hidden at first")
-	card.show_card("AREA_SOUQ_NAME", "AREA_SOUQ_NAME_AR", "AREA_SUBTITLE")
+	card.show_card("AREA_SOUQ_NAME", "AREA_SOUQ_NAME_MUSNAD", "AREA_SUBTITLE")
 	check(card.is_showing(), "showing")
 	check_eq(card.name_text(), "Souq al-Milh Rooftops", "the English name")
 	card.dismiss()

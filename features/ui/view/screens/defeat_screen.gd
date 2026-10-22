@@ -23,7 +23,7 @@ func build(_args: Dictionary) -> void:
 	dark.set_anchors_preset(Control.PRESET_FULL_RECT)
 	dark.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(dark)
-	_panel = centred_panel(Ui.text("DEFEAT_TITLE"), Ui.text("DEFEAT_TITLE_AR"), style.size(&"s_defeat_w"),
+	_panel = centred_panel(Ui.text("DEFEAT_TITLE"), Ui.text("DEFEAT_TITLE_MUSNAD"), style.size(&"s_defeat_w"),
 			style.size(&"s_defeat_h"))
 	add_choice(_panel.body, "DEFEAT_RETRY", RETRY)
 	add_choice(_panel.body, "DEFEAT_LOAD", LOAD, Router.has_save(1))

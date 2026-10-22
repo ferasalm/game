@@ -1,6 +1,6 @@
 class_name ChoiceScreen
 extends UiScreen
-## Base of the small centred "pick one" screens (Sabil, Defeat): a framed panel with the Arabic + English title pair
+## Base of the small centred "pick one" screens (Sabil, Defeat): a framed panel with the Musnad + English title pair
 ## and a column of buttons in focus order. Each button closes the screen with its result (pressing = choose).
 
 var _choices: Array[Button] = []
@@ -9,12 +9,12 @@ var _default_index: int = 0
 
 
 ## A centred framed panel of the given width (and height when above zero); content goes into its body.
-func centred_panel(title_en: String, title_ar: String, width: int, height: int = 0) -> UiPanel:
+func centred_panel(title_en: String, title_musnad: String, width: int, height: int = 0) -> UiPanel:
 	var centre := CenterContainer.new()
 	centre.set_anchors_preset(Control.PRESET_FULL_RECT)
 	centre.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(centre)
-	var panel: UiPanel = Ui.panel(title_en, title_ar)
+	var panel: UiPanel = Ui.panel(title_en, title_musnad)
 	panel.custom_minimum_size = Vector2(width, height)
 	centre.add_child(panel)
 	return panel

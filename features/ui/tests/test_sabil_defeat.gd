@@ -79,8 +79,8 @@ func test_defeat_title_asks_first() -> void:
 
 
 func test_defeat_and_sabil_text_exists() -> void:
-	for key: String in ["SABIL_TITLE", "SABIL_TITLE_AR", "SABIL_ASK", "SABIL_DRINK", "SABIL_NOT_NOW", "SABIL_SAVED",
-			"SABIL_PATROLS", "SABIL_FAIL", "SABIL_PROMPT", "PROMPT_TALK", "PROMPT_OPEN", "DEFEAT_TITLE", "DEFEAT_TITLE_AR",
+	for key: String in ["SABIL_TITLE", "SABIL_TITLE_MUSNAD", "SABIL_ASK", "SABIL_DRINK", "SABIL_NOT_NOW", "SABIL_SAVED",
+			"SABIL_PATROLS", "SABIL_FAIL", "SABIL_PROMPT", "PROMPT_TALK", "PROMPT_OPEN", "DEFEAT_TITLE", "DEFEAT_TITLE_MUSNAD",
 			"DEFEAT_RETRY", "DEFEAT_LOAD", "DEFEAT_TITLE_MENU", "MONEY_GLYPH"]:
 		check(Ui.text(key) != key, "text for " + key)
 

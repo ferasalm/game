@@ -1,6 +1,6 @@
 class_name AreaTitleCard
 extends CanvasLayer
-## The area title card (centre left, no panel) that fades in when the opening shot ends: the Arabic name big over the
+## The area title card (centre left, no panel) that fades in when the opening shot ends: the Musnad name big over the
 ## English name, a gypsum frieze drawing left to right, a subtitle (place and year), then fading out. It takes no input.
 
 signal finished
@@ -17,8 +17,8 @@ func _ready() -> void:
 	add_child(_root)
 
 
-## Shows the card for the given localization keys (name, Arabic name, subtitle).
-func show_card(name_key: String, arabic_key: String, subtitle_key: String) -> void:
+## Shows the card for the given localization keys (name, Musnad name, subtitle).
+func show_card(name_key: String, musnad_key: String, subtitle_key: String) -> void:
 	if _block != null:
 		_tween.kill()
 		_root.remove_child(_block)
@@ -30,11 +30,11 @@ func show_card(name_key: String, arabic_key: String, subtitle_key: String) -> vo
 	_block.custom_minimum_size.x = style.size(&"s_area_w")
 	_block.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var latin: Label = Ui.label(Ui.text(name_key), &"TitleLabel", style.colour(&"c_gypsum"))
-	var arabic: Label = Ui.label(Ui.text(arabic_key), &"BannerLabel")
-	arabic.language = "ar"
+	var musnad: Label = Ui.label(Ui.text(musnad_key), &"MusnadLabel", style.colour(&"c_brass"))
+	musnad.add_theme_font_size_override("font_size", style.size(&"s_font_big"))
 	var subtitle: Label = Ui.label(Ui.text(subtitle_key), &"CaptionLabel", style.colour(&"c_muted"))
 	_latin = latin
-	_block.add_child(arabic)
+	_block.add_child(musnad)
 	_block.add_child(latin)
 	var band: TextureRect = Ui.divider()
 	band.custom_minimum_size.x = 0.0
