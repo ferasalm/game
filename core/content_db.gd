@@ -29,6 +29,7 @@ const KINDS: Dictionary = {
 	"loadout": preload("res://features/jambiyah/defs/loadout_def.gd"),
 	"sound": preload("res://features/audio/defs/sound_def.gd"),
 	"music": preload("res://features/audio/defs/music_def.gd"),
+	"screen_music": preload("res://features/audio/defs/screen_music_def.gd"),
 	"audio_rules": preload("res://features/audio/defs/audio_rules_def.gd"),
 	"building": preload("res://features/world/defs/building_def.gd"),
 	"skyline": preload("res://features/world/defs/skyline_def.gd"),
