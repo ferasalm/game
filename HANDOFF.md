@@ -7,7 +7,7 @@ Plan: docs/design/v03-plan.md (B4 replaced by 3D characters). 3D spec: docs/desi
 - Merged: Phase 1, spike, B1, B2, B3, B5, B6 (git log).
 - Contract stubs for B4 are on the branch: ModelSource, ModelDef (kind `model`), `face_dir`, `hit_stop`,
   `visual_rules.default_source`. Characters are still the old pixel sprites (fallback source).
-- Not seen by the owner yet: v0.3 in play. Renders: inbox/b3/ (world), inbox/spike/ (looks).
+- Owner has not played v0.3 yet.
 - Open numbers: fps_probe 81.7 on the rooftop with look B (target 90; >= 60 on the Latitude holds). Balance
   harness: rooftop_patrol 73-88% without herbs but 99-100% with herbs; patrol_pair and patrol_drone 100%
   (B5's placeholder encounters). Cut-away FPS while active not measured. Title menu (New/Continue/Quit) not built.
