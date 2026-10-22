@@ -34,8 +34,8 @@ Phase 2. Specs in docs/design/: v03-plan, characters-3d (8 = Rodin pipeline), id
 1. Demo push (new chat, Opus high, managing cheap builders): set up opencode (GLM 5.3 Flash, DeepSeek V4.1 Flash)
    beside agy; render the 3 painted routes side by side for Feras; the Brothers-style camera; design level 1 and the
    cyberpunk rooftop souq (docs/design/level-1.md); a demo plan. Model: Opus. Effort: high.
-2. agy's abu-nabil-combat (timeline combat, ../game-wt/abu-nabil-combat): review only if Feras still wants it, since
-   combat turns action later; else close it. Model: Sonnet. Effort: medium.
+2. agy's abu-nabil-combat (../game-wt/abu-nabil-combat): Feras: let agy finish it; then review + merge
+   (`bash tools/agy_review.sh abu-nabil-combat`); the timeline stays until the overhaul. Model: Sonnet. Effort: medium.
 3. Action combat overhaul (parry, counter, dodge, light/heavy, lock-on) after the environment. Model: Opus. Effort: high.
 4. Architecture fixes via agy/opencode (audit top 5); balance (WIP branch). Model: Sonnet. Effort: medium.
 
