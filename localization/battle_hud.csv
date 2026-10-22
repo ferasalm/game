@@ -1,0 +1,5 @@
+keys,en
+BATTLE_UNIT_LETTERED,%s %s
+BATTLE_TARGET,Target: %s
+BATTLE_INTENT_LINE,Casting: %s
+BATTLE_IDLE_LINE,Ready
