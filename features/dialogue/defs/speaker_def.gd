@@ -32,4 +32,8 @@ func read(r: DefReader) -> void:
 
 
 func references() -> Array[Array]:
+	if sprite.is_empty():
+		return []
+	if ContentDB.get_def("model", sprite) != null:
+		return [["model", sprite]]
 	return [["sprite", sprite]]
