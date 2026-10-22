@@ -67,4 +67,4 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-23 | Priority: environment and levels (level 1, the cyberpunk rooftop souq), turning the prototype into a demo | Feras | Feras
 - 2026-10-23 | Camera: close third-person follow with a wide view outdoors (Brothers: A Tale of Two Sons), semi-fixed framed shots indoors (refs inbox/camera-refs/) | Feras | Feras
 - 2026-10-23 | Builders: opencode free models (GLM 5.3 Flash, DeepSeek V4.1 Flash) join agy (Gemini 3.8 Flash) for briefable work and research; Claude manages, briefs, reviews | save the Claude limit | Feras
-- 2026-10-23 | Painted look: render the 3 routes (screen filter, repainted textures, Hades-style sprite frames) side by side before choosing; live 3D stands until then | Feras wants to see them | Feras
+- 2026-10-23 | Painted look: route B, repainted textures on live 3D (oil-baked world, painted character skins, soft flat light); no screen filter, no sprite frames | Feras picked it from inbox/painted_routes.png | Feras

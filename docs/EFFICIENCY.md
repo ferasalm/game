@@ -58,8 +58,8 @@ Measured in session 9: 4 agy builds (~1,600 lines + tests) cost the Claude limit
 still needed 1-3 small fixes (internal ids in text, a missing input lock, a fake test registration).
 
 ## 3b. The builder loop (agy and opencode)
-Builders: agy (Gemini 3.8 Flash; tools/agy_task.sh, branch gemini/<task>) and opencode (free GLM 5.3 Flash or
-DeepSeek V4.1 Flash; tools/oc_task.sh, branch oc/<task>; setup docs/research/opencode-setup.md; rules AGENTS.md +
+Builders: agy (Gemini 3.8 Flash; tools/agy_task.sh, branch gemini/<task>) and opencode (free opencode/glm-5.3-flash-free or
+opencode/deepseek-v4.1-flash-free, no sign-in; CLI 1.19.4 via npm; tools/oc_task.sh, branch oc/<task>; setup docs/research/opencode-setup.md; rules AGENTS.md +
 opencode.json). Same brief, same review: tools/oc_review.sh mirrors agy_review.sh. Free opencode models may train on
 prompts: only this public repo goes into a brief, never keys or the owner's private files. At most 3 runs at once
 across both builders. Pick: agy for Godot code with tests; opencode for research, docs, content and second opinions.
