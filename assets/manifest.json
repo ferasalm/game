@@ -3009,6 +3009,181 @@
       "source": "own",
       "licence": "own",
       "prompt": "painterly_bake"
+    },
+    {
+      "id": "char_eyebrows_female_bin",
+      "path": "characters/eyebrows_female.bin",
+      "source": "quaternius.itch.io/universal-base-characters (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": ""
+    },
+    {
+      "id": "char_eyebrows_female",
+      "path": "characters/eyebrows_female.gltf",
+      "source": "quaternius.itch.io/universal-base-characters (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": "copied from the owner's download; normal/roughness maps dropped, albedo resized to 1024"
+    },
+    {
+      "id": "char_eyebrows_regular_bin",
+      "path": "characters/eyebrows_regular.bin",
+      "source": "quaternius.itch.io/universal-base-characters (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": ""
+    },
+    {
+      "id": "char_eyebrows_regular",
+      "path": "characters/eyebrows_regular.gltf",
+      "source": "quaternius.itch.io/universal-base-characters (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": "copied from the owner's download; normal/roughness maps dropped, albedo resized to 1024"
+    },
+    {
+      "id": "char_hair_beard_bin",
+      "path": "characters/hair_beard.bin",
+      "source": "quaternius.itch.io/universal-base-characters (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": ""
+    },
+    {
+      "id": "char_hair_beard",
+      "path": "characters/hair_beard.gltf",
+      "source": "quaternius.itch.io/universal-base-characters (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": "copied from the owner's download; normal/roughness maps dropped, albedo resized to 1024"
+    },
+    {
+      "id": "char_hair_buzzed_bin",
+      "path": "characters/hair_buzzed.bin",
+      "source": "quaternius.itch.io/universal-base-characters (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": ""
+    },
+    {
+      "id": "char_hair_buzzed",
+      "path": "characters/hair_buzzed.gltf",
+      "source": "quaternius.itch.io/universal-base-characters (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": "copied from the owner's download; normal/roughness maps dropped, albedo resized to 1024"
+    },
+    {
+      "id": "char_hair_simpleparted_bin",
+      "path": "characters/hair_simpleparted.bin",
+      "source": "quaternius.itch.io/universal-base-characters (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": ""
+    },
+    {
+      "id": "char_hair_simpleparted",
+      "path": "characters/hair_simpleparted.gltf",
+      "source": "quaternius.itch.io/universal-base-characters (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": "copied from the owner's download; normal/roughness maps dropped, albedo resized to 1024"
+    },
+    {
+      "id": "char_quaternius_licence",
+      "path": "characters/quaternius_licence.txt",
+      "source": "quaternius.itch.io/universal-base-characters (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": ""
+    },
+    {
+      "id": "char_t_eye_brown",
+      "path": "characters/t_eye_brown.png",
+      "source": "quaternius.itch.io/universal-base-characters (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": "copied from the owner's download; normal/roughness maps dropped, albedo resized to 1024"
+    },
+    {
+      "id": "char_t_female_dark",
+      "path": "characters/t_female_dark.png",
+      "source": "quaternius.itch.io/universal-base-characters (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": "copied from the owner's download; normal/roughness maps dropped, albedo resized to 1024"
+    },
+    {
+      "id": "char_t_female_light",
+      "path": "characters/t_female_light.png",
+      "source": "quaternius.itch.io/universal-base-characters (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": "copied from the owner's download; normal/roughness maps dropped, albedo resized to 1024"
+    },
+    {
+      "id": "char_t_hair_1",
+      "path": "characters/t_hair_1.png",
+      "source": "quaternius.itch.io/universal-base-characters (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": "copied from the owner's download; normal/roughness maps dropped, albedo resized to 1024"
+    },
+    {
+      "id": "char_t_hair_2",
+      "path": "characters/t_hair_2.png",
+      "source": "quaternius.itch.io/universal-base-characters (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": "copied from the owner's download; normal/roughness maps dropped, albedo resized to 1024"
+    },
+    {
+      "id": "char_t_male_dark",
+      "path": "characters/t_male_dark.png",
+      "source": "quaternius.itch.io/universal-base-characters (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": "copied from the owner's download; normal/roughness maps dropped, albedo resized to 1024"
+    },
+    {
+      "id": "char_t_male_light",
+      "path": "characters/t_male_light.png",
+      "source": "quaternius.itch.io/universal-base-characters (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": "copied from the owner's download; normal/roughness maps dropped, albedo resized to 1024"
+    },
+    {
+      "id": "char_ual1_standard",
+      "path": "characters/ual1_standard.glb",
+      "source": "quaternius.itch.io/universal-animation-library (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": ""
+    },
+    {
+      "id": "char_ubc_female_bin",
+      "path": "characters/ubc_female.bin",
+      "source": "quaternius.itch.io/universal-base-characters (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": ""
+    },
+    {
+      "id": "char_ubc_female",
+      "path": "characters/ubc_female.gltf",
+      "source": "quaternius.itch.io/universal-base-characters (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": "copied from the owner's download; normal/roughness maps dropped, albedo resized to 1024"
+    },
+    {
+      "id": "char_ubc_male_bin",
+      "path": "characters/ubc_male.bin",
+      "source": "quaternius.itch.io/universal-base-characters (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": ""
+    },
+    {
+      "id": "char_ubc_male",
+      "path": "characters/ubc_male.gltf",
+      "source": "quaternius.itch.io/universal-base-characters (Standard, free)",
+      "licence": "CC0 1.0 (Quaternius)",
+      "prompt": "copied from the owner's download; normal/roughness maps dropped, albedo resized to 1024"
+    },
+    {
+      "id": "font_noto_old_south_arabian",
+      "path": "fonts/noto_sans_old_south_arabian.ttf",
+      "source": "github.com/google/fonts (Noto Sans Old South Arabian)",
+      "licence": "SIL Open Font Licence 1.1",
+      "prompt": ""
+    },
+    {
+      "id": "font_noto_old_south_arabian_licence",
+      "path": "fonts/noto_sans_old_south_arabian_ofl.txt",
+      "source": "github.com/google/fonts (Noto Sans Old South Arabian)",
+      "licence": "SIL Open Font Licence 1.1",
+      "prompt": ""
     }
   ]
 }

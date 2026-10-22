@@ -62,3 +62,7 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-21 | 3D motion: CC0 moves only (Quaternius library; Claude keys missing attack/cast clips), retargeted, plus Hades-style polish; no Mixamo | Mixamo files can't sit in the public repo | Feras
 - 2026-10-21 | Zayd's default skin always wears his grandfather's djanbeyyah hilt (Heirloom grandfather_hilt): a separate part at the front of his belt, drawn in hand to strike | Feras: the hilt was missing from his model | Feras
 - 2026-10-21 | Checkpoint 1: look B (warm oil lantern: amber light pools, purple-brown shadows, 5 soft bands) with the "hades" camera preset (55 deg, ~20 m); SMAA, not MSAA (-20% FPS) | Feras (recommended; spike renders inbox/spike/) | Feras
+- 2026-10-22 | Spelling: "Jambiyah" replaces "djanbeyyah" in code, content, text and docs (saves migrate the old key) | simpler | Feras
+- 2026-10-22 | Signature motif: the jambiyah hook; smoke, steam, dust, slashes, UI corners and the logo curl into it (like Naruto's spiral) | Feras (recommended) | Feras
+- 2026-10-22 | Writing in Sana'a 2150 is Musnad only (Noto Sans Old South Arabian, OFL): world signs Musnad only; HUD/UI English; menu headings and logo carry Musnad where Arabic was; no Arabic script in game | past meets future | Feras
+- 2026-10-22 | Battle HUD minimal: thin timeline + small HP/SP strip per hero; full cards and commands only on a hero's turn or on hover; all fighters always visible; the chosen target's name shows on the top bar | Feras (recommended) | Feras

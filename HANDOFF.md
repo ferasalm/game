@@ -15,9 +15,8 @@ Plan: docs/design/v03-plan.md (B4 replaced by 3D characters). 3D spec: docs/desi
   `Rooftop.frame_speaker` not wired to dialogue. Sounds ui_* missing from sounds.json.
 
 ## Waiting on the owner
-1. Download the Standard (free) zips of Quaternius "Universal Base Characters" (~122 MB) and "Universal Animation
-   Library" (~15 MB) from quaternius.itch.io into C:\dev\game\inbox\stand_in\. B4 needs them.
-2. Optional: Flow model pictures per docs/design/art-prompts-v03.md (Zayd with the hilt, the hilt alone, Bilqis,
+- Done 2026-10-22: Quaternius zips and Flow pictures (inbox/).
+- Optional: Flow model pictures per docs/design/art-prompts-v03.md (Zayd with the hilt, the hilt alone, Bilqis,
    Abu Nabil): A-pose, grey background.
 
 ## Next steps
@@ -33,11 +32,4 @@ Plan: docs/design/v03-plan.md (B4 replaced by 3D characters). 3D spec: docs/desi
    Model: Opus lead, Sonnet fixes. Effort: high.
 
 ## Paste-ready prompt
-```
-Continue the game repo (ferasalm/game), v0.3 "Painted Rooftops". Read HANDOFF.md, docs/design/v03-plan.md and
-docs/design/characters-3d.md. If inbox/stand_in/ has the Quaternius zips, do Next step 1 (B4 3D characters):
-copy only the used files into assets/characters/, write .import files and manifest entries, start one Technical
-Artist builder (Sonnet, high, worktree) with an exact brief, review renders, merge, run tools/check.sh. Then the
-balance pass (Game Designer) and Phase 3 per HANDOFF. No plan mode while builders run (LESSONS). Briefs exact,
-reports <= 300 words, WIP commits; /handoff before ~150k tokens. Opus lead, high effort.
-```
+Rewritten at the session 7 handoff.
