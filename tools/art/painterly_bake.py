@@ -11,6 +11,7 @@ circular), so they stay seamless. Writes assets/textures/painted/<recipe>/<atlas
 1.3 MB PNG facade is ~0.2 MB, and brush grain hides the loss), bake.json (the recipe and
 the sha256 of every input's RGBA bytes, checked by a Godot test) and one assets/manifest.json entry per file.
 Recipes: tools/art/painterly_recipes.json.
+Per skin (recipe kind skin): painted at scale 1 from content/art/models.json keeping alpha unchanged.
 """
 import argparse, hashlib, json, pathlib, sys, zlib
 import numpy as np
@@ -78,14 +79,25 @@ def brush_grain(shape: tuple[int, int], amount: float, length: int, seed: int) -
     return 1.0 + amount * streaks / max(streaks.std(), 1e-6)
 
 
-def bake_image(src: Image.Image, scale: int, recipe: dict, seed: int) -> Image.Image:
-    up = src.convert("RGB").resize((src.width * scale, src.height * scale), Image.BICUBIC)
-    img = np.asarray(up, dtype=np.float64) / 255.0
+def paint_rgb(rgb: Image.Image, radius: float, recipe: dict, seed: int) -> Image.Image:
+    img = np.asarray(rgb, dtype=np.float64) / 255.0
     for _ in range(int(recipe.get("passes", 1))):
-        img = kuwahara(img, recipe["radius"] * scale / 4.0, int(recipe["sectors"]), recipe["q"])
+        img = kuwahara(img, radius, int(recipe["sectors"]), recipe["q"])
     img = img * brush_grain(img.shape[:2], recipe["grain"], int(recipe["grain_length"]), seed)[:, :, None]
     out = Image.fromarray((np.clip(img, 0.0, 1.0) * 255.0 + 0.5).astype(np.uint8), "RGB")
     return ImageEnhance.Color(out).enhance(recipe["saturation"])
+
+
+def bake_image(src: Image.Image, scale: int, recipe: dict, seed: int) -> Image.Image:
+    up = src.convert("RGB").resize((src.width * scale, src.height * scale), Image.BICUBIC)
+    return paint_rgb(up, recipe["radius"] * scale / 4.0, recipe, seed)
+
+
+def bake_skin_image(src: Image.Image, recipe: dict, seed: int) -> Image.Image:
+    rgba = src.convert("RGBA")
+    painted = paint_rgb(rgba.convert("RGB"), float(recipe["radius"]), recipe, seed)
+    painted.putalpha(rgba.getchannel("A"))
+    return painted
 
 
 def digest(path: pathlib.Path) -> str:
@@ -102,6 +114,29 @@ def bake_recipe(name: str, recipe: dict, src_dir: pathlib.Path, out_root: pathli
         out = out_dir / (atlas + ".webp")
         bake_image(Image.open(src), scale, recipe, zlib.crc32(atlas.encode())).save(out, quality=int(recipe["quality"]), method=6)
         inputs[atlas] = digest(src)
+        written.append(f"textures/painted/{name}/{out.name}")
+    with open(out_dir / "bake.json", "w", newline="\n", encoding="utf-8") as f:
+        json.dump({"recipe": recipe, "inputs": inputs}, f, indent=1, sort_keys=True)
+        f.write("\n")
+    written.append(f"textures/painted/{name}/bake.json")
+    return written
+
+
+def bake_skins(name: str, recipe: dict, models_path: pathlib.Path, res_root: pathlib.Path, out_root: pathlib.Path) -> list[str]:
+    out_dir = out_root / name
+    out_dir.mkdir(parents=True, exist_ok=True)
+    data = json.loads(models_path.read_text(encoding="utf-8"))
+    inputs, written, seen = {}, [], set()
+    for item in data.get("items", []):
+        skin_res = item.get("skin")
+        if not skin_res or skin_res in seen:
+            continue
+        seen.add(skin_res)
+        src = res_root / skin_res.removeprefix("res://").lstrip("/")
+        stem = src.stem
+        out = out_dir / (stem + ".webp")
+        bake_skin_image(Image.open(src), recipe, zlib.crc32(stem.encode())).save(out, quality=int(recipe["quality"]), method=6)
+        inputs[stem] = digest(src)
         written.append(f"textures/painted/{name}/{out.name}")
     with open(out_dir / "bake.json", "w", newline="\n", encoding="utf-8") as f:
         json.dump({"recipe": recipe, "inputs": inputs}, f, indent=1, sort_keys=True)
@@ -127,18 +162,26 @@ def main(argv=None) -> int:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--recipe", default="all", help="recipe name in painterly_recipes.json, or all")
     p.add_argument("--src", default=str(ROOT / ".bake" / "atlases"), help="exported atlases (tools/export_atlases.gd)")
+    p.add_argument("--models", default=str(ROOT / "content" / "art" / "models.json"), help="character models JSON")
     p.add_argument("--out", default=str(OUT_DIR))
     p.add_argument("--assets", default=str(ROOT / "assets"))
     args = p.parse_args(argv)
     recipes = json.loads(RECIPES.read_text(encoding="utf-8"))
     names = sorted(recipes) if args.recipe == "all" else [args.recipe]
     src_dir = pathlib.Path(args.src)
-    if not any(src_dir.glob("*.png")) or any(n not in recipes for n in names):
-        print("painterly_bake.py: no atlases in --src (run tools/export_atlases.gd) or unknown recipe", file=sys.stderr)
+    if any(n not in recipes for n in names):
+        print("painterly_bake.py: unknown recipe", file=sys.stderr)
+        return 1
+    if any(recipes[n].get("kind") != "skin" for n in names) and not any(src_dir.glob("*.png")):
+        print("painterly_bake.py: no atlases in --src (run tools/export_atlases.gd)", file=sys.stderr)
         return 1
     written = []
     for name in names:
-        written += bake_recipe(name, recipes[name], src_dir, pathlib.Path(args.out))
+        rec = recipes[name]
+        if rec.get("kind") == "skin":
+            written += bake_skins(name, rec, pathlib.Path(args.models), ROOT, pathlib.Path(args.out))
+        else:
+            written += bake_recipe(name, rec, src_dir, pathlib.Path(args.out))
         print(f"baked {name}")
     update_manifest(pathlib.Path(args.assets), written)
     return 0
