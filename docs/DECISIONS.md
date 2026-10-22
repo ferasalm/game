@@ -67,3 +67,4 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-22 | Hilt stones (docs/design/hilt-stones.md): heirloom slots open with the story 1 -> 2 -> 3, no resonance; stones bought at the bench and found; free removal | Feras | Feras
 - 2026-10-22 | One task per chat, done directly; subagents only for big isolated builds or read-only audits, at most 2 at once | 7 parallel agents used 83% of the 5-h window in under an hour | Feras
 - 2026-10-22 | Gemini 3.8 Flash (agy) builds well-specified tasks from Claude's briefs in its own branch/worktree (rules: GEMINI.md); Claude reviews, runs check.sh, merges | Gemini usage is outside the Claude limit | Feras
+- 2026-10-22 | Claude runs agy with skip-permissions only via tools/agy_task.sh (own worktree per task) | faster | Feras

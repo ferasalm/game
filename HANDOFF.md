@@ -1,7 +1,6 @@
 # HANDOFF (current state only; rewritten by /handoff; max 60 lines)
 Last updated: 2026-10-22, session 7 (Opus 5.5, `claude-opus-5-5`, lead, high): v0.3 "Painted Rooftops", Phase 2.
-Plan: docs/design/v03-plan.md; 3D spec: docs/design/characters-3d.md. New: identity.md (hook motif),
-zayd-moves.md (new kit), hilt-stones.md (stones). Owner decisions 2026-10-22: DECISIONS.md.
+Specs in docs/design/: v03-plan, characters-3d, identity (hook), zayd-moves, hilt-stones.
 
 ## Status
 - Merged to main: Quaternius files, Musnad font, Jambiyah rename, HUD v3, Musnad-only text, arc sound + ui_*
@@ -18,8 +17,8 @@ zayd-moves.md (new kit), hilt-stones.md (stones). Owner decisions 2026-10-22: DE
 At most 2 agents at once (DECISIONS 2026-10-22). Resume a stopped builder with ONE fresh agent in its worktree.
 
 ## Next steps (one per chat)
-0. Gemini builder (agy): rules in GEMINI.md (verified loading). Headless commands still blocked (LESSONS 6);
-   first Gemini task = Zayd kit from a Claude brief, run by Feras in an agy terminal in its own worktree.
+0. Gemini builder: Claude writes a brief file, runs `bash tools/agy_task.sh <task> <brief> claude/night-sanaa` in
+   the background (worktree ../game-wt/<task>), then reviews, runs check.sh there and merges. First: Zayd kit.
    Model: Opus lead writes the brief and reviews (Gemini 3.8 Flash high builds). Effort: medium.
 1. Finish B4 in its worktree (fresh Technical Artist agent, Sonnet high, no isolation), review renders, merge.
    Model: Opus lead (medium). Effort: high for the builder.
