@@ -15,20 +15,20 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	_frame += 1
-	if _frame == 20:
+	if _frame == 150:
 		_save_image("C:/dev/game/inbox/camera_v2_rooftop_1.png")
 		_rooftop.player.position = Vector3(10.0, 0.5, 2.5)
 		_rooftop.follower.position = _rooftop.player.position + Vector3(-1.0, 0.0, 0.5)
-	elif _frame == 40:
+	elif _frame == 300:
 		_save_image("C:/dev/game/inbox/camera_v2_rooftop_2.png")
 		_rooftop.queue_free()
 		_room = (load("res://features/world/interior/camera_room.tscn") as PackedScene).instantiate() as CameraRoom
 		add_child(_room)
-		_room.set_player_pos(Vector3(2.0, 0.0, 3.5))
-	elif _frame == 60:
+		_room.set_player_pos(Vector3(3.2, 0.0, 2.6))
+	elif _frame == 330:
 		_save_image("C:/dev/game/inbox/camera_v2_room_door.png")
-		_room.set_player_pos(Vector3(6.0, 0.0, 2.5))
-	elif _frame == 80:
+		_room.set_player_pos(Vector3(5.2, 0.0, 2.2))
+	elif _frame == 360:
 		_save_image("C:/dev/game/inbox/camera_v2_room_window.png")
 		get_tree().quit()
 
@@ -40,3 +40,5 @@ func _save_image(path: String) -> void:
 		img.resize(960, 540, Image.INTERPOLATE_LANCZOS)
 	var err: Error = img.save_png(path)
 	print("Saved render: ", path, " (960x540) err=", err)
+	if _rooftop != null and is_instance_valid(_rooftop):
+		print("cam ", get_viewport().get_camera_3d().global_position, " player ", _rooftop.player.global_position, " mode ", _rooftop.camera_rig._mode)

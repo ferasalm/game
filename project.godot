@@ -65,14 +65,6 @@ menu={
 "deadzone": 0.2,
 "events": [Object(InputEventKey,"physical_keycode":4194305), Object(InputEventKey,"physical_keycode":4194306), Object(InputEventJoypadButton,"button_index":6)]
 }
-camera_left={
-"deadzone": 0.2,
-"events": [Object(InputEventKey,"physical_keycode":81), Object(InputEventJoypadMotion,"axis":2,"axis_value":-1.0)]
-}
-camera_right={
-"deadzone": 0.2,
-"events": [Object(InputEventKey,"physical_keycode":69), Object(InputEventJoypadMotion,"axis":2,"axis_value":1.0)]
-}
 
 [rendering]
 

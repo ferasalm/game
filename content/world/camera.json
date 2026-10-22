@@ -3,11 +3,11 @@
   "items": [
     {"id": "explore",
      "mode": "follow",
-     "follow_distance": 6.5,
-     "follow_pitch": 28.0,
-     "follow_fov": 50.0,
+     "follow_distance": 6.0,
+     "follow_pitch": 18.0,
+     "follow_fov": 55.0,
      "aim_height": 1.2,
-     "aim_lead": 1.5,
+     "aim_lead": 1.2,
      "lazy_yaw_delay": 0.8,
      "lazy_yaw_rate": 0.6,
      "walk_toward_dot": -0.3,
@@ -26,8 +26,8 @@
        "bench_w": 1.6, "bench_d": 0.6, "bench_h": 0.45, "bench_x": 4.0, "bench_z": 1.5,
        "window_gap_w": 1.5, "window_gap_h": 1.5, "window_gap_y": 0.8,
        "shots": [
-         {"id": "door_corner", "cam_x": 0.8, "cam_y": 2.6, "cam_z": 4.2, "look_x": 4.0, "look_y": 1.0, "look_z": 2.5, "rect": [0.0, 0.0, 4.0, 5.0], "fov": 45.0},
-         {"id": "window_corner", "cam_x": 7.2, "cam_y": 2.6, "cam_z": 0.8, "look_x": 4.0, "look_y": 1.0, "look_z": 2.5, "rect": [4.0, 0.0, 8.0, 5.0], "fov": 45.0}
+         {"id": "door_corner", "cam_x": 0.35, "cam_y": 2.75, "cam_z": 4.65, "look_x": 4.0, "look_y": 1.0, "look_z": 2.5, "rect": [0.0, 0.0, 4.0, 5.0], "fov": 62.0},
+         {"id": "window_corner", "cam_x": 7.65, "cam_y": 2.75, "cam_z": 0.35, "look_x": 4.0, "look_y": 1.0, "look_z": 2.5, "rect": [4.0, 0.0, 8.0, 5.0], "fov": 62.0}
        ]
      },
      "intro_duration": 6.5, "intro_skip_blend": 0.45,

@@ -58,10 +58,13 @@ func update(delta: float, subject: Vector3) -> void:
 func _update_follow(delta: float, subject: Vector3) -> void:
 	_update_focus(delta, subject)
 	_update_zones()
-	var orbit: float = Input.get_axis("camera_left", "camera_right")
+	var attributes := _camera.attributes as CameraAttributesPractical
+	if attributes != null:  # the close follow view is sharp: no tilt-shift blur
+		attributes.dof_blur_far_enabled = false
+		attributes.dof_blur_near_enabled = false
 	var move_dir: Vector3 = _player.velocity if _player != null else Vector3.ZERO
 	var facing: Vector3 = _player.facing if _player != null else Vector3.ZERO
-	_follow_cam.update(_focus, move_dir, delta, orbit, facing)
+	_follow_cam.update(_focus, move_dir, delta, 0.0, facing)  # no player camera control (owner 2026-10-23)
 	var cam_pos: Vector3 = _shortened_camera_pos()
 	_camera.global_position = cam_pos
 	_camera.look_at(_follow_cam.aim)

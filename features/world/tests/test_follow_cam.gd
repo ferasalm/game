@@ -10,8 +10,8 @@ func test_follow_cam_defaults() -> void:
 	var focus: Vector3 = FollowCam.compute_focus(Vector3(10.0, 0.0, 0.0), Vector3(0.0, 0.0, 10.0), 0.7, 0.3)
 	check(focus.distance_to(Vector3(7.0, 0.0, 3.0)) < 0.01, "focus is player 0.7 + follower 0.3")
 	cam.update(Vector3.ZERO, Vector3.ZERO, 0.0, 0.0, Vector3(0.0, 0.0, 1.0))
-	var want_aim := Vector3(0.0, 1.2, 1.5)
-	check(cam.aim.distance_to(want_aim) < 0.01, "aim = focus + 1.2 m up + 1.5 m along facing")
+	var want_aim := Vector3(0.0, 1.2, -1.5)
+	check(cam.aim.distance_to(want_aim) < 0.01, "aim = focus + 1.2 m up + 1.5 m into the view (yaw 0 looks along -z)")
 
 
 func test_lazy_yaw_delay_and_rate() -> void:

@@ -1,6 +1,6 @@
 class_name FollowCam
 extends RefCounted
-## Close third-person follow camera logic: focus, lazy auto-yaw, manual orbit, zone easing and arm shortening.
+## Close third-person follow camera logic: focus, lazy auto-yaw, a scripted orbit (never player input: owner 2026-10-23), zone easing and arm shortening.
 
 var yaw: float = 0.0
 var pitch: float = 0.0
@@ -130,7 +130,8 @@ func _update_aim(focus: Vector3, move_dir: Vector3, facing_hint: Vector3) -> voi
 		facing = move_flat.normalized()
 	if facing.is_zero_approx():
 		facing = Vector3(0.0, 0.0, 1.0)
-	aim = focus + Vector3(0.0, aim_height, 0.0) + facing * aim_lead
+	# The aim leads into the view (away from the camera), so the pair stands in the lower frame with the land ahead.
+	aim = focus + Vector3(0.0, aim_height, 0.0) + Vector3(-sin(yaw), 0.0, -cos(yaw)) * aim_lead
 
 
 func _update_manual_orbit(orbit_input: float, delta: float) -> void:
