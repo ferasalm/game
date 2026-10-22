@@ -69,8 +69,7 @@
   text goes muddy in fog and leaves a dark outline when fading -> label_energy > 1, no alpha cut, fade outline too.
 
 ## 6. Cheaper routes
-- agy (Gemini CLI 1.1.21) loads repo rules from GEMINI.md at the root, not .agents/rules/; in print mode (-p) it
-  auto-denies shell commands even with permissions.allow in ~/.gemini/antigravity-cli/settings.json -> run it
-  interactively, or fix the allow syntax first (2026-10-22).
+- agy 1.1.21 reads rules from GEMINI.md (not .agents/rules/); -p mode denied every shell command despite
+  ~/.gemini/antigravity-cli/settings.json allow rules -> run agy interactively (2026-10-22).
 - One test file: `tools/run_godot.sh -s res://tests/runner.gd -- timeline`.
 - Where is X: grep docs/MAP.md (generated), not `ls -R`.

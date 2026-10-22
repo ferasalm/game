@@ -4,29 +4,23 @@ Plan: docs/design/v03-plan.md; 3D spec: docs/design/characters-3d.md. New: ident
 zayd-moves.md (new kit), hilt-stones.md (stones). Owner decisions 2026-10-22: DECISIONS.md.
 
 ## Status
-- Branch claude/night-sanaa, merged into main at this handoff. Merged this session: Quaternius files staged in
-  assets/characters/ (CC0, manifest), Musnad font, djanbeyyah -> Jambiyah rename, battle HUD v3 (thin bars,
-  hover cards, "Target: X A" on the top bar), Musnad-only signs and Musnad menu lines (no Arabic script; test),
-  own arc_discharge sound + ui_* ids + loudness fixes, identity spec, Zayd kit and hilt stone designs.
+- Merged to main: Quaternius files, Musnad font, Jambiyah rename, HUD v3, Musnad-only text, arc sound + ui_*
+  sounds, identity spec, kit and stones designs, GEMINI.md (git log for details).
 - Stopped mid-work at 83% of the 5-h window (WIP commits, not checked, NOT merged), worktree branches:
   - B4 3D characters: worktree-agent-ae63c322574a6f227 (3 commits; was on "trail and smear", spec section 4).
   - Workshop bench prop: worktree-agent-a4cf40c0e9518e744 (1 WIP commit; renders not made).
   - Balance pass: worktree-agent-a7a39e37292830460 (1 WIP commit; was waiting on a harness run).
   - Zayd kit and stones builders: stopped at once, nothing committed: restart them from the design docs.
-- Polish noted: Musnad line beside "Paused" too small; battle "Target:" text small; target cone large;
-  `defeat` sound loud, vfx_stab and vfx_overclock quiet. Owner has not played v0.3 yet.
-- Inbox: Abu Nabil 3/4 on green (dialogue portrait later), Flow model pictures (Zayd, Bilqis, Abu Nabil, jambiyah,
-  sabil concept) for image-to-3D later (characters-3d.md section 8).
+- Polish: small Musnad line by "Paused", small "Target:" text, big target cone, loud `defeat` sound.
+- Inbox: Abu Nabil 3/4 portrait (green) and Flow model pictures for image-to-3D (characters-3d.md 8).
 
-## Efficiency rules for the next sessions (owner asked 2026-10-22)
-- At most 2 agents at a time on Pro; one wave per 5-h window. Small jobs inline (rename and staging were cheap).
-- Resume a stopped builder with ONE fresh agent in its worktree (no isolation, brief: "git log, finish, check"),
-  never by resuming the old transcript (LESSONS 4).
-- Sonnet medium by default; high only for big builds; Opus only for lead, design and review.
+## Efficiency
+At most 2 agents at once (DECISIONS 2026-10-22). Resume a stopped builder with ONE fresh agent in its worktree.
 
 ## Next steps (one per chat)
 0. Gemini builder (agy): rules in GEMINI.md (verified loading). Headless commands still blocked (LESSONS 6);
    first Gemini task = Zayd kit from a Claude brief, run by Feras in an agy terminal in its own worktree.
+   Model: Opus lead writes the brief and reviews (Gemini 3.8 Flash high builds). Effort: medium.
 1. Finish B4 in its worktree (fresh Technical Artist agent, Sonnet high, no isolation), review renders, merge.
    Model: Opus lead (medium). Effort: high for the builder.
 2. Zayd kit (zayd-moves.md + hilt-stones.md PerkDef kinds), then stones (hilt-stones.md): one Sonnet high
