@@ -19,17 +19,20 @@ Phase 2. Specs in docs/design/: v03-plan, characters-3d (8 = Rodin pipeline), id
 - Old WIP worktrees (unmerged, kept): bench prop worktree-agent-a4cf40c0e9518e744; balance worktree-agent-a7a39e37292830460.
 
 ## Waiting on the owner
-- Look at the rooftop v2 renders (inbox/rooftop_v2_*.png): keep the layout and dress it, or ask for another layout.
-- Look at the cast in game (Rodin models): run the prototype, or ask for a render into inbox/.
+- Pick the look and camera from the spike renders (step 2), then the level work can start.
+- Combat style: keep the timeline or move to an action JRPG (he is considering it; settle before more combat work).
 
-## Next steps (one per chat)
+## Next steps (one per chat; the owner's playtest of 2026-10-23: docs/design/playtest-2026-10-23.md)
 1. Abu Nabil: review + merge agy part A (`bash tools/agy_review.sh abu-nabil-combat`), then brief and run part B
    (dialogue choices, haggle talk, greedy prices, spar) per the spec's build split. Model: Opus. Effort: medium.
-2. Rooftop v2 dressing (stair head, mafraj, tanks in the `T` corners; workshop off the bridge tiles; Abu Nabil's stall
-   late on the roof with a sneak path past the patrols) via agy. Model: Sonnet. Effort: medium.
-3. Architecture fixes via agy (audit top 5). Model: Opus. Effort: medium.
-4. Zayd kit, then hilt stones via agy. Model: Opus. Effort: medium.
-5. Balance (WIP branch), bench + hook motif, then Phase 3 + Checkpoint 2. Model: Sonnet. Effort: medium.
+2. Look v2 spike: render the camera options (isometric ortho, front 3/4 ortho, telephoto perspective) with a painted
+   pass (painterly filter, repainted textures) side by side into inbox/; owner picks. Model: Opus. Effort: high.
+3. Playtest bugs via agy: footsteps (contact-synced, quieter), Abu Nabil out of his stall, chest lid. Model: Sonnet.
+   Effort: medium.
+4. Level redesign after step 2 (Level Designer): two roofs and a bridge from rooftop-v3.md, a tayramana with a majlis
+   to enter and drink qishr with Bilqis, the designed workshop (bench prop WIP). Model: Opus. Effort: high.
+5. After the combat-style decision: Zayd kit (zayd-moves.md), hilt stones. Model: Opus. Effort: medium.
+6. Architecture fixes via agy (audit top 5); balance (WIP branch). Model: Sonnet. Effort: medium.
 
 ## Paste-ready prompt
 ```
