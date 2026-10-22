@@ -461,8 +461,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 ## localization
 - `localization/arena.csv`
 - `localization/battle.csv`
-- `localization/battle_hud.csv`
-- `localization/battle_hud.en.translation`
 - `localization/combat.csv`
 - `localization/dialogue.csv`
 - `localization/items.csv`
