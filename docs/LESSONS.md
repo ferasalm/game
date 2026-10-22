@@ -1,4 +1,4 @@
-# Lessons (curated; symptom -> cause -> fix; dated; max 80 lines)
+# Lessons (curated; symptom -> cause -> fix; dated; max 100 lines; condense back to ~70)
 
 ## 1. You can do this yourself
 - Run Godot headless with tools/run_godot.sh: it fails on any SCRIPT ERROR or ERROR line even when Godot exits 0
@@ -25,6 +25,11 @@
 - Lathe garments showed skin and swung like capes -> torso pieces end at the waist (depth >= 0.9) over pelvis
   pieces raised 0.15 m; long coats split at the pelvis (2026-10-22).
 - Headless MultiMesh returns identity instance transforms -> keep them in node meta for tests (2026-10-21).
+- Rodin glb: feet at y=-0.95 (centred) made Zayd twice as tall and half underground; its UE rig has other bone axes
+  than the library (bodies twisted on the floor); Godot's glTF export kept the old buffers (18 MB) -> tools/rodin
+  (Godot LOD indices + a Python glb rewrite: lift, strip textures) and PoseFollow (runtime retarget) (2026-10-22).
+- `match` is a GDScript keyword: `var match` is a parse error (2026-10-22).
+- set_exploring(false) hides the player and the patrols -> talks use rooftop.freeze_actors (2026-10-22).
 - See a scene without the owner: non-headless `"$(tools/godot.sh)" --path . --write-movie DIR/f.png --fixed-fps 60
   --quit-after N [scene]`, then view 1-2 frames scaled to 640x360 with Pillow (2026-10-21).
 
@@ -34,33 +39,26 @@
 - A superseded rule lives on in a doc or prompt string -> grep for it when a decision changes (reem-bot).
 - Gemini research contains invented numbers -> ideas and norms only, never facts (feras-career; here too).
 
-## 4. Parallel builders (2026-10-21)
-- One worktree per builder agent (Agent isolation "worktree"; tools/godot.sh finds the exe in the main checkout);
-  shared registries (ContentDB KINDS, DefReader) conflict on merge but resolve by keeping both sides; one CSV per
-  feature avoids text conflicts. Give each brief exact APIs so builders can run at the same time.
-- MAP.md regenerated mid-merge listed conflicted files twice; local check passed, CI failed -> map.py dedupes;
-  regenerate after `git add`. Check CI (`gh run list`) after merging to main.
+## 4. Parallel builders (Claude agents 2026-10-21; agy 2026-10-22)
+- One worktree per builder; shared registries (ContentDB KINDS, MAP.md) conflict but resolve by keeping both sides;
+  regenerate MAP.md after `git add`; check CI (`gh run list`) after merging to main.
 - A side chat editing the same checkout blocked a merge -> one session owns git; others message it.
 - Python's write_text on Windows writes CRLF -> pass newline="
 " (python is `python` here, not python3).
-- The Read(**/*.import) deny also blocks an agent's Write to an existing .import -> the lead writes new
-  "keep" .import files before Godot's import runs.
-- Builders missed the session's commits: Agent worktrees branch from main, not the lead's branch -> every brief
-  starts with `git merge --ff-only <session branch>`; resume a builder with SendMessage (its worktree keeps work).
-- After a merge adds class_names, tests fail with "Could not find type" -> `tools/run_godot.sh --import` first.
-- The 5-hour limit kills background builders mid-edit -> ask for WIP commits early. Near the limit: builders write
-  WIP_NOTES.md + commit, the lead hands off; after the reset start a NEW chat and FRESH agents from the notes
-  (resuming a long chat or agent re-sends its whole transcript uncached once the cache TTL expired) (2026-10-21).
-- Four agents died at once on API errors (ECONNRESET/timeout) -> SendMessage resumed them with work intact (2026-10-21).
-- Entering plan mode in the lead paused every background builder (no edits, no commits) -> enter plan mode only
-  while no builders run, or have them WIP-commit first (2026-10-21).
-- lint_gd linted .claude/worktrees, so builders' unfinished code failed the lead's check -> lint skips .claude/
-  (2026-10-21).
-- `cd` into a worktree in the Bash tool moved the session's working directory -> use `git -C <path>` (2026-10-21).
-- A crash cut a builder off one unit from done -> a small fresh agent in that worktree (no isolation) finished it
-  cheaper than resuming the long transcript (2026-10-21).
-- B4 "needed a builder" but was one tuning pass from done -> run check.sh in a WIP worktree and grep its spec
-  first; the lead finishes small remainders (2026-10-22).
+- The Read(**/*.import) deny also blocks an agent's Write to an existing .import -> the lead writes new "keep" .import
+  files before Godot's import runs. After a merge adds class_names: `tools/run_godot.sh --import` first.
+- Claude Agent worktrees branch from main -> briefs start with `git merge --ff-only <session branch>`; agy_task.sh
+  takes the base branch itself.
+- Limits, crashes and API errors kill builders mid-edit -> WIP commits early; resume with SendMessage, or a small fresh
+  agent in that worktree; after a limit reset start a NEW chat (an old transcript is re-sent uncached).
+- Plan mode in the lead paused every background builder -> only while none run. `cd` into a worktree moved the
+  session's directory -> `git -C <path>`. lint skips .claude/.
+- B4 "needed a builder" but was one tuning pass from done -> run check.sh in a WIP worktree first (2026-10-22).
+- Parallel worktrees share one user:// folder -> save tests flake when two checkouts run tests at once -> per-checkout
+  test save dir (brief save-slots) (2026-10-22).
+- `check.sh | tail && git commit` committed a failing run (tail succeeds) -> grep .check/*.log for FAIL first.
+- agy builds pass check.sh yet miss things a player sees (internal ids in text, no input lock during a talk, fake
+  screen registrations for a test) -> GEMINI.md review_misses + tools/agy_review.sh (2026-10-22).
 
 ## 5. Art, browser, night look (2026-10-21)
 - Owner saw "3 FPS": that was a --write-movie render (each frame goes to disk) -> real FPS only via fps_probe.gd.

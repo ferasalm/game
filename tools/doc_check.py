@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """Keeps the always-loaded notes small and well-formed (docs/EFFICIENCY.md); exit 1 on any failure.
 
-Caps: CLAUDE.md 80 lines, HANDOFF.md 60, docs/DECISIONS.md 70, docs/LESSONS.md 80, and 24 KB for all four
+Caps: CLAUDE.md 80 lines, HANDOFF.md 60, docs/DECISIONS.md 70, docs/LESSONS.md 100, and 27 KB for all four
 (about 6k tokens loaded at every session start). Every next step names a model and an effort; every decision
 is dated; a struck decision says what superseded it; docs/MAP.md is current (tools/map.py --check).
 """
 import pathlib, re, subprocess, sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-CAPS = {"CLAUDE.md": 80, "HANDOFF.md": 60, "docs/DECISIONS.md": 70, "docs/LESSONS.md": 80}
-LOADED_BYTES = 24_000
+CAPS = {"CLAUDE.md": 80, "HANDOFF.md": 60, "docs/DECISIONS.md": 70, "docs/LESSONS.md": 100}
+LOADED_BYTES = 27_000
 fails = []
 
 

@@ -14,7 +14,7 @@ HANDOFF, DECISIONS and LESSONS load at every session start, so every line costs 
    (`~~...~~`) and says what superseded it. Never delete or reword one.
 3. **Lessons.** Anything that cost real time (an error, a wrong guess, nearly asking the owner for something you
    could do): symptom -> cause -> fix, dated, verified only. Merge with similar entries; fix or delete wrong ones.
-   Max 80 lines: summarize back to ~65 when it gets there.
+   Max 100 lines: condense back to ~70 when it gets there (owner, 2026-10-22).
 4. **Usage.** One row in docs/USAGE.md: date, model (name and raw ID from `get_session` when available), effort,
    task, share of the 5-hour window used if the owner told you (`/usage`), result.
 5. **HANDOFF.md** (rewrite, max 60 lines): Last updated (session number, model); Status (what is built and checked,

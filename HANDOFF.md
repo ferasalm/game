@@ -1,35 +1,33 @@
 # HANDOFF (current state only; rewritten by /handoff; max 60 lines)
-Last updated: 2026-10-22, session 8 (Opus 5.5, `claude-opus-5-5`, lead alone, medium): v0.3 "Painted Rooftops", Phase 2.
-Specs in docs/design/: v03-plan, characters-3d, identity (hook), zayd-moves, hilt-stones.
+Last updated: 2026-10-22, session 9 (Opus 5.5, `claude-opus-5-5`, lead + agy, high): v0.3 "Painted Rooftops", Phase 2.
+Specs in docs/design/: v03-plan, characters-3d (8 = Rodin pipeline), identity, zayd-moves, hilt-stones, music.
 
 ## Status
-- Merged to main: everything from session 7 plus B4 (live 3D characters: ModelSource, rig, parts, painted skin,
-  trail + smear, ClipTiming, Locomotion, YawTurn, hit-stop, facing; garments tuned from renders). 547 tests.
-- Not seen by the owner yet: the 3D cast in game (render: inbox/b4_cast_idle_attack.png, idle over attack).
-- Still WIP, not merged, worktree branches:
-  - Workshop bench prop: worktree-agent-a4cf40c0e9518e744 (1 WIP commit; renders not made).
-  - Balance pass: worktree-agent-a7a39e37292830460 (1 WIP commit; was waiting on a harness run).
-  - Zayd kit and stones: nothing built yet.
-- Polish: Musnad line by "Paused", small "Target:", big target cone, loud `defeat` sound.
-- Inbox: Abu Nabil 3/4 portrait (green).
+- Merged to main: Zayd's Rodin model (tools/rodin; PoseFollow retarget via ModelDef `pose_source`); music contexts;
+  Abu Nabil + party talks; architecture audit (docs/audits/). 568 tests.
+- agy runs still going when this chat ended (worktrees ../game-wt/<task>, logs ../game-wt/<task>.log):
+  rooftop-v2 and save-slots (briefs in docs/briefs/). `bash tools/agy_review.sh <task>`; a dead run restarts with
+  the same agy_task.sh command (worktree and commits kept).
+- Old WIP worktrees (unmerged, kept): bench prop worktree-agent-a4cf40c0e9518e744; balance worktree-agent-a7a39e37292830460.
+- Known: Zayd shows two jambiyahs (Rodin baked one + the code hilt part); his cast raises the flesh (left) arm.
 
-## How work runs now
-agy builds (DECISIONS 2026-10-22): brief in docs/briefs/<task>.md, then in the background
-`bash tools/agy_task.sh <task> docs/briefs/<task>.md claude/night-sanaa`; review, check.sh there, merge.
+## Waiting on the owner
+- Music .wav files into inbox/music/ named by id (docs/design/music.md, 9 tracks incl. boss_abu_nabil).
 
 ## Next steps (one per chat)
-0. Zayd's own model (characters-3d.md 8): Claude sends Feras's A-pose picture to Hyper3D Rodin (MCP, cost named
-   first), UE rig; imports, checks bones, repaints, swaps the ModelDef scene, renders. Blender: ask first. Then Bilqis, Abu Nabil, hilt (grey JPGs in inbox). Model: Opus lead. Effort: high.
-1. Zayd kit via agy (zayd-moves.md + hilt-stones.md PerkDef kinds). Model: Opus briefs, reviews. Effort: medium.
-2. Hilt stones via agy (hilt-stones.md), on top of the kit. Model: Opus lead. Effort: medium.
-3. Balance pass on the new kit: agy, on the WIP balance branch. Model: Sonnet. Effort: medium.
-4. Bench (WIP branch) and hook motif shader (identity.md) via agy; Claude judges renders; owner picks the logo
-   letter. Model: Sonnet. Effort: medium.
-5. Phase 3 via agy (title menu, frame_speaker, smoke run, fps_probe); Code Reviewer (Opus, high); Checkpoint 2:
-   Feras plays v0.3. Model: Opus lead. Effort: high.
+0. Merge finished agy runs; Rodin models: Bilqis (pose_source ubc_female), Abu Nabil, enemy + drone (inbox *_front_gray
+   / enemy*.png; ~7k quads, UE rig, tools/rodin, ModelDef swap, render). Zayd: cut the baked dagger (tools/rodin),
+   Rodin hilt + sheath (jambiyah_hilt_and_sheath.png, no rig) as the hilt part, mirror his cast (PoseFollow: swap
+   _l/_r, reflect x). Model: Opus. Effort: high.
+1. Music .wav -> .ogg, assets/audio/music/, manifest. Model: Sonnet. Effort: low.
+2. Architecture fixes via agy (audit top 5). Model: Opus. Effort: medium.
+3. Abu Nabil mini-boss: Game Designer spec (confuse status, herb heals, stall locked until beaten), agy.
+   Model: Opus. Effort: medium.
+4. Zayd kit, then hilt stones via agy. Model: Opus. Effort: medium.
+5. Balance (WIP branch), bench + hook motif, then Phase 3 + Checkpoint 2. Model: Sonnet. Effort: medium.
 
 ## Paste-ready prompt
 ```
-Continue the game repo (ferasalm/game), v0.3. Read HANDOFF.md. Do Next step 0 only: make Zayd's model with
-Hyper3D Rodin from his A-pose picture per docs/design/characters-3d.md 8, judge renders, merge, check.sh, /handoff.
+Continue the game repo (ferasalm/game), v0.3. Read HANDOFF.md. Do Next step 0 only: merge the finished agy runs,
+make Bilqis, Abu Nabil and the enemies with Rodin (cost first), fix Zayd's dagger and cast arm, renders, check.sh, /handoff.
 ```

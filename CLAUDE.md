@@ -19,8 +19,9 @@ plays and makes art; Claude writes the code and runs every check itself. He is o
   when judging art, small), or docs/research/gemini-blueprint-citations.md.
 - docs/research/gemini-blueprint.md is ~20k tokens: grep its headings, read one section at a time.
 - Edit, don't rewrite; no recaps; replies to the owner in a few lines.
-- Subagents: in plan mode, Explore agents audit; builders, designers and reviewers run as the installed agents at a
-  fitting model and effort (DECISIONS 2026-10-21). Keep briefs exact and reports short.
+- Builders: agy first (docs/EFFICIENCY.md 3b: TEMPLATE brief, agy_task.sh, agy_review.sh, remove the worktree after the
+  merge). Claude subagents only where agy can't, at most 2. Keep briefs exact and reports short.
+- Check the 5-hour window and context (get_usage) at the start and before a big step.
 - Checks: `tools/check.sh` (read the FAIL lines). One test file: `tools/run_godot.sh -s res://tests/runner.gd -- <name>`.
 
 ## Code rules (Godot and tools/lint_gd.py enforce them)

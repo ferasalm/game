@@ -12,10 +12,7 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-19 | Combat timeline on integers with fixed 60 ticks/s, deterministic, returns events | testable, replayable, frame-rate independent | Claude
 - 2026-10-19 | Folders by feature (defs/logic/view/tests); logic/ pure; small EventBus | one task reads one folder | Claude
 - 2026-10-19 | Blueprint kept as design input only; its WSL2 rule, one-file commits, 120-line cap and statistics rejected (ARCHITECTURE 16) | no source; costs tokens | Claude
-- 2026-10-19 | Always-loaded notes <= 24 KB; one task, one model and effort per chat; /handoff every session | Pro limits | Claude (from reem-bot, feras-career)
 - 2026-10-19 | Laptop (Dell Latitude 5520, i7-1185G7, 16 GB, Iris Xe, 60 FPS look test) is the minimum target: Forward+ stays, effects must hold 60 FPS here | measured by owner | Claude
-- 2026-10-19 | Look v1: camera (0,6,8.5), FOV 30, DoF near 5 far 12 amount 0.1, 16 px = 1 m; character larger on screen, far blur softer; vsync off in look test to show real FPS | owner screenshot: hero small, back half too blurry | Claude
-- 2026-10-19 | Look v1 accepted as is (camera, FOV 30, DoF 5/12/0.1): 81 FPS on the laptop with vsync off = ~35% headroom over 60; texel density decided at the M1 art spike with a real sprite | owner screenshot + FPS: hero clear, far blur readable | Claude (owner may veto)
 - 2026-10-19 | World: cyberpunk futuristic Sana'a, Yemen (replaces pre-Islamic South Arabia and the Malik/Thurya/Dharib cast) | Feras BRIEFING q2 | Feras
 - 2026-10-19 | Cast: Claude invents it (docs/design/world.md), owner reviews | Feras: "come up with them" | Feras
 - 2026-10-19 | Combat core: Grandia-style timeline with interrupts (default), may change later | Feras BRIEFING q3 | Feras
@@ -24,7 +21,6 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-19 | Title stays "Qarnaw" for now, may change later | Feras BRIEFING q6 | Feras
 - 2026-10-19 | Hero's weapon is a djanbeyyah in two parts, hilt and blade, each upgraded or swapped separately (design: docs/design/world.md) | Feras: combos give varied combat styles | Feras
 - 2026-10-21 | Local development on Windows is primary: edit and check here, push a branch; Godot 4.7.2 win64 exes sit in the repo root (git-ignored) | Feras runs the editor here | Feras/Claude
-- 2026-10-21 | Next chat: Opus runs autonomously toward a playable prototype (later grown into the MVP); scope is open and set by its questions | Feras wants big progress per chat | Feras
 - 2026-10-21 | Every question to Feras: 2-4 multiple-choice options, a recommended first one with the why, plain words (beginner) | Feras is new to game dev | Feras
 - 2026-10-21 | The autonomous run pauses only for owner questions, logins, CAPTCHAs, downloads and anything that costs money; it never works around them | safety rules + $0 budget | Feras/Claude
 - 2026-10-21 | Prototype v0 = walk, then battle: one rooftop area, a workshop, a patrol, one battle in place (docs/design/prototype.md) | Feras chose it over "one battle" | Feras
@@ -44,7 +40,6 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-21 | Rarity: Common, Uncommon, Rare, Epic, Legendary (white, green, blue, purple, gold) on hand-made fixed items, plus a story-only Heirloom tier | Feras | Feras
 - 2026-10-21 | Music: Yemeni fusion (qanbus oud, hand drums, synth bass and pads): a night rooftops theme and a battle theme, made in Google Flow (Feras logs in) | Feras (recommended) | Feras
 - 2026-10-21 | Free online assets (CC0 / OFL) allowed where the game doesn't need unique art; each gets a manifest entry; downloads confirmed with the owner | Feras | Feras
-- 2026-10-21 | Haiku subagents take the mechanical work (cleanup, audits, doc updates) next to the Sonnet builders | Feras: "Involve Haiku subagent too" | Feras
 - 2026-10-21 | Look: painted diorama: Hades-like painted surfaces, ink outlines, painted light; Octopath tilt-shift and side-view battles; our twist = qamariya glass colour + gypsum ornament in light, VFX, UI | Feras (recommended over Octopath pixel, flat 2D) | Feras
 - 2026-10-21 | Save spot: sabil fountain (save + full refill; patrols return); HP/SP carry over between fights, losing offers retry (supersedes slice.md refill) | Feras (recommended) | Feras
 - 2026-10-21 | Currency riyal; party right, enemies left in battle; camera picked by Feras from spike renders | defaults | Claude (owner may veto)
@@ -68,3 +63,8 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-22 | Claude runs agy with skip-permissions only via tools/agy_task.sh (own worktree per task) | faster | Feras
 - 2026-10-22 | Gemini (agy) builds whenever a task can be briefed exactly (code, content, tests, docs); Claude briefs, reviews renders and diffs, merges; Claude agents only where agy can't (art judgment loops, Opus review) | save the Claude limit | Feras
 - 2026-10-22 | Hyper3D Rodin (Feras's paid Creator plan) makes his 3D models: Claude drives its MCP, Gen-2.5-Medium Quad, UE rig, cost named first; RodinBridge plugin git-ignored | Feras (recommended) | Feras
+- 2026-10-22 | Abu Nabil becomes an easy mini-boss near the end of the slice: heals himself with herbs, confuses the party (50% of attacks miss for 1-2 rounds); beating him unlocks his herb stall; own playful battle theme (boss_abu_nabil) | Feras | Feras
+- 2026-10-22 | Saves: 3 slots, picked when saving at the sabil; Load in the title and pause menus | Feras | Feras
+- 2026-10-22 | Tech moves animate the prosthetic arm: Zayd's cast clips are mirrored so his cyber (right) arm casts | Feras | Feras
+- 2026-10-22 | Workflow: every briefable task goes to agy (docs/briefs/TEMPLATE.md, a do-not-edit list, GEMINI.md review_misses), reviewed with tools/agy_review.sh, at most 3 agy runs at once; Opus high leads (design, hard engineering, art), no ultracode; review-and-merge chats may run on Sonnet | session 9: 4 agy builds for ~0 Claude tokens, each needed small fixes | Feras/Claude
+- 2026-10-22 | LESSONS may grow to 100 lines before it is condensed back to ~70; always-loaded notes <= 27 KB (was 24); still one task, one model and effort per chat; /handoff every session | fewer condensing passes | Feras

@@ -39,7 +39,19 @@ missing prerequisites.
 - Never write "...", "rest unchanged", TODO, stubs or placeholder values; write the real content or report BLOCKED.
 </scope>
 
+<review_misses>
+Lead reviews found these in earlier builds; check each before you report DONE.
+- Player text never shows internal ids (move ids, flag names, file names): use the display name from localization/.
+- Never register fake screens, ids or stubs to make a test pass; change the test or report BLOCKED.
+- Anything that shows a dialogue, menu or cutscene stops walking and saving while it is up and restores them after
+  (rooftop.freeze_actors, Router.set_busy); nobody hides unless the brief says so.
+- New lines and props match the current world (read the layout and the brief; no places that no longer exist).
+- A file near 200 lines: split it before adding; never squeeze lines out of formatting.
+- Tests that touch saves, timers or frames: run them 3 times; a flaky pass is a fail.
+- Shared files (prototype_main.gd, ui_stack.gd, content_db.gd, MAP.md): the smallest edit that works.
+</review_misses>
+
 <report>
 End with: COMPLETION REPORT | ID | Status (DONE / PARTIAL / BLOCKED) | Location | Evidence (command + raw output,
-or "none") |, then Unresolved and Assumptions lines.
+or "none") |, then Unresolved and Assumptions lines. List every new player-text line (key, text) at the end.
 </report>

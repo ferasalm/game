@@ -14,7 +14,7 @@ counts), so the costs are: what is loaded at start, how long a chat runs, what g
 | Practice | Here | Why |
 |---|---|---|
 | Notes split by change rate: CLAUDE.md rare, HANDOFF rewritten, DECISIONS append-only, LESSONS curated | Adopted | Old state never reads as current |
-| `@` imports of HANDOFF, DECISIONS, LESSONS | Adopted, **with a 24 KB cap on all four** (tools/doc_check.py) | reem-bot's loaded log grew past 100 KB: paid at every start |
+| `@` imports of HANDOFF, DECISIONS, LESSONS | Adopted, **with a 27 KB cap on all four** (tools/doc_check.py) | reem-bot's loaded log grew past 100 KB: paid at every start |
 | /handoff at the end of every session | Adopted (.claude/skills/handoff) | Next chat starts with no resume step |
 | Model and effort on every next step; one model and effort per chat | Adopted | Effort can't change mid-chat; switching models drops the cache |
 | One task per chat; wrap up past ~150k tokens | Adopted (reem-bot used 200k) | Pro windows are small |
@@ -47,13 +47,26 @@ counts), so the costs are: what is loaded at start, how long a chat runs, what g
 12. **Usage ledger** (docs/USAGE.md): one row per session with the share of the 5-hour window it used. After three
     sessions, the estimates in docs/BRIEFING.md are recalibrated from real numbers.
 
-## 3. Model routing on Pro
-| Work | Model | Effort |
+## 3. Model routing on Pro (DECISIONS 2026-10-22, workflow)
+| Work | Who | Effort |
 |---|---|---|
-| Architecture, specs, reviews, judging art, a bug that survived one attempt | Opus | medium-high |
-| Building a feature from a spec, tests, refactors, tools | Sonnet | medium (high for new systems) |
-| Mechanical: data entry, renames, localization tables, reformatting | Haiku | low-medium |
-One model per chat: pick it by the chat's hardest step. Opus counts much faster against Pro limits: keep its chats short.
+| Design, specs, briefs, hard engineering (e.g. retargeting), judging art and renders | Opus | high |
+| Anything that can be briefed exactly: code, content, tests, docs, audits | agy (Gemini 3.8 Flash) | its default |
+| Reviewing and merging agy branches, small fixes | Sonnet (or Opus when the chat is Opus anyway) | medium |
+Claude subagents only where agy can't (art judgment loops, Opus code review), at most 2 at once.
+Measured in session 9: 4 agy builds (~1,600 lines + tests) cost the Claude limit only their briefs and reviews; each
+still needed 1-3 small fixes (internal ids in text, a missing input lock, a fake test registration).
+
+## 3b. The agy loop
+1. Brief from docs/briefs/TEMPLATE.md (<= 60 lines, a do-not-edit list so parallel runs never share files).
+2. `bash tools/agy_task.sh <task> docs/briefs/<task>.md claude/night-sanaa` in the background; at most 3 at once.
+3. `bash tools/agy_review.sh <task>`: report, check result, non-test code diff, new player text. Read nothing else
+   unless something looks wrong.
+4. Merge, fix small misses on the session branch, `tools/check.sh`, then `git worktree remove ../game-wt/<task>` and
+   `git branch -d gemini/<task>`. A repeated miss goes into GEMINI.md <review_misses>.
+5. agy runs are processes of the chat that started them: a chat that ends early leaves them running only while its
+   session stays open. The next chat checks `git -C ../game-wt/<task> log` and the log; a dead run is restarted with
+   the same command (the worktree and its commits are kept).
 
 ## 4. How the owner can save tokens (prompt tips)
 - Put the whole job in the first message, with what you already know; each missing detail costs a round trip.

@@ -523,6 +523,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tests/runner.gd`: Headless test runner: runs every test_* method of every res://**/tests/test_*.gd file
 
 ## tools
+- `tools/agy_review.sh`: Shows what an agy task did, cheaply: its completion report, the check result, commits, file stats and the diff of
 - `tools/agy_task.sh`: Runs Gemini (agy) on one task brief inside its own git worktree, never in the main checkout (DECISIONS 2026-10-22).
 - `tools/art/figure_cut.py`: Cut one painted full-body figure out of a Flow picture on green (look spike: a static painted billboard).
 - `tools/art/painterly_bake.py`: Offline painterly bake: repaint the code-painted world atlases as brush strokes (numpy + Pillow, deterministic).
