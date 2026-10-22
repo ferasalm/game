@@ -40,6 +40,14 @@
      "is_melee": false, "ignores_cover": true, "cast_speed": 0.6, "recovery": 1300, "knockback": 1800, "vfx": "burst"},
     {"id": "reboot_pulse", "name_key": "ACTION_REBOOT_PULSE", "desc_key": "MOVE_DESC_REBOOT_PULSE", "sp_cost": 14, "power": 0,
      "is_melee": false, "cast_speed": 0.9, "recovery": 800, "knockback": 0, "target": "ally", "heal": 60, "revive": true,
-     "vfx": "heal"}
+     "vfx": "heal"},
+    {"id": "pot_swing", "name_key": "ACTION_POT_SWING", "desc_key": "MOVE_DESC_POT_SWING", "sp_cost": 0, "power": 16,
+     "is_melee": true, "cast_speed": 1.1, "recovery": 600, "knockback": 900, "target": "foe", "vfx": "baton"},
+    {"id": "spice_cloud", "name_key": "ACTION_SPICE_CLOUD", "desc_key": "MOVE_DESC_SPICE_CLOUD", "sp_cost": 8, "power": 4,
+     "is_melee": false, "ignores_cover": true, "cast_speed": 0.6, "recovery": 900, "knockback": 0, "target": "all_foes",
+     "applies_status": "confused", "vfx": "burst"},
+    {"id": "feather_snack", "name_key": "ACTION_FEATHER_SNACK", "desc_key": "MOVE_DESC_FEATHER_SNACK", "sp_cost": 0, "power": 0,
+     "is_melee": false, "cast_speed": 0.9, "recovery": 500, "knockback": 0, "target": "self", "heal": 80,
+     "uses_per_battle": 3, "vfx": "heal"}
   ]
 }

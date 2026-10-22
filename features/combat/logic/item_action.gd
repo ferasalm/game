@@ -18,5 +18,6 @@ static func from_consumable(def: ConsumableDef) -> ItemAction:
 	action.is_melee = false
 	action.vfx = def.vfx
 	action.revive = def.revive
+	action.cures = def.cures.duplicate()
 	action.target = &"all_allies" if def.target == &"all_allies" else &"ally"
 	return action
