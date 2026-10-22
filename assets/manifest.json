@@ -3352,6 +3352,41 @@
       "source": "made by script tools/audio/arc_synth.py",
       "licence": "CC0 (own work)",
       "prompt": ""
+    },
+    {
+      "id": "painted_skin_t_zayd",
+      "path": "textures/painted/skin/t_zayd.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_skin_t_bilqis",
+      "path": "textures/painted/skin/t_bilqis.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_skin_t_abu_nabil",
+      "path": "textures/painted/skin/t_abu_nabil.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_skin_t_concession_enforcer",
+      "path": "textures/painted/skin/t_concession_enforcer.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_skin_bake",
+      "path": "textures/painted/skin/bake.json",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
     }
   ]
 }

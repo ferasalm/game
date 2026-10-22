@@ -1,0 +1,19 @@
+{
+ "inputs": {
+  "t_abu_nabil": "0ad5a6820db63698e1d6ea3430b94724ebebc4318081f258e4efa768836740be",
+  "t_bilqis": "c798b950a7359f03326350b5cbdc9242455e84cebbe32c3435e6e705036a1932",
+  "t_concession_enforcer": "8fc38b1e0349fb85c197df11a211149c4aae576c3a0c636e42c0da3b09944e2f",
+  "t_zayd": "2753ced451b8c7762157395b8fcf33f4d99f1a4884ca2c3fd04f1d86ea1f1ef2"
+ },
+ "recipe": {
+  "grain": 0.03,
+  "grain_length": 9,
+  "kind": "skin",
+  "passes": 1,
+  "q": 12,
+  "quality": 92,
+  "radius": 5,
+  "saturation": 1.15,
+  "sectors": 8
+ }
+}
