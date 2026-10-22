@@ -54,7 +54,7 @@ func begin(actor_id: StringName, action: ActionDef, target_ids: Array[StringName
 	_camera.focus_on(actor.global_position.x)
 	_camera.push(def.zoom, def.impact + 0.5)
 	var melee: bool = action.is_melee and action.is_hostile() and not targets.is_empty()
-	var state: StringName = &"attack" if melee else (&"item" if action is ItemAction else &"cast")
+	var state: StringName = &"attack" if melee else (&"item" if (action is ItemAction or action.id == &"feather_snack") else &"cast")
 	var clip := ClipWait.new(actor)
 	actor.play(state)
 	if melee:

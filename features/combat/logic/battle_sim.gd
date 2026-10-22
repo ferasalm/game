@@ -20,6 +20,8 @@ var setup: BattleSetup
 var bag: Bag
 ## The Items command: reservations, casts and effects of the herbs in the bag.
 var items: BattleItems
+## Tracks move uses and choice rules.
+var action_rules := BattleActionRules.new()
 
 
 ## Builds the battle from a BattleSetup. Party units use their def id; enemies use "<def id>_<n>" counting from
@@ -40,7 +42,7 @@ static func create_from(battle: BattleSetup) -> BattleSim:
 		var unit := UnitState.create(hero, hero.id, 0, battle.party_slots[i], battle.rules)
 		unit.hp = Vitals.hp_of(battle.vitals, hero.id, hero.max_hp)
 		unit.sp = Vitals.sp_of(battle.vitals, hero.id, hero.max_sp)
-		unit.pos = sim._start_pos(0, battle.ambush, hero)
+		unit.pos = BattleActionRules.start_pos(sim.rules, sim.rng, 0, battle.ambush, hero)
 		sim.timeline.units.append(unit)
 	var counts: Dictionary[StringName, int] = {}
 	for i: int in battle.enemies.size():
@@ -48,7 +50,7 @@ static func create_from(battle: BattleSetup) -> BattleSim:
 		counts[foe.id] = counts.get(foe.id, 0) + 1
 		var unit := UnitState.create(
 			foe, StringName("%s_%d" % [foe.id, counts[foe.id]]), 1, battle.enemy_slots[i], battle.rules)
-		unit.pos = sim._start_pos(1, battle.ambush, foe)
+		unit.pos = BattleActionRules.start_pos(sim.rules, sim.rng, 1, battle.ambush, foe)
 		sim.timeline.units.append(unit)
 	sim._resolver = BattleResolver.new(battle.rules, sim.rng, sim.timeline, battle.statuses)
 	sim.items = BattleItems.new(sim.bag, sim.timeline, battle.consumables)
@@ -121,9 +123,15 @@ func waiting_hero() -> UnitState:
 	return waiting if waiting != null and waiting.side == 0 else null
 
 
-## The unit's moves it can pay for now.
+## The unit's moves it can pay for and has uses left for.
 func choices_for(unit: UnitState) -> Array[ActionDef]:
-	return BattleTargets.affordable_moves(unit, actions)
+	return BattleTargets.affordable_moves(unit, actions).filter(
+		func(m: ActionDef) -> bool: return action_rules.can_use(unit.unit_id, m))
+
+
+## True when the unit has uses left for this action (or it is unlimited).
+func can_use(unit: UnitState, action: ActionDef) -> bool:
+	return action_rules.can_use(unit.unit_id, action)
 
 
 func valid_targets(unit: UnitState, action: ActionDef) -> Array[UnitState]:
@@ -133,18 +141,13 @@ func valid_targets(unit: UnitState, action: ActionDef) -> Array[UnitState]:
 ## Commits the waiting unit to a move on a target, paying its SP. Self and all-moves ignore target_id (pass
 ## &""); foe and ally moves need a valid one. Returns "" or why it was refused.
 func choose(unit_id: StringName, action: ActionDef, target_id: StringName) -> String:
+	var refusal: String = action_rules.check_choice(timeline, unit_id, action, target_id)
+	if not refusal.is_empty():
+		return refusal
 	var unit: UnitState = timeline.waiting_for
-	if unit == null or unit.unit_id != unit_id:
-		return "not waiting for '%s'" % unit_id
-	if action == null or not unit.def.actions.has(action.id):
-		return "'%s' is not a move of '%s'" % [action.id if action != null else &"", unit_id]
-	if action.sp_cost > unit.sp:
-		return "not enough SP for '%s'" % action.id
-	var target_ids: Array[StringName] = BattleTargets.chosen_ids(timeline, unit, action, target_id)
-	if target_ids.is_empty():
-		return "'%s' is not a valid target for '%s'" % [target_id, action.id]
 	unit.sp -= action.sp_cost
-	return timeline.choose(unit_id, action, target_ids)
+	action_rules.spend_use(unit_id, action)
+	return timeline.choose(unit_id, action, BattleTargets.chosen_ids(timeline, unit, action, target_id))
 
 
 ## Commits the waiting hero to a herb of the bag (target &"" for the party herb). Returns "" or why it was refused.
@@ -160,15 +163,6 @@ func auto_choose(unit: UnitState) -> void:
 	var choice: BattleAI.Choice = BattleAI.pick(self, unit)
 	if choice != null:
 		choose(unit.unit_id, choice.action, choice.target_id)
-
-
-func _start_pos(side: int, ambush: int, fighter: CombatantDef) -> int:
-	if ambush == 2 and side == 1:
-		return 0
-	var party_range: bool = (side == 0) != (ambush == 1)
-	var low: int = rules.party_start_min if party_range else rules.enemy_start_min
-	var high: int = rules.party_start_max if party_range else rules.enemy_start_max
-	return mini(Timeline.COMMAND_POINT - 1, rng.randi_range(low, high) + fighter.start_bonus)
 
 
 func _handle(event: TimelineEvent, out: Array[TimelineEvent]) -> void:

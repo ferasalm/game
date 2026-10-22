@@ -140,7 +140,7 @@ func _still_valid(actor: UnitState, def: ConsumableDef) -> Array[UnitState]:
 		if def.target != &"all_allies" and not actor.acted_targets.has(target.unit_id):
 			continue
 		var gain: Dictionary = ItemEffect.gains(def, target.hp, target.sp, target.def.max_hp, target.def.max_sp)
-		if ItemEffect.changes(gain):
+		if ItemEffect.changes(gain) or BattleActionRules.cures_any(target, def.cures):
 			out.append(target)
 	return out
 
@@ -157,3 +157,4 @@ func _apply(def: ConsumableDef, target: UnitState, events: Array[TimelineEvent])
 		events.append(TimelineEvent.new(&"healed", target.unit_id, int(gain["hp"]), def.id))
 	if int(gain["sp"]) > 0:
 		events.append(TimelineEvent.new(&"sp_restored", target.unit_id, int(gain["sp"]), def.id))
+	BattleActionRules.apply_cures(target, def.cures, events)
