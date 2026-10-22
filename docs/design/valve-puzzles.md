@@ -1,7 +1,7 @@
 # The valve puzzles (level 1 finale; owner choices 2026-10-23)
 Owner: both puzzles, light lock first, then the water; "challenging medium-difficulty, not too gentle and not too
 hard"; no fail state, visible feedback on a wrong move. Target: about 5 minutes each for a first-time player.
-Place: the east (Concession) roof, at the water tower's foot (valve 21.5, 3.0), plus one piece on the bridge.
+Place: R5, the Concession roof (level-1.md), at the water tower's foot, plus one mirror on R4 by the leap (X4).
 
 ## 1. The qamariya light lock
 Fiction: the Concession sealed the old valve with a glass eye that opens only to pure white light (their "clean"
@@ -12,8 +12,8 @@ used to flash messages roof to roof) still turn.
   The lens on the valve shows the colour that reaches it right now.
 - Light adds: red + green + blue = white, and yellow + blue = white too (yellow is red + green). Two right answers:
   the three-colour route uses all 3 mirrors; the yellow-blue route uses 2, the shortcut for a player who thinks.
-- The medium part: the green window is on the commons' tall tower across the canyon, and its beam reaches the east
-  roof only through the mirror on the bridge. So a player who wants three colours has to walk back to the bridge,
+- The medium part: the green window is on R3's tower across al-Saila, and its beam reaches R5 only through the
+  mirror on R4 by the leap. So a player who wants three colours has to leap back to R4 to turn it,
   and a player who notices yellow skips that. Red + yellow (orange-white) and green + yellow are the near misses.
 - Feedback: every beam is a visible painted ray in its glass colour (dust in the air); the lens takes the mixed
   colour; a wrong mix flickers and buzzes, a right one hums and the seal light turns from red to white; the
@@ -34,8 +34,8 @@ still have the old open gutters, wooden sluice gates and swinging mizab spouts f
   or its stream spills back into the return grate.
 - Wrong routes are funny, never punishing: the return grate gurgles and the tower gauge rises (Bilqis: "Straight
   back to them."); the drone dock floods and two parked drones fizz and sag (harmless; a small cheer from the souq).
-- Finale: the full stream pours from the canyon spout; the camera follows it down al-Saila under the bridge and
-  across to the commons, where the sabil overflows with cyan light and people come to the edge. End card.
+- Finale: the full stream pours from the canyon spout; the camera follows it down al-Saila under the zipline and
+  up to R2, where the sabil overflows with cyan light and neighbours come to the edge. End card.
 - Hints (Bilqis): after 2 min "Every open gate takes a share." After 4 min "That old gate is stuck, not locked."
 
 ## 3. Rules for the build (agy brief after level1-blockout)

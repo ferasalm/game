@@ -39,6 +39,10 @@
   180-degree-tilted lining part on the lid and a dark inside on the box (2026-10-23).
 - A keeper behind his stall was hidden by the awning from the play camera -> StallKeeper: the counter's end
   (2026-10-23).
+- Follow camera sat 8-10 m back: its aim led along the player's facing, and an idle figure faces the camera ->
+  lead along the view direction (FollowCam) (2026-10-23).
+- `find_children(pattern, "MyClass")` never matches a script class_name (engine classes only), and lint bans it ->
+  walk get_children() and test `is MyClass` (2026-10-23).
 - set_exploring(false) hides the player and the patrols -> talks use rooftop.freeze_actors (2026-10-22).
 - See a scene without the owner: non-headless `"$(tools/godot.sh)" --path . --write-movie DIR/f.png --fixed-fps 60
   --quit-after N [scene]`, then view 1-2 frames scaled to 640x360 with Pillow (2026-10-21).
@@ -86,3 +90,8 @@
 - agy 1.1.21 reads rules from GEMINI.md (not .agents/rules/); -p mode denies every shell command despite
   settings.json allow rules -> tools/agy_task.sh (skip-permissions, own worktree outside .claude/) (2026-10-22).
 - Where is X: grep docs/MAP.md (generated), not `ls -R`.
+- opencode CLI (npm opencode-ai 1.19.4): npm blocks its postinstall (no binary) -> `npm install -g
+  --allow-scripts=opencode-ai opencode-ai`; "Database is not empty and has no session table" = the owner's opencode
+  desktop app owns ~/.local/share/opencode -> the CLI gets its own XDG_DATA_HOME (tools/oc_task.sh) (2026-10-23).
+- opencode free models answered "Free usage limit reached" and `opencode run` then hung with an empty log -> read
+  ~/.local/share/oc-cli/opencode/log, taskkill the CLI's opencode.exe (not opencode-cli.exe, the app) (2026-10-23).

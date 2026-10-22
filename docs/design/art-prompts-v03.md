@@ -46,3 +46,20 @@ Save as `inbox/concept_sabil.png`.
 2. Model pictures (1, 2a, 2b, 2c) go into inbox/ for the image-to-3D step (characters-3d.md section 8), not for cutting
    parts. Keep the reference picture attached for 2b.
 3. Tell Claude the file names when they are ready; it will run the image-to-3D step or import them and log the source in the manifest.
+
+## Level 1 concept: the five roofs (Google Flow, 2026-10-23; save the pick to inbox/level1_concept_*.png)
+Painted concept art, 16:9, of five rooftops of old Sana'a tower-houses in the year 2150, at night in a rain storm,
+seen from a high three-quarter angle. Brown basalt and brick tower-houses with white gypsum friezes and round
+qamariya windows of red, green, yellow and blue stained glass glowing from inside; crenellated roof edges traced with
+magenta and cyan neon strips; sagging bundles of cables between the towers; AC units, satellite dishes, solar panels
+and water tanks on the roofs. The roofs stand at different heights and are joined by a wooden plank across a narrow
+alley, a small rope-and-plank bridge, a zipline cable over a wide neon-lit street far below, a short gap to leap,
+and a thick cable bundle along a wall. On one roof, a herb merchant's stall with a striped awning, hanging herb
+bundles and warm lanterns, next to a small stone water fountain. On the tallest tower, a glass-arched rooftop room
+glowing warm amber. On the far roof, a steel water tower with a red beacon and a cyan holographic ring gauge, cold
+white floodlights and a drone dock; two hovering drones cast searchlight cones through the rain. Wet roofs mirror
+the neon in puddles; steam rises from vents. Behind dark mountains, a megacity of glass towers with holographic
+bands glows cyan and magenta under storm clouds and a hidden moon. Two small figures for scale on the nearest roof:
+a young man in a long dark-blue coat with a curved dagger at the front of his belt, and a woman with a mechanical
+right arm. Hand-painted look with ink outlines, rich colour, readable shapes. Signs use ancient South Arabian
+(Musnad) letters only; no Arabic or Latin text.

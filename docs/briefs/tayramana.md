@@ -11,13 +11,13 @@ docs/design/level-1.md section 6; docs/MAP.md lines for camera-v2's framed_shots
 (level1-blockout), dialogue (dialogues.json, talks.json, dialogue box), talk_spot, rooftop freeze_actors, the router.
 
 ## What to build
-0. Two rooms share this system: "tayramana" (below) and "workshop" (6 x 4 m, door (2.5,13.0), the workbench prop
-   content/world/props/workbench.json, shelves, the grandfather's sheath on the wall; its interact opens the existing
-   workshop talk and menu exactly as the outdoor spot did; exit spot (2.5,13.8)). Build both.
-1. content/world/rooms.json (new kind "room", Def + ContentDB registration): id "tayramana", size 7 x 4.5 x 3 m,
-   wall colour letters, window bays on the long north wall (qamariya arches, lit), the props of level-1 section 6
+0. One room only (owner: "keep the Tayramana", no other rooms): its east corner holds the workbench (the prop
+   content/world/props/workbench.json); interacting with it opens the existing workshop talk and equipment menu
+   exactly as the outdoor workshop spot does today; remove the outdoor workshop spot from the area.
+1. content/world/rooms.json (new kind "room", Def + ContentDB registration): id "tayramana", size 7 x 5 x 3 m,
+   wall colour letters, qamariya arches on three walls (lit), the props of level-1 section 6
    as prop JSON (cushions, armrests, carpet, brass tray, jamana pot, cups, shelf, radio, holo-frame), two framed
-   shots, the entry spot, the exit spot on the roof (5.5, 11.0), two sit spots.
+   shots, the entry spot, the exit spot on R3 outside the door (level-1.md 2, 6), two sit spots.
 2. A room builder (view) that builds a room from its def, reusing PropBuilder and the painted materials.
 3. The door place enters: fade out 0.4 s (input locked), the rooftop is hidden like a battle (rooftop_port), the room
    is shown with the framed camera, fade in; leaving through the door reverses it. Area music keeps playing.

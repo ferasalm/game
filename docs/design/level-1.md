@@ -1,104 +1,96 @@
-# Level 1: the rooftops of Souq al-Milh (demo level; Level Designer, 2026-10-23)
-Base layout: docs/design/rooftop-v3.md (two terraces and a 3 m bridge over al-Saila, 26 x 18 m grid, places, patrol
-clearances, reachability and unstuck rules all kept). This file adds what the new camera, the cyberpunk look, the
-tayramana and the demo story need. Where they disagree, this file wins. Owner choices: section 9.
+# Level 1: the rooftops of Souq al-Milh (demo level; Level Designer, rewritten 2026-10-23 from the owner's brief)
+Owner: "multiple roofs of multiple buildings like before, but don't pack them with extra shops, rooms (keep the
+Tayramana)"; Abu Nabil on one roof; crossings by "a wooden board, a simple bridge, jumping to a close roof, ziplines
+or cables"; cyberpunk old Sana'a as in his concept art (chat, 2026-10-23: rain, neon trims on crenellations, cables
+between towers, searchlight drones, the megacity behind the mountains). Answers: 5 roofs; the workbench inside the
+tayramana; contextual leaps; rain. rooftop-v3.md is superseded as the layout (its walk-graph, unstuck and patrol
+clearance rules still apply to every roof). Puzzles: valve-puzzles.md.
 
 ## 1. Intent
-Player fantasy: a courier who owns the rooftops of his old city at night, while the megacity glows on the horizon and
-the Concession owns the water. Arc: warm home (commons) -> a quiet cup with Bilqis (majlis) -> danger in the open
-(patrols, bridge) -> cold Concession roof -> one act of defiance (open the valve) -> water runs home to the sabil.
-The moment to remember: Zayd turns the Concession valve, water rushes down the cyan al-Saila channel under the
-bridge, and the sabil back on the commons overflows with light, seen across the canyon in one camera move.
+A courier who owns the rooftops of his old city in a night storm, while the megacity glows past the mountains and
+the Concession owns the water. Arc: home roofs (warm, safe) -> the tayramana (a cup with Bilqis, the seal) -> the
+zipline over al-Saila into the cold side -> patrols and searchlights -> the light lock and the water -> the water
+runs home to the sabil. The moment to remember: the zipline ride over the neon-lit street in the rain, and later
+the water you freed pouring down that same street.
 
-## 2. What the Brothers-style camera changes (versus rooftop-v3)
-- The sky is in frame now (follow camera, pitch about 28 degrees, wide FOV): the horizon carries the cyberpunk. The
-  Haddah megacity (SW), the Great Mosque minarets (N), the moon and the drone lanes are the level's landmarks.
-- Rooftop-v3's "camera-safe building" height rule is dropped: the arm shortens on walls (camera-v2). Tall tower-houses
-  may now ring both roofs; they frame the sky and make the roofs feel like rooms open to the night.
-- Scale reads closer: props are seen at 4-7 m, so dressing must hold up at that distance (no bare boxes at eye level).
-- Navigation by landmark, not by map: from every cell of the commons the player sees the goal landmark (the Concession
-  water tower on the east roof, red beacon, a cyan holo-gauge) between house_b and tower_h.
-- Camera zones (camera-v2) author the views: spawn (looks NE over the commons to the water tower), vista strip (low,
-  north to minarets and moon), bridge (side view along the canyon), valve (wide, back over the canyon to the sabil).
+## 2. The five roofs (each its own tower-house; floor heights relative to the market roof)
+| Roof | Building | Size | Floor | What is there |
+|---|---|---|---|---|
+| R1 Home | Zayd's family tower, 6 storeys | 8 x 7 m | -0.8 | spawn; the stair door; a dovecote, a water tank, a washing line |
+| R2 Souq al-Milh | the widest old roof, crenellated | 12 x 10 m | 0.0 | Abu Nabil's herb stall, the sabil, 2-3 neighbours under a neon awning, lantern strings |
+| R3 Tayramana | the tallest old tower, 8 storeys | 9 x 8 m | +1.6 | the tayramana (glass-arched top room: majlis + workbench corner) on its north half |
+| R4 Washline | a lower building across al-Saila street | 11 x 9 m | -3.2 | patrol A (enforcer pair), solar panels, dish farm, laundry, AC units, steam vents |
+| R5 Concession | an old tower with a steel annex and the water tower | 12 x 10 m | -3.2 | patrol C (mixed), drone dock, the water tower, the valve, the light lock |
+Gaps between buildings: 2-6 m alleys; al-Saila street between R1/R3 and R4 is 14-16 m wide, 18 m below. Every roof
+edge has a parapet except at a crossing; nobody can fall (no fall state anywhere).
 
-## 3. Shape and flow
-Shape: hub (the commons) with one gated spoke (bridge) to a small arena roof; one interior off the hub (tayramana).
-Critical path about 60 m, 15-20 min first time:
-[Opening pan] -> [Spawn, commons] -> [Workshop room: talk + weapon] -> [Stall] -> [Sabil: save]
-  -> [Tayramana: qishr with Bilqis, the seal] -> [North corridor: patrol A] -> [Vista strip] -> [Bridge]
-  -> [East roof: patrol B drone, patrol C at the tank] -> [Light lock] -> [Route the water] -> [Water runs home] -> [End card]
-Puzzles: docs/design/valve-puzzles.md (owner: both, light lock first, medium, no fail state).
-Optional: chest_mafraj (yard), drone patrol B (north lane), chest_saila (east alcove, guarded by C), Abu Nabil's haggle
-and fight (docs/design/abu-nabil-boss.md), the qamariya rooftop overlook (a dead end with a view, not a trap).
+## 3. Crossings (one of each kind the owner named; each is taught where it is safe)
+| ID | From -> to | Kind | Length / rise | Notes |
+|---|---|---|---|---|
+| X1 | R1 -> R2 | wooden board | 4 m, rises 0.8 m | a scaffold plank across the alley; teaches "edges have crossings"; both ways |
+| X2 | R2 -> R3 | simple bridge | 6 m, rises 1.6 m | planks on two cables with rope rails, sways a little under the pair; both ways |
+| X3 | R3 -> R4 | zipline | 16 m over al-Saila, drops 4.8 m | one way; a courier's pulley handle on a steel cable; Bilqis rides a second line |
+| X4 | R4 -> R5 | leap | 1.8 m gap, same height | contextual: a chalk hook mark on the ledge; interact, the pair leaps in a set move |
+| X5 | R4 -> R1 | cable traverse | 10 m, rises 2.4 m | hand-over-hand along a thick power-cable bundle over a ledge; both ways; the way home |
+Loop: R1 -> R2 -> R3 -> (zip) R4 -> (cable) R1, so the player can always return to the stall and the sabil; R5 hangs
+off R4 by the leap. Crossings are interact-started set moves (input locked, 1.5-4 s), each with its own camera zone
+(side view), sound and a rain splash on landing. The follower crosses right behind the player.
 
-## 4. Pacing
+## 4. Flow and pacing (15-20 min first time)
 | Min | Where | Activity | Tension | Notes |
 |---|---|---|---|---|
-| 0:00 | Opening pan | Camera | none | megacity, minarets, moon; ends behind the party |
-| 0:30 | Commons | Walk, learn camera | low | warm lamps, music explore_souq |
-| 1:30 | Workshop room | Talk, weapon pick | low | the bench is the first close-up of the look |
-| 3:00 | Stall, sabil | Buy, save | low | Abu Nabil's haggle is optional |
-| 4:30 | Tayramana | Sit, qishr, talk | low, warm | the story beat: the Concession seal |
-| 8:00 | North corridor | Patrol A | medium | fight, slip past, or ambush from behind |
-| 10:00 | Vista strip | Look | release | the postcard; drone B crosses the moon |
-| 11:00 | Bridge | Cross | rising | canyon below, Concession roof ahead |
-| 12:00 | East roof | Patrols B, C | high | colder light; the tank under guard |
-| 15:00 | Valve | Interact, cutscene | climax | camera swings back to the commons |
-| 16:00 | Back home | Walk, sabil | resolution | sabil overflows; people at the edge; end card |
+| 0:00 | opening pan | camera | none | storm over the city, megacity, the water tower's red beacon, down to R1 |
+| 0:30 | R1 | walk, talk | low | Bilqis waits under the dovecote awning; the ledger job is set up |
+| 1:30 | X1 -> R2 | board, market | low | Abu Nabil's stall (buy, optional haggle and fight), the sabil (save) |
+| 4:00 | X2 -> R3 | bridge, tayramana | low, warm | sit with Bilqis, qishr, the seal; the workbench (weapon pick) |
+| 8:00 | X3 | zipline | release | the hero shot: side view, neon street below, drones crossing the megacity |
+| 8:30 | R4 | patrol A | medium | fight, slip past under the washing lines, or ambush from behind |
+| 11:00 | X4 -> R5 | leap | rising | a drone searchlight sweeps the gap every 6 s: leap between sweeps |
+| 12:00 | R5 | patrol C, light lock | high | cold floodlights; the lock (valve-puzzles 1) |
+| 15:00 | R5 | route the water | climax | valve-puzzles 2; the water runs down al-Saila |
+| 16:30 | X5 -> R1 -> R2 | walk home or end card | resolution | the sabil overflows; neighbours at the edge |
 
-## 5. Zones and dressing (old Sana'a first, 2150 laid over it)
-- Commons (west roof, warm, safe): lime-plaster floor, tower-house faces with lit qamariya, washing lines with neon-
-  strip pegs, AC units and tangled cables down the walls, a Musnad neon SOUQ sign on a tower, Abu Nabil's stall with
-  hanging herb bundles and a price-holo that flickers; the sabil (cool cyan water against warm glass, the key colour
-  contrast). No Concession red here: safety reads as warm.
-- Workshop (owner 2026-10-23: a room like the tayramana): the lower room of the same tower-house (the mafraj
-  block x1-4 z10-12); door on its south face at (2.5,13.0), lit by a qamariya lamp. Inside, 6 x 4 m, framed camera:
-  the workbench (low cedar table, glowing screen on a brass arm, vise, tools, a jambiyah blank on cloth, cable to a
-  battery box, a brazier), shelves of hilts and blades, the grandfather's old sheath on the wall.
-- Tayramana (the top room of the same tower-house; its door, the stair up, on the east face at 4.5,11.0): see 6.
-- North corridor and vista strip: worn lane tiles (the patrol path is visible on the floor), crenellated parapet, a
-  satellite dish farm, solar panels; the strip ends at the parapet with the minarets and the moon straight ahead.
-- Bridge (x16-19, z5-7): old planks on a new carbon-fibre truss, cables overhead with hanging lanterns, lamp posts at
-  both ends; under it the al-Saila street, its channel dry and dark until the valve beat.
-- East roof (Concession, cold): white-cyan floodlights, red seal lights, a drone dock, crates with the Concession mark;
-  the water tower (tower_h, NE) with a ring gauge holo; the valve wheel at its foot (21.5,3.0) behind patrol C's lane;
-  the HADDAH pink glow around house_a. Ration-meter boxes with red locks on every roof tank: the story without text.
-- Horizon (all zones): Haddah towers with cyan and magenta holo-bands, drone light trails crossing slowly, a far
-  searchlight sweep every 20 s, Jabal Nuqum ridge, mist bands.
+## 5. Look and dressing (concept art: cyberpunk laid over old Sana'a, never replacing it)
+- Old Sana'a first: brown basalt and fired-brick tower-houses, white gypsum friezes (zigzag, triangles), round-arched
+  qamariya windows in red, green, yellow and blue glass lit from inside; crenellated roof edges; carved wooden doors.
+- 2150 laid over it: neon strips (magenta, cyan) along crenellations and window lines (not on the home roofs' inner
+  faces); sagging cable bundles between every pair of towers (they make X5 believable); AC units, dishes, solar
+  panels, water tanks with red-locked Concession meters; vertical Musnad neon signs on street faces; striped neon
+  awnings over doorways; drones with searchlight cones; steam from vents.
+- Storm: rain streaks, wet roofs that mirror the neon in puddles, drips from awnings and cables, the moon breaking
+  through clouds now and then, lightning far behind the mountains (rare, quiet).
+- Colour rule: home side (R1-R3) warm (qamariya, lanterns, the stall's amber); danger side (R4-R5) cold (cyan
+  floodlights, red Concession seals); neon magenta belongs to the street and the city between them.
+- Horizon: Jabal Nuqum's ridge, the Haddah megacity with holo-bands, drone light trails, a searchlight sweep every
+  20 s, the Great Mosque minarets to the north.
+- Street below (seen from every crossing): wet cobbles, the al-Saila channel dry and dark until the finale, a figure
+  with an umbrella, neon reflections; never walkable in level 1.
+- One close-up detail per roof (the camera is near now): R1 the dovecote and herb pots; R2 the stall's hanging
+  bundles and price holo; R3 the tayramana's glass arches; R4 the laundry in the rain; R5 the water tower's ring gauge.
 
-## 6. Tayramana and majlis (interior; framed camera)
-- Outside: a glass-walled room on top of the mafraj (big qamariya arches, warm light spilling on the roof). Door at
-  (4.5,11.0), an interact prompt "Enter". Fade 0.4 s into the interior scene; leaving puts the party at (5.5,11.0).
-- Inside, 7 x 4.5 m, 3 m high: low cushions (mattrah) along three walls, armrests (masnad), a carpet, a low brass tray
-  with a jamana coffee pot and small cups, the large windows on the long wall showing the city and Haddah, a mafraj
-  shelf with a radio and a cracked holo-frame of Zayd's grandfather. Two framed shots (door corner, window corner).
-- Sit: interact at a cushion; Zayd and Bilqis sit (a sit clip, or a held crouch pose until one exists); the talk
-  (4-6 lines): Bilqis pours qishr, reads the ledger seal: Concession; she names the water tower on the east roof.
-- Reward: 2 qishr (cures spice confusion, the Abu Nabil fight). Sitting again later: one line, no reward.
+## 6. Tayramana (the one room; framed camera)
+Top room of R3's tower: big qamariya arches on three sides, warm light spilling on the wet roof. Door on its south
+face; fade 0.4 s inside. 7 x 5 m: the majlis (cushions and armrests along two walls, a carpet, a brass tray with a
+jamana pot and cups, the grandfather's cracked holo-frame on a shelf) and, in the east corner, the workbench (the
+built prop). Two framed shots (door corner, window corner). Sit at a cushion: the qishr talk (docs/briefs/
+tayramana.md lines 1-7), +2 qishr the first time. The bench opens the existing workshop talk and equipment menu.
 
-## 7. Encounters (timeline battles today; the arena stays when action combat arrives)
+## 7. Encounters (timeline battles in the arena, as today)
 | ID | Where | Enemies | Read time | Options | Fallback |
 |---|---|---|---|---|---|
-| E1 patrol A | north corridor z8 | 2 enforcers | seen from the commons exit, 6 m | fight; side lane z5-7; ambush from behind (reverse stab) | commons (z >= 9.5, never entered) |
-| E2 patrol B | north lane z4 | 1 drone | its light sweeps the strip | fight; wait under the dish farm | vista strip west end |
-| E3 patrol C | east roof z10.5 | mixed (2 + drone) | from the bridge landing, 5 m | fight; circle north of house_a; ambush | bridge landing |
-| E4 Abu Nabil | stall | boss (optional) | talk first | haggle or fight | sabil |
-No fight is forced: E3 guards the valve and the alcove chest, but the valve can be reached by the north side while C
-walks south (timing). Clearances and lane rules: rooftop-v3 section 3.
+| E1 | R4 | 2 enforcers | from the zipline landing, 6 m | fight; slip past under the washing lines; ambush | the landing pad by X3 |
+| E2 | X4 gap | drone sweep | its cone is visible | time the leap; caught = a drone fight | R4's dish farm |
+| E3 | R5 | mixed (2 + drone) | from the leap landing, 5 m | fight; circle the water tower; ambush | the leap ledge |
+| E4 | R2 | Abu Nabil (optional) | talk first | haggle or fight | the sabil |
+The home roofs (R1-R3) never hold a patrol.
 
-## 8. Build order and builders (one worktree each; at most 3 at once)
-1. camera-v2 (agy, running): follow camera, camera zones, framed indoor shots, grey-box test room.
-2. workbench (agy): finish the WIP bench prop and the alcove (brief docs/briefs/workbench.md).
-3. level1-blockout (agy, after 1 merges): rooftop-v3 grid and places plus this file's deltas (tall ring buildings,
-   tayramana door, water tower, valve place, four camera zones). Grey box, then a render pass; owner plays it.
-4. tayramana (agy, after 1): interior scene, door fade, sit, the talk (Claude writes the lines), qishr reward.
-5. valve-puzzles (agy, after 3): docs/design/valve-puzzles.md: light lock, water routing, the finale camera move.
-6. dressing (opencode or agy, after the owner plays 3): the 2150 props of section 5 as prop JSON, horizon life.
-7. look: route B (owner pick 2026-10-23): painted skins (skin-bake, opencode, running), the oil-baked world kept,
-   softer flat light; every new prop and room goes through the same bake.
-Claude: this design, the briefs, the talk lines, every review and render judgment. Owner: the look pick, play checks.
-
-## 9. Owner answers (2026-10-23, DECISIONS)
-Tayramana: a real room behind a door. Last beat: open the valve, after the two puzzles (valve-puzzles.md). Demo keeps
-today's timeline battles. Camera: automatic with designed zones, no player camera control. Workshop: a room like the
-tayramana. Puzzles: both, approved as written in valve-puzzles.md.
+## 8. Build order (one worktree each; max 3 runs)
+1. level1-blockout (agy): five roof buildings, the street, crossings as interact places (set moves in step 3),
+   patrols, camera zones incl. side angle and roll, walk-graph tests per roof and across crossings.
+2. skin-bake (agy, running), then the route B look pass (Claude).
+3. crossings (agy): board, bridge, zipline, leap, cable as set moves with camera zones, sounds and tests.
+4. tayramana (agy, after the Abu Nabil part B merge): room, door, sit, talk, the workbench corner.
+5. storm (agy + Claude judging): rain streaks, wet floors and puddles, drips, steam; fps_probe on the laptop.
+6. valve-puzzles (agy): from valve-puzzles.md section 3.
+7. dressing (agy/opencode): the section 5 lists as prop JSON, the street, the horizon life.
+Claude: this design, the briefs, the talk lines, every review and render judgment. Owner: play checks per gate.
