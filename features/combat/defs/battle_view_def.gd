@@ -36,8 +36,6 @@ var banner_font_size: int = 96
 var margin: int = 24
 var icon_size: int = 44
 var bar_height: int = 16
-var party_panel_width: int = 520
-var menu_width: int = 620
 var party_color: Color = Color.WHITE
 var enemy_color: Color = Color.WHITE
 var cast_color: Color = Color.WHITE
@@ -45,6 +43,46 @@ var panel_color: Color = Color.BLACK
 var highlight_color: Color = Color.WHITE
 var hp_color: Color = Color.WHITE
 var sp_color: Color = Color.WHITE
+## HUD v3 (all in pixels at 1920x1080 unless noted): the thin timeline, the strips under the fighters' feet, the
+## turn panel (card + compact menu), the info card and the end panel.
+var timeline_icon: int = 24
+var timeline_track: int = 10
+var timeline_top: int = 4
+var timeline_width: int = 1100
+var timeline_raise: int = 4
+var ring_width: int = 2
+var letter_font: int = 14
+var target_font: int = 24
+var strip_w: int = 150
+var strip_h: int = 18
+var strip_gap: int = 6
+var strip_initial: int = 18
+var hp_h: int = 9
+var sp_h: int = 5
+var foe_strip_w: int = 100
+var foe_strip_h: int = 8
+var foe_strip_seconds: float = 1.8
+var strip_fade: float = 0.4
+var pulse_scale: float = 1.4
+var pulse_seconds: float = 0.35
+var turn_menu_w: int = 380
+var turn_row_h: int = 34
+var turn_gap: int = 16
+var card_bar_h: int = 12
+var info_w: int = 230
+var info_delay: float = 1.2
+var info_fade: float = 0.35
+var info_gap: int = 12
+var rect_pad: int = 4
+var tip_w: int = 560
+var end_panel_w: int = 420
+var end_title_font: int = 48
+var letter_offset: float = 0.15
+var menu_font: int = 20
+var menu_pad_v: int = 3
+var card_font: int = 18
+var card_name_font: int = 22
+var panel_margin: int = 10
 
 
 func read(r: DefReader) -> void:
@@ -57,6 +95,7 @@ func read(r: DefReader) -> void:
 	enemy_stage = _slots(r, "enemy_stage")
 	_read_pacing(r)
 	_read_hud(r)
+	_read_hud_v3(r)
 
 
 func _read_pacing(r: DefReader) -> void:
@@ -89,8 +128,6 @@ func _read_hud(r: DefReader) -> void:
 	margin = r.integer("margin", 0, 200)
 	icon_size = r.integer("icon_size", 8, 200)
 	bar_height = r.integer("bar_height", 4, 80)
-	party_panel_width = r.integer("party_panel_width", 100, 1200)
-	menu_width = r.integer("menu_width", 100, 1200)
 	party_color = _color(r, "party_color")
 	enemy_color = _color(r, "enemy_color")
 	cast_color = _color(r, "cast_color")
@@ -115,3 +152,44 @@ func _color(r: DefReader, key: String) -> Color:
 		r.problem(key, "'%s' is not a colour" % value)
 		return Color.MAGENTA
 	return Color.html(value)
+
+
+func _read_hud_v3(r: DefReader) -> void:
+	timeline_icon = r.integer("timeline_icon", 8, 120)
+	timeline_track = r.integer("timeline_track", 2, 60)
+	timeline_top = r.integer("timeline_top", 0, 60)
+	timeline_width = r.integer("timeline_width", 200, 1900)
+	timeline_raise = r.integer("timeline_raise", 0, 40)
+	ring_width = r.integer("ring_width", 1, 12)
+	letter_font = r.integer("letter_font", 6, 80)
+	target_font = r.integer("target_font", 8, 80)
+	strip_w = r.integer("strip_w", 40, 400)
+	strip_h = r.integer("strip_h", 6, 80)
+	strip_gap = r.integer("strip_gap", 0, 80)
+	strip_initial = r.integer("strip_initial", 6, 60)
+	hp_h = r.integer("hp_h", 2, 40)
+	sp_h = r.integer("sp_h", 2, 40)
+	foe_strip_w = r.integer("foe_strip_w", 40, 400)
+	foe_strip_h = r.integer("foe_strip_h", 3, 40)
+	foe_strip_seconds = r.number("foe_strip_seconds", 0.1, 20.0)
+	strip_fade = r.number("strip_fade", 0.05, 5.0)
+	pulse_scale = r.number("pulse_scale", 1.0, 3.0)
+	pulse_seconds = r.number("pulse_seconds", 0.05, 3.0)
+	turn_menu_w = r.integer("turn_menu_w", 160, 900)
+	turn_row_h = r.integer("turn_row_h", 20, 90)
+	turn_gap = r.integer("turn_gap", 0, 200)
+	card_bar_h = r.integer("card_bar_h", 4, 40)
+	info_w = r.integer("info_w", 100, 600)
+	info_delay = r.number("info_delay", 0.0, 10.0)
+	info_fade = r.number("info_fade", 0.05, 5.0)
+	info_gap = r.integer("info_gap", 0, 100)
+	rect_pad = r.integer("rect_pad", 0, 60)
+	tip_w = r.integer("tip_w", 200, 1800)
+	end_panel_w = r.integer("end_panel_w", 200, 1200)
+	end_title_font = r.integer("end_title_font", 12, 200)
+	letter_offset = r.number("letter_offset", 0.0, 3.0)
+	menu_font = r.integer("menu_font", 8, 80)
+	menu_pad_v = r.integer("menu_pad_v", 0, 30)
+	card_font = r.integer("card_font", 8, 80)
+	card_name_font = r.integer("card_name_font", 8, 80)
+	panel_margin = r.integer("panel_margin", 0, 60)

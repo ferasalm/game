@@ -145,9 +145,11 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/logic/battle_sim.gd`: One battle (docs/design/combat.md): builds the units, steps the Timeline one tick at a time, asks the player (heroes) or BattleAI (enemies) for choices, resolves acts and decides victory or defeat
 - `features/combat/logic/battle_targets.gd`: Who can do what in a battle: a unit's moves, which of them it can pay for, and who a move may target
 - `features/combat/logic/formation.gd`: Two rows per side: slots 0-1 are the vanguard, 2-3 the rearguard, and slot n+2 stands behind slot n
+- `features/combat/logic/hud_layout.gd`: Pure screen-rectangle maths for the battle HUD: the box around projected points, where a panel may sit beside a fighter without covering any fighter, which fighter the mouse points at, and how an info card fades
 - `features/combat/logic/item_action.gd`: A consumable as a battle cast: an ActionDef built from a ConsumableDef, so the timeline treats it like any move (cast speed, recovery, the cast bar, interrupts)
 - `features/combat/logic/timeline.gd`: Grandia-style initiative track (docs/ARCHITECTURE.md, "Combat")
 - `features/combat/logic/timeline_event.gd`: One thing that happened in a battle, for the battle view and logs: what, who, a value (timeline position, damage, status turns) and a detail id (the action for damage, the status for status/status_ended)
+- `features/combat/logic/unit_letters.gd`: Tells apart units of the same kind on one side: two Concession Enforcers are A and B, a lone unit has no letter
 - `features/combat/logic/unit_state.gd`: One fighter during one battle: the numbers that change (hp, timeline position, the action being cast), built from a read-only CombatantDef
 - `features/combat/tests/battle_probe.gd`: Test helper (not a test): hand-made fighters, moves and battles with exact numbers, and loops that play a BattleSim until an event kind appears
 - `features/combat/tests/fake_clip_source.gd`: A stand-in VisualSource for battle view tests: a model-like source of a known size that sends clip events only when the test says so, and records what the battle asked of it (clips, facings, hit pauses, collapses)
@@ -157,7 +159,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/tests/test_battle_camera.gd`: The cinematic battle camera: it frames the stage from a low angle (12-16 degrees down), starts at the exploration camera and swoops to the battle pose, then drifts, follows, pushes in, shakes and glides to the victory pose, all from content/combat/camera.json
 - `features/combat/tests/test_battle_flow.gd`: How a fight starts and ends: carried vitals fill the bars, the end panel shows the riyal, the shatter warp skips cleanly without a frame, the Defeat screen opens on a loss and its three picks leave the fight (retry, load, title)
 - `features/combat/tests/test_battle_hud_style.gd`: The restyled battle HUD keeps its behaviour and gains: tags on the command buttons, gradient bars in the party panel, the brass timeline track, and rarity-coloured spoils on the victory panel (only items not owned yet)
-- `features/combat/tests/test_battle_hud_v2.gd`: Battle HUD v2: the timeline sits on top at the style's size and its icons come from content (disc fallback), the party shows as PartyCards at the bottom right with the acting hero framed, and the hint strip is there
+- `features/combat/tests/test_battle_hud_v2.gd`: Battle HUD v2 basics (kept in v3): the thin timeline sits on top at the view's size and its icons come from content (disc fallback), each hero has a strip and the acting hero a card, and the hint strip is there
+- `features/combat/tests/test_battle_hud_v3.gd`: Battle HUD v3: at rest only a thin timeline and a slim strip under each hero; a hero's turn adds a card and a compact menu beside them; pointing shows an info card that fades; targeting names the target on the top bar; hits pulse a hero's strip and reveal a foe's; and at 1920x1080 nothing the HUD draws at rest covers a fighter
 - `features/combat/tests/test_battle_interrupt.gd`: T4: a cancel move landing on a casting enemy interrupts it (back to INTERRUPT_POS) inside BattleSim
 - `features/combat/tests/test_battle_item_menu.gd`: The Items entry of the command menu and its list: greyed with no herbs, rows with free counts, then the targets, back at each level, and a committed herb is a reserved cast on the timeline
 - `features/combat/tests/test_battle_items.gd`: The Items command in the sim: a herb is reserved when chosen (two heroes cannot share the last one), cast at its cast speed, consumed at ACT with the real amounts, and refunded when the target is no longer valid, when the cast is cut, or when the user falls first
@@ -172,6 +175,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/tests/test_battle_tech.gd`: Tech moves: ally / self / all-target moves, heals (never above max HP, downed allies stay down unless the move revives), the guarded and overclocked statuses, and the damage-taken multiplier
 - `features/combat/tests/test_battle_view3d.gd`: The battle view is ready for 3D models: it waits on the actor's clip events (never a timer), faces by direction with a lean toward the camera and never a negative scale, freezes both fighters at impact, places effects, numbers and markers from the characters' anchors, spaces lunges by width, plays the ko state, and keeps SceneTreeTimers out
 - `features/combat/tests/test_formation.gd`: Formation rows: cover and melee multipliers
+- `features/combat/tests/test_hud_layout.gd`: HudLayout (pure rect maths) and UnitLetters: boxes around points, panels that dodge fighters, which fighter the mouse points at, the info card's fade, and the A / B letters of same-kind units
 - `features/combat/tests/test_item_policy.gd`: ItemPolicy (balance harness): herbs only when the bag has them, deterministic, battles still end
 - `features/combat/tests/test_pause_safety.gd`: Pausing the game stops battle waits and cancels a hitstop (a SceneTreeTimer would keep running during a pause)
 - `features/combat/tests/test_reverse_stab.gd`: The reverse stab: only when the party was ambushed, Zayd strikes the lowest-slot living enemy first
@@ -182,27 +186,34 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/view/battle_action_player.gd`: Plays the swing of one move: the camera leans toward the actor, the actor plays its clip (attack, cast or item) while a melee actor anticipates and dashes, and the call returns when the CLIP says the hit lands (its `impact` event, never a timer; a ranged move then waits out its effect's flight)
 - `features/combat/view/battle_camera.gd`: The cinematic battle camera
 - `features/combat/view/battle_camera_rig.gd`: Builds a BattleStage's camera: the Camera3D with the arena's Environment and the cinematic BattleCamera that moves it, and the painted look's ink outline and grade on top
-- `features/combat/view/battle_command_menu.gd`: The command menu (bottom left) for the hero waiting at COMMAND: first one Button per move (unaffordable ones disabled; name, SP cost, a "cancels" / target tag; the focused move's description below), then one Button per valid target (foes or allies; self and all-moves skip this list)
+- `features/combat/view/battle_command_menu.gd`: The compact command menu (in the turn panel, beside the hero) for the hero waiting at COMMAND: first one Button per move (unaffordable ones disabled; name, SP cost, a "cancels" / target tag; the focused move's description below), then one Button per valid target (foes or allies; self and all-moves skip this list)
 - `features/combat/view/battle_demo.gd`: Battle view demo: a plain floor in the accepted HD-2D look and a BattleStage fighting the rooftop patrol (swift hilt, keen blade, seed 7, ambushed so the reverse stab shows)
 - `features/combat/view/battle_demo.tscn`: scene
 - `features/combat/view/battle_end_panel.gd`: The end-of-battle panel in the middle of the screen
 - `features/combat/view/battle_ending.gd`: How a fight leaves the screen
 - `features/combat/view/battle_event_player.gd`: Plays a batch of TimelineEvents one after another with the animation each one deserves: the swing and its effect (BattleActionPlayer), the flinch, hitstop and popping numbers of a hit, the BREAK! stamp of a cut cast, collapses and revives
 - `features/combat/view/battle_fighters.gd`: The 3D side of a battle: one CharacterVisual per unit on the stage, popping damage / heal numbers and status text, the BREAK! stamp, intent labels over casting enemies, and the bouncing target marker
-- `features/combat/view/battle_hud.gd`: The battle HUD, built in code: timeline bar (top) with the one-time tip under it, party panel (bottom right), command menu (bottom left), the banner text and the end panel
-- `features/combat/view/battle_item_menu.gd`: The Items list of the command menu (bottom left, over the move list): one row per herb the bag holds (name, the count still free, its effect), then the targets of the picked herb (the party herb skips them)
+- `features/combat/view/battle_hero_card.gd`: The acting hero's full card, on top of the turn panel: name, HP and SP with numbers
+- `features/combat/view/battle_hud.gd`: The battle HUD (v3), built in code and minimal at rest: a thin timeline on top (with the chosen target's name), a slim vitals strip under each hero's feet, and nothing else
+- `features/combat/view/battle_info_card.gd`: The small card beside a fighter that is pointed at (mouse over it, or the focus on it while targeting)
+- `features/combat/view/battle_item_menu.gd`: The Items list of the command menu (in the turn panel, in place of the move list): one row per herb the bag holds (name, the count still free, its effect), then the targets of the picked herb (the party herb skips them)
 - `features/combat/view/battle_juice.gd`: Hitstop and camera shake for the battle view
 - `features/combat/view/battle_labels.gd`: Builders for the 3D bits of the battle screen: billboard text (damage numbers, status text, enemy intent) and the target marker
 - `features/combat/view/battle_menu_chips.gd`: The small tags on the right edge of a command-menu button: SP cost (cyan), "cancels" (magenta), the target scope of a self / all move, and for a target the HP and a "will interrupt" warning
+- `features/combat/view/battle_notices.gd`: The words the HUD says to the player: a compact banner in the upper middle ("Interrupted!") that fades, the one-time tip under the top bar, and the key hint strip at the bottom (shown only while a menu is open)
 - `features/combat/view/battle_numbers.gd`: The pop-up text of a battle: damage and heal numbers that pop in with an overshoot, bounce up and fade (bigger for heavy hits, green for heals), and the BREAK! stamp over a unit whose cast was cut
-- `features/combat/view/battle_party_panel.gd`: The party cards (bottom right): per hero a PartyCard with the portrait icon, name, HP bar (red to orange) and SP bar (blue to cyan) with numbers
+- `features/combat/view/battle_rects.gd`: Where each fighter stands on the screen: the box of a CharacterVisual (its width and height from the facade) is projected with the battle camera and boxed again, so panels, strips and the mouse can steer clear of the fighters whatever the art is (sprite, model)
 - `features/combat/view/battle_runner.gd`: One fight, away from the exploring area: builds the arena from the request, the sim from content and the saved gear, the BattleStage beside it, and reports the stage's result
 - `features/combat/view/battle_shatter.gd`: The warp into a fight: the last frame of the area breaks into qamariya-glass shards that fall away and uncover the arena (battle_shatter.gdshader)
 - `features/combat/view/battle_shatter.gdshader`
 - `features/combat/view/battle_stage.gd`: The battle screen (wait mode): places the fighters and the camera, runs the HUD, steps a BattleSim a few ticks per physics frame and plays the resulting events
+- `features/combat/view/battle_strips.gd`: The resting vitals of the battle: a slim BattleUnitStrip under each hero's feet (always there) and under a foe while it was hit lately or is pointed at (it fades after the view's delay)
 - `features/combat/view/battle_style.gd`: Small builders for the battle screen's look (labels, bars, names, head icons)
-- `features/combat/view/battle_timeline_bar.gd`: The timeline along the top: an ornate brass track from 0 to ACT_POINT with a COMMAND mark and a tinted cast zone (BattleTrackArt), and one framed head icon per living unit at its timeline position (enemies above the track, the party below it, a small pointer in the team colour toward the track)
+- `features/combat/view/battle_timeline_bar.gd`: The thin top bar of the battle: a slim brass track from 0 to ACT_POINT with a COMMAND mark and a tinted cast zone (BattleTrackArt, compact), one small head icon per living unit at its timeline position (foes above the track, the party below it), and at the left the name of the chosen target
 - `features/combat/view/battle_track_art.gd`: The painted brass track of the timeline bar: dark glass, brass rails, tick marks, the tinted cast zone, a gypsum zigzag frieze along the bottom, the COMMAND mark (a brass line with diamonds) and an end cap at ACT
+- `features/combat/view/battle_turn_panel.gd`: What a hero's turn shows, in one framed panel: that hero's full card over the compact command menu (or the herb list), placed beside the hero on the side where no fighter stands
+- `features/combat/view/battle_unit_strip.gd`: One slim vitals strip under a fighter's feet: a name initial (the letter for same-kind foes) and a thin HP bar, for a hero also a thinner SP bar
+- `features/combat/view/battle_vitals.gd`: A name line over a thin HP bar and an optional thin SP bar, with the numbers beside them when wanted
 - `features/combat/view/clip_wait.gd`: Waits for a named clip event of one CharacterVisual (&"impact": the hit lands, &"end": the clip is over)
 - `features/combat/view/pause_wait.gd`: The one pause-safe wait of the battle view
 - `features/combat/view/vfx_player.gd`: Paints a VfxDef: turns each layer into pooled VfxSprites around the actor and the target(s) and moves them every frame (no tweens, no allocation once the pool is warm)
@@ -449,6 +460,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 ## localization
 - `localization/arena.csv`
 - `localization/battle.csv`
+- `localization/battle_hud.csv`
+- `localization/battle_hud.en.translation`
 - `localization/combat.csv`
 - `localization/dialogue.csv`
 - `localization/items.csv`
@@ -488,6 +501,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/run_godot.sh`: Runs the pinned Godot headless on this project with the given arguments; fails on a non-zero exit or on
 - `tools/shot_arena.gd`: Builds one battle arena on its own (no rooftop, no Router): the BattleRunner with the default encounter, heroes on auto-play, the HUD hidden when the user argument "hud=off" is given, so the painted arena can be judged alone
 - `tools/shot_battle.gd`: Starts the prototype and, after a moment of walking, makes the patrol touch the player so the battle (camera swoop, effects) can be filmed with the movie writer
+- `tools/shot_hud.gd`: Renders the battle HUD to PNG files (not headless; needs a window)
 - `tools/shot_scene.gd`: Plays a scene (or a Node script) for the movie writer (frames to a folder): the battle demo with its heroes on auto_play, or any scene
 - `tools/shot_shatter.gd`: Shows the qamariya shatter on a stand-in frame (a stripe pattern) so the glass can be judged without a fight
 - `tools/vfx_gallery.gd`: Effect gallery: plays every battle effect kind one after another (one per second) on a night stage, for the movie writer

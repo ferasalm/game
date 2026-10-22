@@ -1,7 +1,9 @@
 class_name BattleHud
 extends CanvasLayer
-## The battle HUD, built in code: timeline bar (top) with the one-time tip under it, party panel (bottom right),
-## command menu (bottom left), the banner text and the end panel. Works with keyboard, mouse and gamepad through Button focus.
+## The battle HUD (v3), built in code and minimal at rest: a thin timeline on top (with the chosen target's name),
+## a slim vitals strip under each hero's feet, and nothing else. A hero's turn adds that hero's card and a compact
+## command menu beside them (BattleTurnPanel); pointing at a fighter (mouse, or the focus while targeting) adds a
+## small info card. Works with keyboard, mouse and gamepad through Button focus. Nothing may cover a fighter.
 
 ## The player committed a move on a target in the command menu.
 signal move_chosen(action: ActionDef, target_id: StringName)
@@ -15,44 +17,87 @@ signal end_chosen(result: StringName)
 var menu: BattleCommandMenu
 var item_menu: BattleItemMenu
 var timeline_bar: BattleTimelineBar
-var party_panel: BattlePartyPanel
+var strips: BattleStrips
+var turn_panel: BattleTurnPanel
+var info_card: BattleInfoCard
+var notices: BattleNotices
 var end_panel: BattleEndPanel
+var rects: BattleRects
+## Every fighter's screen rect as of the last refresh().
+var fighter_rects: Dictionary[StringName, Rect2] = {}
+var _sim: BattleSim
 var _view: BattleViewDef
-var _root: Control
-var _banner: Label
-var _banner_tween: Tween = null
-var _tip: PanelContainer
-var _tip_label: Label
-var _tip_timer: SceneTreeTimer = null
+var _unit_ids: Array[StringName] = []
+var _target: StringName = &""
 
 
-func setup(sim: BattleSim, view: BattleViewDef, shown_hp: Dictionary[StringName, int]) -> void:
+func setup(sim: BattleSim, view: BattleViewDef, shown_hp: Dictionary[StringName, int], camera: Camera3D,
+		fighters: BattleFighters) -> void:
+	_sim = sim
 	_view = view
-	_root = Ui.screen_root()
-	add_child(_root)
+	for unit: UnitState in sim.timeline.units:
+		_unit_ids.append(unit.unit_id)
+	rects = BattleRects.new()
+	rects.setup(camera, fighters, view.rect_pad)
+	var root: Control = Ui.screen_root()
+	add_child(root)
 	timeline_bar = BattleTimelineBar.new()
-	_root.add_child(timeline_bar)
+	root.add_child(timeline_bar)
 	timeline_bar.setup(sim, view, shown_hp)
-	party_panel = BattlePartyPanel.new()
-	_root.add_child(party_panel)
-	party_panel.setup(sim, view, shown_hp)
+	strips = BattleStrips.new()
+	root.add_child(strips)
+	strips.setup(sim, view, shown_hp)
 	menu = BattleCommandMenu.new()
-	_root.add_child(menu)
 	menu.setup(sim, view)
 	menu.chosen.connect(move_chosen.emit)
-	menu.target_focused.connect(target_focused.emit)
+	menu.target_focused.connect(_on_target_focused)
 	menu.items_requested.connect(_open_items)
+	menu.help_changed.connect(_on_help)
 	item_menu = BattleItemMenu.new()
-	_root.add_child(item_menu)
 	item_menu.setup(sim, view)
 	item_menu.chosen.connect(item_chosen.emit)
-	item_menu.target_focused.connect(target_focused.emit)
+	item_menu.target_focused.connect(_on_target_focused)
 	item_menu.closed.connect(_close_items)
-	_build_texts()
+	item_menu.help_changed.connect(_on_help)
+	turn_panel = BattleTurnPanel.new()
+	root.add_child(turn_panel)
+	turn_panel.setup(view, shown_hp, menu, item_menu)
+	info_card = BattleInfoCard.new()
+	root.add_child(info_card)
+	info_card.setup(sim, view, shown_hp, fighters)
+	notices = BattleNotices.new()
+	root.add_child(notices)
+	notices.setup(view, timeline_bar.height())
 	end_panel = BattleEndPanel.new()
-	_root.add_child(end_panel)
+	root.add_child(end_panel)
 	end_panel.setup(view)
 	end_panel.picked.connect(end_chosen.emit)
+
+
+func _process(delta: float) -> void:
+	refresh(delta)
+
+
+## One frame of the HUD: project the fighters, then place the strips, the turn panel and the info card. `mouse` is
+## where the pointer is (Vector2.INF: ask the viewport; tests pass a point).
+func refresh(delta: float, mouse: Vector2 = Vector2.INF) -> void:
+	if _sim == null:
+		return
+	var screen: Rect2 = get_viewport().get_visible_rect()
+	var area: Rect2 = screen.grow_individual(0.0, -(timeline_bar.height() + _view.strip_gap), 0.0, 0.0)
+	fighter_rects = rects.all(_unit_ids)
+	strips.update(delta, fighter_rects, area)
+	turn_panel.update(_sim, fighter_rects, area)
+	var pointed: StringName = _target
+	if mouse == Vector2.INF:
+		mouse = get_viewport().get_mouse_position()
+	if pointed == &"" and screen.has_point(mouse):
+		pointed = HudLayout.hit(fighter_rects, mouse)
+	if pointed != &"" and not end_panel.visible:
+		info_card.point(pointed)
+	var extra: Array[Rect2] = [turn_panel.rect()]
+	info_card.update(delta, fighter_rects, extra, area)
+	notices.show_hints(turn_panel.visible)
 
 
 func open_menu(hero: UnitState) -> void:
@@ -64,7 +109,46 @@ func close_menu() -> void:
 	item_menu.close()
 	menu.visible = false
 	menu.close()
-	target_focused.emit(&"")
+	_on_target_focused(&"")
+
+
+func show_end(result: StringName) -> void:
+	close_menu()
+	end_panel.show_result(result)
+
+
+## Big text that fades over banner_seconds ("Interrupted!", "Reverse stab!").
+func show_banner(content: String) -> void:
+	notices.show_banner(content)
+
+
+func banner_text() -> String:
+	return notices.banner_text()
+
+
+## A one-time hint: shown only if GameState.flags has no `flag` yet, which is then set.
+func show_tip(flag: StringName, key: String) -> void:
+	notices.show_tip(flag, key)
+
+
+func tip_text() -> String:
+	return notices.tip_text()
+
+
+## The screen rect of everything the HUD shows at this moment, for the "nothing covers a fighter" rule. The top bar
+## counts by its track and icons (its full-width box is mostly empty).
+func visible_rects() -> Array[Rect2]:
+	var out: Array[Rect2] = timeline_bar.visible_rects()
+	out.append_array(strips.visible_rects())
+	out.append_array(notices.visible_rects())
+	for panel: Control in [turn_panel, info_card, end_panel]:
+		if panel.is_visible_in_tree():
+			out.append(panel.get_global_rect())
+	return out
+
+
+func _on_help(content: String, warning: bool) -> void:
+	notices.show_help(content, warning)
 
 
 func _open_items() -> void:
@@ -77,72 +161,10 @@ func _close_items() -> void:
 	menu.return_from_items()
 
 
-func show_end(result: StringName) -> void:
-	close_menu()
-	end_panel.show_result(result)
-
-
-## Big centred text that fades over banner_seconds ("Interrupted!", "Reverse stab!").
-func show_banner(content: String) -> void:
-	_banner.text = content
-	_banner.modulate.a = 1.0
-	_banner.visible = true
-	if _banner_tween != null:
-		_banner_tween.kill()
-	_banner_tween = create_tween()
-	_banner_tween.tween_property(_banner, "modulate:a", 0.0, _view.banner_seconds)
-	_banner_tween.tween_callback(_banner.hide)
-
-
-func banner_text() -> String:
-	return _banner.text if _banner.visible else ""
-
-
-## A one-time hint: shown only if GameState.flags has no `flag` yet, which is then set.
-func show_tip(flag: StringName, key: String) -> void:
-	if GameState.flags.get(flag, false):
-		return
-	GameState.flags[flag] = true
-	_tip_label.text = BattleStyle.text(key)
-	_tip.visible = true
-	if _tip_timer != null and _tip_timer.timeout.is_connected(_tip.hide):
-		_tip_timer.timeout.disconnect(_tip.hide)
-	_tip_timer = get_tree().create_timer(_view.tip_seconds) if is_inside_tree() else null
-	if _tip_timer != null:
-		_tip_timer.timeout.connect(_tip.hide)
-
-
-func tip_text() -> String:
-	return _tip_label.text if _tip.visible else ""
-
-
-func _build_texts() -> void:
-	_banner = BattleStyle.label("", &"BannerLabel")
-	_banner.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_banner.anchor_left = 0.0
-	_banner.anchor_right = 1.0
-	_banner.anchor_top = _view.banner_anchor_y
-	_banner.anchor_bottom = _view.banner_anchor_y
-	_banner.grow_vertical = Control.GROW_DIRECTION_BOTH
-	_banner.visible = false
-	_root.add_child(_banner)
-	_tip = PanelContainer.new()
-	_tip.add_theme_stylebox_override("panel", UiBoxes.panel(Ui.style(), &"plate"))
-	_tip.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
-	_tip.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	_tip.grow_vertical = Control.GROW_DIRECTION_END
-	_tip.offset_top = timeline_bar.height() + _view.margin / 2.0
-	_tip.offset_bottom = _tip.offset_top
-	_tip_label = BattleStyle.label("", &"SmallLabel")
-	_tip_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_tip_label.custom_minimum_size.x = _view.menu_width + _view.party_panel_width - _view.margin * 4.0
-	_tip.add_child(_tip_label)
-	_tip.visible = false
-	_root.add_child(_tip)
-	var strip: PromptStrip = Ui.prompt_strip([{"key": "accept", "text": "PROMPT_SELECT"},
-			{"key": "back", "text": "PROMPT_BACK"}, {"key": "info", "text": "PROMPT_INFO"}])
-	strip.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
-	strip.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	strip.grow_vertical = Control.GROW_DIRECTION_BEGIN
-	strip.offset_bottom = -Ui.style().size(&"s_strip_bottom")
-	_root.add_child(strip)
+## The target picker's focus moved: the top bar names it, its timeline icon rises, the info card follows it.
+func _on_target_focused(unit_id: StringName) -> void:
+	_target = unit_id
+	var unit: UnitState = _sim.timeline.find(unit_id) if unit_id != &"" else null
+	var caption: String = BattleStyle.text("BATTLE_TARGET") % BattleStyle.unit_name(_sim, unit) if unit != null else ""
+	timeline_bar.set_target(unit_id, caption)
+	target_focused.emit(unit_id)

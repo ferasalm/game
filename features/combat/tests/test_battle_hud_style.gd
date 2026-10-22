@@ -35,16 +35,19 @@ func test_move_buttons_carry_their_tags() -> void:
 	stage.free()
 
 
-func test_party_bars_use_the_gradient_variations() -> void:
+func test_vitals_use_the_gradient_bars() -> void:
 	var stage: BattleStage = _stage()
-	stage.hud.party_panel._process(0.0)
-	var numbers: PackedStringArray = _labels(stage.hud.party_panel)
-	check(numbers.has("400/400") and numbers.has("24/24"), "Zayd's HP and SP numbers show: %s" % [numbers])
+	stage.run_to_end(30000)
+	stage.hud.refresh(0.0)
+	var card: BattleVitals = stage.hud.turn_panel.card.vitals
+	check(card.hp_text().begins_with("%d/" % stage.sim.waiting_hero().def.max_hp), "the card shows the hero's HP: %s" % card.hp_text())
+	check(card.sp_text().ends_with("/%d" % stage.sim.waiting_hero().def.max_sp), "and SP: %s" % card.sp_text())
 	var kinds: Array[StringName] = []
-	for bar: Node in NodeWalk.all(stage.hud.party_panel):
+	for bar: Node in NodeWalk.all(stage.hud.strips):
 		if bar is ProgressBar:
 			kinds.append((bar as ProgressBar).theme_type_variation)
-	check_eq(kinds, [&"HpBar", &"SpBar", &"HpBar", &"SpBar"] as Array[StringName], "HP and SP bars per hero")
+	check_eq(kinds.count(&"HpBar"), 5, "an HP bar on every strip")
+	check_eq(kinds.count(&"SpBar"), 2, "an SP bar on each hero's strip only")
 	check(stage.hud.timeline_bar.get_child(0) is BattleTrackArt, "the brass track is painted")
 	stage.free()
 

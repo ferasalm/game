@@ -1,6 +1,6 @@
 class_name BattleCommandMenu
 extends PanelContainer
-## The command menu (bottom left) for the hero waiting at COMMAND: first one Button per move (unaffordable ones
+## The compact command menu (in the turn panel, beside the hero) for the hero waiting at COMMAND: first one Button per move (unaffordable ones
 ## disabled; name, SP cost, a "cancels" / target tag; the focused move's description below), then one Button
 ## per valid target (foes or allies; self and all-moves skip this list). The back action (ui_cancel) returns from targets to moves. The sim answers every rule question.
 
@@ -8,6 +8,8 @@ extends PanelContainer
 signal chosen(action: ActionDef, target_id: StringName)
 ## The focused target changed (&"" when leaving the target list); the stage moves the 3D marker.
 signal target_focused(unit_id: StringName)
+## The line under the menu changed: the focused move's description, or (warning) why a choice was refused.
+signal help_changed(text: String, warning: bool)
 ## The Items entry was pressed: the HUD opens the item list (BattleItemMenu).
 signal items_requested
 
@@ -20,8 +22,7 @@ var _move: ActionDef = null
 var _open: bool = false
 var _title: Label
 var _list: VBoxContainer
-var _desc: Label
-var _notice: Label
+var _help: String = ""
 var _buttons: Array[Button] = []
 var _items_button: Button
 
@@ -29,29 +30,13 @@ var _items_button: Button
 func setup(sim: BattleSim, view: BattleViewDef) -> void:
 	_sim = sim
 	_view = view
-	anchor_left = 0.0
-	anchor_right = 0.0
-	anchor_top = 1.0
-	anchor_bottom = 1.0
-	grow_vertical = Control.GROW_DIRECTION_BEGIN
-	offset_left = view.margin
-	offset_bottom = -view.margin
-	offset_top = -view.margin
-	offset_right = view.margin + view.menu_width
+	BattleStyle.bare_panel(self)
 	var box := VBoxContainer.new()
 	add_child(box)
 	_title = BattleStyle.label("", &"TitleLabel")
 	box.add_child(_title)
-	box.add_child(Ui.divider())
 	_list = VBoxContainer.new()
 	box.add_child(_list)
-	box.add_child(Ui.divider())
-	_desc = BattleStyle.label("", &"MutedLabel")
-	_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_desc.custom_minimum_size = Vector2(view.menu_width - view.margin * 2.0, Ui.style().size(&"s_cmd_desc_h"))
-	box.add_child(_desc)
-	_notice = BattleStyle.label("", &"SmallLabel", Ui.style().colour(&"c_bad"))
-	box.add_child(_notice)
 	visible = false
 
 
@@ -106,7 +91,17 @@ func target_buttons() -> Array[Button]:
 
 
 func show_notice(content: String) -> void:
-	_notice.text = content
+	_say(content, true)
+
+
+## The help line now showing (a move's description, or why a choice was refused).
+func help_text() -> String:
+	return _help
+
+
+func _say(content: String, warning: bool) -> void:
+	_help = content
+	help_changed.emit(content, warning)
 
 
 ## Back from the target list to the move list.
@@ -127,7 +122,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _show_moves(focus_move: ActionDef) -> void:
 	_move = null
 	_clear()
-	_title.text = BattleStyle.unit_name(_sim, _hero)
+	_title.visible = false  # the hero's card above names them
 	var affordable: Array[ActionDef] = _sim.choices_for(_hero)
 	for action_id: StringName in _hero.def.actions:
 		var action: ActionDef = _sim.actions.get(action_id) as ActionDef
@@ -155,6 +150,8 @@ func _pick_move(action: ActionDef) -> void:
 		return
 	_move = action
 	_clear()
+	_title.visible = true
+	_title.add_theme_font_size_override("font_size", _view.menu_font + 4)
 	_title.text = BattleStyle.text("UI_PICK_TARGET")
 	for target: UnitState in _sim.valid_targets(_hero, action):
 		var button: Button = _add_button(BattleStyle.unit_name(_sim, target), BattleMenuChips.for_target(_sim, _hero, action, target))
@@ -175,11 +172,11 @@ func _emit_focus(unit_id: StringName) -> void:
 
 
 func _describe(action: ActionDef) -> void:
-	_desc.text = BattleStyle.text(action.desc_key) if not action.desc_key.is_empty() else ""
+	_say(BattleStyle.text(action.desc_key) if not action.desc_key.is_empty() else "", false)
 
 
 func _add_button(content: String, chips: Array[Control]) -> Button:
-	var button: Button = BattleMenuChips.button(_list, content, chips)
+	var button: Button = BattleMenuChips.button(_list, content, chips, _view)
 	_buttons.append(button)
 	return button
 
@@ -196,5 +193,4 @@ func _clear() -> void:
 		button.queue_free()
 	_buttons.clear()
 	_items_button = null
-	_desc.text = ""
-	_notice.text = ""
+	_say("", false)

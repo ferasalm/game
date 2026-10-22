@@ -9,6 +9,7 @@ var _juice: JuiceDef
 var _visuals: Dictionary[StringName, CharacterVisual] = {}
 var _party: Array[StringName] = []
 var _intents: Dictionary[StringName, Label3D] = {}
+var _letters: Dictionary[StringName, Label3D] = {}
 var _marker: MeshInstance3D
 var _marker_target: StringName = &""
 var _marker_time: float = 0.0
@@ -31,6 +32,7 @@ func build(sim: BattleSim, view: BattleViewDef, anchor: Vector3) -> void:
 		visual.position = anchor + Vector3(spot.x, 0.0, spot.y)
 		_visuals[unit.unit_id] = visual
 		visual.face_dir(facing_of(unit.side))
+		_add_letter(unit.unit_id, visual, UnitLetters.of(sim.timeline.units, unit))
 		if unit.side == 0:
 			_party.append(unit.unit_id)
 	_marker = BattleLabels.marker(view)
@@ -70,6 +72,22 @@ func cheer() -> void:
 		if hero != null and not hero.is_down():
 			hero.play(&"victory")
 			hero.victory_hop()
+
+
+## The letter of a same-kind unit hovering over its head (A, B, C), so two Enforcers can be told apart.
+func _add_letter(unit_id: StringName, visual: CharacterVisual, letter: String) -> void:
+	if letter.is_empty():
+		return
+	var label: Label3D = BattleLabels.floating(letter, _view.text_font_size, _view.highlight_color, _view)
+	visual.add_child(label)
+	label.position = visual.anchor_position(&"head") - visual.global_position + Vector3(0.0, _view.letter_offset, 0.0)
+	_letters[unit_id] = label
+
+
+## The letter over a unit's head ("" for a unit that has none).
+func letter_text(unit_id: StringName) -> String:
+	var label: Label3D = _letters.get(unit_id) as Label3D
+	return label.text if label != null else ""
 
 
 func show_intent(unit_id: StringName, content: String) -> void:

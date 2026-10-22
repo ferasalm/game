@@ -2,21 +2,27 @@ class_name BattleTrackArt
 extends Control
 ## The painted brass track of the timeline bar: dark glass, brass rails, tick marks, the tinted cast zone, a
 ## gypsum zigzag frieze along the bottom, the COMMAND mark (a brass line with diamonds) and an end cap at ACT.
-## Captions are child labels. mark_fraction is where COMMAND sits on the track (0..1).
+## Captions are child labels. mark_fraction is where COMMAND sits on the track (0..1). Compact: a thin track with
+## no captions and no frieze (the HUD v3 timeline).
 
 var mark_fraction: float = 0.5
 var _style: UiStyleDef
 var _command: Label
 var _cast: Label
+var _compact: bool = false
 
 
-func setup(content_height: float, fraction: float) -> void:
+func setup(content_height: float, fraction: float, compact: bool = false) -> void:
+	_compact = compact
 	_style = Ui.style()
 	mark_fraction = fraction
 	custom_minimum_size.y = content_height
 	size.y = content_height
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if compact:
+		resized.connect(queue_redraw)
+		return
 	_command = Ui.label(Ui.text("UI_COMMAND"), &"CaptionLabel")
 	_cast = Ui.label(Ui.text("UI_CAST"), &"CaptionLabel", _style.colour(&"c_magenta"))
 	for caption: Label in [_command, _cast]:
@@ -45,8 +51,9 @@ func _draw() -> void:
 	for i: int in range(1, 10):
 		var x: float = size.x * i / 10.0
 		draw_line(Vector2(x, 0.0), Vector2(x, rail * 2.0), _style.colour(&"c_brass_dim"), 1.0)
-	var fh: float = _style.size(&"s_frieze_h")
-	draw_texture_rect(UiOrnament.frieze(_style), Rect2(0.0, size.y - fh - rail, size.x, fh), true)
+	var fh: float = 0.0 if _compact else _style.size(&"s_frieze_h")
+	if not _compact:
+		draw_texture_rect(UiOrnament.frieze(_style), Rect2(0.0, size.y - fh - rail, size.x, fh), true)
 	for y: float in [0.0, size.y - rail]:
 		draw_rect(Rect2(0.0, y, size.x, rail), _style.colour(&"c_brass"))
 	draw_line(Vector2(mark_x, 0.0), Vector2(mark_x, size.y), _style.colour(&"c_brass"), rail * 1.5)
