@@ -1,9 +1,40 @@
 extends Node3D
 ## Frame tool: the rooftop with Zayd put at chosen floor coordinates (and an optional free camera), for rendering
-## pictures. Run with args after "--": <x> <z> [cam_x cam_y cam_z tgt_x tgt_y tgt_z fov].
+## pictures. Run with args after "--": <x> <z> [cam_x cam_y cam_z tgt_x tgt_y tgt_z fov] [route=a] [noactors].
+## route=a lays the painterly screen filter over the picture; noactors hides every character (for route c mockups).
+
+const FILTER: Shader = preload("res://features/world/view/shaders/painterly_filter.gdshader")
 
 
 func _ready() -> void:
+	_build()
+	var args: PackedStringArray = OS.get_cmdline_user_args()
+	if args.has("route=a"):
+		var layer := CanvasLayer.new()
+		layer.layer = 50
+		var rect := ColorRect.new()
+		rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+		var material := ShaderMaterial.new()
+		material.shader = FILTER
+		rect.material = material
+		layer.add_child(rect)
+		add_child(layer)
+	if args.has("noactors"):
+		_hide_actors.call_deferred()
+
+
+## Moves every character mesh to render layer 20 and takes that layer off the camera: the actors stay in the scene,
+## so their shadows and the camera cut-away remain, only their bodies are left out of the picture.
+func _hide_actors() -> void:
+	var camera: Camera3D = get_viewport().get_camera_3d()
+	camera.cull_mask &= ~(1 << 19)
+	for node: Node in find_children("*", "", true, false):
+		if node is Player or node is Follower or node is Bystander or node is Patrol:
+			for mesh: Node in node.find_children("*", "VisualInstance3D", true, false):
+				(mesh as VisualInstance3D).layers = 1 << 19
+
+
+func _build() -> void:
 	var args: PackedStringArray = OS.get_cmdline_user_args()
 	var rooftop := (load("res://features/world/rooftop/rooftop.tscn") as PackedScene).instantiate() as Rooftop
 	add_child(rooftop)
