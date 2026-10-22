@@ -4,8 +4,7 @@ Plan: docs/design/v03-plan.md (B4 replaced by 3D characters). 3D spec: docs/desi
 
 ## Status
 - On claude/night-sanaa, pushed, checked: check.sh all passed, 498 tests. Merged into main at this handoff.
-- Merged: Phase 1 (P1a, P1b), the look spike, B1 items + shop, B2 battle arena, B3 painted world (look B),
-  B5 level (v3 layout, sabil, stall, 3 patrols), B6 UI v2. Details: git log and the builders' commit messages.
+- Merged: Phase 1, spike, B1, B2, B3, B5, B6 (git log).
 - Contract stubs for B4 are on the branch: ModelSource, ModelDef (kind `model`), `face_dir`, `hit_stop`,
   `visual_rules.default_source`. Characters are still the old pixel sprites (fallback source).
 - Not seen by the owner yet: v0.3 in play. Renders: inbox/b3/ (world), inbox/spike/ (looks).
