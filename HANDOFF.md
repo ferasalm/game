@@ -16,12 +16,13 @@ Phase 2. Specs in docs/design/: v03-plan, characters-3d (8 = Rodin pipeline), id
 - Old WIP worktrees (unmerged, kept): bench prop worktree-agent-a4cf40c0e9518e744; balance worktree-agent-a7a39e37292830460.
 
 ## Waiting on the owner
-- Music .wav files into inbox/music/ named by id (docs/design/music.md, 9 tracks incl. boss_abu_nabil).
+- Music: Feras is converting his tracks to .ogg in inbox/music/ (victory, workshop_bench done; battle_2, battle_3 new).
 - Look at the rooftop v2 renders (inbox/rooftop_v2_*.png): keep the layout and dress it, or ask for another layout.
 - Look at the cast in game (Rodin models): run the prototype, or ask for a render into inbox/.
 
 ## Next steps (one per chat)
-1. Music .wav -> .ogg, assets/audio/music/, manifest. Model: Sonnet. Effort: low.
+1. Music .ogg from inbox/music/ -> assets/audio/music/, manifest; battle_2/battle_3 in the battle rotation; menus and
+   the stall play the area music (drop menu_bag/merchant_stall from content/audio). Model: Sonnet. Effort: low.
 2. Rooftop v2 dressing (stair head, mafraj, tanks in the `T` corners; workshop off the bridge tiles) via agy.
    Model: Sonnet. Effort: medium.
 3. Architecture fixes via agy (audit top 5). Model: Opus. Effort: medium.
