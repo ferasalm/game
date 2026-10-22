@@ -88,6 +88,8 @@ func update(delta: float, moving: bool, _prop: bool, down: bool, _facing_x: floa
 	if rig != null:
 		_locomote(moving, down)
 	_clips.tick(delta)
+	if rig != null:
+		rig.follow()
 	if rigid != null:
 		rigid.pose(delta, &"ko" if down else _state, _clips.progress())
 	_holder.rotation = Vector3(deg_to_rad(_move.lean), _move.yaw, 0.0)

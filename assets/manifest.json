@@ -3172,6 +3172,20 @@
       "prompt": "copied from the owner's download; normal/roughness maps dropped, albedo resized to 1024"
     },
     {
+      "id": "char_zayd_rodin",
+      "path": "characters/zayd_rodin.glb",
+      "source": "Hyper3D Rodin Gen-2.5-Medium Quad + UE auto-rig (owner's Creator plan), from the owner's Flow picture flow_zayd_full_front_gray_background.png; generations b1a3857f, f08d7cfb",
+      "licence": "owner's own output; Creator plan: \"Unlimited export and any use\" (hyper3d.ai/pricing, 2026-10-22)",
+      "prompt": "Godot LOD simplifier to 12.6k triangles, textures and materials stripped, feet lifted to y=0, UE head renamed Head"
+    },
+    {
+      "id": "char_t_zayd",
+      "path": "characters/t_zayd.png",
+      "source": "Hyper3D Rodin diffuse of char_zayd_rodin",
+      "licence": "owner's own output; Creator plan: \"Unlimited export and any use\" (hyper3d.ai/pricing, 2026-10-22)",
+      "prompt": "2048 diffuse resized to 1024 (Lanczos)"
+    },
+    {
       "id": "font_noto_old_south_arabian",
       "path": "fonts/noto_sans_old_south_arabian.ttf",
       "source": "github.com/google/fonts (Noto Sans Old South Arabian)",

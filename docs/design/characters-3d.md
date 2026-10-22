@@ -79,6 +79,14 @@ Hero 15k triangles, enemy 10k, NPC 7k; at most 90k character triangles on screen
    `rodin_generate_rigging` with bone_template `ue` (the Quaternius rig's UE names: pelvis, spine_03, hand_r) and no
    animations. Claude names the credit cost before each paid call and never retries a timed-out one (check Hyper3D
    Mine). Before the first manifest entry Claude reads Hyper3D's terms for the output licence.
-3. Claude checks the rigged glb against the budgets and bone names (test_model_defs) and repaints it; Blender only
-   if it fails (ask the owner's OK to install it first).
-4. The ModelDef points at the new scene: no code change.
+3. Slim it (no Blender, no downloads): `SRC=<rigged.glb> IDX=<tmp>/idx.bin DST=<tmp>/junk.glb MAX_TRIS=14800
+   "$(tools/godot.sh)" --headless --path . -s tools/rodin/slim_indices.gd`, then
+   `python -I tools/rodin/rewrite_glb.py <rigged.glb> <tmp>/idx.bin assets/characters/<id>_rodin.glb`: Godot's LOD
+   simplifier, textures and materials stripped, feet lifted to y=0, UE `head` renamed `Head`. The diffuse becomes
+   `t_<id>.png` at 1024 (the painted shader takes the ModelDef's `skin`). Quad 12k faces = ~25k triangles: ask for
+   about 7k quads next time and the simplifier has less to do.
+4. Retarget at run time: the Rodin UE rig has other bone axes and rest pose than the library, so the ModelDef names
+   `"pose_source": "res://assets/characters/ubc_male.gltf"` (ubc_female for women): that body plays the clips hidden
+   and PoseFollow turns each same-named bone to point where the source bone points (twist and ik bones keep rest;
+   the hips' travel scales with hip height). Stand-in garment parts go; the hilt part stays.
+5. Check: test_model_defs, test_pose_match, a render beside the cast (Zayd: inbox/zayd_rodin_cast.png).

@@ -101,9 +101,9 @@ func test_the_bodies_share_the_animation_rig() -> void:
 		var missing: int = 0
 		for track: int in anim.get_track_count():
 			var path: NodePath = anim.track_get_path(track)
-			if rig.model.get_path_to(rig.skeleton) != NodePath(str(path).get_slice(":", 0)):
+			if rig.anim_root.get_path_to(rig.anim_skeleton) != NodePath(str(path).get_slice(":", 0)):
 				missing += 1
-			elif rig.skeleton.find_bone(path.get_subname(0)) < 0:
+			elif rig.anim_skeleton.find_bone(path.get_subname(0)) < 0:
 				missing += 1
 		check_eq(missing, 0, "%s: every Walk track finds its bone (no retargeting needed)" % def.id)
 		holder.free()

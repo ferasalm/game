@@ -8,6 +8,9 @@ const KINDS: Array[StringName] = [&"skinned", &"rigid"]
 
 var kind: StringName = &"skinned"
 var scene: String = ""
+## A body with the library's rig that plays the clips hidden while `scene` follows it (PoseFollow); "" = `scene` itself
+## has the library's rig. For bodies with other bone axes (Feras's Rodin models).
+var pose_source: String = ""
 var skin: String = ""  ## the body's albedo texture
 var eye_texture: String = ""
 var hair_texture: String = ""  ## the brows' (and hair parts') albedo, tinted by the colour below
@@ -40,6 +43,7 @@ func read(r: DefReader) -> void:
 	id = r.id()
 	kind = r.one_of("kind", KINDS)
 	scene = r.text("scene", "", kind == &"skinned")
+	pose_source = r.text("pose_source", "", false)
 	skin = r.text("skin", "", false)
 	eye_texture = r.text("eye_texture", "", false)
 	hair_texture = r.text("hair_texture", "", false)

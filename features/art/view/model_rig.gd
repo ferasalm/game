@@ -2,8 +2,9 @@ class_name ModelRig
 extends RefCounted
 ## Builds one skinned character under a holder node from its ModelDef: the glTF body (scaled to height_m), its
 ## painted materials, the parts it wears on BoneAttachment3D nodes, and a MANUAL AnimationPlayer that carries the
-## shared Quaternius animation library (the same 65-bone rig as the bodies: no retargeting; the library scene is
-## loaded once and only its AnimationLibrary is kept). Part offsets are in model space at the rest pose from the
+## shared Quaternius animation library (the same 65-bone rig as the stand-in bodies; a body with other bone axes names
+## a `pose_source` that plays the clips hidden and PoseFollow retargets; the library scene is loaded once and only its
+## AnimationLibrary is kept). Part offsets are in model space at the rest pose from the
 ## bone, so a part is authored with y up and +z forward whatever the bone's own axes are.
 
 const LIBRARY_SCENE: String = "res://assets/characters/ual1_standard.glb"
@@ -19,6 +20,9 @@ var materials: Array[ShaderMaterial] = []
 var parts: Dictionary[StringName, Node3D] = {}
 var hilt: HiltParts = null  ## the grandfather's jambiyah, when the model wears it
 var native_height: float = 1.8
+var anim_root: Node3D  ## where the AnimationPlayer's tracks start: the model, or the hidden pose source
+var anim_skeleton: Skeleton3D
+var pose: PoseFollow = null
 var _skeleton_xf: Transform3D = Transform3D.IDENTITY
 
 
@@ -58,11 +62,39 @@ func build(model_def: ModelDef, holder: Node3D) -> bool:
 		var made: Node3D = ModelParts.make(self, part)
 		if made != null:
 			parts[part.id] = made
+	anim_root = model
+	anim_skeleton = skeleton
+	if not def.pose_source.is_empty() and not _add_pose_source(holder):
+		return false
 	player = AnimationPlayer.new()
-	model.add_child(player)
+	anim_root.add_child(player)
 	player.root_node = NodePath("..")
 	player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
 	player.add_animation_library(&"", library())
+	return true
+
+
+## Moves the body to the pose source's current pose (call after every advance; nothing without a pose source).
+func follow() -> void:
+	if pose != null:
+		pose.apply()
+
+
+## The hidden body that plays the clips for a `pose_source` model; false when its scene or skeleton is missing.
+func _add_pose_source(holder: Node3D) -> bool:
+	var packed := load(def.pose_source) as PackedScene
+	if packed == null:
+		return false
+	anim_root = packed.instantiate() as Node3D
+	var skeletons: Array[Node] = NodeScan.of_type(anim_root, &"Skeleton3D")
+	if skeletons.is_empty():
+		anim_root.free()
+		return false
+	anim_skeleton = skeletons[0] as Skeleton3D
+	anim_root.visible = false
+	holder.add_child(anim_root)
+	pose = PoseFollow.new()
+	pose.setup(anim_skeleton, NodeScan.transform_of(anim_root, anim_skeleton), skeleton, _skeleton_xf)
 	return true
 
 
