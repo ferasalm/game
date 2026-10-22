@@ -2,7 +2,8 @@ class_name PlaceDef
 extends Def
 ## A named spot in an area (areas.json "places"): where the player stands to use it, or the patrol lane, so code
 ## finds it by id instead of by node path. kind: spawn, workshop, npc, shop, save (the sabil), chest, vista, patrol
-## (a lane from pos to end, fighting `encounter`) or safe (an unstuck target). Yaw 0 faces +z in degrees.
+## (a lane from pos to end, fighting `encounter`) or safe (an unstuck target). Yaw 0 faces +z in degrees. An npc
+## with a `prop` keeps it (a stall): he stands at its counter's end (StallKeeper) and his place is where he is talked to.
 
 const SPAWN: StringName = &"spawn"
 const WORKSHOP: StringName = &"workshop"

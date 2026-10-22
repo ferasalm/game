@@ -33,7 +33,6 @@ func test_every_sound_is_well_formed_and_its_files_exist() -> void:
 func test_game_sounds_exist() -> void:
 	for sound_id: StringName in GAME_SOUNDS:
 		check(ContentDB.get_def("sound", sound_id) != null, "sound " + sound_id)
-	check((ContentDB.get_def("sound", &"footstep_zayd") as SoundDef).interval > 0.0, "footsteps repeat")
 	check((ContentDB.get_def("sound", &"victory") as SoundDef).ducks_music, "stingers duck music")
 
 
@@ -86,16 +85,6 @@ func test_action_sound_prefers_own_vfx_then_map_then_fallback() -> void:
 	check_eq(SoundLogic.action_sound(&"unknown_move", &"", false, rules), rules.fallback_ranged, "ranged fallback")
 
 
-func test_step_clock_fires_once_per_interval() -> void:
-	var clock: float = 0.0
-	var steps: int = 0
-	for i: int in 100:
-		var next: float = SoundLogic.next_step(clock, 0.1, 0.34)
-		steps += 1 if next < clock + 0.1 else 0
-		clock = next
-	check(steps >= 28 and steps <= 30, "10 s at a 0.34 s interval gives about 29 steps, got " + str(steps))
-
-
 func test_rarity_boost_is_louder_and_clamped() -> void:
 	var rules: AudioRulesDef = _rules()
 	check(SoundLogic.rarity_boost(2, rules) > SoundLogic.rarity_boost(0, rules), "rarer is louder")
@@ -115,8 +104,7 @@ func test_director_builds_buses_and_plays_headless() -> void:
 	director.call("play_hit", action, 99)
 	director.call("play_hit", null, 1)
 	director.call("play_item", 3)
-	var clock: float = director.call("step", 0.0, 0.1, true, &"footstep_zayd")
-	check(clock > 0.0, "step clock runs")
+	director.call("play_sfx", &"footstep_zayd")
 	for shown: int in 6:
 		director.call("text_blip", shown)
 	_retire(director)

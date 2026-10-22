@@ -1,7 +1,8 @@
 extends TestCase
 ## The typed places of the rooftop (docs/design/rooftop-v3.md section 3): valid ids and references, every standing
 ## point and patrol end reachable, the props they use stand next to them, and the patrol lanes keep away from the
-## commons; PatrolSafety's lane maths and the unstuck and return picks.
+## commons; PatrolSafety's lane maths and the unstuck and return picks; a keeper stands at his counter's end facing
+## his customers (StallKeeper) and no NPC overlaps a prop's collision.
 
 const CLEARANCE: float = 3.0
 const COMMONS_X: Vector2 = Vector2(5.0, 10.0)
@@ -121,3 +122,30 @@ func test_unstuck_skips_the_wedged_spot_and_the_patrol_side() -> void:
 	check_eq(PatrolSafety.unstuck_spot(here, spots, safe, lanes, 3.0, 1.5), Vector3(5, 0, 8), "newest spot not under him, clear of the patrol")
 	check_eq(PatrolSafety.unstuck_spot(here, [Vector3(5, 0, 1)], safe, lanes, 3.0, 1.5), Vector3(1, 0, 12), "else the nearest safe place")
 	check_eq(PatrolSafety.unstuck_spot(here, [], [], lanes, 3.0, 1.5), here, "nothing known: stays")
+
+
+func test_a_keeper_stands_at_his_counters_end_clear_of_it() -> void:
+	var box := Vector3(2.2, 1.2, 1.0)
+	var spot: Vector2 = StallKeeper.at_end(Vector2(6.0, 12.5), 0.0, box, 0.3, 0.15)
+	check(spot.is_equal_approx(Vector2(4.45, 12.5)), "yaw 0: the end is -x, half the width + radius + gap (%s)" % spot)
+	var turned: Vector2 = StallKeeper.at_end(Vector2.ZERO, 90.0, box, 0.3, 0.15)
+	check(turned.is_equal_approx(Vector2(0.0, 1.55)), "yaw 90: the end turns to +z (%s)" % turned)
+	check(is_equal_approx(StallKeeper.facing(Vector2.ZERO, Vector2(1.0, 0.0)), 90.0), "facing +x is yaw 90")
+	check(is_equal_approx(StallKeeper.facing(Vector2.ZERO, Vector2(0.0, 1.0)), 0.0), "facing +z is yaw 0")
+
+
+func test_no_npc_overlaps_a_prop() -> void:
+	for area_id: StringName in ContentDB.ids("area"):
+		var area := ContentDB.get_def("area", area_id) as AreaDef
+		var holder := Node3D.new()
+		tree.root.add_child(holder)
+		var actors: AreaActors = AreaActors.build(holder, area, _rules(), AreaWalk.floor_height(area))
+		for i: int in actors.bystanders.size():
+			var place: PlaceDef = actors.bystander_places[i]
+			var at: Vector3 = actors.bystanders[i].position
+			check(not AreaWalk.on_prop(area, _rules(), at), "%s/%s: clear of every prop's collision at %s" % [area_id, place.id, at])
+			var counter: Placement = AreaActors.kept_prop(area, place)
+			if counter != null:
+				var reach: float = Vector2(at.x - place.pos.x, at.z - place.pos.z).length()
+				check(reach < 3.0, "%s stands at %s, %.1f m from where he is talked to" % [place.id, counter.ref, reach])
+		holder.free()

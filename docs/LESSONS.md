@@ -3,6 +3,8 @@
 ## 1. You can do this yourself
 - Run Godot headless with tools/run_godot.sh: it fails on any SCRIPT ERROR or ERROR line even when Godot exits 0
   (2026-10-19).
+- check.sh "tests FAIL" with `run_godot: exit code 124` and no FAIL line = the timeout, not a test: 595 tests take
+  ~5 min on the laptop -> cap raised to 600 s (2026-10-23).
 
 ## 2. Traps (Godot)
 - Test runner found 0 tests -> `"abc".contains("")` is false in Godot 4.7 -> guard empty strings (2026-10-19).
@@ -31,6 +33,12 @@
 - Rodin bakes props into the one body mesh (Zayd's dagger is one connected piece with him) -> a triangle cut risks a
   see-through hole (the skin shader culls back faces) -> rewrite_glb.py --press; the real part hides it (2026-10-22).
 - `match` is a GDScript keyword: `var match` is a parse error (2026-10-22).
+- Foot heights in a SceneTree script: get_bone_global_pose stayed at rest after seek -> set bones from the tracks,
+  compose get_bone_pose up the parents (2026-10-23).
+- SurfaceBuffer boxes have no bottom face -> a chest lid swung open showed a hollow frame over a closed top -> a
+  180-degree-tilted lining part on the lid and a dark inside on the box (2026-10-23).
+- A keeper behind his stall was hidden by the awning from the play camera -> StallKeeper: the counter's end
+  (2026-10-23).
 - set_exploring(false) hides the player and the patrols -> talks use rooftop.freeze_actors (2026-10-22).
 - See a scene without the owner: non-headless `"$(tools/godot.sh)" --path . --write-movie DIR/f.png --fixed-fps 60
   --quit-after N [scene]`, then view 1-2 frames scaled to 640x360 with Pillow (2026-10-21).

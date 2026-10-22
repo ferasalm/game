@@ -6,7 +6,7 @@
      "patrol_speed": 1.6, "patrol_pause": 1.5, "touch_grace": 3.0, "safe_return_distance": 3.5, "unstuck_patrol_distance": 3.0, "safe_ring": 8,
      "bench_size": [1.6, 0.9, 0.7], "bench_color": "#6a4a30",
      "touch_radius": 0.9, "interact_radius": 1.4,
-     "capsule_radius": 0.3, "capsule_height": 1.6, "wall_height": 3.0,
+     "capsule_radius": 0.3, "keeper_gap": 0.15, "capsule_height": 1.6, "wall_height": 3.0,
      "prompt_height": 0.4, "prompt_pixel_size": 0.01, "prompt_font_size": 48,
      "chest_open_angle": 100.0, "chest_open_time": 0.6}
   ]

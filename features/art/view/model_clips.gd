@@ -2,7 +2,8 @@ class_name ModelClips
 extends RefCounted
 ## Drives a MANUAL AnimationPlayer. A looping clip (idle, walk, run) plays at a rate the source sets; a one-shot plays on
 ## the ClipTiming curve (slow wind-up, a hold, a fast strike, recovery): tick() advances the player slice by slice so
-## the pose never drifts off the curve, and `event` announces &"impact" and &"end" from the same curve. freeze() holds
+## the pose never drifts off the curve, and `event` announces &"impact" and &"end" from the same curve; a gait loop
+## announces &"footstep" at each foot contact of its ClipDef. freeze() holds
 ## everything for a hit pause (never Engine.time_scale). Clip data are ClipDefs; the animations are the library's.
 
 signal event(kind: StringName)
@@ -13,6 +14,7 @@ var _elapsed: float = 0.0
 var _freeze: float = 0.0
 var _loop: ClipDef = null
 var _rate: float = 1.0
+var _loop_t: float = 0.0
 
 
 func setup(player: AnimationPlayer) -> void:
@@ -81,6 +83,7 @@ func tick(delta: float) -> void:
 		if _player != null:
 			_player.speed_scale = _rate
 			_player.advance(left)
+		_footsteps(left)
 		return
 	var from: float = _elapsed
 	_elapsed += left
@@ -96,7 +99,18 @@ func tick(delta: float) -> void:
 		event.emit(kind)
 
 
+## Announces the foot contacts the running loop passes in `left` seconds (only while an animation really plays).
+func _footsteps(left: float) -> void:
+	if _loop == null or _loop.contacts.is_empty() or _player == null or not _player.is_playing():
+		return
+	var to: float = _loop_t + left * _rate
+	for i: int in Locomotion.contacts_passed(_loop.contacts, _loop.seconds, _loop_t, to):
+		event.emit(&"footstep")
+	_loop_t = fmod(to, _loop.seconds)
+
+
 func _start(clip: ClipDef) -> void:
+	_loop_t = 0.0
 	if _player == null or not _player.has_animation(clip.animation):
 		return
 	var anim: Animation = _player.get_animation(clip.animation)

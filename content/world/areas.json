@@ -74,9 +74,9 @@
           "kind": "npc",
           "id": "herb_seller",
           "x": 5.0,
-          "z": 12.5,
-          "yaw": 90,
-          "sprite": "abu_nabil"
+          "z": 13.6,
+          "sprite": "abu_nabil",
+          "prop": "herb_stall"
         },
         {
           "kind": "shop",
@@ -306,12 +306,12 @@
         },
         {
           "ref": "basil_pot",
-          "x": 4.0,
+          "x": 3.7,
           "z": 12.0
         },
         {
           "ref": "basil_pot",
-          "x": 4.0,
+          "x": 3.7,
           "z": 13.0
         },
         {

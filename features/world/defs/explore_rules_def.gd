@@ -28,6 +28,8 @@ var bench_color: Color = Color.SADDLE_BROWN
 var touch_radius: float = 0.0
 var interact_radius: float = 0.0
 var capsule_radius: float = 0.3
+## Clearance (m) between a stall keeper's body and the end of his counter (StallKeeper).
+var keeper_gap: float = 0.15
 var capsule_height: float = 1.6
 var wall_height: float = 3.0
 var prompt_height: float = 0.0
@@ -62,6 +64,7 @@ func read(r: DefReader) -> void:
 	touch_radius = r.number("touch_radius", 0.1, 5.0)
 	interact_radius = r.number("interact_radius", 0.1, 5.0)
 	capsule_radius = r.number("capsule_radius", 0.05, 2.0)
+	keeper_gap = r.number("keeper_gap", 0.0, 2.0)
 	capsule_height = r.number("capsule_height", 0.2, 4.0)
 	wall_height = r.number("wall_height", 0.5, 20.0)
 	prompt_height = r.number("prompt_height", 0.0, 3.0)

@@ -8,11 +8,12 @@ oldest stolen when all are busy; 2 music players for the crossfade.
 
 ## API
 `play_sfx(id, boost_db)`, `play_ui(id)`, `play_action(ActionDef)`, `play_hit(action, damage)`, `play_item(rarity)`,
-`step(clock, delta, moving, id)` (footsteps, returns the new clock), `text_blip(chars_shown)`,
+`text_blip(chars_shown)`,
 `play_music(id)`, `stop_music()`, `current_music()`. Unknown ids and missing files are skipped quietly.
 
 ## Sounds (all Kenney CC0, picked by file name)
-- Walk: footstep_zayd, footstep_follower (quieter) on concrete steps, repeat interval in the sound.
+- Walk: footstep_zayd, footstep_follower (quieter) on soft carpet steps (playtest 2026-10-23: concrete was harsh),
+  sounded on each foot contact of the walk/run clip (ClipDef.contacts -> clip_event &"footstep"), never a timer.
 - UI: menu_move, menu_confirm, menu_cancel, menu_open, dialogue_blip, dialogue_advance, status_apply, item_obtained.
 - Moves: vfx_slash, heavy_slash, stab, piston, beam, bolt, arc_all, burst, heal, shield, overclock, net,
   drone_shot, baton. A move uses its ActionDef `vfx` field if it has one, else rules.json `action_vfx`, else the

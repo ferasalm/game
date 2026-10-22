@@ -2,8 +2,10 @@
   "kind": "clip",
   "items": [
     {"id": "idle", "animation": "Idle", "seconds": 2.5, "loops": true, "blend": 0.18},
-    {"id": "walk", "animation": "Walk", "seconds": 1.3333, "loops": true, "blend": 0.14},
-    {"id": "run", "animation": "Jog_Fwd", "seconds": 0.9333, "loops": true, "blend": 0.12},
+    {"id": "walk", "animation": "Walk", "seconds": 1.3333, "loops": true, "blend": 0.14,
+     "contacts": [0.0, 0.667]},
+    {"id": "run", "animation": "Jog_Fwd", "seconds": 0.9333, "loops": true, "blend": 0.12,
+     "contacts": [0.02, 0.487]},
     {"id": "dance", "animation": "Dance", "seconds": 1.0, "loops": true, "blend": 0.12},
     {"id": "sword_attack", "animation": "Sword_Attack", "seconds": 1.5333, "blend": 0.06,
      "windup_t": 0.30, "impact_t": 0.40, "strike_end_t": 0.50,

@@ -19,6 +19,8 @@ var strike_rate: float = 1.0
 var recover_rate: float = 1.0
 ## Seconds to cross-fade in from the previous pose.
 var blend: float = 0.1
+## For a looping gait: the clip seconds where a foot touches the ground (ascending); each one sounds a footstep.
+var contacts: Array[float] = []
 
 
 func read(r: DefReader) -> void:
@@ -34,6 +36,8 @@ func read(r: DefReader) -> void:
 	strike_rate = r.number("strike_rate", 0.1, 6.0, 1.0, false)
 	recover_rate = r.number("recover_rate", 0.1, 4.0, 1.0, false)
 	blend = r.number("blend", 0.0, 1.0, 0.1, false)
+	contacts = r.float_list("contacts", 0.0, seconds)
+	contacts.sort()
 	if impact_t > seconds or windup_t > seconds or strike_end_t > seconds:
 		r.problem("impact_t", "windup_t, impact_t and strike_end_t must lie inside the clip (%s s)" % seconds)
 	if strike_end_t < 0.0:

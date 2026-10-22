@@ -101,20 +101,6 @@ func play_item(rarity: int) -> void:
 		play_sfx(ITEM_SOUND, SoundLogic.rarity_boost(rarity, _rules))
 
 
-## Footsteps: call every physics frame with your own clock, keep the returned clock. Steps sound at the
-## sound's interval while moving; standing still re-arms so the first step lands at once.
-func step(clock: float, delta: float, moving: bool, sound_id: StringName) -> float:
-	var def := ContentDB.get_def("sound", sound_id) as SoundDef
-	if def == null:
-		return 0.0
-	if not moving:
-		return def.interval
-	var next: float = SoundLogic.next_step(clock, delta, def.interval)
-	if next < clock + delta:
-		play_sfx(sound_id)
-	return next
-
-
 ## Dialogue typing: call each frame with the number of characters shown; blips every few characters.
 func text_blip(shown: int) -> void:
 	if _rules == null:

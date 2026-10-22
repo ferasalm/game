@@ -1,9 +1,14 @@
 # HANDOFF (current state only; rewritten by /handoff; max 60 lines)
-Last updated: 2026-10-22, session 11 (Opus 5.5, `claude-opus-5-5`, side session of 10, high): v0.3 "Painted Rooftops",
+Last updated: 2026-10-23, session 12 (Opus 5.5, `claude-opus-5-5`, side session of 11, medium): v0.3 "Painted Rooftops",
 Phase 2. Specs in docs/design/: v03-plan, characters-3d (8 = Rodin pipeline), identity, zayd-moves, hilt-stones, music.
 
 ## Status
-- Branch claude/night-sanaa, merged to main. 587 tests.
+- Branch claude/night-sanaa, merged to main. 595 tests (check.sh test cap now 600 s: the suite takes ~5 min).
+- Playtest bugs 1-3 fixed (docs/design/playtest-2026-10-23.md), renders judged by Claude only: footsteps sound on
+  the walk/run clips' foot contacts (ClipDef.contacts -> clip_event &"footstep"), softer Kenney carpet steps at
+  -15/-21 dB, no timer; Abu Nabil stands at his stall's left end (StallKeeper, from the prop's collide box; behind
+  it the awning hid him), turned to his talk point in front; a test keeps every NPC off every prop; chests: one lid,
+  shut until opened, a lined lid and a dark inside when open; a test per chest (shut, opened, looted after a load).
 - Merged: agy save-slots (3 slots picked at the sabil with overwrite confirm; title menu Continue / New Game / Load;
   pause Load; retry loads the last slot; per-checkout test save folders). Worktree and branch removed.
 - All Feras's Rodin models are in game: Bilqis (7.9k tris, casts with her prosthetic right arm), Abu Nabil (8.2k),
@@ -19,6 +24,8 @@ Phase 2. Specs in docs/design/: v03-plan, characters-3d (8 = Rodin pipeline), id
 - Old WIP worktrees (unmerged, kept): bench prop worktree-agent-a4cf40c0e9518e744; balance worktree-agent-a7a39e37292830460.
 
 ## Waiting on the owner
+- Play-check the bug fixes: the softer footsteps (carpet samples; other CC0 sets need his OK to download) and Abu
+  Nabil at the stall's end (behind the counter the awning hid him).
 - Pick the look and camera from the spike renders (step 2), then the level work can start.
 - Combat style: keep the timeline or move to an action JRPG (he is considering it; settle before more combat work).
 
@@ -27,12 +34,10 @@ Phase 2. Specs in docs/design/: v03-plan, characters-3d (8 = Rodin pipeline), id
    (dialogue choices, haggle talk, greedy prices, spar) per the spec's build split. Model: Opus. Effort: medium.
 2. Look v2 spike: render the camera options (isometric ortho, front 3/4 ortho, telephoto perspective) with a painted
    pass (painterly filter, repainted textures) side by side into inbox/; owner picks. Model: Opus. Effort: high.
-3. Playtest bugs via agy: footsteps (contact-synced, quieter), Abu Nabil out of his stall, chest lid. Model: Sonnet.
-   Effort: medium.
-4. Level redesign after step 2 (Level Designer): two roofs and a bridge from rooftop-v3.md, a tayramana with a majlis
+3. Level redesign after step 2 (Level Designer): two roofs and a bridge from rooftop-v3.md, a tayramana with a majlis
    to enter and drink qishr with Bilqis, the designed workshop (bench prop WIP). Model: Opus. Effort: high.
-5. After the combat-style decision: Zayd kit (zayd-moves.md), hilt stones. Model: Opus. Effort: medium.
-6. Architecture fixes via agy (audit top 5); balance (WIP branch). Model: Sonnet. Effort: medium.
+4. After the combat-style decision: Zayd kit (zayd-moves.md), hilt stones. Model: Opus. Effort: medium.
+5. Architecture fixes via agy (audit top 5); balance (WIP branch). Model: Sonnet. Effort: medium.
 
 ## Paste-ready prompt
 ```
