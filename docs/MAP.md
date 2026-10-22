@@ -20,6 +20,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `.agents/skills/technical-artist/SKILL.md`
 
 ## content
+- `content/art/clips.json`: content: clip x15
+- `content/art/models.json`: content: model x5
 - `content/art/palette.json`: content: palette x1
 - `content/art/sprites.json`: content: sprite x5
 - `content/art/visual.json`: content: visual_rules x1
@@ -99,24 +101,48 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `core/text_db.gd`: Player text (autoload TextDB): loads every res://localization/*.csv (header "keys,<lang>,...") into the TranslationServer at startup, so tr("KEY") works
 
 ## features
-- `features/art/defs/clip_def.gd`: Stub (v0.3 registry, filled by B4): the timing of one model clip (attack, cast, hurt...): its length in seconds and whether it loops; B4 adds the wind-up / hold / strike retiming and impact_t
-- `features/art/defs/model_def.gd`: Stub (v0.3 registry, filled by B4; docs/design/characters-3d.md): one live 3D character model: its glTF scene and height now; later the state -> animation map, clip timing, anchors (bone names), stride and turn speed
+- `features/art/defs/clip_def.gd`: The timing of one model clip (an animation of the shared library): its length, whether it loops, and for a one-shot the Hades-style retiming (docs/design/characters-3d.md 4): the clip runs slow to `windup_t`, holds a beat, runs fast through the strike to `strike_end_t` (`impact_t` lands inside it) and eases out
+- `features/art/defs/model_def.gd`: One live 3D character model (docs/design/characters-3d.md 5): a skinned glTF (or a rigid model built in code) with its height, footprint, anchors (bone names), the facade state -> ClipDef map, stride and turn speed, skin tint, and the parts it wears
+- `features/art/defs/model_part_def.gd`: One part worn by a model on a bone (a "part" of a ModelDef): hair or brows from a glTF, a garment lathed around the bone's up axis from a radius profile (skirt, coat, head wrap), a sleeve (capsule from the bone to its child), or the grandfather's jambiyah hilt
 - `features/art/defs/palette_def.gd`: The locked colour palette: one letter per colour ("." is transparent and never listed here)
 - `features/art/defs/sprite_def.gd`: One pixel sprite: rows of palette letters ('.' = transparent), all the same width, feet on the last row
 - `features/art/defs/visual_rules_def.gd`: Numbers for how a CharacterVisual looks and moves: art scale, idle breathing, walking (bob, squash and stretch, lean, dust), turning, the blob shadow, and the battle motions (anticipation, lunge with afterimages, recoil, hurt, knocked out, revive, victory hop)
+- `features/art/logic/clip_timing.gd`: Pure retiming of a one-shot clip (ClipDef): real seconds <-> clip seconds
+- `features/art/logic/locomotion.gd`: Pure walking maths for a model: which gait a ground speed means, the playback rate that keeps feet from sliding (speed / stride), a smoothed speed and the lean into acceleration
+- `features/art/logic/model_gait.gd`: Pure choice of a model's looping clip: which gait (idle, walk, run) its measured ground speed and the state the facade asked for mean, and the playback rate that keeps its feet on the ground
 - `features/art/logic/pixel_art.gd`: Turns a palette-indexed sprite (rows of letters) into an Image or texture
+- `features/art/logic/yaw_turn.gd`: Pure turning for a model: the yaw (radians, about +y; 0 faces +z) of a ground direction and a capped step toward it that always takes the short way round
 - `features/art/tests/test_character_motion.gd`: CharacterVisual motion: the shader material carries the data (minimum light, rim), knocked out / revived snap to the right look, the battle motions and the little effects (dust, afterimages, shadow) run without errors, and the sprite stays crisp (nearest filtering)
+- `features/art/tests/test_model_defs.gd`: The data behind live 3D characters (content/art/models.json, clips.json) against the imported assets: every model maps all nine states to clips that exist, every clip names a real animation of the shared library with its length and an impact inside it, the bodies keep the rig's bone names, every anchor and part bone resolves, and the budgets hold (bones, triangles, surfaces, textures)
+- `features/art/tests/test_model_logic.gd`: The pure maths behind live 3D characters: ClipTiming (wind-up, hold, strike, recovery and the events on that curve), Locomotion (gait, stride to playback rate, lean) and YawTurn (the capped short-way turn)
+- `features/art/tests/test_model_source.gd`: The live 3D source behind the CharacterVisual facade: the model is built and painted, clips announce impact and end on the retimed curve (and wait for the hit pause), the body turns by yaw and never by a negative scale, the feet pace the ground, a knocked-out body stays down, the grandfather's hilt is drawn for a strike and sheathed after, and a CharacterVisual without a model def falls back to the pixel sprite
 - `features/art/tests/test_sprites.gd`: Prototype T7: every sprite is well formed and uses only palette letters; PixelArt and CharacterVisual work
 - `features/art/tests/test_visual_contract.gd`: The CharacterVisual contract: play(state, facing), the anchors, clip events, the pixel and puppet sources behind the facade, and the pulse flag that switches the whole-body squash off for puppets
 - `features/art/view/character.gdshader`
 - `features/art/view/character_fx.gd`: The small effects around one CharacterVisual: a soft blob shadow on the floor, dust puffs at the feet and the fading afterimages of a lunge
 - `features/art/view/character_ghost.gdshader`
+- `features/art/view/character_hull.gdshader`
 - `features/art/view/character_motion.gd`: The root moves of a CharacterVisual: they slide `root` and nothing else (the picture and its squash belong to the VisualSource)
-- `features/art/view/character_visual.gd`: A character standing in the 3D world (feet on the node's origin)
-- `features/art/view/model_source.gd`: Stub for the live 3D model source (B4 fills it in; docs/design/characters-3d.md): a skinned glTF from a ModelDef, clips retargeted at import, yaw facing, BoneAttachment3D anchors, clip events from ModelDef timing
+- `features/art/view/character_skin.gdshader`
+- `features/art/view/character_visual.gd`: A character standing in the 3D world (feet on the node's origin): the facade the game talks to
+- `features/art/view/garment_mesh.gd`: Stand-in clothing built in code from a ModelPartDef (until Feras's own models): a lathe (a skirt, a coat, a head wrap) turned from a radius profile, and `prim`, which adds a coloured primitive to a SurfaceTool so a whole prop (the jambiyah) is one mesh with vertex colours (the skin shader multiplies COLOR into the albedo)
+- `features/art/view/hilt_mesh.gd`: The stand-in for Zayd's grandfather's jambiyah (Heirloom `grandfather_hilt`), built in code from the part's colours until Feras's picture becomes a model: a curved horn grip with two silver bands, a T pommel with a carnelian stone, a curved blade, and a curved leather sheath with silver throat and tip
+- `features/art/view/hilt_parts.gd`: The grandfather's jambiyah as nodes (HiltMesh draws it): a sheath and the hilt with its blade sit at the belt (`root`); draw() carries the hilt to the hand bone for a strike (the blade shows, the sheath stays), sheathe() puts it back
+- `features/art/view/model_clips.gd`: Drives a MANUAL AnimationPlayer
+- `features/art/view/model_materials.gd`: The materials of live 3D characters: every surface (body, eyes, brows, hair, garments, the hilt) is a ShaderMaterial of character_skin.gdshader, so the painted light of the look reaches all of them through `materials()` (PaintedLook feeds the shared light uniforms), and one `set_all` call drives the flash, desat and glow of the whole character
+- `features/art/view/model_move.gd`: What a model's body does on the ground: the ground speed it is really moving at (measured from its own position, so animation and feet agree whoever moves it), the yaw it eases toward at the model's turn speed, and the lean into an acceleration
+- `features/art/view/model_parts.gd`: Puts one ModelPartDef on a rig: hair from its glTF, a lathed garment, a sleeve capsule or the jambiyah, each on a BoneAttachment3D so it follows the bone through every animation
+- `features/art/view/model_react.gd`: What a live 3D character does in answer to the battle's cues, on its materials and on `visual.body`: the hit flash, the revive glow, the knocked-out tint, the small squash of a hit (squash lives on the facade's body node, never on bones) and the victory hop
+- `features/art/view/model_rig.gd`: Builds one skinned character under a holder node from its ModelDef: the glTF body (scaled to height_m), its painted materials, the parts it wears on BoneAttachment3D nodes, and a MANUAL AnimationPlayer that carries the shared Quaternius animation library (the same 65-bone rig as the bodies: no retargeting; the library scene is loaded once and only its AnimationLibrary is kept)
+- `features/art/view/model_source.gd`: The live 3D source of a CharacterVisual (docs/design/characters-3d.md): a skinned model (ModelRig) or a rigid one (RigidRig) from the ModelDef with the sprite's id
+- `features/art/view/model_weapon.gd`: The grandfather's jambiyah in use: drawn from the belt into the hand when a strike begins (the weapon trail starts tracking its hilt and its point), an arc smear on the impact frame, sheathed and the trail released when the clip ends
+- `features/art/view/node_scan.gd`: Finds nodes inside an imported scene by walking its children: every node of a class (the skeleton, the meshes) and the chain of nodes from the root down to one of them (to multiply their transforms)
 - `features/art/view/pixel_motion.gd`: The body-shape motions of a pixel character (PixelSource): whole-body squash and stretch (`pulse`), the cast crouch, the victory hop, the hit flash, knocked out and revive
 - `features/art/view/pixel_source.gd`: The pixel-art source of a CharacterVisual (today's look, unchanged): a lit, billboarded quad with the sprite's texture (nearest filtering), idle breathing, the walk bob with squash and stretch, the lean into the move and dust at the feet
+- `features/art/view/rigid_rig.gd`: A model that is not skinned: a few rigid parts moved by code (the survey drone: a hull, a spinning ring and a lens)
 - `features/art/view/visual_source.gd`: What draws a CharacterVisual
+- `features/art/view/weapon_smear.gdshader`
+- `features/art/view/weapon_trail.gd`: The weapon's swing in the air: a ribbon between two tracked points (hilt and the blade's point) that fades along its age, and an arc smear card (a crescent) flashed on the strike frame
 - `features/audio/defs/audio_rules_def.gd`: Mixer and behaviour numbers of the AudioDirector (content/audio/rules.json): bus volumes, voice pools, music fade and duck, hit weight, text blip rate, item chime boost per rarity, and which sound each move uses
 - `features/audio/defs/music_def.gd`: One music track (content/audio/music.json): its file, volume and whether it loops
 - `features/audio/defs/sound_def.gd`: One sound effect (content/audio/sounds.json): file variants (one is picked each play), the bus it plays on, its volume, a random pitch range so repeats differ, an optional repeat interval (footsteps) and whether it ducks the music (stingers)
@@ -508,6 +534,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_arena.gd`: Builds one battle arena on its own (no rooftop, no Router): the BattleRunner with the default encounter, heroes on auto-play, the HUD hidden when the user argument "hud=off" is given, so the painted arena can be judged alone
 - `tools/shot_battle.gd`: Starts the prototype and, after a moment of walking, makes the patrol touch the player so the battle (camera swoop, effects) can be filmed with the movie writer
 - `tools/shot_hud.gd`: Renders the battle HUD to PNG files (not headless; needs a window)
+- `tools/shot_models.gd`: Model gallery for renders (docs/design/characters-3d.md): the cast in a row on a floor under the painted look, each doing a state, close enough to judge the stand-ins
 - `tools/shot_scene.gd`: Plays a scene (or a Node script) for the movie writer (frames to a folder): the battle demo with its heroes on auto_play, or any scene
 - `tools/shot_shatter.gd`: Shows the qamariya shatter on a stand-in frame (a stripe pattern) so the glass can be judged without a fight
 - `tools/vfx_gallery.gd`: Effect gallery: plays every battle effect kind one after another (one per second) on a night stage, for the movie writer
