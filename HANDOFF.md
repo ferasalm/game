@@ -1,6 +1,6 @@
 # HANDOFF (current state only; rewritten by /handoff; max 60 lines)
 Last updated: 2026-10-21, session 6 (Opus 5.5, `claude-opus-5-5`, lead, high): v0.3 "Painted Rooftops", Phase 2.
-Plan: docs/design/v03-plan.md (B4 replaced by 3D characters). 3D spec: docs/design/characters-3d.md.
+Plan: docs/design/v03-plan.md; 3D spec: docs/design/characters-3d.md.
 
 ## Status
 - On claude/night-sanaa, pushed, checked: check.sh all passed, 498 tests. Merged into main at this handoff.
