@@ -10,6 +10,7 @@ var patrols: Array[Patrol] = []
 var workshop: WorkshopSpot
 var stalls: Array[StallSpot] = []
 var sabil: SabilSpot
+var talk_spots: Array[TalkSpot] = []
 var bystanders: Array[Bystander] = []
 var bystander_places: Array[PlaceDef] = []
 
@@ -37,6 +38,7 @@ func switchables() -> Array[Node]:
 	var out: Array[Node] = [player, follower, workshop]
 	out.append_array(patrols)
 	out.append_array(stalls)
+	out.append_array(talk_spots)
 	if sabil != null:
 		out.append(sabil)
 	return out
@@ -59,6 +61,10 @@ func _add_places(parent: Node3D, area: AreaDef, rules: ExploreRulesDef, floor_y:
 		bystanders.append(person)
 		bystander_places.append(place)
 		parent.add_child(person)
+		var spot := TalkSpot.new(rules, player, place.id, "PROMPT_TALK", lift)
+		spot.position = _at(place, floor_y)
+		talk_spots.append(spot)
+		parent.add_child(spot)
 
 
 static func _at(place: PlaceDef, floor_y: float) -> Vector3:

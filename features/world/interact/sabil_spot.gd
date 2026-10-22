@@ -5,6 +5,8 @@ extends PillSpot
 
 ## The player drank and the game was saved.
 signal drunk
+## The player pressed interact at the sabil fountain.
+signal opened
 
 const SAVE_SLOT: int = 1
 
@@ -21,6 +23,13 @@ func _can_interact() -> bool:
 
 
 func _interact() -> void:
+	opened.emit()
+	if not GameState.flags.get(&"party_sabil_first_done", false):
+		return
+	open_screen()
+
+
+func open_screen() -> void:
 	var screen: UiScreen = Screens.open(Screens.SABIL_ID)
 	if screen != null:
 		screen.closed.connect(_on_closed)
