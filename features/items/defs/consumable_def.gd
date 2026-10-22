@@ -23,6 +23,8 @@ var price: int = 0
 var sell: int = 0
 var max_stack: int = 1
 var vfx: StringName = &""
+## Status ids removed from each target this consumable reaches (friendly targets only).
+var cures: Array[StringName] = []
 
 
 func read(r: DefReader) -> void:
@@ -42,16 +44,22 @@ func read(r: DefReader) -> void:
 	sell = r.integer("sell", 0, 9999)
 	max_stack = r.integer("max_stack", 1, 99)
 	vfx = StringName(r.text("vfx", "", false))
+	cures = r.id_list("cures")
 	_check(r)
 
 
 func references() -> Array[Array]:
-	return [["vfx", vfx]] if vfx != &"" else []
+	var out: Array[Array] = []
+	if vfx != &"":
+		out.append(["vfx", vfx])
+	for status_id: StringName in cures:
+		out.append(["status", status_id])
+	return out
 
 
 func _check(r: DefReader) -> void:
-	if hp <= 0 and hp_pct <= 0.0 and sp <= 0:
-		r.problem("hp", "an item needs an effect (hp, hp_pct or sp above 0)")
+	if hp <= 0 and hp_pct <= 0.0 and sp <= 0 and cures.is_empty():
+		r.problem("hp", "an item needs an effect (hp, hp_pct, sp above 0 or cures)")
 	if revive and hp_pct <= 0.0:
 		r.problem("hp_pct", "a reviving item needs hp_pct above 0")
 	if (target == &"ko_ally") != revive:

@@ -29,6 +29,10 @@ var heal: int = 0
 ## A heal that may also target a downed ally and stand it up.
 var revive: bool = false
 var vfx: StringName = &""
+## Status ids removed from each target this move reaches (friendly moves only).
+var cures: Array[StringName] = []
+## Maximum times this move can be chosen per battle (0 = unlimited).
+var uses_per_battle: int = 0
 
 
 func read(r: DefReader) -> void:
@@ -47,6 +51,8 @@ func read(r: DefReader) -> void:
 	applies_status = StringName(r.text("applies_status", "", false))
 	heal = r.integer("heal", 0, 9999, 0, false)
 	revive = r.flag("revive")
+	cures = r.id_list("cures")
+	uses_per_battle = r.integer("uses_per_battle", 0, 99, 0, false)
 	_read_target_and_vfx(r)
 
 
@@ -61,9 +67,12 @@ func needs_picker() -> bool:
 
 
 func references() -> Array[Array]:
-	if applies_status == &"":
-		return []
-	return [["status", applies_status]]
+	var out: Array[Array] = []
+	if applies_status != &"":
+		out.append(["status", applies_status])
+	for status_id: StringName in cures:
+		out.append(["status", status_id])
+	return out
 
 
 func _read_target_and_vfx(r: DefReader) -> void:
@@ -75,6 +84,8 @@ func _read_target_and_vfx(r: DefReader) -> void:
 		r.problem("vfx", "'%s' is not one of %s" % [vfx, VFX_KINDS])
 	if is_hostile() and (heal > 0 or revive):
 		r.problem("heal", "a move on foes cannot heal or revive")
+	if is_hostile() and not cures.is_empty():
+		r.problem("cures", "a move on foes cannot cure statuses")
 	if not is_hostile() and (power > 0 or cancels_cast):
 		r.problem("power", "a move on the actor's side cannot hurt or cancel (power 0)")
 	if revive and (heal <= 0 or target != &"ally"):

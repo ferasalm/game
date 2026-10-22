@@ -42,3 +42,12 @@ ACTION_REVERSE_STAB,Reverse stab
 UI_REVERSE_STAB,Reverse stab!
 MOVE_DESC_REVERSE_STAB,The hooked blade answers an attack from behind.
 UI_BREAK,BREAK!
+STATUS_CONFUSED,Confused
+ACTION_POT_SWING,Pot Swing
+MOVE_DESC_POT_SWING,Bonk a foe with a clay pot and push them back.
+ACTION_SPICE_CLOUD,Spice Cloud
+MOVE_DESC_SPICE_CLOUD,Blow hawaij in the foes' faces to confuse them.
+ACTION_FEATHER_SNACK,Feather Snack
+MOVE_DESC_FEATHER_SNACK,Chew a pink feather to restore health.
+ENCOUNTER_ABU_NABIL_DUEL,Abu Nabil Duel
+UI_MISS,MISS

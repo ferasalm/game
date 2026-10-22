@@ -38,6 +38,7 @@
 
      "icons": {"zayd": "res://assets/icons/zayd.png", "bilqis": "res://assets/icons/bilqis.png",
                "concession_enforcer": "res://assets/icons/concession_enforcer.png",
-               "survey_drone": "res://assets/icons/survey_drone.png"}}
+               "survey_drone": "res://assets/icons/survey_drone.png",
+               "abu_nabil": "res://assets/icons/abu_nabil.png"}}
   ]
 }

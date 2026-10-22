@@ -36,11 +36,16 @@ func resolve(actor: UnitState) -> Array[TimelineEvent]:
 	if targets.is_empty():
 		events.append(TimelineEvent.new(&"fizzled", actor.unit_id, 0))
 	var fresh: Array[StringName] = []
+	if BattleActionRules.rolls_miss(rng, actor, action):
+		events.append(TimelineEvent.new(&"missed", actor.unit_id, 0, action.id))
+		_finish_turn(actor, events, fresh)
+		return events
 	for target: UnitState in targets:
 		if action.is_hostile():
 			_hit_target(actor, action, target, events)
 		else:
 			_heal_target(actor, action, target, events)
+			BattleActionRules.apply_cures(target, action.cures, events)
 		if _apply_status(action, target, events) and target == actor:
 			fresh.append(action.applies_status)
 	_finish_turn(actor, events, fresh)
