@@ -10,6 +10,7 @@ var epithet_label: Label
 var text_label: Label
 var arrow: Control
 var frame: Control
+var choice_box: VBoxContainer
 var portrait_rest_x: float = 0.0
 
 
@@ -39,6 +40,7 @@ func build(root: Control, style: DialogueStyleDef) -> void:
 	column.add_child(Ui.divider())
 	_build_arrow(box, style, ui)
 	_build_plate(box, ui)
+	_build_choices(root, ui)
 	var strip: PromptStrip = Ui.prompt_strip([{"key": "accept", "text": "PROMPT_CONTINUE"},
 			{"key": "skip", "text": "PROMPT_SKIP"}, {"key": "cease", "text": "PROMPT_CEASE"}])
 	strip.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
@@ -95,3 +97,15 @@ func _build_arrow(box: Control, style: DialogueStyleDef, ui: UiStyleDef) -> void
 	arrow.add_child(triangle)
 	arrow.visible = false
 	box.add_child(arrow)
+
+
+func _build_choices(root: Control, ui: UiStyleDef) -> void:
+	choice_box = VBoxContainer.new()
+	choice_box.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
+	choice_box.offset_right = -ui.size(&"s_dialog_right")
+	choice_box.offset_bottom = -ui.size(&"s_dialog_bottom") - ui.size(&"s_dialog_h") - ui.size(&"s_margin")
+	choice_box.offset_left = choice_box.offset_right - ui.size(&"s_confirm_w")
+	choice_box.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	choice_box.add_theme_constant_override("separation", 8)
+	choice_box.visible = false
+	root.add_child(choice_box)
