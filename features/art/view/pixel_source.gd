@@ -45,6 +45,14 @@ func attach(owner_visual: CharacterVisual, owner_rules: VisualRulesDef) -> void:
 	_motion.setup(visual, rules, material)
 
 
+func materials() -> Array[ShaderMaterial]:
+	return [material]
+
+
+func detach() -> void:
+	_quad.queue_free()
+
+
 ## Shows the sprite with this id (a magenta placeholder when the id or its palette is missing).
 func set_sprite(sprite_id: StringName) -> void:
 	var def := ContentDB.get_def("sprite", sprite_id) as SpriteDef

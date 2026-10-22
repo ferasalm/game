@@ -1,10 +1,9 @@
 class_name CharacterVisual
 extends Node3D
-## A character standing in the 3D world (feet on the node's origin). This is the facade the game talks to:
-## `play(state, facing)` with the states idle, walk, run, attack, cast, hurt, ko, victory, item; the anchors
-## feet / hand / head; and the signal clip_event the battle view can wait on. What draws it is a VisualSource
-## behind the facade (PixelSource today, ModelSource for live 3D; the rules def picks). The root moves (lunge, dash,
-## hurt push) are CharacterMotion's. Numbers come from content/art/visual.json. The art faces right.
+## A character standing in the 3D world (feet on the node's origin): the facade the game talks to. `play(state, facing)`
+## with the states idle, walk, run, attack, cast, hurt, ko, victory, item; the anchors feet / hand / head; the signal
+## clip_event the battle waits on. A VisualSource draws it (ModelSource: live 3D, PixelSource: the fallback sprite). The
+## root moves (lunge, dash, hurt push) are CharacterMotion's. Numbers: content/art/visual.json. Sprites face right.
 
 ## A one-shot clip reached a named frame: &"impact" (the hit lands) or &"end" (the clip is over).
 signal clip_event(event: StringName)
@@ -26,6 +25,7 @@ var fx: CharacterFx
 var rules: VisualRulesDef
 var motion: CharacterMotion
 var source: VisualSource
+var source_kind: StringName = &""  ## &"pixel" / &"model" overrides the rules' default_source (before set_sprite)
 var state: StringName = &"idle"
 var _moving: bool = false
 var _down: bool = false
@@ -47,20 +47,25 @@ func _init() -> void:
 	fx.setup(rules)
 	motion = CharacterMotion.new()
 	motion.setup(self, rules)
-	use_source(ModelSource.new() if rules.default_source == &"model" else PixelSource.new())
+	use_source(PixelSource.new())
 
 
 ## Swaps what draws the character (before the first picture is set).
 func use_source(new_source: VisualSource) -> void:
+	if source != null:
+		source.detach()
 	source = new_source
 	source.attach(self, rules)
 	source.clip_event.connect(clip_event.emit)
-	var pixel := source as PixelSource
-	material = pixel.material if pixel != null else null
+	material = (source as PixelSource).material if source is PixelSource else null
 
 
 ## Shows the picture with this content id (a magenta placeholder when the id or its palette is missing).
 func set_sprite(sprite_id: StringName) -> void:
+	var wants: StringName = source_kind if source_kind != &"" else rules.default_source
+	var has_model: bool = wants == &"model" and ContentDB.get_def("model", sprite_id) != null
+	if has_model != (source is ModelSource):
+		use_source(ModelSource.new() if has_model else PixelSource.new())
 	source.set_sprite(sprite_id)
 
 
@@ -112,8 +117,7 @@ func face_dir(dir: Vector3) -> void:
 	source.face_dir(dir)
 
 
-## Freezes this character's clip for `seconds` (the hit pause on attacker and target); never Engine.time_scale.
-func hit_stop(seconds: float) -> void:
+func hit_stop(seconds: float) -> void:  ## freezes this character's clip (the hit pause); never Engine.time_scale
 	source.hit_stop(seconds)
 
 

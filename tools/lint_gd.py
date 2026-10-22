@@ -48,7 +48,7 @@ def lint(path: pathlib.Path) -> list[str]:
 
 def main() -> int:
     skip = (".godot", "addons", ".claude")
-    files = [p for p in sorted(ROOT.rglob("*.gd")) if not any(part in skip for part in p.parts)]
+    files = [p for p in sorted(ROOT.rglob("*.gd")) if not any(part in skip for part in p.relative_to(ROOT).parts)]
     problems = [msg for f in files for msg in lint(f)]
     print("\n".join(problems) if problems else f"lint: {len(files)} GDScript files ok")
     return 1 if problems else 0

@@ -28,6 +28,13 @@ are marked (enforced). Decisions behind this file: docs/DECISIONS.md, 2026-10-19
   either a `PixelSource` (the old pixel sprites, kept as fallback) or a `ModelSource` (a skinned model from
   `content/art/models.json`, kind `model`, ModelDef). `visual_rules.default_source` picks the default. Gameplay
   never touches either.
+  **Built (B4):** `ModelSource` builds a `ModelRig` (glTF body scaled to `height_m`, painted `character_skin.gdshader`,
+  parts on BoneAttachment3D: hair, lathed garments, sleeves, the grandfather's jambiyah from `HiltMesh`) around a
+  MANUAL AnimationPlayer holding the shared Quaternius library (same 65 bones as the bodies: no retargeting). Pure
+  `logic/`: `ClipTiming` (wind-up, hold, strike, recovery; events on that curve), `Locomotion`, `ModelGait`,
+  `YawTurn`. `ModelClips` advances the player slice by slice; `ModelMove` measures ground speed and eases the yaw;
+  `ModelReact` flashes, squashes `visual.body`, hops; `WeaponTrail` draws the ribbon and the arc smear; the survey
+  drone is a `RigidRig`. Per-character `source_kind` (`pixel` / `model`) overrides the rules' default.
 - **Painted textures, one palette.** One painted albedo per model (AI pictures go through
   `tools/art/painterly_bake.py`); the world and characters share one light model and one locked palette (art
   bible). Characters are 2 m tall; budgets are in characters-3d.md section 6.

@@ -15,6 +15,7 @@ var _dust_next: int = 0
 var _ghosts: Array[MeshInstance3D] = []
 var _ghost_mat: ShaderMaterial
 var _size: Vector2 = Vector2.ONE
+var _has_picture: bool = false  ## afterimages copy a sprite; a live 3D model has none, so it leaves no ghosts
 var _ghost_age: PackedFloat32Array = PackedFloat32Array()
 var _ghost_delay: PackedFloat32Array = PackedFloat32Array()
 
@@ -44,11 +45,17 @@ func setup(rules: VisualRulesDef) -> void:
 
 ## The sprite's picture and size (metres) for the afterimages.
 func set_picture(texture: Texture2D, size: Vector2) -> void:
+	_has_picture = true
 	_ghost_mat.set_shader_parameter(&"albedo_tex", texture)
 	_size = size
 	for ghost: MeshInstance3D in _ghosts:
 		ghost.scale = Vector3(size.x, size.y, 1.0)
 	_shadow.pixel_size = _rules.shadow_size * maxf(size.x, 0.5) / VfxTextures.pixels(&"glow").x
+
+
+## The blob shadow's size for a body of this width (a model has no picture to size it by).
+func set_shadow_width(width: float) -> void:
+	_shadow.pixel_size = _rules.shadow_size * maxf(width, 0.5) / VfxTextures.pixels(&"glow").x
 
 
 func set_flip(flip: float) -> void:
@@ -82,6 +89,8 @@ func puff(at: Vector3, back: float) -> void:
 
 ## Afterimages along a dash from one body offset to another, each appearing a little after the last.
 func trail(from: Vector3, to: Vector3, dash_time: float) -> void:
+	if not _has_picture:
+		return
 	while _ghosts.size() < _rules.ghost_count:
 		var ghost := MeshInstance3D.new()
 		var quad := QuadMesh.new()

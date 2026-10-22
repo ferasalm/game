@@ -128,7 +128,8 @@ static func make_screen(paint: PaintDef) -> CanvasLayer:
 static func paint_characters(root: Node, paint: PaintDef) -> void:
 	for child: Node in root.get_children():
 		if child is CharacterVisual:
-			paint.apply_light((child as CharacterVisual).material, true)
+			for mat: ShaderMaterial in (child as CharacterVisual).source.materials():
+				paint.apply_light(mat, true)
 		paint_characters(child, paint)
 
 

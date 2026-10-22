@@ -56,6 +56,12 @@ var revive_color: Color = Color.WHITE
 var hop_height: float = 0.0
 var hop_time: float = 0.3
 var hop_count: int = 1
+# live 3D models: the weapon ribbon trail (seconds it lasts, width in metres) and the arc smear card on a strike
+var trail_time: float = 0.2
+var trail_color: Color = Color.WHITE
+var smear_time: float = 0.14
+var smear_size: float = 1.2
+var smear_color: Color = Color.WHITE
 
 
 func read(r: DefReader) -> void:
@@ -70,6 +76,7 @@ func read(r: DefReader) -> void:
 	rim_amount = r.number("rim_amount", 0.0, 5.0)
 	_read_walk(r)
 	_read_battle(r)
+	_read_model(r)
 
 
 func _read_walk(r: DefReader) -> void:
@@ -115,3 +122,11 @@ func _read_battle(r: DefReader) -> void:
 	hop_height = r.number("hop_height", 0.0, 3.0)
 	hop_time = r.number("hop_time", 0.05, 2.0)
 	hop_count = r.integer("hop_count", 1, 6)
+
+
+func _read_model(r: DefReader) -> void:
+	trail_time = r.number("trail_time", 0.02, 2.0, trail_time, false)
+	trail_color = r.color("trail_color", trail_color, false)
+	smear_time = r.number("smear_time", 0.02, 2.0, smear_time, false)
+	smear_size = r.number("smear_size", 0.1, 5.0, smear_size, false)
+	smear_color = r.color("smear_color", smear_color, false)
