@@ -16,8 +16,10 @@ const STATE_BUSY: StringName = &"busy"
 const MIN_TIME_SCALE: float = 0.001  ## guards the real-time division
 
 var state: StringName = STATE_TITLE
-## Where saves live; tests point this at a scratch folder.
-var save_dir: String = SaveService.DEFAULT_DIR
+## Where saves live; empty delegates to SaveService.default_dir. Tests point this at a scratch folder.
+var save_dir: String = ""
+## The slot last saved or loaded (not in the save itself; starts at 1).
+var last_slot: int = 1
 ## Replaces reloading the current scene on new game / load / title (tests set a recording Callable).
 var scene_reloader: Callable = Callable()
 ## The frame on screen when the last battle began, for the shatter transition (null when headless).
@@ -46,19 +48,15 @@ func tick(delta: float) -> void:
 func register_area(port: AreaPort) -> void:
 	_port = port
 
-
 func unregister_area(port: AreaPort) -> void:
 	if _port == port:
 		_port = null
 
-
 func is_exploring() -> bool:
 	return state == STATE_EXPLORING
 
-
 func enter_title() -> void:
 	_set_state(STATE_TITLE)
-
 
 func enter_exploring() -> void:
 	_set_state(STATE_EXPLORING)
@@ -81,11 +79,22 @@ func has_save(slot: int) -> bool:
 	return SaveService.new(save_dir).exists(slot)
 
 
+func has_any_save() -> bool:
+	return SaveService.new(save_dir).has_any_save()
+
+
+func newest_slot() -> int:
+	return SaveService.new(save_dir).newest_slot()
+
+
 ## Writes the game to a slot. Returns "" or the reason it failed. The caller checks can_save (the sabil saves
 ## from its own screen).
 func save_slot(slot: int) -> String:
 	var service := SaveService.new(save_dir)
-	return "" if service.write(slot, GameState.to_dict()) else service.last_error
+	var err: String = "" if service.write(slot, GameState.to_dict()) else service.last_error
+	if err.is_empty():
+		last_slot = slot
+	return err
 
 
 ## Loads a slot (its backup when the file is damaged) and restarts the area from it. Returns "" or the reason.
@@ -100,6 +109,7 @@ func load_slot(slot: int) -> String:
 		push_warning("Router: slot %d was damaged, loaded its backup" % slot)
 	var problem: String = GameState.from_dict(data)
 	if problem.is_empty():
+		last_slot = slot
 		_restart(true, STATE_BUSY)
 	return problem
 

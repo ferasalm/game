@@ -9,8 +9,6 @@ extends RefCounted
 signal stage_created(new_stage: BattleStage)
 signal finished(outcome: BattleOutcome)
 
-const SAVE_SLOT: int = 1  ## the one save slot of v0.3 (the sabil writes it)
-
 var request: BattleRequest
 var _host: Node
 var _runner: BattleRunner
@@ -62,7 +60,7 @@ func _on_stage_ended(result: StringName) -> void:
 		Router.go_to_title()
 		return
 	if result == BattleOutcome.LOAD:
-		if Router.load_slot(SAVE_SLOT).is_empty():
+		if Router.load_slot(Router.last_slot).is_empty():
 			return
 		outcome.result = BattleOutcome.DEFEAT  # the save could not be read: back to the area, as after a defeat
 	if result == BattleOutcome.VICTORY:

@@ -14,6 +14,7 @@ var safe_still_radius: float = 1.5
 var debug_font_size: int = 28
 var debug_fps_pos: Vector2 = Vector2.ZERO
 var debug_name_pos: Vector2 = Vector2.ZERO
+var save_slots: int = 3
 
 
 func read(r: DefReader) -> void:
@@ -26,6 +27,8 @@ func read(r: DefReader) -> void:
 	debug_font_size = r.integer("debug_font_size", 8, 96)
 	debug_fps_pos = _vec2(r, "debug_fps_pos")
 	debug_name_pos = _vec2(r, "debug_name_pos")
+	save_slots = r.integer("save_slots", 1, 99, 3, false)
+	SaveService.max_slots = save_slots
 
 
 func references() -> Array[Array]:
