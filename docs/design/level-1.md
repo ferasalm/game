@@ -24,9 +24,10 @@ bridge, and the sabil back on the commons overflows with light, seen across the 
 ## 3. Shape and flow
 Shape: hub (the commons) with one gated spoke (bridge) to a small arena roof; one interior off the hub (tayramana).
 Critical path about 60 m, 15-20 min first time:
-[Opening pan] -> [Spawn, commons] -> [Workshop alcove: talk + weapon] -> [Stall] -> [Sabil: save]
+[Opening pan] -> [Spawn, commons] -> [Workshop room: talk + weapon] -> [Stall] -> [Sabil: save]
   -> [Tayramana: qishr with Bilqis, the seal] -> [North corridor: patrol A] -> [Vista strip] -> [Bridge]
-  -> [East roof: patrol B drone, patrol C at the tank] -> [Valve] -> [Water runs; back to the sabil] -> [End card]
+  -> [East roof: patrol B drone, patrol C at the tank] -> [Light lock] -> [Route the water] -> [Water runs home] -> [End card]
+Puzzles: docs/design/valve-puzzles.md (owner: both, light lock first, medium, no fail state).
 Optional: chest_mafraj (yard), drone patrol B (north lane), chest_saila (east alcove, guarded by C), Abu Nabil's haggle
 and fight (docs/design/abu-nabil-boss.md), the qamariya rooftop overlook (a dead end with a view, not a trap).
 
@@ -35,7 +36,7 @@ and fight (docs/design/abu-nabil-boss.md), the qamariya rooftop overlook (a dead
 |---|---|---|---|---|
 | 0:00 | Opening pan | Camera | none | megacity, minarets, moon; ends behind the party |
 | 0:30 | Commons | Walk, learn camera | low | warm lamps, music explore_souq |
-| 1:30 | Workshop alcove | Talk, weapon pick | low | the bench is the first close-up of the look |
+| 1:30 | Workshop room | Talk, weapon pick | low | the bench is the first close-up of the look |
 | 3:00 | Stall, sabil | Buy, save | low | Abu Nabil's haggle is optional |
 | 4:30 | Tayramana | Sit, qishr, talk | low, warm | the story beat: the Concession seal |
 | 8:00 | North corridor | Patrol A | medium | fight, slip past, or ambush from behind |
@@ -50,10 +51,11 @@ and fight (docs/design/abu-nabil-boss.md), the qamariya rooftop overlook (a dead
   strip pegs, AC units and tangled cables down the walls, a Musnad neon SOUQ sign on a tower, Abu Nabil's stall with
   hanging herb bundles and a price-holo that flickers; the sabil (cool cyan water against warm glass, the key colour
   contrast). No Concession red here: safety reads as warm.
-- Workshop alcove (W, 2.5,13.5): open-sided, under a reed awning on brass poles against the mafraj wall; the workbench
-  (low cedar table, glowing screen on a brass arm, vise, tools, a jambiyah blank on cloth, cable to a battery box, a
-  brazier); a qamariya lamp hung above. Framed by a camera zone so it reads as a room without being one.
-- Tayramana (the mafraj, x1-4 z10-12; the door on its east face at 4.5,11.0): the top room of the tower-house, see 6.
+- Workshop (owner 2026-10-23: a room like the tayramana): the lower room of the same tower-house (the mafraj
+  block x1-4 z10-12); door on its south face at (2.5,13.0), lit by a qamariya lamp. Inside, 6 x 4 m, framed camera:
+  the workbench (low cedar table, glowing screen on a brass arm, vise, tools, a jambiyah blank on cloth, cable to a
+  battery box, a brazier), shelves of hilts and blades, the grandfather's old sheath on the wall.
+- Tayramana (the top room of the same tower-house; its door, the stair up, on the east face at 4.5,11.0): see 6.
 - North corridor and vista strip: worn lane tiles (the patrol path is visible on the floor), crenellated parapet, a
   satellite dish farm, solar panels; the strip ends at the parapet with the minarets and the moon straight ahead.
 - Bridge (x16-19, z5-7): old planks on a new carbon-fibre truss, cables overhead with hanging lanterns, lamp posts at
@@ -90,16 +92,13 @@ walks south (timing). Clearances and lane rules: rooftop-v3 section 3.
 3. level1-blockout (agy, after 1 merges): rooftop-v3 grid and places plus this file's deltas (tall ring buildings,
    tayramana door, water tower, valve place, four camera zones). Grey box, then a render pass; owner plays it.
 4. tayramana (agy, after 1): interior scene, door fade, sit, the talk (Claude writes the lines), qishr reward.
-5. valve-beat (agy, after 3): valve interact, the water fill (channel shader and sabil overflow), the camera move.
+5. valve-puzzles (agy, after 3): docs/design/valve-puzzles.md: light lock, water routing, the finale camera move.
 6. dressing (opencode or agy, after the owner plays 3): the 2150 props of section 5 as prop JSON, horizon life.
 7. look: route B (owner pick 2026-10-23): painted skins (skin-bake, opencode, running), the oil-baked world kept,
    softer flat light; every new prop and room goes through the same bake.
 Claude: this design, the briefs, the talk lines, every review and render judgment. Owner: the look pick, play checks.
 
-## 9. Questions for Feras (recommended first)
-Q1 Tayramana: (a) a real interior scene behind a door, framed camera [recommended: it is the "enter and sit" he
-asked for, and the same tech serves every later room]; (b) an open-walled pavilion on the roof, no loading.
-Q2 The demo's last beat: (a) open the Concession valve, water runs home to the sabil [recommended: one action that
-says the whole chapter, no new combat needed]; (b) the Abu Nabil boss; (c) a patrol C fight at the tank.
-Q3 Workshop: (a) an open alcove on the roof under an awning [recommended: no second interior, seen from the commons];
-(b) an interior room like the tayramana.
+## 9. Owner answers (2026-10-23, DECISIONS)
+Tayramana: a real room behind a door. Last beat: open the valve, after the two puzzles (valve-puzzles.md). Demo keeps
+today's timeline battles. Camera: automatic with designed zones, no player camera control. Workshop: a room like the
+tayramana. Puzzles: both, approved as written in valve-puzzles.md.

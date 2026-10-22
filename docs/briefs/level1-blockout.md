@@ -17,7 +17,8 @@ place_def, area_builder, area_dressing, prop_builder, walk_graph, camera_zone (c
    commons' west parapet (x -3, z 6, 7 floors, lit qamariya) so the commons is framed; (b) the Concession water tower
    on the east roof NE corner (tower_h becomes it: a tank prop on its roof with a red beacon and a cyan ring light);
    (c) a place kind "door" {id, x, z, yaw, target} at (4.5, 11.0) yaw 90 with target "tayramana" (interact prompt
-   key WORLD_PROMPT_ENTER, no action yet beyond a log line; the tayramana brief wires it); (d) a place kind "valve"
+   key WORLD_PROMPT_ENTER, no action yet beyond a log line; the tayramana brief wires it); (c2) a second door "workshop_door" at (2.5, 13.0) yaw 180, target "workshop", replacing the outdoor
+   workshop interact (the workshop menu moves inside with the tayramana brief); (d) a place kind "valve"
    {id, x, z} at (21.5, 3.0) (prompt WORLD_PROMPT_TURN, no action yet); (e) four camera_zone places from level-1
    section 2 (spawn, vista strip, bridge, valve) with numbers you choose, then tune from renders.
 3. Every rooftop-v3 section 5 rule as a test over the new area (reachability, 2 m width, bridge 3 cells, no traps,
