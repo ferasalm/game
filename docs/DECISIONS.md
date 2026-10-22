@@ -3,7 +3,7 @@ One line each: date | decision | why | by. Never delete or reword; strike throug
 it. Loaded at every session start: keep lines short (tools/doc_check.py caps this file at 70 lines).
 
 ## Log
-- ~~2026-10-19 | True HD-2D: 3D diorama world, 2D pixel-art billboard characters (not the blueprint's 2D layers) | iconic look; switching later would redo world art | Feras~~ superseded 2026-10-21: painted diorama + puppets
+- 2026-10-22 | Superseded lines move to docs/decisions-archive.md unchanged | keeps this file under its cap | Claude
 - 2026-10-19 | Art budget $0: Gemini Pro, Google Flow, free tools, CC0/free packs; no paid artist or packs | Feras: "does not require spending money" | Feras
 - 2026-10-19 | Goal: the 30-minute Chapter 1 vertical slice first; decide on a full game after it | Feras | Feras
 - 2026-10-19 | Claude Pro ($20/month): Sonnet builds, Opus designs and reviews, Haiku for mechanical work | Feras's plan; Pro limits | Feras/Claude
@@ -31,7 +31,6 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-21 | Prototype v0 = walk, then battle: one rooftop area, a workshop, a patrol, one battle in place (docs/design/prototype.md) | Feras chose it over "one battle" | Feras
 - 2026-10-21 | Prototype battle: Zayd + Bilqis vs 3 Concession enemies (2 enforcers, 1 drone) | Feras (recommended) | Feras
 - 2026-10-21 | Prototype has a small djanbeyyah pick: 2 hilts x 2 blades at a workshop | Feras (recommended) | Feras
-- ~~2026-10-21 | Prototype art: Claude draws pixel sprites by script; Gemini/Flow art replaces them later through the same format | Feras (recommended) | Feras~~ superseded 2026-10-21: painted puppets
 - 2026-10-21 | Player text: localization/<feature>.csv loaded at startup by a TextDB autoload, not Godot's CSV import | that import errors on a fresh clone (CI) and writes binaries | Claude
 - 2026-10-21 | The 8 game skills are copied from .agents/skills/ to .claude/skills/ (both kept) so Claude Code can load them inline | a skill costs ~2-4k tokens, an agent start 150k+ | Feras
 - 2026-10-21 | A Game Designer (loaded as a skill) reviews combat.md and prototype.md before the prototype build starts | second opinion before code, cheaply | Feras
@@ -41,8 +40,6 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-21 | Ambush from behind: the hero answers with a djanbeyyah reverse stab (its hooked blade is made to strike behind, game fiction) before battle; first used in slice beat 3 | Feras's idea | Feras
 - 2026-10-21 | Game Designer review applied: show enemy intent + "will interrupt" preview, Bilqis's static_net cancels, blade knockback on the first hit only, seeded start positions (party ahead), downed units lose their cast, first-time tips, battles 40-90 s | readable interrupts are the fun hypothesis | Claude (Game Designer skill)
 - 2026-10-21 | The reverse-stab ambush goes into prototype v0 (patrol touch from behind; party head start when Zayd reaches it from behind) | Feras (recommended) | Feras
-- ~~2026-10-21 | Characters 64 px tall; one texel density of 32 px = 1 m for sprites and world (supersedes the 16 px = 1 m in Look v1); same size on screen, finer pixels | Feras chose 64 over 48 and 32 (density follows: Claude, owner may veto) | Feras~~ superseded 2026-10-21: painted look, no pixel density
-- ~~2026-10-21 | Real sprites: Feras's Gemini picture -> tools/art/pixelize.py -> his touch-up in Pixelorama; tools/art/sprite_png.py exports/imports any sprite losslessly; Claude's sprites are stand-ins | Feras (recommended) | Feras~~ superseded 2026-10-21: painted puppets
 - 2026-10-21 | Prototype look: old Sana'a at night (tower-houses, glowing qamariya, moon, stars, clouds, fog) with neon accents and the 2150 megacity on the horizon; real place names (Souq al-Milh, al-Saila, Bab al-Yaman, Zubairi, Haddah, Bayt Baws) | Feras (recommended) | Feras
 - 2026-10-21 | Prosthetics: one slot per hero; it grants the tech moves (attacks, heals, shields, debuffs) paid from SP; the djanbeyyah stays the physical weapon | Feras (recommended) | Feras
 - 2026-10-21 | Rarity: Common, Uncommon, Rare, Epic, Legendary (white, green, blue, purple, gold) on hand-made fixed items, plus a story-only Heirloom tier | Feras | Feras
@@ -50,14 +47,12 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-21 | Free online assets (CC0 / OFL) allowed where the game doesn't need unique art; each gets a manifest entry; downloads confirmed with the owner | Feras | Feras
 - 2026-10-21 | Haiku subagents take the mechanical work (cleanup, audits, doc updates) next to the Sonnet builders | Feras: "Involve Haiku subagent too" | Feras
 - 2026-10-21 | Look: painted diorama: Hades-like painted surfaces, ink outlines, painted light; Octopath tilt-shift and side-view battles; our twist = qamariya glass colour + gypsum ornament in light, VFX, UI | Feras (recommended over Octopath pixel, flat 2D) | Feras
-- ~~2026-10-21 | Characters: painted puppets cut from Feras's Flow pictures, animated in code (gait, clips); battles in a separate arena scene (warp in) | Feras (recommended over Flow frames, 3D models) | Feras~~ superseded 2026-10-21: live 3D characters (the separate battle arena stays)
 - 2026-10-21 | Save spot: sabil fountain (save + full refill; patrols return); HP/SP carry over between fights, losing offers retry (supersedes slice.md refill) | Feras (recommended) | Feras
 - 2026-10-21 | Currency riyal; party right, enemies left in battle; camera picked by Feras from spike renders | defaults | Claude (owner may veto)
 - 2026-10-21 | Norm: big asks start in plan mode (Opus xhigh), audit with agents, then orchestrate; every installed agent at a fitting model and effort | Feras: "This should be the norm" | Feras
 - 2026-10-21 | Herb seller: Abu Nabil, a 40-year-old man (replaces the invented Umm Nabil) | Feras | Feras
 - 2026-10-21 | Characters: live 3D models in the 3D world (2.5D, aiming at Hades quality, motion and design), painted shader + ink outline; not pre-rendered frames | Feras: "exactly like Hades" (recommended) | Feras
 - 2026-10-21 | 3D models: CC0 stand-in bodies now; later Feras's Flow model pictures -> free image-to-3D (he logs in) -> Claude rigs and paints | Feras (recommended) | Feras
-- ~~2026-10-21 | 3D motion: free CC0 packs or Mixamo (Feras logs in), retargeted, plus Claude's Hades-style polish (wind-ups, holds, fast strikes, hit pauses) | Feras (recommended) | Feras~~ superseded 2026-10-21: CC0 moves only
 - 2026-10-21 | Feras's model pictures for image-to-3D: A-pose (arms 30-45 deg down), not T-pose; flat light, grey background, weapon apart (characters-3d.md 8) | what image-to-3D and auto-rig need | Claude (owner may veto)
 - 2026-10-21 | 3D motion: CC0 moves only (Quaternius library; Claude keys missing attack/cast clips), retargeted, plus Hades-style polish; no Mixamo | Mixamo files can't sit in the public repo | Feras
 - 2026-10-21 | Zayd's default skin always wears his grandfather's djanbeyyah hilt (Heirloom grandfather_hilt): a separate part at the front of his belt, drawn in hand to strike | Feras: the hilt was missing from his model | Feras

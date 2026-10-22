@@ -1,0 +1,8 @@
+# Decisions archive (superseded lines moved from DECISIONS.md, unchanged; not loaded at start)
+
+- ~~2026-10-19 | True HD-2D: 3D diorama world, 2D pixel-art billboard characters (not the blueprint's 2D layers) | iconic look; switching later would redo world art | Feras~~ superseded 2026-10-21: painted diorama + puppets
+- ~~2026-10-21 | Prototype art: Claude draws pixel sprites by script; Gemini/Flow art replaces them later through the same format | Feras (recommended) | Feras~~ superseded 2026-10-21: painted puppets
+- ~~2026-10-21 | Characters 64 px tall; one texel density of 32 px = 1 m for sprites and world (supersedes the 16 px = 1 m in Look v1); same size on screen, finer pixels | Feras chose 64 over 48 and 32 (density follows: Claude, owner may veto) | Feras~~ superseded 2026-10-21: painted look, no pixel density
+- ~~2026-10-21 | Real sprites: Feras's Gemini picture -> tools/art/pixelize.py -> his touch-up in Pixelorama; tools/art/sprite_png.py exports/imports any sprite losslessly; Claude's sprites are stand-ins | Feras (recommended) | Feras~~ superseded 2026-10-21: painted puppets
+- ~~2026-10-21 | Characters: painted puppets cut from Feras's Flow pictures, animated in code (gait, clips); battles in a separate arena scene (warp in) | Feras (recommended over Flow frames, 3D models) | Feras~~ superseded 2026-10-21: live 3D characters (the separate battle arena stays)
+- ~~2026-10-21 | 3D motion: free CC0 packs or Mixamo (Feras logs in), retargeted, plus Claude's Hades-style polish (wind-ups, holds, fast strikes, hit pauses) | Feras (recommended) | Feras~~ superseded 2026-10-21: CC0 moves only
