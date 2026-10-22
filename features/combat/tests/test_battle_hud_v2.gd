@@ -1,6 +1,6 @@
 extends TestCase
-## Battle HUD v2: the timeline sits on top at the style's size and its icons come from content (disc fallback), the
-## party shows as PartyCards at the bottom right with the acting hero framed, and the hint strip is there.
+## Battle HUD v2 basics (kept in v3): the thin timeline sits on top at the view's size and its icons come from content
+## (disc fallback), each hero has a strip and the acting hero a card, and the hint strip is there.
 
 
 func _stage() -> BattleStage:
@@ -13,12 +13,14 @@ func _stage() -> BattleStage:
 	return stage
 
 
-func test_timeline_is_top_centred_at_the_style_size() -> void:
+func test_timeline_is_a_thin_top_bar_at_the_views_size() -> void:
 	var stage: BattleStage = _stage()
 	var bar: BattleTimelineBar = stage.hud.timeline_bar
-	var style: UiStyleDef = Ui.style()
-	check_eq(bar.offset_right - bar.offset_left, float(style.size(&"s_timeline_w")), "width from style")
-	check_eq(bar.offset_top, float(style.size(&"s_timeline_top")), "top margin from style")
+	var view := ContentDB.get_def("battle_view", &"default") as BattleViewDef
+	check_eq(bar.anchor_right, 1.0, "the bar spans the screen's width")
+	check_eq(bar.anchor_top, 0.0, "and sits on top")
+	check_eq(bar.height(), float(view.timeline_top + view.timeline_icon * 2 + view.timeline_track), "height from the view")
+	check(bar.height() <= 1080.0 * 0.06, "at most 6%% of a 1080 px screen: %s" % bar.height())
 	check_eq(bar.icon_count(), 5, "five icons")
 	stage.free()
 
@@ -32,16 +34,13 @@ func test_head_icons_are_discs_with_initials_until_art_exists() -> void:
 	enemy.free()
 
 
-func test_party_cards_sit_bottom_right_and_frame_the_active_hero() -> void:
+func test_heroes_have_a_strip_and_the_acting_hero_a_card() -> void:
 	var stage: BattleStage = _stage()
-	var panel: BattlePartyPanel = stage.hud.party_panel
-	check_eq(panel.row_count(), 2, "two cards")
-	check_eq(panel.anchor_right, 1.0, "anchored right")
-	check_eq(panel.anchor_bottom, 1.0, "anchored bottom")
-	panel._process(0.0)
-	var zayd: PartyCard = panel.card_of(&"zayd")
-	check(zayd != null, "a card per hero id of the unit")
-	check_eq(zayd.custom_minimum_size.x, float(Ui.style().size(&"s_card_w")), "card width from style")
+	check(stage.hud.strips.strip_of(&"zayd") != null, "a strip per hero id of the unit")
+	stage.run_to_end(30000)
+	stage.hud.refresh(0.0)
+	var card: BattleHeroCard = stage.hud.turn_panel.card
+	check_eq(card.hero_id(), stage.sim.waiting_hero().unit_id, "the card shows the waiting hero")
 	stage.free()
 
 

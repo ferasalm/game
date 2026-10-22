@@ -24,10 +24,11 @@ func setup(view: BattleViewDef) -> void:
 	grow_horizontal = Control.GROW_DIRECTION_BOTH
 	grow_vertical = Control.GROW_DIRECTION_BOTH
 	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", view.margin)
-	box.custom_minimum_size.x = view.menu_width
+	box.add_theme_constant_override("separation", roundi(view.margin / 2.0))
+	box.custom_minimum_size.x = view.end_panel_w
 	add_child(box)
 	_title = BattleStyle.label("", &"BannerLabel")
+	_title.add_theme_font_size_override("font_size", view.end_title_font)
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(_title)
 	box.add_child(Ui.divider())

@@ -7,11 +7,19 @@
      "enemy_stage": [{"x": -1.2, "z": 0.9}, {"x": -2.5, "z": -0.9}, {"x": -3.9, "z": 0.4}, {"x": -4.6, "z": -1.0}],
      "ticks_per_frame": 3, "face_bias": 0.35, "hit_stop": 0.35, "banner_seconds": 0.9, "damage_gap": 0.18, "tip_seconds": 7.0,
      "end_delay": 0.8, "number_rise": 1.0, "number_seconds": 0.9, "label_energy": 2.6, "number_font_size": 72, "text_font_size": 32,
-     "label_pixel_size": 0.008, "intent_offset": 0.35, "marker_offset": 0.5, "marker_size": 0.25, "banner_anchor_y": 0.3, "marker_bounce": 0.2,
+     "label_pixel_size": 0.008, "intent_offset": 0.55, "marker_offset": 0.8, "marker_size": 0.2, "banner_anchor_y": 0.3, "marker_bounce": 0.2,
      "marker_speed": 6.0, "shake_distance": 0.15, "shake_time": 0.25,
-     "font_size": 28, "banner_font_size": 96, "margin": 24, "icon_size": 44, "bar_height": 16,
-     "party_panel_width": 480, "menu_width": 620,
-     "party_color": "#4ad0ff", "enemy_color": "#ff5a4a", "cast_color": "#ff8a2a55", "panel_color": "#14101ecc",
-     "highlight_color": "#f0b83a", "hp_color": "#4fc46a", "sp_color": "#4a8cf0"}
+     "font_size": 28, "banner_font_size": 64, "margin": 24, "icon_size": 44, "bar_height": 16,
+          "party_color": "#4ad0ff", "enemy_color": "#ff5a4a", "cast_color": "#ff8a2a55", "panel_color": "#14101ecc",
+     "highlight_color": "#f0b83a", "hp_color": "#4fc46a", "sp_color": "#4a8cf0",
+     "timeline_icon": 24, "timeline_track": 10, "timeline_top": 4, "timeline_width": 1100, "timeline_raise": 4,
+     "ring_width": 2, "letter_font": 14, "target_font": 24, "letter_offset": 0.15,
+     "strip_w": 160, "strip_h": 20, "strip_gap": 6, "strip_initial": 18, "hp_h": 10, "sp_h": 6,
+     "foe_strip_w": 100, "foe_strip_h": 8, "foe_strip_seconds": 1.8, "strip_fade": 0.4,
+     "pulse_scale": 1.4, "pulse_seconds": 0.35,
+     "turn_menu_w": 380, "turn_row_h": 36, "turn_gap": 16, "card_bar_h": 12,
+     "info_w": 230, "info_delay": 1.2, "info_fade": 0.35, "info_gap": 12, "rect_pad": 4,
+     "menu_font": 19, "menu_pad_v": 0, "card_font": 16, "card_name_font": 20, "panel_margin": 10,
+     "tip_w": 560, "end_panel_w": 420, "end_title_font": 48}
   ]
 }

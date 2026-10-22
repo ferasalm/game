@@ -33,7 +33,7 @@ func test_builds_headless() -> void:
 	check_eq(stage.fighters.count(), 5, "five fighters on the stage")
 	check_eq(stage.hud.timeline_bar.icon_count(), 5, "five timeline icons")
 	check_eq(stage.hud.timeline_bar.visible_icons(), 5, "all five icons show at the start")
-	check_eq(stage.hud.party_panel.row_count(), 2, "two heroes in the party panel")
+	check(stage.hud.strips.strip_of(&"zayd") != null and stage.hud.strips.strip_of(&"bilqis") != null, "a vitals strip per hero")
 	check(stage.camera != null and stage.camera.current, "the stage camera is current")
 	stage.free()
 

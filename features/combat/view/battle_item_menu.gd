@@ -1,6 +1,6 @@
 class_name BattleItemMenu
 extends PanelContainer
-## The Items list of the command menu (bottom left, over the move list): one row per herb the bag holds (name, the
+## The Items list of the command menu (in the turn panel, in place of the move list): one row per herb the bag holds (name, the
 ## count still free, its effect), then the targets of the picked herb (the party herb skips them). Back returns
 ## from the targets to the rows, and from the rows to the command menu. The sim answers every rule question.
 
@@ -8,39 +8,32 @@ extends PanelContainer
 signal chosen(item_id: StringName, target_id: StringName)
 ## The focused target changed (&"" when leaving the target list); the stage moves the 3D marker.
 signal target_focused(unit_id: StringName)
+## The line under the menu changed: the focused herb's effect, or (warning) why a choice was refused.
+signal help_changed(text: String, warning: bool)
 ## Back out of the row list: the command menu shows again.
 signal closed
 
 var _sim: BattleSim
+var _view: BattleViewDef
 var _hero: UnitState
 var _item: ConsumableDef = null
 var _open: bool = false
 var _title: Label
 var _list: VBoxContainer
-var _desc: Label
+var _help: String = ""
 var _rows: Array[Button] = []
 
 
 func setup(sim: BattleSim, view: BattleViewDef) -> void:
 	_sim = sim
-	set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
-	grow_vertical = Control.GROW_DIRECTION_BEGIN
-	offset_left = view.margin
-	offset_bottom = -view.margin
-	offset_top = -view.margin
-	offset_right = view.margin + view.menu_width
+	_view = view
+	BattleStyle.bare_panel(self)
 	var box := VBoxContainer.new()
 	add_child(box)
 	_title = BattleStyle.label("", &"TitleLabel")
 	box.add_child(_title)
-	box.add_child(Ui.divider())
 	_list = VBoxContainer.new()
 	box.add_child(_list)
-	box.add_child(Ui.divider())
-	_desc = BattleStyle.label("", &"MutedLabel")
-	_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_desc.custom_minimum_size = Vector2(view.menu_width - view.margin * 2.0, Ui.style().size(&"s_cmd_desc_h"))
-	box.add_child(_desc)
 	visible = false
 
 
@@ -74,7 +67,17 @@ func target_buttons() -> Array[Button]:
 
 ## Shows why a choice was refused (under the rows).
 func show_notice(content: String) -> void:
-	_desc.text = content
+	_say(content, true)
+
+
+## The help line now showing (an herb's effect, or why a choice was refused).
+func help_text() -> String:
+	return _help
+
+
+func _say(content: String, warning: bool) -> void:
+	_help = content
+	help_changed.emit(content, warning)
 
 
 ## Back one level: targets to rows, rows to the command menu.
@@ -100,12 +103,15 @@ func _unhandled_input(event: InputEvent) -> void:
 func _show_rows(focus_item: ConsumableDef) -> void:
 	_item = null
 	_clear()
+	_title.add_theme_font_size_override("font_size", _view.menu_font + 4)
 	_title.text = BattleStyle.text("BATTLE_ITEMS")
 	var colour: Color = Ui.style().colour(&"c_gypsum")
 	for def: ConsumableDef in _sim.items.listed():
 		var row: ListRow = Ui.list_row(null, BattleStyle.text(def.name_key), _sim.items.available(def.id), colour,
 			_effect_tag(def)) as ListRow
 		row.set_meta("item_id", def.id)
+		row.custom_minimum_size.y = _view.turn_row_h
+		BattleStyle.compact_button(row, _view)
 		row.set_enabled(_sim.items.available(def.id) > 0 and not _sim.items.valid_targets(_hero, def).is_empty())
 		row.pressed.connect(_pick.bind(def))
 		row.focus_entered.connect(_describe.bind(def))
@@ -122,10 +128,12 @@ func _pick(def: ConsumableDef) -> void:
 		return
 	_item = def
 	_clear()
+	_title.add_theme_font_size_override("font_size", _view.menu_font + 4)
 	_title.text = BattleStyle.text("UI_PICK_TARGET")
 	for target: UnitState in _sim.items.valid_targets(_hero, def):
 		var button: Button = BattleMenuChips.button(_list, BattleStyle.unit_name(_sim, target),
-			[Ui.label("%s %d" % [Ui.text("UI_HP"), target.hp], &"NumberLabel", Ui.style().colour(&"c_hp_b"))] as Array[Control])
+			[Ui.label("%s %d" % [Ui.text("UI_HP"), target.hp], &"NumberLabel", Ui.style().colour(&"c_hp_b"))] as Array[Control],
+			_view)
 		button.set_meta("unit_id", target.unit_id)
 		button.pressed.connect(confirm.bind(target.unit_id))
 		button.focus_entered.connect(target_focused.emit.bind(target.unit_id))
@@ -142,7 +150,7 @@ func confirm(target_id: StringName) -> void:
 
 
 func _describe(def: ConsumableDef) -> void:
-	_desc.text = BattleStyle.text(def.desc_key) if not def.desc_key.is_empty() else ""
+	_say(BattleStyle.text(def.desc_key) if not def.desc_key.is_empty() else "", false)
 
 
 ## The herb's main effect as a short tag: "HP +120", "SP +12", "Revives in battle".
@@ -159,4 +167,4 @@ func _clear() -> void:
 		_list.remove_child(button)
 		button.queue_free()
 	_rows.clear()
-	_desc.text = ""
+	_say("", false)

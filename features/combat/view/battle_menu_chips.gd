@@ -33,12 +33,14 @@ static func for_target(sim: BattleSim, hero: UnitState, action: ActionDef, targe
 	return chips
 
 
-## A menu Button in `list`: left text, chips on the right edge, menu sounds, hover grabs focus.
-static func button(list: Control, content: String, chips: Array[Control]) -> Button:
+## A menu Button in `list` (a view makes it compact): left text, chips on the right edge, menu sounds, hover grabs focus.
+static func button(list: Control, content: String, chips: Array[Control], view: BattleViewDef = null) -> Button:
 	var out := Button.new()
 	out.text = content
 	out.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	out.custom_minimum_size.y = Ui.style().size(&"s_button_h")
+	out.custom_minimum_size.y = view.turn_row_h if view != null else Ui.style().size(&"s_button_h")
+	if view != null:
+		BattleStyle.compact_button(out, view)
 	out.add_child(Ui.chip_row(chips))
 	list.add_child(out)
 	out.focus_entered.connect(AudioDirector.play_ui.bind(&"menu_move"))

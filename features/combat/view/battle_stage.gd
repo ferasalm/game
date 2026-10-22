@@ -50,7 +50,7 @@ func start(battle: BattleSim, anchor: Vector3) -> void:
 	_add_show()
 	hud = BattleHud.new()
 	add_child(hud)
-	hud.setup(sim, _view, shown_hp)
+	hud.setup(sim, _view, shown_hp, camera, fighters)
 	BattleCameraRig.paint(self)
 	hud.move_chosen.connect(_on_move_chosen)
 	hud.item_chosen.connect(_on_item_chosen)
