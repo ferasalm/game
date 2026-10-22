@@ -1,6 +1,6 @@
 class_name TitleOverlay
 extends CanvasLayer
-## The game's title over the opening sky: "Qarnaw" in Latin and Arabic in Reem Kufi with a pulsing "Press any key".
+## The game's title over the opening sky: "Qarnaw" in Musnad (big) and Latin with a pulsing "Press any key".
 ## Any key, click or pad button dismisses it (emitting dismissed at once, then fading out), which is the cue for
 ## the opening camera to leave the moon. The overlay itself never touches the camera.
 
@@ -85,10 +85,9 @@ func _fill() -> void:
 	var style: UiStyleDef = Ui.style()
 	var latin: Label = Ui.label(Ui.text("TITLE_GAME"), &"BannerLabel")
 	latin.add_theme_font_size_override("font_size", style.size(&"s_font_big") * 2)
-	var arabic: Label = Ui.label(Ui.text("TITLE_GAME_AR"), &"TitleLabel", style.colour(&"c_gypsum"))
-	arabic.add_theme_font_size_override("font_size", style.size(&"s_font_big"))
-	arabic.language = "ar"
-	for title: Label in [latin, arabic]:
+	var musnad: Label = Ui.label(Ui.text("TITLE_GAME_MUSNAD"), &"MusnadLabel", style.colour(&"c_gypsum"))
+	musnad.add_theme_font_size_override("font_size", style.size(&"s_font_big") * 2)
+	for title: Label in [musnad, latin]:
 		title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		_block.add_child(title)
 	var band: TextureRect = Ui.divider()

@@ -46,6 +46,7 @@ static func _labels(theme: Theme, style: UiStyleDef) -> void:
 	_label(theme, style, &"TitleLabel", &"font_title", &"s_font_title", &"c_brass")
 	_label(theme, style, &"NameLabel", &"font_title", &"s_font_name", &"c_text")
 	_label(theme, style, &"NumberLabel", &"font_title", &"s_font_number", &"c_text")
+	_label(theme, style, &"MusnadLabel", &"font_musnad", &"s_font_title", &"c_brass_dim")
 	_label(theme, style, &"MutedLabel", &"font_body", &"s_font_small", &"c_muted")
 	_label(theme, style, &"SmallLabel", &"font_body", &"s_font_small", &"c_text")
 	_label(theme, style, &"CaptionLabel", &"font_title", &"s_font_small", &"c_brass")

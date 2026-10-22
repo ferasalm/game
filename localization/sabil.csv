@@ -1,6 +1,6 @@
 keys,en
 SABIL_TITLE,Sabil
-SABIL_TITLE_AR,سبيل
+SABIL_TITLE_MUSNAD,𐩦𐩨𐩺𐩡
 SABIL_PROMPT,Drink
 SABIL_ASK,Drink to rest? This saves your game and restores everyone.
 SABIL_DRINK,Drink
@@ -10,6 +10,6 @@ SABIL_PATROLS,The Concession's patrols return.
 SABIL_FAIL,Could not save.
 PROMPT_TALK,Talk
 PROMPT_OPEN,Open
-WORLD_SIGN_SABIL,سبيل  Sabil
+WORLD_SIGN_SABIL,𐩦𐩨𐩺𐩡
 ENCOUNTER_PATROL_PAIR,Enforcer pair
 ENCOUNTER_PATROL_DRONE,Survey drone

@@ -2,8 +2,8 @@ keys,en
 WORLD_ROOFTOP_NAME,Souq rooftops
 WORLD_PROMPT_WORKSHOP,E: workshop
 WORLD_PROMPT_CHEST,E: open chest
-WORLD_SIGN_SOUQ,سوق الملح  Souq al-Milh
-WORLD_SIGN_BAB,← باب اليمن  Bab al-Yaman
-WORLD_SIGN_ZUBAIRI,شارع الزبيري  Zubairi St. →
-WORLD_SIGN_HADDAH,حدة  Haddah
-WORLD_SIGN_QISHR,قشر  Qishr
+WORLD_SIGN_SOUQ,𐩦𐩥𐩤 𐩱𐩡𐩣𐩡𐩢
+WORLD_SIGN_BAB,← 𐩨𐩱𐩨 𐩱𐩡𐩺𐩣𐩬
+WORLD_SIGN_ZUBAIRI,𐩪𐩱𐩧𐩲 𐩱𐩡𐩸𐩨𐩺𐩧𐩺 →
+WORLD_SIGN_HADDAH,𐩢𐩵𐩠
+WORLD_SIGN_QISHR,𐩤𐩪𐩧

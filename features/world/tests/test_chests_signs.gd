@@ -1,6 +1,6 @@
 extends TestCase
 ## Chests (prompt, one-time opening, the lid animation, the Rooftop signal) and the neon signs (localization keys,
-## Arabic text from the CSV, text fitted to the board).
+## Musnad text from the CSV, text fitted to the board).
 
 const DT: float = 1.0 / 60.0
 
@@ -73,21 +73,33 @@ func test_ease_out_runs_from_zero_to_one() -> void:
 	check(Chest.ease_out(0.5) > 0.5, "fast start, slow end")
 
 
-func test_signs_use_localization_and_arabic() -> void:
+func test_signs_use_localization_and_musnad() -> void:
 	var area := ContentDB.get_def("area", &"souq_rooftops") as AreaDef
-	var wanted: Array[String] = ["Souq al-Milh", "Zubairi St.", "Sabil", "Haddah", "Qishr"]
+	var wanted: Array[String] = ["𐩦𐩥𐩤 𐩱𐩡𐩣𐩡𐩢", "𐩪𐩱𐩧𐩲 𐩱𐩡𐩸𐩨𐩺𐩧𐩺", "𐩦𐩨𐩺𐩡", "𐩢𐩵𐩠", "𐩤𐩪𐩧"]
 	check_eq(area.signs.size(), wanted.size(), "five neon signs")
 	for i: int in area.signs.size():
 		var text: String = TranslationServer.translate(area.signs[i].key)
 		check(text != area.signs[i].key, "sign key %s has text" % area.signs[i].key)
 		check(text.contains(wanted[i]), "sign %d says %s" % [i, wanted[i]])
-		check(_has_arabic(text), "sign %d has Arabic letters" % i)
+		check(_has_musnad(text), "sign %d has Musnad letters" % i)
+		check(not _has_latin(text), "sign %d has no English" % i)
+		var node := NeonSign.new(area.signs[i], ContentDB.get_def("palette", &"main") as PaletteDef)
+		check_eq(node.label.font, NeonSign.FONT, "sign %d uses the Musnad font" % i)
+		node.free()
 
 
-func _has_arabic(text: String) -> bool:
+func _has_musnad(text: String) -> bool:
 	for i: int in text.length():
 		var code: int = text.unicode_at(i)
-		if code >= 0x0600 and code <= 0x06FF:
+		if code >= 0x10A60 and code <= 0x10A7F:
+			return true
+	return false
+
+
+func _has_latin(text: String) -> bool:
+	for i: int in text.length():
+		var code: int = text.unicode_at(i)
+		if (code >= 0x41 and code <= 0x5A) or (code >= 0x61 and code <= 0x7A):
 			return true
 	return false
 

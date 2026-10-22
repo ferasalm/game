@@ -23,7 +23,7 @@ func build(_args: Dictionary) -> void:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", style.size(&"s_margin"))
 	centre.add_child(row)
-	var menu: UiPanel = Ui.panel(Ui.text("PAUSE_HEADING"), Ui.text("PAUSE_HEADING_AR"))
+	var menu: UiPanel = Ui.panel(Ui.text("PAUSE_HEADING"), Ui.text("PAUSE_HEADING_MUSNAD"))
 	menu.custom_minimum_size = Vector2(style.size(&"s_pause_w"), style.size(&"s_pause_h"))
 	row.add_child(menu)
 	_entry_ids = PauseLogic.entries(Screens.has_screen(PauseLogic.ITEMS), Screens.has_screen(PauseLogic.EQUIPMENT),

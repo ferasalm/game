@@ -74,20 +74,20 @@ static func chip_row(chips: Array[Control]) -> HBoxContainer:
 	return line
 
 
-## A framed glass panel with an English + Arabic title pair and a frieze (empty English = no title bar).
-static func panel(title_en: String = "", title_ar: String = "") -> UiPanel:
-	return UiPanel.new().setup(title_en, title_ar)
+## A framed glass panel with an English + Musnad title pair and a frieze (empty English = no title bar).
+static func panel(title_en: String = "", title_musnad: String = "") -> UiPanel:
+	return UiPanel.new().setup(title_en, title_musnad)
 
 
-## A title row: English left in Reem Kufi, Arabic right in dim brass.
-static func title_pair(english: String, arabic: String) -> Control:
+## A title row: English left in Reem Kufi, Musnad right in dim brass.
+static func title_pair(english: String, musnad: String) -> Control:
 	var row := HBoxContainer.new()
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var left: Label = label(english, &"TitleLabel")
 	left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(left)
-	if not arabic.is_empty():
-		row.add_child(label(arabic, &"TitleLabel", style().colour(&"c_brass_dim")))
+	if not musnad.is_empty():
+		row.add_child(label(musnad, &"MusnadLabel"))
 	return row
 
 

@@ -1,6 +1,6 @@
 keys,en
 PAUSE_HEADING,Paused
-PAUSE_HEADING_AR,متوقف
+PAUSE_HEADING_MUSNAD,𐩣𐩩𐩥𐩤𐩰
 PAUSE_PARTY,Party
 PAUSE_RESUME,Resume
 PAUSE_ITEMS,Items
@@ -24,7 +24,7 @@ PAUSE_CONFIRM_QUIT,Quit the game? Unsaved progress is lost.
 PAUSE_YES,Yes
 PAUSE_NO,No
 DEFEAT_TITLE,Defeated
-DEFEAT_TITLE_AR,هُزمتم
+DEFEAT_TITLE_MUSNAD,𐩠𐩸𐩣𐩩𐩣
 DEFEAT_RETRY,Retry fight
 DEFEAT_LOAD,Load last save
 DEFEAT_TITLE_MENU,Title

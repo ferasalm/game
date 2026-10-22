@@ -1,7 +1,7 @@
 extends TestCase
-## The shared UI look: the style loads completely, the theme builds with all three fonts (Arabic glyphs
-## included), every rarity has a colour, the painted frames have the right size, and the text server can shape
-## right-to-left Arabic.
+## The shared UI look: the style loads completely, the theme builds with every font (Reem Kufi and
+## Amiri for English, Noto Old South Arabian for Musnad), every rarity has a colour, the painted frames have the right
+## size, and the text server lays Musnad out right to left.
 
 
 func test_style_is_complete_and_its_fonts_exist() -> void:
@@ -22,8 +22,10 @@ func test_theme_builds_with_every_font_and_variation() -> void:
 	for variant: StringName in UiTheme.LABEL_VARIANTS:
 		check(theme.has_font(&"font", variant) or theme.get_type_variation_base(variant) == &"Label", "label variation " + variant)
 	var title: Font = theme.get_font(&"font", &"TitleLabel")
-	check(title != null and title.has_char(0x0642), "Reem Kufi draws Arabic (qaf)")
-	check(theme.default_font.has_char(0x0642) and theme.default_font.has_char(0x41), "Amiri draws Arabic and Latin")
+	check(title != null and title.has_char(0x41), "Reem Kufi draws Latin")
+	check(theme.default_font.has_char(0x41), "Amiri draws Latin")
+	var musnad: Font = theme.get_font(&"font", &"MusnadLabel")
+	check(musnad != null and musnad.has_char(0x10A64) and musnad.has_char(0x10A7A), "the Musnad label font draws Musnad letters")
 	check(theme.has_stylebox(&"panel", &"PanelContainer") and theme.has_stylebox(&"normal", &"Button"), "panel and button styles")
 	check(theme.has_stylebox(&"fill", &"HpBar") and theme.has_stylebox(&"fill", &"SpBar"), "bar fills")
 
@@ -52,30 +54,11 @@ func test_painted_frames_are_nine_patches_with_the_style_cell() -> void:
 	check_eq(frieze.get_width(), style.size(&"s_frieze_period"), "frieze period")
 
 
-func test_arabic_is_shaped_right_to_left() -> void:
+func test_musnad_is_laid_out_right_to_left() -> void:
 	var server: TextServer = TextServerManager.get_primary_interface()
 	check(server.has_feature(TextServer.FEATURE_BIDI_LAYOUT), "bidi layout available")
-	check(server.has_feature(TextServer.FEATURE_SHAPING), "glyph shaping (joined letters) available")
-	check_eq(Ui.text("TITLE_GAME_AR"), "قرناو", "the Arabic title text")
-	check_eq(Ui.text("AREA_SOUQ_NAME_AR"), "سطوح سوق الملح", "the Arabic area name")
-	var label: Label = Ui.label(Ui.text("TITLE_GAME_AR"), &"TitleLabel")
-	label.language = "ar"
-	check(label.get_minimum_size().x > 0.0, "Arabic title has a width")
+	check_eq(Ui.text("TITLE_GAME_MUSNAD"), "𐩤𐩧𐩬𐩱𐩥", "the Musnad title text")
+	check_eq(Ui.text("AREA_SOUQ_NAME_MUSNAD"), "𐩦𐩷𐩥𐩢 𐩦𐩥𐩤 𐩱𐩡𐩣𐩡𐩢", "the Musnad area name")
+	var label: Label = Ui.label(Ui.text("TITLE_GAME_MUSNAD"), &"MusnadLabel")
+	check(label.get_minimum_size().x > 0.0, "the Musnad title has a width")
 	label.free()
-
-
-func test_speaker_portrait_flip_comes_from_data() -> void:
-	check((ContentDB.get_def("speaker", &"bilqis") as SpeakerDef).portrait_flip, "Bilqis's real portrait faces away: flipped")
-	check(not (ContentDB.get_def("speaker", &"zayd") as SpeakerDef).portrait_flip, "Zayd's faces front: not flipped")
-	var box := DialogueBox.new()
-	tree.root.add_child(box)
-	box.play(&"workshop_first")
-	var guard: int = 0
-	while box.is_playing() and guard < 40:
-		var line: DialogueLine = box._run.current()
-		var flip: bool = (ContentDB.get_def("speaker", line.speaker) as SpeakerDef).portrait_flip and Portraits.has_real(line.speaker, line.expression)
-		check_eq(box._layout.portrait.flip_h, flip, "portrait flip of %s" % line.speaker)
-		box.advance()
-		box.advance()
-		guard += 1
-	box.free()

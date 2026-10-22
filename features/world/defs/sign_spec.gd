@@ -1,6 +1,6 @@
 class_name SignSpec
 extends RefCounted
-## One neon sign: a localization key (Arabic proper nouns and English together), a dark board with a glowing
+## One neon sign: a localization key (a place name in Musnad letters only), a dark board with a glowing
 ## frame, the glow colour, a position and yaw, the text height in metres (size) and how much it flickers.
 
 var key: String = ""

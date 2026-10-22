@@ -1,10 +1,9 @@
 class_name NeonSign
 extends Node3D
-## One neon sign: a dark board, a glowing frame and the text (Label3D in Reem Kufi, unshaded and boosted above
-## 1 so it blooms). The text runs left to right as a line; each Arabic phrase inside it shapes joined and reads
-## right to left. A sign with flicker dips now and then, like a failing tube.
+## One neon sign: a dark board, a glowing frame and the text (Label3D in the Musnad font, unshaded and boosted above
+## 1 so it blooms). The text runs left to right as a line; Musnad letters read right to left. A sign with flicker dips now and then, like a failing tube.
 
-const FONT: FontFile = preload("res://assets/fonts/reem_kufi.ttf")
+const FONT: FontFile = preload("res://assets/fonts/noto_sans_old_south_arabian.ttf")
 const FONT_PX: int = 64
 const FRAME: float = 0.07
 const BOARD_DEPTH: float = 0.12

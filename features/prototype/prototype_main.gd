@@ -11,7 +11,7 @@ const ROOFTOP_SCENE: PackedScene = preload("res://features/world/rooftop/rooftop
 const WORKSHOP_DIALOGUE: StringName = &"workshop_first"
 const WORKSHOP_FLAG: StringName = &"workshop_talk_done"
 const BENCH_PLACE: StringName = &"workshop"
-const AREA_CARD: Array[String] = ["AREA_SOUQ_NAME", "AREA_SOUQ_NAME_AR", "AREA_SUBTITLE"]
+const AREA_CARD: Array[String] = ["AREA_SOUQ_NAME", "AREA_SOUQ_NAME_MUSNAD", "AREA_SUBTITLE"]
 
 var rooftop: Rooftop
 var dialogue: DialogueBox

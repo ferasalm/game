@@ -34,7 +34,7 @@ func build(_args: Dictionary) -> void:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", style.size(&"s_margin"))
 	centre.add_child(row)
-	_list = Ui.panel(Ui.text("ITEMS_TITLE"), Ui.text("ITEMS_TITLE_AR"))
+	_list = Ui.panel(Ui.text("ITEMS_TITLE"), Ui.text("ITEMS_TITLE_MUSNAD"))
 	_list.custom_minimum_size = Vector2(style.size(&"s_pause_w"), style.size(&"s_pause_h"))
 	row.add_child(_list)
 	var right: UiPanel = Ui.panel()

@@ -15,7 +15,7 @@ func _init() -> void:
 
 
 func build(_args: Dictionary) -> void:
-	var panel: UiPanel = centred_panel(Ui.text("SABIL_TITLE"), Ui.text("SABIL_TITLE_AR"), Ui.style().size(&"s_confirm_w"))
+	var panel: UiPanel = centred_panel(Ui.text("SABIL_TITLE"), Ui.text("SABIL_TITLE_MUSNAD"), Ui.style().size(&"s_confirm_w"))
 	var ask: Label = Ui.label(Ui.text("SABIL_ASK"))
 	ask.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	panel.body.add_child(ask)

@@ -23,7 +23,7 @@ const TIMES: Array[StringName] = [
 	&"t_card_out",
 	&"t_focus_sweep", &"t_screen_in", &"t_screen_out", &"t_portrait_in", &"t_text_char", &"t_money_count", &"t_toast_hold",
 	&"t_toast_fade", &"t_transition_sweep", &"t_defeat_fade", &"t_money_flash", &"t_caret", &"t_prompt_fade"]
-const FONTS: Array[StringName] = [&"font_body", &"font_bold", &"font_title"]
+const FONTS: Array[StringName] = [&"font_body", &"font_bold", &"font_title", &"font_musnad"]
 
 var colours: Dictionary[StringName, Color] = {}
 var sizes: Dictionary[StringName, int] = {}
