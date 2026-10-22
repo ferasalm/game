@@ -41,6 +41,7 @@ func test_items_screen_lists_the_bag_and_uses_a_herb() -> void:
 
 func test_shop_screen_buys_and_sells() -> void:
 	_fresh()
+	GameState.flags[&"abu_nabil_beaten"] = true
 	Screens.open(&"shop", {"shop": &"herb_stall"})
 	var screen: ShopScreen = Screens.top() as ShopScreen
 	check(screen != null, "opens")
