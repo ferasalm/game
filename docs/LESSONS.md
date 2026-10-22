@@ -28,6 +28,8 @@
 - Rodin glb: feet at y=-0.95 (centred) made Zayd twice as tall and half underground; its UE rig has other bone axes
   than the library (bodies twisted on the floor); Godot's glTF export kept the old buffers (18 MB) -> tools/rodin
   (Godot LOD indices + a Python glb rewrite: lift, strip textures) and PoseFollow (runtime retarget) (2026-10-22).
+- Rodin bakes props into the one body mesh (Zayd's dagger is one connected piece with him) -> a triangle cut risks a
+  see-through hole (the skin shader culls back faces) -> rewrite_glb.py --press; the real part hides it (2026-10-22).
 - `match` is a GDScript keyword: `var match` is a parse error (2026-10-22).
 - set_exploring(false) hides the player and the patrols -> talks use rooftop.freeze_actors (2026-10-22).
 - See a scene without the owner: non-headless `"$(tools/godot.sh)" --path . --write-movie DIR/f.png --fixed-fps 60

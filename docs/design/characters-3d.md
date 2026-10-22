@@ -89,4 +89,11 @@ Hero 15k triangles, enemy 10k, NPC 7k; at most 90k character triangles on screen
    `"pose_source": "res://assets/characters/ubc_male.gltf"` (ubc_female for women): that body plays the clips hidden
    and PoseFollow turns each same-named bone to point where the source bone points (twist and ik bones keep rest;
    the hips' travel scales with hip height). Stand-in garment parts go; the hilt part stays.
-5. Check: test_model_defs, test_pose_match, a render beside the cast (Zayd: inbox/zayd_rodin_cast.png).
+5. Check: test_model_defs, test_pose_match, test_rodin_parts, a render beside the cast (tools/shot_models.gd).
+6. Rigid pieces and fixes (rewrite_glb.py, IDX `-` keeps the glb's own triangles; boxes in source mesh space, find
+   them with a front/side projection of the mesh): `--place OX,OY,OZ,YAW,SCALE` puts a rigid piece's node at the
+   origin (no lift without a skin); `--keep BOX` / `--cut BOX` split one piece into two files (the grandfather hilt:
+   grip `y > 0.235`, sheath the rest, both `--place=0.24,0.235,0,90,0.17`); `--press BOX` flattens a baked bump onto
+   the box's back face (Zayd's Rodin dagger: a cut would leave a see-through hole, the skin shader culls back faces).
+   Rigid pieces are ModelDef parts of kind `mesh` (glb + texture; the drone hull) or the hilt's `scene` +
+   `sheath_scene` (the blade stays HiltMesh's).
