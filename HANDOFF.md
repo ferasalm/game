@@ -12,7 +12,7 @@ Two tracks: level 1 (session 15, branch claude/night-sanaa) and RPG + menus (ses
 - Feras's 7 backdrops are in (assets/textures/ui_bg/*.webp + manifest); his layout mockups: inbox/ui_refs/mock_*.png.
 - Renders: inbox/menu_pause.png, menu_save.png, menu_shop.png, menu_equipment.png.
 - RUNNING via tools/build_pipeline.sh (agy; result in C:/dev/game-wt/<task>.result; worktree game-wt/<task>):
-  workshop-menu (build), equipment-polish (build). Review: read the .result, the non-test diff, the renders; merge into
+  workshop-menu, equipment-polish: agy quota ran out at 12:04; both resume at 13:08 (workshop from its WIP). Review: read the .result, the non-test diff, the renders; merge into
   claude/menus-rpg-5089fa; check.sh; remove the worktree and branch.
 - Queued briefs: holo-map and interact-focus (only after the level-1 session merges gemini/level1-blockout-fix; ask it first: features/world/interact/ is its area).
 - Balance: start gear 82.7% wins; better gear combos 92-99% (above 65-90%): for the balance pass.
