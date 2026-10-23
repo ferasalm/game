@@ -74,6 +74,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/prosthetics/prosthetics.json`: content: prosthetic x6
 - `content/prototype/flow.json`: content: flow_rules x1
 - `content/puzzles/light_lock.json`: content: light_lock x1
+- `content/puzzles/puzzle_yard.json`: content: puzzle_yard x1
 - `content/puzzles/water_net.json`: content: water_net x1
 - `content/ui/backdrops.json`: content: backdrop x7
 - `content/ui/style.json`: content: ui_style x1
@@ -412,6 +413,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/puzzles/defs/light_lock_def.gd`: purpose: Defines the qamariya light lock puzzle layout (windows, mirrors, and hint timings)
 - `features/puzzles/defs/light_lock_mirror.gd`: purpose: One rotatable mirror in a light lock puzzle with four directional targets
 - `features/puzzles/defs/light_lock_window.gd`: purpose: One colored qamariya window in a light lock puzzle
+- `features/puzzles/defs/puzzle_yard_def.gd`: purpose: Defines the grey-box puzzle yard: floor, walls, ledge, tower, camera, colours and view sizes
 - `features/puzzles/defs/water_net_def.gd`: purpose: Defines a water routing network puzzle (valves, splits, gates, spouts, outlets)
 - `features/puzzles/defs/water_node_def.gd`: purpose: One node in a water network puzzle (source, split, gate, spout, or outlet)
 - `features/puzzles/logic/light_lock.gd`: purpose: Pure logic for light lock beam tracing, shutter toggling, mirror rotation, and solution check
@@ -420,7 +422,24 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/puzzles/logic/water_net.gd`: purpose: Pure logic for water net gate toggling, unjamming, spout swinging, and flow calculation
 - `features/puzzles/logic/water_net_state.gd`: purpose: Runtime state of a water routing network (gate open/freed states and spout directions)
 - `features/puzzles/tests/test_light_lock.gd`: purpose: Tests qamariya light lock puzzle logic, state, beam tracing, routes, loops, and def validation
+- `features/puzzles/tests/test_puzzle_board.gd`: purpose: Tests the grey-box puzzle board: piece moves, nearest piece, saved solves, beams, lens colour, water strips, the canyon gauge and hint timing
 - `features/puzzles/tests/test_water_net.gd`: purpose: Tests water routing network logic, unjamming, spout routing, conservation, def errors, and hints
+- `features/puzzles/view/beam_builder.gd`: purpose: Draws one thin additive box per traced light segment, including the open-ended mirror ray
+- `features/puzzles/view/lens_view.gd`: purpose: Draws the lens sphere and the seal torus, with the wrong-mix flicker and the solved seal turn
+- `features/puzzles/view/light_view.gd`: purpose: Draws qamariya windows, shutters, mirrors and delegates the lens and light beams to their builders
+- `features/puzzles/view/outlet_view.gd`: purpose: Draws the return grate, the drone dock and the canyon gauge, reacting to their water shares
+- `features/puzzles/view/puzzle_board.gd`: purpose: One self-contained grey-box valve-puzzle scene: builds the yard, holds both puzzle states, moves a stand-in player and redraws every view
+- `features/puzzles/view/puzzle_geometry.gd`: purpose: Grey-box geometry helpers shared by the puzzle yard: oriented boxes, edge boxes and beam segments
+- `features/puzzles/view/puzzle_hints_view.gd`: purpose: Tracks each puzzle's stall time and shows every due hint once for a few seconds in a bottom label
+- `features/puzzles/view/puzzle_materials.gd`: purpose: Shared materials for the grey-box puzzle yard (stone, emissive, additive beams, flowing water)
+- `features/puzzles/view/puzzle_pieces.gd`: purpose: Lists the interactive pieces of both puzzles and returns their world positions
+- `features/puzzles/view/puzzle_player.gd`: purpose: Stand-in player capsule that walks at a fixed speed on the yard floor and the R4 ledge
+- `features/puzzles/view/puzzle_save.gd`: purpose: Reads the two puzzle save flags and builds the canonical solved states they stand for
+- `features/puzzles/view/puzzle_scene_builder.gd`: purpose: Builds the fixed parts of the puzzle yard scene: camera, light, environment, player, marker and hints
+- `features/puzzles/view/puzzle_yard.tscn`: scene
+- `features/puzzles/view/shaders/water_strip.gdshader`
+- `features/puzzles/view/water_view.gd`: purpose: Draws stone channels, flowing water strips, gates, spouts, outlets and the canyon gauge
+- `features/puzzles/view/yard_builder.gd`: purpose: Builds the grey-box floor, back wall, parapet, R4 ledge and far tower of the puzzle yard
 - `features/ui/defs/backdrop_def.gd`: Backdrop definition for full-screen menu backgrounds
 - `features/ui/defs/ui_style_def.gd`: The look of every menu and HUD (content/ui/style.json): three font files, named colours (c_*), sizes in pixels at 1920x1080 (s_*) and times in seconds (t_*)
 - `features/ui/logic/pause_logic.gd`: Pure rules of the pause menu: which entries show and in what order, which ask "are you sure", the vitals of a hero with a missing record (= full), and the play-time clock text
@@ -711,6 +730,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_menu.gd`: Renders pause, save, or shop menu at 1920x1080 to an inbox PNG
 - `tools/shot_menu.tscn`: scene
 - `tools/shot_models.gd`: Model gallery for renders (docs/design/characters-3d.md): the cast in a row on a floor under the painted look, each doing a state, close enough to judge the stand-ins
+- `tools/shot_puzzles.gd`: Renders the grey-box valve-puzzle scene at 1920x1080 to C:/dev/game/inbox/puzzle_<arg>.png
+- `tools/shot_puzzles.tscn`: scene
 - `tools/shot_scene.gd`: Plays a scene (or a Node script) for the movie writer (frames to a folder): the battle demo with its heroes on auto_play, or any scene
 - `tools/shot_shatter.gd`: Shows the qamariya shatter on a stand-in frame (a stripe pattern) so the glass can be judged without a fight
 - `tools/shot_workbench.gd`: Renders the workbench prop close up and in the rooftop from the play camera to inbox PNGs (960x540)
