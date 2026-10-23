@@ -31,10 +31,10 @@ if os.path.isfile(log_path):
     text = open(log_path, encoding="utf-8", errors="replace").read()
 
 def parse_tokens(txt):
-    m_in = re.search(r"\"(?:input|input_tokens|prompt_tokens)\":\s*(\d+)", txt)
-    m_out = re.search(r"\"(?:output|output_tokens|completion_tokens)\":\s*(\d+)", txt)
-    if m_in and m_out:
-        return int(m_in.group(1)), int(m_out.group(1))
+    ins = re.findall(r"\"(?:input|input_tokens|prompt_tokens)\":\s*(\d+)", txt)  # one per request: sum them
+    outs = re.findall(r"\"(?:output|output_tokens|completion_tokens)\":\s*(\d+)", txt)
+    if ins and outs:
+        return sum(map(int, ins)), sum(map(int, outs))
     m_in = re.search(r"(?:input[_\s]+tokens?|prompt[_\s]+tokens?)\s*[:=]\s*(\d[\d,]*)", txt, re.I)
     m_out = re.search(r"(?:output[_\s]+tokens?|completion[_\s]+tokens?)\s*[:=]\s*(\d[\d,]*)", txt, re.I)
     if m_in and m_out:
@@ -85,7 +85,9 @@ for res in "$dir"/*.result; do
   if [[ "$line2" =~ ^builder[[:space:]]+([a-zA-Z0-9_-]+) ]]; then
     builder="${BASH_REMATCH[1]}"
   fi
-  [ -n "$builder" ] || builder="agy"
+  if [ -z "$builder" ]; then  # results from before the builder line: guess from the branch prefix
+    case "$(git -C "$dir/$task" rev-parse --abbrev-ref HEAD 2>/dev/null)" in gemini/*) builder=agy ;; *) builder=oc ;; esac
+  fi
 
   log="$dir/$task.log"
   stale=0
