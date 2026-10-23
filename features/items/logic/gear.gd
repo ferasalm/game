@@ -10,8 +10,11 @@ static func build_hero(hero_id: StringName, state: GearState) -> CombatantDef:
 	var out: CombatantDef = state.base.clone() if state.base != null else CombatantDef.new()
 	if state.class_def != null and state.level > 1:
 		out = Progression.grow(out, state.class_def, state.level)
-	_apply_gear(out, hero_id, state)
+	_apply_armor(out, state)
+	_apply_hilt(out, state)
+	_apply_blade(out, state)
 	_apply_stones(out, state)
+	_apply_prosthetic(out, hero_id, state)
 	_apply_upgrades(out, state)
 	out = _apply_all_perks(out, state)
 	_apply_caps(out)
@@ -31,32 +34,28 @@ static func build(
 	return build_hero(base.id if base != null else &"", state)
 
 
-static func _apply_gear(out: CombatantDef, hero_id: StringName, state: GearState) -> void:
+static func _apply_armor(out: CombatantDef, state: GearState) -> void:
 	if state.armor != null:
 		out.max_hp += state.armor.max_hp
 		out.defense += state.armor.defense
 		out.agility += state.armor.agility
 		out.weight += state.armor.weight
+
+
+static func _apply_hilt(out: CombatantDef, state: GearState) -> void:
 	if state.hilt != null:
 		out.agility += state.hilt.agility
 		out.cast_speed *= state.hilt.cast_speed
 		out.weight += state.hilt.weight
 		if state.hilt.ability != &"" and not out.actions.has(state.hilt.ability):
 			out.actions.append(state.hilt.ability)
+
+
+static func _apply_blade(out: CombatantDef, state: GearState) -> void:
 	if state.blade != null:
 		out.attack += state.blade.attack
 		out.knockback_bonus += state.blade.knockback
 		out.weight += state.blade.weight
-	if state.prosthetic != null and (state.prosthetic.wearer == hero_id or state.prosthetic.wearer == out.id):
-		out.max_hp += state.prosthetic.hp
-		out.max_sp += state.prosthetic.sp
-		out.attack += state.prosthetic.attack
-		out.defense += state.prosthetic.defense
-		out.agility += state.prosthetic.agility
-		out.weight += state.prosthetic.weight
-		for action_id: StringName in state.prosthetic.actions:
-			if not out.actions.has(action_id):
-				out.actions.append(action_id)
 
 
 static func _apply_stones(out: CombatantDef, state: GearState) -> void:
@@ -67,6 +66,19 @@ static func _apply_stones(out: CombatantDef, state: GearState) -> void:
 			out.attack += stone.stats.get(&"attack", 0)
 			out.defense += stone.stats.get(&"defense", 0)
 			out.agility += stone.stats.get(&"agility", 0)
+
+
+static func _apply_prosthetic(out: CombatantDef, hero_id: StringName, state: GearState) -> void:
+	if state.prosthetic != null and (state.prosthetic.wearer == hero_id or state.prosthetic.wearer == out.id):
+		out.max_hp += state.prosthetic.hp
+		out.max_sp += state.prosthetic.sp
+		out.attack += state.prosthetic.attack
+		out.defense += state.prosthetic.defense
+		out.agility += state.prosthetic.agility
+		out.weight += state.prosthetic.weight
+		for action_id: StringName in state.prosthetic.actions:
+			if not out.actions.has(action_id):
+				out.actions.append(action_id)
 
 
 static func _apply_upgrades(out: CombatantDef, state: GearState) -> void:
