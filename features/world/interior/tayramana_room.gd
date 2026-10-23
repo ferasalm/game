@@ -16,6 +16,7 @@ var workshop: WorkshopSpot
 var sit_spots: Array[RoomSitSpot] = []
 var spec: RoomDef
 var room_node: Node3D
+var manual_camera: bool = false
 
 var _mat_env: WorldEnvironment
 var _rules: ExploreRulesDef
@@ -48,16 +49,24 @@ func _setup_lighting() -> void:
 	env.background_mode = Environment.BG_COLOR
 	env.background_color = Color(0.08, 0.09, 0.14)
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = Color(0.85, 0.75, 0.65)
-	env.ambient_light_energy = 0.95
+	env.ambient_light_color = Color(0.12, 0.10, 0.16)
+	env.ambient_light_energy = 0.2
 	_mat_env.environment = env
 	add_child(_mat_env)
-	var lamp := OmniLight3D.new()
-	lamp.position = Vector3(spec.size.x * 0.5, 2.2, spec.size.z * 0.5)
-	lamp.light_color = Color(1.0, 0.88, 0.72)
-	lamp.light_energy = 1.2
-	lamp.omni_range = 8.0
-	add_child(lamp)
+	var lamp1 := OmniLight3D.new()
+	lamp1.name = "LampMajlis"
+	lamp1.position = Vector3(2.5, 2.2, 2.0)
+	lamp1.light_color = Color("#ffb070")
+	lamp1.light_energy = 1.3
+	lamp1.omni_range = 6.5
+	add_child(lamp1)
+	var lamp2 := OmniLight3D.new()
+	lamp2.name = "LampWorkshop"
+	lamp2.position = Vector3(5.2, 2.2, 3.2)
+	lamp2.light_color = Color("#ffb070")
+	lamp2.light_energy = 1.2
+	lamp2.omni_range = 6.0
+	add_child(lamp2)
 
 
 func _setup_actors(rules: ExploreRulesDef) -> void:
@@ -111,7 +120,7 @@ func _setup_camera(rig_def: CameraRigDef) -> void:
 
 
 func _process(delta: float) -> void:
-	if camera_rig != null and player != null:
+	if not manual_camera and camera_rig != null and player != null:
 		camera_rig.update(delta, player.position)
 
 
@@ -123,18 +132,20 @@ func freeze_actors(freeze: bool) -> void:
 
 
 func sit_party(kneel: bool) -> void:
+	for spot: RoomSitSpot in sit_spots:
+		spot.set_active(not kneel)
 	if kneel:
-		var zayd_pos: Vector3 = spec.sit_spots[0].pos if spec.sit_spots.size() > 0 else Vector3(2.0, 0.0, 1.8)
-		var bilqis_pos: Vector3 = spec.sit_spots[1].pos if spec.sit_spots.size() > 1 else Vector3(4.0, 0.0, 1.8)
+		var zayd_pos: Vector3 = spec.sit_spots[0].pos if spec.sit_spots.size() > 0 else Vector3(2.3, 0.0, 2.0)
+		var bilqis_pos: Vector3 = spec.sit_spots[1].pos if spec.sit_spots.size() > 1 else Vector3(3.9, 0.0, 2.0)
 		player.position = zayd_pos
 		player.visual().face(1.0)
 		player.visual().root.scale = Vector3(1.15, 0.65, 1.15)
-		player.visual().root.position.y = -0.12
+		player.visual().root.position.y = 0.13
 		player.visual().set_moving(false)
 		follower.position = bilqis_pos
 		follower.visual().face(-1.0)
 		follower.visual().root.scale = Vector3(1.15, 0.65, 1.15)
-		follower.visual().root.position.y = -0.12
+		follower.visual().root.position.y = 0.13
 		follower.visual().set_moving(false)
 	else:
 		player.visual().root.scale = Vector3.ONE
