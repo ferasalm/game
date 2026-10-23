@@ -62,8 +62,8 @@
 - Builders said "done" with failing tests or died mid-edit -> tools/build_pipeline.sh (leftovers as WIP, check, one
   free fix pass); PASS with no commits = nothing built; read fix-pass test diffs (one hardcoded a value) (2026-10-23).
 - Editing a running .sh broke the running copy (bash reads as it goes) -> never edit tools/*.sh mid-run (2026-10-23).
-- Builder stdin: agy exited 2, opencode hung 25 min -> `< /dev/null`. Inkling read outside its worktree and quit 3x
-  -> that brief went to agy (2026-10-23).
+- Builder stdin: agy exited 2, opencode hung 25 min -> `< /dev/null`. opencode auto-rejected reads outside its
+  worktree and quit (Inkling 3x, DeepSeek 3x NOWORK) -> opencode.json external_directory allows inbox/ (2026-10-24).
 - OpenRouter :free = 50 requests/day under $10 bought credit, shared by Inkling and all :free models (2026-10-23).
 - 4 opencode + 2 agy + Godot hit the 16 GB commit limit (fork failed) -> <= 3 runs; check free memory (2026-10-23).
 
