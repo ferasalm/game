@@ -21,6 +21,7 @@ const KINDS: Dictionary = {
 	"explore_rules": preload("res://features/world/defs/explore_rules_def.gd"),
 	"sky": preload("res://features/world/defs/sky_def.gd"),
 	"mist": preload("res://features/world/defs/mist_def.gd"),
+	"storm": preload("res://features/world/weather/defs/storm_def.gd"),
 	"camera_rig": preload("res://features/world/defs/camera_rig_def.gd"),
 	"battle_rules": preload("res://features/combat/defs/battle_rules_def.gd"),
 	"encounter": preload("res://features/combat/defs/encounter_def.gd"),
