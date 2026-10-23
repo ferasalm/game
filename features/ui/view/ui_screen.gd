@@ -44,6 +44,9 @@ func close(result: Variant = null) -> void:
 	if _closing:
 		return
 	_closing = true
+	# A screen closed while another still covers it (the slot picker under its overwrite dialog) must still fade
+	# out and free: a covered screen is process-disabled, which would freeze its fade forever.
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	closed.emit(result)
 	if is_inside_tree():
