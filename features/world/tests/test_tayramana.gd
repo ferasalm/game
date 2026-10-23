@@ -144,3 +144,25 @@ func test_first_sit_gives_two_qishr_once_and_persists_across_save_load() -> void
 	check_eq(GameState.bag.get(&"qishr_cup", 0), 2, "second sit gives no additional qishr")
 	host.free()
 	_clean()
+
+
+## Bug 2026-10-24: interact-focus-3 rewired the workbench straight to InteractFocus, so the first-visit talk and the
+## bench stock (prototype_main._on_workshop_opened) never ran. The bench must reach the flow's workshop_opened.
+func test_room_workbench_reaches_workshop_opened() -> void:
+	if GameState.party.is_empty():
+		GameState.start_new()
+	var host := Node3D.new()
+	tree.root.add_child(host)
+	var rooftop := ROOFTOP_SCENE.instantiate() as Rooftop
+	host.add_child(rooftop)
+	var dlg := DialogueBox.new()
+	host.add_child(dlg)
+	var flow := TayramanaFlow.new()
+	flow.setup(host, rooftop, RooftopPort.new(rooftop, host), dlg)
+	flow.enter_room(&"tayramana", 0.0)
+	var opened: Array[bool] = []
+	flow.workshop_opened.connect(func() -> void: opened.append(true))
+	flow.room.workshop.opened.emit()
+	check_eq(opened.size(), 1, "the room's workbench reaches prototype_main through workshop_opened")
+	host.free()
+	_clean()

@@ -96,7 +96,7 @@ func _setup_interacts(rules: ExploreRulesDef) -> void:
 	bench_place.prop = &"workbench"
 	workshop = WorkshopSpot.new(rules, player, bench_place, false)
 	workshop.position = Vector3(5.4, 0.0, 3.8)
-	workshop.opened.connect(func() -> void: InteractFocus.open_spot(workshop, &"workbench", player, Screens.WORKSHOP_ID))
+	workshop.opened.connect(workshop_opened.emit)
 	add_child(workshop)
 	for s: RoomDef.SitSpot in spec.sit_spots:
 		var spot := RoomSitSpot.new(rules, player, s.id)
@@ -159,3 +159,8 @@ func active_shot_id() -> StringName:
 	if framed_shots != null and framed_shots.active_shot != null:
 		return framed_shots.active_shot.id
 	return &""
+
+
+## The camera eases onto the workbench and the workshop menu opens (prototype_main, after the first-visit talk).
+func focus_workbench() -> UiScreen:
+	return await InteractFocus.open_spot(workshop, &"workbench", player, Screens.WORKSHOP_ID)

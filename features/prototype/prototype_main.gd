@@ -116,7 +116,8 @@ func _on_workshop_opened() -> void:
 	RewardApplier.chests_at(BENCH_PLACE)  # the bench stock; chests already opened give nothing
 	if GameState.flags.get(WORKSHOP_FLAG, false):
 		Screens.notify_opened(&"workshop")
-		menu.open()
+		if _room_flow == null or not _room_flow.open_bench(_on_menu_closed):
+			menu.open()
 	else:
 		dialogue.play(WORKSHOP_DIALOGUE)
 
@@ -145,7 +146,8 @@ func _on_dialogue_finished(dialogue_id: StringName) -> void:
 	if dialogue_id == WORKSHOP_DIALOGUE:
 		GameState.flags[WORKSHOP_FLAG] = true
 		Screens.notify_opened(&"workshop")
-		menu.open()
+		if _room_flow == null or not _room_flow.open_bench(_on_menu_closed):
+			menu.open()
 		return
 	if dialogue_id == &"party_sabil_first":
 		GameState.flags[&"party_sabil_first_done"] = true

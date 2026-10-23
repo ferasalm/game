@@ -46,6 +46,10 @@
 ## 4. Parallel builders (Claude agents 2026-10-21; agy 2026-10-22)
 - One worktree per builder; registries (ContentDB KINDS, MAP.md) conflict -> keep both sides, regenerate MAP.md;
   after a merge adds class_names run `tools/run_godot.sh --import` first; check CI (`gh run list`) after main.
+- A pull into C:/dev/game without an import: the game did not run (stale class cache) -> `bash tools/sync_main.sh`
+  after every pull (2026-10-24).
+- A builder rewired a signal and its old listener went dead; gate, tests and review passed -> audits trace rewired
+  signals to their old listeners (2026-10-24).
 - One session owns git in C:\dev\game; others message it for the window. `cd` into a worktree moves the session's
   directory -> `git -C <path>`.
 - Python on Windows writes CRLF -> `newline="\n"` (python is `python` here, not python3).
@@ -63,8 +67,9 @@
 - OpenRouter :free = 50 requests/day under $10 bought credit, shared by Inkling and all :free models (2026-10-23).
 - 4 opencode + 2 agy + Godot hit the 16 GB commit limit (fork failed) -> <= 3 runs; check free memory (2026-10-23).
 
-- opencode Inkling on balance-gear ran the harness, hit permission rejections and committed nothing (the WIP commits were empty) -> `git diff base...branch` empty = nothing built; rerun on agy (2026-10-23).
-- check.sh failed once on `exit code 124` and once on exit 139 ("Parameter mem is null" = out of memory) while other Godot runs were open; the failing test passed alone and the rerun was green -> rerun before debugging; and never push before reading the final check line (2026-10-23).
+- Inkling on balance-gear hit permission rejections, committed nothing -> empty `git diff base...branch`: rerun on agy (2026-10-23).
+- check.sh exit 124/139 ("Parameter mem is null") with other Godot runs open = memory, not a test -> rerun first;
+  never push before reading the final check line (2026-10-23).
 
 ## 5. Art, browser, night look (2026-10-21)
 - "3 FPS" was a --write-movie render -> real FPS only via fps_probe.gd.

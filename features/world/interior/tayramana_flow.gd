@@ -141,3 +141,19 @@ func _fade_to(target_alpha: float, duration: float) -> void:
 	_fade_tween = _fade_rect.create_tween()
 	_fade_tween.tween_property(_fade_rect, "color:a", target_alpha, duration)
 	await _fade_tween.finished
+
+
+## Opens the bench inside the room (camera ease + workshop menu); false outside it. on_closed runs once it closes.
+func open_bench(on_closed: Callable) -> bool:
+	if not is_in_room():
+		return false
+	_focus_bench(on_closed)
+	return true
+
+
+func _focus_bench(on_closed: Callable) -> void:
+	var screen: UiScreen = await room.focus_workbench()
+	if screen == null:
+		on_closed.call()
+		return
+	screen.closed.connect(func(_result: Variant) -> void: on_closed.call(), CONNECT_ONE_SHOT)
