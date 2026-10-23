@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "cf-agents": {
+      "command": "python",
+      "args": ["tools/cf_mcp/server.py"]
+    }
+  }
+}

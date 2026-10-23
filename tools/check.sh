@@ -14,7 +14,7 @@ py=python3; command -v python3 > /dev/null 2>&1 && python3 -c "" 2> /dev/null ||
 step docs $py tools/doc_check.py
 step lint $py tools/lint_gd.py
 step import tools/run_godot.sh --import
-step tool_tests sh -c "$py tools/art/test_pixelize.py && $py tools/art/test_sprite_png.py && $py tools/art/test_portrait.py && $py tools/art/test_painterly_bake.py && $py tools/test_build_gate.py && $py tools/test_slots.py && $py tools/test_check_slot.py && $py tools/oc_agents.py --check"
+step tool_tests sh -c "$py tools/art/test_pixelize.py && $py tools/art/test_sprite_png.py && $py tools/art/test_portrait.py && $py tools/art/test_painterly_bake.py && $py tools/test_build_gate.py && $py tools/test_slots.py && $py tools/test_check_slot.py && $py tools/oc_agents.py --check && $py tools/cf_mcp/test_server.py"
 . tools/check_slot.sh; acquire_check_slot; trap release_check_slot EXIT
 step tests env GODOT_TIMEOUT=600 tools/run_godot.sh -s res://tests/runner.gd
 release_check_slot

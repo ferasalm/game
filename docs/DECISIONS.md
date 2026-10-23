@@ -5,7 +5,6 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 ## Log
 - 2026-10-22 | Superseded lines move to docs/decisions-archive.md unchanged | keeps this file under its cap | Claude
 - 2026-10-19 | Art budget $0: Gemini Pro, Google Flow, free tools, CC0/free packs; no paid artist or packs | Feras: "does not require spending money" | Feras
-- 2026-10-19 | Claude Pro ($20/month): Sonnet builds, Opus designs and reviews, Haiku for mechanical work | Feras's plan; Pro limits | Feras/Claude
 - 2026-10-19 | Godot 4.7.2 stable pinned in .godot-version; typed GDScript (untyped = error); Forward+ renderer; Windows first | free, text scenes, headless tests | Claude (owner may veto)
 - 2026-10-19 | Content as JSON read into read-only Def classes; runtime state in separate objects; saves = GameState dict with a version | one format, small diffs, tests; no shared-.tres HP bug | Claude
 - 2026-10-19 | Combat timeline on integers with fixed 60 ticks/s, deterministic, returns events | testable, replayable, frame-rate independent | Claude
@@ -56,7 +55,6 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-23 | Painted look: route B, repainted textures on live 3D (oil-baked world, painted character skins, soft flat light); no screen filter, no sprite frames | Feras picked it from inbox/painted_routes.png | Feras
 - 2026-10-23 | Camera: close follow outdoors (Brothers), automatic, no player control, a three-quarter side angle (~32 deg) by default, a rolled horizon (5-8 deg) only in designed tension zones; corner framed shots indoors | Feras (inbox/camera_tilt_options.png) | Feras
 - 2026-10-23 | Demo = level 1 (demo-plan.md, level-1.md): 5 roofs of separate tower-houses joined by board, bridge, zipline, contextual leap, cable; Abu Nabil on the market roof; the tayramana the only room (majlis + workbench); night storm with rain, cyberpunk old Sana'a per his concept art; finale light lock + water routing (valve-puzzles.md); timeline battles kept | Feras | Feras
-- 2026-10-23 | Camera: when a wall blocks the view it rises toward an isometric view, never closes in on faces (test on the five roofs first) | Feras playtest | Feras
 - 2026-10-23 | RPG layer (docs/design/rpg-systems.md): XP, levels, a fixed class per hero, armor, Luck, dodge/crit/resist; flee = interruptible cast, never vs bosses (Abu Nabil too) | Feras (recommended) | Feras
 - 2026-10-23 | Menus (rpg-menus.md): own equipment menu (3D hologram hero); workshop = upgrade, gemstones, small crafting; menus pause over painted backdrops; holo map | Feras (recommended) | Feras
 - 2026-10-23 | Zayd's kit (zayd-moves.md 2026-10-22) gets built, plus ATK split across multi-hit moves so SP moves beat the free strike | Feras: SP moves "basically useless" | Feras/Claude
@@ -68,3 +66,5 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-23 | Claude delegates its own work to subagents: Haiku first (Haiku max effort beats Sonnet medium), Sonnet only when Haiku can't do it well; Claude reviews sensitive results | save the Claude limit without losing quality | Feras
 - 2026-10-23 | Efficiency: side sessions report only at milestones (merged, blocked, renders ready); every chat, managers too, hands off at 150k; HANDOFF has one section per track, edited only by its owner; briefs end with a gate-tested Checklist and a Haiku diff-vs-brief pass comes before Opus (design and renders only); tools/slots.sh counts builder slots and DeepSeek spend; Claude keeps hunting further savings | Feras | Feras
 - 2026-10-23 | Emergency mode (.claude/skills/emergency-efficiency): one Claude director chat, builders build, merge, test and review on backup branches; Opus reviews resume after the weekly reset | 50% of the window in 30 min | Feras
+- 2026-10-24 | Bilqis: rivet pistol, frame + barrel parts upgraded like Zayd's hilt and blade | Feras (recommended) | Feras
+- 2026-10-24 | Every hero: accessory slot (ring) with 1-2 gem sockets by rarity; grandfather hilt keeps its 3 | Feras (recommended) | Feras

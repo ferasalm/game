@@ -6,6 +6,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 
 ## (root)
 - `.godot-version`
+- `.mcp.json`: content: ? x0
 - `AGENTS.md`
 - `GEMINI.md`
 - `opencode.json`: content: ? x0
@@ -749,6 +750,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/build_gate.py`: Build gate: judges a builder run before Claude reads it (NOWORK, BREACH, FAIL or PASS plus a WARN checklist).
 - `tools/build_pipeline.sh`: Free builder pipeline (DECISIONS 2026-10-23): builder run -> check.sh -> one free fix pass fed the FAIL lines ->
 - `tools/cf_build.sh`: Rates (USD per million tokens)
+- `tools/cf_mcp/server.py`: Stdio MCP server: triage_trace (GLM-5.3 Flash) and generate_patch (Kimi K2.7 Code) on Cloudflare Workers AI.
+- `tools/cf_mcp/test_server.py`: Tests for tools/cf_mcp/server.py over its real stdio protocol, in dry mode (no Cloudflare call, no credentials).
 - `tools/check.sh`: One command for every check (docs, lint, Godot import, tests). One ok/FAIL line per step; logs in .check/.
 - `tools/check_slot.sh`: Test-run slots shared by every worktree on this machine: at most CHECK_SLOTS Godot test suites at once. Four at once
 - `tools/doc_check.py`: Keeps the always-loaded notes small and well-formed (docs/EFFICIENCY.md); exit 1 on any failure.

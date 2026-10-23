@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+"""Tests for tools/cf_mcp/server.py over its real stdio protocol, in dry mode (no Cloudflare call, no credentials)."""
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+SERVER = Path(__file__).with_name("server.py")
+
+
+def _run(messages: list) -> list:
+    env = dict(os.environ, CF_MCP_DRY="1")
+    lines = "".join(json.dumps(m) + "\n" for m in messages)
+    out = subprocess.run([sys.executable, str(SERVER)], input=lines, capture_output=True, text=True, env=env,
+                         timeout=30)
+    assert out.returncode == 0, out.stderr
+    return [json.loads(line) for line in out.stdout.splitlines() if line.strip()]
+
+
+def main() -> int:
+    replies = _run([
+        {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2025-06-18"}},
+        {"jsonrpc": "2.0", "method": "notifications/initialized"},
+        {"jsonrpc": "2.0", "id": 2, "method": "tools/list"},
+        {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "triage_trace", "arguments": {
+            "trace": "player frozen after crossing", "files": ["features/world/interact/crossing_spot.gd"]}}},
+        {"jsonrpc": "2.0", "id": 4, "method": "tools/call", "params": {"name": "generate_patch", "arguments": {
+            "diagnosis": "x", "files": ["../outside.txt"]}}},
+        {"jsonrpc": "2.0", "id": 5, "method": "tools/call", "params": {"name": "nope", "arguments": {}}},
+    ])
+    fails = []
+    if [r["id"] for r in replies] != [1, 2, 3, 4, 5]:
+        fails.append("a notification got a reply or a request got none")
+    names = [t["name"] for t in replies[1]["result"]["tools"]]
+    if names != ["triage_trace", "generate_patch"]:
+        fails.append(f"tools/list names {names}")
+    triage = json.loads(replies[2]["result"]["content"][0]["text"])
+    if triage["model"] != "@cf/zai-org/glm-5.3-flash" or "func cross_to" not in triage["messages"][1]["content"]:
+        fails.append("triage_trace: wrong model or the file was not read into the prompt")
+    patch = json.loads(replies[3]["result"]["content"][0]["text"])
+    if patch["model"] != "@cf/moonshotai/kimi-k2.7-code" or "not a file inside the repo" not in patch["messages"][1]["content"]:
+        fails.append("generate_patch: wrong model or a path outside the repo was read")
+    if "error" not in replies[4]:
+        fails.append("unknown tool did not return an error")
+    for f in fails:
+        print("FAIL", f)
+    print("cf_mcp: ok" if not fails else f"cf_mcp: {len(fails)} failed")
+    return 1 if fails else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
