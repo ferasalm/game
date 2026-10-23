@@ -101,6 +101,7 @@ func make_setup(party: Array[CombatantDef], battle_seed: int, ambush: int = 0) -
 	setup.seed = battle_seed
 	setup.ambush = ambush
 	setup.encounter_id = encounter.id
+	setup.can_flee = encounter.can_flee
 	if economy != null:
 		setup.ko_stand_hp = economy.ko_stand_hp
 	return setup

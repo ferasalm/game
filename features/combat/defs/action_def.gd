@@ -8,7 +8,7 @@ const TARGETS: Array[StringName] = [&"foe", &"ally", &"self", &"all_foes", &"all
 ## The effect a later VFX phase draws; empty lets the view pick by melee / ranged.
 const VFX_KINDS: Array[StringName] = [
 	&"slash", &"heavy_slash", &"stab", &"piston", &"beam", &"bolt", &"arc_all", &"burst", &"heal", &"shield",
-	&"overclock", &"net", &"drone_shot", &"baton"]
+	&"overclock", &"net", &"drone_shot", &"baton", &"none"]
 
 var name_key: String = ""
 var desc_key: String = ""
@@ -33,6 +33,8 @@ var vfx: StringName = &""
 var cures: Array[StringName] = []
 ## Maximum times this move can be chosen per battle (0 = unlimited).
 var uses_per_battle: int = 0
+## Never dodged (e.g. reverse stab skips dodge anyway; a forced sure_hit always lands).
+var sure_hit: bool = false
 
 
 func read(r: DefReader) -> void:
@@ -53,6 +55,7 @@ func read(r: DefReader) -> void:
 	revive = r.flag("revive")
 	cures = r.id_list("cures")
 	uses_per_battle = r.integer("uses_per_battle", 0, 99, 0, false)
+	sure_hit = r.flag("sure_hit")
 	_read_target_and_vfx(r)
 
 

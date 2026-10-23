@@ -4,7 +4,8 @@ extends Def
 ## after each act), hp_regen (HP healed after each act), bonus_knockback (added to every first hit's
 ## knockback), start_bonus (timeline units gained at the start of a battle).
 
-const KINDS: Array[StringName] = [&"sp_per_act", &"hp_regen", &"bonus_knockback", &"start_bonus"]
+const KINDS: Array[StringName] = [&"sp_per_act", &"hp_regen", &"bonus_knockback", &"start_bonus",
+	&"dodge_bonus", &"crit_bonus", &"status_pierce"]
 
 var name_key: String = ""
 var desc_key: String = ""

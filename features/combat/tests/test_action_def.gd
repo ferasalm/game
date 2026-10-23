@@ -47,7 +47,7 @@ func test_target_kinds_and_pickers() -> void:
 
 
 func test_every_shipped_action_has_a_known_vfx() -> void:
-	check_eq(ActionDef.VFX_KINDS.size(), 14, "fourteen effect kinds")
+	check_eq(ActionDef.VFX_KINDS.size(), 15, "fifteen effect kinds (including none)")
 	for action_id: StringName in ContentDB.ids("action"):
 		var action := ContentDB.get_def("action", action_id) as ActionDef
 		check(ActionDef.VFX_KINDS.has(action.vfx), "%s has vfx '%s'" % [action_id, action.vfx])

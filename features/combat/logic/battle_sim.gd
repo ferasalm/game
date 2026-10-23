@@ -22,6 +22,16 @@ var bag: Bag
 var items: BattleItems
 ## Tracks move uses and choice rules.
 var action_rules := BattleActionRules.new()
+## A second RNG for roll chances (hit, crit, resist, flee), separate from the battle RNG.
+var roll_rng := RandomNumberGenerator.new()
+## When false, roll calculations are skipped (tests pin exact damage with old rules).
+var rolls_enabled: bool = true:
+	set(value):
+		rolls_enabled = value
+		if _resolver != null:
+			_resolver.rolls_enabled = value  # set after create_from: the resolver copied the old value
+## Failed flee attempts this battle (used by the flee chance formula).
+var flee_fails: int = 0
 
 
 ## Builds the battle from a BattleSetup. Party units use their def id; enemies use "<def id>_<n>" counting from
@@ -36,6 +46,7 @@ static func create_from(battle: BattleSetup) -> BattleSim:
 	sim.statuses = battle.statuses
 	sim.bag = Bag.from_counts(battle.bag)
 	sim.rng.seed = battle.seed
+	sim.roll_rng.seed = hash([battle.seed, "rolls"])
 	sim.ambush = battle.ambush
 	for i: int in battle.party.size():
 		var hero: CombatantDef = battle.party[i]
@@ -52,7 +63,7 @@ static func create_from(battle: BattleSetup) -> BattleSim:
 			foe, StringName("%s_%d" % [foe.id, counts[foe.id]]), 1, battle.enemy_slots[i], battle.rules)
 		unit.pos = BattleActionRules.start_pos(sim.rules, sim.rng, 1, battle.ambush, foe)
 		sim.timeline.units.append(unit)
-	sim._resolver = BattleResolver.new(battle.rules, sim.rng, sim.timeline, battle.statuses)
+	sim._resolver = BattleResolver.new(battle.rules, sim.rng, sim.timeline, battle.statuses, sim.roll_rng, sim.rolls_enabled)
 	sim.items = BattleItems.new(sim.bag, sim.timeline, battle.consumables)
 	return sim
 
@@ -93,28 +104,7 @@ func opening() -> Array[TimelineEvent]:
 
 ## One tick. Returns what happened, in order; [] while a hero waits for a choice or once the battle is over.
 func step() -> Array[TimelineEvent]:
-	var out: Array[TimelineEvent] = _step()
-	if items != null:
-		items.sync()
-	return out
-
-
-func _step() -> Array[TimelineEvent]:
-	var out: Array[TimelineEvent] = []
-	if result != &"" or timeline.waiting_for != null:
-		return out
-	if not _opened:
-		out.append_array(opening())
-		if result != &"":
-			return out
-	ticks += 1
-	for event: TimelineEvent in timeline.tick():
-		_handle(event, out)
-		if result != &"":
-			return out
-	if ticks >= rules.max_ticks:
-		_end(&"defeat", out)
-	return out
+	return BattleSimRunner.step(self)
 
 
 ## The party unit waiting at COMMAND, or null.
@@ -144,6 +134,9 @@ func choose(unit_id: StringName, action: ActionDef, target_id: StringName) -> St
 	var refusal: String = action_rules.check_choice(timeline, unit_id, action, target_id)
 	if not refusal.is_empty():
 		return refusal
+	# Flee is refused when the encounter does not allow it.
+	if action != null and action.id == &"flee" and setup != null and not setup.can_flee:
+		return "UI_CANT_FLEE"
 	var unit: UnitState = timeline.waiting_for
 	unit.sp -= action.sp_cost
 	action_rules.spend_use(unit_id, action)
@@ -163,28 +156,6 @@ func auto_choose(unit: UnitState) -> void:
 	var choice: BattleAI.Choice = BattleAI.pick(self, unit)
 	if choice != null:
 		choose(unit.unit_id, choice.action, choice.target_id)
-
-
-func _handle(event: TimelineEvent, out: Array[TimelineEvent]) -> void:
-	var unit: UnitState = timeline.find(event.unit_id)
-	if not unit.is_alive():
-		return
-	if event.kind == &"command":
-		if unit.phase != UnitState.Phase.COMMAND:
-			return  # knocked back in the same tick it arrived
-		out.append(event)
-		if unit.side == 1:
-			auto_choose(unit)
-	elif event.kind == &"act" and unit.acted is ItemAction:
-		out.append(event)
-		out.append_array(items.resolve(unit))
-	elif event.kind == &"act":
-		out.append(event)
-		out.append_array(_resolver.resolve(unit))
-		if BattleTargets.side_is_down(timeline, 1):
-			_end(&"victory", out)
-		elif BattleTargets.side_is_down(timeline, 0):
-			_end(&"defeat", out)
 
 
 func _end(outcome: StringName, out: Array[TimelineEvent]) -> void:

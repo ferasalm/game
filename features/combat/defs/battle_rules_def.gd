@@ -25,6 +25,29 @@ var melee_front_bonus: float = 0.15
 var melee_back_penalty: float = 0.15
 var melee_min: float = 0.5
 var melee_max: float = 1.5
+## Hit roll (docs/design/rpg-systems.md): chance before dodge.
+var hit_base: float = 0.95
+var hit_agi_k: float = 0.006
+var hit_min: float = 0.60
+var hit_max: float = 0.99
+## Crit roll.
+var crit_base: float = 0.05
+var crit_lck_k: float = 0.004
+var crit_max: float = 0.40
+var crit_mult: float = 1.5
+var crit_knockback: float = 1.25
+## Resist roll.
+var resist_base: float = 0.10
+var resist_lck_k: float = 0.01
+var resist_max: float = 0.75
+## Flee roll.
+var flee_base: float = 0.50
+var flee_agi_k: float = 0.01
+var flee_step: float = 0.15
+var flee_ambushed: float = -0.20
+var flee_ambusher: float = 0.20
+var flee_min: float = 0.10
+var flee_max: float = 0.95
 
 
 func read(r: DefReader) -> void:
@@ -46,5 +69,24 @@ func read(r: DefReader) -> void:
 	melee_back_penalty = r.number("melee_back_penalty", 0.0, 1.0, 0.15, false)
 	melee_min = r.number("melee_min", 0.1, 1.0, 0.5, false)
 	melee_max = r.number("melee_max", 1.0, 5.0, 1.5, false)
+	hit_base = r.number("hit_base", 0.0, 1.0, 0.95, false)
+	hit_agi_k = r.number("hit_agi_k", 0.0, 0.05, 0.006, false)
+	hit_min = r.number("hit_min", 0.0, 1.0, 0.60, false)
+	hit_max = r.number("hit_max", 0.0, 1.0, 0.99, false)
+	crit_base = r.number("crit_base", 0.0, 1.0, 0.05, false)
+	crit_lck_k = r.number("crit_lck_k", 0.0, 0.05, 0.004, false)
+	crit_max = r.number("crit_max", 0.0, 1.0, 0.40, false)
+	crit_mult = r.number("crit_mult", 0.5, 5.0, 1.5, false)
+	crit_knockback = r.number("crit_knockback", 0.5, 5.0, 1.25, false)
+	resist_base = r.number("resist_base", 0.0, 1.0, 0.10, false)
+	resist_lck_k = r.number("resist_lck_k", 0.0, 0.05, 0.01, false)
+	resist_max = r.number("resist_max", 0.0, 1.0, 0.75, false)
+	flee_base = r.number("flee_base", 0.0, 1.0, 0.50, false)
+	flee_agi_k = r.number("flee_agi_k", 0.0, 0.05, 0.01, false)
+	flee_step = r.number("flee_step", 0.0, 1.0, 0.15, false)
+	flee_ambushed = r.number("flee_ambushed", -1.0, 1.0, -0.20, false)
+	flee_ambusher = r.number("flee_ambusher", -1.0, 1.0, 0.20, false)
+	flee_min = r.number("flee_min", 0.0, 1.0, 0.10, false)
+	flee_max = r.number("flee_max", 0.0, 1.0, 0.95, false)
 	if party_start_min > party_start_max or enemy_start_min > enemy_start_max:
 		r.problem("party_start_min", "a start range has min above max")

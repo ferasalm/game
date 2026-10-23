@@ -5,6 +5,11 @@
      "party_start_min": 3000, "party_start_max": 4500, "enemy_start_min": 1000, "enemy_start_max": 3000,
      "heal_attack_factor": 0.5, "ai_heal_below": 0.4, "ai_big_cast_power": 25,
      "speed_weight_factor": 0.015, "speed_min_mult": 0.5, "melee_front_bonus": 0.15, "melee_back_penalty": 0.15,
-     "melee_min": 0.5, "melee_max": 1.5}
+     "melee_min": 0.5, "melee_max": 1.5,
+     "hit_base": 0.95, "hit_agi_k": 0.006, "hit_min": 0.60, "hit_max": 0.99,
+     "crit_base": 0.05, "crit_lck_k": 0.004, "crit_max": 0.40, "crit_mult": 1.5, "crit_knockback": 1.25,
+     "resist_base": 0.10, "resist_lck_k": 0.01, "resist_max": 0.75,
+     "flee_base": 0.50, "flee_agi_k": 0.01, "flee_step": 0.15, "flee_ambushed": -0.20,
+     "flee_ambusher": 0.20, "flee_min": 0.10, "flee_max": 0.95}
   ]
 }
