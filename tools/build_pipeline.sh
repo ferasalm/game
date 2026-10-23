@@ -43,6 +43,7 @@ if check; then status=PASS; else
   OC_TIMEOUT=45m AGY_TIMEOUT=45m run "$wt.fix.md"; leftovers "fix pass"
   if check; then status=PASS; else status=FAIL; fi
 fi
+[ -n "$(git -C "$wt" log --oneline "$base..HEAD")" ] || status="NOWORK"  # green but nothing built (quota, quit)
 { echo "$status $(date +%H:%M) $prefix/$name"
   grep -E '^(ok|FAIL)|^ {5}|passed|FAILED' "$wt.check.txt" | head -40
   echo "--- commits"; git -C "$wt" log --oneline "$base..HEAD" | head -30
