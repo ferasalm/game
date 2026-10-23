@@ -1,10 +1,12 @@
 class_name Portraits
 extends RefCounted
 ## Finds the portrait texture for (speaker, expression): res://assets/portraits/<speaker>_<expression>.png when it
-## exists (loaded straight from the file, the "keep" importer needs no import step), else a stand-in disc with the
-## expression's brows and mouth (StandinPortrait). Sprite pixels are never cropped.
+## exists (loaded straight from the file, the "keep" importer needs no import step), else the speaker's painted
+## neutral (a painted face beats a stand-in), else a stand-in disc with the expression's brows and mouth
+## (StandinPortrait). Sprite pixels are never cropped.
 
 const FOLDER: String = "res://assets/portraits"
+const NEUTRAL: StringName = &"neutral"
 
 static var _cache: Dictionary[String, Texture2D] = {}
 
@@ -15,6 +17,14 @@ static func path_for(speaker: StringName, expression: StringName) -> String:
 
 static func has_real(speaker: StringName, expression: StringName) -> bool:
 	return FileAccess.file_exists(path_for(speaker, expression))
+
+
+## The painted file shown for (speaker, expression): its own, else the speaker's neutral; "" = a stand-in is drawn.
+static func painted_path(speaker: StringName, expression: StringName) -> String:
+	for wanted: StringName in [expression, NEUTRAL]:
+		if has_real(speaker, wanted):
+			return path_for(speaker, wanted)
+	return ""
 
 
 ## Null only when the speaker, its sprite or the dialogue style is missing from ContentDB.
@@ -43,9 +53,10 @@ static func standin_image(speaker: StringName, expression: StringName) -> Image:
 
 
 static func _load_real(speaker: StringName, expression: StringName) -> Texture2D:
-	if not has_real(speaker, expression):
+	var path: String = painted_path(speaker, expression)
+	if path.is_empty():
 		return null
-	var loaded: Image = Image.load_from_file(path_for(speaker, expression))
+	var loaded: Image = Image.load_from_file(path)
 	return null if loaded == null else ImageTexture.create_from_image(loaded)
 
 

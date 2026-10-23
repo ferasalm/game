@@ -122,9 +122,9 @@ func _show_line() -> void:
 	_layout.name_label.text = Ui.text(speaker.name_key)
 	_layout.epithet_label.text = Ui.text(speaker.epithet_key) if not speaker.epithet_key.is_empty() else ""
 	_layout.epithet_label.visible = not _layout.epithet_label.text.is_empty()
-	var real: bool = Portraits.has_real(line.speaker, line.expression)
+	var real: bool = not Portraits.painted_path(line.speaker, line.expression).is_empty()
 	_layout.portrait.flip_h = speaker.portrait_flip and real
-	_layout.portrait.texture = Portraits.texture(line.speaker, line.expression)
+	_layout.show_portrait(Portraits.texture(line.speaker, line.expression))
 	if line.speaker != _speaker:
 		_slide_portrait_in()
 	_speaker = line.speaker

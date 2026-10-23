@@ -12,6 +12,7 @@ var arrow: Control
 var frame: Control
 var choice_box: VBoxContainer
 var portrait_rest_x: float = 0.0
+var portrait_max_h: float = 0.0
 
 
 func build(root: Control, style: DialogueStyleDef) -> void:
@@ -56,13 +57,24 @@ func _build_portrait(root: Control, ui: UiStyleDef) -> void:
 	portrait_rest_x = ui.size(&"s_portrait_x")
 	portrait.offset_left = portrait_rest_x
 	portrait.offset_right = portrait_rest_x + ui.size(&"s_portrait_w")
-	portrait.offset_top = -ui.size(&"s_portrait_h")
+	portrait_max_h = ui.size(&"s_portrait_h")
+	portrait.offset_top = -portrait_max_h
 	portrait.offset_bottom = 0.0
 	portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	portrait.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(portrait)
+
+
+## Shows a portrait standing on the screen's bottom edge: the box takes the picture's shape (up to s_portrait_h), so
+## a picture shorter than the box no longer floats above the edge with its body cut off in mid-air (playtest 2026-10-23).
+func show_portrait(texture: Texture2D) -> void:
+	portrait.texture = texture
+	if texture == null or texture.get_width() <= 0:
+		return
+	var width: float = portrait.offset_right - portrait.offset_left
+	portrait.offset_top = -minf(portrait_max_h, width * texture.get_height() / texture.get_width())
 
 
 ## The nameplate: a raised tab on the box's top edge (its bottom dips s_plate_lift into the box), name over epithet.

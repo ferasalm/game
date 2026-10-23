@@ -77,6 +77,19 @@ func test_layout_sizes_come_from_the_ui_style() -> void:
 	box.free()
 
 
+func test_a_portrait_stands_on_the_bottom_edge() -> void:
+	var box: DialogueBox = _box()
+	box.play(&"workshop_first")
+	var portrait: TextureRect = box._layout.portrait
+	var texture: Texture2D = portrait.texture
+	var width: float = portrait.offset_right - portrait.offset_left
+	var height: float = portrait.offset_bottom - portrait.offset_top
+	check_eq(portrait.offset_bottom, 0.0, "anchored on the screen's bottom edge")
+	check(absf(height - minf(box._layout.portrait_max_h, width * texture.get_height() / texture.get_width())) < 0.5,
+		"the box takes the picture's shape, so no gap floats under the body")
+	box.free()
+
+
 func test_standins_are_discs_not_sprite_crops() -> void:
 	var style := ContentDB.get_def("dialogue_style", &"default") as DialogueStyleDef
 	var image: Image = Portraits.standin_image(&"zayd", &"happy")

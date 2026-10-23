@@ -289,7 +289,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/dialogue/view/dialogue_demo.gd`: Manual check: plays the workshop_first dialogue over a plain background (F6 in the editor)
 - `features/dialogue/view/dialogue_demo.tscn`: scene
 - `features/dialogue/view/dialogue_layout.gd`: Builds the dialogue box's controls in code (Hades II style; sizes from the UI style, laid out for 1920x1080): a big portrait at the left that slides in, an ornate glass text box at the bottom right with a frieze, a nameplate tab on the box's top edge (name in brass, epithet under it) and the button hints
-- `features/dialogue/view/portraits.gd`: Finds the portrait texture for (speaker, expression): res://assets/portraits/<speaker>_<expression>.png when it exists (loaded straight from the file, the "keep" importer needs no import step), else a stand-in disc with the expression's brows and mouth (StandinPortrait)
+- `features/dialogue/view/portraits.gd`: Finds the portrait texture for (speaker, expression): res://assets/portraits/<speaker>_<expression>.png when it exists (loaded straight from the file, the "keep" importer needs no import step), else the speaker's painted neutral (a painted face beats a stand-in), else a stand-in disc with the expression's brows and mouth (StandinPortrait)
 - `features/equipment/logic/equipment_options.gd`: Pure rules of the equipment screen: which slots a hero has, which OWNED items fit a slot (best rarity first), which items a hero wears now, the fighter built from a staged set of items, and writing a staged set into the saved equipment through Inventory.equip
 - `features/equipment/tests/test_equipment.gd`: The equipment screen: the pure options rules (owned items only, rarer first, per hero and slot), the screen listing only owned items in rarity colours, staging, Confirm writing every slot through Inventory.equip, back changing nothing, and the stat comparison
 - `features/equipment/view/equipment_data.gd`: What the equipment screen needs from ContentDB, read once: every equippable by id, the perks, the rarity order, and each hero's start loadout (heroes in loadout order)
@@ -587,6 +587,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_battle.gd`: Starts the prototype and, after a moment of walking, makes the patrol touch the player so the battle (camera swoop, effects) can be filmed with the movie writer
 - `tools/shot_camera_v2.gd`: Renders rooftop and camera_room scenes in follow and framed camera modes to C:/dev/game/inbox/camera_v2_*.png
 - `tools/shot_camera_v2.tscn`: scene
+- `tools/shot_dialogue.gd`: Renders one dialogue line over the rooftop to an inbox PNG, to judge the portrait and box layout by eye
+- `tools/shot_dialogue.tscn`: scene
 - `tools/shot_hud.gd`: Renders the battle HUD to PNG files (not headless; needs a window)
 - `tools/shot_models.gd`: Model gallery for renders (docs/design/characters-3d.md): the cast in a row on a floor under the painted look, each doing a state, close enough to judge the stand-ins
 - `tools/shot_scene.gd`: Plays a scene (or a Node script) for the movie writer (frames to a folder): the battle demo with its heroes on auto_play, or any scene

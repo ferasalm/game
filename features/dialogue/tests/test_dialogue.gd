@@ -84,6 +84,12 @@ func test_real_portraits_load_and_standins_remain() -> void:
 	check(texture != null and texture.get_height() > 0, "real portrait texture")
 	check(Portraits.standin_image(&"zayd", &"happy") != null, "the stand-in still builds for speakers without art")
 	check(Portraits.texture(&"nobody", &"happy") == null, "unknown speaker gives null")
+	# Playtest 2026-10-23: Abu Nabil showed the pixel stand-in although Feras made his portrait (neutral only).
+	check(Portraits.has_real(&"abu_nabil", &"neutral"), "Abu Nabil's owner portrait is shipped")
+	check(Portraits.painted_path(&"abu_nabil", &"angry").ends_with("abu_nabil_neutral.png"), "a missing expression uses the painted neutral")
+	Portraits.clear_cache()
+	var angry: Texture2D = Portraits.texture(&"abu_nabil", &"angry")
+	check(angry != null and angry.get_height() == 720, "Abu Nabil's angry line shows the painted portrait, not the stand-in")
 
 
 func _on_finished(dialogue_id: StringName) -> void:
