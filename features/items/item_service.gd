@@ -52,3 +52,16 @@ static func use(item_id: StringName, hero: StringName) -> Dictionary:
 		GameState.take(held)
 		GameState.set_vitals(vitals)
 	return result
+
+
+## Adds amount of item_id to GameState.bag respecting max_stack. Emits EventBus.item_obtained.
+static func add_to_bag(item_id: StringName, amount: int = 1) -> int:
+	var def := ContentDB.get_def("consumable", item_id) as ConsumableDef
+	if def == null or amount <= 0:
+		return 0
+	var held: Holdings = GameState.holdings()
+	var leftover: int = held.bag.add(item_id, amount, def.max_stack)
+	GameState.take(held)
+	EventBus.item_obtained.emit(item_id)
+	return amount - leftover
+

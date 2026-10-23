@@ -2,6 +2,8 @@ class_name DoorSpot
 extends InteractSpot
 ## Interactive door spot: shows enter prompt and logs transition on interact.
 
+signal entered(target: StringName)
+
 var place: PlaceDef
 
 
@@ -12,4 +14,5 @@ func _init(rules: ExploreRulesDef, player: Player, p: PlaceDef, prompt_y: float)
 
 
 func _interact() -> void:
-	print("Door entered: target=%s" % (place.target if place != null else &""))
+	entered.emit(place.target if place != null else &"")
+

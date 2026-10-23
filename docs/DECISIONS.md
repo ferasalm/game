@@ -46,7 +46,6 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-22 | Hook motif: pointed tip; party hooks curl left, enemy hooks curl right (docs/design/identity.md); logo letter chosen from renders later | Feras (recommended) | Feras
 - 2026-10-22 | Hilt stone slots: the Heirloom grandfather hilt has 3, other hilts fewer by rarity (Common 0); stones add passives or stats; Zayd's moves each get a distinct combat job (redesign by Game Designer, owner reviews) | Feras | Feras
 - 2026-10-22 | Hilt stones (docs/design/hilt-stones.md): heirloom slots open with the story 1 -> 2 -> 3, no resonance; stones bought at the bench and found; free removal | Feras | Feras
-- 2026-10-22 | Claude runs agy with skip-permissions only via tools/agy_task.sh (own worktree per task) | faster | Feras
 - 2026-10-22 | Hyper3D Rodin (Feras's paid Creator plan) makes his 3D models: Claude drives its MCP, Gen-2.5-Medium Quad, UE rig, cost named first; RodinBridge plugin git-ignored | Feras (recommended) | Feras
 - 2026-10-22 | Saves: 3 slots, picked when saving at the sabil; Load in the title and pause menus | Feras | Feras
 - 2026-10-22 | Tech moves animate the prosthetic arm: Zayd's cast clips are mirrored so his cyber (right) arm casts | Feras | Feras
@@ -68,3 +67,4 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-23 | Valve puzzles: walk up + interact per piece, ~5 min each (demo ~20-23 min); code in features/puzzles/ | audit | Feras
 - 2026-10-23 | Builders: up to 5 runs at once across all sessions (2 agy, 2 Cloudflare DeepSeek, 1 Inkling :free), each told the game-dev skills; Claude plans, orchestrates, reviews and owns quality; Claude subagents as needed at a fitting model and effort; one task per chat stays | save the Claude limit | Feras
 - 2026-10-23 | Claude delegates its own work to subagents: Haiku first (Haiku max effort beats Sonnet medium), Sonnet only when Haiku can't do it well; Claude reviews sensitive results | save the Claude limit without losing quality | Feras
+- 2026-10-23 | Efficiency: side sessions report only at milestones (merged, blocked, renders ready); every chat, managers too, hands off at 150k; HANDOFF has one section per track, edited only by its owner; briefs end with a gate-tested Checklist and a Haiku diff-vs-brief pass comes before Opus (design and renders only); tools/slots.sh counts builder slots and DeepSeek spend; Claude keeps hunting further savings | Feras | Feras

@@ -14,7 +14,8 @@ plays and makes art; Claude writes the code and runs every check itself. He is o
 3. Before changing code in an area: grep docs/MAP.md, then grep docs/ARCHITECTURE.md for that area's section.
 
 ## Spend little (why: docs/EFFICIENCY.md)
-- One task per chat, one model and effort per chat. Past ~150k tokens: finish the unit, /handoff, new chat.
+- One task per chat, one model and effort per chat. Past ~150k tokens (managers too): finish the unit, /handoff, new chat.
+- Side sessions end a turn only at a milestone (merged, blocked, renders ready); waiting runs in background watchers.
 - Grep, then read only the lines needed. Never read .godot/, *.import, *.uid, assets/ binaries (pictures only
   when judging art, small), or docs/research/gemini-blueprint-citations.md.
 - docs/research/gemini-blueprint.md is ~20k tokens: grep its headings, read one section at a time.

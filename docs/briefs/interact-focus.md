@@ -1,5 +1,5 @@
-# Brief: interact-focus (<= 60 lines; the level-1 blockout is merged into main; tayramana builds in parallel)
-You are in your own worktree on branch oc/interact-focus (made from main). Follow GEMINI.md,
+# Brief: interact-focus (<= 60 lines; the level-1 blockout is merged into main; tayramana is merged: the workbench is in its room)
+You are in your own worktree on branch oc/interact-focus (made from claude/level1-review). Follow GEMINI.md,
 including <review_misses>. Load the godot-gameplay-scripter skill (.agents/skills/) if one fits.
 
 ## Why
@@ -51,7 +51,7 @@ framing idea); features/world/player/player.gd (set_active); features/ui/view/ui
 `docs/DECISIONS.md`
 `HANDOFF.md`
 `*.import`
-Also leave the tests of those files alone. The workbench moves into the tayramana room (a parallel build):
+Also leave the tests of those files alone. The workbench now sits in the tayramana room (features/world/interior/):
 hook only the existing workbench open path, one line.
 
 ## Tests (features/world/tests/test_interact_focus.gd)

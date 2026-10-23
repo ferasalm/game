@@ -16,10 +16,22 @@ static func build(area: AreaDef, palette: PaletteDef, floor_y: float) -> Node3D:
 	for id: StringName in by_house:
 		var def := ContentDB.get_def("building", id) as BuildingDef
 		root.add_child(_multi(TowerHouse.mesh(def, palette), by_house[id]))
+	var props_root := build_props(area.props, palette, floor_y)
+	for child: Node in props_root.get_children():
+		props_root.remove_child(child)
+		root.add_child(child)
+	props_root.free()
+	return root
+
+
+## Builds props from a placement list into one node with MultiMeshes and Collisions.
+static func build_props(props: Array[Placement], palette: PaletteDef, floor_y: float = 0.0) -> Node3D:
+	var root := Node3D.new()
+	root.name = "Props"
 	var by_prop: Dictionary[StringName, Array] = {}
 	var body := StaticBody3D.new()
 	body.name = "Collision"
-	for p: Placement in area.props:
+	for p: Placement in props:
 		var def := ContentDB.get_def("prop", p.ref) as PropDef
 		if def == null:
 			continue
@@ -29,7 +41,9 @@ static func build(area: AreaDef, palette: PaletteDef, floor_y: float) -> Node3D:
 	for id: StringName in by_prop:
 		var def := ContentDB.get_def("prop", id) as PropDef
 		if not def.chest:
-			root.add_child(_multi(PropMesh.mesh(def, palette), by_prop[id]))
+			var multi_node := _multi(PropMesh.mesh(def, palette), by_prop[id])
+			multi_node.name = String(id)
+			root.add_child(multi_node)
 		if def.splash != null:
 			for at: Transform3D in by_prop[id]:
 				root.add_child(PropFx.splash(def.splash, at))
@@ -44,8 +58,13 @@ static func transform_of(p: Placement, floor_y: float) -> Transform3D:
 
 ## Real lights carried by the props (a lantern brings its light), moved to where each prop stands.
 static func light_specs(area: AreaDef, floor_y: float) -> Array[LightSpec]:
+	return light_specs_from_props(area.props, floor_y)
+
+
+## Real lights carried by a list of placements.
+static func light_specs_from_props(props: Array[Placement], floor_y: float = 0.0) -> Array[LightSpec]:
 	var out: Array[LightSpec] = []
-	for p: Placement in area.props:
+	for p: Placement in props:
 		var def := ContentDB.get_def("prop", p.ref) as PropDef
 		if def != null and def.light != null:
 			out.append(def.light.placed(_place(p, floor_y).origin, p.yaw))

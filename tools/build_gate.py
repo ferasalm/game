@@ -13,6 +13,9 @@ import re
 import subprocess
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from gate_checklist import brief_checklist
+
 NOISE = ("*.uid", "*.import", "docs/MAP.md")  # Godot's import and map.py write these during any check
 OK_NUMBERS = {"0", "1", "2", "0.0", "1.0", "0.5", "-1"}
 NUMBER = re.compile(r"(?<![\w.])-?\d+\.?\d*(?![\w.])")
@@ -20,7 +23,14 @@ READER_RANGE = re.compile(r"\.(number|integer|int_list|float_list)\(")  # a Def'
 
 
 def git(repo, *args):
-    return subprocess.run(["git", "-C", repo, *args], capture_output=True, text=True, check=True).stdout
+    import time
+    for i in range(3):
+        try:
+            return subprocess.run(["git", "-C", repo, *args], capture_output=True, text=True, check=True).stdout
+        except subprocess.CalledProcessError as e:
+            if i == 2 or (e.returncode and e.returncode in (1, 2)):
+                raise
+            time.sleep(0.05)
 
 
 def fail_lines(check_text):
@@ -87,12 +97,12 @@ def checklist(files, added, brief_text, inbox, fix_test_files):
     return items
 
 
-def verdict(check_text, files, hits):
+def verdict(check_text, files, hits, misses=()):
     if not real_files(files):
         return "NOWORK"
     if hits:
         return "BREACH"
-    if fail_lines(check_text) or "all checks passed" not in check_text:
+    if fail_lines(check_text) or "all checks passed" not in check_text or misses:
         return "FAIL"
     return "PASS"
 
@@ -117,11 +127,16 @@ def run_gate(a):
     check_text = open(a.check, encoding="utf-8", errors="replace").read() if os.path.isfile(a.check) else ""
     hits = breaches(real_files(files), forbidden_paths(brief))
     fix_tests = [f for f in changed(a.wt, f"{a.fix_from}...HEAD") if is_test(f)] if a.fix_from else []
-    word = verdict(check_text, files, hits)
+    misses, warns = brief_checklist(a.wt, brief)
+    word = verdict(check_text, files, hits, misses)
     for ln in fail_lines(check_text):
         print(ln)
     for f in hits:
         print(f"BREACH {f} (the brief's Do NOT edit list)")
+    for miss in misses:
+        print(f"CHECKLIST missing: {miss}")
+    for w in warns:
+        print(w)
     for status, item, detail in checklist(real_files(files), added_lines(a.wt, a.base), brief, a.inbox, fix_tests):
         print(f"{status:4} {item}: {detail}")
     print(f"VERDICT {word}")

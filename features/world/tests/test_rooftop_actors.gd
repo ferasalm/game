@@ -8,9 +8,9 @@ func _save_dir() -> String:
 	return SaveService.default_dir.path_join("rooftop")
 
 
-func _make() -> Rooftop:
+func _make(area_id: StringName = &"souq_rooftops_v4") -> Rooftop:
 	var rooftop := (load("res://features/world/rooftop/rooftop.tscn") as PackedScene).instantiate() as Rooftop
-	rooftop.area_id = &"souq_rooftops_v4"
+	rooftop.area_id = area_id
 	tree.root.add_child(rooftop)
 	return rooftop
 
@@ -33,7 +33,7 @@ func _end() -> void:
 
 func test_the_workshop_bench_is_a_mesh_and_the_seller_stands_behind_the_stall() -> void:
 	_begin()
-	var rooftop: Rooftop = _make()
+	var rooftop: Rooftop = _make(&"souq_rooftops")
 	var meshes: int = 0
 	for child: Node in rooftop.workshop.get_children():
 		meshes += 1 if child is MeshInstance3D else 0

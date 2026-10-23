@@ -1,5 +1,5 @@
 # Brief: souq-place (<= 60 lines; main holds the level-1 blockout; souq-props-2 is reviewed, unmerged)
-You are in your own worktree on branch oc/souq-place (made from main). Follow GEMINI.md and AGENTS.md, including
+You are in your own worktree on branch gemini/souq-place-2 (made from claude/level1-review: main + tayramana + camera-wall). Follow GEMINI.md, including
 <review_misses>. Load the level-designer skill.
 
 ## Why
@@ -45,4 +45,4 @@ within 0.05 m of the same wall and its text is Musnad only; every crate or barre
 `bash tools/check.sh` raw last 15 lines with 0 failed; renders from the play camera (a .tscn wrapper like
 tools/shot_level1.tscn, non-headless, 960x540): C:/dev/game/inbox/souq_r2_sabil.png (party 3 m in front of the sabil)
 and C:/dev/game/inbox/souq_r2_stall.png (party at the stall, Abu Nabil in frame); small WIP commits; final message ends
-with `Built-by: <model> (opencode)`.
+with `Built-by: Gemini 3.8 Flash (agy)`.
