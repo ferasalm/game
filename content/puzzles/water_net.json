@@ -16,7 +16,7 @@
         {"id": "s2", "kind": "spout", "to": ["canyon", "grate"], "start": 1, "spill_unless_shut": "g3", "at": [6.8, 0.05, 2.5]},
         {"id": "grate", "kind": "outlet", "reaction": "return", "at": [5.5, 0.05, -4.0]},
         {"id": "dock", "kind": "outlet", "reaction": "dock", "at": [3.5, 0.05, -4.0]},
-        {"id": "canyon", "kind": "outlet", "reaction": "goal", "at": [8.5, -3.0, 2.5]}
+        {"id": "canyon", "kind": "outlet", "reaction": "goal", "at": [7.8, -1.0, 2.5]}
       ],
       "hint_secs": [120, 240],
       "hint_keys": ["PUZZLE_WATER_HINT_1", "PUZZLE_WATER_HINT_2"]
