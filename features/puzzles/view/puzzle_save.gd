@@ -14,6 +14,14 @@ static func has_water() -> bool:
 	return GameState.flags.get(FLAG_WATER, false)
 
 
+static func apply(board: PuzzleBoard) -> void:
+	if has_lock():
+		board.light_done = true
+		board.light_state = solved_light(board.light_def)
+	if has_water():
+		board.water_state = solved_water(board.water_def)
+
+
 static func solved_light(def: LightLockDef) -> LightLockState:
 	var state: LightLockState = LightLockState.start(def)
 	state.shutters[&"yellow"] = true

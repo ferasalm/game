@@ -65,6 +65,13 @@ func canyon_gauge() -> float:
 	return _outlets.canyon_gauge()
 
 
+func canyon_at() -> Vector3:
+	for node: WaterNodeDef in _def.nodes:
+		if node.kind == &"outlet" and node.reaction == &"goal":
+			return node.at
+	return Vector3.ZERO
+
+
 func grate_share() -> float:
 	return _outlets.grate_share()
 

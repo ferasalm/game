@@ -1,7 +1,6 @@
 class_name PuzzleBoard
 extends Node3D
-## purpose: One self-contained grey-box valve-puzzle scene: builds the yard, holds both puzzle states, moves a
-## stand-in player and redraws every view.
+## purpose: Holds both valve puzzle states and their views, in the grey-box yard or placed on the rooftop level.
 
 const FLAG_LOCK: StringName = &"puzzle_valve_lock"
 const FLAG_WATER: StringName = &"puzzle_valve_water"
@@ -17,13 +16,17 @@ var player: PuzzlePlayer
 var marker: MeshInstance3D
 var camera: Camera3D
 var hint_label: Label
+var level_mode: bool = false
+var level_player: Player
+var level_spots: Array[PuzzlePieceSpot] = []
 
 var _built: bool = false
 var _hints: PuzzleHintsView
-var _light_done: bool = false
+var light_done: bool = false
 
 
-func _init() -> void:
+func _init(in_level: bool = false) -> void:
+	level_mode = in_level
 	_build()
 
 
@@ -34,16 +37,18 @@ func redraw() -> void:
 	light_view.sync(light_state)
 	water_view.sync(water_state, light_open)
 	if light_open:
-		_light_done = true
+		light_done = true
 		GameState.flags[FLAG_LOCK] = true
 	if WaterNet.solved(water_def, water_state):
 		GameState.flags[FLAG_WATER] = true
-	_update_marker()
+	PuzzlePieces.place_marker(marker, nearest_piece(_actor_position()), light_def, water_def, yard)
 
 
 func act(piece_id: StringName) -> bool:
 	if not _built:
 		return false
+	var lock_before: bool = light_solved()
+	var water_before: bool = water_solved()
 	if light_def.get_window(piece_id) != null:
 		LightLock.toggle_shutter(light_state, piece_id)
 	elif light_def.get_mirror(piece_id) != null:
@@ -62,27 +67,36 @@ func act(piece_id: StringName) -> bool:
 		else:
 			return false
 	redraw()
+	_say_outcome(piece_id, lock_before, water_before)
 	return true
 
 
 func interact() -> void:
-	if _built:
-		var id: StringName = nearest_piece(player.position)
-		if id != &"":
-			act(id)
+	if not _built:
+		return
+	var id: StringName = nearest_piece(_actor_position())
+	if id != &"":
+		act(id)
+	else:
+		say(PuzzleFeedback.idle_key(self))
+
+
+func can_touch(piece_id: StringName) -> bool:
+	return _built and (not PuzzlePieces.is_water(water_def, piece_id) or light_solved())
 
 
 func nearest_piece(pos: Vector3) -> StringName:
 	if not _built:
 		return &""
+	var local: Vector3 = to_local(pos) if is_inside_tree() else pos
 	var best: StringName = &""
 	var best_dist: float = yard.interact_range
-	var unlocked: bool = _light_done or LightLock.solved(light_def, light_state)
+	var unlocked: bool = light_done or LightLock.solved(light_def, light_state)
 	for id: StringName in PuzzlePieces.ids(light_def, water_def):
 		if not unlocked and PuzzlePieces.is_water(water_def, id):
 			continue
 		var at: Vector3 = PuzzlePieces.position(light_def, water_def, id)
-		var dist: float = Vector2(pos.x - at.x, pos.z - at.z).length()
+		var dist: float = Vector2(local.x - at.x, local.z - at.z).length()
 		if dist <= yard.interact_range and (best == &"" or dist < best_dist):
 			best = id
 			best_dist = dist
@@ -90,20 +104,30 @@ func nearest_piece(pos: Vector3) -> StringName:
 
 
 func move_player(direction: Vector3, delta: float) -> void:
-	if _built:
+	if _built and player != null:
 		player.move(direction, delta)
-		_update_marker()
+		PuzzlePieces.place_marker(marker, nearest_piece(_actor_position()), light_def, water_def, yard)
 
 
 func advance(delta: float) -> void:
 	if _hints != null:
-		_hints.advance(delta, _light_done, WaterNet.solved(water_def, water_state))
+		_hints.advance(delta, light_done, WaterNet.solved(water_def, water_state))
 
 
 func hints_due() -> Array[StringName]:
 	if _hints == null:
 		return []
-	return _hints.due(_light_done, WaterNet.solved(water_def, water_state))
+	return _hints.due(light_done, WaterNet.solved(water_def, water_state))
+
+
+func check_return() -> void:
+	if _hints != null and water_view != null:
+		_hints.check_return(light_done, water_view.grate_share())
+
+
+func say(key: StringName) -> void:
+	if _hints != null and key != &"":
+		_hints.queue_hint(key)
 
 
 func light_solved() -> bool:
@@ -126,6 +150,12 @@ func canyon_gauge() -> float:
 	return water_view.canyon_gauge() if _built else 0.0
 
 
+func canyon_gauge_top() -> Vector3:
+	if not _built:
+		return global_position
+	return to_global(water_view.canyon_at() + Vector3(0.0, yard.gauge_height, 0.0))
+
+
 func edge_share(from: StringName, to: StringName) -> float:
 	return water_view.edge_share(from, to) if _built else 0.0
 
@@ -134,66 +164,27 @@ func water_strip_visible(from: StringName, to: StringName) -> bool:
 	return water_view.water_strip_visible(from, to) if _built else false
 
 
+func setup_level(valve_world: Vector3, rules: ExploreRulesDef, actor: Player, parent: Node3D) -> void:
+	level_player = actor
+	PuzzleLevel.place(self, valve_world, rules, actor, parent)
+
+
 func _build() -> void:
 	if _built:
 		return
 	_built = true
-	yard = ContentDB.get_def("puzzle_yard", &"yard") as PuzzleYardDef
-	light_def = ContentDB.get_def("light_lock", &"valve_lock") as LightLockDef
-	water_def = ContentDB.get_def("water_net", &"valve_water") as WaterNetDef
-	if yard == null or light_def == null or water_def == null:
-		push_error("PuzzleBoard: missing puzzle content")
+	if not PuzzleSceneBuilder.build_board(self):
 		_built = false
 		return
-	light_state = LightLockState.start(light_def)
-	water_state = WaterNetState.start(water_def)
-	_apply_saved()
-	PuzzleSceneBuilder.build_yard(self, yard)
-	light_view = PuzzleLightView.new()
-	add_child(light_view)
-	light_view.setup(light_def, yard)
-	water_view = PuzzleWaterView.new()
-	add_child(water_view)
-	water_view.setup(water_def, yard)
-	player = PuzzleSceneBuilder.build_player(self, yard)
-	marker = PuzzleSceneBuilder.build_marker(self, yard)
-	camera = PuzzleSceneBuilder.build_camera(self, yard)
-	_hints = PuzzleSceneBuilder.build_hints(self, yard, light_def, water_def)
-	hint_label = _hints.label
-	redraw()
+	var drive := PuzzleBoardDrive.new(self)
+	add_child(drive)
 
 
-func _apply_saved() -> void:
-	if PuzzleSave.has_lock():
-		_light_done = true
-		light_state = PuzzleSave.solved_light(light_def)
-	if PuzzleSave.has_water():
-		water_state = PuzzleSave.solved_water(water_def)
+func _actor_position() -> Vector3:
+	if level_player != null:
+		return level_player.global_position if level_player.is_inside_tree() else level_player.position
+	return player.position if player != null else Vector3.ZERO
 
 
-func _update_marker() -> void:
-	PuzzlePieces.place_marker(marker, nearest_piece(player.position), light_def, water_def, yard)
-
-
-func _physics_process(delta: float) -> void:
-	if player == null:
-		return
-	var input: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	if not input.is_zero_approx():
-		move_player(Vector3(input.x, 0.0, input.y), delta)
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if player != null and event.is_action_pressed("interact"):
-		interact()
-		get_viewport().set_input_as_handled()
-
-
-func _process(delta: float) -> void:
-	if _hints == null:
-		return
-	advance(delta)
-	for key: StringName in hints_due():
-		_hints.queue_hint(key)
-	_hints.check_return(_light_done, water_view.grate_share())
-	_hints.update_label(delta)
+func _say_outcome(piece_id: StringName, lock_before: bool, water_before: bool) -> void:
+	say(PuzzleFeedback.outcome(self, piece_id, lock_before, water_before))

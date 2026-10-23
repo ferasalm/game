@@ -2,6 +2,7 @@ class_name PuzzleYardDef
 extends Def
 ## purpose: Defines the grey-box puzzle yard: floor, walls, ledge, tower, camera, colours and view sizes.
 
+var place_yaw: float = 0.0
 var floor_size: Vector2 = Vector2(14.0, 10.0)
 var floor_color: Color = Color.MAGENTA
 var back_wall_z: float = -5.0
@@ -68,6 +69,7 @@ var colors: Dictionary[StringName, Color] = {}
 
 func read(r: DefReader) -> void:
 	id = r.id()
+	place_yaw = r.number("place_yaw", -360.0, 360.0, 0.0, false)
 	_read_build(r)
 	_read_camera(r)
 	_read_pieces(r)

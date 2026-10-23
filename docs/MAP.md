@@ -439,19 +439,23 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/puzzles/logic/water_net_state.gd`: purpose: Runtime state of a water routing network (gate open/freed states and spout directions)
 - `features/puzzles/tests/test_light_lock.gd`: purpose: Tests qamariya light lock puzzle logic, state, beam tracing, routes, loops, and def validation
 - `features/puzzles/tests/test_puzzle_board.gd`: purpose: Tests the grey-box puzzle board: piece moves, nearest piece, saved solves, beams, lens colour, water strips, the canyon gauge and hint timing
+- `features/puzzles/tests/test_puzzle_place.gd`: purpose: Tests the valve puzzles placed on the level: order, saved flags, roof cells, party spawn and the R5 view
 - `features/puzzles/tests/test_water_net.gd`: purpose: Tests water routing network logic, unjamming, spout routing, conservation, def errors, and hints
 - `features/puzzles/view/beam_builder.gd`: purpose: Draws one thin additive box per traced light segment, including the open-ended mirror ray
 - `features/puzzles/view/lens_view.gd`: purpose: Draws the lens sphere and the seal torus, with the wrong-mix flicker and the solved seal turn
 - `features/puzzles/view/light_view.gd`: purpose: Draws qamariya windows, shutters, mirrors and delegates the lens and light beams to their builders
 - `features/puzzles/view/outlet_view.gd`: purpose: Draws the return grate, the drone dock and the canyon gauge, reacting to their water shares
-- `features/puzzles/view/puzzle_board.gd`: purpose: One self-contained grey-box valve-puzzle scene: builds the yard, holds both puzzle states, moves a stand-in player and redraws every view
+- `features/puzzles/view/puzzle_board.gd`: purpose: Holds both valve puzzle states and their views, in the grey-box yard or placed on the rooftop level
+- `features/puzzles/view/puzzle_board_drive.gd`: purpose: Ticks the board's hints and, for the grey-box board only, walks the stand-in player and reads interact
+- `features/puzzles/view/puzzle_feedback.gd`: purpose: Picks the localization key for the board's spoken feedback after a move or at the valve
 - `features/puzzles/view/puzzle_geometry.gd`: purpose: Grey-box geometry helpers shared by the puzzle yard: oriented boxes, edge boxes and beam segments
 - `features/puzzles/view/puzzle_hints_view.gd`: purpose: Tracks each puzzle's stall time and shows every due hint once for a few seconds in a bottom label
+- `features/puzzles/view/puzzle_level.gd`: purpose: Places a level-mode puzzle board on the rooftops from the valve place and builds one spot per piece
 - `features/puzzles/view/puzzle_materials.gd`: purpose: Shared materials for the grey-box puzzle yard (stone, emissive, additive beams, flowing water)
 - `features/puzzles/view/puzzle_pieces.gd`: purpose: Lists the interactive pieces of both puzzles and returns their world positions
 - `features/puzzles/view/puzzle_player.gd`: purpose: Stand-in player capsule that walks at a fixed speed on the yard floor and the R4 ledge
 - `features/puzzles/view/puzzle_save.gd`: purpose: Reads the two puzzle save flags and builds the canonical solved states they stand for
-- `features/puzzles/view/puzzle_scene_builder.gd`: purpose: Builds the fixed parts of the puzzle yard scene: camera, light, environment, player, marker and hints
+- `features/puzzles/view/puzzle_scene_builder.gd`: purpose: Builds the fixed parts of the puzzle scene: content, views, hints, and for the grey-box yard its floor, camera, stand-in player and marker
 - `features/puzzles/view/puzzle_yard.tscn`: scene
 - `features/puzzles/view/shaders/water_strip.gdshader`
 - `features/puzzles/view/water_view.gd`: purpose: Draws stone channels, flowing water strips, gates, spouts, outlets and the canyon gauge
@@ -568,11 +572,12 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/interact/door_spot.gd`: Interactive door spot: shows enter prompt and logs transition on interact
 - `features/world/interact/interact_spot.gd`: Something the player can press interact next to: a floating prompt (a localization key) that shows while he is within the interact radius, and a virtual _interact() that runs on the key press
 - `features/world/interact/pill_spot.gd`: An interact spot whose prompt is the UI's glass pill ("[E] Verb", Ui.interaction_prompt) instead of a 3D label: the pill follows the spot through the camera and shows while the player is in range
+- `features/world/interact/puzzle_piece_spot.gd`: purpose: Interact spot on one valve-puzzle piece; routes the key press to the level's puzzle board
 - `features/world/interact/sabil_drink.gd`: What drinking at the sabil does to the game: the whole party is refilled (no carried vitals = full), the cleared patrols are forgotten (they return), the save point is the sabil and the game is written to a slot
 - `features/world/interact/sabil_spot.gd`: The sabil fountain: interact opens the "Drink to rest?" screen
 - `features/world/interact/stall_spot.gd`: The herb stall: stand at the counter and press interact to open the shop screen (Screens id &"shop")
 - `features/world/interact/talk_spot.gd`: An interact spot for talking to an NPC (e.g
-- `features/world/interact/valve_spot.gd`: Interactive valve spot: shows turn prompt and triggers on interact
+- `features/world/interact/valve_spot.gd`: Interactive valve spot: shows turn prompt and hands the key press to the valve's puzzle board
 - `features/world/interior/camera_room.gd`: Grey-box interior test room demonstrating FramedShots and FollowCameraRig in framed indoor mode
 - `features/world/interior/camera_room.tscn`: scene
 - `features/world/interior/room_builder.gd`: purpose: Builds room view: shell geometry, painted qamariya arches, and props via PropBuilder

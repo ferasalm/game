@@ -15,6 +15,7 @@ var bystander_places: Array[PlaceDef] = []
 var crossings: Array[CrossingSpot] = []
 var doors: Array[DoorSpot] = []
 var valves: Array[ValveSpot] = []
+var puzzle: PuzzleBoard
 
 
 static func build(parent: Node3D, area: AreaDef, rules: ExploreRulesDef, floor_y: float) -> AreaActors:
@@ -54,6 +55,8 @@ func switchables() -> Array[Node]:
 	out.append_array(crossings)
 	out.append_array(doors)
 	out.append_array(valves)
+	if puzzle != null:
+		out.append_array(puzzle.level_spots)
 	if sabil != null:
 		out.append(sabil)
 	return out
@@ -84,6 +87,11 @@ func _add_places(parent: Node3D, area: AreaDef, rules: ExploreRulesDef, floor_y:
 		valve.position = _at(area, place, floor_y)
 		valves.append(valve)
 		parent.add_child(valve)
+		if place.id == &"valve_water":
+			puzzle = PuzzleBoard.new(true)
+			parent.add_child(puzzle)
+			puzzle.setup_level(valve.position, rules, player, parent)
+			valve.set_puzzle(puzzle)
 
 
 func _add_npc(parent: Node3D, area: AreaDef, rules: ExploreRulesDef, floor_y: float, place: PlaceDef,

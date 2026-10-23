@@ -1,8 +1,9 @@
 class_name ValveSpot
 extends InteractSpot
-## Interactive valve spot: shows turn prompt and triggers on interact.
+## Interactive valve spot: shows turn prompt and hands the key press to the valve's puzzle board.
 
 var place: PlaceDef
+var board: PuzzleBoard
 
 
 func _init(rules: ExploreRulesDef, player: Player, p: PlaceDef, prompt_y: float) -> void:
@@ -11,5 +12,10 @@ func _init(rules: ExploreRulesDef, player: Player, p: PlaceDef, prompt_y: float)
 	place = p
 
 
+func set_puzzle(p_board: PuzzleBoard) -> void:
+	board = p_board
+
+
 func _interact() -> void:
-	print("Valve turned: %s" % (place.id if place != null else &""))
+	if board != null:
+		board.interact()

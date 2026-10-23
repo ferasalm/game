@@ -3,6 +3,7 @@
   "items": [
     {
       "id": "yard",
+      "place_yaw": 0.0,
       "floor": {"size": [14, 10], "color": "#5a524a"},
       "back_wall": {"z": -5, "height": 6, "thickness": 0.2, "color": "#6b6158"},
       "parapet": {"height": 0.6, "thickness": 0.2, "color": "#6b6158"},
