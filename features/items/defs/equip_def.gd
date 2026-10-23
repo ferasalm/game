@@ -8,6 +8,8 @@ var desc_key: String = ""
 var rarity: StringName = &""
 ## A PerkDef id, or empty.
 var perk: StringName = &""
+## Stat adds per upgrade level (e.g. {"attack": 2} or {"max_hp": 15, "defense": 1}).
+var upgrade: Dictionary[StringName, int] = {}
 
 
 func read_gear(r: DefReader) -> void:
@@ -16,6 +18,12 @@ func read_gear(r: DefReader) -> void:
 	desc_key = r.text("desc_key")
 	rarity = r.id("rarity")
 	perk = StringName(r.text("perk", "", false))
+	upgrade.clear()
+	if r.has("upgrade"):
+		var u: DefReader = r.child("upgrade")
+		for stat_name: String in ["max_hp", "defense", "attack", "agility", "sp", "hp", "knockback"]:
+			if u.has(stat_name):
+				upgrade[StringName(stat_name)] = u.integer(stat_name, -999, 9999, 0, false)
 
 
 ## The references every piece of gear has: its rarity and, when set, its perk.

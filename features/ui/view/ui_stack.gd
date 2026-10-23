@@ -33,7 +33,7 @@ func _ready() -> void:
 	register(ShopScreen.ID, func() -> Control: return ShopScreen.new())
 	register(SABIL_ID, func() -> Control: return SabilScreen.new())
 	register(DEFEAT_ID, func() -> Control: return DefeatScreen.new())
-	register(WORKSHOP_ID, func() -> Control: return EquipmentMenu.new())
+	register(WORKSHOP_ID, func() -> Control: return WorkshopMenu.new())
 	register(TITLE_ID, func() -> Control: return UiScreen.new())
 	register(SLOT_PICKER_ID, func() -> Control: return SlotPickerScreen.new())
 	Router.flow_changed.connect(_on_flow_changed)

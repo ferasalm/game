@@ -1,0 +1,42 @@
+{
+  "kind": "recipe",
+  "items": [
+    {
+      "id": "pink_herb_2",
+      "output": "pink_herb",
+      "count": 2,
+      "riyal": 10,
+      "materials": {
+        "scrap_copper": 1
+      }
+    },
+    {
+      "id": "yellow_herb_1",
+      "output": "yellow_herb",
+      "count": 1,
+      "riyal": 20,
+      "materials": {
+        "drone_coil": 1
+      }
+    },
+    {
+      "id": "sulaimani_1",
+      "output": "sulaimani",
+      "count": 1,
+      "riyal": 30,
+      "materials": {
+        "scrap_copper": 3
+      }
+    },
+    {
+      "id": "fayruz_1",
+      "output": "fayruz",
+      "count": 1,
+      "riyal": 40,
+      "materials": {
+        "drone_coil": 2,
+        "salt_crystal": 1
+      }
+    }
+  ]
+}

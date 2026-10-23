@@ -47,6 +47,23 @@ func _ready() -> void:
 			_screen = EquipmentMenu.new()
 			_sub_vp.add_child(_screen)
 			_screen.open()
+		"workshop_upgrade", "workshop_gemstones", "workshop_crafting":
+			GameState.start_new()
+			GameState.money = 8450
+			GameState.materials[&"scrap_copper"] = 4
+			GameState.materials[&"drone_coil"] = 2
+			GameState.materials[&"salt_crystal"] = 1
+			for item_id: StringName in [&"swift_hilt", &"keen_blade", &"anvil_hilt", &"broad_blade", &"concession_plate", &"mesh_abaya", &"sulaimani", &"fayruz", &"jaz_black"]:
+				Inventory.add(GameState.inventory, item_id)
+			_screen = WorkshopMenu.new()
+			_sub_vp.add_child(_screen)
+			_screen.open()
+			var tab_idx: int = WorkshopTabsBar.Tab.UPGRADE
+			if _menu_kind == "workshop_gemstones":
+				tab_idx = WorkshopTabsBar.Tab.GEMSTONES
+			elif _menu_kind == "workshop_crafting":
+				tab_idx = WorkshopTabsBar.Tab.CRAFTING
+			(_screen as WorkshopMenu)._tabs.select_tab(tab_idx)
 
 
 func _process(_delta: float) -> void:

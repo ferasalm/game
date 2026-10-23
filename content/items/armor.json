@@ -10,7 +10,8 @@
       "max_hp": 20,
       "defense": 2,
       "agility": 0,
-      "weight": 0.5
+      "weight": 0.5,
+      "upgrade": {"max_hp": 15, "defense": 1}
     },
     {
       "id": "rig_shawl",
@@ -21,7 +22,8 @@
       "max_hp": 12,
       "defense": 1,
       "agility": 0,
-      "weight": 0.3
+      "weight": 0.3,
+      "upgrade": {"max_hp": 15, "defense": 1}
     },
     {
       "id": "souq_leather",
@@ -32,7 +34,8 @@
       "max_hp": 40,
       "defense": 4,
       "agility": 0,
-      "weight": 1.5
+      "weight": 1.5,
+      "upgrade": {"max_hp": 15, "defense": 1}
     },
     {
       "id": "mesh_abaya",
@@ -43,7 +46,8 @@
       "max_hp": 30,
       "defense": 3,
       "agility": 1,
-      "weight": 0.5
+      "weight": 0.5,
+      "upgrade": {"max_hp": 15, "defense": 1}
     },
     {
       "id": "concession_plate",
@@ -55,7 +59,8 @@
       "max_hp": 70,
       "defense": 7,
       "agility": -2,
-      "weight": 3.0
+      "weight": 3.0,
+      "upgrade": {"max_hp": 15, "defense": 1}
     }
   ]
 }

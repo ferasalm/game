@@ -60,6 +60,9 @@ const KINDS: Dictionary = {
 	"stone": preload("res://features/jambiyah/defs/stone_def.gd"),
 	"heirloom": preload("res://features/jambiyah/defs/heirloom_def.gd"),
 	"backdrop": preload("res://features/ui/defs/backdrop_def.gd"),
+	"material": preload("res://features/items/defs/material_def.gd"),
+	"upgrade_costs": preload("res://features/workshop/defs/upgrade_costs_def.gd"),
+	"recipe": preload("res://features/workshop/defs/recipe_def.gd"),
 }
 ## Equippable kinds share one id namespace; get_def("item", id) finds any of them.
 const ITEM_KINDS: Array[String] = ["hilt", "blade", "prosthetic", "armor"]

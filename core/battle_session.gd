@@ -90,8 +90,21 @@ func _win(outcome: BattleOutcome) -> void:
 	outcome.items = reward.items
 	outcome.consumables = reward.consumables.duplicate()
 	outcome.rewarded = true
+	_award_battle_materials(outcome.encounter_id, was_cleared)
 	if not was_cleared:
 		GameState.cleared_patrols.append(outcome.encounter_id)
+
+
+func _award_battle_materials(encounter_id: StringName, was_cleared: bool) -> void:
+	var enc := ContentDB.get_def("encounter", encounter_id) as EncounterDef
+	if enc == null or enc.materials.is_empty():
+		return
+	var rules := ContentDB.get_def("economy_rules", &"default") as EconomyRulesDef
+	var share: float = rules.repeat_payout if (was_cleared and rules != null) else 1.0
+	for mat_id: StringName in enc.materials:
+		var count: int = floori(float(enc.materials[mat_id]) * share)
+		if count > 0:
+			Materials.add(GameState.materials, mat_id, count)
 
 
 func _award_battle_xp(outcome: BattleOutcome, was_cleared: bool) -> void:
