@@ -7,6 +7,13 @@ import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import build_gate as bg  # noqa: E402
+from test_gate_checklist import (  # noqa: E402, F401
+    test_checklist_forms_pass,
+    test_checklist_forms_miss,
+    test_nowork_wins_over_checklist_miss,
+    test_no_checklist_warn,
+    test_unknown_checklist_warn,
+)
 
 PASSED = "ok   docs\nok   tests\n     tests: 700 passed\nall checks passed\n"
 BRIEF = "# Brief: x\n## What to build\n1. `features/ui/` is fine to read\n## Do NOT edit\n`content/world/areas.json`\n" \
@@ -14,8 +21,15 @@ BRIEF = "# Brief: x\n## What to build\n1. `features/ui/` is fine to read\n## Do 
 
 
 def sh(repo, *args):
-    subprocess.run(["git", "-C", repo, "-c", "user.name=t", "-c", "user.email=t@t", *args], check=True,
-                   capture_output=True)
+    import time
+    for i in range(3):
+        try:
+            return subprocess.run(["git", "-C", repo, "-c", "user.name=t", "-c", "user.email=t@t", *args],
+                                  check=True, capture_output=True)
+        except subprocess.CalledProcessError:
+            if i == 2:
+                raise
+            time.sleep(0.1)
 
 
 def write(repo, path, text):
