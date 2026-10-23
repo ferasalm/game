@@ -67,8 +67,13 @@ prompts: only this public repo goes into a brief, never keys or the owner's priv
 2026-10-23 (a 'pong' run); 'Free usage limit reached' = wait for the reset. OpenRouter `:free` models need the owner's key,
 entered by him with `XDG_DATA_HOME=~/.local/share/oc-cli opencode auth login` (pass the model as oc_task.sh's 4th arg). The
 OpenRouter MCP connector (send-message) answers one-shot questions; slugs end in `:free` only (the account holds paid credit,
-never spend it); poolside/laguna-s-2.1:free answered a GDScript question correctly 2026-10-23. At most 3 runs at once
-across both builders. Pick: agy for Godot code with tests; opencode for research, docs, content and second opinions.
+never spend it); poolside/laguna-s-2.1:free answered a GDScript question correctly 2026-10-23. At most 5 runs at once
+across all sessions (DECISIONS 2026-10-23): 2 agy, 2 Cloudflare DeepSeek (item 6), 1 Inkling :free; count with
+`git worktree list` (game-wt/*) before a launch. Pick: agy for Godot code with tests and UI with renders; DeepSeek
+for code and scenes when agy is full; Inkling for docs, content, research and second opinions. Every brief names
+one game-dev skill (.agents/skills/: godot-gameplay-scripter, godot-shader-developer, technical-artist,
+level-designer, game-designer, narrative-designer, game-audio-engineer, blender-addon-engineer); build_pipeline
+pastes it into the prompt and opencode may hand parts to its skill subagents (AGENTS.md).
 1. Brief from docs/briefs/TEMPLATE.md (<= 60 lines, a do-not-edit list so parallel runs never share files).
 2. From the main checkout, in the background: `bash <session worktree>/tools/build_pipeline.sh <oc|agy> <task>
    <brief> <base>` (build, check.sh, one free fix pass, check, tools/build_gate.py -> ../game-wt/<task>.result).
@@ -81,7 +86,7 @@ across both builders. Pick: agy for Godot code with tests; opencode for research
 5. agy runs are processes of the chat that started them: a chat that ends early leaves them running only while its
    session stays open. The next chat checks `git -C ../game-wt/<task> log` and the log; a dead run is restarted with
    the same command (the worktree and its commits are kept).
-6. Cloudflare DeepSeek (Workers Paid; model test 16/16 + right cause 2026-10-23), when agy and the :free models are out of quota or a brief suits opencode: `bash tools/cf_build.sh <task> <brief>
+6. Cloudflare DeepSeek (Workers Paid; model test 16/16 + right cause 2026-10-23), 2 of the 5 slots: `bash tools/cf_build.sh <task> <brief>
    <base>` (Cloudflare Workers AI `@cf/deepseek-ai/deepseek-v4.1-flash-1017` via opencode; $0.30/M input, $0.006/M
    cached input, $1.20/M output; 10,000 free neurons a day; up to $10 usage over the free neurons, Feras 2026-10-23). Needs Workers
    Paid or prepaid AI Gateway credits. Spend: Cloudflare dashboard -> AI -> Workers AI; note it in HANDOFF after each run.

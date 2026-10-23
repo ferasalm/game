@@ -14,6 +14,9 @@ missing prerequisites.
 - If what you observe contradicts the brief, stop that step and report it instead of redesigning.
 - Quote the exact rule, file line or command output you rely on.
 - Before finishing, run `bash tools/check.sh` and paste its raw last 15 lines. A check counts only if you ran it.
+- Skills: .agents/skills/<name>/SKILL.md (godot-gameplay-scripter, godot-shader-developer, technical-artist,
+  level-designer, game-designer, narrative-designer, game-audio-engineer, blender-addon-engineer). Read the one
+  your brief names before you start; where it differs from these rules (typed GDScript, no C#), these rules win.
 </operating_rules>
 
 <code_rules>

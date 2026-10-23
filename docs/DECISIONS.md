@@ -46,9 +46,7 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-22 | Hook motif: pointed tip; party hooks curl left, enemy hooks curl right (docs/design/identity.md); logo letter chosen from renders later | Feras (recommended) | Feras
 - 2026-10-22 | Hilt stone slots: the Heirloom grandfather hilt has 3, other hilts fewer by rarity (Common 0); stones add passives or stats; Zayd's moves each get a distinct combat job (redesign by Game Designer, owner reviews) | Feras | Feras
 - 2026-10-22 | Hilt stones (docs/design/hilt-stones.md): heirloom slots open with the story 1 -> 2 -> 3, no resonance; stones bought at the bench and found; free removal | Feras | Feras
-- 2026-10-22 | One task per chat, done directly; subagents only for big isolated builds or read-only audits, at most 2 at once | 7 parallel agents used 83% of the 5-h window in under an hour | Feras
 - 2026-10-22 | Claude runs agy with skip-permissions only via tools/agy_task.sh (own worktree per task) | faster | Feras
-- 2026-10-22 | Gemini (agy) builds whenever a task can be briefed exactly (code, content, tests, docs); Claude briefs, reviews renders and diffs, merges; Claude agents only where agy can't (art judgment loops, Opus review) | save the Claude limit | Feras
 - 2026-10-22 | Hyper3D Rodin (Feras's paid Creator plan) makes his 3D models: Claude drives its MCP, Gen-2.5-Medium Quad, UE rig, cost named first; RodinBridge plugin git-ignored | Feras (recommended) | Feras
 - 2026-10-22 | Saves: 3 slots, picked when saving at the sabil; Load in the title and pause menus | Feras | Feras
 - 2026-10-22 | Tech moves animate the prosthetic arm: Zayd's cast clips are mirrored so his cyber (right) arm casts | Feras | Feras
@@ -68,3 +66,4 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-23 | Demo = level 1; slice.md parked until after it; workshop = the tayramana bench; Abu Nabil on R2, no patrols | audit | Feras
 - 2026-10-23 | Wall camera rises toward isometric (the built min-2 m arm is fixed); X4 leap two-way | audit | Feras
 - 2026-10-23 | Valve puzzles: walk up + interact per piece, ~5 min each (demo ~20-23 min); code in features/puzzles/ | audit | Feras
+- 2026-10-23 | Builders: up to 5 runs at once across all sessions (2 agy, 2 Cloudflare DeepSeek, 1 Inkling :free), each told the game-dev skills; Claude plans, orchestrates, reviews and owns quality; Claude subagents as needed at a fitting model and effort; one task per chat stays | save the Claude limit | Feras

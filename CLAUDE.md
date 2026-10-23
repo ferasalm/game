@@ -19,8 +19,9 @@ plays and makes art; Claude writes the code and runs every check itself. He is o
   when judging art, small), or docs/research/gemini-blueprint-citations.md.
 - docs/research/gemini-blueprint.md is ~20k tokens: grep its headings, read one section at a time.
 - Edit, don't rewrite; no recaps; replies to the owner in a few lines.
-- Builders: agy or opencode first (docs/EFFICIENCY.md 3b: TEMPLATE brief, own worktree, Claude reviews, remove the
-  worktree after the merge); cheap research too. Claude subagents only where they can't, at most 2. Exact briefs.
+- Builders write, Claude plans, orchestrates and reviews (docs/EFFICIENCY.md 3b: TEMPLATE brief naming a skill, own
+  worktree, build_pipeline, gate, review, merge_run). Up to 5 runs at once across all sessions: 2 agy, 2 Cloudflare
+  DeepSeek, 1 Inkling :free. Claude subagents as needed, at the cheapest fitting model and effort. Exact briefs.
 - Check the 5-hour window and context (get_usage) at the start and before a big step.
 - Checks: `tools/check.sh` (read the FAIL lines). One test file: `tools/run_godot.sh -s res://tests/runner.gd -- <name>`.
 
