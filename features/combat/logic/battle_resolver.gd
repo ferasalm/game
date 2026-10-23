@@ -8,15 +8,20 @@ var rules: BattleRulesDef
 var rng: RandomNumberGenerator
 var timeline: Timeline
 var statuses: Dictionary[StringName, StatusDef]
+var roll_rng: RandomNumberGenerator
+var rolls_enabled: bool = true
 
 
 func _init(
 		battle_rules: BattleRulesDef, battle_rng: RandomNumberGenerator, battle_timeline: Timeline,
-		status_defs: Dictionary[StringName, StatusDef]) -> void:
+		status_defs: Dictionary[StringName, StatusDef], roll_random: RandomNumberGenerator = null,
+		enabled: bool = true) -> void:
 	rules = battle_rules
 	rng = battle_rng
 	timeline = battle_timeline
 	statuses = status_defs
+	roll_rng = roll_random if roll_random != null else battle_rng
+	rolls_enabled = enabled
 
 
 ## One free strike outside the timeline (the reverse stab): hits, knockback and a possible down, no SP or
@@ -41,13 +46,7 @@ func resolve(actor: UnitState) -> Array[TimelineEvent]:
 		_finish_turn(actor, events, fresh)
 		return events
 	for target: UnitState in targets:
-		if action.is_hostile():
-			_hit_target(actor, action, target, events)
-		else:
-			_heal_target(actor, action, target, events)
-			BattleActionRules.apply_cures(target, action.cures, events)
-		if _apply_status(action, target, events) and target == actor:
-			fresh.append(action.applies_status)
+		_resolve_target(actor, action, target, events, fresh)
 	_finish_turn(actor, events, fresh)
 	for target: UnitState in targets:
 		if not target.is_alive():
@@ -57,6 +56,32 @@ func resolve(actor: UnitState) -> Array[TimelineEvent]:
 
 ## Who the act hits. Foe and ally moves keep the chosen target while it is valid, else retarget to the first
 ## valid one on that side; self and all-moves resolve against whoever qualifies now (once per living target).
+func _resolve_target(actor: UnitState, action: ActionDef, target: UnitState, events: Array[TimelineEvent], fresh: Array[StringName]) -> void:
+	var dodged: bool = false
+	if rolls_enabled and action.is_hostile() and action.power > 0 and not action.sure_hit and action.id != &"reverse_stab" and target.is_alive():
+		var hit_chance_val: float = BattleRolls.hit_chance(actor, target, rules)
+		if roll_rng.randf() > hit_chance_val:
+			dodged = true
+			events.append(TimelineEvent.new(&"dodged", target.unit_id, 0, action.id))
+	if not dodged:
+		var is_crit: bool = false
+		if rolls_enabled and action.is_hostile() and target.is_alive():
+			var crit_chance_val: float = BattleRolls.crit_chance(actor, rules)
+			if roll_rng.randf() < crit_chance_val:
+				is_crit = true
+		if is_crit:
+			events.append(TimelineEvent.new(&"crit", target.unit_id, 0))
+		if action.is_hostile():
+			if not dodged:
+				_hit_target(actor, action, target, events, is_crit)
+		else:
+			_heal_target(actor, action, target, events)
+			BattleActionRules.apply_cures(target, action.cures, events)
+		if not dodged and _apply_status(actor, action, target, events, is_crit):
+			if target == actor:
+				fresh.append(action.applies_status)
+
+
 func _targets(actor: UnitState, action: ActionDef) -> Array[UnitState]:
 	var options: Array[UnitState] = BattleTargets.valid_targets(timeline, actor, action)
 	if not action.needs_picker() or options.is_empty():
@@ -66,15 +91,20 @@ func _targets(actor: UnitState, action: ActionDef) -> Array[UnitState]:
 	return single
 
 
-func _hit_target(actor: UnitState, action: ActionDef, target: UnitState, events: Array[TimelineEvent]) -> void:
+func _hit_target(actor: UnitState, action: ActionDef, target: UnitState, events: Array[TimelineEvent], is_crit: bool = false) -> void:
+	var mult: float = rules.crit_mult if is_crit else 1.0
+	var knock_mult: float = rules.crit_knockback if is_crit else 1.0
 	for i: int in action.hit_count:
 		if not target.is_alive():
 			break
 		var amount: int = _damage(actor, action, target)
+		if is_crit:
+			amount = maxi(1, roundi(amount * mult))
 		target.hp = maxi(0, target.hp - amount)
 		events.append(TimelineEvent.new(&"damage", target.unit_id, amount, action.id))
 		if target.is_alive():
-			var bonus: int = actor.def.knockback_bonus if i == 0 else 0
+			var base_bonus: int = actor.def.knockback_bonus if i == 0 else 0
+			var bonus: int = roundi(base_bonus * (rules.crit_knockback if (is_crit and i == 0) else 1.0))
 			events.append(timeline.hit(target.unit_id, action, bonus))
 
 
@@ -101,10 +131,16 @@ func _heal_target(actor: UnitState, action: ActionDef, target: UnitState, events
 
 
 ## True when the status was set on the target.
-func _apply_status(action: ActionDef, target: UnitState, events: Array[TimelineEvent]) -> bool:
+func _apply_status(actor: UnitState, action: ActionDef, target: UnitState, events: Array[TimelineEvent], is_crit: bool = false) -> bool:
 	if action.applies_status == &"" or not target.is_alive() or not statuses.has(action.applies_status):
 		return false
 	var status: StatusDef = statuses[action.applies_status]
+	# Resist roll for hostile status applications on a living target.
+	if rolls_enabled and action.is_hostile() and target.is_alive() and target.side != actor.side:
+		var resist_chance_val: float = BattleRolls.resist_chance(actor, target, rules)
+		if roll_rng.randf() < resist_chance_val:
+			events.append(TimelineEvent.new(&"resisted", target.unit_id, 0, status.id))
+			return false
 	target.apply_status(status)
 	events.append(TimelineEvent.new(&"status", target.unit_id, status.turns, status.id))
 	return true

@@ -17,7 +17,8 @@
      "enemies": ["concession_enforcer", "concession_enforcer", "survey_drone", "survey_drone"],
      "enemy_slots": [0, 1, 2, 3], "party_slots": [0, 2], "loot": [], "money": 120,
      "consumables": {"white_herb": 1}},
-    {"id": "abu_nabil_duel", "music": "boss_abu_nabil", "name_key": "ENCOUNTER_ABU_NABIL_DUEL",
-     "enemies": ["abu_nabil"], "enemy_slots": [0], "party_slots": [0, 2], "loot": [], "money": 0}
+     {"id": "abu_nabil_duel", "music": "boss_abu_nabil", "name_key": "ENCOUNTER_ABU_NABIL_DUEL",
+     "enemies": ["abu_nabil"], "enemy_slots": [0], "party_slots": [0, 2], "loot": [], "money": 0,
+     "can_flee": false}
   ]
 }

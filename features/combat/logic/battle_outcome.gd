@@ -6,6 +6,7 @@ extends RefCounted
 const VICTORY: StringName = &"victory"
 const DEFEAT: StringName = &"defeat"
 const RETRY: StringName = &"retry"
+const FLED: StringName = &"fled"
 ## The Defeat screen's other picks: leave the fight for the last save, or for the title.
 const LOAD: StringName = &"load"
 const TITLE: StringName = &"title"

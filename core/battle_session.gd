@@ -68,6 +68,12 @@ func _on_stage_ended(result: StringName) -> void:
 		_restore_snapshot()
 	elif result == BattleOutcome.VICTORY:
 		_win(outcome)
+	elif result == BattleOutcome.FLED:
+		# Fled: keep vitals and bag, pay nothing, never clear patrol.
+		GameState.set_vitals(outcome.vitals)
+		GameState.set_bag(outcome.bag)
+		# The area return path stays as after a defeat (patrol reset, grace time handled by Router),
+		# but vitals and bag are preserved.
 	else:
 		_restore_snapshot()
 	finished.emit(outcome)

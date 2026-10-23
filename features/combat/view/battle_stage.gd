@@ -120,25 +120,21 @@ func _check_end() -> void:
 		camera_rig.victory()
 		fighters.cheer()
 		AudioDirector.play_music(&"victory")
-	if sim.result == &"defeat" and not auto_play and not practice and BattleEnding.open_defeat(_finish):
+	elif sim.result == &"fled":
+		hud.show_banner(BattleStyle.text("UI_FLED"))
+	if sim.result == &"defeat" and not auto_play and not practice and BattleEnding.open_defeat(_finish_wrapper):
+		return
+	if sim.result == &"fled":
+		# Fled: banner shown; no victory cheer, no defeat screen, no end panel.
+		if not instant:
+			await PauseWait.seconds(self, _view.banner_seconds)
+		BattleStageExtra.finish(self, sim.result)
 		return
 	hud.show_end(sim.result)
 	if auto_play:
 		if not instant:
 			await PauseWait.seconds(self, _view.end_delay + _view.banner_seconds)
-		_finish(sim.result)
-
-
-## The fight is over with this answer: &"victory" / &"defeat" (back to the rooftop, after the light wash), &"retry",
-## &"load" or &"title" (the Defeat screen's picks).
-func _finish(result: StringName) -> void:
-	if _finished:
-		return
-	_finished = true
-	if instant or auto_play or not BattleEnding.washes(result):
-		ended.emit(result)
-	else:
-		BattleEnding.wash(self, ended.emit.bind(result))
+		BattleStageExtra.finish(self, sim.result)
 
 
 ## The area's last frame breaks into glass over the arena (the opening waits for it).
@@ -192,3 +188,11 @@ func _add_show() -> void:
 	_actions = BattleActionPlayer.new()
 	add_child(_actions)
 	_actions.setup(fighters, vfx, camera_rig, juice)
+
+
+func _finish_wrapper(result: StringName) -> void:
+	BattleStageExtra.finish(self, result)
+
+
+func _finish(result: StringName) -> void:
+	BattleStageExtra.finish(self, result)

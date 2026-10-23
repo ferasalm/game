@@ -142,6 +142,8 @@ func _add_items_entry() -> void:
 	_items_button.set_meta("action_id", ITEMS_ID)
 	_items_button.disabled = not _sim.items.any_available()
 	_items_button.pressed.connect(items_requested.emit)
+	# The FLEE entry.
+	BattleFleeButton.add_to(self, _list, _buttons)
 
 
 func _pick_move(action: ActionDef) -> void:

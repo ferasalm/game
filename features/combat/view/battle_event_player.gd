@@ -16,6 +16,10 @@ var _skip: bool = false
 var _actions: BattleActionPlayer
 var _juice: BattleJuice
 var _vfx: VfxPlayer
+var _extra: BattleEventExtra
+var _damage_extra: BattleDamageEvents
+## Targets that received a "crit" event for the current action (affects the next damage number display).
+var _pending_crit: Dictionary[StringName, bool] = {}
 
 
 func setup(sim: BattleSim, view: BattleViewDef, fighters: BattleFighters, hud: BattleHud,
@@ -25,6 +29,10 @@ func setup(sim: BattleSim, view: BattleViewDef, fighters: BattleFighters, hud: B
 	_fighters = fighters
 	_hud = hud
 	_shown_hp = shown_hp
+	_extra = BattleEventExtra.new()
+	_extra.setup(self)
+	_damage_extra = BattleDamageEvents.new()
+	add_child(_damage_extra)
 
 
 ## The pieces that make the show: the move player, the hitstop / shake node and the effect painter.
@@ -54,9 +62,9 @@ func _play_one(events: Array[TimelineEvent], i: int) -> void:
 		&"reverse_stab":
 			await _on_reverse_stab(event, BattleEventTargets.targets_after(_sim, events, i))
 		&"damage":
-			await _on_damage(event)
+			await _damage_extra.on_damage(self, event)
 		&"missed":
-			await _on_missed(event)
+			await _damage_extra.on_missed(self, event)
 		&"interrupted":
 			await _on_interrupted(event)
 		&"status":
@@ -73,6 +81,16 @@ func _play_one(events: Array[TimelineEvent], i: int) -> void:
 			_on_sp_restored(event)
 		&"fizzled":
 			_float_status(event, BattleStyle.text("BATTLE_ITEM_FIZZLED"))
+		&"dodged":
+			await _extra.on_dodged(event)
+		&"crit":
+			await _extra.on_crit(event)
+		&"resisted":
+			await _extra.on_resisted(event)
+		&"fled":
+			await _extra.on_fled(event)
+		&"flee_failed":
+			await _extra.on_flee_failed(event)
 
 
 func _on_command(event: TimelineEvent) -> void:
@@ -94,19 +112,6 @@ func _on_reverse_stab(event: TimelineEvent, targets: Array[StringName]) -> void:
 func _on_move(actor_id: StringName, action: ActionDef, targets: Array[StringName]) -> void:
 	if not _skip and action != null:
 		await _actions.begin(actor_id, action, targets)
-
-
-func _on_damage(event: TimelineEvent) -> void:
-	var before: int = _shown_hp.get(event.unit_id, 0)
-	_shown_hp[event.unit_id] = maxi(0, before - event.value)
-	if _skip:
-		return
-	AudioDirector.play_hit(_sim.actions.get(event.detail) as ActionDef, event.value)
-	var target: CharacterVisual = _fighters.visual(event.unit_id)
-	if target != null:
-		_fighters.float_number(event.unit_id, event.value)
-		await _actions.on_hit(target, event.value)
-	await _wait(_view.damage_gap)
 
 
 ## The cut cast: BREAK! stamp, a burst, a hard freeze and a camera jolt.
@@ -170,15 +175,6 @@ func _float_status(event: TimelineEvent, content: String) -> void:
 func _status_name(status_id: StringName) -> String:
 	var status := ContentDB.get_def("status", status_id) as StatusDef
 	return BattleStyle.text(status.name_key) if status != null else String(status_id)
-
-
-func _on_missed(event: TimelineEvent) -> void:
-	if not _skip:
-		var actor: UnitState = _sim.timeline.find(event.unit_id)
-		if actor != null:
-			for target_id: StringName in actor.acted_targets:
-				_fighters.float_text(target_id, BattleStyle.text("UI_MISS"))
-		await _wait(_view.damage_gap)
 
 
 func _targets_after(events: Array[TimelineEvent], i: int) -> Array[StringName]:

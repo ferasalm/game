@@ -46,7 +46,9 @@
     {"id": "spice_cloud", "name_key": "ACTION_SPICE_CLOUD", "desc_key": "MOVE_DESC_SPICE_CLOUD", "sp_cost": 8, "power": 4,
      "is_melee": false, "ignores_cover": true, "cast_speed": 0.6, "recovery": 900, "knockback": 0, "target": "all_foes",
      "applies_status": "confused", "vfx": "burst"},
-    {"id": "feather_snack", "name_key": "ACTION_FEATHER_SNACK", "desc_key": "MOVE_DESC_FEATHER_SNACK", "sp_cost": 0, "power": 0,
+     {"id": "flee", "name_key": "UI_FLEE", "desc_key": "MOVE_DESC_FLEE", "sp_cost": 0, "power": 0,
+     "is_melee": false, "cast_speed": 1.4, "recovery": 1000, "knockback": 0, "target": "self", "vfx": ""},
+     {"id": "feather_snack", "name_key": "ACTION_FEATHER_SNACK", "desc_key": "MOVE_DESC_FEATHER_SNACK", "sp_cost": 0, "power": 0,
      "is_melee": false, "cast_speed": 0.9, "recovery": 500, "knockback": 0, "target": "self", "heal": 80,
      "uses_per_battle": 3, "vfx": "heal"}
   ]

@@ -11,6 +11,8 @@ var loot: Array[StringName] = []
 ## Riyal paid for the first win; a repeat win pays rules.repeat_payout of it (items and herbs only the first time).
 var money: int = 0
 var consumables: Dictionary[StringName, int] = {}
+## Whether the party can attempt to flee this encounter (default true, false for bosses like abu_nabil_duel).
+var can_flee: bool = true
 var music: StringName = &""  ## its battle track; empty = the flow's battle_music
 
 
@@ -24,6 +26,7 @@ func read(r: DefReader) -> void:
 	money = r.integer("money", 0, 9999, 0, false)
 	consumables = CountMap.read(r, "consumables")
 	music = StringName(r.text("music", "", false))
+	can_flee = r.flag("can_flee", true)
 	if enemies.is_empty() or enemies.size() != enemy_slots.size():
 		r.problem("enemy_slots", "needs one slot per enemy (and at least one enemy)")
 	if party_slots.is_empty():

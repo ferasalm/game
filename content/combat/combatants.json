@@ -1,16 +1,21 @@
 {
   "kind": "combatant",
   "items": [
-    {"id": "zayd", "name_key": "NAME_ZAYD", "max_hp": 400, "max_sp": 24, "attack": 20, "defense": 14,
-     "agility": 40, "weight": 3.0, "actions": ["jambiyah_strike", "breaker"]},
-    {"id": "bilqis", "name_key": "NAME_BILQIS", "max_hp": 280, "max_sp": 36, "attack": 16, "defense": 9,
-     "agility": 44, "weight": 1.0, "actions": ["spark_shot", "static_net"]},
-    {"id": "concession_enforcer", "name_key": "NAME_CONCESSION_ENFORCER", "max_hp": 450, "max_sp": 0, "attack": 31,
-     "defense": 14, "agility": 30, "weight": 6.0, "interrupt_resist": 0.2, "actions": ["baton_slam"]},
-    {"id": "survey_drone", "name_key": "NAME_SURVEY_DRONE", "max_hp": 1200, "max_sp": 12, "attack": 45,
-     "defense": 6, "agility": 48, "weight": 0.0, "actions": ["laser_ping", "overcharge_beam"]},
-    {"id": "abu_nabil", "name_key": "NPC_HERB_SELLER", "max_hp": 1200, "max_sp": 12, "attack": 45,
-     "defense": 10, "agility": 60, "weight": 5.0, "interrupt_resist": 0.7,
+     {"id": "zayd", "name_key": "NAME_ZAYD", "max_hp": 400, "max_sp": 24, "attack": 20, "defense": 14,
+     "agility": 40, "weight": 3.0, "luck": 10, "xp": 0, "dodge_bonus": 0.0, "crit_bonus": 0.0, "status_pierce": 0.0,
+     "actions": ["jambiyah_strike", "breaker"]},
+     {"id": "bilqis", "name_key": "NAME_BILQIS", "max_hp": 280, "max_sp": 36, "attack": 16, "defense": 9,
+     "agility": 44, "weight": 1.0, "luck": 12, "xp": 0, "dodge_bonus": 0.0, "crit_bonus": 0.0, "status_pierce": 0.0,
+     "actions": ["spark_shot", "static_net"]},
+     {"id": "concession_enforcer", "name_key": "NAME_CONCESSION_ENFORCER", "max_hp": 450, "max_sp": 0, "attack": 31,
+     "defense": 14, "agility": 30, "weight": 6.0, "interrupt_resist": 0.2, "luck": 5, "xp": 30,
+     "dodge_bonus": 0.0, "crit_bonus": 0.0, "status_pierce": 0.0, "actions": ["baton_slam"]},
+     {"id": "survey_drone", "name_key": "NAME_SURVEY_DRONE", "max_hp": 1200, "max_sp": 12, "attack": 45,
+     "defense": 6, "agility": 48, "weight": 0.0, "luck": 8, "xp": 45,
+     "dodge_bonus": 0.0, "crit_bonus": 0.0, "status_pierce": 0.0, "actions": ["laser_ping", "overcharge_beam"]},
+     {"id": "abu_nabil", "name_key": "NPC_HERB_SELLER", "max_hp": 1200, "max_sp": 12, "attack": 45,
+     "defense": 10, "agility": 60, "weight": 5.0, "interrupt_resist": 0.7, "luck": 15, "xp": 150,
+     "dodge_bonus": 0.0, "crit_bonus": 0.0, "status_pierce": 0.0,
      "actions": ["pot_swing", "spice_cloud", "feather_snack"]}
   ]
 }

@@ -16,6 +16,12 @@ static func apply(base: CombatantDef, perk_list: Array[PerkDef]) -> CombatantDef
 				out.knockback_bonus += perk.amount
 			&"start_bonus":
 				out.start_bonus += perk.amount
+			&"dodge_bonus":
+				out.dodge_bonus += float(perk.amount)
+			&"crit_bonus":
+				out.crit_bonus += float(perk.amount)
+			&"status_pierce":
+				out.status_pierce += float(perk.amount)
 	return out
 
 

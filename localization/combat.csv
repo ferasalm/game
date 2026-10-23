@@ -51,3 +51,11 @@ ACTION_FEATHER_SNACK,Feather Snack
 MOVE_DESC_FEATHER_SNACK,Chew a pink feather to restore health.
 ENCOUNTER_ABU_NABIL_DUEL,Abu Nabil Duel
 UI_MISS,MISS
+UI_DODGED,Dodged
+UI_CRIT,Critical!
+UI_RESISTED,Resisted
+UI_FLED,Escaped!
+UI_FLEE_FAILED,Escape failed
+UI_FLEE,Flee
+UI_CANT_FLEE,Can't flee
+MOVE_DESC_FLEE,A desperate attempt to escape the fight.

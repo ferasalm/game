@@ -33,6 +33,8 @@ var vfx: StringName = &""
 var cures: Array[StringName] = []
 ## Maximum times this move can be chosen per battle (0 = unlimited).
 var uses_per_battle: int = 0
+## Never dodged (e.g. reverse stab skips dodge anyway; a forced sure_hit always lands).
+var sure_hit: bool = false
 
 
 func read(r: DefReader) -> void:
@@ -53,6 +55,7 @@ func read(r: DefReader) -> void:
 	revive = r.flag("revive")
 	cures = r.id_list("cures")
 	uses_per_battle = r.integer("uses_per_battle", 0, 99, 0, false)
+	sure_hit = r.flag("sure_hit")
 	_read_target_and_vfx(r)
 
 
