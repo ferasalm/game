@@ -61,7 +61,7 @@ A on a row selects it and moves focus to the hero picker; A on a hero uses it (u
 toast "Used Feathered herb on Zayd"); B returns to the list; full HP/SP or no target = disabled hero + ui_error.
 ### Shop (herb stall; own screen over the world)
 ```
-(120,100) 1680x80  HERB STALL / 𐩵𐩫𐩱𐩬 𐩱𐩡𐩱𐩲𐩪𐩱𐩨     tabs [Buy][Sell] (LB/RB)       MoneyCounter (1500,112)
+(120,100) 1680x80  HERB STALL / 𐩦𐩥𐩤 𐩱𐩡𐩱𐩲𐩪𐩱𐩨     tabs [Buy][Sell] (LB/RB)       MoneyCounter (1500,112)
 (120,200) 900x700 ListRow: icon name  price(riyal)  owned x2       (1060,200) 740x470 detail: art, desc, effect
 (1060,690) 740x210 Price 40  Owned 2  Money after: 1,200 -> 1,160 (c_bad when < 0)   Quantity [-] 1 [+]
 ```
@@ -138,7 +138,7 @@ Localization (CSV per feature, `keys,en,musnad`; Musnad only for titles; ids are
 - items.csv: items.title (Items, 𐩱𐩡𐩱𐩶𐩧𐩱𐩳), items.tab_herbs Herbs, items.tab_keys Keys, items.owned "Owned %d",
   items.use_on "Use on", items.preview "%d -> %d", items.used "Used %s on %s", items.full "Already full",
   items.empty "Nothing here", item.<id>.name and item.<id>.desc per consumable.
-- shop.csv: shop.title (Herb Stall, 𐩵𐩫𐩱𐩬 𐩱𐩡𐩱𐩲𐩪𐩱𐩨), shop.buy Buy, shop.sell Sell, shop.price Price, shop.owned Owned,
+- shop.csv: shop.title (Herb Stall, 𐩦𐩥𐩤 𐩱𐩡𐩱𐩲𐩪𐩱𐩨), shop.buy Buy, shop.sell Sell, shop.price Price, shop.owned Owned,
   shop.money_after "Money after", shop.qty Quantity, shop.cant_afford "Not enough riyal", shop.sold_out "Sold out",
   shop.bought "Bought %s", shop.sold "Sold %s", ui.riyal riyal, ui.riyal_short YR.
 - sabil.csv: sabil.title (Sabil, 𐩦𐩨𐩺𐩡), sabil.prompt Drink, sabil.ask "Drink to rest? This saves your game and

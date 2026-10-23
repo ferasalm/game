@@ -97,7 +97,7 @@ pause_confirm_no,No
 |---|---|---|
 | shop_heading | Herb stall | 𐩵𐩫𐩱𐩬 𐩱𐩡𐩱𐩲𐩪𐩱𐩨 |
 | pause_heading | Paused | 𐩣𐩩𐩥𐩤𐩰 |
-| battle_defeat_heading | Defeated | 𐩠𐩸𐩣𐩩𐩣 |
+| battle_defeat_heading | Defeated | 𐩣𐩠𐩸𐩥𐩣 |
 
 Musnad lines get a native review later (Respect notes). The sabil inscription's Musnad original is not written here.
 
