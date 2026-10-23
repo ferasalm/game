@@ -4,6 +4,7 @@ including <review_misses>. Load the godot-gameplay-scripter skill (.agents/skill
 
 ## Why: Feras approved the workshop: upgrade gear to +3, set hilt stones, craft from won materials; nothing fails.
 ## Read first
+C:/dev/game/inbox/ui_refs/mock_workshop.png (layout target; Feras's Gemini mockup: copy its layout, not its names, numbers or glyphs);
 docs/design/rpg-systems.md 8-9 and docs/design/hilt-stones.md 4-9 (THE SPEC; every number); rpg-menus.md 0 and 3
 (rects at 1920x1080); features/ui/view/ui_screen.gd, ui_stack.gd, menu_backdrop.gd, ui.gd, list_row.gd,
 money_counter.gd, prompt_strip.gd, ui_rarity.gd, toast_host.gd; features/equipment/view/hologram_stage.gd (reuse

@@ -2,11 +2,9 @@
 You are in your own worktree on branch oc/menu-skins (made from claude/menus-rpg-5089fa). Follow GEMINI.md, including
 <review_misses>. Load the godot-gameplay-scripter skill (.agents/skills/) if one fits.
 
-## Why
-Feras approved painted menus (docs/design/rpg-menus.md): every menu pauses over a painted backdrop (or the blurred world),
-and the pause, save and shop screens take the layouts of his reference pictures.
-
+## Why: Feras approved painted menus (docs/design/rpg-menus.md): every menu pauses over a painted backdrop (or the blurred world), and the pause, save and shop screens take the layouts of his reference pictures.
 ## Read first
+C:/dev/game/inbox/ui_refs/mock_pause.png, mock_save.png, mock_shop.png (layout target; Feras's Gemini mockup: copy its layout, not its names, numbers or glyphs);
 docs/design/rpg-menus.md sections 0, 1, 4, 5 (THE SPEC: rects at 1920x1080, style keys); docs/design/ui.md 1-2;
 features/ui/view/ui_screen.gd, ui_stack.gd, ui.gd, ui_panel.gd, list_row.gd, party_card.gd, money_counter.gd,
 prompt_strip.gd, ui_rarity.gd, screens/pause_menu.gd, pause_party.gd, shop_screen.gd, shop_detail.gd,
@@ -16,7 +14,7 @@ slot_picker_screen.gd, confirm_dialog.gd; features/ui/logic/pause_logic.gd; feat
 ## What to build
 1. Content: content/ui/backdrops.json, kind "backdrop" (BackdropDef in features/ui/defs/: id, path, dim 0-1 default
    0.35): rows pause, items, equipment, workshop, shop, save, map, path assets/textures/ui_bg/<id>.webp. Register the
-   kind in ContentDB.KINDS. Create assets/textures/ui_bg/.gdignore (empty). No picture files yet (Feras paints them).
+   kind in ContentDB.KINDS. The 7 webp files, .gdignore and manifest entries already exist (1376x768, painted).
 2. features/ui/view/menu_backdrop.gd (class MenuBackdrop extends Control, full rect, mouse_filter ignore): setup(id)
    loads the webp like ModelMaterials.load_texture (FileAccess bytes -> Image.load_webp_from_buffer); TextureRect
    expand, stretch_mode KEEP_ASPECT_COVERED, then a ColorRect black at alpha `dim`. Missing file -> fallback: copy the

@@ -2,10 +2,9 @@
 You are in your own worktree on branch oc/equipment-menu (made from claude/menus-rpg-5089fa). Follow GEMINI.md,
 including <review_misses>. Load the godot-gameplay-scripter skill (.agents/skills/) if one fits.
 
-## Why
-Feras approved an equipment menu of its own (rpg-menus.md 2): a turning cyan hologram hero, slots around it.
-
+## Why: Feras approved an equipment menu of its own (rpg-menus.md 2): a turning cyan hologram hero, slots around it.
 ## Read first
+C:/dev/game/inbox/ui_refs/mock_equipment.png (layout target; Feras's Gemini mockup: copy its layout, not its names, numbers or glyphs);
 docs/design/rpg-menus.md 0 and 2 (THE SPEC: rects at 1920x1080, focus rules); rpg-systems.md 6-8; features/ui/view/
 ui_screen.gd, ui_stack.gd, menu_backdrop.gd, ui.gd, ui_panel.gd, list_row.gd, prompt_strip.gd, ui_rarity.gd;
 features/equipment/logic/equipment_options.gd (keep its rules); features/items/logic/gear.gd (Gear.build_hero,

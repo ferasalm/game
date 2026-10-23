@@ -1,5 +1,5 @@
 # Brief: rpg-progression (<= 60 lines; run AFTER rpg-rolls-flee merges; it may run beside zayd-kit)
-You are in your own worktree on branch oc/rpg-progression (made from claude/menus-rpg-5089fa). Follow GEMINI.md,
+You are in your own worktree on branch gemini/rpg-progression (made from claude/menus-rpg-5089fa). Follow GEMINI.md,
 including <review_misses>. Load the godot-gameplay-scripter skill (.agents/skills/) if one fits.
 
 ## Why

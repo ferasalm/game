@@ -3394,6 +3394,55 @@
       "source": "Feras, chat 2026-10-23 (inbox/abu_nabil_portrait_src.png)",
       "licence": "Gemini, owner-generated",
       "prompt": ""
+    },
+    {
+      "id": "ui_bg_pause",
+      "path": "textures/ui_bg/pause.webp",
+      "source": "Feras, Gemini 2026-10-23 (inbox/backdrops-ui-bg/pause_ui_bg.png)",
+      "licence": "Gemini, owner-generated",
+      "prompt": "docs/design/rpg-menus.md 7 (pause)"
+    },
+    {
+      "id": "ui_bg_items",
+      "path": "textures/ui_bg/items.webp",
+      "source": "Feras, Gemini 2026-10-23 (inbox/backdrops-ui-bg/items_ui_bg.png)",
+      "licence": "Gemini, owner-generated",
+      "prompt": "docs/design/rpg-menus.md 7 (items)"
+    },
+    {
+      "id": "ui_bg_equipment",
+      "path": "textures/ui_bg/equipment.webp",
+      "source": "Feras, Gemini 2026-10-23 (inbox/backdrops-ui-bg/equipment_ui_bg.png)",
+      "licence": "Gemini, owner-generated",
+      "prompt": "docs/design/rpg-menus.md 7 (equipment)"
+    },
+    {
+      "id": "ui_bg_workshop",
+      "path": "textures/ui_bg/workshop.webp",
+      "source": "Feras, Gemini 2026-10-23 (inbox/backdrops-ui-bg/workshop_ui_bg.png)",
+      "licence": "Gemini, owner-generated",
+      "prompt": "docs/design/rpg-menus.md 7 (workshop)"
+    },
+    {
+      "id": "ui_bg_shop",
+      "path": "textures/ui_bg/shop.webp",
+      "source": "Feras, Gemini 2026-10-23 (inbox/backdrops-ui-bg/shop_ui_bg.png)",
+      "licence": "Gemini, owner-generated",
+      "prompt": "docs/design/rpg-menus.md 7 (shop)"
+    },
+    {
+      "id": "ui_bg_save",
+      "path": "textures/ui_bg/save.webp",
+      "source": "Feras, Gemini 2026-10-23 (inbox/backdrops-ui-bg/save_ui_bg.png)",
+      "licence": "Gemini, owner-generated",
+      "prompt": "docs/design/rpg-menus.md 7 (save)"
+    },
+    {
+      "id": "ui_bg_map",
+      "path": "textures/ui_bg/map.webp",
+      "source": "Feras, Gemini 2026-10-23 (inbox/backdrops-ui-bg/map_ui_bg.png)",
+      "licence": "Gemini, owner-generated",
+      "prompt": "docs/design/rpg-menus.md 7 (map)"
     }
   ]
 }

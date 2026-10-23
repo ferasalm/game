@@ -7,6 +7,7 @@ Feras approved a holographic map (rpg-menus.md 6, his reference 09): the area's 
 and a city view of Sana'a's districts.
 
 ## Read first
+C:/dev/game/inbox/ui_refs/mock_map.png (layout target; Feras's Gemini mockup: copy its layout, not its names, numbers or glyphs);
 docs/design/rpg-menus.md 0 and 6 (THE SPEC: rects at 1920x1080); docs/design/world.md (district names);
 features/world/defs/area_def.gd (width, depth, is_walkable, tile_id_at, places, places_of, and the crossings the
 blockout added: grep "crossing"), place_def.gd (id, kind, pos, cell); features/ui/view/ui_screen.gd, menu_backdrop.gd,
