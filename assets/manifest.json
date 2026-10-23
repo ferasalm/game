@@ -3443,6 +3443,146 @@
       "source": "Feras, Gemini 2026-10-23 (inbox/backdrops-ui-bg/map_ui_bg.png)",
       "licence": "Gemini, owner-generated",
       "prompt": "docs/design/rpg-menus.md 7 (map)"
+    },
+    {
+      "id": "painted_wash_facade_tower_r1",
+      "path": "textures/painted/wash/facade_tower_r1.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_r1_emit",
+      "path": "textures/painted/wash/facade_tower_r1_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_r2",
+      "path": "textures/painted/wash/facade_tower_r2.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_r2_emit",
+      "path": "textures/painted/wash/facade_tower_r2_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_r3",
+      "path": "textures/painted/wash/facade_tower_r3.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_r3_emit",
+      "path": "textures/painted/wash/facade_tower_r3_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_r4",
+      "path": "textures/painted/wash/facade_tower_r4.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_r4_emit",
+      "path": "textures/painted/wash/facade_tower_r4_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_r5",
+      "path": "textures/painted/wash/facade_tower_r5.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_wash_facade_tower_r5_emit",
+      "path": "textures/painted/wash/facade_tower_r5_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_r1",
+      "path": "textures/painted/oil/facade_tower_r1.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_r1_emit",
+      "path": "textures/painted/oil/facade_tower_r1_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_r2",
+      "path": "textures/painted/oil/facade_tower_r2.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_r2_emit",
+      "path": "textures/painted/oil/facade_tower_r2_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_r3",
+      "path": "textures/painted/oil/facade_tower_r3.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_r3_emit",
+      "path": "textures/painted/oil/facade_tower_r3_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_r4",
+      "path": "textures/painted/oil/facade_tower_r4.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_r4_emit",
+      "path": "textures/painted/oil/facade_tower_r4_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_r5",
+      "path": "textures/painted/oil/facade_tower_r5.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
+    },
+    {
+      "id": "painted_oil_facade_tower_r5_emit",
+      "path": "textures/painted/oil/facade_tower_r5_emit.webp",
+      "source": "own",
+      "licence": "own",
+      "prompt": "painterly_bake"
     }
   ]
 }

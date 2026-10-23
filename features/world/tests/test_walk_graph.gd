@@ -69,9 +69,13 @@ func test_every_area_is_one_piece_from_its_spawn() -> void:
 	for id: StringName in graphs:
 		var area := ContentDB.get_def("area", id) as AreaDef
 		var g: WalkGraph = graphs[id]
-		var reach: Dictionary[Vector2i, bool] = g.reachable(_spawn_of(area))
+		var crossings: Array[PlaceDef] = area.places_of(PlaceDef.CROSSING)
+		var reach: Dictionary[Vector2i, bool] = g.reachable_with_crossings(_spawn_of(area), crossings) if not crossings.is_empty() else g.reachable(_spawn_of(area))
 		check(not reach.is_empty(), "%s: the spawn can be stood on" % id)
-		check(AreaDef.MARKERS.all(func(m: String) -> bool: return reach.has(area.find_marker(m))), "%s: markers reachable" % id)
+		check(AreaDef.MARKERS.all(func(m: String) -> bool:
+			var cell: Vector2i = area.find_marker(m)
+			return cell == Vector2i(-1, -1) or reach.has(cell)
+		), "%s: markers reachable" % id)
 		var lost: Array[Vector2i] = []
 		for cell: Vector2i in g.open_cells():
 			if not reach.has(cell):

@@ -68,6 +68,8 @@ func _update_follow(delta: float, subject: Vector3) -> void:
 	var cam_pos: Vector3 = _shortened_camera_pos()
 	_camera.global_position = cam_pos
 	_camera.look_at(_follow_cam.aim)
+	if not is_zero_approx(_follow_cam.roll):
+		_camera.rotate_object_local(Vector3.FORWARD, _follow_cam.roll)
 	_camera.fov = _follow_cam.fov
 	if _player != null:
 		_player.camera_yaw = _follow_cam.yaw
@@ -90,7 +92,7 @@ func _update_zones() -> void:
 	var p2 := Vector2(_player.global_position.x, _player.global_position.z)
 	for z: PlaceDef in _camera_zones:
 		if z.zone_rect.has_point(p2):
-			_follow_cam.enter_zone(deg_to_rad(z.yaw), deg_to_rad(z.pitch), z.distance, z.fov)
+			_follow_cam.enter_zone(deg_to_rad(z.yaw), deg_to_rad(z.pitch), z.distance, z.fov, deg_to_rad(z.roll))
 			return
 	_follow_cam.exit_zone()
 

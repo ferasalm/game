@@ -44,6 +44,7 @@ var limit_z: Vector2 = Vector2.ZERO
 var mode: StringName = &"fixed"
 var follow_distance: float = 6.5
 var follow_pitch_deg: float = 28.0
+var follow_side_deg: float = 0.0
 var follow_fov: float = 50.0
 var aim_height: float = 1.2
 var aim_lead: float = 1.5
@@ -132,6 +133,7 @@ func _read_preset(r: DefReader) -> Preset:
 func _read_follow_params(r: DefReader) -> void:
 	follow_distance = r.number("follow_distance", 1.0, 100.0, 6.5, false)
 	follow_pitch_deg = r.number("follow_pitch", 0.0, 89.0, 28.0, false)
+	follow_side_deg = r.number("follow_side_deg", -180.0, 180.0, 0.0, false)
 	follow_fov = r.number("follow_fov", 5.0, 120.0, 50.0, false)
 	aim_height = r.number("aim_height", 0.0, 20.0, 1.2, false)
 	aim_lead = r.number("aim_lead", 0.0, 20.0, 1.5, false)

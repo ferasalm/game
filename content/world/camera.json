@@ -8,6 +8,7 @@
      "follow_fov": 55.0,
      "aim_height": 1.2,
      "aim_lead": 1.2,
+     "follow_side_deg": 32,
      "lazy_yaw_delay": 0.8,
      "lazy_yaw_rate": 0.6,
      "walk_toward_dot": -0.3,

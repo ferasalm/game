@@ -10,6 +10,7 @@ func _save_dir() -> String:
 
 func _make() -> Rooftop:
 	var rooftop := (load("res://features/world/rooftop/rooftop.tscn") as PackedScene).instantiate() as Rooftop
+	rooftop.area_id = &"souq_rooftops_v4"
 	tree.root.add_child(rooftop)
 	return rooftop
 
@@ -66,8 +67,10 @@ func test_dialogue_framing_aims_at_the_speaker_and_clears() -> void:
 func test_bilqis_never_sticks_around_the_props() -> void:
 	_begin()
 	var rooftop: Rooftop = _make()
-	var route: Array[Vector3] = [Vector3(9.0, 0.5, 15.5), Vector3(12.0, 0.5, 12.0), Vector3(8.0, 0.5, 9.5),
-		Vector3(14.0, 0.5, 9.0), Vector3(6.0, 0.5, 15.5)]
+	rooftop.player.position = Vector3(31.5, 0.0, 20.5)
+	rooftop.follower.position = rooftop.player.position + Vector3(0.0, 0.0, 1.0)
+	var route: Array[Vector3] = [Vector3(29.0, 0.0, 18.0), Vector3(29.0, 0.0, 16.0), Vector3(31.5, 0.0, 16.0),
+		Vector3(33.5, 0.0, 18.0), Vector3(31.5, 0.0, 20.5)]
 	for goal: Vector3 in route:
 		for i: int in 600:
 			var to: Vector3 = goal - rooftop.player.position
