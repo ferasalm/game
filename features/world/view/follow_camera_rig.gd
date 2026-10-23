@@ -65,6 +65,7 @@ func _update_follow(delta: float, subject: Vector3) -> void:
 	var move_dir: Vector3 = _player.velocity if _player != null else Vector3.ZERO
 	var facing: Vector3 = _player.facing if _player != null else Vector3.ZERO
 	_follow_cam.update(_focus, move_dir, delta, 0.0, facing)  # no player camera control (owner 2026-10-23)
+	_update_wall_rise(delta)
 	var cam_pos: Vector3 = _shortened_camera_pos()
 	_camera.global_position = cam_pos
 	_camera.look_at(_follow_cam.aim)
@@ -73,6 +74,35 @@ func _update_follow(delta: float, subject: Vector3) -> void:
 	_camera.fov = _follow_cam.fov
 	if _player != null:
 		_player.camera_yaw = _follow_cam.yaw
+
+
+func _update_wall_rise(delta: float) -> void:
+	var target_rise: float = 0.0
+	if is_inside_tree() and get_viewport() != null:
+		var world := get_viewport().find_world_3d()
+		if world != null:
+			var space := world.direct_space_state
+			var candidates := FollowCamWall.rise_candidates(_follow_cam.pitch, deg_to_rad(_rig.wall_rise_max_pitch), deg_to_rad(_rig.wall_rise_step))
+			var first_clear := false
+			var target_pitch: float = _follow_cam.pitch
+			for c_pitch in candidates:
+				var test_pos: Vector3 = _follow_cam.camera_position(_follow_cam.distance, c_pitch)
+				var query := PhysicsRayQueryParameters3D.create(_follow_cam.aim, test_pos)
+				var excludes: Array[RID] = []
+				if _player != null:
+					excludes.append(_player.get_rid())
+				if _follower != null and is_instance_valid(_follower):
+					excludes.append(_follower.get_rid())
+				query.exclude = excludes
+				var hit := space.intersect_ray(query)
+				if hit.is_empty():
+					first_clear = true
+					target_pitch = c_pitch
+					break
+			if not first_clear:
+				target_pitch = deg_to_rad(_rig.wall_rise_max_pitch)
+			target_rise = target_pitch - _follow_cam.pitch
+	_follow_cam.wall_rise = FollowCamWall.ease_wall_rise(_follow_cam.wall_rise, target_rise, delta, _rig.wall_rise_up_rate, _rig.wall_rise_down_rate)
 
 
 func _update_focus(delta: float, subject: Vector3) -> void:
@@ -98,7 +128,8 @@ func _update_zones() -> void:
 
 
 func _shortened_camera_pos() -> Vector3:
-	var desired_pos: Vector3 = _follow_cam.camera_position()
+	var desired_pitch: float = _follow_cam.pitch + _follow_cam.wall_rise
+	var desired_pos: Vector3 = _follow_cam.camera_position(_follow_cam.distance, desired_pitch)
 	var actual_dist: float = _follow_cam.distance
 	if is_inside_tree() and get_viewport() != null:
 		var world := get_viewport().find_world_3d()
@@ -115,7 +146,7 @@ func _shortened_camera_pos() -> Vector3:
 			if not hit.is_empty():
 				var hit_dist: float = (_follow_cam.aim - (hit.position as Vector3)).length()
 				actual_dist = FollowCam.shorten_arm(hit_dist, _rig.collision_min_distance, _rig.collision_margin)
-	return _follow_cam.camera_position(actual_dist)
+	return _follow_cam.camera_position(actual_dist, desired_pitch)
 
 
 func _update_framed(delta: float) -> void:
