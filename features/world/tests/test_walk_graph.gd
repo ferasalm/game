@@ -64,23 +64,36 @@ func _spawn_of(area: AreaDef) -> Vector2i:
 	return area.find_marker(AreaDef.SPAWN)
 
 
+func _walk_errors(area: AreaDef, g: WalkGraph, rules: ExploreRulesDef) -> PackedStringArray:
+	var errs := PackedStringArray()
+	var crossings: Array[PlaceDef] = area.places_of(PlaceDef.CROSSING)
+	var spawn: Vector2i = _spawn_of(area)
+	var reach: Dictionary[Vector2i, bool] = g.reachable_with_crossings(spawn, crossings, rules.walk_step) if not crossings.is_empty() else g.reachable(spawn)
+	if reach.is_empty():
+		errs.append("the spawn can be stood on")
+	if not reach.has(spawn):
+		errs.append("spawn reachable")
+	if not area.places_of(PlaceDef.WORKSHOP).is_empty():
+		var w_cell: Vector2i = area.find_marker(AreaDef.WORKSHOP)
+		if w_cell == Vector2i(-1, -1) or not reach.has(w_cell):
+			errs.append("workshop marker W exists and reachable")
+	var lost: Array[Vector2i] = []
+	for cell: Vector2i in g.open_cells():
+		if not reach.has(cell):
+			lost.append(cell)
+	if not lost.is_empty():
+		errs.append("open cells that cannot be reached: %s" % str(lost))
+	return errs
+
+
 func test_every_area_is_one_piece_from_its_spawn() -> void:
+	var rules := ContentDB.get_def("explore_rules", &"default") as ExploreRulesDef
 	var graphs: Dictionary[StringName, WalkGraph] = _shipped()
 	for id: StringName in graphs:
 		var area := ContentDB.get_def("area", id) as AreaDef
 		var g: WalkGraph = graphs[id]
-		var crossings: Array[PlaceDef] = area.places_of(PlaceDef.CROSSING)
-		var reach: Dictionary[Vector2i, bool] = g.reachable_with_crossings(_spawn_of(area), crossings) if not crossings.is_empty() else g.reachable(_spawn_of(area))
-		check(not reach.is_empty(), "%s: the spawn can be stood on" % id)
-		check(reach.has(area.find_marker(AreaDef.SPAWN)), "%s: spawn reachable" % id)
-		if not area.places_of(PlaceDef.WORKSHOP).is_empty():
-			var w_cell: Vector2i = area.find_marker(AreaDef.WORKSHOP)
-			check(w_cell != Vector2i(-1, -1) and reach.has(w_cell), "%s: workshop marker W exists and reachable" % id)
-		var lost: Array[Vector2i] = []
-		for cell: Vector2i in g.open_cells():
-			if not reach.has(cell):
-				lost.append(cell)
-		check(lost.is_empty(), "%s: open cells that cannot be reached: %s" % [id, str(lost)])
+		var errs: PackedStringArray = _walk_errors(area, g, rules)
+		check(errs.is_empty(), "%s: %s" % [id, "; ".join(errs)])
 
 
 func test_every_area_has_no_traps_and_no_tall_steps() -> void:
@@ -136,11 +149,21 @@ func test_area_needing_w_marker_fails_when_lacking() -> void:
 	check(w != Vector2i(-1, -1), "souq_rooftops has W marker")
 	var lacking := AreaDef.new()
 	lacking.legend = area.legend
-	var rows: PackedStringArray = PackedStringArray()
+	var rows := PackedStringArray()
 	for r: String in area.rows:
 		rows.append(r.replace("W", "."))
 	lacking.rows = rows
 	lacking.places = area.places
-	var w_missing: bool = lacking.find_marker(AreaDef.WORKSHOP) == Vector2i(-1, -1)
-	var needs_w: bool = not lacking.places_of(PlaceDef.WORKSHOP).is_empty()
-	check(needs_w and w_missing, "area needing W lacks it")
+	var rules := ContentDB.get_def("explore_rules", &"default") as ExploreRulesDef
+	var lacking_graph: WalkGraph = AreaWalk.build(lacking, rules)
+	var errs: PackedStringArray = _walk_errors(lacking, lacking_graph, rules)
+	check(errs.has("workshop marker W exists and reachable"), "real walk check fails when W is missing")
+
+
+func test_step_around_walk_step_splits_and_joins_regions() -> void:
+	var rules := ContentDB.get_def("explore_rules", &"default") as ExploreRulesDef
+	var step: float = rules.walk_step
+	var g_split: WalkGraph = _graph(PackedStringArray(["ab"]), {"a": 0.0, "b": step + 0.01})
+	check_eq(g_split.regions(step).size(), 2, "a step just above walk_step splits two regions")
+	var g_join: WalkGraph = _graph(PackedStringArray(["ab"]), {"a": 0.0, "b": step - 0.01})
+	check_eq(g_join.regions(step).size(), 1, "a step just below walk_step joins them into one region")

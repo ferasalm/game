@@ -59,7 +59,7 @@ func reachable(start: Vector2i, mask: PackedByteArray = PackedByteArray()) -> Di
 
 
 ## Connected open-cell components where floor height step between neighbours <= max_step.
-func regions(max_step: float = 0.1) -> Array[Dictionary]:
+func regions(max_step: float) -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
 	var visited: Dictionary[Vector2i, bool] = {}
 	for cell: Vector2i in open_cells():
@@ -86,7 +86,7 @@ func regions(max_step: float = 0.1) -> Array[Dictionary]:
 
 ## Reachable cells starting from `start` across flat steps and crossing edges.
 func reachable_with_crossings(start: Vector2i, crossings: Array[PlaceDef],
-		max_step: float = 0.1) -> Dictionary[Vector2i, bool]:
+		max_step: float) -> Dictionary[Vector2i, bool]:
 	var seen: Dictionary[Vector2i, bool] = {}
 	if not is_open(start):
 		return seen

@@ -54,7 +54,7 @@ func test_sabil_back_flush_against_r2_wall_and_save_walkable() -> void:
 	var wg: WalkGraph = AreaWalk.build(area, _rules())
 	var spawn: PlaceDef = area.place(&"spawn_start")
 	var spawn_cell := Vector2i(floori(spawn.pos.x), floori(spawn.pos.z))
-	var reached: Dictionary[Vector2i, bool] = wg.reachable_with_crossings(spawn_cell, area.places_of(PlaceDef.CROSSING))
+	var reached: Dictionary[Vector2i, bool] = wg.reachable_with_crossings(spawn_cell, area.places_of(PlaceDef.CROSSING), _rules().walk_step)
 	check(reached.has(sc), "save place is reachable on walk graph")
 
 	var basin: PropPart = sabil_def.parts[16]
