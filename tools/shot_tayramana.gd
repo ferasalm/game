@@ -32,6 +32,7 @@ func _ready() -> void:
 func _apply_shot(shot: RoomDef.Shot) -> void:
 	if shot == null or _room == null:
 		return
+	_room.manual_camera = true
 	_room.camera.global_position = shot.cam_pos
 	_room.camera.look_at(shot.look_target)
 	_room.camera.fov = shot.fov
