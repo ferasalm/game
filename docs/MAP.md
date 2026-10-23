@@ -64,6 +64,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/prosthetics/prosthetics.json`: content: prosthetic x6
 - `content/prototype/flow.json`: content: flow_rules x1
 - `content/ui/backdrops.json`: content: backdrop x7
+- `content/ui/map.json`: content: map_info x1
 - `content/ui/style.json`: content: ui_style x1
 - `content/ui/transitions.json`: content: transition x3
 - `content/workshop/recipes.json`: content: recipe x4
@@ -71,8 +72,10 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/world/areas.json`: content: area x1
 - `content/world/buildings.json`: content: building x10
 - `content/world/camera.json`: content: camera_rig x1
+- `content/world/city_map.json`: content: city_district x8
 - `content/world/explore.json`: content: explore_rules x1
 - `content/world/look.json`: content: look x5
+- `content/world/map_markers.json`: content: map_marker x3
 - `content/world/mist.json`: content: mist x3
 - `content/world/props.json`: content: prop x25
 - `content/world/props/workbench.json`: content: prop x1
@@ -377,6 +380,16 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/jambiyah/logic/workshop_stats.gd`: The comparison rows the equipment screen shows: base fighter against the fighter built by Jambiyah.equip
 - `features/jambiyah/tests/test_jambiyah.gd`: T3: every hilt + blade pairing gives a different Zayd stat sets, inside the timeline caps; each hilt adds exactly one move; the shared base definition is never changed
 - `features/jambiyah/tests/test_loadout.gd`: The loadout fallback: a hero wears the saved item per slot, else the start loadout
+- `features/map/defs/city_district_def.gd`: purpose: Defines a city district with polygon boundaries in metres
+- `features/map/defs/map_info_def.gd`: purpose: Defines map metadata including coordinates and sector key
+- `features/map/defs/map_marker_def.gd`: purpose: Defines a map marker pointing to a place (kind npc, vendor, quest) and optional quest flag
+- `features/map/logic/map_plan.gd`: purpose: Pure logic for planning area walkable cells, aspect fitting, and marker positioning
+- `features/map/tests/test_holo_map.gd`: purpose: Tests for holographic map planning, marker filtering, city districts, and screen view
+- `features/map/view/holo_map.gd`: purpose: Holographic map screen with floor plan, markers, district radar, and city map toggle
+- `features/map/view/holo_map_canvas.gd`: purpose: 1200x800 holographic map canvas drawing area floor plan or full city map with scanlines
+- `features/map/view/holo_map_city_preview.gd`: purpose: Circular city map radar preview (300x300 at 1560,720) showing Sana'a district outlines
+- `features/map/view/holo_map_legend.gd`: purpose: Legend panel (260x260 at 80,140) showing marker icons and labels
+- `features/map/view/holo_scan.gdshader`
 - `features/progression/defs/class_def.gd`: A hero's RPG class: growth stats added per level above 1 and a passive perk (content/progression/classes.json)
 - `features/progression/defs/levels_def.gd`: Thresholds of total XP required to reach each level (content/progression/levels.json)
 - `features/progression/logic/level_up.gd`: Holds the details of a hero's level advancement: from/to levels and stat gains
@@ -680,6 +693,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_camera_v2.tscn`: scene
 - `tools/shot_dialogue.gd`: Renders one dialogue line over the rooftop to an inbox PNG, to judge the portrait and box layout by eye
 - `tools/shot_dialogue.tscn`: scene
+- `tools/shot_holo_map.gd`: purpose: Renders holographic map (area and city views) over the starting rooftop to inbox PNGs
+- `tools/shot_holo_map.tscn`: scene
 - `tools/shot_hud.gd`: Renders the battle HUD to PNG files (not headless; needs a window)
 - `tools/shot_menu.gd`: Renders pause, save, or shop menu at 1920x1080 to an inbox PNG
 - `tools/shot_menu.tscn`: scene
