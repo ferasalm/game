@@ -22,9 +22,6 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-21 | Local development on Windows is primary: edit and check here, push a branch; Godot 4.7.2 win64 exes sit in the repo root (git-ignored) | Feras runs the editor here | Feras/Claude
 - 2026-10-21 | Every question to Feras: 2-4 multiple-choice options, a recommended first one with the why, plain words (beginner) | Feras is new to game dev | Feras
 - 2026-10-21 | The autonomous run pauses only for owner questions, logins, CAPTCHAs, downloads and anything that costs money; it never works around them | safety rules + $0 budget | Feras/Claude
-- 2026-10-21 | Prototype v0 = walk, then battle: one rooftop area, a workshop, a patrol, one battle in place (docs/design/prototype.md) | Feras chose it over "one battle" | Feras
-- 2026-10-21 | Prototype battle: Zayd + Bilqis vs 3 Concession enemies (2 enforcers, 1 drone) | Feras (recommended) | Feras
-- 2026-10-21 | Prototype has a small djanbeyyah pick: 2 hilts x 2 blades at a workshop | Feras (recommended) | Feras
 - 2026-10-21 | Player text: localization/<feature>.csv loaded at startup by a TextDB autoload, not Godot's CSV import | that import errors on a fresh clone (CI) and writes binaries | Claude
 - 2026-10-21 | The 8 game skills are copied from .agents/skills/ to .claude/skills/ (both kept) so Claude Code can load them inline | a skill costs ~2-4k tokens, an agent start 150k+ | Feras
 - 2026-10-21 | A Game Designer (loaded as a skill) reviews combat.md and prototype.md before the prototype build starts | second opinion before code, cheaply | Feras
@@ -68,3 +65,6 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-23 | Camera: close follow outdoors (Brothers), automatic, no player control, a three-quarter side angle (~32 deg) by default, a rolled horizon (5-8 deg) only in designed tension zones; corner framed shots indoors | Feras (inbox/camera_tilt_options.png) | Feras
 - 2026-10-23 | Demo = level 1 (demo-plan.md, level-1.md): 5 roofs of separate tower-houses joined by board, bridge, zipline, contextual leap, cable; Abu Nabil on the market roof; the tayramana the only room (majlis + workbench); night storm with rain, cyberpunk old Sana'a per his concept art; finale light lock + water routing (valve-puzzles.md); timeline battles kept | Feras | Feras
 - 2026-10-23 | Camera: when a wall blocks the view it rises toward an isometric view, never closes in on faces (test on the five roofs first) | Feras playtest | Feras
+- 2026-10-23 | RPG layer (docs/design/rpg-systems.md): XP + levels, one fixed class per hero (growth + passive), armor slot, Luck stat, dodge/crit/resist rolls; flee = short interruptible cast, never in boss fights (Abu Nabil incl.) | Feras (recommended) | Feras
+- 2026-10-23 | Menus (rpg-menus.md): own equipment menu with a live 3D hologram hero; workshop = upgrade, gemstones, small real crafting (3 materials, 4 recipes); every menu pauses over a painted backdrop; holo area + Sana'a map | Feras (recommended) | Feras
+- 2026-10-23 | Zayd's kit (zayd-moves.md 2026-10-22) gets built, plus ATK split across multi-hit moves so SP moves beat the free strike | Feras: SP moves "basically useless" | Feras/Claude
