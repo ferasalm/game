@@ -19,4 +19,4 @@ func _can_interact() -> bool:
 
 func _interact() -> void:
 	opened.emit(shop_id)
-	Screens.open(&"shop", {"shop": shop_id})
+	InteractFocus.open_spot(self, shop_id, _player, &"shop", {"shop": shop_id})

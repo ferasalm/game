@@ -150,6 +150,8 @@ func test_the_stall_opens_the_shop_and_the_prompt_is_a_pill() -> void:
 	check(rooftop.stall.pill().visible, "the pill shows at the counter")
 	check_eq(rooftop.stall.pill().verb_text(), "Talk", "its verb comes from the localization key")
 	rooftop.stall._interact()
+	if InteractFocus.current != null:
+		InteractFocus.current.advance(0.6)
 	check_eq(shops, [&"herb_stall"] as Array[StringName], "interact opens the herb stall's shop")
 	check(Screens.is_open_id(&"shop"), "the shop screen is up")
 	Screens.clear()

@@ -96,7 +96,7 @@ func _setup_interacts(rules: ExploreRulesDef) -> void:
 	bench_place.prop = &"workbench"
 	workshop = WorkshopSpot.new(rules, player, bench_place, false)
 	workshop.position = Vector3(5.4, 0.0, 3.8)
-	workshop.opened.connect(workshop_opened.emit)
+	workshop.opened.connect(func() -> void: InteractFocus.open_spot(workshop, &"workbench", player, Screens.WORKSHOP_ID))
 	add_child(workshop)
 	for s: RoomDef.SitSpot in spec.sit_spots:
 		var spot := RoomSitSpot.new(rules, player, s.id)

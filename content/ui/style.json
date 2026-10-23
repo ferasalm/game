@@ -33,7 +33,7 @@
 
      "t_loot_fade": 0.35, "t_loot_hold": 2.2, "t_loot_shine": 0.9,
      "t_title_fade": 0.9, "t_pulse": 1.6, "t_card_in": 0.9, "t_card_hold": 2.8, "t_card_out": 1.1,
-     "t_focus_sweep": 0.35, "t_screen_in": 0.22, "t_screen_out": 0.16, "t_portrait_in": 0.4, "t_text_char": 0.025,
+     "t_focus_sweep": 0.35, "t_focus_zoom": 0.6, "t_screen_in": 0.22, "t_screen_out": 0.16, "t_portrait_in": 0.4, "t_text_char": 0.025,
      "t_money_count": 0.5, "t_toast_hold": 2.0, "t_toast_fade": 0.3, "t_transition_sweep": 0.6, "t_defeat_fade": 1.2,
      "t_money_flash": 0.4, "t_caret": 0.5, "t_prompt_fade": 0.2,
 
