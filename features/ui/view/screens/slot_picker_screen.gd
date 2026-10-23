@@ -130,7 +130,7 @@ func _make_action_button(label_text: String) -> Button:
 	var btn := Button.new()
 	btn.text = label_text
 	btn.custom_minimum_size = Vector2(280, 72)
-	sweep_on_focus(btn)
+	UiBoxes.apply_pill_button(btn, Ui.style())
 	return btn
 
 

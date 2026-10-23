@@ -4,7 +4,7 @@ extends TestCase
 const RECTS: Dictionary = {
 	"pause_cmd": [80.0, 80.0, 420.0, 760.0],
 	"pause_info": [80.0, 880.0, 420.0, 100.0],
-	"pause_party": [540.0, 80.0, 1300.0, 900.0],
+	"pause_party": [540.0, 80.0, 1300.0, 450.0],
 	"save_title": [560.0, 60.0, 800.0, 90.0],
 	"save_rows": [440.0, 180.0, 900.0, 620.0],
 	"save_detail": [1380.0, 180.0, 460.0, 620.0],
@@ -66,8 +66,8 @@ func test_backdrop_is_child_0_of_screens() -> void:
 
 func test_pause_party_row_progression_and_ko() -> void:
 	var row := PauseHeroRow.new().setup(&"zayd")
-	check(row.lv_node() != null and not row.lv_node().visible, "hidden Lv node")
-	check(row.xp_bar() != null and not row.xp_bar().visible, "hidden XP node")
+	check(row.lv_node() != null and row.lv_node().visible, "visible Lv node")
+	check(row.xp_bar() != null and row.xp_bar().visible, "visible XP node")
 	check_eq(row.xp_bar().custom_minimum_size, Vector2(360, 10), "xp bar 360x10")
 	check_eq(row.hp_bar().custom_minimum_size, Vector2(420, 14), "hp bar 420x14")
 	check_eq(row.sp_bar().custom_minimum_size, Vector2(420, 14), "sp bar 420x14")

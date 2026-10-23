@@ -21,6 +21,21 @@ func _init() -> void:
 	row.add_child(_label)
 
 
+## Styles the money counter as a framed pill with rounded corners and brass border.
+func set_pill_style() -> void:
+	var style: UiStyleDef = Ui.style()
+	var box := StyleBoxFlat.new()
+	box.set_corner_radius_all(style.size(&"s_gap"))
+	box.set_border_width_all(style.size(&"s_frame_line"))
+	box.border_color = style.colour(&"c_brass")
+	box.bg_color = style.colour(&"c_glass_menu")
+	box.content_margin_left = style.size(&"s_pad")
+	box.content_margin_right = style.size(&"s_pad")
+	box.content_margin_top = 4
+	box.content_margin_bottom = 4
+	add_theme_stylebox_override("panel", box)
+
+
 ## Sets the amount; with animate (and the pill in the tree) the shown number counts there.
 func set_amount(amount: int, animate: bool = true) -> void:
 	var style: UiStyleDef = Ui.style()

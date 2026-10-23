@@ -98,3 +98,46 @@ static func pill(style: UiStyleDef, edge: Color) -> StyleBoxFlat:
 	box.content_margin_top = 0
 	box.content_margin_bottom = 0
 	return box
+
+
+## A framed pill button style (SAVE, DELETE SLOT, BACK, shop tabs).
+static func pill_button(style: UiStyleDef, state: StringName) -> StyleBoxFlat:
+	var box := StyleBoxFlat.new()
+	var line: int = style.size(&"s_frame_line")
+	var rad: int = style.size(&"s_gap")
+	box.set_corner_radius_all(rad)
+	box.set_border_width_all(line)
+	box.content_margin_left = style.size(&"s_pad")
+	box.content_margin_right = style.size(&"s_pad")
+	box.content_margin_top = style.size(&"s_gap")
+	box.content_margin_bottom = style.size(&"s_gap")
+	match state:
+		&"normal":
+			box.bg_color = style.colour(&"c_glass_menu")
+			box.border_color = style.colour(&"c_brass")
+		&"hover":
+			box.bg_color = style.colour(&"c_indigo")
+			box.border_color = style.colour(&"c_cyan")
+		&"pressed":
+			box.bg_color = style.colour(&"c_glass_lit")
+			box.border_color = style.colour(&"c_brass")
+		&"focus":
+			box.bg_color = style.colour(&"c_glass_lit")
+			box.border_color = style.colour(&"c_cyan")
+			box.shadow_color = style.colour(&"c_cyan")
+			box.shadow_color.a = 0.35
+			box.shadow_size = style.size(&"s_focus_glow")
+		&"disabled":
+			box.bg_color = Color(0.0, 0.0, 0.0, 0.35)
+			box.border_color = style.colour(&"c_disabled")
+	return box
+
+
+## Applies framed pill styling to a button.
+static func apply_pill_button(btn: Button, style: UiStyleDef) -> void:
+	for state: StringName in [&"normal", &"hover", &"pressed", &"focus", &"disabled"]:
+		btn.add_theme_stylebox_override(state, pill_button(style, state))
+	btn.add_theme_color_override("font_focus_color", style.colour(&"c_cyan"))
+	btn.add_theme_color_override("font_hover_color", style.colour(&"c_cyan"))
+	btn.focus_entered.connect(UiSweep.start.bind(btn))
+	btn.focus_exited.connect(UiSweep.clear.bind(btn))

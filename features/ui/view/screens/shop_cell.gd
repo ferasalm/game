@@ -9,7 +9,7 @@ var _price_label: Label
 var _tag_label: Label
 
 
-func setup(def: ConsumableDef, price: int, owned: int, _can_afford: bool, is_sold_out: bool) -> ShopCell:
+func setup(def: ConsumableDef, price: int, _owned: int, _can_afford: bool, is_sold_out: bool) -> ShopCell:
 	item_id = def.id if def != null else &""
 	var style: UiStyleDef = Ui.style()
 	custom_minimum_size = Vector2(220, 170)
@@ -25,7 +25,7 @@ func setup(def: ConsumableDef, price: int, owned: int, _can_afford: bool, is_sol
 	col.set_anchors_preset(Control.PRESET_FULL_RECT)
 	col.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	col.alignment = BoxContainer.ALIGNMENT_CENTER
-	col.add_theme_constant_override("separation", 4)
+	col.add_theme_constant_override("separation", 2)
 	add_child(col)
 
 	_build_content(col, style, def, rarity_col, price, is_sold_out)
@@ -39,13 +39,12 @@ func setup(def: ConsumableDef, price: int, owned: int, _can_afford: bool, is_sol
 func _build_content(col: Control, style: UiStyleDef, def: ConsumableDef, rarity_col: Color, price: int, is_sold_out: bool) -> void:
 	_icon_rect = TextureRect.new()
 	_icon_rect.custom_minimum_size = Vector2(96, 96)
-	_icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_icon_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	ItemIcons.apply(_icon_rect, def, 96)
 	col.add_child(_icon_rect)
 
 	var name_text: String = Ui.text(def.name_key) if def != null else ""
-	_name_label = Ui.label(name_text, &"NameLabel", rarity_col)
+	_name_label = Ui.label(name_text, &"SmallLabel", rarity_col)
 	_name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	col.add_child(_name_label)
 

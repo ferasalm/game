@@ -20,11 +20,15 @@ func _init() -> void:
 func build(_args: Dictionary) -> void:
 	var style: UiStyleDef = Ui.style()
 
-	_cmd_panel = Ui.panel(Ui.text("PAUSE_HEADING"), Ui.text("PAUSE_HEADING_MUSNAD"))
+	_cmd_panel = Ui.panel()
 	_cmd_panel.position = Vector2(80, 80)
 	_cmd_panel.size = Vector2(420, 760)
 	_cmd_panel.custom_minimum_size = Vector2(420, 760)
 	add_child(_cmd_panel)
+
+	var title_plate: PanelContainer = Ui.title_plate(Ui.text("PAUSE_HEADING"), Ui.text("PAUSE_HEADING_MUSNAD"))
+	_cmd_panel.body.add_child(title_plate)
+	_cmd_panel.body.add_child(Ui.divider())
 
 	_entry_ids = PauseLogic.entries(Screens.has_screen(PauseLogic.ITEMS), Screens.has_screen(PauseLogic.EQUIPMENT),
 			Router.has_any_save())
@@ -41,15 +45,21 @@ func build(_args: Dictionary) -> void:
 	add_child(_info_box)
 	_build_info_box(_info_box)
 
+	_party = PauseParty.new()
+	_party.fill()
+	var party_count: int = _party.rows().size()
+	var row_h: int = 200
+	var pad_y: int = style.size(&"s_pad")
+	var content_h: int = party_count * row_h + maxi(0, party_count - 1) * pad_y
+	var margin_y: int = int(style.size(&"s_frame_cell") - style.size(&"s_frame_gap")) * 2
+	var panel_h: int = content_h + margin_y
+
 	_party_panel = Ui.panel()
 	_party_panel.position = Vector2(540, 80)
-	_party_panel.size = Vector2(1300, 900)
-	_party_panel.custom_minimum_size = Vector2(1300, 900)
+	_party_panel.size = Vector2(1300, panel_h)
+	_party_panel.custom_minimum_size = Vector2(1300, panel_h)
 	add_child(_party_panel)
-
-	_party = PauseParty.new()
 	_party_panel.body.add_child(_party)
-	_party.fill()
 
 
 func focus_default() -> void:
@@ -149,7 +159,7 @@ func _build_info_box(box: PanelContainer) -> void:
 	var place: String = Ui.text(area.name_key) if area != null else "Souq al-Milh Rooftops"
 	col.add_child(Ui.label("%s: %s" % [Ui.text("PAUSE_AREA"), place], &"SmallLabel"))
 	var row := HBoxContainer.new()
-	var money: MoneyCounter = Ui.money_counter()
+	var money: MoneyCounter = Ui.money_counter(true)
 	money.set_amount(PauseLogic.money_of(GameState.get(&"money")), false)
 	row.add_child(money)
 	var time_lbl := Ui.label("%s: %s" % [Ui.text("PAUSE_TIME"), PauseLogic.clock(GameState.get(&"play_seconds"))], &"SmallLabel")

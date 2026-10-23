@@ -24,3 +24,8 @@ static func effect(def: ConsumableDef) -> String:
 	if def.sp > 0:
 		parts.append(Ui.text("ITEMS_EFFECT_SP") % def.sp)
 	return "  ".join(parts)
+
+
+## A stat change line with an up arrow: "HP 450 -> 510 (+60) ▲".
+static func comparison(stat_tag: String, now_val: int, next_val: int, diff: int) -> String:
+	return "%s %d -> %d (+%d) ▲" % [stat_tag, now_val, next_val, diff]

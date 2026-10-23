@@ -9,6 +9,7 @@ var _time: Label
 var _money: MoneyCounter
 var _empty_note: Label
 var _content: VBoxContainer
+var _party_row: HBoxContainer
 
 
 func _init() -> void:
@@ -31,7 +32,10 @@ func _init() -> void:
 	_content = VBoxContainer.new()
 	_content.add_theme_constant_override("separation", style.size(&"s_gap"))
 	box.add_child(_content)
+	_build_content(style)
 
+
+func _build_content(style: UiStyleDef) -> void:
 	var thumb_box := PanelContainer.new()
 	thumb_box.custom_minimum_size = Vector2(440, 248)
 	thumb_box.add_theme_stylebox_override("panel", UiBoxes.panel(style, &"inset"))
@@ -52,6 +56,10 @@ func _init() -> void:
 	_money = Ui.money_counter()
 	money_row.add_child(_money)
 	_content.add_child(money_row)
+
+	_party_row = HBoxContainer.new()
+	_party_row.add_theme_constant_override("separation", style.size(&"s_pad"))
+	_content.add_child(_party_row)
 
 
 func show_slot(slot: int, has_data: bool, summary: Dictionary, service: SaveService) -> void:
@@ -74,6 +82,23 @@ func show_slot(slot: int, has_data: bool, summary: Dictionary, service: SaveServ
 	var mins: int = (int(secs) % 3600) / 60
 	_time.text = Ui.text("SLOT_PLAY_TIME_FMT") % ("%02dh %02dm" % [hours, mins])
 	_money.set_amount(int(summary.get("money", 0)), false)
+	_refresh_party(slot, service)
+
+
+func _refresh_party(slot: int, service: SaveService) -> void:
+	for child: Node in _party_row.get_children():
+		child.queue_free()
+	var party: Array = []
+	if service != null and service.exists(slot):
+		var full: Dictionary = service.read(slot)
+		party = full.get("party", [])
+	if party.is_empty():
+		party = [&"zayd", &"bilqis"]
+	for hero_v: Variant in party:
+		var hero: StringName = StringName(hero_v)
+		var face: Control = PortraitFaces.face(hero, Ui.style().colour(&"c_party"))
+		face.custom_minimum_size = Vector2(48, 48)
+		_party_row.add_child(face)
 
 
 func thumbnail_rect() -> TextureRect:

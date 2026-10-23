@@ -4,7 +4,7 @@ extends Def
 ## at 1920x1080 (s_*) and times in seconds (t_*). Screens ask for a name; they never hold a number or colour.
 
 const COLOURS: Array[StringName] = [
-	&"c_glass", &"c_glass_deep", &"c_indigo", &"c_indigo_lit", &"c_brass", &"c_brass_dim", &"c_gypsum",
+	&"c_glass", &"c_glass_deep", &"c_glass_menu", &"c_indigo", &"c_indigo_lit", &"c_brass", &"c_brass_dim", &"c_gypsum",
 	&"c_gypsum_dim", &"c_text", &"c_muted", &"c_cyan", &"c_magenta", &"c_hp_a", &"c_hp_b", &"c_sp_a", &"c_sp_b",
 	&"c_good", &"c_bad", &"c_party", &"c_enemy", &"c_cast", &"c_shadow", &"c_scrim", &"c_title_shade",
 	&"c_glass_lit", &"c_epithet", &"c_disabled", &"c_qam_red", &"c_qam_amber", &"c_qam_green", &"c_qam_blue", &"c_qam_violet"]

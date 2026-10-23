@@ -41,6 +41,7 @@ static func font(style: UiStyleDef, key: StringName) -> Font:
 static func _labels(theme: Theme, style: UiStyleDef) -> void:
 	theme.set_color(&"font_color", &"Label", style.colour(&"c_text"))
 	theme.set_color(&"font_shadow_color", &"Label", style.colour(&"c_shadow"))
+	theme.set_font_size(&"font_size", &"Label", style.size(&"s_font_body"))
 	for variant: StringName in LABEL_VARIANTS:
 		theme.set_type_variation(variant, &"Label")
 	_label(theme, style, &"TitleLabel", &"font_title", &"s_font_title", &"c_brass")
@@ -75,9 +76,11 @@ static func _buttons(theme: Theme, style: UiStyleDef) -> void:
 		theme.set_color(&"font_disabled_color", type_name, style.colour(&"c_disabled"))
 		theme.set_constant(&"h_separation", type_name, style.size(&"s_gap"))
 		for state: StringName in [&"normal", &"hover", &"pressed", &"focus", &"disabled"]:
-			theme.set_stylebox(state, type_name, UiBoxes.button(style, state))
-		theme.set_stylebox(&"hover_pressed", type_name, UiBoxes.button(style, &"pressed"))
-	theme.set_stylebox(&"normal", &"TabButton", UiBoxes.button(style, &"disabled"))
+			theme.set_stylebox(state, type_name, UiBoxes.button(style, state) if type_name == &"Button" else UiBoxes.pill_button(style, state))
+		theme.set_stylebox(&"hover_pressed", type_name, UiBoxes.button(style, &"pressed") if type_name == &"Button" else UiBoxes.pill_button(style, &"pressed"))
+	theme.set_color(&"font_focus_color", &"TabButton", style.colour(&"c_cyan"))
+	theme.set_color(&"font_pressed_color", &"TabButton", style.colour(&"c_cyan"))
+	theme.set_color(&"font_hover_color", &"TabButton", style.colour(&"c_cyan"))
 
 
 static func _bars(theme: Theme, style: UiStyleDef) -> void:
