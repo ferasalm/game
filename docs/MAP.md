@@ -21,6 +21,16 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `.agents/skills/narrative-designer/SKILL.md`
 - `.agents/skills/technical-artist/SKILL.md`
 
+## .opencode
+- `.opencode/agent/blender-addon-engineer.md`
+- `.opencode/agent/game-audio-engineer.md`
+- `.opencode/agent/game-designer.md`
+- `.opencode/agent/godot-gameplay-scripter.md`
+- `.opencode/agent/godot-shader-developer.md`
+- `.opencode/agent/level-designer.md`
+- `.opencode/agent/narrative-designer.md`
+- `.opencode/agent/technical-artist.md`
+
 ## content
 - `content/art/clips.json`: content: clip x15
 - `content/art/models.json`: content: model x5
@@ -671,6 +681,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/map.py`: Writes docs/MAP.md from each file's purpose line, so the map never drifts. --check: exit 1 if stale.
 - `tools/merge_run.sh`: Merges one gated builder run into the current branch (DECISIONS 2026-10-23): only a PASS .result; a fast-forward onto
 - `tools/musnad.py`: Transliterate Arabic to Musnad (Old South Arabian) letter by letter; scan files for Arabic.
+- `tools/oc_agents.py`: Makes one opencode subagent per game skill (.agents/skills/<name> -> .opencode/agent/<name>.md); --check fails when stale.
 - `tools/oc_review.sh`: Reviews an opencode task (branch oc/<task>) the same cheap way as an agy one: report, check result, commits, stats,
 - `tools/oc_task.sh`: Runs opencode on one task brief inside its own git worktree, never in the main checkout (DECISIONS 2026-10-23).
 - `tools/rodin/rewrite_glb.py`: Rebuild a Rodin glb with new triangle indices (from Godot, winding flipped back; IDX_BIN '-' keeps its own), no
