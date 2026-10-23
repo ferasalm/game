@@ -50,22 +50,20 @@ reboot_pulse (ally; 14; heal 60 + Atk x0.5, revives a downed ally), elder_cut (f
 300 seeded battles per row, BattleAI plays both sides (it heals an ally under 40% HP, revives, guards before a
 big cast); Bilqis in her wrist_rig. Rows are Zayd hilt + blade + prosthetic; noise is about +-3 points.
 ```
-obtainable now (with rpg-rolls-flee rules: dodge/crit/resist/flee)  win %   secs
-2026-10-23 harness (30 battles each, faster run):
-grandfather + rustwire + salvage_arm                  3.3   49.6
-grandfather + rustwire + arc_arm                      0.0   48.8
-grandfather + keen + salvage_arm                      0.0   44.6
-grandfather + keen + arc_arm                          0.0   49.1
-swift + rustwire + salvage_arm                        0.0   47.8
-swift + rustwire + arc_arm                            0.0   47.5
-swift + keen + salvage_arm                            0.0   47.6
-swift + keen + arc_arm                                0.0   45.6
-anvil + rustwire + salvage_arm                        0.0   46.3
-anvil + rustwire + arc_arm                            0.0   47.4
-anvil + keen + salvage_arm                            0.0   51.0
-anvil + keen + arc_arm                                0.0   47.3
-bilqis: wrist_rig                                      3.3   49.6
-bilqis: lens_array                                     0.0   47.0
+obtainable now (2026-10-23 zayd-kit redesign, 300 battles each):  win %   secs
+grandfather + rustwire + salvage_arm                  82.7   63.9
+grandfather + rustwire + arc_arm                      97.0   51.3
+grandfather + keen + salvage_arm                      89.3   62.0
+grandfather + keen + arc_arm                          98.0   49.3
+swift + rustwire + salvage_arm                        89.3   58.9
+swift + rustwire + arc_arm                            97.7   48.4
+swift + keen + salvage_arm                            91.7   57.3
+swift + keen + arc_arm                                98.3   46.9
+anvil + rustwire + salvage_arm                        92.0   57.7
+anvil + rustwire + arc_arm                            99.0   44.3
+anvil + keen + salvage_arm                            95.3   56.8
+anvil + keen + arc_arm                                99.3   42.8
+bilqis: wrist_rig                                     82.7   63.9
+bilqis: lens_array                                    87.3   61.6
 ```
-The new roll rules (dodge, crit, resist, flee) significantly change balance; the harness still runs cleanly.
-Target unchanged: 65-90% wins per pairing. Numbers will be retuned by play-through after rules stabilize.
+Target met: start gear 82.7% (65-90% window), all durations 42.8-63.9 s (40-90 s window). Enemy numbers tuned: enforcer HP 420->390, Atk 28->27; drone HP 220->190, Atk 24->23.

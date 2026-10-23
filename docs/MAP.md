@@ -39,7 +39,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/combat/encounters.json`: content: encounter x6
 - `content/combat/juice.json`: content: battle_juice x1
 - `content/combat/rules.json`: content: battle_rules x1
-- `content/combat/statuses.json`: content: status x4
+- `content/combat/statuses.json`: content: status x6
 - `content/combat/vfx.json`: content: vfx x16
 - `content/combat/view.json`: content: battle_view x1
 - `content/dialogue/box.json`: content: dialogue_style x1
@@ -187,6 +187,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/harness/item_policy.gd`: The balance harness's opt-in herb use (docs/design/economy.md section 9): a white herb on a downed hero, a pink herb on the living hero below 40% HP, a yellow herb when a hero cannot pay for his cheapest move
 - `features/combat/logic/battle_action_rules.gd`: Move uses per battle, miss roll for confused units, and status cures for BattleSim and BattleResolver
 - `features/combat/logic/battle_ai.gd`: The one battle policy (enemies in play, both sides in the balance harness), in this order: 1
+- `features/combat/logic/battle_ai_tactics.gd`: Tactics evaluation for BattleAI (section 4): stance against incoming melee, shove near COMMAND, arc on spread/jammed
 - `features/combat/logic/battle_flee_logic.gd`: Flee resolution logic, extracted to keep battle_sim.gd under 200 lines
 - `features/combat/logic/battle_items.gd`: The Items command of a battle (docs/design/economy.md section 5)
 - `features/combat/logic/battle_outcome.gd`: What a finished battle hands back: result (victory, defeat, retry, load, title), the party's vitals and bag after the fight, and the rewards (money, equippable items, consumables) still to be applied to GameState by the Router
@@ -239,6 +240,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/tests/test_reverse_stab.gd`: The reverse stab: only when the party was ambushed, Zayd strikes the lowest-slot living enemy first
 - `features/combat/tests/test_timeline.gd`: Timeline rules: command pause, cast and act, interrupts, knockback limits, determinism
 - `features/combat/tests/test_vfx.gd`: Battle effects: every ActionDef vfx kind has data, every texture paints, the effect player builds and plays each kind (single target and all foes) without errors and gives its sprites back to the pool, and the juice numbers (hitstop, shake, zoom) come from data and rank heavy above light
+- `features/combat/tests/test_zayd_kit.gd`: Tests for Zayd's redesigned kit (zayd-moves.md section 5 and brief): damage split, sp_gain, after_act_pos, cast_status, bonus vs status, poised counter, shove, and content comparisons
 - `features/combat/view/arena_builder.gd`: Builds a battle arena from its ArenaDef: a painted roof slab whose top is at the arena origin, a parapet round three sides (the fourth is the camera's), the dressing (props, lanterns, the city behind) and the look's key light, placed far from the exploring area (content/combat/arenas.json)
 - `features/combat/view/arena_dressing.gd`: The things standing on and around an arena's roof, built with the world's own helpers so the painted look applies: props (PropBuilder; no collision, nothing walks here), the lanterns' light (AreaLights, a few real OmniLights plus fake pools), and the city behind (SkylineBuilder) centred on the roof
 - `features/combat/view/battle_action_player.gd`: Plays the swing of one move: the camera leans toward the actor, the actor plays its clip (attack, cast or item) while a melee actor anticipates and dashes, and the call returns when the CLIP says the hit lands (its `impact` event, never a timer; a ranged move then waits out its effect's flight)
@@ -273,6 +275,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/view/battle_strips.gd`: The resting vitals of the battle: a slim BattleUnitStrip under each hero's feet (always there) and under a foe while it was hit lately or is pointed at (it fades after the view's delay)
 - `features/combat/view/battle_style.gd`: Small builders for the battle screen's look (labels, bars, names, head icons)
 - `features/combat/view/battle_timeline_bar.gd`: The thin top bar of the battle: a slim brass track from 0 to ACT_POINT with a COMMAND mark and a tinted cast zone (BattleTrackArt, compact), one small head icon per living unit at its timeline position (foes above the track, the party below it), and at the left the name of the chosen target
+- `features/combat/view/battle_timeline_ghost.gd`: Ghost landing marker on the timeline bar for previewing knockback (section 3 and 6)
 - `features/combat/view/battle_track_art.gd`: The painted brass track of the timeline bar: dark glass, brass rails, tick marks, the tinted cast zone, a gypsum zigzag frieze along the bottom, the COMMAND mark (a brass line with diamonds) and an end cap at ACT
 - `features/combat/view/battle_turn_panel.gd`: What a hero's turn shows, in one framed panel: that hero's full card over the compact command menu (or the herb list), placed beside the hero on the side where no fighter stands
 - `features/combat/view/battle_unit_strip.gd`: One slim vitals strip under a fighter's feet: a name initial (the letter for same-kind foes) and a thin HP bar, for a hero also a thinner SP bar
