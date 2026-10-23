@@ -46,7 +46,8 @@ if check; then :; else
 fi
 leftovers "check"  # the .uid files Godot wrote during the last check belong to the checked tree
 py=python; command -v python > /dev/null 2>&1 || py=python3
-gate="$($py "$here/build_gate.py" gate --wt "$wt" --base "$base" --brief "$brief" --check "$wt.check.txt" \n  ${fix_from:+--fix-from "$fix_from"} --inbox "$root/inbox" 2>&1)"
+gate="$($py "$here/build_gate.py" gate --wt "$wt" --base "$base" --brief "$brief" --check "$wt.check.txt" \
+  ${fix_from:+--fix-from "$fix_from"} --inbox "$root/inbox" 2>&1)"
 status="$(echo "$gate" | sed -n 's/^VERDICT //p')"; status="${status:-FAIL}"
 { echo "$status $(date +%H:%M) $prefix/$name"
   echo "checked $(git -C "$wt" rev-parse HEAD)"

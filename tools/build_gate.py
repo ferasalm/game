@@ -98,7 +98,7 @@ def verdict(check_text, files, hits):
 
 def added_lines(repo, base):
     out, cur = {}, None
-    for ln in git(repo, "diff", "-U0", f"{base}..HEAD").splitlines():
+    for ln in git(repo, "diff", "-U0", f"{base}...HEAD").splitlines():
         if ln.startswith("+++ "):
             cur = ln[6:] if ln.startswith("+++ b/") else None
         elif cur and ln.startswith("+") and not ln.startswith("+++"):
@@ -111,11 +111,11 @@ def changed(repo, rng):
 
 
 def run_gate(a):
-    files = changed(a.wt, f"{a.base}..HEAD")
+    files = changed(a.wt, f"{a.base}...HEAD")  # from the fork point: a moving base is not the run's work
     brief = open(a.brief, encoding="utf-8").read()
     check_text = open(a.check, encoding="utf-8", errors="replace").read() if os.path.isfile(a.check) else ""
     hits = breaches(real_files(files), forbidden_paths(brief))
-    fix_tests = [f for f in changed(a.wt, f"{a.fix_from}..HEAD") if is_test(f)] if a.fix_from else []
+    fix_tests = [f for f in changed(a.wt, f"{a.fix_from}...HEAD") if is_test(f)] if a.fix_from else []
     word = verdict(check_text, files, hits)
     for ln in fail_lines(check_text):
         print(ln)

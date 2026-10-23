@@ -102,6 +102,19 @@ def test_clean_run_passes_with_checklist():
     assert "player text: 2 new line(s)" in out, out
 
 
+def test_moving_base_is_not_the_runs_work():  # puzzle-logic: the session branch gained commits during the run
+    repo, base = new_repo()
+    sh(repo, "checkout", "-q", "-b", "run")
+    write(repo, "features/x/tests/test_x.gd", "## t\nvar n: int = 3\n")
+    commit(repo, "run work")
+    sh(repo, "checkout", "-q", "main")
+    write(repo, "features/world/view/cam.gd", "## c\n")
+    commit(repo, "session work after the fork")
+    sh(repo, "checkout", "-q", "run")
+    code, out = verdict_of(lambda: gate(repo, "main"))
+    assert code == 0 and "BREACH" not in out and out.strip().endswith("VERDICT PASS"), out
+
+
 def test_code_without_tests_warns():
     items = bg.checklist(["features/x/logic/x.gd"], {}, "", ".", [])
     assert ("WARN", "tests", "code changed but no test file changed") in items
