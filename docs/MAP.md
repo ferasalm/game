@@ -48,13 +48,18 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/dialogue/talks.json`: content: talk x1
 - `content/economy/rules.json`: content: economy_rules x1
 - `content/economy/shops.json`: content: shop x1
+- `content/items/armor.json`: content: armor x5
 - `content/items/chests.json`: content: chest x4
 - `content/items/consumables.json`: content: consumable x4
-- `content/items/perks.json`: content: perk x6
+- `content/items/perks.json`: content: perk x16
 - `content/items/rarities.json`: content: rarity x6
 - `content/jambiyah/blades.json`: content: blade x3
+- `content/jambiyah/heirloom.json`: content: heirloom x3
 - `content/jambiyah/hilts.json`: content: hilt x3
 - `content/jambiyah/loadouts.json`: content: loadout x2
+- `content/jambiyah/stones.json`: content: stone x12
+- `content/progression/classes.json`: content: class x2
+- `content/progression/levels.json`: content: levels x1
 - `content/prosthetics/prosthetics.json`: content: prosthetic x6
 - `content/prototype/flow.json`: content: flow_rules x1
 - `content/ui/style.json`: content: ui_style x1
@@ -178,7 +183,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/defs/vfx_def.gd`: One battle effect kind (content/combat/vfx.json, id = an ActionDef.VFX_KINDS entry): when the hit lands, the hitstop and camera shake / push it earns, and the layers of pooled sprites it paints
 - `features/combat/defs/vfx_layer.gd`: One layer of a VfxDef: `count` sprites of one texture that start at an anchor (plus an offset), grow from size to size_end, drift or travel, spin and fade
 - `features/combat/harness/balance.gd`: Balance harness: seeded battles per gear pairing with BattleAI playing both sides, one table
-- `features/combat/harness/battle_loader.gd`: Gathers the battle content from a loaded ContentDB (passed in as a Node) and builds ready-to-run BattleSims for the default encounter
+- `features/combat/harness/battle_loader.gd`: Gathers the battle content from a loaded ContentDB and builds ready-to-run BattleSims for the default encounter
 - `features/combat/harness/item_policy.gd`: The balance harness's opt-in herb use (docs/design/economy.md section 9): a white herb on a downed hero, a pink herb on the living hero below 40% HP, a yellow herb when a hero cannot pay for his cheapest move
 - `features/combat/logic/battle_action_rules.gd`: Move uses per battle, miss roll for confused units, and status cures for BattleSim and BattleResolver
 - `features/combat/logic/battle_ai.gd`: The one battle policy (enemies in play, both sides in the balance harness), in this order: 1
@@ -309,6 +314,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/equipment/view/equipment_item_button.gd`: Builds one owned item as a menu button: its name in the rarity colour, the rarity tag and an "Equipped" mark on the right
 - `features/equipment/view/equipment_page.gd`: The equipment layout: title and hero tabs on top, the slot lists on the left, the item detail and stat comparison on the right, Confirm with the back hint at the bottom
 - `features/equipment/view/equipment_screen.gd`: The equipment screen (the bench): a tab per hero (Zayd: hilt, blade, prosthetic; Bilqis: prosthetic), the OWNED items of each slot with rarity colours and tags, the perk and tech moves of the focused item, and the stat comparison base vs
+- `features/items/defs/armor_def.gd`: Armor worn in slot "<hero>.armor": raises HP, DEF, alters AGI and WT (content/items/armor.json)
 - `features/items/defs/chest_def.gd`: A chest holding an equippable (an id of a hilt, blade or prosthetic), riyal and/or consumables; at least one
 - `features/items/defs/consumable_def.gd`: A stackable item used from the bag, in the field or in battle (feathered herbs, the qishr cup)
 - `features/items/defs/count_map.gd`: Reads an optional {"id": count} JSON object (rewards, the start bag) as {StringName: int}, each count 1 or more
@@ -321,7 +327,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/items/logic/bag.gd`: The party's stackable consumables: counts per id plus RESERVATIONS made by pending battle casts
 - `features/items/logic/chests.gd`: Chest rules: opening gives the item once, and the opened state is a saved flag
 - `features/items/logic/field_use.gd`: Using a consumable outside battle, pure: the item must be usable in the field, aimed at living allies, and must change something (a full hero is refused)
-- `features/items/logic/gear.gd`: Builds a hero's fighter from the shared base plus worn gear: base -> hilt -> blade -> prosthetic -> perks (caps are applied by each step)
+- `features/items/logic/gear.gd`: Builds a hero's fighter from base stats, class level growth, armor, weapons, prosthetic, socketed gemstones, item upgrades, and perks
+- `features/items/logic/gear_state.gd`: Holds all worn gear, progression level, socketed stones, upgrades, and perks for building a hero fighter
 - `features/items/logic/holdings.gd`: What rewards are paid into: riyal, the consumable Bag, the unique-item inventory and the flags
 - `features/items/logic/inventory.gd`: Which unique items the party owns and whether a hero may wear one in a slot
 - `features/items/logic/item_effect.gd`: What a consumable does to one hero: gains() computes the real change from current numbers (never past the maximum, a herb never helps a downed hero, a white herb only a downed one); apply() writes it into carried vitals
@@ -341,14 +348,24 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/items/tests/test_rewards.gd`: Rewards: the first win pays everything and sets patrol_paid_<id>, a repeat win pays half the riyal and nothing else, herbs over the stack turn into riyal, the purse has a cap, a chest pays once
 - `features/items/tests/test_shop.gd`: The herb stall: buy and sell rules and their edge cases (economy.md section 9), the ShopService purse signal, and using consumables in the field (FieldUse, ItemService)
 - `features/jambiyah/defs/blade_def.gd`: A jambiyah blade: adds to attack, adds knockback to every hit the wielder lands, adds weight
+- `features/jambiyah/defs/heirloom_def.gd`: Maps heirloom restoration rank to open stone slots and story flags (content/jambiyah/heirloom.json)
 - `features/jambiyah/defs/hilt_def.gd`: A jambiyah hilt: adds to agility, multiplies cast speed, adds weight, and grants exactly one move
 - `features/jambiyah/defs/loadout_def.gd`: A hero's starting gear: which hilt, blade and prosthetic they own and wear at the start (each optional)
+- `features/jambiyah/defs/stone_def.gd`: A gemstone socketed into a jambiyah hilt (content/jambiyah/stones.json)
 - `features/jambiyah/logic/jambiyah.gd`: Builds Zayd's fighter from a base CombatantDef plus one hilt and one blade (docs/design/combat.md)
 - `features/jambiyah/logic/loadout.gd`: Which gear a hero wears: the saved choice per slot ("<hero>.<part>" in GameState.equipment), else the starting gear
 - `features/jambiyah/logic/stat_row.gd`: One line of the workshop comparison: label key, value now (base) and value with the chosen pair
+- `features/jambiyah/logic/stones.gd`: Pure rules for jambiyah hilt gemstones: open socket counts, rarity fitting rules, and socket mutations
 - `features/jambiyah/logic/workshop_stats.gd`: The comparison rows the equipment screen shows: base fighter against the fighter built by Jambiyah.equip
 - `features/jambiyah/tests/test_jambiyah.gd`: T3: every hilt + blade pairing gives a different Zayd stat sets, inside the timeline caps; each hilt adds exactly one move; the shared base definition is never changed
 - `features/jambiyah/tests/test_loadout.gd`: The loadout fallback: a hero wears the saved item per slot, else the start loadout
+- `features/progression/defs/class_def.gd`: A hero's RPG class: growth stats added per level above 1 and a passive perk (content/progression/classes.json)
+- `features/progression/defs/levels_def.gd`: Thresholds of total XP required to reach each level (content/progression/levels.json)
+- `features/progression/logic/level_up.gd`: Holds the details of a hero's level advancement: from/to levels and stat gains
+- `features/progression/logic/progression.gd`: Pure RPG progression rules: level calculation from XP thresholds, stat growth from class definitions, XP awards to party members, and encounter XP calculation
+- `features/progression/tests/test_battle_progression.gd`: Tests for battle progression integration: LevelUp HP/SP increases on win, and battle end panel formatting
+- `features/progression/tests/test_progression.gd`: Tests for RPG progression: level thresholds, class stat growth, XP awards, and gear merge order
+- `features/progression/tests/test_stones.gd`: Tests for jambiyah hilt gemstones: rarity fit rules, heirloom slot progression, and socket operations
 - `features/prosthetics/defs/prosthetic_def.gd`: A high-tech prosthetic: one slot per hero
 - `features/prosthetics/logic/prosthetics.gd`: Merges a prosthetic into a fighter (docs/design/prosthetics.md), like Jambiyah.equip: stat adds, then the granted moves, then the caps
 - `features/prosthetics/tests/test_prosthetics.gd`: Prosthetics: the merge (base -> hilt -> blade -> prosthetic -> perks -> caps) builds new fighters and never touches the shared defs; each hero's prosthetics grant 1-2 tech moves; a prosthetic fits only its wearer

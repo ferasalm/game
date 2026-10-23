@@ -59,3 +59,74 @@ UI_FLEE_FAILED,Escape failed
 UI_FLEE,Flee
 UI_CANT_FLEE,Can't flee
 MOVE_DESC_FLEE,A desperate attempt to escape the fight.
+UI_LEVEL_UP,%s reached Lv %d
+CLASS_COURIER_NAME,Courier
+CLASS_COURIER_DESC,Swift messenger of the alleyways.
+CLASS_RIGGER_NAME,Rigger
+CLASS_RIGGER_DESC,Technician who harnesses rogue currents.
+PERK_COURIERS_FOOTING,Courier's Footing
+PERK_COURIERS_FOOTING_DESC,Light steps increase dodge chance.
+PERK_CLEAN_CODE,Clean Code
+PERK_CLEAN_CODE_DESC,Precise execution pierces status resistance.
+ARMOR_COURIER_JACKET,Courier Jacket
+ARMOR_COURIER_JACKET_DESC,Reinforced coat suited for rooftop jumps.
+ARMOR_RIG_SHAWL,Rig Shawl
+ARMOR_RIG_SHAWL_DESC,Light insulated weave protecting sensitive cybernetics.
+ARMOR_SOUQ_LEATHER,Souq Leather
+ARMOR_SOUQ_LEATHER_DESC,Sturdy treated hide balancing protection and weight.
+ARMOR_MESH_ABAYA,Mesh Abaya
+ARMOR_MESH_ABAYA_DESC,Conductive nanofiber mesh that cushions blows and quickens movement.
+ARMOR_CONCESSION_PLATE,Concession Plate
+ARMOR_CONCESSION_PLATE_DESC,Heavy salvaged enforcement plating offering immense defense at the cost of speed.
+STONE_AQIQ_RED_NAME,Red Aqiq
+STONE_AQIQ_RED_DESC,Carnelian set in the hilt; raises maximum HP by 30.
+STONE_AQIQ_RED_FLAVOUR,"Yemeni carnelian: the stone on every grandfather's ring."
+STONE_SULAIMANI_NAME,Sulaimani Agate
+STONE_SULAIMANI_DESC,Banded agate; raises Defense by 2.
+STONE_SULAIMANI_FLAVOUR,Banded like the layers of a tower-house wall.
+STONE_DAM_AKHAWAYN_NAME,Dragon's Blood Bead
+STONE_DAM_AKHAWAYN_DESC,Socotra resin bead; raises Attack by 2.
+STONE_DAM_AKHAWAYN_FLAVOUR,"Socotra resin, hardened red; healers swore by it."
+STONE_JAZ_BLACK_NAME,Black Jaz'
+STONE_JAZ_BLACK_DESC,Haraz onyx; adds 400 knockback to the first hit.
+STONE_JAZ_BLACK_FLAVOUR,"Onyx from the Haraz: heavy in the hand, heavier in a blow."
+STONE_FAYRUZ_NAME,Fayruz
+STONE_FAYRUZ_DESC,Turquoise stone; restores 1 extra SP after each action.
+STONE_FAYRUZ_FLAVOUR,Turquoise for safe roads; the couriers still carry it.
+STONE_MILH_CRYSTAL_NAME,Salt of Souq al-Milh
+STONE_MILH_CRYSTAL_DESC,Salt cluster; regenerates 5 HP after each action.
+STONE_MILH_CRYSTAL_FLAVOUR,Salt keeps what it touches.
+STONE_KAMARAN_PEARL_NAME,Kamaran Pearl
+STONE_KAMARAN_PEARL_DESC,Lustrous sea pearl; grants 400 timeline head start in battle.
+STONE_KAMARAN_PEARL_FLAVOUR,"Dived off Kamaran island, before the sea went grey."
+STONE_QAMAR_STONE_NAME,Moonstone
+STONE_QAMAR_STONE_DESC,Pale qamariya stone; enhances Jambiyah Strike.
+STONE_QAMAR_STONE_FLAVOUR,Pale as the qamariya glass at midnight.
+STONE_AYN_BEAD_NAME,Eye Bead
+STONE_AYN_BEAD_DESC,Protective eye agate; Elder's Patience counters ranged attacks.
+STONE_AYN_BEAD_FLAVOUR,The eye agate that watches your back.
+STONE_MARIB_STONE_NAME,Ma'rib Stone
+STONE_MARIB_STONE_DESC,Ancient masonry fragment; refunds 4 SP when interrupting an enemy.
+STONE_MARIB_STONE_FLAVOUR,Cut for the great dam; it remembers breaking.
+STONE_SABATAYN_GLASS_NAME,Sab'atayn Glass
+STONE_SABATAYN_GLASS_DESC,Desert fulgurite; boosts damage against jammed foes.
+STONE_SABATAYN_GLASS_FLAVOUR,Lightning fused this sand in the desert east of Ma'rib.
+STONE_JADD_AQIQ_NAME,The Grandfather's Aqiq
+STONE_JADD_AQIQ_DESC,The master carnelian; countering propels Zayd to immediate command.
+STONE_JADD_AQIQ_FLAVOUR,He set it himself. It was always meant to come back.
+PERK_JAZ_KNOCKBACK,Heavy Jaz'
+PERK_JAZ_KNOCKBACK_DESC,Adds 400 knockback to the first hit.
+PERK_MILH_REGEN,Salt Preservation
+PERK_MILH_REGEN_DESC,Regenerates 5 HP after each action.
+PERK_KAMARAN_START,Island Swiftness
+PERK_KAMARAN_START_DESC,Advances position at battle start by 400.
+PERK_QAMAR_BOOST,Lunar Edge
+PERK_QAMAR_BOOST_DESC,Jambiyah Strike gains +1 SP and +300 knockback.
+PERK_AYN_COUNTER,All-Seeing Eye
+PERK_AYN_COUNTER_DESC,Counters ranged attacks.
+PERK_MARIB_REFUND,Dam's Memory
+PERK_MARIB_REFUND_DESC,Refunds 4 SP on interrupt.
+PERK_SABATAYN_SURGE,Conductive Glass
+PERK_SABATAYN_SURGE_DESC,Deals 1.25x damage to jammed foes.
+PERK_JADD_COMMAND,Grandfather's Legacy
+PERK_JADD_COMMAND_DESC,Countering grants an immediate turn.

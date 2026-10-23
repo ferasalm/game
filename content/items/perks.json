@@ -6,6 +6,16 @@
     {"id": "surge_current", "name_key": "PERK_SURGE_CURRENT", "desc_key": "PERK_SURGE_CURRENT_DESC", "kind": "sp_per_act", "amount": 2},
     {"id": "mender_loop", "name_key": "PERK_MENDER_LOOP", "desc_key": "PERK_MENDER_LOOP_DESC", "kind": "hp_regen", "amount": 8},
     {"id": "deep_mender", "name_key": "PERK_DEEP_MENDER", "desc_key": "PERK_DEEP_MENDER_DESC", "kind": "hp_regen", "amount": 12},
-    {"id": "heavy_hand", "name_key": "PERK_HEAVY_HAND", "desc_key": "PERK_HEAVY_HAND_DESC", "kind": "bonus_knockback", "amount": 700}
+    {"id": "heavy_hand", "name_key": "PERK_HEAVY_HAND", "desc_key": "PERK_HEAVY_HAND_DESC", "kind": "bonus_knockback", "amount": 700},
+    {"id": "couriers_footing", "name_key": "PERK_COURIERS_FOOTING", "desc_key": "PERK_COURIERS_FOOTING_DESC", "kind": "dodge_bonus", "amount": 0.05},
+    {"id": "clean_code", "name_key": "PERK_CLEAN_CODE", "desc_key": "PERK_CLEAN_CODE_DESC", "kind": "status_pierce", "amount": 0.15},
+    {"id": "jaz_knockback", "name_key": "PERK_JAZ_KNOCKBACK", "desc_key": "PERK_JAZ_KNOCKBACK_DESC", "kind": "bonus_knockback", "amount": 400},
+    {"id": "milh_regen", "name_key": "PERK_MILH_REGEN", "desc_key": "PERK_MILH_REGEN_DESC", "kind": "hp_regen", "amount": 5},
+    {"id": "kamaran_start", "name_key": "PERK_KAMARAN_START", "desc_key": "PERK_KAMARAN_START_DESC", "kind": "start_bonus", "amount": 400},
+    {"id": "qamar_boost", "name_key": "PERK_QAMAR_BOOST", "desc_key": "PERK_QAMAR_BOOST_DESC", "kind": "action_sp_gain", "amount": 1, "action": "jambiyah_strike"},
+    {"id": "ayn_counter", "name_key": "PERK_AYN_COUNTER", "desc_key": "PERK_AYN_COUNTER_DESC", "kind": "counter_ranged", "amount": 1},
+    {"id": "marib_refund", "name_key": "PERK_MARIB_REFUND", "desc_key": "PERK_MARIB_REFUND_DESC", "kind": "interrupt_refund", "amount": 4},
+    {"id": "sabatayn_surge", "name_key": "PERK_SABATAYN_SURGE", "desc_key": "PERK_SABATAYN_SURGE_DESC", "kind": "bonus_vs_status", "amount": 1.25, "status": "jammed"},
+    {"id": "jadd_command", "name_key": "PERK_JADD_COMMAND", "desc_key": "PERK_JADD_COMMAND_DESC", "kind": "counter_to_command", "amount": 1}
   ]
 }

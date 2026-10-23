@@ -30,6 +30,7 @@ func setup(sim: BattleSim, view: BattleViewDef, fighters: BattleFighters, hud: B
 	_hud = hud
 	_shown_hp = shown_hp
 	_extra = BattleEventExtra.new()
+	add_child(_extra)
 	_extra.setup(self)
 	_damage_extra = BattleDamageEvents.new()
 	add_child(_damage_extra)

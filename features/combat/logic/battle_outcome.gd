@@ -21,6 +21,7 @@ var consumables: Dictionary = {}
 ## True once the Router paid money / items / consumables into GameState (so a second apply pays nothing).
 var rewarded: bool = false
 var practice: bool = false
+var level_ups: Array[LevelUp] = []
 
 
 ## The outcome of a finished (or abandoned) sim: result, each hero's HP/SP after (a downed hero stands up at

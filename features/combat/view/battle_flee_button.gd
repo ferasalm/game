@@ -17,5 +17,4 @@ static func add_to(menu: BattleCommandMenu, list: VBoxContainer, buttons: Array[
 		button.tooltip_text = BattleStyle.text("UI_CANT_FLEE")
 	button.pressed.connect(menu._pick_move.bind(flee_action))
 	button.focus_entered.connect(menu._describe.bind(flee_action))
-	buttons.append(button)
 	return button

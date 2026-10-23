@@ -16,6 +16,7 @@ var _loot: Array[StringName] = []
 var _shown_loot: Array[StringName] = []
 var _money: int = 0
 var _herbs: Dictionary = {}
+var _level_ups: Array = []
 
 
 func setup(view: BattleViewDef) -> void:
@@ -52,6 +53,15 @@ func set_rewards(money: int, herbs: Dictionary) -> void:
 	_herbs = herbs
 
 
+## The LevelUp events to display on victory.
+func set_level_ups(level_ups: Array) -> void:
+	_level_ups = level_ups
+
+
+func shown_level_ups() -> Array:
+	return _level_ups
+
+
 ## The riyal line the panel shows right now (0 when none: a defeat, or a fight that pays nothing).
 func shown_money() -> int:
 	return _money if _loot_box.visible and _money > 0 else 0
@@ -76,7 +86,8 @@ func show_result(result: StringName) -> void:
 	else:
 		_add("UI_RETRY", &"retry")
 		_add("UI_BACK_TO_ROOFTOP", &"defeat")
-	_buttons[0].grab_focus()
+	if is_inside_tree() and not _buttons.is_empty():
+		_buttons[0].grab_focus()
 
 
 ## The buttons now showing, in order.
@@ -93,13 +104,14 @@ func _fill_loot(won: bool) -> void:
 		for item_id: StringName in _loot:
 			if not GameState.inventory.has(item_id):
 				_shown_loot.append(item_id)
-	var rewards: bool = won and (_money > 0 or not _herbs.is_empty())
+	var rewards: bool = won and (_money > 0 or not _herbs.is_empty() or not _level_ups.is_empty())
 	_loot_box.visible = not _shown_loot.is_empty() or rewards
 	if not _loot_box.visible:
 		return
 	_loot_box.add_child(BattleStyle.label(BattleStyle.text("UI_SPOILS"), &"CaptionLabel"))
 	if rewards:
 		_add_rewards()
+		_add_level_ups()
 	for item_id: StringName in _shown_loot:
 		var line := HBoxContainer.new()
 		line.add_theme_constant_override("separation", _view.margin)
@@ -118,6 +130,25 @@ func _add_rewards() -> void:
 		if def != null:
 			_loot_box.add_child(BattleStyle.label(BattleStyle.text("BATTLE_REWARD_HERB") % [
 				BattleStyle.text(def.name_key), int(_herbs[herb_id])], &"NameLabel"))
+
+
+func _add_level_ups() -> void:
+	for lu: Variant in _level_ups:
+		var hero_id: StringName = lu.hero if "hero" in lu else &""
+		var hero_name: String = str(hero_id).capitalize()
+		var hero_def := ContentDB.get_def("combatant", hero_id) as CombatantDef
+		if hero_def != null and not hero_def.name_key.is_empty():
+			hero_name = BattleStyle.text(hero_def.name_key)
+		var to_lv: int = int(lu.to_level) if "to_level" in lu else 1
+		var title: String = BattleStyle.text("UI_LEVEL_UP") % [hero_name, to_lv]
+		var parts: PackedStringArray = PackedStringArray()
+		var gains: Dictionary = lu.gains if "gains" in lu else {}
+		for stat_pair: Array in [["max_hp", "HP"], ["max_sp", "SP"], ["attack", "ATK"], ["defense", "DEF"], ["agility", "AGI"], ["luck", "LCK"]]:
+			var val: int = int(gains.get(StringName(stat_pair[0]), 0))
+			if val > 0:
+				parts.append("%s +%d" % [stat_pair[1], val])
+		var line_text: String = "%s  %s" % [title, "  ".join(parts)] if not parts.is_empty() else title
+		_loot_box.add_child(BattleStyle.label(line_text, &"NameLabel", Ui.style().colour(&"c_gold")))
 
 
 func _add(key: String, result: StringName) -> void:

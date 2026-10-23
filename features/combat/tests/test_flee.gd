@@ -2,7 +2,7 @@ extends TestCase
 ## Flee: chance, refusal on boss, interrupted flee, FLED outcome rules.
 
 func test_flee_refused_on_abu_nabil_duel() -> void:
-	var moves: Array[ActionDef] = [BattleProbe.move(&"flee")]
+	var moves: Array[ActionDef] = [BattleProbe.move(&"flee", {"target": &"self"})]
 	var heroes: Array[CombatantDef] = [BattleProbe.fighter(&"h", {"actions": [&"flee"] as Array[StringName]})]
 	var foes: Array[CombatantDef] = [BattleProbe.fighter(&"f")]
 	var sim: BattleSim = BattleProbe.sim(heroes, [0] as Array[int], foes, [0] as Array[int], moves)

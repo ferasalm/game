@@ -25,6 +25,7 @@ var _list: VBoxContainer
 var _help: String = ""
 var _buttons: Array[Button] = []
 var _items_button: Button
+var _flee_button: Button
 
 
 func setup(sim: BattleSim, view: BattleViewDef) -> void:
@@ -67,7 +68,7 @@ func move_buttons() -> Array[Button]:
 	var out: Array[Button] = []
 	if _open and _move == null:
 		for button: Button in _buttons:
-			if button != _items_button:
+			if button != _items_button and button != _flee_button:
 				out.append(button)
 	return out
 
@@ -142,8 +143,7 @@ func _add_items_entry() -> void:
 	_items_button.set_meta("action_id", ITEMS_ID)
 	_items_button.disabled = not _sim.items.any_available()
 	_items_button.pressed.connect(items_requested.emit)
-	# The FLEE entry.
-	BattleFleeButton.add_to(self, _list, _buttons)
+	_flee_button = BattleFleeButton.add_to(self, _list, _buttons)
 
 
 func _pick_move(action: ActionDef) -> void:

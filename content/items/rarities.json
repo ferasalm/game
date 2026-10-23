@@ -1,11 +1,11 @@
 {
   "kind": "rarity",
   "items": [
-    {"id": "common", "name_key": "RARITY_COMMON", "colour": "#e6e6e6", "order": 0, "story_only": false, "allows_perk": false},
-    {"id": "uncommon", "name_key": "RARITY_UNCOMMON", "colour": "#4fc46a", "order": 1, "story_only": false, "allows_perk": false},
-    {"id": "rare", "name_key": "RARITY_RARE", "colour": "#4a8cf0", "order": 2, "story_only": false, "allows_perk": true},
-    {"id": "epic", "name_key": "RARITY_EPIC", "colour": "#a05ad8", "order": 3, "story_only": false, "allows_perk": true},
-    {"id": "legendary", "name_key": "RARITY_LEGENDARY", "colour": "#f0b83a", "order": 4, "story_only": false, "allows_perk": true},
-    {"id": "heirloom", "name_key": "RARITY_HEIRLOOM", "colour": "#d9503f", "order": 5, "story_only": true, "allows_perk": true}
+    {"id": "common", "name_key": "RARITY_COMMON", "colour": "#e6e6e6", "order": 0, "story_only": false, "allows_perk": false, "stone_slots": 0},
+    {"id": "uncommon", "name_key": "RARITY_UNCOMMON", "colour": "#4fc46a", "order": 1, "story_only": false, "allows_perk": false, "stone_slots": 1},
+    {"id": "rare", "name_key": "RARITY_RARE", "colour": "#4a8cf0", "order": 2, "story_only": false, "allows_perk": true, "stone_slots": 1},
+    {"id": "epic", "name_key": "RARITY_EPIC", "colour": "#a05ad8", "order": 3, "story_only": false, "allows_perk": true, "stone_slots": 2},
+    {"id": "legendary", "name_key": "RARITY_LEGENDARY", "colour": "#f0b83a", "order": 4, "story_only": false, "allows_perk": true, "stone_slots": 2},
+    {"id": "heirloom", "name_key": "RARITY_HEIRLOOM", "colour": "#d9503f", "order": 5, "story_only": true, "allows_perk": true, "stone_slots": 3}
   ]
 }
