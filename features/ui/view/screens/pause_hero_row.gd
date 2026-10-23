@@ -27,6 +27,13 @@ func setup(hero: StringName) -> PauseHeroRow:
 	row.add_theme_constant_override("separation", style.size(&"s_margin"))
 	add_child(row)
 
+	_build_face(row, style, hero)
+	_build_middle(row, style, def, hero)
+	_build_stats(row, style, def, hero)
+	return self
+
+
+func _build_face(parent: Control, style: UiStyleDef, hero: StringName) -> void:
 	_face_box = PanelContainer.new()
 	_face_box.custom_minimum_size = Vector2(160, 160)
 	_face_box.add_theme_stylebox_override("panel", UiBoxes.medallion(style, style.colour(&"c_brass")))
@@ -36,12 +43,14 @@ func setup(hero: StringName) -> PauseHeroRow:
 	_face.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_face.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_face_box.add_child(_face)
-	row.add_child(_face_box)
+	parent.add_child(_face_box)
 
+
+func _build_middle(parent: Control, style: UiStyleDef, def: CombatantDef, hero: StringName) -> void:
 	var middle := VBoxContainer.new()
 	middle.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	middle.alignment = BoxContainer.ALIGNMENT_CENTER
-	row.add_child(middle)
+	parent.add_child(middle)
 
 	var name_str: String = Ui.text(def.name_key) if def != null else String(hero)
 	_name_label = Ui.label(name_str, &"TitleLabel", style.colour(&"c_brass"))
@@ -64,10 +73,12 @@ func setup(hero: StringName) -> PauseHeroRow:
 	prog_space.add_child(_xp_bar)
 	middle.add_child(prog_space)
 
+
+func _build_stats(parent: Control, style: UiStyleDef, def: CombatantDef, hero: StringName) -> void:
 	var stats := VBoxContainer.new()
 	stats.alignment = BoxContainer.ALIGNMENT_CENTER
 	stats.custom_minimum_size.x = 450
-	row.add_child(stats)
+	parent.add_child(stats)
 
 	var max_hp: int = def.max_hp if def != null else 1
 	var max_sp: int = def.max_sp if def != null else 1
@@ -81,7 +92,6 @@ func setup(hero: StringName) -> PauseHeroRow:
 
 	var now: Vector2i = PauseLogic.vitals_of(GameState.get(&"vitals"), hero, max_hp, max_sp)
 	update(now.x, now.y)
-	return self
 
 
 func update(hp: int, sp: int) -> void:

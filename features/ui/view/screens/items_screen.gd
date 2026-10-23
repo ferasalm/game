@@ -53,6 +53,8 @@ func build(_args: Dictionary) -> void:
 
 
 func focus_default() -> void:
+	if not is_inside_tree():
+		return
 	if _picking and _selected != &"" and focus_first_hero():
 		return
 	if _rows.has(_selected):

@@ -361,6 +361,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/logic/toast_queue.gd`: Pure: toasts wait in order and are shown one at a time
 - `features/ui/tests/node_walk.gd`: Test helper (not a test): every descendant of a node, depth first
 - `features/ui/tests/test_items_shop.gd`: The Items and Shop screens on the Screens stack, and the riyal banner of the loot popup
+- `features/ui/tests/test_menu_skins.gd`: Menu skins test: backdrops, fallback, child 0, party rows, thumbnails, shop money-after, rects
 - `features/ui/tests/test_musnad.gd`: The written language of Sana'a in 2150 is Musnad only: no Arabic script in any CSV, JSON or script; every *_MUSNAD and WORLD_SIGN_* text holds only Musnad letters, spaces and arrows; the Musnad font draws it
 - `features/ui/tests/test_pause_menu.gd`: The pause menu rules (PauseLogic) and the screen built from them
 - `features/ui/tests/test_popups.gd`: The loot popup (queues item_obtained in order, skippable), the area title card, the title overlay (any key dismisses it once) and the opening shot held on the moon until then
@@ -614,6 +615,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_dialogue.gd`: Renders one dialogue line over the rooftop to an inbox PNG, to judge the portrait and box layout by eye
 - `tools/shot_dialogue.tscn`: scene
 - `tools/shot_hud.gd`: Renders the battle HUD to PNG files (not headless; needs a window)
+- `tools/shot_menu.gd`: Renders pause, save, or shop menu at 1920x1080 to an inbox PNG
+- `tools/shot_menu.tscn`: scene
 - `tools/shot_models.gd`: Model gallery for renders (docs/design/characters-3d.md): the cast in a row on a floor under the painted look, each doing a state, close enough to judge the stand-ins
 - `tools/shot_scene.gd`: Plays a scene (or a Node script) for the movie writer (frames to a folder): the battle demo with its heroes on auto_play, or any scene
 - `tools/shot_shatter.gd`: Shows the qamariya shatter on a stand-in frame (a stripe pattern) so the glass can be judged without a fight

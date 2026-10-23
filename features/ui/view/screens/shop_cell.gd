@@ -28,6 +28,15 @@ func setup(def: ConsumableDef, price: int, owned: int, _can_afford: bool, is_sol
 	col.add_theme_constant_override("separation", 4)
 	add_child(col)
 
+	_build_content(col, style, def, rarity_col, price, is_sold_out)
+
+	focus_entered.connect(UiSweep.start.bind(self))
+	focus_exited.connect(UiSweep.clear.bind(self))
+	mouse_entered.connect(grab_focus)
+	return self
+
+
+func _build_content(col: Control, style: UiStyleDef, def: ConsumableDef, rarity_col: Color, price: int, is_sold_out: bool) -> void:
 	_icon_rect = TextureRect.new()
 	_icon_rect.custom_minimum_size = Vector2(96, 96)
 	_icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -53,11 +62,6 @@ func setup(def: ConsumableDef, price: int, owned: int, _can_afford: bool, is_sol
 		_tag_label = Ui.label(Ui.text("SHOP_SOLD_OUT_TAG"), &"SmallLabel", style.colour(&"c_bad"))
 		_tag_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		col.add_child(_tag_label)
-
-	focus_entered.connect(UiSweep.start.bind(self))
-	focus_exited.connect(UiSweep.clear.bind(self))
-	mouse_entered.connect(grab_focus)
-	return self
 
 
 func icon_rect() -> TextureRect:
