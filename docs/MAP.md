@@ -630,6 +630,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/tests/test_facade.gd`: Night Sana'a textures: the facade painter (size, determinism, lit windows and qamariya glass in the emission map, a door, every pixel painted), the surface patterns (tile 4 m, deterministic, tileable) and the tile content
 - `features/world/tests/test_follow_cam.gd`: FollowCam tests: defaults, focus, lazy yaw, walk toward camera, manual orbit, zone blend, input rotation, arm shortening
 - `features/world/tests/test_framed_shots.gd`: FramedShots tests: shot picking, 0.5 m hysteresis, +-15 deg clamp, and input basis retention
+- `features/world/tests/test_interact_focus.gd`: purpose: Tests for interact focus camera framing ease, input eating, screen chaining and camera restore
 - `features/world/tests/test_level1_blockout.gd`: Unit tests for Level 1 blockout: area souq_rooftops_v4, crossings X1-X5, walk-graph regions, reachability, loop, and clearances
 - `features/world/tests/test_look_test.gd`: The look-test scene builds without errors (headless: no pixels are drawn, but every node and resource is made)
 - `features/world/tests/test_night.gd`: Night look: the sky def feeds every shader uniform, look "night" builds a sky environment with fog and a fill light while "v1" stays the flat daytime look, bad look keys are caught, the vista zone and mist layers load
@@ -653,6 +654,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/view/explore_camera.gd`: The exploration camera and its language: it follows the player at the look's offset, eases to a low "vista" pose while the player stands in the area's vista zone (so the sky and moon show above the skyline), and can play the opening establishing shot (keyframes from CameraRigDef; any key, click or button skips it)
 - `features/world/view/far_landmarks.gd`: The far landmarks, built into an unshaded buffer (faces are shaded by a fake light so low-poly facets read): the ridge of Jabal Nuqum, the Haddah megacity of 2150 (slim towers with cyan and magenta neon edges) and the village of Bayt Baws on its rocky crag
 - `features/world/view/follow_camera_rig.gd`: Drives Camera3D in follow mode (FollowCam), framed mode (FramedShots), or legacy fixed mode (ExploreCamera)
+- `features/world/view/interact_focus.gd`: purpose: Manages camera ease-in framing shots on spot interaction and ease-out restore on menu close
 - `features/world/view/landmark_builder.gd`: Builds all landmarks of a SkylineDef into one ArrayMesh with two surfaces: 0 lit (minarets, Bab al-Yaman: vertex colours shaded by the scene lights) and 1 glow (ridge, megacity, village: unshaded, boosted above 1 so neon and lit windows bloom)
 - `features/world/view/mist_builder.gd`: Builds one mist layer from a MistDef: a big flat plane over the area at the def's height, with the scrolling noise shader and a seamless noise texture made once here
 - `features/world/view/neon_sign.gd`: One neon sign: a dark board, a glowing frame and the text (Label3D in the Musnad font, unshaded and boosted above 1 so it blooms)
@@ -760,6 +762,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_camera_v2.tscn`: scene
 - `tools/shot_dialogue.gd`: Renders one dialogue line over the rooftop to an inbox PNG, to judge the portrait and box layout by eye
 - `tools/shot_dialogue.tscn`: scene
+- `tools/shot_focus.gd`: purpose: Renders interact-focus framed shots for herb stall, sabil and workbench to C:/dev/game/inbox/
+- `tools/shot_focus.tscn`: scene
 - `tools/shot_holo_map.gd`: purpose: Renders holographic map (area and city views) over the starting rooftop to inbox PNGs
 - `tools/shot_holo_map.tscn`: scene
 - `tools/shot_hud.gd`: Renders the battle HUD to PNG files (not headless; needs a window)

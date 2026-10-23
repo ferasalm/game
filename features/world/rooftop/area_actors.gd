@@ -40,6 +40,7 @@ static func build(parent: Node3D, area: AreaDef, rules: ExploreRulesDef, floor_y
 		parent.add_child(out.workshop)
 	out._add_places(parent, area, rules, floor_y)
 	out._add_crossings(parent, area, rules, floor_y)
+	parent.add_child(InteractFocus.new())
 	return out
 
 

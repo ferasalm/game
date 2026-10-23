@@ -44,6 +44,8 @@ func test_sabil_screen_opens_picker_and_saves() -> void:
 	GameState.start_new()
 	var rooftop: Rooftop = _make()
 	rooftop.sabil.open_screen()
+	if InteractFocus.current != null:
+		InteractFocus.current.advance(0.6)
 	check(Screens.is_open_id(Screens.SABIL_ID), "sabil screen is open")
 	var sabil_screen: SabilScreen = Screens.top() as SabilScreen
 	sabil_screen.choose(SabilScreen.DRINK)
