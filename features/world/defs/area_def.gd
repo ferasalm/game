@@ -23,6 +23,8 @@ var signs: Array[SignSpec] = []
 var places: Array[PlaceDef] = []
 ## The sunken street under the roofs (null = none).
 var canyon: CanyonSpec = null
+## Weather preset id (content/world/storm.json) or empty string when calm.
+var weather: String = ""
 ## At most this many real OmniLights near the player; they fade in or out light_fade per second.
 var light_budget: int = 8
 var light_fade: float = 3.0
@@ -34,6 +36,7 @@ func read(r: DefReader) -> void:
 	rows = r.text_list("rows")
 	legend = r.text_map("legend")
 	mist = r.id_list("mist")
+	weather = r.text("weather", "", false)
 	var cells: Array[int] = r.int_list("vista", 0, 500)
 	if cells.size() == 4:
 		vista = Rect2i(cells[0], cells[1], cells[2] - cells[0] + 1, cells[3] - cells[1] + 1)
@@ -135,42 +138,7 @@ func find_marker(marker: String) -> Vector2i:
 
 ## Every layout problem: unequal row widths, characters without a legend entry, markers not present once.
 func problems() -> PackedStringArray:
-	var out := PackedStringArray()
-	if rows.is_empty():
-		out.append("no rows")
-	for z: int in rows.size():
-		if rows[z].length() != width():
-			out.append("row %d is %d wide, row 0 is %d" % [z, rows[z].length(), width()])
-		for ch: String in rows[z]:
-			if not legend.has(ch):
-				out.append("row %d: '%s' is not in the legend" % [z, ch])
-	if vista.has_area() and not Rect2i(0, 0, width(), depth()).encloses(vista):
-		out.append("the vista zone sticks out of the area")
-	for marker: String in MARKERS:
-		var count: int = "".join(rows).count(marker)
-		if count != 1:
-			out.append("marker %s appears %d times (must be once)" % [marker, count])
-	out.append_array(_place_problems())
-	return out
-
-
-func _place_problems() -> PackedStringArray:
-	var out := PackedStringArray()
-	var seen: Dictionary[StringName, bool] = {}
-	var bounds := Rect2(0.0, 0.0, width(), depth())
-	for p: PlaceDef in places:
-		if seen.has(p.id):
-			out.append("place %s appears twice" % p.id)
-		seen[p.id] = true
-		var points: Array[Vector3] = []
-		if p.kind != PlaceDef.VISTA and p.kind != PlaceDef.CAMERA_ZONE:
-			points.append(p.pos)
-		if p.kind == PlaceDef.PATROL:
-			points.append(p.end)
-		for point: Vector3 in points:
-			if not bounds.has_point(Vector2(point.x, point.z)):
-				out.append("place %s is outside the area" % p.id)
-	return out
+	return AreaProblems.check(self)
 
 
 ## Is this grid cell within bounds and walkable (non-solid tile)?
