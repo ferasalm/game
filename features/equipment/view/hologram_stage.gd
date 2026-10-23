@@ -9,6 +9,7 @@ var _camera: Camera3D
 var _light: DirectionalLight3D
 var _disc: MeshInstance3D
 var _visual: CharacterVisual
+var _holo_mat: ShaderMaterial
 var _lines: Dictionary[StringName, Line2D] = {}
 var _box_anchors: Dictionary[StringName, Dictionary] = {}
 
@@ -60,6 +61,22 @@ func visual() -> CharacterVisual:
 	return _visual
 
 
+func hologram_material() -> ShaderMaterial:
+	return _holo_mat
+
+
+func disc() -> MeshInstance3D:
+	return _disc
+
+
+func model_meshes() -> Array[MeshInstance3D]:
+	var out: Array[MeshInstance3D] = []
+	if _visual != null:
+		for mesh: Node in NodeScan.of_type(_visual, &"MeshInstance3D"):
+			out.append(mesh as MeshInstance3D)
+	return out
+
+
 func sub_viewport() -> SubViewport:
 	return _sub_viewport
 
@@ -88,17 +105,16 @@ func _build_stage() -> void:
 
 
 func _build_grid_disc() -> void:
-	var style: UiStyleDef = Ui.style()
-	var cyan: Color = style.colour(&"c_cyan")
-	var disc_mesh := CylinderMesh.new()
-	disc_mesh.top_radius = 0.45
-	disc_mesh.bottom_radius = 0.45
-	disc_mesh.height = 0.01
+	var disc_mesh := PlaneMesh.new()
+	disc_mesh.size = Vector2(2.2, 2.2)
 
-	var disc_mat := StandardMaterial3D.new()
-	disc_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	disc_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	disc_mat.albedo_color = Color(cyan.r, cyan.g, cyan.b, 0.3)
+	var grid_shader: Shader = load("res://features/equipment/view/grid_disc.gdshader") as Shader
+	var disc_mat := ShaderMaterial.new()
+	disc_mat.shader = grid_shader
+	var cyan: Color = Ui.style().colour(&"c_cyan")
+	disc_mat.set_shader_parameter(&"grid_color", Color(cyan.r, cyan.g, cyan.b, 0.85))
+	disc_mat.set_shader_parameter(&"grid_spacing", 0.15)
+	disc_mat.set_shader_parameter(&"disc_radius", 1.05)
 
 	_disc = MeshInstance3D.new()
 	_disc.mesh = disc_mesh
@@ -108,21 +124,17 @@ func _build_grid_disc() -> void:
 
 
 func _apply_hologram() -> void:
-	if _visual == null or not (_visual.source is ModelSource):
+	if _visual == null:
 		return
 	var holo_shader: Shader = load("res://features/equipment/view/hologram.gdshader") as Shader
 	if holo_shader == null:
 		return
-	var holo_mat := ShaderMaterial.new()
-	holo_mat.shader = holo_shader
-	var mats: Array[ShaderMaterial] = (_visual.source as ModelSource).materials()
-	for mat: ShaderMaterial in mats:
-		if mat == null:
-			continue
-		if mat.next_pass != null:
-			mat.next_pass.next_pass = holo_mat
-		else:
-			mat.next_pass = holo_mat
+	_holo_mat = ShaderMaterial.new()
+	_holo_mat.shader = holo_shader
+	var cyan: Color = Ui.style().colour(&"c_cyan")
+	_holo_mat.set_shader_parameter(&"rim_color", Color(cyan.r, cyan.g, cyan.b, 0.85))
+	for mesh: Node in NodeScan.of_type(_visual, &"MeshInstance3D"):
+		(mesh as MeshInstance3D).material_override = _holo_mat
 
 
 func _update_leader_lines() -> void:
