@@ -1,0 +1,21 @@
+{
+  "kind": "light_lock",
+  "items": [
+    {
+      "id": "valve_lock",
+      "windows": [
+        {"id": "red", "bits": 1, "target": "m1"},
+        {"id": "blue", "bits": 4, "target": "m1"},
+        {"id": "yellow", "bits": 3, "target": "m2"},
+        {"id": "green", "bits": 2, "target": "m3"}
+      ],
+      "mirrors": [
+        {"id": "m1", "targets": ["", "m2", "", "m3"], "start": 0},
+        {"id": "m2", "targets": ["", "", "lens", "m1"], "start": 0},
+        {"id": "m3", "targets": ["", "m2", "m1", ""], "start": 0}
+      ],
+      "hint_secs": [120, 240],
+      "hint_keys": ["PUZZLE_LIGHT_HINT_1", "PUZZLE_LIGHT_HINT_2"]
+    }
+  ]
+}

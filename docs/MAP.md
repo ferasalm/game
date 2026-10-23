@@ -73,6 +73,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/progression/levels.json`: content: levels x1
 - `content/prosthetics/prosthetics.json`: content: prosthetic x6
 - `content/prototype/flow.json`: content: flow_rules x1
+- `content/puzzles/light_lock.json`: content: light_lock x1
+- `content/puzzles/water_net.json`: content: water_net x1
 - `content/ui/backdrops.json`: content: backdrop x7
 - `content/ui/style.json`: content: ui_style x1
 - `content/ui/transitions.json`: content: transition x3
@@ -407,6 +409,18 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/prototype/tests/test_router_battle.gd`: The Router's battle round trip: the area is hidden and stopped while the arena fights, then restored; Retry and defeat restore the pre-battle snapshot; vitals and herbs carry (a downed hero stands up after a victory); the first win pays everything and a repeat pays half
 - `features/prototype/tests/test_smoke_flow.gd`: Smoke test of the whole flow, headless through the Router: a new game, a fight on auto-play, the outcome applied to GameState, a save, a load that restores exactly that state
 - `features/prototype/tests/test_talk_interact.gd`: Interaction test: walking up to herb_seller and confirming plays abu_nabil_first on the first visit, and abu_nabil_chat_1 on the next visit; sabil plays party_sabil_first before opening screen
+- `features/puzzles/defs/light_lock_def.gd`: purpose: Defines the qamariya light lock puzzle layout (windows, mirrors, and hint timings)
+- `features/puzzles/defs/light_lock_mirror.gd`: purpose: One rotatable mirror in a light lock puzzle with four directional targets
+- `features/puzzles/defs/light_lock_window.gd`: purpose: One colored qamariya window in a light lock puzzle
+- `features/puzzles/defs/water_net_def.gd`: purpose: Defines a water routing network puzzle (valves, splits, gates, spouts, outlets)
+- `features/puzzles/defs/water_node_def.gd`: purpose: One node in a water network puzzle (source, split, gate, spout, or outlet)
+- `features/puzzles/logic/light_lock.gd`: purpose: Pure logic for light lock beam tracing, shutter toggling, mirror rotation, and solution check
+- `features/puzzles/logic/light_lock_state.gd`: purpose: Runtime state of a light lock puzzle (shutter open/closed and mirror turn angles)
+- `features/puzzles/logic/puzzle_hints.gd`: purpose: Computes how many puzzle hints are due based on elapsed stalled time
+- `features/puzzles/logic/water_net.gd`: purpose: Pure logic for water net gate toggling, unjamming, spout swinging, and flow calculation
+- `features/puzzles/logic/water_net_state.gd`: purpose: Runtime state of a water routing network (gate open/freed states and spout directions)
+- `features/puzzles/tests/test_light_lock.gd`: purpose: Tests qamariya light lock puzzle logic, state, beam tracing, routes, loops, and def validation
+- `features/puzzles/tests/test_water_net.gd`: purpose: Tests water routing network logic, unjamming, spout routing, conservation, def errors, and hints
 - `features/ui/defs/backdrop_def.gd`: Backdrop definition for full-screen menu backgrounds
 - `features/ui/defs/ui_style_def.gd`: The look of every menu and HUD (content/ui/style.json): three font files, named colours (c_*), sizes in pixels at 1920x1080 (s_*) and times in seconds (t_*)
 - `features/ui/logic/pause_logic.gd`: Pure rules of the pause menu: which entries show and in what order, which ask "are you sure", the vitals of a hero with a missing record (= full), and the play-time clock text
