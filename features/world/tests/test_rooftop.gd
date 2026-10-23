@@ -7,7 +7,7 @@ const DT: float = 1.0 / 60.0
 
 func _make() -> Rooftop:
 	var rooftop := (load("res://features/world/rooftop/rooftop.tscn") as PackedScene).instantiate() as Rooftop
-	rooftop.area_id = &"souq_rooftops"
+	rooftop.area_id = &"souq_rooftops_v4"
 	rooftop.look_id = &"night"
 	tree.root.add_child(rooftop)
 	return rooftop
@@ -132,7 +132,7 @@ func test_player_walks_faces_and_is_stopped_by_the_edge() -> void:
 	check(rooftop.player.facing.x > 0.9, "remembers facing right")
 	_walk(rooftop, "move_up", 10)
 	check(rooftop.player.position.z < start.z - 0.3, "up is -Z")
-	rooftop.player.position = Vector3(1.5, start.y, 15.5)
+	rooftop.player.position = Vector3(27.5, 0.0, 20.5)
 	_walk(rooftop, "move_left", 60)
-	check(rooftop.player.position.x >= 1.2 and rooftop.player.position.x < 1.5, "the parapet blocks the west edge")
+	check(rooftop.player.position.x >= 27.2 and rooftop.player.position.x < 27.5, "the parapet blocks the west edge")
 	rooftop.free()
