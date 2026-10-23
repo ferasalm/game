@@ -7,7 +7,6 @@ var defense: int = 0
 var agility: int = 0
 var weight: float = 0.0
 var heroes: Array[StringName] = []
-var upgrade: Dictionary[StringName, int] = {}
 
 
 func read(r: DefReader) -> void:
@@ -17,12 +16,6 @@ func read(r: DefReader) -> void:
 	agility = r.integer("agility", -99, 99, 0, false)
 	weight = r.number("weight", 0.0, 30.0, 0.0, false)
 	heroes = r.id_list("heroes")
-	upgrade.clear()
-	if r.has("upgrade"):
-		var u: DefReader = r.child("upgrade")
-		upgrade[&"max_hp"] = u.integer("max_hp", 0, 999, 0, false)
-		upgrade[&"defense"] = u.integer("defense", 0, 999, 0, false)
-		upgrade[&"agility"] = u.integer("agility", -99, 99, 0, false)
 
 
 func references() -> Array[Array]:

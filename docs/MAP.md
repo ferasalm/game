@@ -51,6 +51,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/items/armor.json`: content: armor x5
 - `content/items/chests.json`: content: chest x4
 - `content/items/consumables.json`: content: consumable x4
+- `content/items/materials.json`: content: material x3
 - `content/items/perks.json`: content: perk x16
 - `content/items/rarities.json`: content: rarity x6
 - `content/jambiyah/blades.json`: content: blade x3
@@ -65,6 +66,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/ui/backdrops.json`: content: backdrop x7
 - `content/ui/style.json`: content: ui_style x1
 - `content/ui/transitions.json`: content: transition x3
+- `content/workshop/recipes.json`: content: recipe x4
+- `content/workshop/upgrades.json`: content: upgrade_costs x1
 - `content/world/areas.json`: content: area x1
 - `content/world/buildings.json`: content: building x10
 - `content/world/camera.json`: content: camera_rig x1
@@ -331,6 +334,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/items/defs/count_map.gd`: Reads an optional {"id": count} JSON object (rewards, the start bag) as {StringName: int}, each count 1 or more
 - `features/items/defs/economy_rules_def.gd`: The money and rest numbers (content/economy/rules.json, id "default"): start purse and bag, the cap, the repeat-win payout share, the HP a downed hero stands up with after a victory, the patrol respawn guards
 - `features/items/defs/equip_def.gd`: Shared base of everything a hero can wear or wield (hilt, blade, prosthetic): names, a rarity tier and an optional perk (Rare and above only; rules in docs/design/prosthetics.md)
+- `features/items/defs/material_def.gd`: purpose: Defines a crafting or upgrade material with rarity and display information
 - `features/items/defs/perk_def.gd`: One perk an item can carry: a kind that battle logic implements and an amount
 - `features/items/defs/rarity_def.gd`: One rarity tier: its name, display colour, sort order, whether it is story-only (never loot) and whether gear of this tier may carry a perk
 - `features/items/defs/shop_def.gd`: A stall: who keeps it, her greeting and the consumable ids on sale (price and sell come from the ConsumableDef)
@@ -455,6 +459,24 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/ui_theme.gd`: Builds the one Godot Theme every menu and HUD uses: Amiri for reading, Reem Kufi for titles, names and numbers, ornate panels, brass-focus buttons, gradient bars
 - `features/ui/view/ui_transition.gd`: The qamariya screen wipe: five stained-glass shards (red, amber, green, blue, violet) drop over the screen one after another, cover it, then lift away
 - `features/ui/view/ui_type.gd`: Typed text: a label reveals one character per t_text_char with the typing blip; confirm finishes the line
+- `features/workshop/defs/recipe_def.gd`: purpose: Defines a workshop crafting recipe producing consumables or gemstones
+- `features/workshop/defs/upgrade_costs_def.gd`: purpose: Defines upgrade progression costs (riyal, rarity multipliers, and materials per level)
+- `features/workshop/logic/crafting.gd`: purpose: Pure rules for crafting recipes (consumables and unique gemstones)
+- `features/workshop/logic/materials.gd`: purpose: Pure inventory math for crafting and upgrade materials, capped at 99
+- `features/workshop/logic/upgrades.gd`: purpose: Pure rules and cost calculations for equipment upgrades (+1 to +3)
+- `features/workshop/logic/workshop_holdings.gd`: purpose: Plain working copy of player state for pure workshop operations
+- `features/workshop/tests/test_workshop_logic.gd`: purpose: Tests pure workshop upgrade costs, refusals, crafting rules, caps, and stone operations
+- `features/workshop/tests/test_workshop_loot.gd`: purpose: Tests material payouts on battle victory and repeat victories
+- `features/workshop/tests/test_workshop_menu.gd`: purpose: Tests opening WorkshopMenu via Screens stack, tab counts, and disabled reasons when short
+- `features/workshop/view/workshop_hologram.gd`: purpose: 760x620 SubViewport displaying a turning 3D hologram jambiyah or 256px item icon
+- `features/workshop/view/workshop_items_list.gd`: purpose: Left list panel (460x760 at 80,140) displaying upgradeable gear, gemstones, or craft recipes
+- `features/workshop/view/workshop_materials_bar.gd`: purpose: Panel (760x120 at 580,780) showing required materials, have/need counts, and riyal cost
+- `features/workshop/view/workshop_menu.gd`: purpose: Workshop screen (upgrades, hilt gemstones, crafting) with 3D hologram and live stat comparison
+- `features/workshop/view/workshop_presenter.gd`: purpose: Prepares stat comparison defs and status reasons for workshop views
+- `features/workshop/view/workshop_preview_panel.gd`: purpose: Stats preview panel (460x620 at 1380,140) comparing now vs after or recipe description
+- `features/workshop/view/workshop_sockets_row.gd`: purpose: Displays the worn hilt's 3 gemstone sockets (96px circles) under the hologram
+- `features/workshop/view/workshop_tabs_bar.gd`: purpose: Header bar (1760x64 at 80,40) with title pair, mode tabs, and money counter
+- `features/workshop/workshop_service.gd`: purpose: Executes workshop operations against GameState and emits toasts and bus events
 - `features/world/defs/area_def.gd`: A level as data: equal-width rows of tile characters, a legend (character -> tile id), two markers (S spawn, W workshop bench) that each appear once and stand on floor, and typed places (PlaceDef: stall, sabil, patrols...)
 - `features/world/defs/area_problems.gd`: Checks an AreaDef for layout problems: row widths, unmapped tiles, missing markers, out-of-bounds places
 - `features/world/defs/building_def.gd`: One Sana'a tower-house as data: footprint (metres), floors (the lowest stone_floors are basalt), window columns per facade, frieze style, qamariya glass letters, lit-window ratio, parapet style and roof extras
