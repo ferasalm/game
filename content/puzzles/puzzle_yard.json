@@ -15,7 +15,7 @@
       "marker": {"radius": 0.1, "height": 0.6, "color": "#30d8d0"},
       "beam": {"width": 0.08, "alpha": 0.7, "open_length": 4.0},
       "window": {"width": 1.0, "height": 1.4},
-      "mirror": {"size": [0.1, 0.8, 0.6], "post": 0.08},
+      "mirror": {"size": [0.15, 1.0, 0.8], "post": 0.08},
       "lens": {"radius": 0.35, "flicker_hz": 9.0, "flicker_min": 0.6, "flicker_max": 1.4},
       "seal": {"radius": 0.5, "turn_secs": 0.8},
       "channel": {"width": 0.4, "depth": 0.15, "color": "#6b6158"},

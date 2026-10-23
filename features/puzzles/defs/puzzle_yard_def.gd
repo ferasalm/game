@@ -35,7 +35,7 @@ var beam_width: float = 0.08
 var beam_alpha: float = 0.7
 var beam_open_length: float = 4.0
 var window_size: Vector2 = Vector2(1.0, 1.4)
-var mirror_size: Vector3 = Vector3(0.1, 0.8, 0.6)
+var mirror_size: Vector3 = Vector3(0.15, 1.0, 0.8)
 var mirror_post: float = 0.08
 var lens_radius: float = 0.35
 var flicker_hz: float = 9.0
@@ -81,7 +81,7 @@ func color(key: StringName) -> Color:
 
 func _read_build(r: DefReader) -> void:
 	var floor_r: DefReader = r.child("floor")
-	floor_size = Def.vec2(floor_r, "size")
+	floor_size = PuzzleDefCoords.vec2(floor_r, "size")
 	floor_color = floor_r.color("color")
 	var wall: DefReader = r.child("back_wall")
 	back_wall_z = wall.number("z", -100.0, 100.0)
@@ -105,15 +105,15 @@ func _read_build(r: DefReader) -> void:
 	ledge_top = ledge.number("top", 0.0, 10.0)
 	ledge_color = ledge.color("color")
 	var tower: DefReader = r.child("tower")
-	tower_size = Def.vec3(tower, "size")
-	tower_at = Def.vec3(tower, "at")
+	tower_size = PuzzleDefCoords.vec3(tower, "size")
+	tower_at = PuzzleDefCoords.vec3(tower, "at")
 	tower_color = tower.color("color")
 
 
 func _read_camera(r: DefReader) -> void:
 	var cam: DefReader = r.child("camera")
-	camera_at = Def.vec3(cam, "at")
-	camera_look_at = Def.vec3(cam, "look_at")
+	camera_at = PuzzleDefCoords.vec3(cam, "at")
+	camera_look_at = PuzzleDefCoords.vec3(cam, "look_at")
 	camera_fov = cam.number("fov", 1.0, 179.0)
 	interact_range = r.number("interact_range", 0.1, 20.0)
 	walk_speed = r.number("walk_speed", 0.1, 20.0)
@@ -135,7 +135,7 @@ func _read_pieces(r: DefReader) -> void:
 	var win: DefReader = r.child("window")
 	window_size = Vector2(win.number("width", 0.1, 10.0), win.number("height", 0.1, 10.0))
 	var mir: DefReader = r.child("mirror")
-	mirror_size = Def.vec3(mir, "size")
+	mirror_size = PuzzleDefCoords.vec3(mir, "size")
 	mirror_post = mir.number("post", 0.01, 2.0)
 	var lens: DefReader = r.child("lens")
 	lens_radius = lens.number("radius", 0.01, 5.0)
@@ -160,17 +160,17 @@ func _read_water(r: DefReader) -> void:
 	water_scroll_speed = w.number("scroll_speed", 0.0, 20.0)
 	strip_height = w.number("strip_height", 0.001, 1.0)
 	var gate: DefReader = r.child("gate")
-	gate_size = Def.vec3(gate, "size")
+	gate_size = PuzzleDefCoords.vec3(gate, "size")
 	gate_open_raise = gate.number("open_raise", 0.0, 5.0)
 	gate_jam_tilt = gate.number("jam_tilt", 0.0, 90.0)
 	var spout: DefReader = r.child("spout")
 	spout_length = spout.number("length", 0.01, 10.0)
 	spout_width = spout.number("width", 0.01, 5.0)
 	var gr: DefReader = r.child("grate")
-	grate_size = Def.vec2(gr, "size")
+	grate_size = PuzzleDefCoords.vec2(gr, "size")
 	grate_height = gr.number("height", 0.001, 2.0)
 	var dock: DefReader = r.child("dock")
-	dock_size = Def.vec2(dock, "size")
+	dock_size = PuzzleDefCoords.vec2(dock, "size")
 	dock_height = dock.number("height", 0.001, 2.0)
 	drone_size = dock.number("drone", 0.01, 5.0)
 	drone_sag = dock.number("drone_sag", 0.0, 2.0)

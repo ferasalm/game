@@ -74,4 +74,19 @@ func _build_mirrors() -> void:
 			Vector3(0.0, -post_height * 0.5, 0.0), PuzzleMaterials.stone(_yard.color(&"brass")))
 		var box := PuzzleGeometry.box(pivot, _yard.mirror_size, Vector3.ZERO,
 			PuzzleMaterials.stone(_yard.color(&"brass")))
+		_disc(pivot, Vector3(0.0, _yard.mirror_size.y * 0.5 + 0.02, 0.0), 0.15,
+			PuzzleMaterials.stone(_yard.color(&"brass")))
 		_mirrors[mirror.id] = box
+
+
+static func _disc(parent: Node3D, at: Vector3, radius: float, material: Material) -> MeshInstance3D:
+	var mesh := CylinderMesh.new()
+	mesh.top_radius = radius
+	mesh.bottom_radius = radius
+	mesh.height = 0.04
+	var node := MeshInstance3D.new()
+	node.mesh = mesh
+	node.material_override = material
+	node.position = at
+	parent.add_child(node)
+	return node

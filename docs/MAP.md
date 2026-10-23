@@ -413,6 +413,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/puzzles/defs/light_lock_def.gd`: purpose: Defines the qamariya light lock puzzle layout (windows, mirrors, and hint timings)
 - `features/puzzles/defs/light_lock_mirror.gd`: purpose: One rotatable mirror in a light lock puzzle with four directional targets
 - `features/puzzles/defs/light_lock_window.gd`: purpose: One colored qamariya window in a light lock puzzle
+- `features/puzzles/defs/puzzle_def_coords.gd`: purpose: Typed optional [x, y] and [x, y, z] reads used by the puzzle definitions
 - `features/puzzles/defs/puzzle_yard_def.gd`: purpose: Defines the grey-box puzzle yard: floor, walls, ledge, tower, camera, colours and view sizes
 - `features/puzzles/defs/water_net_def.gd`: purpose: Defines a water routing network puzzle (valves, splits, gates, spouts, outlets)
 - `features/puzzles/defs/water_node_def.gd`: purpose: One node in a water network puzzle (source, split, gate, spout, or outlet)

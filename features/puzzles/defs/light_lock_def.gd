@@ -24,7 +24,7 @@ func read(r: DefReader) -> void:
 			wr.problem("bits", "bad bits value %d" % b)
 		w.bits = b
 		w.target = StringName(wr.text("target", "", false))
-		w.at = Def.vec3(wr, "at")
+		w.at = PuzzleDefCoords.vec3(wr, "at")
 		windows.append(w)
 		_windows_by_id[w.id] = w
 
@@ -37,7 +37,7 @@ func read(r: DefReader) -> void:
 		if m.targets.size() != 4:
 			mr.problem("targets", "!= 4 targets: found %d" % m.targets.size())
 		m.start = mr.integer("start", 0, 3, 0, false)
-		m.at = Def.vec3(mr, "at")
+		m.at = PuzzleDefCoords.vec3(mr, "at")
 		mirrors.append(m)
 		_mirrors_by_id[m.id] = m
 
@@ -51,7 +51,7 @@ func read(r: DefReader) -> void:
 
 	if r.has("lens"):
 		var lr: DefReader = r.child("lens")
-		lens_at = Def.vec3(lr, "at")
+		lens_at = PuzzleDefCoords.vec3(lr, "at")
 
 	hint_secs = r.int_list("hint_secs", 0, 3600)
 	hint_keys = r.id_list("hint_keys")

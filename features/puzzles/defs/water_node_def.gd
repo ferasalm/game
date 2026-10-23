@@ -25,6 +25,6 @@ func read(r: DefReader) -> void:
 	start = r.integer("start", 0, 1, 0, false)
 	spill_unless_shut = StringName(r.text("spill_unless_shut", "", false))
 	reaction = StringName(r.text("reaction", "", false))
-	at = Def.vec3(r, "at")
+	at = PuzzleDefCoords.vec3(r, "at")
 	if kind == &"outlet" and not reaction.is_empty() and not REACTIONS.has(reaction):
 		r.problem("reaction", "'%s' is not one of %s" % [reaction, REACTIONS])

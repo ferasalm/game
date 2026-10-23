@@ -28,6 +28,7 @@ func _ready() -> void:
 		GameState.flags[&"puzzle_valve_water"] = true
 	_board = PuzzleBoard.new()
 	_sub_vp.add_child(_board)
+	_board.player.position = Vector3(-1.5, 0.0, 3.0)
 	_board.camera.current = true
 	if _arg == "water_half":
 		_set_water_half()
