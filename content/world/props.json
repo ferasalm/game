@@ -252,7 +252,7 @@
     {"id": "sabil", "collide": [1.8, 1.4, 0.85], "splash": {"at": [0, 0.64, -0.01], "count": 14, "color": "#bff0ff", "energy": 2.2, "size": 0.05, "speed": 1.2, "lifetime": 0.5, "radius": 0.05, "gravity": 5.0},
      "light": {"x": 0.0, "y": 0.9, "z": 0.6, "color": "#ffb86c", "energy": 0.85, "range": 3.8, "pool": 2.6, "pool_energy": 0.4, "pool_y": 0.0, "flicker": 0.05, "flicker_speed": 4.0},
      "parts": [
-       {"at": [0, 1.4, -0.15], "size": [2.2, 2.8, 0.3], "color": "h", "pattern": "basalt"},
+       {"at": [0, 1.4, -0.15], "size": [2.2, 2.8, 0.3], "color": "p", "pattern": "plaster_worn"},
        {"at": [-0.64, 0.95, 0.0], "size": [0.22, 1.9, 0.12], "color": "w", "pattern": "gypsum"},
        {"at": [0.64, 0.95, 0.0], "size": [0.22, 1.9, 0.12], "color": "w", "pattern": "gypsum"},
        {"at": [0, 2.01, 0.0], "size": [1.5, 0.22, 0.12], "color": "w", "pattern": "gypsum"},

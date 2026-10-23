@@ -29,11 +29,11 @@ func test_sabil_has_wall_slab_frame_and_water() -> void:
 	var slab: PropPart = null
 	var water_parts: int = 0
 	for part: PropPart in def.parts:
-		if part.pattern == &"basalt" and part.size.x >= 2.0:
+		if part.pattern == &"plaster_worn" and part.size.x >= 2.0:
 			slab = part
 		if part.water:
 			water_parts += 1
-	check(slab != null, "has basalt wall slab behind basin")
+	check(slab != null, "has plaster_worn wall slab behind basin")
 	if slab != null:
 		check(absf(slab.at.z + slab.size.z / 2.0) <= 0.01, "slab front at z=0")
 	check(water_parts >= 2, "has falling stream and basin water")
