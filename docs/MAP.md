@@ -60,16 +60,16 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/ui/style.json`: content: ui_style x1
 - `content/ui/transitions.json`: content: transition x3
 - `content/world/areas.json`: content: area x1
-- `content/world/buildings.json`: content: building x10
+- `content/world/buildings.json`: content: building x15
 - `content/world/camera.json`: content: camera_rig x1
 - `content/world/explore.json`: content: explore_rules x1
 - `content/world/look.json`: content: look x5
 - `content/world/mist.json`: content: mist x3
-- `content/world/props.json`: content: prop x25
+- `content/world/props.json`: content: prop x26
 - `content/world/props/workbench.json`: content: prop x1
 - `content/world/sky.json`: content: sky x1
 - `content/world/skyline.json`: content: skyline x1
-- `content/world/tiles.json`: content: tile x8
+- `content/world/tiles.json`: content: tile x18
 
 ## core
 - `core/area_port.gd`: What the Router needs from the area that is playing (a base class to override; the default does nothing)

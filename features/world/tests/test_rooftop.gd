@@ -175,7 +175,7 @@ func test_camera_follows_and_can_be_restored() -> void:
 	for i: int in 60:
 		rooftop._process(0.1)
 	var look := ContentDB.get_def("look", &"night") as LookDef
-	var want: Vector3 = rooftop.player.position + look.camera_offset
+	var want: Vector3 = rooftop.camera_rig._follow_cam.camera_position() if rooftop.camera_rig._mode == &"follow" else rooftop.player.position + look.camera_offset
 	check(rooftop.camera.position.distance_to(want) < 0.05, "camera sits at the look offset from the player")
 	var other := Camera3D.new()
 	rooftop.add_child(other)

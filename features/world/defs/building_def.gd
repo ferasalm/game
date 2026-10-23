@@ -26,8 +26,8 @@ var seed_value: int = 1
 
 func read(r: DefReader) -> void:
 	id = r.id()
-	footprint_w = r.integer("footprint_w", 3, 10)
-	footprint_d = r.integer("footprint_d", 3, 10)
+	footprint_w = r.integer("footprint_w", 3, 20)
+	footprint_d = r.integer("footprint_d", 3, 20)
 	floors = r.integer("floors", 2, 12)
 	stone_floors = r.integer("stone_floors", 1, 3)
 	columns_front = r.integer("columns_front", 1, 5)

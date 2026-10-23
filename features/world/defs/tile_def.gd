@@ -18,7 +18,7 @@ var tint: Color = Color.WHITE
 
 func read(r: DefReader) -> void:
 	id = r.id()
-	height = r.number("height", 0.01, 20.0)
+	height = r.number("height", -20.0, 20.0, 0.0, false)
 	color = r.text("color")
 	solid = r.flag("solid")
 	glow = r.number("glow", 0.0, 8.0, 0.0, false)
