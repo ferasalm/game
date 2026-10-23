@@ -1,0 +1,25 @@
+FAIL docs (.check/docs.log)
+     map: docs/MAP.md is stale; run python3 tools/map.py
+     FAIL docs/MAP.md current
+ok   lint
+FAIL import (.check/import.log)
+      0 [main] bash (33016) child_copy: cygheap read copy failed, 0x0..0x80000D850, done 0, windows pid 33016, Win32 error 299
+      0 [main] tail (17112) child_copy: cygheap read copy failed, 0x0..0x80000FC00, done 0, windows pid 17112, Win32 error 299
+      0 [main] grep (21996) child_copy: cygheap read copy failed, 0x0..0x80000FC40, done 0, windows pid 21996, Win32 error 299
+      0 [main] bash 22252 dofork: child -1 - forked process 33016 died unexpectedly, retry 0, exit code 0xC0000142, errno 11
+tools/check.sh: fork: retry: Resource temporarily unavailable
+ok   tool_tests
+FAIL tests (.check/tests.log)
+         [0] _build_rain (res://features/world/weather/view/storm_builder.gd:100)
+         [1] build (res://features/world/weather/view/storm_builder.gd:19)
+         [2] build (res://features/world/rooftop/rooftop_world.gd:22)
+         [3] _ready (res://features/world/rooftop/rooftop.gd:62)
+         [4] _ready (res://features/prototype/prototype_main.gd:36)
+         [5] make_main (res://features/prototype/tests/flow_harness.gd:33)
+         [6] test_defeat_screen_picks_load_and_title_leave_the_fight (res://features/combat/tests/test_battle_flow.gd:94)
+         [7] _run (res://tests/runner.gd:39)
+         [8] _process (res://tests/runner.gd:13)
+     -- END OF GDSCRIPT BACKTRACE --
+     ================================================================
+     run_godot: exit code 139
+3 check(s) FAILED
