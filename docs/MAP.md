@@ -77,6 +77,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/puzzles/puzzle_yard.json`: content: puzzle_yard x1
 - `content/puzzles/water_net.json`: content: water_net x1
 - `content/ui/backdrops.json`: content: backdrop x7
+- `content/ui/focus.json`: content: focus_shot x3
 - `content/ui/map.json`: content: map_info x1
 - `content/ui/style.json`: content: ui_style x1
 - `content/ui/transitions.json`: content: transition x3
@@ -457,6 +458,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/puzzles/view/water_view.gd`: purpose: Draws stone channels, flowing water strips, gates, spouts, outlets and the canyon gauge
 - `features/puzzles/view/yard_builder.gd`: purpose: Builds the grey-box floor, back wall, parapet, R4 ledge and far tower of the puzzle yard
 - `features/ui/defs/backdrop_def.gd`: Backdrop definition for full-screen menu backgrounds
+- `features/ui/defs/focus_shot_def.gd`: purpose: Defines camera framing parameters for spot interaction focus zooms
 - `features/ui/defs/ui_style_def.gd`: The look of every menu and HUD (content/ui/style.json): three font files, named colours (c_*), sizes in pixels at 1920x1080 (s_*) and times in seconds (t_*)
 - `features/ui/logic/pause_logic.gd`: Pure rules of the pause menu: which entries show and in what order, which ask "are you sure", the vitals of a hero with a missing record (= full), and the play-time clock text
 - `features/ui/logic/prompt_glyph.gd`: Pure: the localization key of the button glyph for an action on keyboard or gamepad ("accept" -> Enter / A), and the fade of a world-space interaction prompt with distance
