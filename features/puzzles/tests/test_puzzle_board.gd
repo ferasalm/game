@@ -81,8 +81,23 @@ func test_beam_count_and_lens_colours() -> void:
 	board.free()
 
 
+func test_no_water_before_light_lock() -> void:
+	var board: PuzzleBoard = _fresh()
+	for node: WaterNodeDef in board.water_def.nodes:
+		for target: StringName in node.to:
+			check(not board.water_strip_visible(node.id, target),
+				"no strip on %s>%s before the lock" % [node.id, target])
+	check(absf(board.canyon_gauge()) < 0.001, "gauge stays empty before the lock")
+	check(absf(board.water_view.grate_share()) < 0.001, "grate line stays dry before the lock")
+	_solve_light(board)
+	check(board.water_strip_visible(&"g1", &"dock"), "water flows from the start state after the lock")
+	check(absf(board.water_view.grate_share()) > 0.0, "the grate line shows water after the lock")
+	board.free()
+
+
 func test_water_strip_and_gauge() -> void:
 	var board: PuzzleBoard = _fresh()
+	_solve_light(board)
 	check(board.water_strip_visible(&"g1", &"dock"), "g1 edge has water at start")
 	check(not board.water_strip_visible(&"s2", &"canyon"), "s2 spills to the grate at start")
 	board.water_state.freed[&"g3"] = true

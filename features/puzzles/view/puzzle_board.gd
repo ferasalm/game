@@ -30,9 +30,10 @@ func _init() -> void:
 func redraw() -> void:
 	if not _built:
 		return
+	var light_open: bool = LightLock.solved(light_def, light_state)
 	light_view.sync(light_state)
-	water_view.sync(water_state)
-	if LightLock.solved(light_def, light_state):
+	water_view.sync(water_state, light_open)
+	if light_open:
 		_light_done = true
 		GameState.flags[FLAG_LOCK] = true
 	if WaterNet.solved(water_def, water_state):

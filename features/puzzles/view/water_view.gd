@@ -26,9 +26,11 @@ func setup(def: WaterNetDef, yard: PuzzleYardDef) -> void:
 	_outlets.setup(def, yard)
 
 
-func sync(state: WaterNetState) -> void:
+func sync(state: WaterNetState, valve_open: bool) -> void:
 	_state = state
 	_flow = WaterNet.flow(_def, _state)
+	if not valve_open:
+		_flow.clear()
 	_update_strips()
 	_update_gates()
 	_update_spouts()
