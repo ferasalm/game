@@ -766,10 +766,10 @@
         },
         {
           "ref": "sabil",
-          "x": 35.5,
+          "x": 36.7,
           "y": 0.0,
           "z": 18.0,
-          "yaw": 180
+          "yaw": 270
         }
       ],
       "places": [
@@ -831,9 +831,9 @@
           "kind": "save",
           "id": "sabil",
           "prop": "sabil",
-          "x": 33.5,
+          "x": 34.64,
           "z": 18.0,
-          "yaw": 180
+          "yaw": 90
         },
         {
           "kind": "door",
@@ -1036,6 +1036,22 @@
           "distance": 8.0,
           "fov": 50.0,
           "roll": 6.0
+        }
+      ],
+      "signs": [
+        {
+          "key": "WORLD_SIGN_SABIL",
+          "x": 36.94,
+          "y": 2.8,
+          "z": 18.0,
+          "yaw": 270,
+          "board": [
+            1.8,
+            0.6
+          ],
+          "size": 0.35,
+          "color": "#9fe8ff",
+          "energy": 2.0
         }
       ]
     }
