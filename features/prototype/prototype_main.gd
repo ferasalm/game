@@ -15,7 +15,7 @@ const AREA_CARD: Array[String] = ["AREA_SOUQ_NAME", "AREA_SOUQ_NAME_MUSNAD", "AR
 
 var rooftop: Rooftop
 var dialogue: DialogueBox
-var menu: EquipmentScreen
+var menu: EquipmentMenu
 ## The title over the opening sky (null once it is gone), and the banners for the area and for loot.
 var title: TitleOverlay
 var area_card: AreaTitleCard
@@ -36,7 +36,7 @@ func _ready() -> void:
 	add_child(rooftop)
 	dialogue = DialogueBox.new()
 	add_child(dialogue)
-	menu = EquipmentScreen.new()
+	menu = EquipmentMenu.new()
 	add_child(menu)
 	loot_popup = LootPopup.new()
 	add_child(loot_popup)
@@ -153,7 +153,7 @@ func _end_talk() -> void:
 	rooftop.freeze_actors(false)
 
 
-func _on_menu_closed() -> void:
+func _on_menu_closed(_result: Variant = null) -> void:
 	Screens.notify_closed(&"workshop")
 	Router.set_busy(false)
 	rooftop.set_exploring(true)
