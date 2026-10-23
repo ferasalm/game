@@ -58,6 +58,8 @@ Measured in session 9: 4 agy builds (~1,600 lines + tests) cost the Claude limit
 still needed 1-3 small fixes (internal ids in text, a missing input lock, a fake test registration).
 
 ## 3b. The builder loop (agy and opencode)
+Low on Claude limit: .claude/skills/emergency-efficiency/SKILL.md overrides this section (one director chat,
+builders merge, test and review on backup branches).
 Builders: agy (Gemini 3.8 Flash; tools/agy_task.sh, branch gemini/<task>) and opencode (default openrouter/thinkingmachines/inkling:free,
 the winner of the 2026-10-23 free-model test: 16/16 strict-typed GDScript and the right root cause of a real bug, where
 laguna broke the typing rule and misdiagnosed, Nemotron Ultra crashed; Inkling's free tier works only inside agents, not
