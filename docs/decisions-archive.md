@@ -39,3 +39,6 @@
 - ~~2026-10-23 | Builders: agy + opencode (Inkling :free; no OpenRouter credit bought); paid only Cloudflare DeepSeek V4.1 Flash, capped at $8.50 | Feras | Feras~~ (superseded 2026-10-23: Cloudflare on Workers Paid)
 - ~~2026-10-23 | Builds run through tools/build_pipeline.sh (build, check, one free fix pass); Claude reviews its .result only; no manager subagents (supersedes the 2026-10-22 workflow line) | builders said done with failures | Feras/Claude~~ (superseded 2026-10-23: the build gate line)
 - ~~2026-10-23 | Builders: agy, opencode :free; Cloudflare DeepSeek V4.1 Flash on Workers Paid (Feras subscribes; $8.50 total with the $5 month) | free plan refuses it | Feras~~ (superseded 2026-10-23: $10 usage cap, subagents)
+- ~~2026-10-19 | Goal: the 30-minute Chapter 1 vertical slice first; decide on a full game after it | Feras | Feras~~ (superseded 2026-10-23: demo = level 1, slice parked)
+- ~~2026-10-21 | Slice: medium difficulty; Hamoud joins at beat 5; Idris escapes mid-fight; both a stealth walk and the sluice puzzle | Feras (slice.md questions) | Feras~~ (superseded 2026-10-23: slice parked)
+- ~~2026-10-19 | Language: English first, Arabic later | Feras BRIEFING q4 | Feras~~ (superseded 2026-10-22: Musnad only, no Arabic script)

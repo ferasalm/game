@@ -22,8 +22,10 @@ content/puzzles/*.json; tools/shot_menu.gd + tools/shot_menu.tscn (the render-to
    #ffd23f, green #3cdc78, blue #3a7bff, white #f4f1ea, water #5fd4e0, rust #8a4b2a, wood #7a5230, grate #b0302a.
 3. PuzzleBoard (Node3D, puzzle_board.gd + puzzle_yard.tscn): builds the grey boxes from content, holds a
    LightLockState and a WaterNetState, act(piece_id) applies one move (shutter, mirror, gate, hook-free, spout), then
-   redraws. Pieces cycle with move_left/move_right in the content order; interact acts on the selected one; a cyan
-   0.2 m marker floats 0.6 m above it. The water pieces cannot be selected until the light lock is solved.
+   redraws. Walk up + interact (DECISIONS 2026-10-23): a stand-in player (a 0.4 x 1.7 m capsule, #c86040) moves
+   with move_* at 3.0 m/s on the floor and the R4 ledge; nearest_piece(pos) -> the closest piece within
+   interact_range 1.3 m (content), or &"". interact acts on it; a cyan 0.2 m marker floats 0.6 m above it. Water
+   pieces are not offered until the light lock is solved. The level later swaps the capsule for Zayd.
 4. Light view: a window is a 1.0 x 1.4 emissive quad in its colour, a shut shutter is a wood box over it; a mirror
    is a 0.1 x 0.8 x 0.6 brass box (#c8a040) on a post, yaw = turn x 90 deg. Every open window's trace is drawn as
    thin boxes (0.08 m) node to node, unshaded additive, alpha 0.7, in its colour; a trace that ends at "" goes 4 m
@@ -52,7 +54,8 @@ content/puzzles/*.json; tools/shot_menu.gd + tools/shot_menu.tscn (the render-to
 `features/puzzles/logic/`
 
 ## Tests (features/puzzles/tests/)
-- act() on each piece kind changes the matching state; water pieces refuse while the light lock is unsolved.
+- act() on each piece kind changes the matching state; nearest_piece: in range, out of range (&""), water pieces
+  not offered while the light lock is unsolved.
 - The yellow-blue moves through act() solve the light lock and set the flag; a board made after that loads solved.
 - Beam boxes: count = trace segments of open windows; the lens colour matches lens_bits for 0, 3 and 7.
 - A water edge has a strip only when its share > 0; the gauge equals the canyon share (0.5 and 1.0 cases).

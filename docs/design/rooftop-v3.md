@@ -1,4 +1,4 @@
-# Rooftop v3 (souq_rooftops): level spec for the painted camera
+# Rooftop v3 (souq_rooftops): level spec for the painted camera (SUPERSEDED as the layout by level-1.md; camera by DECISIONS)
 [cx,cx+1] x [cz,cz+1]; floor top y = 0.5. Yaw 0 = the figure faces +z (south, toward the camera); 180 faces north.
 
 ## 1. Goals (first 2 minutes)

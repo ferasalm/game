@@ -7,7 +7,7 @@ Place: R5, the Concession roof (level-1.md), at the water tower's foot, plus one
 Fiction: the Concession sealed the old valve with a glass eye that opens only to pure white light (their "clean"
 signal). The souq answers with its oldest glass. The couriers' brass signal mirrors (old heliographs on the parapets,
 used to flash messages roof to roof) still turn.
-- Pieces: 4 lit qamariya windows facing the east roof, one colour each (red, yellow, green, blue), each with a
+- Pieces: 4 lit qamariya windows facing R5 (the Concession roof), one colour each (red, yellow, green, blue), each with a
   wooden shutter (open or closed, interact). 3 brass mirrors on posts, each turns in 4 steps of 90 degrees.
   The lens on the valve shows the colour that reaches it right now.
 - Light adds: red + green + blue = white, and yellow + blue = white too (yellow is red + green). Two right answers:
@@ -24,7 +24,7 @@ used to flash messages roof to roof) still turn.
 ## 2. Route the water home
 Fiction: opening the valve sends the water where the Concession's pipes point, back into its own tank. The roofs
 still have the old open gutters, wooden sluice gates and swinging mizab spouts from before the pumps.
-- Pieces: a gutter network cut into the east roof floor (stone channels, visible at all times); 4 sluice gates (open
+- Pieces: a gutter network cut into the R5 floor (stone channels, visible at all times); 4 sluice gates (open
   or shut); 2 mizab spouts on the parapet that swing between two outlets; 3 outlets: the Concession return grate
   (red), the drone dock, and the canyon spout over al-Saila (the goal, toward the sabil).
 - Water runs live from the valve along every open path and splits at forks. The canyon spout only gets the full
@@ -39,10 +39,11 @@ still have the old open gutters, wooden sluice gates and swinging mizab spouts f
 - Hints (Bilqis): after 2 min "Every open gate takes a share." After 4 min "That old gate is stuck, not locked."
 
 ## 3. Rules for the build (agy brief after level1-blockout)
-- Pure logic, tested: features/world/logic/light_lock.gd (beam paths from windows through mirrors; additive colour
+- Pure logic, tested (features/puzzles/, DECISIONS 2026-10-23): logic/light_lock.gd (beam paths from windows through mirrors; additive colour
   at the lens; solved = white) and water_net.gd (graph from the valve: which outlets get water and what share, from
-  gate and spout states). Content: content/world/puzzles.json (positions, colours, graph, hint times).
-- Every piece is turned with the one interact key; any state can be turned back; nothing can be lost or locked.
+  gate and spout states). Content: content/puzzles/*.json (positions, colours, graph, hint times).
+- Walk up to a piece and press interact (one key); any state can be turned back; nothing can be lost; the water
+  pieces wake only once the light lock is solved (light first, then water).
 - A save stores the solved flags only; an unsolved puzzle resets to its start state on load.
 - 60 FPS: beams are unshaded additive quads, water is a scrolling shader on channel meshes (no particles beyond the
   spout splash).

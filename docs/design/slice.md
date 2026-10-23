@@ -1,4 +1,4 @@
-# Chapter 1 slice: "The Water Ledger" (~30 min; draft for owner review)
+# Chapter 1 slice: "The Water Ledger" (PARKED 2026-10-23: the demo is level 1; decided after the demo)
 Setting and cast: world.md. Rules: combat.md. Prototype v0 covers beats 3-5 (one fight). (check) = unsure culture detail.
 ## Pitch
 Dawn in the Old City, 2150. The Concession cuts the souq's water ration again. Zayd, a courier-fixer, is paid
