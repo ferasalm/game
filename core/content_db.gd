@@ -54,9 +54,14 @@ const KINDS: Dictionary = {
 	"camera_preset": preload("res://features/world/defs/camera_preset_def.gd"),
 	"place": preload("res://features/world/defs/place_def.gd"),
 	"flow_rules": preload("res://core/defs/flow_rules_def.gd"),
+	"levels": preload("res://features/progression/defs/levels_def.gd"),
+	"class": preload("res://features/progression/defs/class_def.gd"),
+	"armor": preload("res://features/items/defs/armor_def.gd"),
+	"stone": preload("res://features/jambiyah/defs/stone_def.gd"),
+	"heirloom": preload("res://features/jambiyah/defs/heirloom_def.gd"),
 }
 ## Equippable kinds share one id namespace; get_def("item", id) finds any of them.
-const ITEM_KINDS: Array[String] = ["hilt", "blade", "prosthetic"]
+const ITEM_KINDS: Array[String] = ["hilt", "blade", "prosthetic", "armor"]
 
 var _defs: Dictionary[String, Dictionary] = {}
 

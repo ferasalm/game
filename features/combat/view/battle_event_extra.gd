@@ -39,5 +39,5 @@ func on_flee_failed(event: TimelineEvent) -> void:
 	await _wait(_event_player._view.banner_seconds)
 
 func _wait(seconds: float) -> void:
-	if not _skip and seconds > 0.0:
-		await get_tree().create_timer(seconds).timeout
+	if not _skip and seconds > 0.0 and _event_player != null:
+		await _event_player._wait(seconds)

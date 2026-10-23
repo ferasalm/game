@@ -8,6 +8,7 @@ var colour: Color = Color.WHITE
 var order: int = 0
 var story_only: bool = false
 var allows_perk: bool = false
+var stone_slots: int = 0
 
 
 func read(r: DefReader) -> void:
@@ -21,3 +22,4 @@ func read(r: DefReader) -> void:
 	order = r.integer("order", 0, 99)
 	story_only = r.flag("story_only")
 	allows_perk = r.flag("allows_perk")
+	stone_slots = r.integer("stone_slots", 0, 10, 0, false)

@@ -13,19 +13,19 @@ func test_v3_fixture_migrates_to_v4() -> void:
 	var result: Dictionary = SaveCodec.migrate(_v3())
 	check(bool(result["ok"]), "v3 accepted")
 	var data: Dictionary = result["data"]
-	check_eq(data["version"], 4, "now version 4")
+	check_eq(data["version"], 5, "now version 5")
 	check_eq((data["place"] as Dictionary)["area"], "souq_rooftops", "area_id moved into place")
 	check_eq((data["place"] as Dictionary)["save_point"], "gate", "spawn_id became the save point")
 	check(not data.has("area_id") and not data.has("spawn_id"), "the old keys are gone")
 	check_eq(data["money"], 0, "a v3 save has no money")
 	check((data["bag"] as Dictionary).is_empty() and (data["vitals"] as Dictionary).is_empty(), "no bag, vitals full")
-	check_eq((data["inventory"] as Array).size(), 5, "inventory kept")
+	check_eq((data["inventory"] as Array).size(), 8, "inventory kept plus v5 start gear")
 
 
 func test_unknown_versions_are_refused() -> void:
-	check(not bool(SaveCodec.migrate({"version": 5})["ok"]), "future version refused")
+	check(not bool(SaveCodec.migrate({"version": 6})["ok"]), "future version refused")
 	check(not bool(SaveCodec.migrate({})["ok"]), "no version refused")
-	check_eq(SaveCodec.migrate({"version": 0})["error"], "save version 0, expected 4", "reason names both versions")
+	check_eq(SaveCodec.migrate({"version": 0})["error"], "save version 0, expected 5", "reason names both versions")
 
 
 func test_unknown_ids_are_dropped_with_a_warning() -> void:
@@ -34,8 +34,8 @@ func test_unknown_ids_are_dropped_with_a_warning() -> void:
 	data["vitals"] = {"zayd": {"hp": 0}, "nobody": {"hp": 5}}
 	data["cleared_patrols"] = ["patrol_scouts", "lost_patrol"]
 	var known: Dictionary = {
-		"item": ["swift_hilt", "keen_blade", "lens_array", "grandfather_hilt"], "consumable": ["pink_herb"],
-		"hero": ["zayd", "bilqis"], "encounter": ["patrol_scouts"]}
+		"item": ["swift_hilt", "keen_blade", "lens_array", "grandfather_hilt", "courier_jacket", "rig_shawl", "aqiq_red"],
+		"consumable": ["pink_herb"], "hero": ["zayd", "bilqis"], "encounter": ["patrol_scouts"]}
 	var warnings: PackedStringArray = SaveCodec.sanitize(data, known)
 	check_eq(warnings.size(), 4, "one warning each: ghost_item, moon_dust, nobody, lost_patrol (%s)" % warnings)
 	check(not (data["inventory"] as Array).has("ghost_item"), "unknown inventory item dropped")

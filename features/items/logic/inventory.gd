@@ -48,6 +48,9 @@ static func equip_problem(owned: Array[StringName], slot: StringName, item: Equi
 		"prosthetic":
 			var worn := item as ProstheticDef
 			return "" if worn != null and worn.wearer == hero else "'%s' does not fit %s" % [item.id, hero]
+		"armor":
+			var armor := item as ArmorDef
+			return "" if armor != null and armor.heroes.has(hero) else "'%s' is not armor for %s" % [item.id, hero]
 	return "'%s' is not a slot" % slot
 
 

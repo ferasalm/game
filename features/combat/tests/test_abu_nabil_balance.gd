@@ -14,7 +14,7 @@ func test_abu_nabil_duel_balance_harness() -> void:
 	var total_battles: int = 200
 	for seed_val: int in range(1, total_battles + 1):
 		var sim: BattleSim = loader.make_sim(
-			&"grandfather_hilt", &"rustwire_blade", seed_val, 0, &"salvage_arm", &"wrist_rig")
+			&"grandfather_hilt", &"rustwire_blade", seed_val, 0, &"salvage_arm", &"wrist_rig", 3)
 		BattleLoader.autoplay(sim)
 		if sim.result == &"victory":
 			wins += 1

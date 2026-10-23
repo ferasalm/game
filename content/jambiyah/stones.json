@@ -1,0 +1,113 @@
+{
+  "kind": "stone",
+  "items": [
+    {
+      "id": "aqiq_red",
+      "name_key": "STONE_AQIQ_RED_NAME",
+      "desc_key": "STONE_AQIQ_RED_DESC",
+      "flavour_key": "STONE_AQIQ_RED_FLAVOUR",
+      "rarity": "common",
+      "price": 0,
+      "stats": {"max_hp": 30}
+    },
+    {
+      "id": "sulaimani",
+      "name_key": "STONE_SULAIMANI_NAME",
+      "desc_key": "STONE_SULAIMANI_DESC",
+      "flavour_key": "STONE_SULAIMANI_FLAVOUR",
+      "rarity": "common",
+      "price": 60,
+      "stats": {"defense": 2}
+    },
+    {
+      "id": "dam_akhawayn",
+      "name_key": "STONE_DAM_AKHAWAYN_NAME",
+      "desc_key": "STONE_DAM_AKHAWAYN_DESC",
+      "flavour_key": "STONE_DAM_AKHAWAYN_FLAVOUR",
+      "rarity": "common",
+      "price": 70,
+      "stats": {"attack": 2}
+    },
+    {
+      "id": "jaz_black",
+      "name_key": "STONE_JAZ_BLACK_NAME",
+      "desc_key": "STONE_JAZ_BLACK_DESC",
+      "flavour_key": "STONE_JAZ_BLACK_FLAVOUR",
+      "rarity": "uncommon",
+      "price": 80,
+      "perk": "jaz_knockback"
+    },
+    {
+      "id": "fayruz",
+      "name_key": "STONE_FAYRUZ_NAME",
+      "desc_key": "STONE_FAYRUZ_DESC",
+      "flavour_key": "STONE_FAYRUZ_FLAVOUR",
+      "rarity": "uncommon",
+      "price": 90,
+      "perk": "steady_current"
+    },
+    {
+      "id": "milh_crystal",
+      "name_key": "STONE_MILH_CRYSTAL_NAME",
+      "desc_key": "STONE_MILH_CRYSTAL_DESC",
+      "flavour_key": "STONE_MILH_CRYSTAL_FLAVOUR",
+      "rarity": "uncommon",
+      "price": 90,
+      "perk": "milh_regen"
+    },
+    {
+      "id": "kamaran_pearl",
+      "name_key": "STONE_KAMARAN_PEARL_NAME",
+      "desc_key": "STONE_KAMARAN_PEARL_DESC",
+      "flavour_key": "STONE_KAMARAN_PEARL_FLAVOUR",
+      "rarity": "uncommon",
+      "price": 0,
+      "perk": "kamaran_start"
+    },
+    {
+      "id": "qamar_stone",
+      "name_key": "STONE_QAMAR_STONE_NAME",
+      "desc_key": "STONE_QAMAR_STONE_DESC",
+      "flavour_key": "STONE_QAMAR_STONE_FLAVOUR",
+      "rarity": "rare",
+      "price": 150,
+      "perk": "qamar_boost"
+    },
+    {
+      "id": "ayn_bead",
+      "name_key": "STONE_AYN_BEAD_NAME",
+      "desc_key": "STONE_AYN_BEAD_DESC",
+      "flavour_key": "STONE_AYN_BEAD_FLAVOUR",
+      "rarity": "rare",
+      "price": 0,
+      "perk": "ayn_counter"
+    },
+    {
+      "id": "marib_stone",
+      "name_key": "STONE_MARIB_STONE_NAME",
+      "desc_key": "STONE_MARIB_STONE_DESC",
+      "flavour_key": "STONE_MARIB_STONE_FLAVOUR",
+      "rarity": "rare",
+      "price": 0,
+      "perk": "marib_refund"
+    },
+    {
+      "id": "sabatayn_glass",
+      "name_key": "STONE_SABATAYN_GLASS_NAME",
+      "desc_key": "STONE_SABATAYN_GLASS_DESC",
+      "flavour_key": "STONE_SABATAYN_GLASS_FLAVOUR",
+      "rarity": "rare",
+      "price": 0,
+      "perk": "sabatayn_surge"
+    },
+    {
+      "id": "jadd_aqiq",
+      "name_key": "STONE_JADD_AQIQ_NAME",
+      "desc_key": "STONE_JADD_AQIQ_DESC",
+      "flavour_key": "STONE_JADD_AQIQ_FLAVOUR",
+      "rarity": "heirloom",
+      "price": 0,
+      "perk": "jadd_command"
+    }
+  ]
+}

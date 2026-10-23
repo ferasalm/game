@@ -46,7 +46,7 @@ func test_item_ids_are_unique_across_kinds_and_within_the_budget() -> void:
 		check(not seen.has(item.id), "%s is in one kind only" % item.id)
 		seen[item.id] = true
 		check(ContentDB.get_def("item", item.id) == item, "get_def(item) finds %s" % item.id)
-	check_eq(seen.size(), 4 + 8 + 0, "4 old items + 8 new ones")
+	check_eq(seen.size(), 4 + 8 + 5, "4 old items + 8 new ones + 5 armors")
 
 
 func test_the_heirloom_hilt_is_the_start_hilt_and_never_loot() -> void:

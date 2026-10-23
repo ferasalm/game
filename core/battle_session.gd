@@ -79,8 +79,10 @@ func _on_stage_ended(result: StringName) -> void:
 	finished.emit(outcome)
 
 
-## Carries the fight's vitals and herbs into the game and pays the encounter's rewards once.
+## Carries the fight's vitals and herbs into the game, awards XP and level-ups, and pays rewards once.
 func _win(outcome: BattleOutcome) -> void:
+	var was_cleared: bool = GameState.cleared_patrols.has(outcome.encounter_id)
+	_award_battle_xp(outcome, was_cleared)
 	GameState.set_vitals(outcome.vitals)
 	GameState.set_bag(outcome.bag)
 	var reward: RewardResult = RewardApplier.victory(outcome.encounter_id)
@@ -88,8 +90,30 @@ func _win(outcome: BattleOutcome) -> void:
 	outcome.items = reward.items
 	outcome.consumables = reward.consumables.duplicate()
 	outcome.rewarded = true
-	if not GameState.cleared_patrols.has(outcome.encounter_id):
+	if not was_cleared:
 		GameState.cleared_patrols.append(outcome.encounter_id)
+
+
+func _award_battle_xp(outcome: BattleOutcome, was_cleared: bool) -> void:
+	var encounter_def := ContentDB.get_def("encounter", outcome.encounter_id) as EncounterDef
+	var combatants: Dictionary = {}
+	for cid: StringName in ContentDB.ids("combatant"):
+		combatants[cid] = ContentDB.get_def("combatant", cid) as CombatantDef
+	var xp_base: int = Progression.encounter_xp(encounter_def, combatants)
+	var rules := ContentDB.get_def("economy_rules", &"default") as EconomyRulesDef
+	var share: float = rules.repeat_xp_share if (was_cleared and rules != null) else 1.0
+	var xp_amount: int = floori(xp_base * share)
+	var levels_def := ContentDB.get_def("levels", &"default") as LevelsDef
+	var classes: Dictionary = {}
+	for class_id: StringName in ContentDB.ids("class"):
+		var c := ContentDB.get_def("class", class_id) as ClassDef
+		classes[c.hero] = c
+	outcome.level_ups = Progression.award(GameState.xp, GameState.party, xp_amount, levels_def, classes)
+	for lu: LevelUp in outcome.level_ups:
+		if outcome.vitals.has(lu.hero):
+			var vit: Dictionary = outcome.vitals[lu.hero]
+			vit["hp"] = int(vit.get("hp", 0)) + lu.gains.get(&"max_hp", 0)
+			vit["sp"] = int(vit.get("sp", 0)) + lu.gains.get(&"max_sp", 0)
 
 
 func restore_snapshot() -> void:

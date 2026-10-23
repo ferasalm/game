@@ -1,7 +1,7 @@
 class_name Perks
 extends RefCounted
-## Applies perks to a fighter. Four kinds (PerkDef.KINDS): bonus_knockback folds into the fighter's knockback
-## bonus; the other three become fields that BattleSim reads. Never mutates the fighter it is given.
+## Applies perks to a fighter. Modifies stats, timeline properties, and passive roll chances.
+## Never mutates the fighter it is given.
 
 
 static func apply(base: CombatantDef, perk_list: Array[PerkDef]) -> CombatantDef:
@@ -9,19 +9,22 @@ static func apply(base: CombatantDef, perk_list: Array[PerkDef]) -> CombatantDef
 	for perk: PerkDef in perk_list:
 		match perk.kind:
 			&"sp_per_act":
-				out.sp_per_act_bonus += perk.amount
+				out.sp_per_act_bonus += int(perk.amount)
 			&"hp_regen":
-				out.hp_regen += perk.amount
+				out.hp_regen += int(perk.amount)
 			&"bonus_knockback":
-				out.knockback_bonus += perk.amount
+				out.knockback_bonus += int(perk.amount)
 			&"start_bonus":
-				out.start_bonus += perk.amount
+				out.start_bonus += int(perk.amount)
 			&"dodge_bonus":
 				out.dodge_bonus += float(perk.amount)
 			&"crit_bonus":
 				out.crit_bonus += float(perk.amount)
 			&"status_pierce":
 				out.status_pierce += float(perk.amount)
+			&"action_sp_gain", &"counter_ranged", &"interrupt_refund", &"counter_to_command", &"bonus_vs_status":
+				# TODO(zayd-kit): Handled in zayd-kit move redesign
+				pass
 	return out
 
 

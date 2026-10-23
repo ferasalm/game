@@ -1,30 +1,26 @@
 extends Node
 ## Everything a save file holds (autoload GameState). Plain data only: nodes read and write it, never own it.
-## to_dict()/from_dict() are the save format (SaveCodec migrates old versions); bump SaveCodec.VERSION and add a
-## migration step when the shape changes.
+## to_dict()/from_dict() are the save format (SaveCodec migrates old versions).
 
 var flags: Dictionary[StringName, bool] = {}
-## Worn gear per hero and part: &"zayd.hilt", &"zayd.blade", &"zayd.prosthetic", &"bilqis.prosthetic" ->
-## content ids. A missing slot means the hero's starting gear (content/jambiyah/loadouts.json).
+## Worn gear per hero and part: &"zayd.hilt", &"zayd.armor", etc. -> content ids.
 var equipment: Dictionary[StringName, StringName] = {}
-## Unique items the party owns (hilts, blades, prosthetics), each id at most once (Inventory.add).
+## Unique items the party owns (hilts, blades, prosthetics, armors, stones), each id at most once.
 var inventory: Array[StringName] = []
 var counters: Dictionary[StringName, int] = {}
 var party: Array[StringName] = []
 var area_id: StringName = &""
-## The save point the party last drank at (&"" before the first); a loaded game starts there.
 var save_point: StringName = &""
-## Riyal.
 var money: int = 0
-## Stackable consumables: {consumable id: count} (Bag).
 var bag: Dictionary[StringName, int] = {}
-## Carried HP/SP per hero (Vitals); missing means full.
 var vitals: Dictionary[StringName, Dictionary] = {}
-## Patrol encounter ids beaten since the last sabil drink (they stay gone; the sabil empties this).
 var cleared_patrols: Array[StringName] = []
 var play_seconds: float = 0.0
-## Problems the last from_dict found and repaired (unknown ids dropped), for the log.
 var load_warnings: PackedStringArray = PackedStringArray()
+var xp: Dictionary[StringName, int] = {}
+var sockets: Dictionary[StringName, Array] = {}
+var upgrades: Dictionary[StringName, int] = {}
+var materials: Dictionary[StringName, int] = {}
 
 
 func reset() -> void:
@@ -40,9 +36,13 @@ func reset() -> void:
 	vitals.clear()
 	cleared_patrols.clear()
 	play_seconds = 0.0
+	xp.clear()
+	sockets.clear()
+	upgrades.clear()
+	materials.clear()
 
 
-## A fresh game: everything reset, then the purse and bag of content/economy/rules.json.
+## A fresh game: everything reset, starting equipment, stones, money, bag, and party.
 func start_new() -> void:
 	reset()
 	var rules := ContentDB.get_def("economy_rules", &"default") as EconomyRulesDef
@@ -50,6 +50,14 @@ func start_new() -> void:
 		money = rules.start_money
 		bag = rules.start_bag.duplicate()
 		party = rules.start_party.duplicate()
+	equipment[&"zayd.armor"] = &"courier_jacket"
+	equipment[&"bilqis.armor"] = &"rig_shawl"
+	for item_id: StringName in [&"courier_jacket", &"rig_shawl", &"aqiq_red"]:
+		if not inventory.has(item_id):
+			inventory.append(item_id)
+	sockets[&"grandfather_hilt"] = [&"aqiq_red"]
+	for hero: StringName in party:
+		xp[hero] = 0
 
 
 func to_dict() -> Dictionary:
@@ -66,10 +74,13 @@ func to_dict() -> Dictionary:
 		"vitals": vitals.duplicate(true),
 		"cleared_patrols": cleared_patrols.duplicate(),
 		"play_seconds": play_seconds,
+		"xp": xp.duplicate(),
+		"sockets": sockets.duplicate(true),
+		"upgrades": upgrades.duplicate(),
+		"materials": materials.duplicate(),
 	}
 
 
-## Returns "" on success, else the reason the data was refused (the state is then unchanged).
 func from_dict(raw: Dictionary) -> String:
 	var migrated: Dictionary = SaveCodec.migrate(raw)
 	if not bool(migrated["ok"]):
@@ -84,7 +95,6 @@ func from_dict(raw: Dictionary) -> String:
 	return ""
 
 
-## A working copy of purse and bag that shares the inventory and flags; pay rewards into it, then take() it back.
 func holdings() -> Holdings:
 	var held := Holdings.new()
 	held.money = money
@@ -99,14 +109,12 @@ func take(held: Holdings) -> void:
 	bag = held.bag.snapshot()
 
 
-## Replaces the carried vitals with a copy of src ({hero id: {"hp", "sp"}}).
 func set_vitals(src: Dictionary) -> void:
 	vitals.clear()
 	for hero: Variant in src:
 		vitals[StringName(str(hero))] = (src[hero] as Dictionary).duplicate()
 
 
-## Replaces the bag with src ({consumable id: count}); counts of 0 or less are dropped.
 func set_bag(src: Dictionary) -> void:
 	bag.clear()
 	for item_id: Variant in src:
@@ -114,7 +122,6 @@ func set_bag(src: Dictionary) -> void:
 			bag[StringName(str(item_id))] = int(src[item_id])
 
 
-## What a slot list shows, from the live state.
 func summary() -> Dictionary:
 	return SaveCodec.summary(to_dict())
 
@@ -130,6 +137,11 @@ func _read_items(data: Dictionary) -> void:
 		counters[StringName(str(key))] = int(data["counters"][key])
 	for member: Variant in (data.get("party", []) as Array):
 		party.append(StringName(str(member)))
+	for hilt: Variant in (data.get("sockets", {}) as Dictionary):
+		var list: Array = []
+		for s: Variant in (data["sockets"][hilt] as Array):
+			list.append(StringName(str(s)))
+		sockets[StringName(str(hilt))] = list
 
 
 func _read_numbers(data: Dictionary) -> void:
@@ -145,18 +157,24 @@ func _read_numbers(data: Dictionary) -> void:
 		var kept: Dictionary = {}
 		for field: String in ["hp", "sp"]:
 			if entry.has(field):
-				kept[field] = maxi(0, int(entry[field]))  # a missing field means full (Vitals)
+				kept[field] = maxi(0, int(entry[field]))
 		vitals[StringName(str(hero))] = kept
 	for encounter: Variant in (data.get("cleared_patrols", []) as Array):
 		cleared_patrols.append(StringName(str(encounter)))
 	play_seconds = float(data.get("play_seconds", 0.0))
+	for hero: Variant in (data.get("xp", {}) as Dictionary):
+		xp[StringName(str(hero))] = int(data["xp"][hero])
+	for item: Variant in (data.get("upgrades", {}) as Dictionary):
+		upgrades[StringName(str(item))] = int(data["upgrades"][item])
+	for mat: Variant in (data.get("materials", {}) as Dictionary):
+		materials[StringName(str(mat))] = int(data["materials"][mat])
 
 
-## The ids content knows, per SaveCodec.sanitize category.
 func _known_ids() -> Dictionary:
 	var items: Array = []
 	for kind: String in ContentDB.ITEM_KINDS:
 		items.append_array(ContentDB.ids(kind))
+	items.append_array(ContentDB.ids("stone"))
 	return {
 		"item": items, "consumable": ContentDB.ids("consumable"), "hero": ContentDB.ids("combatant"),
 		"encounter": ContentDB.ids("encounter"),

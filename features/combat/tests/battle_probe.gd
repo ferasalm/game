@@ -62,7 +62,11 @@ static func sim(
 	setup.statuses = statuses
 	setup.seed = 1
 	setup.ambush = ambush
-	return BattleSim.create_from(setup)
+	var sim: BattleSim = BattleSim.create_from(setup)
+	var enabled: bool = bool(rule_props.get("rolls_enabled", false))
+	sim.rolls_enabled = enabled
+	sim._resolver.rolls_enabled = enabled
+	return sim
 
 
 ## Steps until an event of this kind is returned (that step's events are included), the battle ends, or

@@ -184,7 +184,7 @@ func _on_chest_opened(chest_id: StringName) -> void:
 
 ## A new game owns each hero's starting gear (they wear it through the loadout fallback).
 func _grant_start_gear() -> void:
-	if not GameState.inventory.is_empty():
+	if GameState.inventory.has(&"grandfather_hilt"):
 		return
 	for loadout_id: StringName in ContentDB.ids("loadout"):
 		Inventory.add_all(GameState.inventory, (ContentDB.get_def("loadout", loadout_id) as LoadoutDef).item_ids())
