@@ -66,3 +66,24 @@ func test_camera_zones_x3_and_x5_yaw() -> void:
 	check(z5 != null, "zone_x5 exists")
 	check(is_equal_approx(z3.yaw, 90.0) or is_equal_approx(z3.yaw, 270.0), "zone_x3 yaw is 90 or 270")
 	check(is_equal_approx(z5.yaw, 90.0) or is_equal_approx(z5.yaw, 270.0), "zone_x5 yaw is 90 or 270")
+
+
+func test_abu_nabil_stands_within_one_and_a_half_metres_of_counter_end() -> void:
+	var area := ContentDB.get_def("area", AREA_ID) as AreaDef
+	var seller: PlaceDef = null
+	for p: PlaceDef in area.places_of(PlaceDef.NPC):
+		if p.id == &"herb_seller":
+			seller = p
+			break
+	check(seller != null, "herb_seller place exists in souq_rooftops_v4")
+	check_eq(seller.prop, &"herb_stall", "herb_seller links to prop herb_stall")
+	var counter: Placement = AreaActors.kept_prop(area, seller)
+	check(counter != null, "herb_stall prop found by kept_prop")
+	var rules := _rules()
+	var keeper_pos: Vector3 = AreaActors.keeper_point(counter, rules, 0.0)
+	var stall_def := ContentDB.get_def("prop", counter.ref) as PropDef
+	check(stall_def != null, "herb_stall prop def exists")
+	var counter_end := Vector2(counter.pos.x, counter.pos.z) + Vector2(-stall_def.collide.x / 2.0, 0.0).rotated(-deg_to_rad(counter.yaw))
+	var dist: float = Vector2(keeper_pos.x, keeper_pos.z).distance_to(counter_end)
+	check(dist <= 1.5, "stall keeper stands within 1.5 m of his stall's counter end (got %.2f m)" % dist)
+
