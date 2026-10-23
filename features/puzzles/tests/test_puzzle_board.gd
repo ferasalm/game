@@ -40,12 +40,14 @@ func test_act_changes_matching_state() -> void:
 
 func test_nearest_piece_range_and_water_lock() -> void:
 	var board: PuzzleBoard = _fresh()
-	check_eq(board.nearest_piece(Vector3(-5.5, 0.0, -4.9)), &"red", "red in range")
+	var red_at: Vector3 = PuzzlePieces.position(board.light_def, board.water_def, &"red")
+	check_eq(board.nearest_piece(red_at), &"red", "red in range")
 	check_eq(board.nearest_piece(Vector3(20.0, 0.0, 20.0)), &"", "nothing in range")
-	check_eq(board.nearest_piece(Vector3(3.5, 0.0, -2.0)), &"", "water hidden before the lock")
+	var g1_at: Vector3 = PuzzlePieces.position(board.light_def, board.water_def, &"g1")
+	check_eq(board.nearest_piece(g1_at), &"", "water hidden before the lock")
 	_solve_light(board)
 	check(board.light_solved(), "yellow-blue solves the light lock")
-	check_eq(board.nearest_piece(Vector3(3.5, 0.0, -2.0)), &"g1", "water offered after the lock")
+	check_eq(board.nearest_piece(g1_at), &"g1", "water offered after the lock")
 	board.free()
 
 

@@ -22,6 +22,8 @@ static func is_water(water_def: WaterNetDef, id: StringName) -> bool:
 
 static func place_marker(marker: MeshInstance3D, id: StringName, light_def: LightLockDef,
 		water_def: WaterNetDef, yard: PuzzleYardDef) -> void:
+	if marker == null:
+		return
 	marker.visible = id != &""
 	if marker.visible:
 		marker.position = position(light_def, water_def, id) + Vector3(0.0, yard.marker_height, 0.0)

@@ -1,6 +1,34 @@
 class_name PuzzleSceneBuilder
 extends RefCounted
-## purpose: Builds the fixed parts of the puzzle yard scene: camera, light, environment, player, marker and hints.
+## purpose: Builds the fixed parts of the puzzle scene: content, views, hints, and for the grey-box yard its floor,
+## camera, stand-in player and marker.
+
+static func build_board(board: PuzzleBoard) -> bool:
+	board.yard = ContentDB.get_def("puzzle_yard", &"yard") as PuzzleYardDef
+	board.light_def = ContentDB.get_def("light_lock", &"valve_lock") as LightLockDef
+	board.water_def = ContentDB.get_def("water_net", &"valve_water") as WaterNetDef
+	if board.yard == null or board.light_def == null or board.water_def == null:
+		push_error("PuzzleBoard: missing puzzle content")
+		return false
+	board.light_state = LightLockState.start(board.light_def)
+	board.water_state = WaterNetState.start(board.water_def)
+	PuzzleSave.apply(board)
+	if not board.level_mode:
+		build_yard(board, board.yard)
+	board.light_view = PuzzleLightView.new()
+	board.add_child(board.light_view)
+	board.light_view.setup(board.light_def, board.yard)
+	board.water_view = PuzzleWaterView.new()
+	board.add_child(board.water_view)
+	board.water_view.setup(board.water_def, board.yard)
+	if not board.level_mode:
+		board.player = build_player(board, board.yard)
+		board.marker = build_marker(board, board.yard)
+		board.camera = build_camera(board, board.yard)
+	board._hints = build_hints(board, board.yard, board.light_def, board.water_def)
+	board.hint_label = board._hints.label
+	board.redraw()
+	return true
 
 
 static func build_yard(parent: Node3D, yard: PuzzleYardDef) -> void:
