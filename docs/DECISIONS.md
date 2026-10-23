@@ -66,5 +66,5 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-23 | RPG layer (docs/design/rpg-systems.md): XP, levels, a fixed class per hero, armor, Luck, dodge/crit/resist; flee = interruptible cast, never vs bosses (Abu Nabil too) | Feras (recommended) | Feras
 - 2026-10-23 | Menus (rpg-menus.md): own equipment menu (3D hologram hero); workshop = upgrade, gemstones, small crafting; menus pause over painted backdrops; holo map | Feras (recommended) | Feras
 - 2026-10-23 | Zayd's kit (zayd-moves.md 2026-10-22) gets built, plus ATK split across multi-hit moves so SP moves beat the free strike | Feras: SP moves "basically useless" | Feras/Claude
-- 2026-10-23 | Builders: agy, opencode :free; Cloudflare DeepSeek V4.1 Flash on Workers Paid (Feras subscribes; $8.50 total with the $5 month) | free plan refuses it | Feras
 - 2026-10-23 | Builds: build_pipeline.sh + build_gate.py; Claude reads PASS runs only; merge_run.sh reuses a fast-forward's check; merge chats on Sonnet | review tokens | Feras
+- 2026-10-23 | Builders: agy, opencode :free, Cloudflare DeepSeek V4.1 Flash (Workers Paid, Feras subscribed; <= $10 usage over the free neurons); opencode may call the 8 skill subagents | Feras | Feras
