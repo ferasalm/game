@@ -113,11 +113,12 @@ func test_dodged_target_takes_no_damage() -> void:
 	check(trace.any(func(e: TimelineEvent) -> bool: return e.kind == &"dodged"), "dodge event may appear (random)")
 	# If dodged, verify no damage event for the same target in the trace.
 	var dodged_target: StringName = ""
-	for e: TimelineEvent in trace:
-		if e.kind == &"dodged":
-			dodged_target = e.unit_id
-	if dodged_target != "" and e.kind == &"damage" and e.unit_id == dodged_target:
-		push_error("dodged target took damage: %s" % e.unit_id)
+	for event_d: TimelineEvent in trace:
+		if event_d.kind == &"dodged":
+			dodged_target = event_d.unit_id
+	for event_d: TimelineEvent in trace:
+		if dodged_target != "" and event_d.kind == &"damage" and event_d.unit_id == dodged_target:
+			push_error("dodged target took damage: %s" % event_d.unit_id)
 
 func test_forced_crit_multiplies_damage() -> void:
 	# A test that sets crit_base to 1.0 so any hostile action always crits.
@@ -163,8 +164,8 @@ func test_forced_crit_multiplies_damage() -> void:
 	flee_rules.flee_step = 0.15
 	flee_rules.flee_min = 0.10
 	flee_rules.flee_max = 0.95
-	var party: Array[UnitState] = []
-	var foes: Array[UnitState] = []
-	var chance_0: float = BattleRolls.flee_chance(party, foes, 0, 0, flee_rules)
-	var chance_1: float = BattleRolls.flee_chance(party, foes, 1, 0, flee_rules)
+	var party_units: Array[UnitState] = []
+	var foe_units: Array[UnitState] = []
+	var chance_0: float = BattleRolls.flee_chance(party_units, foe_units, 0, 0, flee_rules)
+	var chance_1: float = BattleRolls.flee_chance(party_units, foe_units, 1, 0, flee_rules)
 	check_approx_eq(chance_1, chance_0 + 0.15, 0.001, "+0.15 per fail")
