@@ -1,5 +1,5 @@
 # Brief: zayd-kit (<= 60 lines; run AFTER rpg-rolls-flee is merged into claude/menus-rpg-5089fa)
-You are in your own worktree on branch <gemini|oc>/zayd-kit (made from claude/menus-rpg-5089fa). Follow GEMINI.md,
+You are in your own worktree on branch oc/zayd-kit (made from claude/menus-rpg-5089fa). Follow GEMINI.md,
 including <review_misses>. Load the godot-gameplay-scripter skill (.agents/skills/) if one fits.
 
 ## Why
@@ -34,7 +34,9 @@ content/combat/actions.json, statuses.json; features/combat/defs/action_def.gd, 
 
 ## Do NOT edit
 features/world/**, content/world/**, features/equipment/**, features/ui/view/screens/**, core/**, docs/DECISIONS.md,
-HANDOFF.md, any *.import. battle_rolls.gd: read only.
+HANDOFF.md, any *.import, features/progression/**, features/items/**, content/progression/**, content/jambiyah/**,
+content/items/**. battle_rolls.gd: read only. rpg-progression runs beside you: in combatants.json, combatant_def.gd,
+perks.json and localization/combat.csv make the smallest edit (change your rows, append new keys at the end).
 
 ## Tests (features/combat/tests/test_zayd_kit.gd + the list in zayd-moves.md section 5)
 Every test of section 5; plus: the damage split (2-hit strike at Atk 26 vs Def 14 = 2 x round(12 + 9.5) with variance

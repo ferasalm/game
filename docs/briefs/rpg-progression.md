@@ -1,5 +1,5 @@
 # Brief: rpg-progression (<= 60 lines; run AFTER rpg-rolls-flee merges; it may run beside zayd-kit)
-You are in your own worktree on branch <gemini|oc>/rpg-progression (made from claude/menus-rpg-5089fa). Follow GEMINI.md,
+You are in your own worktree on branch oc/rpg-progression (made from claude/menus-rpg-5089fa). Follow GEMINI.md,
 including <review_misses>. Load the godot-gameplay-scripter skill (.agents/skills/) if one fits.
 
 ## Why
@@ -41,7 +41,9 @@ equipment_options.gd (a Gear.build caller).
 
 ## Do NOT edit
 features/world/**, content/world/**, features/ui/view/screens/**, features/equipment/view/**, features/combat/logic/
-battle_resolver.gd, battle_rolls.gd, timeline.gd, battle_ai.gd, docs/DECISIONS.md, HANDOFF.md, any *.import.
+battle_resolver.gd, battle_rolls.gd, timeline.gd, battle_ai.gd, content/combat/actions.json, statuses.json,
+docs/DECISIONS.md, HANDOFF.md, any *.import. zayd-kit runs beside you: in combatants.json, combatant_def.gd, perks.json
+and localization/combat.csv make the smallest edit (add fields and keys at the end; never retune numbers).
 
 ## Tests (features/progression/tests/, core/tests/test_game_state.gd)
 level(xp) at each threshold and the cap; grow() at Lv1 equals the base; Lv3 Zayd = base + 2 x growth; award shares
