@@ -88,7 +88,7 @@ def test_forbidden_file_is_breach():
 
 def test_clean_run_passes_with_checklist():
     repo, base = new_repo()
-    write(repo, "features/x/logic/x.gd", "## x\nfunc f() -> float:\n\treturn 37.5\n")
+    write(repo, "features/x/logic/x.gd", "## x\nfunc f() -> float:\n\treturn 37.5\n\tvar b: int = r.integer(\"bits\", 1, 7)\n")
     write(repo, "features/x/tests/test_x.gd", "## t\nvar n: int = 99\n")
     write(repo, "localization/x.csv", "keys,en\nX_A,A\n")
     fix = commit(repo, "feat")

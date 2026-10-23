@@ -16,6 +16,7 @@ import sys
 NOISE = ("*.uid", "*.import", "docs/MAP.md")  # Godot's import and map.py write these during any check
 OK_NUMBERS = {"0", "1", "2", "0.0", "1.0", "0.5", "-1"}
 NUMBER = re.compile(r"(?<![\w.])-?\d+\.?\d*(?![\w.])")
+READER_RANGE = re.compile(r"\.(number|integer|int_list|float_list)\(")  # a Def's allowed range, not a gameplay number
 
 
 def git(repo, *args):
@@ -57,7 +58,7 @@ def new_numbers(added):
     for f, lines in added.items():
         if not f.endswith(".gd") or is_test(f):
             continue
-        hits = [ln for ln in lines if not ln.lstrip().startswith(("const", "#", "##"))
+        hits = [ln for ln in lines if not ln.lstrip().startswith(("const", "#", "##")) and not READER_RANGE.search(ln)
                 and set(NUMBER.findall(ln.split("#")[0])) - OK_NUMBERS]
         if hits:
             out[f] = hits
