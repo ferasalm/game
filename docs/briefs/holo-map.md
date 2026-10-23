@@ -1,5 +1,5 @@
-# Brief: holo-map (<= 60 lines; run ONLY AFTER gemini/level1-blockout-fix merges AND equipment-menu merges)
-You are in your own worktree on branch oc/holo-map (made from claude/menus-rpg-5089fa). Follow GEMINI.md, including
+# Brief: holo-map (<= 60 lines; builds on the current area; the five roofs show up when the blockout merges)
+You are in your own worktree on branch gemini/holo-map (made from claude/menus-rpg-5089fa). Follow GEMINI.md, including
 <review_misses>. Load the godot-gameplay-scripter skill (.agents/skills/) if one fits.
 
 ## Why
@@ -9,8 +9,8 @@ and a city view of Sana'a's districts.
 ## Read first
 C:/dev/game/inbox/ui_refs/mock_map.png (layout target; Feras's Gemini mockup: copy its layout, not its names, numbers or glyphs);
 docs/design/rpg-menus.md 0 and 6 (THE SPEC: rects at 1920x1080); docs/design/world.md (district names);
-features/world/defs/area_def.gd (width, depth, is_walkable, tile_id_at, places, places_of, and the crossings the
-blockout added: grep "crossing"), place_def.gd (id, kind, pos, cell); features/ui/view/ui_screen.gd, menu_backdrop.gd,
+features/world/defs/area_def.gd (width, depth, is_walkable, tile_id_at, places, places_of, crossings only if
+AreaDef has them: grep "crossing"), place_def.gd (id, kind, pos, cell); features/ui/view/ui_screen.gd, menu_backdrop.gd,
 ui.gd, ui_panel.gd, prompt_strip.gd; features/equipment/view/equipment_menu.gd (its tabs); core/game_state.gd (area,
 flags); the Router / rooftop API that gives the live player position (grep "player_position" or Player.global_position
 through an AreaPort query; read only).
@@ -50,4 +50,5 @@ position.
 
 ## Proof
 `bash tools/check.sh` raw last 15 lines; renders C:/dev/game/inbox/menu_map_area.png and menu_map_city.png on the
-five-roof area (a .tscn wrapper, non-headless); small WIP commits; final message ends with `Built-by: <model> (opencode)`.
+area the game starts in (a .tscn wrapper, non-headless); small WIP commits; final message ends with
+`Built-by: Gemini 3.8 Flash (agy)`.
