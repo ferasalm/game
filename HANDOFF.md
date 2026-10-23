@@ -11,18 +11,10 @@ Last updated: 2026-10-23, session 16 manager (Opus 5.5, `claude-opus-5-5`): per-
 3. Action combat overhaul after the demo. Model: Opus. Effort: high.
 
 ## Track: Level 1 (owner: the next chat from this prompt)
-- On main (all checks pass): five-roof blockout (souq_rooftops_v4: storm, per-area fog_height, patrol sprites);
-  camera-wall (blocked -> rises toward 62 deg, min 4 m; passed on the five roofs); tayramana flow + tayramana-look;
-  souq props pass 2 + sabil against R2's east edge with its Musnad sign, crates clear; both valve puzzles placed on R5.
-- Unverified: renders of tayramana-look and puzzle-place (inbox/tayramana_*.png, puzzle_r5_*.png; puzzle renders were
-  missing). souq_r2_stall.png hides Abu Nabil. Sabil niche/qamariya/herb bundles need an art pass later.
-- interact-focus: Inkling breached (worktree game-wt/interact-focus), Cloudflare did nothing (interact-focus-2);
-  interact-focus-3 (agy) may still be running: merge only a PASS (tools/merge_run.sh interact-focus-3 gemini --keep).
-- Stale game-wt worktrees to remove (owner OK; auto mode blocks force-remove): level1-blockout(-fix), souq-props(-2),
-  souq-place(-2), camera-wall, tayramana(-look), interact-focus(-2), puzzle-place.
-- Waiting on the owner: judge the roofs, souq, tayramana and R5 renders; play the camera.
-1. level1-polish (docs/briefs/level1-polish.md: start on v4, old-area walk regression, drone lane, side views, Abu
-   Nabil in frame), then review the renders above. Model: Opus. Effort: high.
+- On main: five roofs (storm, fog, patrols), camera-wall, tayramana + look, souq props + sabil on R2, R5 puzzles,
+  interact-focus. Renders not yet judged (tayramana_*, puzzle_r5_* missing); Abu Nabil hidden in souq_r2_stall.png.
+- Stale game-wt worktrees need the owner's OK to remove (auto mode blocks force-remove).
+1. level1-polish (docs/briefs/), then judge the renders. Model: Opus. Effort: high.
 `Continue ferasalm/game on main. Read HANDOFF.md (Level 1). Do its next step as manager; /handoff.`
 
 ## Track: RPG + menus (owner: the next chat from this prompt)
