@@ -7,3 +7,8 @@ WORLD_SIGN_BAB,← 𐩨𐩱𐩨 𐩱𐩡𐩺𐩣𐩬
 WORLD_SIGN_ZUBAIRI,𐩪𐩱𐩧𐩲 𐩱𐩡𐩸𐩨𐩺𐩧𐩺 →
 WORLD_SIGN_HADDAH,𐩢𐩵𐩠
 WORLD_SIGN_QISHR,𐩤𐩪𐩧
+PUZZLE_LIGHT_HINT_1,"The lens wants white. Glass can make white."
+PUZZLE_LIGHT_HINT_2,"Yellow is already half of white."
+PUZZLE_WATER_HINT_1,"Every open gate takes a share."
+PUZZLE_WATER_HINT_2,"That old gate is stuck, not locked."
+PUZZLE_WATER_RETURN,"Straight back to them."

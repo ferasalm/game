@@ -21,6 +21,16 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `.agents/skills/narrative-designer/SKILL.md`
 - `.agents/skills/technical-artist/SKILL.md`
 
+## .opencode
+- `.opencode/agent/blender-addon-engineer.md`
+- `.opencode/agent/game-audio-engineer.md`
+- `.opencode/agent/game-designer.md`
+- `.opencode/agent/godot-gameplay-scripter.md`
+- `.opencode/agent/godot-shader-developer.md`
+- `.opencode/agent/level-designer.md`
+- `.opencode/agent/narrative-designer.md`
+- `.opencode/agent/technical-artist.md`
+
 ## content
 - `content/art/clips.json`: content: clip x15
 - `content/art/models.json`: content: model x5
@@ -63,6 +73,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/progression/levels.json`: content: levels x1
 - `content/prosthetics/prosthetics.json`: content: prosthetic x6
 - `content/prototype/flow.json`: content: flow_rules x1
+- `content/puzzles/light_lock.json`: content: light_lock x1
+- `content/puzzles/water_net.json`: content: water_net x1
 - `content/ui/backdrops.json`: content: backdrop x7
 - `content/ui/style.json`: content: ui_style x1
 - `content/ui/transitions.json`: content: transition x3
@@ -397,6 +409,18 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/prototype/tests/test_router_battle.gd`: The Router's battle round trip: the area is hidden and stopped while the arena fights, then restored; Retry and defeat restore the pre-battle snapshot; vitals and herbs carry (a downed hero stands up after a victory); the first win pays everything and a repeat pays half
 - `features/prototype/tests/test_smoke_flow.gd`: Smoke test of the whole flow, headless through the Router: a new game, a fight on auto-play, the outcome applied to GameState, a save, a load that restores exactly that state
 - `features/prototype/tests/test_talk_interact.gd`: Interaction test: walking up to herb_seller and confirming plays abu_nabil_first on the first visit, and abu_nabil_chat_1 on the next visit; sabil plays party_sabil_first before opening screen
+- `features/puzzles/defs/light_lock_def.gd`: purpose: Defines the qamariya light lock puzzle layout (windows, mirrors, and hint timings)
+- `features/puzzles/defs/light_lock_mirror.gd`: purpose: One rotatable mirror in a light lock puzzle with four directional targets
+- `features/puzzles/defs/light_lock_window.gd`: purpose: One colored qamariya window in a light lock puzzle
+- `features/puzzles/defs/water_net_def.gd`: purpose: Defines a water routing network puzzle (valves, splits, gates, spouts, outlets)
+- `features/puzzles/defs/water_node_def.gd`: purpose: One node in a water network puzzle (source, split, gate, spout, or outlet)
+- `features/puzzles/logic/light_lock.gd`: purpose: Pure logic for light lock beam tracing, shutter toggling, mirror rotation, and solution check
+- `features/puzzles/logic/light_lock_state.gd`: purpose: Runtime state of a light lock puzzle (shutter open/closed and mirror turn angles)
+- `features/puzzles/logic/puzzle_hints.gd`: purpose: Computes how many puzzle hints are due based on elapsed stalled time
+- `features/puzzles/logic/water_net.gd`: purpose: Pure logic for water net gate toggling, unjamming, spout swinging, and flow calculation
+- `features/puzzles/logic/water_net_state.gd`: purpose: Runtime state of a water routing network (gate open/freed states and spout directions)
+- `features/puzzles/tests/test_light_lock.gd`: purpose: Tests qamariya light lock puzzle logic, state, beam tracing, routes, loops, and def validation
+- `features/puzzles/tests/test_water_net.gd`: purpose: Tests water routing network logic, unjamming, spout routing, conservation, def errors, and hints
 - `features/ui/defs/backdrop_def.gd`: Backdrop definition for full-screen menu backgrounds
 - `features/ui/defs/ui_style_def.gd`: The look of every menu and HUD (content/ui/style.json): three font files, named colours (c_*), sizes in pixels at 1920x1080 (s_*) and times in seconds (t_*)
 - `features/ui/logic/pause_logic.gd`: Pure rules of the pause menu: which entries show and in what order, which ask "are you sure", the vitals of a hero with a missing record (= full), and the play-time clock text
@@ -659,8 +683,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/audio/arc_synth.py`: Synthesizes the Arc Discharge sound (vfx_arc_all): 3 seeded variations as 44.1 kHz mono 16-bit WAV.
 - `tools/audio/levels.py`: Loudness table for the sound effects: reads the audio of a Godot movie capture (.avi, PCM) made by
 - `tools/audio/measure_levels.gd`: Plays every sfx file of content/audio/sounds.json one after another at 0 dB for the movie writer's audio capture; prints "SLOT <path> <start seconds> <seconds>" lines for tools/audio/levels.py
+- `tools/build_gate.py`: Build gate: judges a builder run before Claude reads it (NOWORK, BREACH, FAIL or PASS plus a WARN checklist).
 - `tools/build_pipeline.sh`: Free builder pipeline (DECISIONS 2026-10-23): builder run -> check.sh -> one free fix pass fed the FAIL lines ->
-- `tools/cf_build.sh`: Paid fallback builder (DECISIONS 2026-10-23: Cloudflare Workers AI DeepSeek V4.1 Flash, $8.50 cap in total): runs
+- `tools/cf_build.sh`: Paid fallback builder (DECISIONS 2026-10-23: Cloudflare Workers AI DeepSeek V4.1 Flash, Workers Paid, <= $10 usage): runs
 - `tools/check.sh`: One command for every check (docs, lint, Godot import, tests). One ok/FAIL line per step; logs in .check/.
 - `tools/doc_check.py`: Keeps the always-loaded notes small and well-formed (docs/EFFICIENCY.md); exit 1 on any failure.
 - `tools/export_atlases.gd`: Exports the code-painted world atlases (PaintedAtlases) to PNG for the offline painterly bake
@@ -668,7 +693,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.
 - `tools/lint_gd.py`: GDScript rules Godot itself doesn't enforce (docs/ARCHITECTURE.md, "Code rules"); exit 1 on any break.
 - `tools/map.py`: Writes docs/MAP.md from each file's purpose line, so the map never drifts. --check: exit 1 if stale.
+- `tools/merge_run.sh`: Merges one gated builder run into the current branch (DECISIONS 2026-10-23): only a PASS .result; a fast-forward onto
 - `tools/musnad.py`: Transliterate Arabic to Musnad (Old South Arabian) letter by letter; scan files for Arabic.
+- `tools/oc_agents.py`: Makes one opencode subagent per game skill (.agents/skills/<name> -> .opencode/agent/<name>.md); --check fails when stale.
 - `tools/oc_review.sh`: Reviews an opencode task (branch oc/<task>) the same cheap way as an agy one: report, check result, commits, stats,
 - `tools/oc_task.sh`: Runs opencode on one task brief inside its own git worktree, never in the main checkout (DECISIONS 2026-10-23).
 - `tools/rodin/rewrite_glb.py`: Rebuild a Rodin glb with new triangle indices (from Godot, winding flipped back; IDX_BIN '-' keeps its own), no
@@ -687,4 +714,5 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_scene.gd`: Plays a scene (or a Node script) for the movie writer (frames to a folder): the battle demo with its heroes on auto_play, or any scene
 - `tools/shot_shatter.gd`: Shows the qamariya shatter on a stand-in frame (a stripe pattern) so the glass can be judged without a fight
 - `tools/shot_workbench.gd`: Renders the workbench prop close up and in the rooftop from the play camera to inbox PNGs (960x540)
+- `tools/test_build_gate.py`: Self-test for build_gate.py: python tools/test_build_gate.py (temp git repos, plain asserts, exit 1 on failure).
 - `tools/vfx_gallery.gd`: Effect gallery: plays every battle effect kind one after another (one per second) on a night stage, for the movie writer

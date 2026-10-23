@@ -4,8 +4,8 @@ old Sana'a rooftops under a 2150 megacity, painted, at 60 FPS on the Iris Xe lap
 timeline battle in the arena; the action-combat overhaul replaces it after the demo (HANDOFF next steps).
 
 ## Scope
-In: title -> opening pan -> level 1 (commons, workshop alcove, stall, sabil, tayramana, corridor, vista, bridge, east
-roof, valve) -> end card; painted route B; camera-v2; 3 patrols + optional Abu Nabil; saves; music already in.
+In: title -> opening pan -> level 1 (the five roofs R1-R5 of level-1.md: Abu Nabil on R2, the valve puzzles on R5)
+-> end card; painted route B; camera-v2; saves; music already in.
 Out: Chapter 1's cistern and station, Hamoud, action combat, Arabic, new characters beyond the Rodin cast.
 
 ## Milestones (each ends with renders for Feras and a play check by him)

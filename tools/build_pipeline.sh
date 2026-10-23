@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Free builder pipeline (DECISIONS 2026-10-23): builder run -> check.sh -> one free fix pass fed the FAIL lines ->
-# check.sh again -> ../game-wt/<task>.result (PASS/FAIL, fail lines, commits, leftovers). Claude reviews after it.
+# check.sh again -> tools/build_gate.py -> ../game-wt/<task>.result (first word PASS/FAIL/NOWORK/BREACH, the gate's
+# checklist, the checked commit). Claude reads only a PASS; tools/merge_run.sh merges it.
 # Usage (cwd = the main checkout): bash <this repo>/tools/build_pipeline.sh <oc|agy> <task> <brief> <base> [model]
 # Run it with run_in_background; agy needs stdin detached (< /dev/null) or it exits 2 at once. SKIP_BUILD=1 below.
 set -uo pipefail
@@ -31,8 +32,9 @@ if [ -n "$skill" ] && [ -f "$here/../.agents/skills/$skill/SKILL.md" ]; then
     sed '1,/^---$/{/^---$/!d}; /^---$/d' "$here/../.agents/skills/$skill/SKILL.md"; } >> "$prompt"
 fi
 [ -n "${SKIP_BUILD:-}" ] || run "$prompt"  # SKIP_BUILD=1: the build already ran; start at the check
-leftovers "build"; cp "$wt.log" "$wt.build.log" 2> /dev/null
-if check; then status=PASS; else
+leftovers "build"; cp "$wt.log" "$wt.build.log" 2> /dev/null; fix_from=""
+if check; then :; else
+  fix_from="$(git -C "$wt" rev-parse HEAD)"
   echo "RUNNING $(date +%H:%M) fix pass" > "$res"
   { echo "# Fix pass: $name (<= 45 min)"
     echo "You are in your own worktree on branch $prefix/$name. Your build of the brief below left checks failing."
@@ -40,12 +42,16 @@ if check; then status=PASS; else
     echo "until it prints \"all checks passed\", commit. The FAIL lines:"
     echo '```'; grep -A13 '^FAIL' "$wt.check.txt"; echo '```'
     echo; echo "## The brief"; cat "$brief"; } > "$wt.fix.md"
-  OC_TIMEOUT=45m AGY_TIMEOUT=45m run "$wt.fix.md"; leftovers "fix pass"
-  if check; then status=PASS; else status=FAIL; fi
+  OC_TIMEOUT=45m AGY_TIMEOUT=45m run "$wt.fix.md"; leftovers "fix pass"; check
 fi
-[ -n "$(git -C "$wt" log --oneline "$base..HEAD")" ] || status="NOWORK"  # green but nothing built (quota, quit)
+leftovers "check"  # the .uid files Godot wrote during the last check belong to the checked tree
+py=python; command -v python > /dev/null 2>&1 || py=python3
+gate="$($py "$here/build_gate.py" gate --wt "$wt" --base "$base" --brief "$brief" --check "$wt.check.txt" \
+  ${fix_from:+--fix-from "$fix_from"} --inbox "$root/inbox" 2>&1)"
+status="$(echo "$gate" | sed -n 's/^VERDICT //p')"; status="${status:-FAIL}"
 { echo "$status $(date +%H:%M) $prefix/$name"
-  grep -E '^(ok|FAIL)|^ {5}|passed|FAILED' "$wt.check.txt" | head -40
+  echo "checked $(git -C "$wt" rev-parse HEAD)"
+  echo "$gate"; grep -E '^ {5}tests:' "$wt.check.txt" | head -3
   echo "--- commits"; git -C "$wt" log --oneline "$base..HEAD" | head -30
   echo "--- diffstat"; git -C "$wt" diff --stat "$base..HEAD" | tail -n 3; } > "$res"
 cat "$res"

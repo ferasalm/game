@@ -71,17 +71,19 @@ never spend it); poolside/laguna-s-2.1:free answered a GDScript question correct
 across both builders. Pick: agy for Godot code with tests; opencode for research, docs, content and second opinions.
 1. Brief from docs/briefs/TEMPLATE.md (<= 60 lines, a do-not-edit list so parallel runs never share files).
 2. From the main checkout, in the background: `bash <session worktree>/tools/build_pipeline.sh <oc|agy> <task>
-   <brief> <base>` (build, check.sh, one free fix pass, check again -> ../game-wt/<task>.result); at most 3 at once.
-3. Read <task>.result first (FAIL after the fix pass = brief or spec problem); then `bash tools/agy_review.sh <task>`: report, check result, non-test code diff, new player text. Read nothing else
-   unless something looks wrong.
-4. Merge, fix small misses on the session branch, `tools/check.sh`, then `git worktree remove ../game-wt/<task>` and
-   `git branch -d gemini/<task>`. A repeated miss goes into GEMINI.md <review_misses>.
+   <brief> <base>` (build, check.sh, one free fix pass, check, tools/build_gate.py -> ../game-wt/<task>.result).
+3. Read the .result's first line only: NOWORK (nothing real built), BREACH (touched a Do NOT edit path) or FAIL =
+   rerun or fix the brief, read nothing else. PASS: read its WARN lines, then `bash tools/agy_review.sh <task>` only
+   for what a WARN names, and the renders.
+4. `bash tools/merge_run.sh <task> <gemini|oc>`: a fast-forward onto the checked commit reuses the check, any other
+   merge runs check.sh; it removes the worktree and branch. Review-and-merge chats run on Sonnet. A repeated miss
+   goes into GEMINI.md <review_misses>.
 5. agy runs are processes of the chat that started them: a chat that ends early leaves them running only while its
    session stays open. The next chat checks `git -C ../game-wt/<task> log` and the log; a dead run is restarted with
    the same command (the worktree and its commits are kept).
-6. Paid fallback, only when agy and Inkling :free are both out of quota: `bash tools/cf_build.sh <task> <brief>
+6. Cloudflare DeepSeek (Workers Paid; model test 16/16 + right cause 2026-10-23), when agy and the :free models are out of quota or a brief suits opencode: `bash tools/cf_build.sh <task> <brief>
    <base>` (Cloudflare Workers AI `@cf/deepseek-ai/deepseek-v4.1-flash-1017` via opencode; $0.30/M input, $0.006/M
-   cached input, $1.20/M output; 10,000 free neurons a day; hard cap $8.50 in total, Feras 2026-10-23). Needs Workers
+   cached input, $1.20/M output; 10,000 free neurons a day; up to $10 usage over the free neurons, Feras 2026-10-23). Needs Workers
    Paid or prepaid AI Gateway credits. Spend: Cloudflare dashboard -> AI -> Workers AI; note it in HANDOFF after each run.
 
 ## 4. How the owner can save tokens (prompt tips)

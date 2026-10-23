@@ -1,4 +1,5 @@
 # Combat rules (v0, for the prototype; numbers are starting values in content/, tuned by the harness)
+Demo combat stays these timeline battles; action combat (DECISIONS 2026-10-23) replaces them after the demo.
 Timeline basics are built and tested (docs/ARCHITECTURE.md, "Combat"; features/combat/logic/timeline.gd).
 Every number below lives in content JSON; code reads it from Defs. Each rule here has a test.
 
