@@ -119,10 +119,42 @@ func has_any_save() -> bool:
 	return false
 
 
+func thumbnail_path_for(slot: int) -> String:
+	return dir.path_join("slot_%d.png" % slot)
+
+
+func write_thumbnail(slot: int, image: Image = null) -> bool:
+	var img: Image = image
+	if img == null or img.is_empty():
+		img = Image.create(480, 270, false, Image.FORMAT_RGBA8)
+	elif img.get_width() != 480 or img.get_height() != 270:
+		img = img.duplicate()
+		img.resize(480, 270, Image.INTERPOLATE_BILINEAR)
+	if DirAccess.make_dir_recursive_absolute(dir) != OK:
+		return false
+	return img.save_png(thumbnail_path_for(slot)) == OK
+
+
+func read_thumbnail(slot: int) -> Texture2D:
+	var path: String = thumbnail_path_for(slot)
+	if not FileAccess.file_exists(path):
+		return null
+	var bytes: PackedByteArray = FileAccess.get_file_as_bytes(path)
+	if bytes.is_empty():
+		return null
+	var img := Image.new()
+	if img.load_png_from_buffer(bytes) != OK:
+		return null
+	return ImageTexture.create_from_image(img)
+
+
 func delete(slot: int) -> void:
 	for suffix: String in ["", ".bak", ".tmp"]:
 		if FileAccess.file_exists(path_for(slot) + suffix):
 			DirAccess.remove_absolute(path_for(slot) + suffix)
+	var thumb: String = thumbnail_path_for(slot)
+	if FileAccess.file_exists(thumb):
+		DirAccess.remove_absolute(thumb)
 
 
 func _parse(path: String, label: String) -> Dictionary:

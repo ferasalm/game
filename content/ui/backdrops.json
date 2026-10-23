@@ -1,0 +1,12 @@
+{
+  "kind": "backdrop",
+  "items": [
+    {"id": "pause", "path": "assets/textures/ui_bg/pause.webp", "dim": 0.35},
+    {"id": "items", "path": "assets/textures/ui_bg/items.webp", "dim": 0.35},
+    {"id": "equipment", "path": "assets/textures/ui_bg/equipment.webp", "dim": 0.35},
+    {"id": "workshop", "path": "assets/textures/ui_bg/workshop.webp", "dim": 0.35},
+    {"id": "shop", "path": "assets/textures/ui_bg/shop.webp", "dim": 0.35},
+    {"id": "save", "path": "assets/textures/ui_bg/save.webp", "dim": 0.35},
+    {"id": "map", "path": "assets/textures/ui_bg/map.webp", "dim": 0.35}
+  ]
+}

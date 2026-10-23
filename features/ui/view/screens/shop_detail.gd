@@ -1,52 +1,124 @@
 class_name ShopDetail
-extends VBoxContainer
-## The right half of the shop: the riyal counter, the focused item's name, description and effect, then price,
-## owned count, "money after" (red when the trade is not affordable) and the quantity. Labels only; no rules.
+extends PanelContainer
+## Shop detail panel at (840,140) 560x760: icon 160, name, desc, effect, and per-hero comparison.
 
-var _money: Label
+var _icon: TextureRect
 var _name: Label
 var _desc: Label
 var _effect: Label
-var _price: Label
-var _owned: Label
-var _after: Label
-var _qty: Label
+var _compare_box: VBoxContainer
 
 
 func _init() -> void:
 	var style: UiStyleDef = Ui.style()
-	_money = Ui.label("", &"NumberLabel", style.colour(&"c_brass"))
-	_money.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	_name = Ui.label("", &"NameLabel")
+	custom_minimum_size = Vector2(560, 760)
+	size = Vector2(560, 760)
+	add_theme_stylebox_override("panel", UiBoxes.panel(style, &"glass"))
+
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", style.size(&"s_pad"))
+	add_child(box)
+
+	var icon_box := PanelContainer.new()
+	icon_box.custom_minimum_size = Vector2(160, 160)
+	icon_box.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	icon_box.add_theme_stylebox_override("panel", UiBoxes.panel(style, &"inset"))
+	_icon = TextureRect.new()
+	_icon.custom_minimum_size = Vector2(160, 160)
+	_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon_box.add_child(_icon)
+	box.add_child(icon_box)
+
+	_name = Ui.label("", &"TitleLabel")
+	_name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(_name)
+
 	_desc = Ui.label("", &"MutedLabel")
 	_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	box.add_child(_desc)
+
 	_effect = Ui.label("", &"SmallLabel", style.colour(&"c_good"))
-	_price = Ui.label("", &"NumberLabel")
-	_owned = Ui.label("", &"SmallLabel")
-	_after = Ui.label("", &"SmallLabel")
-	_qty = Ui.label("", &"NumberLabel")
-	add_theme_constant_override("separation", style.size(&"s_gap"))
-	for node: Control in [_money, _name, _desc, _effect, Ui.divider(), _price, _owned, _after, _qty]:
-		add_child(node)
+	_effect.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(_effect)
+
+	box.add_child(Ui.divider())
+
+	var cmp_title := Ui.label(Ui.text("SHOP_COMPARISON"), &"TitleLabel", style.colour(&"c_brass"))
+	box.add_child(cmp_title)
+
+	_compare_box = VBoxContainer.new()
+	_compare_box.add_theme_constant_override("separation", style.size(&"s_gap"))
+	box.add_child(_compare_box)
 
 
-func show_money(amount: int) -> void:
-	_money.text = "%s %s" % [str(amount), Ui.text("UI_RIYAL")]
+## Backward-compatible stub (money is handled in summary panel).
+func show_money(_amount: int) -> void:
+	pass
 
 
-## def == null clears the item part. `price` is the per-unit riyal (buy price or sell value).
-func show_item(def: ConsumableDef, price: int, qty: int, money: int, owned: int, selling: bool) -> void:
+## Updates the detail panel for the chosen item.
+func show_item(def: ConsumableDef, _price: int, _qty: int, _money: int, _owned: int, _selling: bool) -> void:
 	if def == null:
-		for label: Label in [_name, _desc, _effect, _price, _owned, _after, _qty]:
-			label.text = ""
+		_name.text = ""
+		_desc.text = ""
+		_effect.text = ""
+		_clear_comparisons()
 		return
-	var after: int = money + (price * qty if selling else -price * qty)
+
+	var rarity_col: Color = UiRarity.colour(def.rarity if "rarity" in def else &"")
 	_name.text = Ui.text(def.name_key)
+	_name.add_theme_color_override("font_color", rarity_col)
 	_desc.text = Ui.text(def.desc_key)
 	_effect.text = ItemsText.effect(def)
-	_price.text = "%s  %s %s" % [Ui.text("SHOP_PRICE"), str(price), Ui.text("UI_RIYAL")]
-	_owned.text = "%s  %d / %d" % [Ui.text("SHOP_OWNED"), owned, def.max_stack]
-	_after.text = "%s  %s" % [Ui.text("SHOP_MONEY_AFTER"), Ui.text("ITEMS_PREVIEW") % [money, after]]
-	var style: UiStyleDef = Ui.style()
-	_after.add_theme_color_override("font_color", style.colour(&"c_bad" if after < 0 else &"c_muted"))
-	_qty.text = "%s  < %d >" % [Ui.text("SHOP_QTY"), qty]
+	_build_comparisons(def)
+
+
+func icon_rect() -> TextureRect:
+	return _icon
+
+
+func _clear_comparisons() -> void:
+	for child: Node in _compare_box.get_children():
+		child.queue_free()
+
+
+func _build_comparisons(def: ConsumableDef) -> void:
+	_clear_comparisons()
+	var party: Array = GameState.party if not GameState.party.is_empty() else [&"zayd", &"bilqis"]
+	var vitals: Dictionary = GameState.get(&"vitals") if GameState.get(&"vitals") is Dictionary else {}
+	var maxes: Dictionary = _hero_maxes(party)
+
+	for hero_v: Variant in party:
+		var hero: StringName = StringName(hero_v)
+		var cdef := ContentDB.get_def("combatant", hero) as CombatantDef
+		var hero_name: String = Ui.text(cdef.name_key) if cdef != null else String(hero)
+		var top: Vector2i = maxes.get(hero, Vector2i(100, 50))
+		var cur_hp: int = Vitals.hp_of(vitals, hero, top.x)
+		var cur_sp: int = Vitals.sp_of(vitals, hero, top.y)
+
+		var gain: Dictionary = FieldUse.preview(def, vitals, hero, maxes)
+		var hp_gain: int = int(gain.get("hp", 0))
+		var sp_gain: int = int(gain.get("sp", 0))
+
+		var row := HBoxContainer.new()
+		row.add_child(Ui.label(hero_name, &"NameLabel"))
+		var stats_str: String = ""
+		if hp_gain > 0:
+			stats_str += "  HP: %d -> %d (+%d)" % [cur_hp, clampi(cur_hp + hp_gain, 0, top.x), hp_gain]
+		if sp_gain > 0:
+			stats_str += "  SP: %d -> %d (+%d)" % [cur_sp, clampi(cur_sp + sp_gain, 0, top.y), sp_gain]
+		if stats_str.is_empty():
+			stats_str = "  --"
+		var lbl: Label = Ui.label(stats_str, &"SmallLabel", Ui.style().colour(&"c_good" if hp_gain > 0 or sp_gain > 0 else &"c_muted"))
+		row.add_child(lbl)
+		_compare_box.add_child(row)
+
+
+func _hero_maxes(party: Array) -> Dictionary:
+	var out: Dictionary = {}
+	for hero_v: Variant in party:
+		var hero: StringName = StringName(hero_v)
+		var cdef := ContentDB.get_def("combatant", hero) as CombatantDef
+		out[hero] = Vector2i(cdef.max_hp, cdef.max_sp) if cdef != null else Vector2i(100, 50)
+	return out
