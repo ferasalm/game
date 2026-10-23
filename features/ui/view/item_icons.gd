@@ -61,7 +61,11 @@ static func apply(target: TextureRect, def: ConsumableDef, side: int = DEFAULT_S
 	target.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	target.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	var real: Texture2D = texture(def)
-	var old_label: Node = target.get_node_or_null("InitialLabel")
+	var old_label: Label = null
+	for child: Node in target.get_children():
+		if child is Label and child.name == &"InitialLabel":
+			old_label = child as Label
+			break
 	if real != null:
 		target.texture = real
 		if old_label != null:

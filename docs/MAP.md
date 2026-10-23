@@ -387,6 +387,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/logic/toast_queue.gd`: Pure: toasts wait in order and are shown one at a time
 - `features/ui/tests/node_walk.gd`: Test helper (not a test): every descendant of a node, depth first
 - `features/ui/tests/test_items_shop.gd`: The Items and Shop screens on the Screens stack, and the riyal banner of the loot popup
+- `features/ui/tests/test_menu_polish.gd`: Menu polish tests: portrait faces, pause hero progression, icon disc fallback, label font sizes, glass panel colour
 - `features/ui/tests/test_menu_skins.gd`: Menu skins test: backdrops, fallback, child 0, party rows, thumbnails, shop money-after, rects
 - `features/ui/tests/test_musnad.gd`: The written language of Sana'a in 2150 is Musnad only: no Arabic script in any CSV, JSON or script; every *_MUSNAD and WORLD_SIGN_* text holds only Musnad letters, spaces and arrows; the Musnad font draws it
 - `features/ui/tests/test_pause_menu.gd`: The pause menu rules (PauseLogic) and the screen built from them
@@ -400,12 +401,14 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/area_title_card.gd`: The area title card (centre left, no panel) that fades in when the opening shot ends: the Musnad name big over the English name, a gypsum frieze drawing left to right, a subtitle (place and year), then fading out
 - `features/ui/view/character_icons.gd`: Head icons for timeline medallions and party cards
 - `features/ui/view/interaction_prompt.gd`: A small glass pill above an object in the world: the interact glyph and a verb ("Drink", "Talk", "Open")
+- `features/ui/view/item_icons.gd`: Resolves item icon textures from content paths; where the image file is missing, draws a rarity-coloured disc with the item's first letter
 - `features/ui/view/list_row.gd`: One row of a menu list: icon | name (rarity colour) | "x3" count | tag chip on the right
 - `features/ui/view/loot_popup.gd`: The "Obtained" banner: listens to EventBus.item_obtained and shows each new item centred high on the screen with its name in the rarity colour, a light sweep for Rare and above and a rarity jingle (AudioDirector.play_item)
 - `features/ui/view/menu_backdrop.gd`: Full-screen painted menu backdrop with blur fallback
 - `features/ui/view/menu_blur.gdshader`
 - `features/ui/view/money_counter.gd`: A pill with the riyal amount in brass
 - `features/ui/view/party_card.gd`: A hero card: portrait icon, name, HP and SP bars with numbers
+- `features/ui/view/portrait_faces.gd`: Caches painted hero portraits cropped to the head (top 38% of the image, centred square)
 - `features/ui/view/prompt_strip.gd`: The Hades-style button hints along the bottom: "[Enter] Select   [Esc] Back"
 - `features/ui/view/screens/choice_screen.gd`: Base of the small centred "pick one" screens (Sabil, Defeat): a framed panel with the Musnad + English title pair and a column of buttons in focus order
 - `features/ui/view/screens/confirm_dialog.gd`: A centred Yes/No question over the scrim
@@ -421,7 +424,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/screens/shop_detail.gd`: Shop detail panel at (840,140) 560x760: icon 160, name, desc, effect, and per-hero comparison
 - `features/ui/view/screens/shop_grid.gd`: Shop grid panel at (80,140) 720x560: tabs [Buy][Sell] and 3-column items grid
 - `features/ui/view/screens/shop_keeper_box.gd`: Keeper box: portrait 220x260 and typed greeting in a glass box at (80,720) 620x260
-- `features/ui/view/screens/shop_party_mini.gd`: Party mini cards panel at (1440,600) 400x300: compact HP and SP bars for each hero
+- `features/ui/view/screens/shop_layout.gd`: Builds panels for ShopScreen: brass title plate, money counter pill, and sub-panels
+- `features/ui/view/screens/shop_party_mini.gd`: Party mini cards panel at (1440,600) 400x300: compact HP and SP bars for each hero with painted portraits
 - `features/ui/view/screens/shop_screen.gd`: Shop screen: title (80,40), grid (80,140), keeper (80,720), detail (840,140), summary (1440,140), party (1440,600)
 - `features/ui/view/screens/shop_summary.gd`: Shop summary panel at (1440,140) 400x420: quantity, owned, price, money after (c_bad when < 0)
 - `features/ui/view/screens/slot_detail.gd`: Details panel for the focused save slot: header, thumbnail 440x248, area, party, riyal, play time

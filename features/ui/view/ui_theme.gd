@@ -41,6 +41,7 @@ static func font(style: UiStyleDef, key: StringName) -> Font:
 static func _labels(theme: Theme, style: UiStyleDef) -> void:
 	theme.set_color(&"font_color", &"Label", style.colour(&"c_text"))
 	theme.set_color(&"font_shadow_color", &"Label", style.colour(&"c_shadow"))
+	theme.set_font_size(&"font_size", &"Label", style.size(&"s_font_body"))
 	for variant: StringName in LABEL_VARIANTS:
 		theme.set_type_variation(variant, &"Label")
 	_label(theme, style, &"TitleLabel", &"font_title", &"s_font_title", &"c_brass")

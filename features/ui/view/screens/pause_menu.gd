@@ -45,16 +45,21 @@ func build(_args: Dictionary) -> void:
 	add_child(_info_box)
 	_build_info_box(_info_box)
 
+	_party = PauseParty.new()
+	_party.fill()
+	var party_count: int = _party.rows().size()
+	var row_h: int = 200
+	var pad_y: int = style.size(&"s_pad")
+	var content_h: int = party_count * row_h + maxi(0, party_count - 1) * pad_y
+	var margin_y: int = int(style.size(&"s_frame_cell") - style.size(&"s_frame_gap")) * 2
+	var panel_h: int = content_h + margin_y
+
 	_party_panel = Ui.panel()
 	_party_panel.position = Vector2(540, 80)
-	_party_panel.size = Vector2(1300, 0)
-	_party_panel.custom_minimum_size = Vector2(1300, 0)
+	_party_panel.size = Vector2(1300, panel_h)
+	_party_panel.custom_minimum_size = Vector2(1300, panel_h)
 	add_child(_party_panel)
-
-	_party = PauseParty.new()
 	_party_panel.body.add_child(_party)
-	_party.fill()
-	_party_panel.reset_size()
 
 
 func focus_default() -> void:

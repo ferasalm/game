@@ -96,13 +96,13 @@ func _refresh_progression(hero: StringName) -> void:
 			cdef = c
 			break
 	var class_name_str: String = Ui.text(cdef.name_key) if cdef != null else ""
-	_class_label.text = "(%s)" % class_name_str if not class_name_str.is_empty() else ""
-
-	var xp_amount: int = int(GameState.xp.get(hero, 0))
-	var lv: int = Progression.level(xp_amount)
-	_lv_node.text = "Lv %d" % lv
+	_class_label.text = class_name_str
 
 	var levels_def := ContentDB.get_def("levels", &"default") as LevelsDef
+	var xp_amount: int = int(GameState.xp.get(hero, 0))
+	var lv: int = Progression.level(xp_amount, levels_def)
+	_lv_node.text = "Lv %d" % lv
+
 	var next_xp: int = levels_def.xp_total[lv] if (levels_def != null and lv < levels_def.xp_total.size()) else xp_amount
 	_xp_bar.max_value = next_xp
 	_xp_bar.value = xp_amount
