@@ -3,6 +3,7 @@ extends HBoxContainer
 ## purpose: Top bar (1760x64 at 80,40) with title pair and menu tabs (Equipment, Items, Map).
 
 signal items_requested
+signal map_requested
 
 var _eq_btn: Button
 var _items_btn: Button
@@ -46,5 +47,5 @@ func _build_ui() -> void:
 	_map_btn = Button.new()
 	_map_btn.text = Ui.text("EQUIP_TAB_MAP")
 	_map_btn.theme_type_variation = &"TabButton"
-	_map_btn.disabled = true
+	_map_btn.pressed.connect(map_requested.emit)
 	tabs_row.add_child(_map_btn)

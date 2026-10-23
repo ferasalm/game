@@ -97,6 +97,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _build_components() -> void:
 	tabs = EquipmentTabsBar.new()
 	tabs.items_requested.connect(_open_items_in_place)
+	tabs.map_requested.connect(_open_map_in_place)
 	header = EquipmentHeroHeader.new()
 	owned_list = EquipmentOwnedList.new()
 	owned_list.item_focused.connect(_on_item_focused)
@@ -173,3 +174,9 @@ func _open_items_in_place() -> void:
 	close()
 	if is_inside_tree():
 		Screens.open(&"items")
+
+
+func _open_map_in_place() -> void:
+	close()
+	if is_inside_tree():
+		Screens.open(&"map")
