@@ -1,12 +1,13 @@
 extends Node
-## Renders a prop close-up from play camera height to an inbox PNG (960x540).
-## Run: "$(tools/godot.sh)" --path . --resolution 960x540 res://tools/shot_prop.tscn -- <prop_id>
+## purpose: Renders prop close-up and play views to inbox PNGs (960x540).
+## Run: bash tools/run_godot.sh --resolution 960x540 res://tools/shot_prop.tscn -- <prop_id> [close|play]
 
 const OUT_DIR: String = "C:/dev/game/inbox"
 const LOOK_ID: StringName = &"painted_b"
 const SETTLE_FRAMES: int = 20
 
 var _prop_id: StringName = &"sabil"
+var _view: StringName = &"close"
 var _frame: int = 0
 
 
@@ -14,6 +15,8 @@ func _ready() -> void:
 	var args: PackedStringArray = OS.get_cmdline_user_args()
 	if args.size() > 0 and not args[0].begins_with("-"):
 		_prop_id = StringName(args[0])
+	if args.size() > 1 and not args[1].begins_with("-"):
+		_view = StringName(args[1])
 	_setup_scene()
 
 
@@ -60,7 +63,10 @@ func _make_camera() -> Camera3D:
 	var camera := Camera3D.new()
 	camera.fov = 42.0
 	add_child(camera)
-	if _prop_id == &"herb_stall":
+	if _view == &"play":
+		camera.position = Vector3(0.0, 4.0, 6.0)
+		camera.rotation_degrees = Vector3(-35.0, 0.0, 0.0)
+	elif _prop_id == &"herb_stall":
 		camera.position = Vector3(0.0, 1.85, 3.2)
 		camera.look_at(Vector3(0.0, 1.1, 0.15))
 	else:
@@ -79,7 +85,11 @@ func _process(_delta: float) -> void:
 func _save_and_quit() -> void:
 	var img: Image = get_viewport().get_texture().get_image()
 	DirAccess.make_dir_recursive_absolute(OUT_DIR)
-	var out_path: String = OUT_DIR.path_join("prop_%s.png" % _prop_id)
+	var suffix: String = "_play" if _view == &"play" else ""
+	var file_name: String = "prop_%s%s.png" % [_prop_id, suffix]
+	var out_path: String = OUT_DIR.path_join(file_name)
 	img.save_png(out_path)
+	DirAccess.make_dir_recursive_absolute("inbox")
+	img.save_png("inbox".path_join(file_name))
 	print("Saved render to %s (%dx%d)" % [out_path, img.get_width(), img.get_height()])
 	get_tree().quit()
