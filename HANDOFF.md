@@ -17,13 +17,13 @@ Last updated: 2026-10-23, session 16 manager (Opus 5.5, `claude-opus-5-5`): per-
 1. Review + merge the running builds; interact-focus; puzzle placement on R5. Model: Opus. Effort: high.
 `Continue ferasalm/game on main. Read HANDOFF.md (Level 1). Do its next step as manager; /handoff.`
 
-## Track: RPG + menus (owner: session local_c29a3aa9)
+## Track: RPG + menus (owner: the next chat from this prompt)
 - On main: rolls + flee, progression (XP, classes, armor, stones, save v5; no static state), Zayd's kit, menu skins +
   backdrops, equipment and workshop menus, balance-gear, holo map (area plan, markers, city view). 758 tests.
 - Holo map is flat 2D; mock_map.png is an isometric 3D table. Renders predate the five roofs.
-- Waiting on the owner: judge the menu renders (inbox/menu_*.png) against your mockups; icon art (5 heads, 4 items).
+- Waiting on the owner: judge the menu renders (inbox/menu_*.png) against your mockups.
 1. Polish briefs: workshop vs mock_workshop.png; holo map as an isometric table on the five roofs; equipment
-   inventory/header overlap. Then interact-focus (brief ready). Model: Sonnet. Effort: medium.
+   inventory/header overlap. Model: Sonnet. Effort: medium.
 `Continue ferasalm/game on main. Read HANDOFF.md (RPG + menus). Do its next step; /handoff.`
 
 ## Track: Puzzles (owner: session local_8f9c02cf)
@@ -31,8 +31,8 @@ Last updated: 2026-10-23, session 16 manager (Opus 5.5, `claude-opus-5-5`): per-
 1. Review puzzle-scene (renders vs valve-puzzles.md), merge, renders to Feras. Model: Opus. Effort: high.
 `Continue ferasalm/game on main. Read HANDOFF.md (Puzzles). Do its next step; /handoff.`
 
-## Track: Efficiency (owner: session 16 manager)
-- On branch claude/efficiency-docs -> main: per-track HANDOFF, milestone-only reports. RUNNING: efficiency-tools
-  (agy: checklist gate, tools/slots.sh, DeepSeek spend log).
-1. Review + merge efficiency-tools. Model: Sonnet. Effort: medium.
-`Continue ferasalm/game on main. Read HANDOFF.md (Efficiency). Do its next step; /handoff.`
+## Track: Efficiency (owner: the next manager chat)
+- On main: per-track HANDOFF, milestone-only reports, gate checklists, tools/slots.sh, DeepSeek spend log
+  (../game-wt/cf_spend.csv), check.sh capped at 2 test suites machine-wide (tools/check_slot.sh).
+1. Keep the tracks in sync, retire finished sessions, hunt further savings. Model: Opus. Effort: medium.
+`Continue ferasalm/game on main as manager. Read HANDOFF.md (all tracks). Sync sessions; /handoff.`
