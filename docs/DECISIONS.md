@@ -67,4 +67,4 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-23 | Emergency mode (.claude/skills/emergency-efficiency): one Claude director chat, builders build, merge, test and review on backup branches; Opus reviews resume after the weekly reset | 50% of the window in 30 min | Feras
 - 2026-10-24 | Bilqis: rivet pistol, frame + barrel parts upgraded like Zayd's hilt and blade | Feras (recommended) | Feras
 - 2026-10-24 | Every hero: accessory slot (ring) with 1-2 gem sockets by rarity; grandfather hilt keeps its 3 | Feras (recommended) | Feras
-- 2026-10-24 | Cloudflare builds and generate_patch use DeepSeek V4.1 Flash, not Kimi; triage_trace stays GLM-5.3 Flash | Feras | Feras
+- 2026-10-24 | Cloudflare: no Kimi; generate_patch + default builds DeepSeek V4.1 Flash, triage GLM-5.3 Flash; skills: design DeepSeek V4 Pro/Nemotron/Gemini, builds GLM-5.3, retry once then agy | Feras | Feras
