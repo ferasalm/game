@@ -18,7 +18,7 @@ Two tracks: level 1 (session 15, branch claude/night-sanaa) and RPG + menus (ses
 - Balance: start gear 82.7% wins; better gear combos 92-99% (above 65-90%): for the balance pass.
 - Builders now: tools/build_pipeline.sh <oc|agy> <task> <brief> <base> from C:/dev/game, run_in_background. It pastes
   the brief's named skill into the prompt. Gap to fix when no pipeline runs: PASS with zero commits is not a pass.
-- opencode is blocked until the OpenRouter free cap resets (50 :free requests/day under $10 bought credit).
+- OpenRouter free cap: 50 requests/day; when it runs out, build on agy only (Feras: no credit bought).
 - Level-1 track (session 15, unchanged here): blockout-fix and souq-props-2 agy runs ended (worktrees in game-wt);
   still to review and merge by the level-1 session (local_60fae4fe...), then storm on the new area, sabil on R2,
   tayramana, camera wall test.
@@ -27,9 +27,6 @@ Two tracks: level 1 (session 15, branch claude/night-sanaa) and RPG + menus (ses
 - Judge the 4 menu renders against your mockups. No icon art exists (assets/icons/ is missing): 5 head icons
   (zayd, bilqis, concession_enforcer, survey_drone, abu_nabil) and 4 item icons (herb_pink, herb_yellow,
   herb_white, qishr_cup); letter discs stand in until you make them.
-- OpenRouter: buy $2 of credit (one time) to lift the free cap to 1000 requests/day, or keep agy-only builds on
-  days the cap runs out? (Recommended: buy; Inkling stays free per request.) Ling 3.1 Flash tied Inkling (16/16,
-  right cause) for $0.016 if you ever want a paid fallback.
 - Play the Abu Nabil fight (session 14 notes); judge the five roofs and souq props when merged; play the camera.
 
 ## Next steps (one per chat)
