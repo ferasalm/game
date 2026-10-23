@@ -23,6 +23,8 @@ features/world/tests/test_rooftop_systems.gd, test_walk_graph.gd, test_places.gd
 5. Numbers out of code into content (explore.json or camera.json): crossing_spot.gd fade 0.15 s (use 0.3 s total),
    walk_graph.gd walk step 0.1 m, area_walk.gd 0.1 m tolerance.
 6. door_spot.gd and valve_spot.gd print no English debug text (an empty interact stays silent).
+7. Abu Nabil (herb_seller) is visible from the play camera when the party stands at the stall (souq-place render
+   C:/dev/game/inbox/souq_r2_stall.png hid him): move him or the awning parts, never the camera rule.
 
 ## Do NOT edit
 `features/combat/`
