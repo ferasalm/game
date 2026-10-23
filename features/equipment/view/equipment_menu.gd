@@ -1,0 +1,169 @@
+class_name EquipmentMenu
+extends UiScreen
+## purpose: Equipment menu with 3D hologram hero, slot boxes, owned list, stats comparison and tabs.
+
+const ID: StringName = &"equipment"
+
+enum Mode { SLOTS, LIST }
+
+var hero: StringName = &"zayd"
+var heroes: Array[StringName] = []
+var active_slot: StringName = &"blade"
+var mode: Mode = Mode.SLOTS
+var root: Control
+var tabs: EquipmentTabsBar
+var header: EquipmentHeroHeader
+var owned_list: EquipmentOwnedList
+var stage: HologramStage
+var boxes_manager := EquipmentBoxes.new()
+var stats: EquipmentStatsPanel
+var desc: EquipmentDescBar
+var _is_open: bool = false
+
+
+func _init() -> void:
+	super()
+	visible = false
+	backdrop_id = ID
+	prompts = [
+		{"key": "accept", "text": "EQUIP_PROMPT_EQUIP"}, {"key": "back", "text": "EQUIP_PROMPT_BACK"},
+		{"key": "hero", "text": "EQUIP_PROMPT_HERO"}, {"key": "tab", "text": "EQUIP_PROMPT_TAB"},
+	]
+
+
+func open(args: Dictionary = {}) -> void:
+	_is_open = true
+	visible = true
+	super(args)
+
+
+func close(result: Variant = null) -> void:
+	_is_open = false
+	super(result)
+
+
+func cancel() -> void:
+	_is_open = false
+	visible = false
+	closed.emit(null)
+
+
+func is_open() -> bool:
+	return _is_open and not is_closing()
+
+
+func build(_args: Dictionary) -> void:
+	root = Ui.screen_root()
+	add_child(root)
+	heroes.clear()
+	for h: Variant in GameState.party:
+		heroes.append(StringName(str(h)))
+	if heroes.is_empty():
+		heroes = [&"zayd", &"bilqis"]
+	hero = heroes[0]
+	_build_components()
+	show_hero(hero)
+
+
+func focus_default() -> void:
+	if mode == Mode.LIST:
+		owned_list.focus_first()
+	else:
+		boxes_manager.focus_first()
+
+
+func on_back() -> bool:
+	if mode == Mode.LIST:
+		mode = Mode.SLOTS
+		boxes_manager.focus_slot(active_slot)
+		return true
+	close()
+	return true
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_Q:
+			cycle_hero(-1)
+		elif event.keycode == KEY_E:
+			cycle_hero(1)
+	elif event is InputEventJoypadButton and event.pressed:
+		if event.button_index == JOY_BUTTON_LEFT_SHOULDER:
+			cycle_hero(-1)
+		elif event.button_index == JOY_BUTTON_RIGHT_SHOULDER:
+			_open_items_in_place()
+
+
+func _build_components() -> void:
+	tabs = EquipmentTabsBar.new()
+	tabs.items_requested.connect(_open_items_in_place)
+	header = EquipmentHeroHeader.new()
+	owned_list = EquipmentOwnedList.new()
+	owned_list.item_focused.connect(_on_item_focused)
+	owned_list.item_activated.connect(_on_item_pressed)
+	stage = HologramStage.new()
+	stage.position = Vector2(560.0, 140.0)
+	stats = EquipmentStatsPanel.new()
+	stats.position = Vector2(1400.0, 140.0)
+	desc = EquipmentDescBar.new()
+	for n: Control in [tabs, header, owned_list, stage, stats, desc]:
+		root.add_child(n)
+	boxes_manager.build(root, stage, _on_slot_activated)
+
+
+func show_hero(hero_id: StringName) -> void:
+	hero = hero_id
+	header.set_hero(hero)
+	stage.set_hero(hero)
+	boxes_manager.refresh(hero)
+	var parts: Array[StringName] = EquipmentOptions.parts_for(hero)
+	active_slot = parts[0] if not parts.is_empty() else &"armor"
+	owned_list.populate(hero, active_slot)
+	stats.update_stats(hero)
+	_update_desc_from_worn()
+
+
+func _on_slot_activated(slot_name: StringName) -> void:
+	active_slot = slot_name
+	owned_list.populate(hero, active_slot)
+	mode = Mode.LIST
+	owned_list.focus_first()
+
+
+func _on_item_focused(item: EquipDef) -> void:
+	stats.update_stats(hero, Inventory.slot_key(hero, active_slot), item.id)
+	desc.set_item(item)
+
+
+func _on_item_pressed(item: EquipDef) -> void:
+	var slot_key: StringName = Inventory.slot_key(hero, active_slot)
+	Inventory.equip(GameState.equipment, GameState.inventory, slot_key, item)
+	boxes_manager.refresh(hero)
+	owned_list.populate(hero, active_slot)
+	stats.update_stats(hero)
+	desc.set_item(item)
+
+
+func _update_desc_from_worn() -> void:
+	var worn_id: StringName = GameState.equipment.get(Inventory.slot_key(hero, active_slot), &"")
+	if worn_id == &"":
+		for l_id: StringName in ContentDB.ids("loadout"):
+			var l := ContentDB.get_def("loadout", l_id) as LoadoutDef
+			if l != null and l.hero == hero:
+				worn_id = Loadout.worn(GameState.equipment, l, active_slot)
+				break
+	var item: EquipDef = ContentDB.get_def("item", worn_id) as EquipDef
+	desc.set_item(item)
+
+
+func cycle_hero(dir: int) -> void:
+	var idx: int = heroes.find(hero)
+	var next_idx: int = (idx + dir + heroes.size()) % heroes.size()
+	show_hero(heroes[next_idx])
+	boxes_manager.focus_first()
+
+
+func _open_items_in_place() -> void:
+	close()
+	if is_inside_tree():
+		Screens.open(&"items")
