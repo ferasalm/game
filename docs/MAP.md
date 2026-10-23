@@ -607,6 +607,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/tests/test_sabil_slots.gd`: Tests for Sabil saving into the slot chosen via the slot picker
 - `features/world/tests/test_safe_spot.gd`: SafeSpot: a place counts after standing still, walking resets the clock, the newest spot is skipped when the player is wedged right there, and only the two newest spots are kept
 - `features/world/tests/test_skyline.gd`: Night Sana'a city: building and skyline content, the layout rules (outside the area, out of the al-Saila corridor, inside the band, deterministic), the tower-house mesh, the landmarks and the draw-call budget
+- `features/world/tests/test_souq_props.gd`: Tests for souq props: the wall niche sabil with 7-colour qamariya and the herb stall within budgets
 - `features/world/tests/test_tayramana.gd`: purpose: Tests for Tayramana room: def parsing, prop building, enter/leave transition, input locks, and qishr sit rewards
 - `features/world/tests/test_walk_graph.gd`: WalkGraph rules on small grids (reachability, diagonals, 2 x 2 width, traps, steps) and on every shipped area (docs/design/rooftop-v3.md section 5): everything is reachable from the spawn, no corridor is under 2 m, no cell is a trap, no step is too tall, and the bridge keeps three rows
 - `features/world/tests/test_workbench.gd`: The jambiyah smith's workbench: built from the prop 'workbench' (content/world/props/workbench.json), within the triangle and material budgets, carrying its lamp's light, with the prompt and footprint of the old box
@@ -729,6 +730,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_menu.gd`: Renders pause, save, or shop menu at 1920x1080 to an inbox PNG
 - `tools/shot_menu.tscn`: scene
 - `tools/shot_models.gd`: Model gallery for renders (docs/design/characters-3d.md): the cast in a row on a floor under the painted look, each doing a state, close enough to judge the stand-ins
+- `tools/shot_prop.gd`: Renders a prop close-up from play camera height to an inbox PNG (960x540)
+- `tools/shot_prop.tscn`: scene
 - `tools/shot_scene.gd`: Plays a scene (or a Node script) for the movie writer (frames to a folder): the battle demo with its heroes on auto_play, or any scene
 - `tools/shot_shatter.gd`: Shows the qamariya shatter on a stand-in frame (a stripe pattern) so the glass can be judged without a fight
 - `tools/shot_tayramana.gd`: Renders Tayramana framed shots with the party seated to C:/dev/game/inbox/tayramana_*.png (960x540)
