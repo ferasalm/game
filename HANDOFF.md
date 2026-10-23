@@ -26,9 +26,9 @@ Last updated: 2026-10-23, session 16 manager (Opus 5.5, `claude-opus-5-5`): per-
    inventory/header overlap. Model: Sonnet. Effort: medium.
 `Continue ferasalm/game on main. Read HANDOFF.md (RPG + menus). Do its next step; /handoff.`
 
-## Track: Puzzles (owner: session local_8f9c02cf)
-- On main: puzzle logic (light lock, water network, hints). RUNNING: puzzle-scene (DeepSeek).
-1. Review puzzle-scene (renders vs valve-puzzles.md), merge, renders to Feras. Model: Opus. Effort: high.
+## Track: Puzzles (owner: none)
+- On main: features/puzzles/ logic + grey-box scene (puzzle_yard.tscn); renders inbox/puzzle_*.png sent.
+1. R5 placement via valve_spot (level-1 briefs it; render player on m2, gauge at edge). Model: Sonnet. Effort: medium.
 `Continue ferasalm/game on main. Read HANDOFF.md (Puzzles). Do its next step; /handoff.`
 
 ## Track: Efficiency (owner: the next manager chat)
