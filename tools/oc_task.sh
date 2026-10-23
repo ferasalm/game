@@ -8,7 +8,7 @@
 set -euo pipefail
 name="$1"; brief="$(cd "$(dirname "$2")" && pwd)/$(basename "$2")"
 root="$(git rev-parse --show-toplevel)"
-base="${3:-$(git -C "$root" rev-parse --abbrev-ref HEAD)}"; model="${4:-opencode/glm-5.3-flash-free}"
+base="${3:-$(git -C "$root" rev-parse --abbrev-ref HEAD)}"; model="${4:-openrouter/thinkingmachines/inkling:free}"
 [[ "$name" =~ ^[a-z0-9-]+$ ]] || { echo "task name: lowercase letters, digits and - only" >&2; exit 1; }
 [ "$base" != "HEAD" ] || { echo "base branch needed" >&2; exit 1; }
 command -v opencode >/dev/null || { echo "opencode is not installed (docs/research/opencode-setup.md 7)" >&2; exit 1; }

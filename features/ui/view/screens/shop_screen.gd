@@ -175,7 +175,7 @@ func _entries() -> Array[ConsumableDef]:
 
 func _add_row(def: ConsumableDef) -> void:
 	var button := Button.new()
-	var price: int = def.price if _tab == BUY else def.sell
+	var price: int = def.sell if _tab == SELL else Shop.unit_buy_price(_shop, def, GameState.flags)
 	button.text = "%s   %d   x%d" % [Ui.text(def.name_key), price, GameState.bag.get(def.id, 0)]
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	button.custom_minimum_size.y = Ui.style().size(&"s_list_row_h")
@@ -192,8 +192,8 @@ func _refresh() -> void:
 	_info.show_money(GameState.money)
 	var def := ContentDB.get_def("consumable", _item) as ConsumableDef
 	var selling: bool = _tab == SELL
-	_qty = clampi(_qty, 1, maxi(1, ShopService.limit(_item, selling)))
+	_qty = clampi(_qty, 1, maxi(1, ShopService.limit(_item, selling, _shop.id)))
 	if def == null:
 		_info.show_item(null, 0, 1, GameState.money, 0, selling)
 		return
-	_info.show_item(def, def.sell if selling else def.price, _qty, GameState.money, GameState.bag.get(_item, 0), selling)
+	_info.show_item(def, def.sell if selling else Shop.unit_buy_price(_shop, def, GameState.flags), _qty, GameState.money, GameState.bag.get(_item, 0), selling)

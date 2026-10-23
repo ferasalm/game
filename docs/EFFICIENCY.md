@@ -58,10 +58,16 @@ Measured in session 9: 4 agy builds (~1,600 lines + tests) cost the Claude limit
 still needed 1-3 small fixes (internal ids in text, a missing input lock, a fake test registration).
 
 ## 3b. The builder loop (agy and opencode)
-Builders: agy (Gemini 3.8 Flash; tools/agy_task.sh, branch gemini/<task>) and opencode (free opencode/glm-5.3-flash-free or
-opencode/deepseek-v4.1-flash-free, no sign-in; CLI 1.19.4 via npm; tools/oc_task.sh, branch oc/<task>; setup docs/research/opencode-setup.md; rules AGENTS.md +
+Builders: agy (Gemini 3.8 Flash; tools/agy_task.sh, branch gemini/<task>) and opencode (default openrouter/thinkingmachines/inkling:free,
+the winner of the 2026-10-23 free-model test: 16/16 strict-typed GDScript and the right root cause of a real bug, where
+laguna broke the typing rule and misdiagnosed, Nemotron Ultra crashed; Inkling's free tier works only inside agents, not
+the MCP; fallback opencode/glm-5.3-flash-free when its free tier is not exhausted; CLI 1.19.4 via npm; tools/oc_task.sh, branch oc/<task>; setup docs/research/opencode-setup.md; rules AGENTS.md +
 opencode.json). Same brief, same review: tools/oc_review.sh mirrors agy_review.sh. Free opencode models may train on
-prompts: only this public repo goes into a brief, never keys or the owner's private files. At most 3 runs at once
+prompts: only this public repo goes into a brief, never keys or the owner's private files. Free tier verified working
+2026-10-23 (a 'pong' run); 'Free usage limit reached' = wait for the reset. OpenRouter `:free` models need the owner's key,
+entered by him with `XDG_DATA_HOME=~/.local/share/oc-cli opencode auth login` (pass the model as oc_task.sh's 4th arg). The
+OpenRouter MCP connector (send-message) answers one-shot questions; slugs end in `:free` only (the account holds paid credit,
+never spend it); poolside/laguna-s-2.1:free answered a GDScript question correctly 2026-10-23. At most 3 runs at once
 across both builders. Pick: agy for Godot code with tests; opencode for research, docs, content and second opinions.
 1. Brief from docs/briefs/TEMPLATE.md (<= 60 lines, a do-not-edit list so parallel runs never share files).
 2. `bash tools/agy_task.sh <task> docs/briefs/<task>.md claude/night-sanaa` in the background; at most 3 at once.

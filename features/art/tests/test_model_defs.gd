@@ -81,7 +81,7 @@ func test_the_bodies_keep_the_rig_and_the_budgets() -> void:
 			check(part.draw_bone.is_empty() or rig.skeleton.find_bone(part.draw_bone) >= 0, "%s/%s: draw_bone exists" % [def.id, part.id])
 			check(rig.parts.has(part.id), "%s: part %s was built" % [def.id, part.id])
 		for path: String in [def.skin, def.eye_texture, def.hair_texture]:
-			var texture := load(path) as Texture2D
+			var texture: Texture2D = ModelMaterials.load_texture(path)
 			check(texture != null and maxi(texture.get_width(), texture.get_height()) <= MAX_TEXTURE, "%s: texture %s within %d" % [def.id, path.get_file(), MAX_TEXTURE])
 		holder.free()
 	var party: int = 0

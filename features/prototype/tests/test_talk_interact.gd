@@ -30,10 +30,15 @@ func _visit_herb_seller(main: PrototypeMain) -> void:
 		spot._unhandled_input(press)
 
 
-func _talk_through(main: PrototypeMain) -> int:
+func _talk_through(main: PrototypeMain, choice_idx: int = 3) -> int:
 	var presses: int = 0
 	while main.dialogue.is_playing() and presses < 50:
-		main.dialogue.advance()
+		if main.dialogue.is_showing_choices():
+			var count: int = main.dialogue.choice_buttons().size()
+			var pick: int = mini(choice_idx, count - 1)
+			main.dialogue.choose(pick)
+		else:
+			main.dialogue.advance()
 		presses += 1
 	return presses
 
@@ -48,19 +53,24 @@ func test_confirm_on_herb_seller_plays_first_then_chat() -> void:
 	check_eq(main.dialogue.dialogue_id(), &"abu_nabil_first", "first visit plays abu_nabil_first")
 	check(main.rooftop.player.process_mode == Node.PROCESS_MODE_DISABLED and main.rooftop.player.visible,
 		"walking stops while he talks; Zayd stays in view")
-	_talk_through(main)
+	_talk_through(main, 3)
 	check(not main.dialogue.is_playing(), "dialogue finished")
 	check(main.rooftop.player.process_mode == Node.PROCESS_MODE_INHERIT,
 		"walking comes back after the talk")
-	check_eq(played, [&"abu_nabil_first"] as Array[StringName], "first finished recorded")
-	check(bool(GameState.flags.get(TalkPicker.flag_first(&"herb_seller"), false)), "first talk flag set")
+	check(played.has(&"abu_nabil_haggle_d"), "haggle walk-away finished recorded")
 
 	_visit_herb_seller(main)
-	check(main.dialogue.is_playing(), "dialogue is playing on second visit")
-	check_eq(main.dialogue.dialogue_id(), &"abu_nabil_chat_1", "second visit plays first chat")
-	_talk_through(main)
+	check(main.dialogue.is_playing(), "dialogue replays before beaten")
+	check_eq(main.dialogue.dialogue_id(), &"abu_nabil_first", "second visit before beaten replays first")
+	_talk_through(main, 3)
 	check(not main.dialogue.is_playing(), "second dialogue finished")
-	check_eq(played.size(), 2, "two dialogues played")
+
+	GameState.flags[&"abu_nabil_beaten"] = true
+	_visit_herb_seller(main)
+	check(main.dialogue.is_playing(), "third visit after beaten opens menu")
+	check_eq(main.dialogue.dialogue_id(), &"abu_nabil_menu", "after win plays abu_nabil_menu")
+	_talk_through(main, 3)
+	check(not main.dialogue.is_playing(), "menu closed on leave")
 
 	main.free()
 	GameState.reset()

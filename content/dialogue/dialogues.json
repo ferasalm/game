@@ -8,22 +8,57 @@
       {"speaker": "bilqis", "expression": "angry", "text": "DLG_WORKSHOP_FIRST_4"}
     ]},
     {"id": "abu_nabil_first", "lines": [
-      {"speaker": "abu_nabil", "expression": "neutral", "text": "DLG_ABU_NABIL_FIRST_1"},
-      {"speaker": "zayd", "expression": "neutral", "text": "DLG_ABU_NABIL_FIRST_2"},
-      {"speaker": "abu_nabil", "expression": "happy", "text": "DLG_ABU_NABIL_FIRST_3"},
-      {"speaker": "bilqis", "expression": "neutral", "text": "DLG_ABU_NABIL_FIRST_4"},
-      {"speaker": "abu_nabil", "expression": "neutral", "text": "DLG_ABU_NABIL_FIRST_5"},
-      {"speaker": "zayd", "expression": "neutral", "text": "DLG_ABU_NABIL_FIRST_6"},
-      {"speaker": "abu_nabil", "expression": "surprised", "text": "DLG_ABU_NABIL_FIRST_7"},
-      {"speaker": "abu_nabil", "expression": "neutral", "text": "DLG_ABU_NABIL_FIRST_8"},
-      {"speaker": "zayd", "expression": "happy", "text": "DLG_ABU_NABIL_FIRST_9"}
+      {"speaker": "abu_nabil", "expression": "happy", "text": "DLG_ABU_NABIL_HAGGLE_INTRO"},
+      {"speaker": "zayd", "expression": "surprised", "text": "DLG_ABU_NABIL_HAGGLE_ZAYD_SHOCK"},
+      {"speaker": "abu_nabil", "expression": "neutral", "text": "DLG_ABU_NABIL_HAGGLE_DEFENSE", "choices": [
+        {"text": "DLG_ABU_NABIL_CHOICE_A", "next": "abu_nabil_haggle_a"},
+        {"text": "DLG_ABU_NABIL_CHOICE_B", "next": "end", "effects": ["set_flag abu_nabil_insulted", "start_battle abu_nabil_duel enemy_first"]},
+        {"text": "DLG_ABU_NABIL_CHOICE_C", "next": "abu_nabil_haggle_c", "effects": ["set_flag abu_nabil_charmed"]},
+        {"text": "DLG_ABU_NABIL_CHOICE_D", "next": "abu_nabil_haggle_d"}
+      ]}
+    ]},
+    {"id": "abu_nabil_haggle_a", "lines": [
+      {"speaker": "abu_nabil", "expression": "angry", "text": "DLG_ABU_NABIL_HAGGLE_A_1", "choices": [
+        {"text": "DLG_ABU_NABIL_FIGHT_YES", "next": "end", "effects": ["start_battle abu_nabil_duel even"]},
+        {"text": "DLG_ABU_NABIL_FIGHT_NOT_YET", "next": "end"}
+      ]}
+    ]},
+    {"id": "abu_nabil_haggle_c", "lines": [
+      {"speaker": "abu_nabil", "expression": "happy", "text": "DLG_ABU_NABIL_HAGGLE_C_1", "choices": [
+        {"text": "DLG_ABU_NABIL_FIGHT_YES", "next": "end", "effects": ["start_battle abu_nabil_duel party_first"]},
+        {"text": "DLG_ABU_NABIL_FIGHT_NOT_YET", "next": "end"}
+      ]}
+    ]},
+    {"id": "abu_nabil_haggle_d", "lines": [
+      {"speaker": "abu_nabil", "expression": "neutral", "text": "DLG_ABU_NABIL_HAGGLE_D_1"}
     ]},
     {"id": "abu_nabil_after_battle", "lines": [
-      {"speaker": "abu_nabil", "expression": "surprised", "text": "DLG_ABU_NABIL_AFTER_BATTLE_1"},
-      {"speaker": "zayd", "expression": "neutral", "text": "DLG_ABU_NABIL_AFTER_BATTLE_2"},
-      {"speaker": "abu_nabil", "expression": "happy", "text": "DLG_ABU_NABIL_AFTER_BATTLE_3"},
-      {"speaker": "bilqis", "expression": "happy", "text": "DLG_ABU_NABIL_AFTER_BATTLE_4"},
-      {"speaker": "abu_nabil", "expression": "neutral", "text": "DLG_ABU_NABIL_AFTER_BATTLE_5"}
+      {"speaker": "abu_nabil", "expression": "surprised", "text": "DLG_ABU_NABIL_WIN_1"},
+      {"speaker": "abu_nabil", "expression": "neutral", "text": "DLG_ABU_NABIL_WIN_2"},
+      {"speaker": "abu_nabil", "expression": "happy", "text": "DLG_ABU_NABIL_WIN_3"},
+      {"speaker": "abu_nabil", "expression": "neutral", "text": "DLG_ABU_NABIL_WIN_4", "choices": [
+        {"text": "DLG_ABU_NABIL_WIN_PAY", "next": "abu_nabil_after_win_pay", "effects": ["set_flag abu_nabil_beaten", "give_item qishr_cup 1"]},
+        {"text": "DLG_ABU_NABIL_WIN_REFUSE", "next": "abu_nabil_after_win_refuse", "effects": ["set_flag abu_nabil_beaten", "give_item qishr_cup 1"]}
+      ]}
+    ]},
+    {"id": "abu_nabil_after_win_pay", "lines": [
+      {"speaker": "bilqis", "expression": "angry", "text": "DLG_ABU_NABIL_WIN_BILQIS_STOP"},
+      {"speaker": "abu_nabil", "expression": "surprised", "text": "DLG_ABU_NABIL_WIN_PAY_CHUCKLE"}
+    ]},
+    {"id": "abu_nabil_after_win_refuse", "lines": [
+      {"speaker": "abu_nabil", "expression": "angry", "text": "DLG_ABU_NABIL_WIN_REFUSE_GRUMBLE"},
+      {"speaker": "abu_nabil", "expression": "happy", "text": "DLG_ABU_NABIL_WIN_REFUSE_CLOSE"}
+    ]},
+    {"id": "abu_nabil_menu", "lines": [
+      {"speaker": "abu_nabil", "expression": "happy", "text": "DLG_ABU_NABIL_MENU_PROMPT", "choices": [
+        {"text": "DLG_ABU_NABIL_MENU_SHOP", "next": "end", "effects": ["open_shop"]},
+        {"text": "DLG_ABU_NABIL_MENU_SPAR", "next": "end", "effects": ["start_battle abu_nabil_duel even practice"]},
+        {"text": "DLG_ABU_NABIL_MENU_CHAT", "next": "abu_nabil_chat_1"},
+        {"text": "DLG_ABU_NABIL_MENU_LEAVE", "next": "end"}
+      ]}
+    ]},
+    {"id": "abu_nabil_spar_lost", "lines": [
+      {"speaker": "abu_nabil", "expression": "happy", "text": "DLG_ABU_NABIL_SPAR_LOST"}
     ]},
     {"id": "abu_nabil_chat_1", "lines": [
       {"speaker": "abu_nabil", "expression": "neutral", "text": "DLG_ABU_NABIL_CHAT_1_1"},

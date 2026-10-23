@@ -20,11 +20,20 @@ const REASON_KEYS: Dictionary[StringName, String] = {
 
 
 ## How many of this item the purse and the bag room allow right now.
-static func max_buy(def: ConsumableDef, money: int, owned: int) -> int:
+static func max_buy(def: ConsumableDef, money: int, owned: int, unit_price: int = -1) -> int:
 	var room: int = maxi(0, def.max_stack - owned)
-	if def.price <= 0:
+	var price: int = unit_price if unit_price >= 0 else (def.price if def != null else 0)
+	if price <= 0:
 		return room
-	return mini(floori(float(money) / float(def.price)), room)
+	return mini(floori(float(money) / float(price)), room)
+
+
+## Calculates the per-unit price to buy an item from a shop under given flags.
+static func unit_buy_price(shop: ShopDef, def: ConsumableDef, flags: Dictionary) -> int:
+	if def == null:
+		return 0
+	var mult: float = shop.price_multiplier(flags) if shop != null else 1.0
+	return roundi(float(def.price) * mult)
 
 
 ## How many the bag can give up and the purse (under its cap) can take.
@@ -45,11 +54,12 @@ static func buy(
 		return ShopResult.fail(NOT_IN_STOCK, item_id)
 	if held.bag.count(item_id) + amount > def.max_stack:
 		return ShopResult.fail(STACK_FULL, item_id)
-	if held.money < def.price * amount:
+	var price: int = unit_buy_price(shop, def, held.flags)
+	if held.money < price * amount:
 		return ShopResult.fail(SHORT_MONEY, item_id)
 	held.bag.add(item_id, amount, def.max_stack)
-	held.money -= def.price * amount
-	return _done(item_id, amount, -def.price * amount)
+	held.money -= price * amount
+	return _done(item_id, amount, -price * amount)
 
 
 static func sell(

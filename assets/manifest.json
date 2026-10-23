@@ -3387,6 +3387,13 @@
       "source": "own",
       "licence": "own",
       "prompt": "painterly_bake"
+    },
+    {
+      "id": "abu_nabil_neutral",
+      "path": "portraits/abu_nabil_neutral.png",
+      "source": "Feras, chat 2026-10-23 (inbox/abu_nabil_portrait_src.png)",
+      "licence": "Gemini, owner-generated",
+      "prompt": ""
     }
   ]
 }

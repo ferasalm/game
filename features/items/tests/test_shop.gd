@@ -11,17 +11,18 @@ func _herbs() -> Dictionary[StringName, ConsumableDef]:
 	return ShopService.consumables()
 
 
-func _held(money: int, counts: Dictionary) -> Holdings:
+func _held(money: int, counts: Dictionary, flags: Dictionary[StringName, bool] = {}) -> Holdings:
 	var held := Holdings.new()
 	held.money = money
 	held.bag = Bag.from_counts(counts)
+	held.flags = flags
 	return held
 
 
 func test_the_shipped_stall() -> void:
 	var shop: ShopDef = _shop()
 	check(shop != null, "herb_stall loads")
-	check_eq(shop.stock, [&"pink_herb", &"yellow_herb", &"white_herb", &"qishr_cup"] as Array[StringName], "stock")
+	check_eq(shop.stock, [&"pink_herb", &"yellow_herb", &"white_herb"] as Array[StringName], "stock")
 	for item_id: StringName in _herbs():
 		var def: ConsumableDef = _herbs()[item_id]
 		check(def.sell * 2 <= def.price, "%s sells for at most half its price" % item_id)
@@ -29,6 +30,9 @@ func test_the_shipped_stall() -> void:
 
 func test_buy_pays_and_fills_the_bag() -> void:
 	var held: Holdings = _held(100, {&"pink_herb": 1})
+	var greedy: ShopResult = Shop.buy(_shop(), &"pink_herb", 1, held, _herbs())
+	check(not greedy.ok and greedy.reason == Shop.SHORT_MONEY, "300 riyal needed before beaten")
+	held.flags[&"abu_nabil_beaten"] = true
 	var result: ShopResult = Shop.buy(_shop(), &"pink_herb", 2, held, _herbs())
 	check(result.ok and result.count == 2, "bought two")
 	check_eq(result.money_delta, -60, "60 riyal paid")
@@ -37,7 +41,7 @@ func test_buy_pays_and_fills_the_bag() -> void:
 
 
 func test_buy_refusals_change_nothing() -> void:
-	var held: Holdings = _held(25, {&"pink_herb": 5})
+	var held: Holdings = _held(25, {&"pink_herb": 5}, {&"abu_nabil_beaten": true})
 	var short: ShopResult = Shop.buy(_shop(), &"yellow_herb", 2, held, _herbs())
 	check_eq(short.reason, Shop.SHORT_MONEY, "40 needed, 25 held")
 	var full: ShopResult = Shop.buy(_shop(), &"pink_herb", 1, held, _herbs())
@@ -94,6 +98,7 @@ func test_every_refusal_has_a_keeper_line() -> void:
 
 func test_service_writes_game_state_and_announces_the_purse() -> void:
 	GameState.start_new()
+	GameState.flags[&"abu_nabil_beaten"] = true
 	var log: Array = []
 	var hook := func(total: int, delta: int) -> void: log.append([total, delta])
 	EventBus.money_changed.connect(hook)
