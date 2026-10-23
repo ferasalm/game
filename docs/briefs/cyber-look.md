@@ -25,7 +25,9 @@ content/world/buildings or areas.json (souq_rooftops_v4 blocks), content/world/s
 6. Wet roofs: floor roughness 0.25 where wet spots are, so neon reflects (screen-space reflection only if >= 60 FPS).
 7. The wall: the tower faces that stand within 1.5 m of a playable roof edge and rise more than 2.5 m above it get
    windows, a frieze and a neon strip like every other facade, or are lowered to <= 2.5 m above the roof.
-8. Renders from the play camera: inbox/cyber_r1.png, cyber_r4.png, cyber_r5.png; fps_probe numbers in the final message.
+8. Rain: no streak may render closer than 1.5 m to the camera (a huge diagonal streak crossed render_clean_r1.png);
+   streak length and near-clip distance from storm.json.
+9. Renders from the play camera: inbox/cyber_r1.png, cyber_r4.png, cyber_r5.png; fps_probe numbers in the final message.
 
 ## Do NOT edit
 `core/`

@@ -39,7 +39,7 @@ def main() -> int:
     if triage["model"] != "@cf/zai-org/glm-5.3-flash" or "func cross_to" not in triage["messages"][1]["content"]:
         fails.append("triage_trace: wrong model or the file was not read into the prompt")
     patch = json.loads(replies[3]["result"]["content"][0]["text"])
-    if patch["model"] != "@cf/moonshotai/kimi-k2.7-code" or "not a file inside the repo" not in patch["messages"][1]["content"]:
+    if patch["model"] != "@cf/deepseek-ai/deepseek-v4.1-flash-1017" or "not a file inside the repo" not in patch["messages"][1]["content"]:
         fails.append("generate_patch: wrong model or a path outside the repo was read")
     if "error" not in replies[4]:
         fails.append("unknown tool did not return an error")
