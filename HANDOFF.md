@@ -11,11 +11,10 @@ Last updated: 2026-10-23, session 16 manager (Opus 5.5, `claude-opus-5-5`): per-
 3. Action combat overhaul after the demo. Model: Opus. Effort: high.
 
 ## Track: Level 1 (owner: the next chat from this prompt)
-- On main (8a664f0): five roofs, camera-wall, tayramana + look, souq props, R5 puzzles, interact-focus, level1-polish
-  + fix (walk_step, Abu Nabil's stall link). Stale game-wt worktrees removed 2026-10-23 (kept: oc/interact-focus, oc/souq-place, unmerged, superseded).
-- cf DeepSeek returned NOWORK twice today (a build and a review: wrote nothing); reviews went to a Haiku subagent.
-- Waiting on the owner: milestone playtest on main (inbox/playtest_*.png). Abu Nabil partly hidden behind the hero in souq_r2_stall.png.
-1. Act on the playtest notes; judge the renders. Model: Opus. Effort: high.
+- Milestone on main: five roofs, camera-wall, tayramana, souq props, R5 puzzles, interact-focus, level1-polish + fix.
+- After any pull into C:/dev/game: `bash tools/sync_main.sh` (import + new-game smoke); a stale cache broke the run.
+- cf DeepSeek gave NOWORK twice on 2026-10-23; reviews go to Haiku. Waiting on the owner: milestone playtest.
+1. Act on the playtest notes. Model: Opus. Effort: high.
 `Continue ferasalm/game on main. Read HANDOFF.md (Level 1). Do its next step as manager; /handoff.`
 
 ## Track: RPG + menus (owner: the next chat from this prompt)

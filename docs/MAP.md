@@ -794,6 +794,11 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_tayramana.tscn`: scene
 - `tools/shot_workbench.gd`: Renders the workbench prop close up and in the rooftop from the play camera to inbox PNGs (960x540)
 - `tools/slots.sh`: Slots reporter and DeepSeek spend tracker (DECISIONS 2026-10-23)
+- `tools/smoke_keeper.gd`: Survives scene changes during tools/smoke_new_game: starts a new game, waits, reports the scene, quits
+- `tools/smoke_keeper.tscn`: scene
+- `tools/smoke_new_game.gd`: Smoke test of the real start: loads the main scene, starts a new game, runs it a while, quits (tools/sync_main.sh)
+- `tools/smoke_new_game.tscn`: scene
+- `tools/sync_main.sh`: Brings the main checkout up to origin/main and proves the game starts (2026-10-24: merges pulled without a re-import
 - `tools/test_build_gate.py`: Self-test for build_gate.py: python tools/test_build_gate.py (temp git repos, plain asserts, exit 1 on failure).
 - `tools/test_check_slot.py`: check_slot.sh: a full set of slots makes the next run wait; a released or stale slot lets it in.
 - `tools/test_gate_checklist.py`: Tests for brief checklist verification in build_gate.
