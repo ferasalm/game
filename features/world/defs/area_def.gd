@@ -25,6 +25,8 @@ var places: Array[PlaceDef] = []
 var canyon: CanyonSpec = null
 ## Weather preset id (content/world/storm.json) or empty string when calm.
 var weather: String = ""
+## Height fog pools below this y here (overrides the look's fog_height: low roofs stay clear); NAN = the look's.
+var fog_height: float = NAN
 ## At most this many real OmniLights near the player; they fade in or out light_fade per second.
 var light_budget: int = 8
 var light_fade: float = 3.0
@@ -37,6 +39,8 @@ func read(r: DefReader) -> void:
 	legend = r.text_map("legend")
 	mist = r.id_list("mist")
 	weather = r.text("weather", "", false)
+	if r.has("fog_height"):
+		fog_height = r.number("fog_height", -50.0, 50.0)
 	var cells: Array[int] = r.int_list("vista", 0, 500)
 	if cells.size() == 4:
 		vista = Rect2i(cells[0], cells[1], cells[2] - cells[0] + 1, cells[3] - cells[1] + 1)

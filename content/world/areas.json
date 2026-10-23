@@ -634,6 +634,8 @@
     {
       "id": "souq_rooftops_v4",
       "name_key": "WORLD_ROOFTOP_NAME",
+      "weather": "storm",
+      "fog_height": -5.5,
       "mist": [
         "saila_fog_v4",
         "saila_floor_v4",
@@ -849,7 +851,8 @@
           "x": 5.5,
           "z": 18.5,
           "bx": 9.5,
-          "bz": 18.5
+          "bz": 18.5,
+          "sprite": "concession_enforcer"
         },
         {
           "kind": "patrol",
@@ -858,7 +861,8 @@
           "x": 3.5,
           "z": 11.5,
           "bx": 4.5,
-          "bz": 11.5
+          "bz": 11.5,
+          "sprite": "survey_drone"
         },
         {
           "kind": "patrol",
@@ -867,7 +871,8 @@
           "x": 4.5,
           "z": 6.5,
           "bx": 9.5,
-          "bz": 6.5
+          "bz": 6.5,
+          "sprite": "concession_enforcer"
         },
         {
           "kind": "valve",
