@@ -2,8 +2,8 @@
 Last updated: 2026-10-23, session 16 manager (Opus 5.5, `claude-opus-5-5`): per-track HANDOFF.
 
 ## Shared
-- Builders: CLAUDE.md + EFFICIENCY 3b (5 runs: 2 agy, 2 DeepSeek, 1 Inkling); check `bash tools/slots.sh` (until it
-  lands: count RUNNING lines in ../game-wt/*.result). Balance: start gear 82.7-89% wins; arc_arm needs an upside.
+- Builders: CLAUDE.md + EFFICIENCY 3b (5 runs: 2 agy, 2 DeepSeek, 1 Inkling); check `bash tools/slots.sh`.
+  Balance: start gear 82.7-89% wins; arc_arm needs an upside.
 - Waiting on the owner: icon art (5 heads, 4 items; letter discs stand in); play the Abu Nabil fight.
 ### Next steps (one per chat; reviews Sonnet, design and art judgment Opus)
 1. Balance pass 2: arc_arm identity, every encounter, workshop upgrades inside 65-90%. Model: Sonnet. Effort: medium.
