@@ -145,3 +145,23 @@ func test_crossing_interact_moves_player() -> void:
 	check(player.position.distance_to(Vector3(28.5, 0.0, 23.5)) < 0.05, "player crossed to target")
 	spot.free()
 	player.free()
+
+
+func test_no_mist_layer_reaches_within_two_metres_of_lowest_floor() -> void:
+	var area: AreaDef = _area()
+	var lowest_floor: float = INF
+	for z: int in area.depth():
+		for x: int in area.width():
+			if not area.is_walkable(x, z):
+				continue
+			var tile := ContentDB.get_def("tile", area.tile_id_at(x, z)) as TileDef
+			if tile != null:
+				lowest_floor = minf(lowest_floor, tile.height)
+	check(lowest_floor < INF, "lowest floor found")
+	for mist_id: StringName in area.mist:
+		var mist := ContentDB.get_def("mist", mist_id) as MistDef
+		check(mist != null, "mist def %s exists" % mist_id)
+		for i: int in mist.stack:
+			var layer_y: float = mist.height + float(i) * mist.step
+			check(lowest_floor - layer_y >= 2.0,
+				"mist %s layer %d (y=%.2f) stays >= 2 m below lowest floor (%.2f)" % [mist_id, i, layer_y, lowest_floor])

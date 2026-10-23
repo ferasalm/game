@@ -634,9 +634,9 @@
       "id": "souq_rooftops_v4",
       "name_key": "WORLD_ROOFTOP_NAME",
       "mist": [
-        "saila_fog",
-        "saila_floor",
-        "wisps"
+        "saila_fog_v4",
+        "saila_floor_v4",
+        "wisps_v4"
       ],
       "vista": [
         28,
