@@ -10,13 +10,11 @@ Two tracks: level 1 (session 15, branch claude/night-sanaa) and RPG + menus (ses
   hologram hero, slot boxes, stat preview; the old bench screen is gone), menu-polish (glass panels, painted
   faces, class/level/XP on pause, framed plates and pills, icon disc fallback).
 - Feras's 7 backdrops are in (assets/textures/ui_bg/*.webp + manifest); his layout mockups: inbox/ui_refs/mock_*.png.
-- Renders to judge: inbox/menu_pause.png, menu_save.png, menu_shop.png, menu_equipment.png (first pass: right
-  layout, flat look; polish briefs below).
+- Renders: inbox/menu_pause.png, menu_save.png, menu_shop.png, menu_equipment.png.
 - RUNNING via tools/build_pipeline.sh (agy; result in C:/dev/game-wt/<task>.result; worktree game-wt/<task>):
   workshop-menu (build), equipment-polish (build). Review: read the .result, the non-test diff, the renders; merge into
   claude/menus-rpg-5089fa; check.sh; remove the worktree and branch.
-- Queued briefs (docs/briefs/): holo-map and interact-focus (only after the
-  level-1 session merges gemini/level1-blockout-fix; ask it first: features/world/interact/ is its area).
+- Queued briefs: holo-map and interact-focus (only after the level-1 session merges gemini/level1-blockout-fix; ask it first: features/world/interact/ is its area).
 - Balance: start gear 82.7% wins; better gear combos 92-99% (above 65-90%): for the balance pass.
 - Builders now: tools/build_pipeline.sh <oc|agy> <task> <brief> <base> from C:/dev/game, run_in_background. It pastes
   the brief's named skill into the prompt. Gap to fix when no pipeline runs: PASS with zero commits is not a pass.
