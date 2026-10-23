@@ -24,8 +24,8 @@ missing prerequisites.
   migrate through SaveCodec one version at a time.
 - No node lookups by path: `@export` or `%UniqueName`. No gameplay numbers in code. Player text = localization keys.
 - Every rule and every fixed bug gets a test (tests/test_*.gd style; helpers in tests/ must not start with test_).
-- Where is X: grep docs/MAP.md. After adding files: `python tools/map.py`. After new class_names:
-  `bash tools/run_godot.sh --import`. One test file: `bash tools/run_godot.sh -s res://tests/runner.gd -- <name>`.
+- Where is X: grep docs/MAP.md. After adding files: `python tools/map.py`. After new class_names, and FIRST in a
+  fresh worktree (else "Could not find type"): `bash tools/run_godot.sh --import`. One test file: `bash tools/run_godot.sh -s res://tests/runner.gd -- <name>`.
 </code_rules>
 
 <scope>
