@@ -49,16 +49,19 @@
 - One session owns git in C:\dev\game; others message it for the window. `cd` into a worktree moves the session's
   directory -> `git -C <path>`.
 - Python on Windows writes CRLF -> `newline="\n"` (python is `python` here, not python3).
-- Builders die mid-edit (limits, crashes, agy's 1h30 print timeout) -> WIP commits after each step; review their
-  commits and run check.sh in the worktree yourself; commit their leftovers (2026-10-22/23).
 - Parallel worktrees shared user:// -> per-checkout test save dir (2026-10-22). `check.sh | tail && git commit`
   committed a failing run -> grep .check/*.log for FAIL first.
 - agy passes check.sh yet misses what a player sees -> GEMINI.md review_misses + tools/agy_review.sh (2026-10-22).
 - agy is not creative (owner): a described look (herbs, a sabil) came back as cones and gems -> creative briefs give
   geometry recipes with numbers, colours and the concept path; judge renders from the play camera (2026-10-23).
 - An approved design with no brief was never built (zayd-moves.md) -> brief it the same day (2026-10-23).
-- An agy run reported "done" with 14 failing tests after a timeout -> never trust its report; run check.sh (2026-10-23).
-- Backgrounded agy exited 2, empty log -> `< /dev/null` (build_pipeline.sh) (2026-10-23).
+- Builders said "done" with failing tests or died mid-edit -> tools/build_pipeline.sh (leftovers as WIP, check, one
+  free fix pass); PASS with no commits = nothing built; read fix-pass test diffs (one hardcoded a value) (2026-10-23).
+- Editing a running .sh broke the running copy (bash reads as it goes) -> never edit tools/*.sh mid-run (2026-10-23).
+- Builder stdin: agy exited 2, opencode hung 25 min -> `< /dev/null`. Inkling read outside its worktree and quit 3x
+  -> that brief went to agy (2026-10-23).
+- OpenRouter :free = 50 requests/day under $10 bought credit, shared by Inkling and all :free models (2026-10-23).
+- 4 opencode + 2 agy + Godot hit the 16 GB commit limit (fork failed) -> <= 3 runs; check free memory (2026-10-23).
 
 ## 5. Art, browser, night look (2026-10-21)
 - "3 FPS" was a --write-movie render -> real FPS only via fps_probe.gd.
