@@ -46,7 +46,7 @@ func cross_to(target_pos: Vector3) -> void:
 		_rooftop.teleport_party(target_pos)
 		_rooftop.freeze_actors(false)
 		return
-	var half_fade: float = (_rules.crossing_fade / 2.0) if _rules != null else 0.15
+	var half_fade: float = _rules.crossing_fade / 2.0
 	var tween := create_tween()
 	tween.tween_property(_fade_rect, "color:a", 1.0, half_fade)
 	tween.tween_callback(func() -> void: _rooftop.teleport_party(target_pos))

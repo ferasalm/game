@@ -61,8 +61,8 @@ static func _prop_boxes(area: AreaDef, rules: ExploreRulesDef, floor_y: float) -
 	return out
 
 
-static func _blocked(boxes: Array[Dictionary], point: Vector2, height: float = -999.0,
-		capsule_height: float = 1.6, tolerance: float = 0.1) -> bool:
+static func _blocked(boxes: Array[Dictionary], point: Vector2, height: float,
+		capsule_height: float, tolerance: float) -> bool:
 	for box: Dictionary in boxes:
 		if height > -900.0 and box.has("bottom"):
 			var b: float = box["bottom"] as float
