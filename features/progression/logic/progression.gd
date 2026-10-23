@@ -3,18 +3,14 @@ extends RefCounted
 ## Pure RPG progression rules: level calculation from XP thresholds, stat growth from class definitions,
 ## XP awards to party members, and encounter XP calculation. Never mutates input objects.
 
-static var default_levels: LevelsDef = null
-static var default_classes: Dictionary[StringName, ClassDef] = {}
-
 
 ## The level reached for a given XP amount, capped at the size of the threshold list (LevelsDef.xp_total).
-static func level(xp_amount: int, levels_def: LevelsDef = null) -> int:
-	var def: LevelsDef = levels_def if levels_def != null else default_levels
-	if def == null or def.xp_total.is_empty() or xp_amount <= 0:
+static func level(xp_amount: int, levels_def: LevelsDef) -> int:
+	if levels_def == null or levels_def.xp_total.is_empty() or xp_amount <= 0:
 		return 1
-	var cap: int = def.xp_total.size()
+	var cap: int = levels_def.xp_total.size()
 	for i: int in range(cap - 1, -1, -1):
-		if xp_amount >= def.xp_total[i]:
+		if xp_amount >= levels_def.xp_total[i]:
 			return mini(i + 1, cap)
 	return 1
 
@@ -38,25 +34,22 @@ static func grow(base: CombatantDef, class_def: ClassDef, hero_level: int) -> Co
 
 ## Awards XP to every hero in the party, updating the xp dictionary and returning an array of LevelUp.
 static func award(
-		xp_dict: Dictionary, party: Array, amount: int,
-		levels_def: LevelsDef = null, classes: Dictionary = {}) -> Array[LevelUp]:
-	var def: LevelsDef = levels_def if levels_def != null else default_levels
-	var class_map: Dictionary = classes if not classes.is_empty() else default_classes
+		xp_dict: Dictionary[StringName, int], party: Array[StringName], amount: int,
+		levels_def: LevelsDef, classes: Dictionary[StringName, ClassDef]) -> Array[LevelUp]:
 	var out: Array[LevelUp] = []
-	for hero: Variant in party:
-		var hero_id := StringName(str(hero))
+	for hero_id: StringName in party:
 		var old_xp: int = int(xp_dict.get(hero_id, 0))
-		var old_lv: int = level(old_xp, def)
+		var old_lv: int = level(old_xp, levels_def)
 		var new_xp: int = old_xp + amount
 		xp_dict[hero_id] = new_xp
-		var new_lv: int = level(new_xp, def)
+		var new_lv: int = level(new_xp, levels_def)
 		if new_lv > old_lv:
 			var lu := LevelUp.new()
 			lu.hero = hero_id
 			lu.from_level = old_lv
 			lu.to_level = new_lv
 			var diff: int = new_lv - old_lv
-			var c_def: ClassDef = class_map.get(hero_id) as ClassDef
+			var c_def: ClassDef = classes.get(hero_id) as ClassDef
 			if c_def != null:
 				for stat: StringName in c_def.growth:
 					lu.gains[stat] = c_def.growth[stat] * diff
@@ -65,7 +58,7 @@ static func award(
 
 
 ## Total XP an encounter yields: sum of its enemies' XP.
-static func encounter_xp(encounter: EncounterDef, combatants: Dictionary = {}) -> int:
+static func encounter_xp(encounter: EncounterDef, combatants: Dictionary[StringName, CombatantDef] = {}) -> int:
 	if encounter == null:
 		return 0
 	var total: int = 0
