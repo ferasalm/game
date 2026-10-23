@@ -7,6 +7,8 @@
 set -uo pipefail
 builder="$1"; name="$2"; brief="$(cd "$(dirname "$3")" && pwd)/$(basename "$3")"; base="$4"; model="${5:-}"
 here="$(cd "$(dirname "$0")" && pwd)"
+# A stale local branch (e.g. main) made the gate diff against old code (false BREACH 2026-10-23): prefer origin/<base>.
+git fetch -q origin 2> /dev/null; git rev-parse -q --verify "origin/$base" > /dev/null && base="origin/$base"
 root="$(git rev-parse --show-toplevel)"; wt="$(dirname "$root")/game-wt/$name"; res="$wt.result"
 prefix=oc; [ "$builder" = agy ] && prefix=gemini
 
