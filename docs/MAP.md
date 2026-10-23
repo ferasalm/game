@@ -40,7 +40,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/combat/juice.json`: content: battle_juice x1
 - `content/combat/rules.json`: content: battle_rules x1
 - `content/combat/statuses.json`: content: status x4
-- `content/combat/vfx.json`: content: vfx x15
+- `content/combat/vfx.json`: content: vfx x16
 - `content/combat/view.json`: content: battle_view x1
 - `content/dialogue/box.json`: content: dialogue_style x1
 - `content/dialogue/dialogues.json`: content: dialogue x16

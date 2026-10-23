@@ -8,7 +8,7 @@ const TARGETS: Array[StringName] = [&"foe", &"ally", &"self", &"all_foes", &"all
 ## The effect a later VFX phase draws; empty lets the view pick by melee / ranged.
 const VFX_KINDS: Array[StringName] = [
 	&"slash", &"heavy_slash", &"stab", &"piston", &"beam", &"bolt", &"arc_all", &"burst", &"heal", &"shield",
-	&"overclock", &"net", &"drone_shot", &"baton"]
+	&"overclock", &"net", &"drone_shot", &"baton", &"none"]
 
 var name_key: String = ""
 var desc_key: String = ""

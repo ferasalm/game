@@ -14,6 +14,7 @@ signal help_changed(text: String, warning: bool)
 signal items_requested
 
 const ITEMS_ID: StringName = &"items"  ## the action_id meta of the Items entry (it is not a move)
+const FLEE_ID: StringName = &"flee"  ## the action_id meta of the FLEE entry (it is not a move)
 
 var _sim: BattleSim
 var _view: BattleViewDef
@@ -25,6 +26,7 @@ var _list: VBoxContainer
 var _help: String = ""
 var _buttons: Array[Button] = []
 var _items_button: Button
+var _flee_button: Button
 
 
 func setup(sim: BattleSim, view: BattleViewDef) -> void:
@@ -67,7 +69,7 @@ func move_buttons() -> Array[Button]:
 	var out: Array[Button] = []
 	if _open and _move == null:
 		for button: Button in _buttons:
-			if button != _items_button:
+			if button != _items_button and button != _flee_button:
 				out.append(button)
 	return out
 
@@ -143,7 +145,7 @@ func _add_items_entry() -> void:
 	_items_button.disabled = not _sim.items.any_available()
 	_items_button.pressed.connect(items_requested.emit)
 	# The FLEE entry.
-	BattleFleeButton.add_to(self, _list, _buttons)
+	_flee_button = BattleFleeButton.add_to(self, _list, _buttons)
 
 
 func _pick_move(action: ActionDef) -> void:
@@ -188,11 +190,11 @@ func _focus(preferred_id: StringName, meta_key: String) -> void:
 	if first != null:
 		first.grab_focus()
 
-
 func _clear() -> void:
 	for button: Button in _buttons:
 		_list.remove_child(button)
 		button.queue_free()
 	_buttons.clear()
 	_items_button = null
+	_flee_button = null
 	_say("", false)

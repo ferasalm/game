@@ -2,7 +2,8 @@ class_name BattleFleeLogic
 extends RefCounted
 ## Flee resolution logic, extracted to keep battle_sim.gd under 200 lines.
 
-static func resolve_flee(sim: BattleSim, unit: UnitState, out: Array[TimelineEvent]) -> Array[TimelineEvent]:
+static func resolve_flee(sim: BattleSim, unit: UnitState) -> Array[TimelineEvent]:
+	var out: Array[TimelineEvent] = []
 	var party: Array[UnitState] = []
 	var foes: Array[UnitState] = []
 	for u: UnitState in sim.timeline.units:

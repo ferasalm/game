@@ -42,7 +42,7 @@ static func handle_event(sim: BattleSim, event: TimelineEvent, out: Array[Timeli
 	elif event.kind == &"act":
 		out.append(event)
 		if unit.acted != null and unit.acted.id == &"flee":
-			out.append_array(BattleFleeLogic.resolve_flee(sim, unit, out))
+			out.append_array(BattleFleeLogic.resolve_flee(sim, unit))
 		else:
 			out.append_array(sim._resolver.resolve(unit))
 		if BattleTargets.side_is_down(sim.timeline, 1):

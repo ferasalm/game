@@ -132,7 +132,7 @@ func choose(unit_id: StringName, action: ActionDef, target_id: StringName) -> St
 		return refusal
 	# Flee is refused when the encounter does not allow it.
 	if action != null and action.id == &"flee" and setup != null and not setup.can_flee:
-		return "Can't flee"
+		return "UI_CANT_FLEE"
 	var unit: UnitState = timeline.waiting_for
 	unit.sp -= action.sp_cost
 	action_rules.spend_use(unit_id, action)

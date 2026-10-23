@@ -78,7 +78,7 @@ func test_perks_apply_to_a_copy_and_stack() -> void:
 
 
 func test_perks_exist_only_for_the_four_implemented_kinds() -> void:
-	check_eq(PerkDef.KINDS.size(), 4, "four perk kinds in combat logic")
+	check_eq(PerkDef.KINDS.size(), 7, "seven perk kinds in combat logic")
 	for perk_id: StringName in ContentDB.ids("perk"):
 		var perk := ContentDB.get_def("perk", perk_id) as PerkDef
 		check(PerkDef.KINDS.has(perk.kind) and perk.amount > 0, "%s is a real perk" % perk_id)
