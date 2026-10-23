@@ -36,6 +36,7 @@ func _ready() -> void:
 	register(WORKSHOP_ID, func() -> Control: return WorkshopMenu.new())
 	register(TITLE_ID, func() -> Control: return UiScreen.new())
 	register(SLOT_PICKER_ID, func() -> Control: return SlotPickerScreen.new())
+	register(HoloMap.ID, func() -> Control: return HoloMap.new())
 	Router.flow_changed.connect(_on_flow_changed)
 
 

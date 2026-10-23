@@ -65,6 +65,9 @@ const KINDS: Dictionary = {
 	"recipe": preload("res://features/workshop/defs/recipe_def.gd"),
 	"light_lock": preload("res://features/puzzles/defs/light_lock_def.gd"),
 	"water_net": preload("res://features/puzzles/defs/water_net_def.gd"),
+	"map_marker": preload("res://features/map/defs/map_marker_def.gd"),
+	"city_district": preload("res://features/map/defs/city_district_def.gd"),
+	"map_info": preload("res://features/map/defs/map_info_def.gd"),
 	"room": preload("res://features/world/defs/room_def.gd"),
 	"puzzle_yard": preload("res://features/puzzles/defs/puzzle_yard_def.gd"),
 }
