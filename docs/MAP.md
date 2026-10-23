@@ -87,7 +87,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/world/areas.json`: content: area x2
 - `content/world/buildings.json`: content: building x15
 - `content/world/camera.json`: content: camera_rig x1
-- `content/world/city_map.json`: content: city_district x8
+- `content/world/city_map.json`: content: city_district x14
 - `content/world/explore.json`: content: explore_rules x1
 - `content/world/look.json`: content: look x5
 - `content/world/map_markers.json`: content: map_marker x3
@@ -397,15 +397,20 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/jambiyah/logic/workshop_stats.gd`: The comparison rows the equipment screen shows: base fighter against the fighter built by Jambiyah.equip
 - `features/jambiyah/tests/test_jambiyah.gd`: T3: every hilt + blade pairing gives a different Zayd stat sets, inside the timeline caps; each hilt adds exactly one move; the shared base definition is never changed
 - `features/jambiyah/tests/test_loadout.gd`: The loadout fallback: a hero wears the saved item per slot, else the start loadout
-- `features/map/defs/city_district_def.gd`: purpose: Defines a city district with polygon boundaries in metres
+- `features/map/defs/city_district_def.gd`: purpose: Defines a city map feature: district polygon, road line, ring/contours or area pin
 - `features/map/defs/map_info_def.gd`: purpose: Defines map metadata including coordinates and sector key
 - `features/map/defs/map_marker_def.gd`: purpose: Defines a map marker pointing to a place (kind npc, vendor, quest) and optional quest flag
 - `features/map/logic/map_plan.gd`: purpose: Pure logic for planning area walkable cells, aspect fitting, and marker positioning
 - `features/map/tests/test_holo_map.gd`: purpose: Tests for holographic map planning, marker filtering, city districts, and screen view
 - `features/map/view/holo_map.gd`: purpose: Holographic map screen with floor plan, markers, district radar, and city map toggle
-- `features/map/view/holo_map_canvas.gd`: purpose: 1200x800 holographic map canvas drawing area floor plan or full city map with scanlines
+- `features/map/view/holo_map_canvas.gd`: purpose: 1200x800 holographic map canvas: rooftop floor plan or full city map with cyan glow and scanlines
 - `features/map/view/holo_map_city_preview.gd`: purpose: Circular city map radar preview (300x300 at 1560,720) showing Sana'a district outlines
+- `features/map/view/holo_map_geo.gd`: purpose: Project city map features from world metres to screen space and compute the fitting bounds
+- `features/map/view/holo_map_label.gd`: purpose: One map label candidate with a rect that can be pushed away from others
+- `features/map/view/holo_map_labels.gd`: purpose: Resolve overlapping 2D map labels by iterative repulsion, keeping them inside bounds
 - `features/map/view/holo_map_legend.gd`: purpose: Legend panel (260x260 at 80,140) showing marker icons and labels
+- `features/map/view/holo_map_markers.gd`: purpose: Draw map marker icons (player, npc, vendor, quest) used by the area view
+- `features/map/view/holo_map_style.gd`: purpose: Shared holographic map drawing helpers: glow lines, dashed ring, hatched fills
 - `features/map/view/holo_scan.gdshader`
 - `features/progression/defs/class_def.gd`: A hero's RPG class: growth stats added per level above 1 and a passive perk (content/progression/classes.json)
 - `features/progression/defs/levels_def.gd`: Thresholds of total XP required to reach each level (content/progression/levels.json)

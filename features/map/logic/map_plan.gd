@@ -47,7 +47,7 @@ static func _find_runs(area: AreaDef) -> Dictionary:
 static func _find_crossings(area: AreaDef) -> Array[PackedVector2Array]:
 	var crossings: Array[PackedVector2Array] = []
 	for p: PlaceDef in area.places_of(&"crossing"):
-		crossings.append(PackedVector2Array([Vector2(p.pos.x, p.pos.z), Vector2(p.end.x, p.end.z)]))
+		crossings.append(PackedVector2Array([p.from_pos, p.to_pos]))
 	return crossings
 
 
@@ -92,23 +92,19 @@ static func fit(plan_data: Dictionary, target_rect: Rect2) -> Dictionary:
 
 
 ## Filters markers for the area, excluding quest markers whose flag is already set.
-static func markers(area: AreaDef, marker_defs: Array, flags: Dictionary) -> Array[Dictionary]:
+static func markers(area: AreaDef, marker_defs: Array[MapMarkerDef], flags: Dictionary) -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
-	for m: Variant in marker_defs:
+	for m: MapMarkerDef in marker_defs:
 		if m == null:
 			continue
-		var m_kind: StringName = StringName(m.kind if "kind" in m else (m as Dictionary).get("kind", ""))
-		var m_flag: StringName = StringName(m.flag if "flag" in m else (m as Dictionary).get("flag", ""))
-		var m_place: StringName = StringName(m.place if "place" in m else (m as Dictionary).get("place", ""))
-		var m_id: StringName = StringName(m.id if "id" in m else (m as Dictionary).get("id", ""))
-		if m_kind == &"quest" and not m_flag.is_empty():
-			if bool(flags.get(m_flag, false)):
+		if m.kind == &"quest" and not m.flag.is_empty():
+			if bool(flags.get(m.flag, false)):
 				continue
-		var p: PlaceDef = area.place(m_place)
+		var p: PlaceDef = area.place(m.place)
 		if p != null:
 			out.append({
-				"id": m_id,
-				"kind": m_kind,
+				"id": m.id,
+				"kind": m.kind,
 				"cell": p.cell,
 				"pos": Vector2(p.pos.x, p.pos.z),
 			})

@@ -8,6 +8,8 @@ var _c_brass: Color
 var _districts: Array[CityDistrictDef] = []
 var _center: Vector2 = Vector2(150.0, 150.0)
 var _radius: float = 120.0
+var _scale: float = 0.0
+var _offset: Vector2 = Vector2.ZERO
 
 
 func _init() -> void:
@@ -23,10 +25,22 @@ func _init() -> void:
 
 func _load_districts() -> void:
 	_districts.clear()
+	var min_pt := Vector2(INF, INF)
+	var max_pt := Vector2(-INF, -INF)
 	for d_id: StringName in ContentDB.ids("city_district"):
 		var def := ContentDB.get_def("city_district", d_id) as CityDistrictDef
-		if def != null:
+		if def != null and def.feature == &"district":
 			_districts.append(def)
+			for p: Vector2 in def.polygon:
+				min_pt = min_pt.min(p)
+				max_pt = max_pt.max(p)
+	var bounds: Rect2 = Rect2(Vector2.ZERO, Vector2.ONE)
+	if min_pt.x != INF:
+		bounds = Rect2(min_pt, max_pt - min_pt)
+	var avail: float = _radius * 1.7
+	_scale = avail / maxf(maxf(bounds.size.x, bounds.size.y), 1.0)
+	var fitted: Vector2 = bounds.size * _scale
+	_offset = _center - (bounds.position + fitted * 0.5)
 
 
 func _draw() -> void:
@@ -51,11 +65,10 @@ func _draw_radar_grid() -> void:
 
 
 func _draw_districts() -> void:
-	var scale_factor: float = _radius * 0.85 / 1000.0
 	for d: CityDistrictDef in _districts:
 		var pts := PackedVector2Array()
 		for pt: Vector2 in d.polygon:
-			pts.append(_center + pt * scale_factor)
+			pts.append(_offset + Vector2(pt.x, -pt.y) * _scale)
 		if pts.size() >= 3:
 			var fill_color := Color(_c_cyan.r, _c_cyan.g, _c_cyan.b, 0.12 if d.is_old_city else 0.04)
 			draw_colored_polygon(pts, fill_color)

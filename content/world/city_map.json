@@ -4,90 +4,155 @@
     {
       "id": "old_city",
       "name_key": "DISTRICT_OLD_CITY",
+      "feature": "district",
       "is_old_city": true,
       "polygon": [
-        [-150.0, -150.0],
-        [150.0, -150.0],
-        [150.0, 150.0],
-        [-150.0, 150.0]
+        [-650, 450],
+        [-150, 520],
+        [300, 480],
+        [650, 150],
+        [650, -150],
+        [300, -500],
+        [-250, -500],
+        [-650, -100]
       ]
     },
     {
       "id": "bab_al_yaman",
       "name_key": "DISTRICT_BAB_AL_YAMAN",
+      "feature": "district",
       "is_old_city": false,
       "polygon": [
-        [-120.0, 150.0],
-        [120.0, 150.0],
-        [160.0, 400.0],
-        [-160.0, 400.0]
+        [-300, -500],
+        [0, -500],
+        [200, -550],
+        [250, -750],
+        [0, -820],
+        [-250, -750]
       ]
     },
     {
       "id": "al_saila",
       "name_key": "DISTRICT_AL_SAILA",
+      "feature": "district",
       "is_old_city": false,
       "polygon": [
-        [-350.0, -250.0],
-        [-150.0, -150.0],
-        [-150.0, 250.0],
-        [-350.0, 300.0]
+        [-650, 1500],
+        [-200, 1500],
+        [-200, -1500],
+        [-650, -1500]
       ]
     },
     {
       "id": "zubairi",
       "name_key": "DISTRICT_ZUBAIRI",
+      "feature": "district",
       "is_old_city": false,
       "polygon": [
-        [-550.0, 100.0],
-        [-350.0, 100.0],
-        [-350.0, 450.0],
-        [-550.0, 450.0]
+        [-2700, -1400],
+        [1200, -1400],
+        [1200, -1900],
+        [-2700, -1900]
       ]
     },
     {
       "id": "haddah",
       "name_key": "DISTRICT_HADDAH",
+      "feature": "district",
       "is_old_city": false,
       "polygon": [
-        [-450.0, 450.0],
-        [150.0, 450.0],
-        [150.0, 800.0],
-        [-450.0, 800.0]
+        [-5000, -5000],
+        [-3000, -5000],
+        [-2500, -6500],
+        [-4500, -7000],
+        [-6000, -6000]
       ]
     },
     {
       "id": "bayt_baws",
       "name_key": "DISTRICT_BAYT_BAWS",
+      "feature": "district",
       "is_old_city": false,
       "polygon": [
-        [-350.0, 800.0],
-        [200.0, 800.0],
-        [150.0, 1150.0],
-        [-300.0, 1150.0]
+        [-2200, -7000],
+        [-1200, -7000],
+        [-1000, -8300],
+        [-2000, -8500],
+        [-2800, -7900]
       ]
     },
     {
       "id": "tahrir",
       "name_key": "DISTRICT_TAHRIR",
+      "feature": "district",
       "is_old_city": false,
       "polygon": [
-        [-550.0, -250.0],
-        [-350.0, -250.0],
-        [-350.0, 100.0],
-        [-550.0, 100.0]
+        [-1300, 100],
+        [-900, 150],
+        [-700, -200],
+        [-1000, -400],
+        [-1400, -250]
       ]
     },
     {
       "id": "al_hasaba",
       "name_key": "DISTRICT_AL_HASABA",
+      "feature": "district",
       "is_old_city": false,
       "polygon": [
-        [-250.0, -650.0],
-        [250.0, -650.0],
-        [150.0, -150.0],
-        [-150.0, -150.0]
+        [-700, 2500],
+        [-100, 2500],
+        [200, 3200],
+        [0, 3500],
+        [-500, 3500],
+        [-900, 3100]
       ]
+    },
+    {
+      "id": "al_saila_road",
+      "name_key": "DISTRICT_AL_SAILA",
+      "feature": "line",
+      "points": [
+        [-430, 1110],
+        [-430, -1440]
+      ]
+    },
+    {
+      "id": "zubairi_street",
+      "name_key": "DISTRICT_ZUBAIRI",
+      "feature": "line",
+      "points": [
+        [-2690, -1660],
+        [1080, -1660]
+      ]
+    },
+    {
+      "id": "ring_road",
+      "name_key": "RING_ROAD",
+      "feature": "ring",
+      "center": [0, 0],
+      "radius": 3500
+    },
+    {
+      "id": "jabal_nuqum",
+      "name_key": "JABAL_NUQUM",
+      "feature": "contours",
+      "center": [3230, 550],
+      "radii": [400, 700, 1000]
+    },
+    {
+      "id": "area_souq_rooftops_v4",
+      "name_key": "AREA_SOUQ_NAME",
+      "feature": "area_pin",
+      "area_id": "souq_rooftops_v4",
+      "center": [110, -110]
+    },
+    {
+      "id": "area_souq_rooftops",
+      "name_key": "AREA_SOUQ_NAME",
+      "feature": "area_pin",
+      "area_id": "souq_rooftops",
+      "center": [110, -110]
     }
   ]
 }

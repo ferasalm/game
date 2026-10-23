@@ -1,7 +1,6 @@
 extends TestCase
 ## purpose: Tests for holographic map planning, marker filtering, city districts, and screen view.
 
-
 func test_plan_3x2_area_walkable_cells_only() -> void:
 	var area := AreaDef.new()
 	area.id = &"test_area"
@@ -18,7 +17,6 @@ func test_plan_3x2_area_walkable_cells_only() -> void:
 	check(runs.has(Rect2i(0, 0, 1, 1)), "row 0 cell 0")
 	check(runs.has(Rect2i(2, 0, 1, 1)), "row 0 cell 2")
 	check(runs.has(Rect2i(0, 1, 2, 1)), "row 1 cells 0..1")
-
 
 func test_fit_keeps_aspect_inside_panel() -> void:
 	var plan := {
@@ -105,12 +103,85 @@ func test_y_toggles_city_and_area() -> void:
 
 func test_city_map_loads_eight_districts() -> void:
 	var ids: Array[StringName] = ContentDB.ids("city_district")
-	check_eq(ids.size(), 8, "city_map has 8 districts")
+	var district_count: int = 0
 	for d_id: StringName in ids:
 		var d := ContentDB.get_def("city_district", d_id) as CityDistrictDef
-		check(d != null, "district def exists: " + str(d_id))
-		if d != null:
+		if d != null and d.feature == &"district":
+			district_count += 1
 			check(d.polygon.size() >= 3, "%s has >= 3 points (%d)" % [d_id, d.polygon.size()])
+	check_eq(district_count, 8, "city_map has 8 district features")
+
+
+func test_projected_districts_keep_real_order() -> void:
+	var centers: Dictionary = _district_centers()
+
+	check(centers.has(&"al_hasaba") and centers.has(&"old_city"), "has north and centre")
+	check(centers[&"al_hasaba"].y < centers[&"old_city"].y, "al-Hasaba is north of Old City")
+	check(centers.has(&"haddah") and centers.has(&"bayt_baws"), "has south districts")
+	check(centers[&"haddah"].y > centers[&"old_city"].y, "Haddah is south of Old City")
+	check(centers[&"bayt_baws"].y > centers[&"old_city"].y, "Bayt Baws is south of Old City")
+	check(centers.has(&"tahrir"), "has Tahrir")
+	check(centers[&"tahrir"].x < centers[&"old_city"].x, "Tahrir is west of Old City")
+	check(centers.has(&"bab_al_yaman") and centers.has(&"old_city"), "has Bab al-Yaman")
+	check(centers[&"bab_al_yaman"].y > centers[&"old_city"].y, "Bab al-Yaman is south of Old City")
+
+
+func _district_centers() -> Dictionary:
+	var districts: Array[CityDistrictDef] = []
+	var all_features: Array[CityDistrictDef] = []
+	var pins: Array[CityDistrictDef] = []
+	for d_id: StringName in ContentDB.ids("city_district"):
+		var d := ContentDB.get_def("city_district", d_id) as CityDistrictDef
+		if d == null:
+			continue
+		if d.feature == &"district":
+			districts.append(d)
+		elif d.feature == &"area_pin":
+			pins.append(d)
+		else:
+			all_features.append(d)
+	var bounds: Rect2 = HoloMapGeo.city_bounds(districts, all_features, pins, Rect2(Vector2.ZERO, Vector2(1200.0, 800.0)))
+	var tr: Dictionary = HoloMapGeo.fit(bounds, Vector2(1200.0, 800.0), 40.0)
+	var scale: float = float(tr.get("scale", 0.0))
+	var offset: Vector2 = tr.get("offset", Vector2.ZERO) as Vector2
+	var out: Dictionary = {}
+	for d: CityDistrictDef in districts:
+		var c := Vector2.ZERO
+		for p: Vector2 in d.polygon:
+			c += HoloMapGeo.project(p, scale, offset)
+		out[d.id] = c / float(max(d.polygon.size(), 1))
+	return out
+
+
+func test_crossings_use_from_to_not_origin() -> void:
+	var area: AreaDef = ContentDB.get_def("area", &"souq_rooftops_v4") as AreaDef
+	check(area != null, "v4 area exists")
+	var plan: Dictionary = MapPlan.plan(area)
+	var crossings: Array[PackedVector2Array] = plan.get("crossings", [])
+	check(not crossings.is_empty(), "v4 has crossings")
+	for seg: PackedVector2Array in crossings:
+		check(seg.size() >= 2, "crossing has two ends")
+		if seg.size() >= 2:
+			check(seg[0] != Vector2.ZERO, "crossing start is not origin")
+			check(seg[1] != Vector2.ZERO, "crossing end is not origin")
+
+
+func test_label_resolver_removes_overlap() -> void:
+	var font: Font = Ui.theme().default_font
+	var a := HoloMapLabel.new()
+	a.text = "AAA"
+	a.anchor = Vector2(100.0, 100.0)
+	a.pos = a.anchor
+	a.size = font.get_string_size(a.text, 16)
+	var b := HoloMapLabel.new()
+	b.text = "BBB"
+	b.anchor = Vector2(105.0, 105.0)
+	b.pos = b.anchor
+	b.size = font.get_string_size(b.text, 16)
+	var resolved: Array[HoloMapLabel] = HoloMapLabels.resolve([a, b], Rect2(Vector2.ZERO, Vector2(1000.0, 1000.0)))
+	check_eq(resolved.size(), 2, "two labels returned")
+	if resolved.size() >= 2:
+		check(not resolved[0].rect.intersects(resolved[1].rect), "labels no longer overlap: %s vs %s" % [resolved[0].rect, resolved[1].rect])
 
 
 func test_player_marker_follows_moved_position() -> void:
