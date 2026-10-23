@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stdio MCP server: triage_trace (GLM-5.3 Flash) and generate_patch (Kimi K2.7 Code) on Cloudflare Workers AI."""
+"""Stdio MCP server: triage_trace (GLM-5.3 Flash) and generate_patch (DeepSeek V4.1 Flash) on Cloudflare Workers AI."""
 # Feras's two-tier debug workflow (2026-10-24): Claude passes repo paths, the server reads the files, so code and logs
 # never enter Claude's context. Needs CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN (Workers AI permission) in the
 # environment or the Windows user environment; Feras sets them, Claude never reads them. Standard library only.
@@ -19,7 +19,7 @@ API = "https://api.cloudflare.com/client/v4/accounts/{acct}/ai/v1/chat/completio
 MAX_FILE_CHARS = 60000
 MODELS = {
     "triage_trace": "@cf/zai-org/glm-5.3-flash",
-    "generate_patch": "@cf/moonshotai/kimi-k2.7-code",
+    "generate_patch": "@cf/deepseek-ai/deepseek-v4.1-flash-1017",
 }
 SYSTEM = {
     "triage_trace": (
@@ -48,7 +48,7 @@ TOOLS = [
     },
     {
         "name": "generate_patch",
-        "description": "Tier 2 (Kimi K2.7 Code): unified diff from a triage diagnosis. Pass repo paths in `files`.",
+        "description": "Tier 2 (DeepSeek V4.1 Flash): unified diff from a triage diagnosis. Pass repo paths in `files`.",
         "inputSchema": {"type": "object", "required": ["diagnosis", "files"], "properties": {
             "diagnosis": {"type": "string", "description": "The triage result to implement."},
             "files": {"type": "array", "items": {"type": "string"}, "description": "Repo-relative paths to patch."},

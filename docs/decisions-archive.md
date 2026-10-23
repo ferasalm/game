@@ -48,3 +48,5 @@
 - ~~2026-10-23 | Builders: agy, opencode :free, Cloudflare DeepSeek V4.1 Flash (Workers Paid, Feras subscribed; <= $10 usage over the free neurons); opencode may call the 8 skill subagents | Feras | Feras~~ superseded 2026-10-23: the 5-run builder line + EFFICIENCY 3b.6 (Cloudflare details)
 - 2026-10-19 | Claude Pro ($20/month): Sonnet builds, Opus designs and reviews, Haiku for mechanical work | Feras's plan; Pro limits | Feras/Claude (superseded 2026-10-23: builders build, Claude plans and reviews)
 - 2026-10-23 | Camera: when a wall blocks the view it rises toward an isometric view, never closes in on faces (test on the five roofs first) | Feras playtest | Feras (superseded 2026-10-23: wall camera rises toward isometric, audit line)
+- 2026-10-21 | A Game Designer (loaded as a skill) reviews combat.md and prototype.md before the prototype build starts | second opinion before code, cheaply | Feras (done: the prototype was built 2026-10-21; combat became action 2026-10-23)
+~~2026-10-24 | Cloudflare builds and generate_patch use DeepSeek V4.1 Flash, not Kimi; triage_trace stays GLM-5.3 Flash | Feras | Feras~~ (superseded 2026-10-24: skill routes line)
