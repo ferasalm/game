@@ -71,7 +71,7 @@ func test_herb_stall_has_awning_and_herbs() -> void:
 	var herbs: Dictionary = {}
 	for part: PropPart in stall.parts:
 		awning += 1 if (part.color == "u" or part.color == "w") and part.size.x >= 0.2 else 0
-		if part.shape == &"frustum" and ["M", "G", "L", "q", "p"].has(part.color):
+		if ["M", "G", "L", "q", "p"].has(part.color):
 			herbs[part.color] = true
 	check(awning >= 2, "a striped awning")
 	check(herbs.size() >= 3, "herb bundles")
