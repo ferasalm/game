@@ -3,7 +3,10 @@ You are in your own worktree on branch oc/puzzle-scene; it already holds your pu
 docs/briefs/puzzle-scene.md). Follow GEMINI.md and AGENTS.md. Load the godot-gameplay-scripter skill.
 
 ## Why
-Claude's render review of inbox/puzzle_*.png found these; fix exactly these, nothing else.
+Claude's render review of inbox/puzzle_*.png found these; fix exactly these, nothing else. Your last run built
+nothing: work only inside this worktree (never make another worktree or read outside it). A test FAIL with
+"ERROR: Parameter \"mem\" is null" means the PC ran out of memory, not your code: rerun check.sh once. Delete
+.check_run.log (git rm) and commit after each numbered item.
 
 ## What to build
 1. No water before the light lock is solved: the valve is shut until then. Water strips, gauge, dock sag, the
