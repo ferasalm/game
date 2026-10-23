@@ -54,12 +54,12 @@ func test_pause_screen_builds_and_resume_closes() -> void:
 	Router.state = Router.STATE_TITLE
 
 
-func test_equipment_host_opens_the_bench() -> void:
+func test_equipment_opens_the_menu() -> void:
 	Screens.open(&"equipment")
-	var host: EquipmentHost = Screens.top() as EquipmentHost
-	check(host != null and host.bench().is_open(), "the bench is open inside the host")
-	if host != null:
-		host.on_back()
-		check(not Screens.is_open(), "back closes the bench and the host")
+	var menu: EquipmentMenu = Screens.top() as EquipmentMenu
+	check(menu != null, "the equipment menu opens")
+	if menu != null:
+		menu.on_back()
+		check(not Screens.is_open(), "back closes the menu")
 	Screens.clear()
 	tree.paused = false

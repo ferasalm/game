@@ -40,6 +40,13 @@ func _ready() -> void:
 			_screen = ShopScreen.new()
 			_sub_vp.add_child(_screen)
 			_screen.open({"shop": &"herb_stall"})
+		"equipment":
+			GameState.start_new()
+			for item_id: StringName in [&"swift_hilt", &"keen_blade", &"arc_arm", &"concession_plate", &"mesh_abaya"]:
+				Inventory.add(GameState.inventory, item_id)
+			_screen = EquipmentMenu.new()
+			_sub_vp.add_child(_screen)
+			_screen.open()
 
 
 func _process(_delta: float) -> void:
