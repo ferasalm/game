@@ -1,0 +1,21 @@
+{
+  "kind": "map_marker",
+  "items": [
+    {
+      "id": "herb_seller",
+      "place": "herb_seller",
+      "kind": "npc"
+    },
+    {
+      "id": "shop_herbs",
+      "place": "shop_herbs",
+      "kind": "vendor"
+    },
+    {
+      "id": "quest_water",
+      "place": "sabil",
+      "kind": "quest",
+      "flag": "sabil_visited"
+    }
+  ]
+}

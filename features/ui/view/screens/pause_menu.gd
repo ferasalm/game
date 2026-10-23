@@ -31,7 +31,7 @@ func build(_args: Dictionary) -> void:
 	_cmd_panel.body.add_child(Ui.divider())
 
 	_entry_ids = PauseLogic.entries(Screens.has_screen(PauseLogic.ITEMS), Screens.has_screen(PauseLogic.EQUIPMENT),
-			Router.has_any_save())
+			Router.has_any_save(), Screens.has_screen(PauseLogic.MAP))
 	for i: int in _entry_ids.size():
 		var id: StringName = _entry_ids[i]
 		_buttons[id] = _add_entry(_cmd_panel, id, i + 1)
@@ -117,7 +117,7 @@ func _run(id: StringName) -> void:
 	match id:
 		PauseLogic.RESUME:
 			close()
-		PauseLogic.ITEMS, PauseLogic.EQUIPMENT:
+		PauseLogic.ITEMS, PauseLogic.EQUIPMENT, PauseLogic.MAP:
 			Screens.open(id)
 		PauseLogic.LOAD:
 			Screens.open(Screens.SLOT_PICKER_ID, {"mode": SlotPickerScreen.MODE_LOAD})

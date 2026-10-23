@@ -1,0 +1,93 @@
+{
+  "kind": "city_district",
+  "items": [
+    {
+      "id": "old_city",
+      "name_key": "DISTRICT_OLD_CITY",
+      "is_old_city": true,
+      "polygon": [
+        [-150.0, -150.0],
+        [150.0, -150.0],
+        [150.0, 150.0],
+        [-150.0, 150.0]
+      ]
+    },
+    {
+      "id": "bab_al_yaman",
+      "name_key": "DISTRICT_BAB_AL_YAMAN",
+      "is_old_city": false,
+      "polygon": [
+        [-120.0, 150.0],
+        [120.0, 150.0],
+        [160.0, 400.0],
+        [-160.0, 400.0]
+      ]
+    },
+    {
+      "id": "al_saila",
+      "name_key": "DISTRICT_AL_SAILA",
+      "is_old_city": false,
+      "polygon": [
+        [-350.0, -250.0],
+        [-150.0, -150.0],
+        [-150.0, 250.0],
+        [-350.0, 300.0]
+      ]
+    },
+    {
+      "id": "zubairi",
+      "name_key": "DISTRICT_ZUBAIRI",
+      "is_old_city": false,
+      "polygon": [
+        [-550.0, 100.0],
+        [-350.0, 100.0],
+        [-350.0, 450.0],
+        [-550.0, 450.0]
+      ]
+    },
+    {
+      "id": "haddah",
+      "name_key": "DISTRICT_HADDAH",
+      "is_old_city": false,
+      "polygon": [
+        [-450.0, 450.0],
+        [150.0, 450.0],
+        [150.0, 800.0],
+        [-450.0, 800.0]
+      ]
+    },
+    {
+      "id": "bayt_baws",
+      "name_key": "DISTRICT_BAYT_BAWS",
+      "is_old_city": false,
+      "polygon": [
+        [-350.0, 800.0],
+        [200.0, 800.0],
+        [150.0, 1150.0],
+        [-300.0, 1150.0]
+      ]
+    },
+    {
+      "id": "tahrir",
+      "name_key": "DISTRICT_TAHRIR",
+      "is_old_city": false,
+      "polygon": [
+        [-550.0, -250.0],
+        [-350.0, -250.0],
+        [-350.0, 100.0],
+        [-550.0, 100.0]
+      ]
+    },
+    {
+      "id": "al_hasaba",
+      "name_key": "DISTRICT_AL_HASABA",
+      "is_old_city": false,
+      "polygon": [
+        [-250.0, -650.0],
+        [250.0, -650.0],
+        [150.0, -150.0],
+        [-150.0, -150.0]
+      ]
+    }
+  ]
+}

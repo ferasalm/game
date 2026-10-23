@@ -6,6 +6,7 @@ extends RefCounted
 const RESUME: StringName = &"resume"
 const ITEMS: StringName = &"items"
 const EQUIPMENT: StringName = &"equipment"
+const MAP: StringName = &"map"
 const LOAD: StringName = &"load"
 const LOAD_LAST: StringName = &"load_last"
 const RESTART: StringName = &"restart"
@@ -18,6 +19,7 @@ const ENTRIES: Dictionary[StringName, Array] = {
 	RESUME: ["PAUSE_RESUME", ""],
 	ITEMS: ["PAUSE_ITEMS", ""],
 	EQUIPMENT: ["PAUSE_EQUIPMENT", ""],
+	MAP: ["PAUSE_MAP", ""],
 	LOAD: ["PAUSE_LOAD", "PAUSE_CONFIRM_LOAD"],
 	LOAD_LAST: ["PAUSE_LOAD_LAST", "PAUSE_CONFIRM_LOAD"],
 	RESTART: ["PAUSE_RESTART", "PAUSE_CONFIRM_RESTART"],
@@ -32,12 +34,14 @@ const GROUP: int = 3  ## digits per thousands group
 
 ## The entries to show, top to bottom. Items and Equipment need their screens registered; the fourth entry is
 ## "Load" when a save exists and "Restart" when none does.
-static func entries(has_items: bool, has_equipment: bool, has_save: bool) -> Array[StringName]:
+static func entries(has_items: bool, has_equipment: bool, has_save: bool, has_map: bool = false) -> Array[StringName]:
 	var out: Array[StringName] = [RESUME]
 	if has_items:
 		out.append(ITEMS)
 	if has_equipment:
 		out.append(EQUIPMENT)
+	if has_map:
+		out.append(MAP)
 	out.append(LOAD if has_save else RESTART)
 	out.append_array([UNSTUCK, TITLE, QUIT])
 	return out

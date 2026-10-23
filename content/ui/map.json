@@ -1,0 +1,10 @@
+{
+  "kind": "map_info",
+  "items": [
+    {
+      "id": "default",
+      "coordinates": "15 21'04\"N 44 12'32\"E",
+      "sector_key": "MAP_SECTOR_01"
+    }
+  ]
+}
