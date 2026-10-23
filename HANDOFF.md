@@ -20,7 +20,7 @@ Last updated: 2026-10-23, session 16 manager (Opus 5.5, `claude-opus-5-5`): per-
 ## Track: RPG + menus (owner: session local_c29a3aa9)
 - On main: rolls + flee, progression (XP, classes, armor, stones, save v5; no static state), Zayd's kit, menu skins +
   backdrops, equipment and workshop menus, balance-gear, holo map (area plan, markers, city view). 758 tests.
-- Holo map is flat 2D; the mockup (inbox/ui_refs/mock_map.png) is an isometric 3D table. Renders predate the five roofs.
+- Holo map is flat 2D; mock_map.png is an isometric 3D table. Renders predate the five roofs.
 - Waiting on the owner: judge the menu renders (inbox/menu_*.png) against your mockups; icon art (5 heads, 4 items).
 1. Polish briefs: workshop vs mock_workshop.png; holo map as an isometric table on the five roofs; equipment
    inventory/header overlap. Then interact-focus (brief ready). Model: Sonnet. Effort: medium.
