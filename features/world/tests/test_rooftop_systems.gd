@@ -63,6 +63,10 @@ func test_camera_follows_and_can_be_restored() -> void:
 	var look := ContentDB.get_def("look", &"night") as LookDef
 	var want: Vector3 = rooftop.camera_rig._follow_cam.camera_position() if rooftop.camera_rig._mode == &"follow" else rooftop.player.position + look.camera_offset
 	check(rooftop.camera.position.distance_to(want) < 0.05, "camera sits at the look offset from the player")
+	var aim: Vector3 = rooftop.player.position + Vector3(0.0, rooftop.camera_rig._follow_cam.aim_height, 0.0)
+	var dir: Vector3 = (aim - rooftop.camera.global_position).normalized()
+	var forward: Vector3 = -rooftop.camera.global_transform.basis.z
+	check(forward.dot(dir) > 0.99, "camera aims at focus + aim_height, not just camera_position()")
 	var other := Camera3D.new()
 	rooftop.add_child(other)
 	other.make_current()

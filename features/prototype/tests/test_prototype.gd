@@ -6,8 +6,9 @@ extends TestCase
 const DT: float = 1.0 / 60.0
 
 
-func _make() -> PrototypeMain:
+func _make(area_id: StringName = &"souq_rooftops") -> PrototypeMain:
 	GameState.reset()
+	GameState.area_id = area_id
 	var main := (load("res://features/prototype/prototype_main.tscn") as PackedScene).instantiate() as PrototypeMain
 	main.stage_created.connect(func(stage: BattleStage) -> void:
 		stage.auto_play = true

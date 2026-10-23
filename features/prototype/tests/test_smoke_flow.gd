@@ -62,9 +62,10 @@ func test_going_to_the_title_forgets_the_run() -> void:
 
 func test_the_main_scene_starts_a_fresh_game_from_an_empty_state() -> void:
 	var h := FlowHarness.new(tree)
-	var main: PrototypeMain = h.make_main()
+	var main: PrototypeMain = h.make_main(&"")
 	check_eq(Router.state, Router.STATE_TITLE, "a plain start shows the title")
 	check(GameState.money > 0 and GameState.party.size() == 2, "and starts the new-game purse and party")
+	check_eq(main.rooftop.area_id, &"souq_rooftops_v4", "default start is souq_rooftops_v4")
 	check_eq(GameState.area_id, main.rooftop.area_id, "the area id is recorded for the save")
 	main.free()
 	h.finish()

@@ -8,6 +8,7 @@
      "touch_radius": 0.9, "interact_radius": 1.4,
      "capsule_radius": 0.3, "keeper_gap": 0.15, "capsule_height": 1.6, "wall_height": 3.0,
      "prompt_height": 0.4, "prompt_pixel_size": 0.01, "prompt_font_size": 48,
+     "crossing_fade": 0.3, "walk_step": 0.1, "walk_tolerance": 0.1,
      "chest_open_angle": 100.0, "chest_open_time": 0.6}
   ]
 }

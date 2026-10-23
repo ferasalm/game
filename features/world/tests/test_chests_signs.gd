@@ -8,6 +8,7 @@ const DT: float = 1.0 / 60.0
 
 func _make() -> Rooftop:
 	var rooftop := (load("res://features/world/rooftop/rooftop.tscn") as PackedScene).instantiate() as Rooftop
+	rooftop.area_id = &"souq_rooftops"
 	tree.root.add_child(rooftop)
 	return rooftop
 

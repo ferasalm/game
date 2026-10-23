@@ -30,10 +30,15 @@ var _battles: int = 0
 
 
 func _ready() -> void:
+	var override_area: StringName = GameState.area_id
 	if GameState.party.is_empty():
 		GameState.start_new()
+	if override_area != &"":
+		GameState.area_id = override_area
 	PrototypeBattleFlow.grant_start_gear()
 	rooftop = ROOFTOP_SCENE.instantiate() as Rooftop
+	if GameState.area_id != &"":
+		rooftop.area_id = GameState.area_id
 	add_child(rooftop)
 	dialogue = DialogueBox.new()
 	add_child(dialogue)

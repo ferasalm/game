@@ -35,7 +35,7 @@ func build(_args: Dictionary) -> void:
 func _load_area() -> void:
 	var a_id: StringName = GameState.area_id
 	if a_id == &"":
-		a_id = &"souq_rooftops"
+		a_id = &"souq_rooftops_v4"
 	_area_def = ContentDB.get_def("area", a_id) as AreaDef
 
 

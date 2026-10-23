@@ -25,7 +25,9 @@ func _init(scene_tree: SceneTree) -> void:
 
 
 ## The main scene, with battles on auto_play and instant.
-func make_main() -> PrototypeMain:
+func make_main(area_id: StringName = &"souq_rooftops") -> PrototypeMain:
+	if area_id != &"":
+		GameState.area_id = area_id
 	var main := (load("res://features/prototype/prototype_main.tscn") as PackedScene).instantiate() as PrototypeMain
 	main.stage_created.connect(func(stage: BattleStage) -> void:
 		stage.auto_play = true

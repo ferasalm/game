@@ -17,7 +17,7 @@ static func build(area: AreaDef, rules: ExploreRulesDef) -> WalkGraph:
 			var tile := ContentDB.get_def("tile", area.tile_id_at(x, z)) as TileDef
 			var index: int = z * area.width() + x
 			heights[index] = tile.height if tile != null else 0.0
-			var free: bool = tile != null and not tile.solid and not _blocked(boxes, Vector2(x + 0.5, z + 0.5), tile.height)
+			var free: bool = tile != null and not tile.solid and not _blocked(boxes, Vector2(x + 0.5, z + 0.5), tile.height, rules.capsule_height, rules.walk_tolerance)
 			open[index] = 1 if free else 0
 	return WalkGraph.new(area.width(), area.depth(), open, heights)
 
@@ -31,7 +31,7 @@ static func floor_height(area: AreaDef) -> float:
 
 ## True when a floor point lies inside a prop's collide box grown by the capsule radius (a body there would overlap it).
 static func on_prop(area: AreaDef, rules: ExploreRulesDef, point: Vector3) -> bool:
-	return _blocked(_prop_boxes(area, rules, floor_height(area)), Vector2(point.x, point.z))
+	return _blocked(_prop_boxes(area, rules, floor_height(area)), Vector2(point.x, point.z), point.y, rules.capsule_height, rules.walk_tolerance)
 
 
 ## Floor-plane cell centres of the cells in `cells`, as points at floor_y.
@@ -61,12 +61,13 @@ static func _prop_boxes(area: AreaDef, rules: ExploreRulesDef, floor_y: float) -
 	return out
 
 
-static func _blocked(boxes: Array[Dictionary], point: Vector2, height: float = -999.0) -> bool:
+static func _blocked(boxes: Array[Dictionary], point: Vector2, height: float = -999.0,
+		capsule_height: float = 1.6, tolerance: float = 0.1) -> bool:
 	for box: Dictionary in boxes:
 		if height > -900.0 and box.has("bottom"):
 			var b: float = box["bottom"] as float
 			var t: float = box["top"] as float
-			if height < b - 0.1 or height > t + 0.1:
+			if b >= height + capsule_height - tolerance or t <= height + tolerance:
 				continue
 		var local: Vector2 = (point - (box["at"] as Vector2)).rotated(box["yaw"] as float)
 		var half: Vector2 = box["half"] as Vector2

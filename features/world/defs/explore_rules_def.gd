@@ -36,6 +36,9 @@ var wall_height: float = 3.0
 var prompt_height: float = 0.0
 var prompt_pixel_size: float = 0.01
 var prompt_font_size: int = 48
+var crossing_fade: float = 0.3
+var walk_step: float = 0.1
+var walk_tolerance: float = 0.1
 ## Chest lid: how far it swings (degrees) and how long it takes (seconds).
 var chest_open_angle: float = 100.0
 var chest_open_time: float = 0.6
@@ -71,5 +74,8 @@ func read(r: DefReader) -> void:
 	prompt_height = r.number("prompt_height", 0.0, 3.0)
 	prompt_pixel_size = r.number("prompt_pixel_size", 0.001, 0.1)
 	prompt_font_size = r.integer("prompt_font_size", 8, 200)
+	crossing_fade = r.number("crossing_fade", 0.05, 5.0, 0.3, false)
+	walk_step = r.number("walk_step", 0.01, 2.0, 0.1, false)
+	walk_tolerance = r.number("walk_tolerance", 0.01, 1.0, 0.1, false)
 	chest_open_angle = r.number("chest_open_angle", 10.0, 170.0, chest_open_angle, false)
 	chest_open_time = r.number("chest_open_time", 0.05, 5.0, chest_open_time, false)

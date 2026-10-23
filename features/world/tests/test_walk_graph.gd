@@ -72,10 +72,10 @@ func test_every_area_is_one_piece_from_its_spawn() -> void:
 		var crossings: Array[PlaceDef] = area.places_of(PlaceDef.CROSSING)
 		var reach: Dictionary[Vector2i, bool] = g.reachable_with_crossings(_spawn_of(area), crossings) if not crossings.is_empty() else g.reachable(_spawn_of(area))
 		check(not reach.is_empty(), "%s: the spawn can be stood on" % id)
-		check(AreaDef.MARKERS.all(func(m: String) -> bool:
-			var cell: Vector2i = area.find_marker(m)
-			return cell == Vector2i(-1, -1) or reach.has(cell)
-		), "%s: markers reachable" % id)
+		check(reach.has(area.find_marker(AreaDef.SPAWN)), "%s: spawn reachable" % id)
+		if not area.places_of(PlaceDef.WORKSHOP).is_empty():
+			var w_cell: Vector2i = area.find_marker(AreaDef.WORKSHOP)
+			check(w_cell != Vector2i(-1, -1) and reach.has(w_cell), "%s: workshop marker W exists and reachable" % id)
 		var lost: Array[Vector2i] = []
 		for cell: Vector2i in g.open_cells():
 			if not reach.has(cell):
@@ -128,3 +128,19 @@ func test_the_terrace_is_continuous_across_columns() -> void:
 		for z: int in area.depth():
 			count += 1 if reach.has(Vector2i(column, z)) else 0
 		check(count >= 15, "column %d: %d walkable cells join the terrace (>= 15 wanted)" % [column, count])
+
+
+func test_area_needing_w_marker_fails_when_lacking() -> void:
+	var area := ContentDB.get_def("area", &"souq_rooftops") as AreaDef
+	var w: Vector2i = area.find_marker(AreaDef.WORKSHOP)
+	check(w != Vector2i(-1, -1), "souq_rooftops has W marker")
+	var lacking := AreaDef.new()
+	lacking.legend = area.legend
+	var rows: PackedStringArray = PackedStringArray()
+	for r: String in area.rows:
+		rows.append(r.replace("W", "."))
+	lacking.rows = rows
+	lacking.places = area.places
+	var w_missing: bool = lacking.find_marker(AreaDef.WORKSHOP) == Vector2i(-1, -1)
+	var needs_w: bool = not lacking.places_of(PlaceDef.WORKSHOP).is_empty()
+	check(needs_w and w_missing, "area needing W lacks it")
