@@ -10,6 +10,7 @@ var _sp: ProgressBar = null
 var _tween: Tween = null
 var _initial: String = ""
 var _colour: Color = Color.WHITE
+var _exposed: bool = false
 
 
 ## `initial` is the text at the left ("Z", or a foe's letter / ""), `hp_max` and `sp_max` size the bars (sp_max 0: no SP bar).
@@ -35,12 +36,31 @@ func setup(id: StringName, view: BattleViewDef, initial: String, hp_max: int, sp
 
 ## The initial is drawn here, not in a Label: a Label is never shorter than its font's line and would hang below the strip.
 func _draw() -> void:
-	if _initial.is_empty():
-		return
-	var font: Font = Ui.theme().get_font(&"font", &"CaptionLabel")
-	var px: int = _view.letter_font + 4
-	var baseline: float = (size.y + font.get_ascent(px) - font.get_descent(px)) / 2.0
-	draw_string(font, Vector2(0.0, baseline), _initial, HORIZONTAL_ALIGNMENT_CENTER, _view.strip_initial, px, _colour)
+	if not _initial.is_empty():
+		var font: Font = Ui.theme().get_font(&"font", &"CaptionLabel")
+		var px: int = _view.letter_font + 4
+		var baseline: float = (size.y + font.get_ascent(px) - font.get_descent(px)) / 2.0
+		draw_string(font, Vector2(0.0, baseline), _initial, HORIZONTAL_ALIGNMENT_CENTER, _view.strip_initial, px, _colour)
+	if _exposed:
+		var isize: float = 6.0
+		var ix: float = size.x - isize - 1.0
+		var iy: float = (size.y - isize) / 2.0
+		var pts := PackedVector2Array([
+			Vector2(ix + isize * 0.5, iy),
+			Vector2(ix + isize, iy + isize),
+			Vector2(ix, iy + isize)
+		])
+		draw_colored_polygon(pts, Color(0.9, 0.2, 0.2, 0.95))
+
+
+func set_exposed(exposed: bool) -> void:
+	if _exposed != exposed:
+		_exposed = exposed
+		queue_redraw()
+
+
+func has_exposed_icon() -> bool:
+	return _exposed
 
 
 func set_values(hp: int, sp: int) -> void:
