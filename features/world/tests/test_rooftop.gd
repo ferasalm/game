@@ -34,7 +34,8 @@ func _walk(rooftop: Rooftop, action: String, frames: int) -> void:
 func test_builds_with_actors() -> void:
 	var rooftop: Rooftop = _make()
 	check(rooftop.player != null and rooftop.follower != null, "player and follower exist")
-	check(rooftop.patrol != null and rooftop.workshop != null, "patrol and workshop exist")
+	check(rooftop.patrol != null, "patrol exists")
+	check(rooftop.workshop == null, "souq_rooftops_v4 has no outdoor workshop spot")
 	var multimeshes: int = 0
 	var bodies: int = 0
 	for child: Node in rooftop.blocks.get_children():

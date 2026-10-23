@@ -30,13 +30,14 @@ static func build(parent: Node3D, area: AreaDef, rules: ExploreRulesDef, floor_y
 		out.patrols.append(patrol)
 		parent.add_child(patrol)
 	var workshop_place: PlaceDef = area.place(&"workshop")
-	out.workshop = WorkshopSpot.new(rules, out.player, workshop_place)
-	if workshop_place != null:
-		out.workshop.position = _at(area, workshop_place, floor_y)
-		out.workshop.rotation.y = deg_to_rad(workshop_place.yaw)
-	else:
-		out.workshop.position = marker_of(area, AreaDef.WORKSHOP, floor_y)
-	parent.add_child(out.workshop)
+	if workshop_place != null or area.find_marker(AreaDef.WORKSHOP) != Vector2i(-1, -1):
+		out.workshop = WorkshopSpot.new(rules, out.player, workshop_place)
+		if workshop_place != null:
+			out.workshop.position = _at(area, workshop_place, floor_y)
+			out.workshop.rotation.y = deg_to_rad(workshop_place.yaw)
+		else:
+			out.workshop.position = marker_of(area, AreaDef.WORKSHOP, floor_y)
+		parent.add_child(out.workshop)
 	out._add_places(parent, area, rules, floor_y)
 	out._add_crossings(parent, area, rules, floor_y)
 	return out
@@ -44,7 +45,9 @@ static func build(parent: Node3D, area: AreaDef, rules: ExploreRulesDef, floor_y
 
 ## Every actor that switches off during a battle or menu (all but the people standing about).
 func switchables() -> Array[Node]:
-	var out: Array[Node] = [player, follower, workshop]
+	var out: Array[Node] = [player, follower]
+	if workshop != null:
+		out.append(workshop)
 	out.append_array(patrols)
 	out.append_array(stalls)
 	out.append_array(talk_spots)
@@ -74,6 +77,8 @@ func _add_places(parent: Node3D, area: AreaDef, rules: ExploreRulesDef, floor_y:
 		door.position = _at(area, place, floor_y)
 		doors.append(door)
 		parent.add_child(door)
+		if parent is Rooftop:
+			door.entered.connect((parent as Rooftop).door_entered.emit)
 	for place: PlaceDef in area.places_of(PlaceDef.VALVE):
 		var valve := ValveSpot.new(rules, player, place, lift)
 		valve.position = _at(area, place, floor_y)
