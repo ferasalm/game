@@ -13,6 +13,9 @@ func _init() -> void:
 	position = Vector2(80.0, 240.0)
 	custom_minimum_size = Vector2(420.0, 620.0)
 	size = Vector2(420.0, 620.0)
+	var title_plate := Ui.title_plate(Ui.text("EQUIP_INVENTORY"), "")
+	body.add_child(title_plate)
+	body.add_child(Ui.divider())
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -37,19 +40,25 @@ func populate(hero: StringName, slot_name: StringName) -> void:
 	for r_id: StringName in ContentDB.ids("rarity"):
 		order[r_id] = UiRarity.order(r_id)
 	var options: Array[EquipDef] = EquipmentOptions.options(GameState.inventory, all_items, hero, slot_name, order)
-	var worn_id: StringName = GameState.equipment.get(Inventory.slot_key(hero, slot_name), &"")
-	if worn_id == &"":
+	var slot_key: StringName = Inventory.slot_key(hero, slot_name)
+	var worn_id: StringName = GameState.equipment.get(slot_key, &"")
+	if worn_id == &"" and not GameState.equipment.has(slot_key):
 		for l_id: StringName in ContentDB.ids("loadout"):
 			var l := ContentDB.get_def("loadout", l_id) as LoadoutDef
 			if l != null and l.hero == hero:
-				worn_id = Loadout.worn(GameState.equipment, l, slot_name)
+				if slot_name == &"hilt":
+					worn_id = l.hilt
+				elif slot_name == &"blade":
+					worn_id = l.blade
+				elif slot_name == &"prosthetic":
+					worn_id = l.prosthetic
 				break
 	for item: EquipDef in options:
 		var row := ListRow.new()
 		var is_worn: bool = (item.id == worn_id)
-		var icon_tex: Texture2D = null
-		if "icon" in item and not str(item.get("icon")).is_empty():
-			icon_tex = load(str(item.get("icon"))) as Texture2D
+		var icon_tex: Texture2D = ItemIcons.texture(item)
+		if icon_tex == null:
+			icon_tex = ItemIcons.disc(UiRarity.colour(item.rarity).darkened(0.2), 48)
 		row.setup(icon_tex, Ui.text(item.name_key), -1, UiRarity.colour(item.rarity), "E" if is_worn else "")
 		row.focus_entered.connect(item_focused.emit.bind(item))
 		row.pressed.connect(item_activated.emit.bind(item))

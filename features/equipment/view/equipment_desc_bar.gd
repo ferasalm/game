@@ -11,7 +11,7 @@ func _init() -> void:
 	position = Vector2(80.0, 900.0)
 	custom_minimum_size = Vector2(1760.0, 90.0)
 	size = Vector2(1760.0, 90.0)
-	theme_type_variation = &"InsetPanel"
+	add_theme_stylebox_override("panel", UiBoxes.panel(Ui.style(), &"panel"))
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 

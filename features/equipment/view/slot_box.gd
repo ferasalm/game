@@ -8,8 +8,11 @@ var part: StringName = &""
 var is_gemstones: bool = false
 var _label: Label
 var _icon: TextureRect
+var _name_label: Label
 var _sockets_row: HBoxContainer
 var _socket_panels: Array[PanelContainer] = []
+var _worn_item: EquipDef = null
+var _has_dim_ring: bool = false
 
 
 func _init() -> void:
@@ -45,10 +48,41 @@ func setup(part_name: StringName, display_label: String, gemstones: bool = false
 func set_item(item: EquipDef) -> void:
 	if is_gemstones or _icon == null:
 		return
-	if item != null and "icon" in item and not str(item.get("icon")).is_empty():
-		_icon.texture = load(str(item.get("icon"))) as Texture2D
+	_worn_item = item
+	if item != null:
+		_has_dim_ring = false
+		ItemIcons.apply(_icon, item, 96)
+		if _name_label != null:
+			_name_label.text = Ui.text(item.name_key)
+			_name_label.add_theme_color_override("font_color", UiRarity.colour(item.rarity))
 	else:
-		_icon.texture = null
+		_has_dim_ring = true
+		for c: Node in _icon.get_children():
+			c.queue_free()
+		_icon.texture = ItemIcons.dim_ring(96)
+		if _name_label != null:
+			_name_label.text = ""
+			_name_label.remove_theme_color_override("font_color")
+
+
+func item_name() -> String:
+	return _name_label.text if _name_label != null else ""
+
+
+func has_dim_ring() -> bool:
+	return _has_dim_ring
+
+
+func is_empty_slot() -> bool:
+	return _has_dim_ring
+
+
+func name_label() -> Label:
+	return _name_label
+
+
+func icon_texture() -> Texture2D:
+	return _icon.texture if _icon != null else null
 
 
 func set_sockets(stones_list: Array, open_count: int) -> void:
@@ -90,6 +124,15 @@ func _build_ui() -> void:
 
 	_build_sockets_row(column)
 
+	_name_label = Label.new()
+	_name_label.name = &"ItemName"
+	_name_label.theme_type_variation = &"SmallLabel"
+	_name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_name_label.position = Vector2(-20.0, 154.0)
+	_name_label.size = Vector2(190.0, 24.0)
+	_name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_name_label)
+
 
 func _build_sockets_row(parent: Control) -> void:
 	_sockets_row = HBoxContainer.new()
@@ -108,30 +151,7 @@ func _build_sockets_row(parent: Control) -> void:
 
 
 func _draw_socket_content(panel: PanelContainer, stone_id: StringName) -> void:
-	for c: Node in panel.get_children():
-		c.queue_free()
-	var style: UiStyleDef = Ui.style()
-	var s_box := StyleBoxFlat.new()
-	s_box.set_corner_radius_all(22)
-	if stone_id == &"":
-		s_box.draw_center = false
-		s_box.border_color = style.colour(&"c_muted")
-		s_box.set_border_width_all(2)
-		panel.add_theme_stylebox_override("panel", s_box)
-	else:
-		var stone_def := ContentDB.get_def("stone", stone_id) as StoneDef
-		var col: Color = UiRarity.colour(stone_def.rarity) if stone_def != null else style.colour(&"c_cyan")
-		s_box.bg_color = Color(col.r, col.g, col.b, 0.5)
-		s_box.border_color = col
-		s_box.set_border_width_all(2)
-		panel.add_theme_stylebox_override("panel", s_box)
-		if stone_def != null and "icon" in stone_def and not str(stone_def.get("icon")).is_empty():
-			var tex := TextureRect.new()
-			tex.texture = load(str(stone_def.get("icon"))) as Texture2D
-			tex.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-			tex.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-			tex.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			panel.add_child(tex)
+	SlotSocketDraw.draw(panel, stone_id)
 
 
 func _on_focus_entered() -> void:
@@ -147,7 +167,7 @@ func _on_pressed() -> void:
 func _draw() -> void:
 	var style: UiStyleDef = Ui.style()
 	var rect := Rect2(Vector2.ZERO, size)
-	var bg_col := Color(0.02, 0.04, 0.07, 0.8)
+	var bg_col: Color = style.colour(&"c_glass_menu")
 	draw_rect(rect, bg_col, true)
 	if has_focus():
 		draw_rect(rect, style.colour(&"c_brass"), false, 3.0)

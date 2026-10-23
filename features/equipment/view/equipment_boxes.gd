@@ -52,9 +52,15 @@ func refresh(hero: StringName) -> void:
 				var hilt_def := ContentDB.get_def("hilt", hilt_id) as HiltDef
 				box.set_sockets(sock_list, Stones.open_slots(hilt_def, GameState.flags))
 			else:
-				var worn_id: StringName = GameState.equipment.get(Inventory.slot_key(hero, slot_name), &"")
-				if worn_id == &"" and loadout != null:
-					worn_id = Loadout.worn(GameState.equipment, loadout, slot_name)
+				var slot_key: StringName = Inventory.slot_key(hero, slot_name)
+				var worn_id: StringName = GameState.equipment.get(slot_key, &"")
+				if worn_id == &"" and not GameState.equipment.has(slot_key) and loadout != null:
+					if slot_name == &"hilt":
+						worn_id = loadout.hilt
+					elif slot_name == &"blade":
+						worn_id = loadout.blade
+					elif slot_name == &"prosthetic":
+						worn_id = loadout.prosthetic
 				var item: EquipDef = ContentDB.get_def("item", worn_id) as EquipDef
 				box.set_item(item)
 

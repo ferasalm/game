@@ -11,6 +11,8 @@ class StagedState extends RefCounted:
 var _loader: BattleLoader
 var _rules: BattleRulesDef
 var _grid: GridContainer
+var _now_hdr: Label
+var _after_hdr: Label
 var _now_labels: Dictionary[String, Label] = {}
 var _after_labels: Dictionary[String, Label] = {}
 var _last_now: CombatantDef = null
@@ -54,19 +56,46 @@ func last_now() -> CombatantDef:
 	return _last_now
 
 
+func header_now() -> Label:
+	return _now_hdr
+
+
+func header_after() -> Label:
+	return _after_hdr
+
+
 func _build_ui() -> void:
 	for child: Node in get_children():
 		child.queue_free()
 	var style: UiStyleDef = Ui.style()
-	theme_type_variation = &"InsetPanel"
+	add_theme_stylebox_override("panel", UiBoxes.panel(style, &"panel"))
 
 	var vbox := VBoxContainer.new()
 	vbox.add_theme_constant_override("separation", style.size(&"s_pad"))
 	add_child(vbox)
 
-	var title := Ui.label(Ui.text("EQUIP_STATS_TITLE"), &"TitleLabel", style.colour(&"c_brass"))
-	vbox.add_child(title)
+	var title_plate := Ui.title_plate(Ui.text("EQUIP_STATS_TITLE"), "")
+	vbox.add_child(title_plate)
 	vbox.add_child(Ui.divider())
+
+	var header_row := HBoxContainer.new()
+	header_row.name = "StatsHeader"
+	header_row.add_theme_constant_override("separation", 14)
+	var spacer := Control.new()
+	spacer.custom_minimum_size.x = 90.0
+	header_row.add_child(spacer)
+	_now_hdr = Ui.label(Ui.text("EQUIP_HEADER_NOW"), &"CaptionLabel", style.colour(&"c_muted"))
+	_now_hdr.custom_minimum_size.x = 60.0
+	_now_hdr.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	header_row.add_child(_now_hdr)
+	var arrow_sp := Control.new()
+	arrow_sp.custom_minimum_size.x = 24.0
+	header_row.add_child(arrow_sp)
+	_after_hdr = Ui.label(Ui.text("EQUIP_HEADER_AFTER"), &"CaptionLabel", style.colour(&"c_muted"))
+	_after_hdr.custom_minimum_size.x = 80.0
+	_after_hdr.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	header_row.add_child(_after_hdr)
+	vbox.add_child(header_row)
 
 	_grid = GridContainer.new()
 	_grid.columns = 4
@@ -138,10 +167,16 @@ func _set_row(stat_key: String, now_val: float, after_val: float, fmt: String, s
 		return
 	_now_labels[stat_key].text = fmt % now_val
 	var after_lbl: Label = _after_labels[stat_key]
-	after_lbl.text = fmt % after_val
-	if after_val > now_val:
+	var is_wt: bool = (stat_key == "WT")
+	var better: bool = (after_val < now_val) if is_wt else (after_val > now_val)
+	var worse: bool = (after_val > now_val) if is_wt else (after_val < now_val)
+	var arrow: String = ""
+	if better:
+		arrow = " ▲"
 		after_lbl.add_theme_color_override("font_color", style.colour(&"c_good"))
-	elif after_val < now_val:
+	elif worse:
+		arrow = " ▼"
 		after_lbl.add_theme_color_override("font_color", style.colour(&"c_bad"))
 	else:
 		after_lbl.remove_theme_color_override("font_color")
+	after_lbl.text = (fmt % after_val) + arrow

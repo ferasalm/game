@@ -145,12 +145,18 @@ func _on_item_pressed(item: EquipDef) -> void:
 
 
 func _update_desc_from_worn() -> void:
-	var worn_id: StringName = GameState.equipment.get(Inventory.slot_key(hero, active_slot), &"")
-	if worn_id == &"":
+	var slot_key: StringName = Inventory.slot_key(hero, active_slot)
+	var worn_id: StringName = GameState.equipment.get(slot_key, &"")
+	if worn_id == &"" and not GameState.equipment.has(slot_key):
 		for l_id: StringName in ContentDB.ids("loadout"):
 			var l := ContentDB.get_def("loadout", l_id) as LoadoutDef
 			if l != null and l.hero == hero:
-				worn_id = Loadout.worn(GameState.equipment, l, active_slot)
+				if active_slot == &"hilt":
+					worn_id = l.hilt
+				elif active_slot == &"blade":
+					worn_id = l.blade
+				elif active_slot == &"prosthetic":
+					worn_id = l.prosthetic
 				break
 	var item: EquipDef = ContentDB.get_def("item", worn_id) as EquipDef
 	desc.set_item(item)
