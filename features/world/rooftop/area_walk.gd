@@ -17,7 +17,7 @@ static func build(area: AreaDef, rules: ExploreRulesDef) -> WalkGraph:
 			var tile := ContentDB.get_def("tile", area.tile_id_at(x, z)) as TileDef
 			var index: int = z * area.width() + x
 			heights[index] = tile.height if tile != null else 0.0
-			var free: bool = tile != null and not tile.solid and not _blocked(boxes, Vector2(x + 0.5, z + 0.5))
+			var free: bool = tile != null and not tile.solid and not _blocked(boxes, Vector2(x + 0.5, z + 0.5), tile.height)
 			open[index] = 1 if free else 0
 	return WalkGraph.new(area.width(), area.depth(), open, heights)
 
@@ -55,15 +55,19 @@ static func _prop_boxes(area: AreaDef, rules: ExploreRulesDef, floor_y: float) -
 		if def == null or def.collide == Vector3.ZERO:
 			continue
 		var bottom: float = p.pos.y if p.has_y else floor_y
-		if bottom >= floor_y + rules.capsule_height or bottom + def.collide.y <= floor_y:
-			continue
 		out.append({"at": Vector2(p.pos.x, p.pos.z), "yaw": deg_to_rad(p.yaw),
-			"half": Vector2(def.collide.x, def.collide.z) / 2.0 + Vector2.ONE * rules.capsule_radius})
+			"half": Vector2(def.collide.x, def.collide.z) / 2.0 + Vector2.ONE * rules.capsule_radius,
+			"bottom": bottom, "top": bottom + def.collide.y})
 	return out
 
 
-static func _blocked(boxes: Array[Dictionary], point: Vector2) -> bool:
+static func _blocked(boxes: Array[Dictionary], point: Vector2, height: float = -999.0) -> bool:
 	for box: Dictionary in boxes:
+		if height > -900.0 and box.has("bottom"):
+			var b: float = box["bottom"] as float
+			var t: float = box["top"] as float
+			if height < b - 0.1 or height > t + 0.1:
+				continue
 		var local: Vector2 = (point - (box["at"] as Vector2)).rotated(box["yaw"] as float)
 		var half: Vector2 = box["half"] as Vector2
 		if absf(local.x) < half.x and absf(local.y) < half.y:

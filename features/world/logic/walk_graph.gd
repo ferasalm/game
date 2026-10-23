@@ -58,6 +58,59 @@ func reachable(start: Vector2i, mask: PackedByteArray = PackedByteArray()) -> Di
 	return seen
 
 
+## Connected open-cell components where floor height step between neighbours <= max_step.
+func regions(max_step: float = 0.1) -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	var visited: Dictionary[Vector2i, bool] = {}
+	for cell: Vector2i in open_cells():
+		if visited.has(cell):
+			continue
+		var reg: Dictionary[Vector2i, bool] = {}
+		var queue: Array[Vector2i] = [cell]
+		visited[cell] = true
+		reg[cell] = true
+		while not queue.is_empty():
+			var cur: Vector2i = queue.pop_back()
+			for step: Vector2i in AROUND:
+				var next: Vector2i = cur + step
+				if visited.has(next) or not _can_step(_open, cur, step):
+					continue
+				if absf(height_at(cur) - height_at(next)) > max_step:
+					continue
+				visited[next] = true
+				reg[next] = true
+				queue.append(next)
+		out.append(reg)
+	return out
+
+
+## Reachable cells starting from `start` across flat steps and crossing edges.
+func reachable_with_crossings(start: Vector2i, crossings: Array[PlaceDef],
+		max_step: float = 0.1) -> Dictionary[Vector2i, bool]:
+	var seen: Dictionary[Vector2i, bool] = {}
+	if not is_open(start):
+		return seen
+	var queue: Array[Vector2i] = [start]
+	seen[start] = true
+	while not queue.is_empty():
+		var cur: Vector2i = queue.pop_back()
+		for step: Vector2i in AROUND:
+			var next: Vector2i = cur + step
+			if not seen.has(next) and _can_step(_open, cur, step) and absf(height_at(cur) - height_at(next)) <= max_step:
+				seen[next] = true
+				queue.append(next)
+		for x: PlaceDef in crossings:
+			var fc: Vector2i = x.from_cell()
+			var tc: Vector2i = x.to_cell()
+			if cur == fc and not seen.has(tc) and is_open(tc):
+				seen[tc] = true
+				queue.append(tc)
+			if not x.one_way and cur == tc and not seen.has(fc) and is_open(fc):
+				seen[fc] = true
+				queue.append(fc)
+	return seen
+
+
 ## One byte per cell: 1 for the open cells that belong to a free 2 x 2 block of open cells.
 func wide_mask() -> PackedByteArray:
 	var out := PackedByteArray()

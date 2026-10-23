@@ -629,6 +629,409 @@
           "energy": 2.4
         }
       ]
+    },
+    {
+      "id": "souq_rooftops_v4",
+      "name_key": "WORLD_ROOFTOP_NAME",
+      "mist": [
+        "saila_fog",
+        "saila_floor",
+        "wisps"
+      ],
+      "vista": [
+        28,
+        1,
+        36,
+        8
+      ],
+      "light_budget": 8,
+      "light_fade": 3.0,
+      "rows": [
+        "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+        "TTTTTTTTTTTTTTTTTTTTTTTTTTTT#########T",
+        "TTTTTTTTTTTTTTTTTTTTTTTTTTTT#3333333#T",
+        "T%%%%%%%%%%%%TTTTTTTTTTTTTTT#3333333#T",
+        "T%5555555555%TTTTTTTTTTTTTTT#3333333#T",
+        "T%5555555555%TTTTTTTTTTTTTTT33333333#T",
+        "T%5555555555%TTTTTTTTTTTTTTT#3333333#T",
+        "T%5555555555%TTTTTTTTTTTTTTT#3333333#T",
+        "T%5555555555%TTTTTTTTTTTTTTT####3####T",
+        "T%5555555555%TTTTTTTTTTTTTTTTTTTTTTTTT",
+        "T%5555555555%TTTTTTTTTTTTTTTTTTTTTTTTT",
+        "T%5555555555%TTTTTTTTTTTTTTTTTTTTTTTTT",
+        "T%%%%%%5%%%%%TTTTTTTTTTTTTTTTTTTTTTTTT",
+        "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+        "TT$$$$$4$$$$$TTTTTTTTTTTTT@@@@@@2@@@@@",
+        "TT$4444444444TTTTTTTTTTTTT@2222222222@",
+        "TT$444444444$TTTTTTTTTTTTT@2222222222@",
+        "TT$444444444$TTTTTTTTTTTTT@2222222222@",
+        "TT$444444444$TTTTTTTTTTTTT@2222222222@",
+        "TT$444444444$TTTTTTTTTTTTT@2222222222@",
+        "TT$444444444$TTTTTTTTTTTTT@2222222222@",
+        "TT$4444444444TTTTTTTTTTTTT@2222222222@",
+        "TT$$$$$$$$$$$TTTTTTTTTTTTT@2222222222@",
+        "TTTTTTTTTTTTTTTTTTTTTTTTTT@@2@@@@@@@@@",
+        "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+        "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+        "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+        "TTTTTTTTTTTTTTTTTTTTTTT!!!!!1!!TTTTTTT",
+        "TTTTTTTTTTTTTTTTTTTTTTT!111111!TTTTTTT",
+        "TTTTTTTTTTTTTTTTTTTTTTT1111111!TTTTTTT",
+        "TTTTTTTTTTTTTTTTTTTTTTT!1S1111!TTTTTTT",
+        "TTTTTTTTTTTTTTTTTTTTTTT!111111!TTTTTTT",
+        "TTTTTTTTTTTTTTTTTTTTTTT!111111!TTTTTTT",
+        "TTTTTTTTTTTTTTTTTTTTTTT!!!!!!!!TTTTTTT",
+        "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+        "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT"
+      ],
+      "legend": {
+        "1": "roof_r1",
+        "2": "roof_r2",
+        "3": "roof_r3",
+        "4": "roof_r4",
+        "5": "roof_r5",
+        "!": "parapet_r1",
+        "@": "parapet_r2",
+        "#": "parapet_r3",
+        "$": "parapet_r4",
+        "%": "parapet_r5",
+        "T": "footprint",
+        "S": "roof_r1"
+      },
+      "canyon": {
+        "x0": 13.0,
+        "x1": 24.0,
+        "z0": 0.0,
+        "z1": 36.0,
+        "bottom_y": -18.0,
+        "top_y": -0.8,
+        "channel_width": 0.8,
+        "channel_color": "#5ad0ff",
+        "channel_glow": 1.2
+      },
+      "buildings": [
+        {
+          "ref": "tower_r1",
+          "x": 26.5,
+          "y": -18.8,
+          "z": 30.5,
+          "yaw": 0
+        },
+        {
+          "ref": "tower_r2",
+          "x": 31.5,
+          "y": -18.0,
+          "z": 18.5,
+          "yaw": 0
+        },
+        {
+          "ref": "tower_r3",
+          "x": 32.0,
+          "y": -22.4,
+          "z": 4.5,
+          "yaw": 0
+        },
+        {
+          "ref": "tower_r4",
+          "x": 7.0,
+          "y": -18.2,
+          "z": 18.0,
+          "yaw": 0
+        },
+        {
+          "ref": "tower_r5",
+          "x": 6.5,
+          "y": -18.2,
+          "z": 7.5,
+          "yaw": 0
+        }
+      ],
+      "props": [
+        {
+          "ref": "water_tower",
+          "x": 10.5,
+          "y": -3.2,
+          "z": 4.5,
+          "yaw": 0
+        },
+        {
+          "ref": "herb_stall",
+          "x": 27.5,
+          "y": 0.0,
+          "z": 18.0,
+          "yaw": 270
+        },
+        {
+          "ref": "sabil",
+          "x": 35.5,
+          "y": 0.0,
+          "z": 18.0,
+          "yaw": 180
+        }
+      ],
+      "places": [
+        {
+          "kind": "spawn",
+          "id": "spawn_start",
+          "x": 25.5,
+          "z": 30.5,
+          "yaw": 0
+        },
+        {
+          "kind": "safe",
+          "id": "safe_r1",
+          "x": 25.5,
+          "z": 31.5
+        },
+        {
+          "kind": "safe",
+          "id": "safe_r2",
+          "x": 31.5,
+          "z": 20.5
+        },
+        {
+          "kind": "safe",
+          "id": "safe_r3",
+          "x": 32.5,
+          "z": 6.5
+        },
+        {
+          "kind": "safe",
+          "id": "safe_r4",
+          "x": 4.5,
+          "z": 16.5
+        },
+        {
+          "kind": "safe",
+          "id": "safe_r5",
+          "x": 3.5,
+          "z": 8.5
+        },
+        {
+          "kind": "shop",
+          "id": "shop_herbs",
+          "shop": "herb_stall",
+          "prop": "herb_stall",
+          "x": 29.0,
+          "z": 18.0,
+          "yaw": 270
+        },
+        {
+          "kind": "npc",
+          "id": "herb_seller",
+          "sprite": "abu_nabil",
+          "prop": "herb_stall",
+          "x": 27.5,
+          "z": 16.0
+        },
+        {
+          "kind": "save",
+          "id": "sabil",
+          "prop": "sabil",
+          "x": 33.5,
+          "z": 18.0,
+          "yaw": 180
+        },
+        {
+          "kind": "door",
+          "id": "door_tayramana",
+          "target": "tayramana",
+          "prompt": "WORLD_PROMPT_ENTER",
+          "x": 30.5,
+          "z": 4.5,
+          "yaw": 0
+        },
+        {
+          "kind": "patrol",
+          "id": "patrol_a",
+          "encounter": "patrol_pair",
+          "x": 5.5,
+          "z": 18.5,
+          "bx": 9.5,
+          "bz": 18.5
+        },
+        {
+          "kind": "patrol",
+          "id": "patrol_drone",
+          "encounter": "patrol_drone",
+          "x": 3.5,
+          "z": 11.5,
+          "bx": 4.5,
+          "bz": 11.5
+        },
+        {
+          "kind": "patrol",
+          "id": "patrol_c",
+          "encounter": "rooftop_patrol",
+          "x": 4.5,
+          "z": 6.5,
+          "bx": 9.5,
+          "bz": 6.5
+        },
+        {
+          "kind": "valve",
+          "id": "valve_water",
+          "prompt": "WORLD_PROMPT_TURN",
+          "x": 8.5,
+          "z": 4.5
+        },
+        {
+          "kind": "crossing",
+          "id": "x1",
+          "crossing_kind": "board",
+          "from": [
+            28.5,
+            27.5
+          ],
+          "to": [
+            28.5,
+            23.5
+          ],
+          "one_way": false
+        },
+        {
+          "kind": "crossing",
+          "id": "x2",
+          "crossing_kind": "bridge",
+          "from": [
+            32.5,
+            14.5
+          ],
+          "to": [
+            32.5,
+            8.5
+          ],
+          "one_way": false
+        },
+        {
+          "kind": "crossing",
+          "id": "x3",
+          "crossing_kind": "zipline",
+          "from": [
+            28.5,
+            5.5
+          ],
+          "to": [
+            12.5,
+            15.5
+          ],
+          "one_way": true
+        },
+        {
+          "kind": "crossing",
+          "id": "x4",
+          "crossing_kind": "leap",
+          "from": [
+            7.5,
+            14.5
+          ],
+          "to": [
+            7.5,
+            12.5
+          ],
+          "one_way": false
+        },
+        {
+          "kind": "crossing",
+          "id": "x5",
+          "crossing_kind": "cable",
+          "from": [
+            12.5,
+            21.5
+          ],
+          "to": [
+            23.5,
+            29.5
+          ],
+          "one_way": false
+        },
+        {
+          "kind": "camera_zone",
+          "id": "zone_x1",
+          "rect": [
+            26.0,
+            22.0,
+            31.0,
+            29.0
+          ],
+          "yaw": 90.0,
+          "pitch": 15.0,
+          "distance": 7.0,
+          "fov": 50.0
+        },
+        {
+          "kind": "camera_zone",
+          "id": "zone_x2",
+          "rect": [
+            30.0,
+            7.0,
+            35.0,
+            16.0
+          ],
+          "yaw": 90.0,
+          "pitch": 15.0,
+          "distance": 8.0,
+          "fov": 50.0
+        },
+        {
+          "kind": "camera_zone",
+          "id": "zone_x3",
+          "rect": [
+            11.0,
+            4.0,
+            30.0,
+            17.0
+          ],
+          "yaw": 0.0,
+          "pitch": 12.0,
+          "distance": 14.0,
+          "fov": 55.0
+        },
+        {
+          "kind": "camera_zone",
+          "id": "zone_x4",
+          "rect": [
+            5.0,
+            11.0,
+            10.0,
+            16.0
+          ],
+          "yaw": 90.0,
+          "pitch": 15.0,
+          "distance": 6.0,
+          "fov": 50.0,
+          "roll": 6.0
+        },
+        {
+          "kind": "camera_zone",
+          "id": "zone_x5",
+          "rect": [
+            11.0,
+            19.0,
+            25.0,
+            31.0
+          ],
+          "yaw": 0.0,
+          "pitch": 14.0,
+          "distance": 10.0,
+          "fov": 50.0
+        },
+        {
+          "kind": "camera_zone",
+          "id": "zone_r5",
+          "rect": [
+            0.0,
+            1.0,
+            14.0,
+            13.0
+          ],
+          "yaw": 0.0,
+          "pitch": 20.0,
+          "distance": 8.0,
+          "fov": 50.0,
+          "roll": 6.0
+        }
+      ]
     }
   ]
 }

@@ -15,7 +15,7 @@ const RIG_ID: StringName = &"explore"
 ## A frame length long enough that the camera's smoothing finishes in one update (a jump cut).
 const SNAP_SECONDS: float = 100.0
 
-@export var area_id: StringName = &"souq_rooftops"
+@export var area_id: StringName = &"souq_rooftops_v4"
 @export var look_id: StringName = &"painted_b"
 
 var player: Player
