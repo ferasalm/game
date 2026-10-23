@@ -23,7 +23,14 @@ leftovers() {  # builders die mid-edit: keep their work as a WIP commit
 }
 
 echo "RUNNING $(date +%H:%M) build" > "$res"
-[ -n "${SKIP_BUILD:-}" ] || run "$brief"  # SKIP_BUILD=1: the build already ran; start at the check
+# The skill the brief names (".agents/skills/<name>") goes into the prompt itself: builders skipped optional skills.
+prompt="$(dirname "$wt")/$name.prompt.md"; cp "$brief" "$prompt"
+skill="$(grep -o -m1 -E '(godot|game|level|narrative|technical|blender)-[a-z-]+ skill' "$brief" | sed 's/ skill$//')"
+if [ -n "$skill" ] && [ -f "$here/../.agents/skills/$skill/SKILL.md" ]; then
+  { echo; echo "## Skill: $skill (reference; GEMINI.md and this brief win where they differ: typed GDScript, no C#)"
+    sed '1,/^---$/{/^---$/!d}; /^---$/d' "$here/../.agents/skills/$skill/SKILL.md"; } >> "$prompt"
+fi
+[ -n "${SKIP_BUILD:-}" ] || run "$prompt"  # SKIP_BUILD=1: the build already ran; start at the check
 leftovers "build"; cp "$wt.log" "$wt.build.log" 2> /dev/null
 if check; then status=PASS; else
   echo "RUNNING $(date +%H:%M) fix pass" > "$res"
