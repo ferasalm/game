@@ -582,6 +582,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/audio/arc_synth.py`: Synthesizes the Arc Discharge sound (vfx_arc_all): 3 seeded variations as 44.1 kHz mono 16-bit WAV.
 - `tools/audio/levels.py`: Loudness table for the sound effects: reads the audio of a Godot movie capture (.avi, PCM) made by
 - `tools/audio/measure_levels.gd`: Plays every sfx file of content/audio/sounds.json one after another at 0 dB for the movie writer's audio capture; prints "SLOT <path> <start seconds> <seconds>" lines for tools/audio/levels.py
+- `tools/build_pipeline.sh`: Free builder pipeline (DECISIONS 2026-10-23): builder run -> check.sh -> one free fix pass fed the FAIL lines ->
 - `tools/check.sh`: One command for every check (docs, lint, Godot import, tests). One ok/FAIL line per step; logs in .check/.
 - `tools/doc_check.py`: Keeps the always-loaded notes small and well-formed (docs/EFFICIENCY.md); exit 1 on any failure.
 - `tools/export_atlases.gd`: Exports the code-painted world atlases (PaintedAtlases) to PNG for the offline painterly bake

@@ -58,6 +58,7 @@
   geometry recipes with numbers, colours and the concept path; judge renders from the play camera (2026-10-23).
 - An approved design with no brief was never built (zayd-moves.md) -> brief it the same day (2026-10-23).
 - An agy run reported "done" with 14 failing tests after a timeout -> never trust its report; run check.sh (2026-10-23).
+- Backgrounded agy exited 2, empty log -> `< /dev/null` (build_pipeline.sh) (2026-10-23).
 
 ## 5. Art, browser, night look (2026-10-21)
 - "3 FPS" was a --write-movie render -> real FPS only via fps_probe.gd.
