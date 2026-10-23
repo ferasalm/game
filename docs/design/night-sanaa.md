@@ -19,8 +19,9 @@ features/world/logic/, builders in features/world/view/. Demo: `skyline_demo.tsc
 - Great Mosque minarets: (4, -58) 36 m and (28, -70) 30 m, north. Bab al-Yaman gate: (18, 95) south, at the end of
   al-Saila, towers 20 m. Jabal Nuqum ridge: (300, -140) running north-south, east. Haddah megacity: (-230, 240)
   south-west, 14 slim towers up to 220 m with cyan/magenta neon. Bayt Baws: (40, 260) far south, crag with 12 houses.
-- Camera facts: the exploration camera (look v1, pitch 35 deg, FOV 30) sees only ground inside ~19 m of the camera,
-  so it shows the nearest rooftops only; the landmarks need a low or wide camera (the sky builder's vista camera).
+- Camera facts: close follow outdoors, automatic, a three-quarter side angle of ~32 deg; when a wall blocks the
+  view it rises toward isometric (DECISIONS 2026-10-23). The camera (FOV 30) sees only ground inside ~19 m, so it
+  shows the nearest rooftops only; the landmarks need a low or wide camera (the sky builder's vista camera).
   Looking north: both minarets, street canyon; east: ridge; south: Bab al-Yaman, village; south-west: megacity.
 
 ## Textures and tiles
@@ -43,8 +44,8 @@ features/world/logic/, builders in features/world/view/. Demo: `skyline_demo.tsc
   solid tile "footprint"; "street" is hidden too, so the sunken street shows below. Props: content/world/props.json, parts =
   box/frustum + palette letter (glow, blink, pattern, group), optional `light`, `collide`, `chest`.
 - Lights: every light with `pool` gets a fake additive pool (one MultiMesh); only the nearest few get an OmniLight3D (no shadows).
-- Signs: Label3D in Reem Kufi, text from localization/world.csv (Arabic and English on one line, Arabic runs read right to left),
-  fitted to the board, HDR so they bloom; `flicker` dips one like a failing tube.
+- Signs: Label3D in Noto Sans Old South Arabian, text from localization/world.csv (Musnad only, Musnad runs read
+  right to left), fitted to the board, HDR so they bloom; `flicker` dips one like a failing tube.
 - Chests: props with `chest: true` (ids chest_saila, chest_mafraj); `Rooftop.chest_opened(chest_id)` fires once per chest.
 - Fog: mist defs take `rect`, `stack`/`step` (sheets forming a volume in the canyon) and `hole` (wisps never over the roof).
 - Frame tool: `rooftop_shot.tscn -- <x> <z> [cam x y z, target x y z, fov]`. FPS on the Latitude: ~100 (probe).
