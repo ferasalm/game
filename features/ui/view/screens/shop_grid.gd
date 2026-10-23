@@ -20,14 +20,14 @@ func setup_grid() -> ShopGrid:
 	custom_minimum_size = Vector2(720, 560)
 
 	var tabs_box := HBoxContainer.new()
+	tabs_box.add_theme_constant_override("separation", style.size(&"s_pad"))
 	for tab_id: StringName in [ShopScreen.BUY, ShopScreen.SELL]:
 		var btn := Button.new()
-		btn.theme_type_variation = &"TabButton"
 		btn.toggle_mode = true
 		btn.text = Ui.text("SHOP_TAB_BUY" if tab_id == ShopScreen.BUY else "SHOP_TAB_SELL")
+		btn.custom_minimum_size = Vector2(140, style.size(&"s_button_h"))
+		UiBoxes.apply_pill_button(btn, style)
 		btn.pressed.connect(_on_tab_pressed.bind(tab_id))
-		btn.focus_entered.connect(UiSweep.start.bind(btn))
-		btn.focus_exited.connect(UiSweep.clear.bind(btn))
 		tabs_box.add_child(btn)
 		_tabs[tab_id] = btn
 	body.add_child(tabs_box)
@@ -41,8 +41,18 @@ func setup_grid() -> ShopGrid:
 
 
 func open_tab(tab: StringName, shop: ShopDef) -> void:
+	var style: UiStyleDef = Ui.style()
 	for key: StringName in _tabs:
-		_tabs[key].button_pressed = key == tab
+		var btn: Button = _tabs[key]
+		var is_active: bool = key == tab
+		btn.button_pressed = is_active
+		if is_active:
+			btn.add_theme_color_override("font_color", style.colour(&"c_cyan"))
+			btn.add_theme_stylebox_override("normal", UiBoxes.pill_button(style, &"focus"))
+		else:
+			btn.add_theme_color_override("font_color", style.colour(&"c_text"))
+			btn.add_theme_stylebox_override("normal", UiBoxes.pill_button(style, &"normal"))
+
 	for old: Node in _grid.get_children():
 		old.queue_free()
 	_rows.clear()

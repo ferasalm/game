@@ -25,8 +25,6 @@ func _init() -> void:
 	icon_box.add_theme_stylebox_override("panel", UiBoxes.panel(style, &"inset"))
 	_icon = TextureRect.new()
 	_icon.custom_minimum_size = Vector2(160, 160)
-	_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	icon_box.add_child(_icon)
 	box.add_child(icon_box)
 
@@ -71,6 +69,7 @@ func show_item(def: ConsumableDef, _price: int, _qty: int, _money: int, _owned: 
 	_name.add_theme_color_override("font_color", rarity_col)
 	_desc.text = Ui.text(def.desc_key)
 	_effect.text = ItemsText.effect(def)
+	ItemIcons.apply(_icon, def, 160)
 	_build_comparisons(def)
 
 
@@ -105,9 +104,9 @@ func _build_comparisons(def: ConsumableDef) -> void:
 		row.add_child(Ui.label(hero_name, &"NameLabel"))
 		var stats_str: String = ""
 		if hp_gain > 0:
-			stats_str += "  HP: %d -> %d (+%d)" % [cur_hp, clampi(cur_hp + hp_gain, 0, top.x), hp_gain]
+			stats_str += "  " + ItemsText.comparison("HP", cur_hp, clampi(cur_hp + hp_gain, 0, top.x), hp_gain)
 		if sp_gain > 0:
-			stats_str += "  SP: %d -> %d (+%d)" % [cur_sp, clampi(cur_sp + sp_gain, 0, top.y), sp_gain]
+			stats_str += "  " + ItemsText.comparison("SP", cur_sp, clampi(cur_sp + sp_gain, 0, top.y), sp_gain)
 		if stats_str.is_empty():
 			stats_str = "  --"
 		var lbl: Label = Ui.label(stats_str, &"SmallLabel", Ui.style().colour(&"c_good" if hp_gain > 0 or sp_gain > 0 else &"c_muted"))

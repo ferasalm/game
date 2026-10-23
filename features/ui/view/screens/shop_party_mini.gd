@@ -1,6 +1,6 @@
 class_name ShopPartyMini
 extends PanelContainer
-## Party mini cards panel at (1440,600) 400x300: compact HP and SP bars for each hero.
+## Party mini cards panel at (1440,600) 400x300: compact HP and SP bars for each hero with painted portraits.
 
 var _box: VBoxContainer
 
@@ -39,7 +39,7 @@ func refresh() -> void:
 		row.add_theme_constant_override("separation", Ui.style().size(&"s_pad"))
 		card.add_child(row)
 
-		var face: Control = CharacterIcons.face(hero, Ui.style().colour(&"c_party"))
+		var face: Control = PortraitFaces.face(hero, Ui.style().colour(&"c_party"))
 		face.custom_minimum_size = Vector2(56, 56)
 		row.add_child(face)
 
@@ -61,9 +61,9 @@ func _mini_bar(tag_key: String, bar_kind: StringName, current: int, maximum: int
 	bar.show_percentage = false
 	bar.max_value = maximum
 	bar.value = current
-	bar.custom_minimum_size = Vector2(180, 10)
+	bar.custom_minimum_size = Vector2(180, 14)
 	bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	line.add_child(bar)
-	line.add_child(Ui.label("%d/%d" % [current, maximum], &"SmallLabel"))
+	line.add_child(Ui.label("%d/%d" % [current, maximum], &"NumberLabel"))
 	return line

@@ -7,8 +7,9 @@ var _face: TextureRect
 var _face_box: PanelContainer
 var _name_label: Label
 var _class_label: Label
-var _lv_node: Control
+var _lv_node: Label
 var _xp_bar: ProgressBar
+var _xp_text: Label
 var _hp_bar: ProgressBar
 var _sp_bar: ProgressBar
 var _hp_text: Label
@@ -38,7 +39,8 @@ func _build_face(parent: Control, style: UiStyleDef, hero: StringName) -> void:
 	_face_box.custom_minimum_size = Vector2(160, 160)
 	_face_box.add_theme_stylebox_override("panel", UiBoxes.medallion(style, style.colour(&"c_brass")))
 	_face = TextureRect.new()
-	_face.texture = CharacterIcons.texture(hero)
+	var tex: Texture2D = PortraitFaces.texture(hero)
+	_face.texture = tex if tex != null else CharacterIcons.disc(style.colour(&"c_party").darkened(0.45))
 	_face.custom_minimum_size = Vector2(160, 160)
 	_face.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_face.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
@@ -50,28 +52,61 @@ func _build_middle(parent: Control, style: UiStyleDef, def: CombatantDef, hero: 
 	var middle := VBoxContainer.new()
 	middle.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	middle.alignment = BoxContainer.ALIGNMENT_CENTER
+	middle.add_theme_constant_override("separation", 2)
 	parent.add_child(middle)
 
 	var name_str: String = Ui.text(def.name_key) if def != null else String(hero)
 	_name_label = Ui.label(name_str, &"TitleLabel", style.colour(&"c_brass"))
 	middle.add_child(_name_label)
 
-	var prog_space := VBoxContainer.new()
-	prog_space.custom_minimum_size = Vector2(360, 40)
 	_class_label = Ui.label("", &"SmallLabel", style.colour(&"c_epithet"))
 	_class_label.name = "ClassLabel"
-	_class_label.visible = false  # TODO(rpg-progression)
-	prog_space.add_child(_class_label)
+	middle.add_child(_class_label)
+
+	var xp_row := HBoxContainer.new()
+	xp_row.add_theme_constant_override("separation", style.size(&"s_pad"))
 	_lv_node = Ui.label("", &"NumberLabel")
 	_lv_node.name = "LvNode"
-	_lv_node.visible = false  # TODO(rpg-progression)
-	prog_space.add_child(_lv_node)
+	xp_row.add_child(_lv_node)
+
+	var xp_tag := Ui.label("XP", &"CaptionLabel", style.colour(&"c_cyan"))
+	xp_row.add_child(xp_tag)
+
 	_xp_bar = ProgressBar.new()
 	_xp_bar.name = "XpBar"
 	_xp_bar.custom_minimum_size = Vector2(360, 10)
-	_xp_bar.visible = false  # TODO(rpg-progression)
-	prog_space.add_child(_xp_bar)
-	middle.add_child(prog_space)
+	_xp_bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	_xp_bar.show_percentage = false
+	_xp_bar.add_theme_stylebox_override("background", UiBoxes.bar_back(style))
+	_xp_bar.add_theme_stylebox_override("fill", UiBoxes.bar_fill(style, &"c_cyan", &"c_cyan"))
+	xp_row.add_child(_xp_bar)
+
+	_xp_text = Ui.label("", &"NumberLabel", style.colour(&"c_muted"))
+	xp_row.add_child(_xp_text)
+	middle.add_child(xp_row)
+
+	_refresh_progression(hero)
+
+
+func _refresh_progression(hero: StringName) -> void:
+	var cdef: ClassDef = null
+	for class_id: StringName in ContentDB.ids("class"):
+		var c := ContentDB.get_def("class", class_id) as ClassDef
+		if c != null and c.hero == hero:
+			cdef = c
+			break
+	var class_name_str: String = Ui.text(cdef.name_key) if cdef != null else ""
+	_class_label.text = "(%s)" % class_name_str if not class_name_str.is_empty() else ""
+
+	var xp_amount: int = int(GameState.xp.get(hero, 0))
+	var lv: int = Progression.level(xp_amount)
+	_lv_node.text = "Lv %d" % lv
+
+	var levels_def := ContentDB.get_def("levels", &"default") as LevelsDef
+	var next_xp: int = levels_def.xp_total[lv] if (levels_def != null and lv < levels_def.xp_total.size()) else xp_amount
+	_xp_bar.max_value = next_xp
+	_xp_bar.value = xp_amount
+	_xp_text.text = "%d/%d" % [xp_amount, next_xp]
 
 
 func _build_stats(parent: Control, style: UiStyleDef, def: CombatantDef, hero: StringName) -> void:
@@ -102,6 +137,7 @@ func update(hp: int, sp: int) -> void:
 	var dead: bool = hp <= 0
 	_ko_label.visible = dead
 	modulate = Ui.style().colour(&"c_disabled") if dead else Color.WHITE
+	_refresh_progression(hero_id)
 
 
 func is_ko() -> bool:
@@ -114,6 +150,10 @@ func ko_label() -> Label:
 
 func lv_node() -> Control:
 	return _lv_node
+
+
+func class_label() -> Label:
+	return _class_label
 
 
 func xp_bar() -> ProgressBar:

@@ -32,8 +32,21 @@ func build(args: Dictionary) -> void:
 		push_warning("ShopScreen: unknown shop %s" % args.get("shop"))
 		close()
 		return
-	_build_title_bar()
-	_build_panels()
+	var title_nodes: Dictionary = ShopLayout.build_title_bar(self)
+	_title_bar = title_nodes["title_bar"]
+	_money_counter = title_nodes["money_counter"]
+
+	var panel_nodes: Dictionary = ShopLayout.build_panels(self)
+	_grid_panel = panel_nodes["grid"]
+	_grid_panel.tab_switched.connect(switch_tab)
+	_grid_panel.item_selected.connect(select)
+	_grid_panel.item_traded.connect(func() -> void: trade())
+
+	_keeper_box = panel_nodes["keeper"]
+	_detail = panel_nodes["detail"]
+	_summary = panel_nodes["summary"]
+	_party_mini = panel_nodes["party"]
+
 	_keeper_box.setup_portrait(&"abu_nabil")
 	_keeper_box.set_text(Ui.text(ShopService.greeting(_shop, args.get("after_battle", false))))
 	_open_tab(BUY)
@@ -134,44 +147,6 @@ func _input(event: InputEvent) -> void:
 	if step != 0 and cell != null and cell.has_focus():
 		set_quantity(_qty + step)
 		get_viewport().set_input_as_handled()
-
-
-func _build_title_bar() -> void:
-	var title_text: String = Ui.text("SHOP_TITLE_HERB_STALL")
-	_title_bar = Ui.panel(title_text, Ui.text("SHOP_HERB_STALL_MUSNAD"))
-	_title_bar.position = Vector2(80, 40)
-	_title_bar.size = Vector2(1760, 80)
-	_title_bar.custom_minimum_size = Vector2(1760, 80)
-	add_child(_title_bar)
-
-	_money_counter = Ui.money_counter()
-	_money_counter.position = Vector2(1600, 56)
-	_money_counter.set_amount(GameState.money, false)
-	add_child(_money_counter)
-
-
-func _build_panels() -> void:
-	_grid_panel = ShopGrid.new().setup_grid()
-	_grid_panel.tab_switched.connect(switch_tab)
-	_grid_panel.item_selected.connect(select)
-	_grid_panel.item_traded.connect(func() -> void: trade())
-	add_child(_grid_panel)
-
-	_keeper_box = ShopKeeperBox.new()
-	_keeper_box.position = Vector2(80, 720)
-	add_child(_keeper_box)
-
-	_detail = ShopDetail.new()
-	_detail.position = Vector2(840, 140)
-	add_child(_detail)
-
-	_summary = ShopSummary.new()
-	_summary.position = Vector2(1440, 140)
-	add_child(_summary)
-
-	_party_mini = ShopPartyMini.new()
-	_party_mini.position = Vector2(1440, 600)
-	add_child(_party_mini)
 
 
 func _open_tab(tab: StringName) -> void:
