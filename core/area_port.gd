@@ -43,3 +43,8 @@ func teleport_party(_position: Vector3) -> void:
 ## Puts the party at a save point (a PlaceDef id); an unknown or empty id means the area's start.
 func place_party(_save_point: StringName) -> void:
 	pass
+
+
+## Lifts any actor freeze a crossing or talk left behind (the "unstuck" button).
+func unfreeze() -> void:
+	pass

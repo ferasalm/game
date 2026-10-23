@@ -47,11 +47,17 @@ func cross_to(target_pos: Vector3) -> void:
 		_rooftop.freeze_actors(false)
 		return
 	var half_fade: float = _rules.crossing_fade / 2.0
-	var tween := create_tween()
+	var tween := fade_owner().create_tween()
 	tween.tween_property(_fade_rect, "color:a", 1.0, half_fade)
 	tween.tween_callback(func() -> void: _rooftop.teleport_party(target_pos))
 	tween.tween_property(_fade_rect, "color:a", 0.0, half_fade)
 	tween.tween_callback(func() -> void: _rooftop.freeze_actors(false))
+
+
+## The node the fade tween runs on: the rooftop, which keeps processing while freeze_actors stops this spot
+## (a tween bound to this spot never ran and left the party frozen, 2026-10-24).
+func fade_owner() -> Node:
+	return _rooftop
 
 
 func set_active(on: bool) -> void:

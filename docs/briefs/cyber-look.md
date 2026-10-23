@@ -1,0 +1,49 @@
+# Brief: cyber-look (<= 60 lines; after render-clean merges)
+You are in your own worktree on branch gemini/cyber-look (made from origin/main). Follow GEMINI.md, including
+<review_misses>. Load the technical-artist skill. agy is not creative: follow the numbers below exactly.
+
+## Why
+Feras's playtest (inbox/playtest_04.png, inbox/playtest_05.png): "why are red bricks dominant? where is the cyberpunk aesthetic... neon lights and cyberpunk
+colours?" and "why is there a wall?" (a neighbour tower's bare facade fills the view right behind the R4/R5
+parapets at roof height). Target: his concept art, saved by him as C:/dev/game/inbox/concept_cyber_sanaa.png (tower-
+houses with magenta and cyan neon crowns, cables, storm, megacity glow) and inbox/concept_neon_street.png.
+Decisions: painted route B, Musnad-only signs, 60 FPS on the Iris Xe laptop (docs/DECISIONS.md).
+
+## Read first
+docs/MAP.md greps: facade_painter, facade_spec, masonry, building_def, sign_spec, skyline_def, paint_def, storm.
+content/world/buildings or areas.json (souq_rooftops_v4 blocks), content/world/skyline.json, storm.json, palette.
+
+## What to build (all numbers in content)
+1. Facade palette: brick becomes dark umber-brown (#5A3B2E base, #3E2A22 mortar), less saturated; gypsum friezes and
+   window frames stay white (#E8E2D6); basalt floors #2B2B30. Red no longer dominates any play-camera frame.
+2. Neon crowns: every tower-house roof edge in the area and the near skyline gets an emissive strip 0.08 m tall at the
+   parapet top: magenta #FF2BD6 (60%) or cyan #23E6F0 (40%), energy 3.0, picked by a seeded hash; a soft OmniLight
+   (range 4 m, energy 0.6, same colour) on 1 in 3 roofs only (budget).
+3. Cables: 3-6 sagging black cables (0.03 m radius, 12 segments, sag 0.6 m) between neighbouring towers per roof.
+4. Holo signs: 4 Musnad neon signs (existing SignSpec) on R1-R5 side walls, cyan/magenta, slow 0.5 Hz flicker.
+5. Megacity glow: skyline far band gets cyan/magenta window emission (30% of windows) and a purple horizon glow.
+6. Wet roofs: floor roughness 0.25 where wet spots are, so neon reflects (screen-space reflection only if >= 60 FPS).
+7. The wall: the tower faces that stand within 1.5 m of a playable roof edge and rise more than 2.5 m above it get
+   windows, a frieze and a neon strip like every other facade, or are lowered to <= 2.5 m above the roof.
+8. Renders from the play camera: inbox/cyber_r1.png, cyber_r4.png, cyber_r5.png; fps_probe numbers in the final message.
+
+## Do NOT edit
+`core/`
+`features/ui/`
+`features/equipment/`
+`features/map/`
+`tools/check.sh`
+`CLAUDE.md`
+`docs/DECISIONS.md`
+`HANDOFF.md`
+
+## Tests
+- Every roof edge of souq_rooftops_v4 has a neon strip; colours only from the two content neon colours.
+- No facade within 1.5 m of a roof edge rises > 2.5 m above it without windows (the wall rule).
+
+## Checklist
+- file: content/world/storm.json
+- file: content/world/skyline.json
+
+## Proof
+`bash tools/check.sh` raw last 15 lines; renders; fps numbers; final message ends with `Built-by: Gemini 3.8 Flash (agy)`.

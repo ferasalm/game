@@ -47,3 +47,7 @@ func teleport_party(position: Vector3) -> void:
 
 func place_party(save_point: StringName) -> void:
 	_rooftop.place_party(save_point)
+
+
+func unfreeze() -> void:
+	_rooftop.freeze_actors(false)

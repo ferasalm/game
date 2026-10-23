@@ -127,6 +127,7 @@ func go_to_title() -> void:
 func unstuck() -> void:
 	if _port != null:
 		_port.teleport_party(_port.last_safe_position())
+		_port.unfreeze()
 
 
 func quit_game() -> void:
