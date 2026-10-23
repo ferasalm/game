@@ -77,17 +77,22 @@ func test_herb_stall_herbs_baskets_and_lantern() -> void:
 	var def: PropDef = _prop(&"herb_stall")
 	check(def.light != null and def.light.pos.x < -0.5, "lantern at keeper's (-x) end")
 	check_eq(def.light.energy, 0.85, "lantern energy 0.85")
-	var hanging: int = 0
+	var hanging_blades: int = 0
+	var hanging_frustums: int = 0
 	var baskets: int = 0
 	var pink_plumes: int = 0
 	for part: PropPart in def.parts:
-		if part.shape == &"frustum" and part.at.y >= 1.5 and part.at.z >= 0.45:
-			hanging += 1
+		if part.at.y >= 1.5 and part.at.z >= 0.45:
+			if part.shape == &"box" and absf(part.size.y - 0.32) <= 0.01:
+				hanging_blades += 1
+			elif part.shape == &"frustum":
+				hanging_frustums += 1
 		if part.shape == &"frustum" and absf(part.at.y - 0.96) <= 0.05 and part.color == "q":
 			baskets += 1
 		if part.color == "M":
 			pink_plumes += 1
-	check(hanging >= 6, ">= 6 hanging herb bundles (%d)" % hanging)
+	check(hanging_blades >= 56, ">= 56 hanging herb blades (%d)" % hanging_blades)
+	check_eq(hanging_frustums, 0, "no frustums in hanging bundles")
 	check(baskets >= 3, ">= 3 woven baskets on counter (%d)" % baskets)
 	check(pink_plumes >= 3, "pink-magenta feather plumes present (%d)" % pink_plumes)
 
