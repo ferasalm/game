@@ -307,14 +307,21 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/dialogue/view/dialogue_layout.gd`: Builds the dialogue box's controls in code (Hades II style; sizes from the UI style, laid out for 1920x1080): a big portrait at the left that slides in, an ornate glass text box at the bottom right with a frieze, a nameplate tab on the box's top edge (name in brass, epithet under it) and the button hints
 - `features/dialogue/view/portraits.gd`: Finds the portrait texture for (speaker, expression): res://assets/portraits/<speaker>_<expression>.png when it exists (loaded straight from the file, the "keep" importer needs no import step), else the speaker's painted neutral (a painted face beats a stand-in), else a stand-in disc with the expression's brows and mouth (StandinPortrait)
 - `features/equipment/logic/equipment_options.gd`: Pure rules of the equipment screen: which slots a hero has, which OWNED items fit a slot (best rarity first), which items a hero wears now, the fighter built from a staged set of items, and writing a staged set into the saved equipment through Inventory.equip
-- `features/equipment/tests/test_equipment.gd`: The equipment screen: the pure options rules (owned items only, rarer first, per hero and slot), the screen listing only owned items in rarity colours, staging, Confirm writing every slot through Inventory.equip, back changing nothing, and the stat comparison
+- `features/equipment/tests/test_equipment.gd`: purpose: Tests the pure EquipmentOptions rules (owned items only, rarer first, per hero and slot)
+- `features/equipment/tests/test_equipment_menu.gd`: purpose: Tests EquipmentMenu layout, 3D hologram stage, slot boxes, equipping, preview and focus
+- `features/equipment/view/equipment_boxes.gd`: purpose: Manages the 5 equipment slot boxes, their positions, visibility per hero and focus navigation
 - `features/equipment/view/equipment_data.gd`: What the equipment screen needs from ContentDB, read once: every equippable by id, the perks, the rarity order, and each hero's start loadout (heroes in loadout order)
-- `features/equipment/view/equipment_demo.gd`: Manual check: opens the equipment screen over a plain background (F6 in the editor) with a few owned items
-- `features/equipment/view/equipment_demo.tscn`: scene
+- `features/equipment/view/equipment_desc_bar.gd`: purpose: Description bar (1760x90 at 80,900) showing item name, rarity, description and combat effect
 - `features/equipment/view/equipment_detail.gd`: The right-hand side of the equipment screen: the focused item (name in its rarity colour, tag, text, perk and the tech moves it teaches) above the stat comparison (base, with the staged kit, an up / down arrow)
+- `features/equipment/view/equipment_hero_header.gd`: purpose: Hero info box (520x96 at 80,124) with name, class epithet, level and cyan XP progress bar
 - `features/equipment/view/equipment_item_button.gd`: Builds one owned item as a menu button: its name in the rarity colour, the rarity tag and an "Equipped" mark on the right
-- `features/equipment/view/equipment_page.gd`: The equipment layout: title and hero tabs on top, the slot lists on the left, the item detail and stat comparison on the right, Confirm with the back hint at the bottom
-- `features/equipment/view/equipment_screen.gd`: The equipment screen (the bench): a tab per hero (Zayd: hilt, blade, prosthetic; Bilqis: prosthetic), the OWNED items of each slot with rarity colours and tags, the perk and tech moves of the focused item, and the stat comparison base vs
+- `features/equipment/view/equipment_menu.gd`: purpose: Equipment menu with 3D hologram hero, slot boxes, owned list, stats comparison and tabs
+- `features/equipment/view/equipment_owned_list.gd`: purpose: Owned items panel (420x620 at 80,240) populated with ListRows and worn "E" chips
+- `features/equipment/view/equipment_stats_panel.gd`: purpose: Stats preview panel (440x560) showing now vs after comparison and derived battle rolls
+- `features/equipment/view/equipment_tabs_bar.gd`: purpose: Top bar (1760x64 at 80,40) with title pair and menu tabs (Equipment, Items, Map)
+- `features/equipment/view/hologram.gdshader`
+- `features/equipment/view/hologram_stage.gd`: purpose: 800x760 SubViewportContainer with 3D hologram hero, camera, disc and leader lines
+- `features/equipment/view/slot_box.gd`: purpose: 150x150 equipment slot box showing slot label, item icon or gemstone sockets
 - `features/items/defs/armor_def.gd`: Armor worn in slot "<hero>.armor": raises HP, DEF, alters AGI and WT (content/items/armor.json)
 - `features/items/defs/chest_def.gd`: A chest holding an equippable (an id of a hilt, blade or prosthetic), riyal and/or consumables; at least one
 - `features/items/defs/consumable_def.gd`: A stackable item used from the bag, in the field or in battle (feathered herbs, the qishr cup)
@@ -410,7 +417,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/screens/choice_screen.gd`: Base of the small centred "pick one" screens (Sabil, Defeat): a framed panel with the Musnad + English title pair and a column of buttons in focus order
 - `features/ui/view/screens/confirm_dialog.gd`: A centred Yes/No question over the scrim
 - `features/ui/view/screens/defeat_screen.gd`: The defeat screen (Screens id &"defeat"): the arena darkens over t_defeat_fade, then DEFEATED offers Retry fight (default), Load last save (greyed with no save) and Title (asks first)
-- `features/ui/view/screens/equipment_host.gd`: Puts the existing EquipmentScreen (the bench, a CanvasLayer with its own open()/closed API) on the Screens stack as the screen &"equipment"
 - `features/ui/view/screens/items_screen.gd`: The Items screen (Screens id &"items", opened from the pause menu): the bag on the left, the chosen item's description and effect on the right, and under it the hero picker
 - `features/ui/view/screens/items_text.gd`: Item screen wording: the effect line ("HP +120") and a hero's "HP 200 -> 320" preview
 - `features/ui/view/screens/pause_hero_row.gd`: One hero row in the pause party panel: face 160x160, name, class, HP/SP bars, KO state
