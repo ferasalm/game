@@ -4,13 +4,13 @@
     {
       "id": "night_storm",
       "rain_box": [24.0, 14.0, 24.0],
-      "rain_count": 2400,
+      "rain_count": 3000,
       "rain_speed": 14.0,
       "rain_wind": [-1.8, 0.0, 0.6],
       "rain_color": "#b8d0f0",
-      "rain_alpha": 0.32,
-      "rain_streak_width": 0.015,
-      "rain_streak_length": 0.45,
+      "rain_alpha": 0.4,
+      "rain_streak_width": 0.024,
+      "rain_streak_length": 0.9,
       "rain_floor_margin": 2.0,
       "splash_box": [10.0, 10.0],
       "splash_count": 100,
@@ -48,8 +48,9 @@
       "lightning_interval_min": 25.0,
       "lightning_interval_max": 60.0,
       "lightning_duration": 0.15,
-      "lightning_energy_boost": 2.5,
-      "lightning_color": "#cde0ff"
+      "lightning_energy_boost": 6.0,
+      "lightning_color": "#cde0ff",
+      "lightning_screen_alpha": 0.22
     }
   ]
 }

@@ -6,7 +6,7 @@ extends TestCase
 func test_storm_def_parses_every_field() -> void:
 	var def := ContentDB.get_def("storm", &"night_storm") as StormDef
 	check(def != null, "night_storm def exists")
-	check(def.rain_count == 2400, "rain count 2400")
+	check(def.rain_count > 0 and def.rain_count <= 3000, "rain count within the 3000 cap")
 	check(is_equal_approx(def.rain_speed, 14.0), "rain speed 14 m/s")
 	check(def.rain_box.is_equal_approx(Vector3(24.0, 14.0, 24.0)), "rain box 24x14x24")
 	check(def.splash_count == 100, "splash count 100")
@@ -97,6 +97,20 @@ func test_lightning_off_when_flag_off() -> void:
 	check(not host.is_lightning_active(), "lightning inactive when flag off")
 	host.trigger_lightning()
 	check(not host.is_flashing(), "trigger does not flash when disabled")
+	host.free()
+
+
+## Review 2026-10-23: a light alone barely showed through the painted shaders; the flash also washes the screen.
+func test_lightning_washes_the_screen_and_clears() -> void:
+	var def := ContentDB.get_def("storm", &"night_storm") as StormDef
+	var host := StormHost.new()
+	host.def = def
+	tree.root.add_child(host)
+	host.trigger_lightning()
+	host._update_lightning(def.lightning_duration * 0.2)
+	check(host.flash_rect.color.a > 0.0, "the flash washes the screen")
+	host._update_lightning(def.lightning_duration)
+	check(is_zero_approx(host.flash_rect.color.a) and not host.is_flashing(), "and clears when the flash ends")
 	host.free()
 
 

@@ -8,6 +8,7 @@ var rain_particles: GPUParticles3D
 var splash_particles: GPUParticles3D
 var puddles_root: Node3D
 var lightning_light: DirectionalLight3D
+var flash_rect: ColorRect
 
 var _lightning_timer: float = 0.0
 var _flash_timer: float = 0.0
@@ -50,6 +51,17 @@ func _setup_lightning_light() -> void:
 	lightning_light.light_energy = 0.0
 	lightning_light.rotation_degrees = Vector3(-35.0, -140.0, 0.0)
 	add_child(lightning_light)
+	var layer := CanvasLayer.new()
+	layer.name = "LightningFlash"
+	add_child(layer)
+	flash_rect = ColorRect.new()
+	flash_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+	flash_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	flash_rect.color = Color(def.lightning_color, 0.0)
+	var add := CanvasItemMaterial.new()
+	add.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	flash_rect.material = add
+	layer.add_child(flash_rect)
 
 
 func _schedule_lightning() -> void:
@@ -71,10 +83,14 @@ func _update_lightning(delta: float) -> void:
 	var boost: float = _double_flash_intensity(_flash_timer, def.lightning_duration)
 	if lightning_light != null:
 		lightning_light.light_energy = boost * def.lightning_energy_boost
+	if flash_rect != null:
+		flash_rect.color.a = boost * def.lightning_screen_alpha
 	if _flash_timer >= def.lightning_duration:
 		_is_flashing = false
 		if lightning_light != null:
 			lightning_light.light_energy = 0.0
+		if flash_rect != null:
+			flash_rect.color.a = 0.0
 		_schedule_lightning()
 
 

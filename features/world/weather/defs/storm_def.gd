@@ -58,6 +58,8 @@ var lightning_interval_max: float = 60.0
 var lightning_duration: float = 0.15
 var lightning_energy_boost: float = 2.5
 var lightning_color: Color = Color(0.8, 0.88, 1.0)
+## Peak alpha of the screen-wide flash (the painted shaders draw their own light, so a light alone barely shows).
+var lightning_screen_alpha: float = 0.0
 
 
 func read(r: DefReader) -> void:
@@ -153,3 +155,4 @@ func _read_lightning(r: DefReader) -> void:
 	lightning_duration = r.number("lightning_duration", 0.02, 5.0)
 	lightning_energy_boost = r.number("lightning_energy_boost", 0.0, 50.0)
 	lightning_color = r.color("lightning_color")
+	lightning_screen_alpha = r.number("lightning_screen_alpha", 0.0, 1.0)
