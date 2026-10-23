@@ -2,10 +2,12 @@ class_name BattleAI
 extends RefCounted
 ## The one battle policy (enemies in play, both sides in the balance harness), in this order:
 ## 1. cancel the casting foe nearest to ACT when a cancel move is affordable;
-## 2. stand up a downed ally (revive move), else heal the weakest ally under rules.ai_heal_below;
-## 3. guard (a damage-reducing status move) when a foe is casting a move of power x hits >= rules.ai_big_cast_power;
-## 4. else a random useful move on a random valid target (heals only when someone is hurt, buffs only when
-##    missing; guard moves are kept for step 3).
+## 2. stance when a foe casts a melee move at this unit;
+## 3. stand up a downed ally (revive move), else heal the weakest ally under rules.ai_heal_below;
+## 4. guard (a damage-reducing status move) when a foe is casting a move of power x hits >= rules.ai_big_cast_power;
+## 5. shove a foe within 1500 of COMMAND when no cancel is affordable;
+## 6. arc when a foe is jammed or >= 2 foes live;
+## 7. else a random useful move on a random valid target (no Flash Flood near an enemy ACT).
 
 
 class Choice extends RefCounted:
@@ -23,9 +25,15 @@ static func pick(sim: BattleSim, unit: UnitState) -> Choice:
 		func(m: ActionDef) -> bool: return sim.can_use(unit, m))
 	var choice: Choice = _cancel_choice(sim.timeline, moves, unit)
 	if choice == null:
+		choice = BattleAITactics.stance_choice(sim, moves, unit)
+	if choice == null:
 		choice = _heal_choice(sim, moves, unit)
 	if choice == null:
 		choice = _guard_choice(sim, moves, unit)
+	if choice == null:
+		choice = BattleAITactics.shove_choice(sim, moves, unit)
+	if choice == null:
+		choice = BattleAITactics.arc_choice(sim, moves, unit)
 	if choice == null:
 		choice = _random_choice(sim, moves, unit)
 	return choice
@@ -113,6 +121,10 @@ static func _is_useful(sim: BattleSim, unit: UnitState, move: ActionDef) -> bool
 	var options: Array[UnitState] = BattleTargets.valid_targets(sim.timeline, unit, move)
 	if options.is_empty():
 		return false
+	if move.cast_status != &"":
+		for foe: UnitState in sim.timeline.units:
+			if foe.side != unit.side and foe.is_alive() and foe.phase == UnitState.Phase.CAST and foe.pos >= Timeline.ACT_POINT - 1500:
+				return false
 	if move.is_hostile():
 		if move.power <= 4 and move.applies_status != &"":
 			var all_have_status: bool = options.all(
@@ -120,8 +132,8 @@ static func _is_useful(sim: BattleSim, unit: UnitState, move: ActionDef) -> bool
 			if all_have_status:
 				return false
 		return true
-	if _is_guard(sim, move):
-		return false  # guards wait for a big enemy cast (step 3)
+	if _is_guard(sim, move) or BattleAITactics.is_stance(sim, move):
+		return false  # guards and stances wait for an incoming cast
 	if move.heal > 0:
 		return options.any(func(t: UnitState) -> bool: return t.hp < t.def.max_hp)
 	if move.applies_status != &"":

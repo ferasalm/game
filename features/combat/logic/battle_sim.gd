@@ -32,6 +32,8 @@ var rolls_enabled: bool = true:
 			_resolver.rolls_enabled = value  # set after create_from: the resolver copied the old value
 ## Failed flee attempts this battle (used by the flee chance formula).
 var flee_fails: int = 0
+## Events produced outside tick (e.g. status applied at choose), flushed on step.
+var pending_events: Array[TimelineEvent] = []
 
 
 ## Builds the battle from a BattleSetup. Party units use their def id; enemies use "<def id>_<n>" counting from
@@ -63,9 +65,24 @@ static func create_from(battle: BattleSetup) -> BattleSim:
 			foe, StringName("%s_%d" % [foe.id, counts[foe.id]]), 1, battle.enemy_slots[i], battle.rules)
 		unit.pos = BattleActionRules.start_pos(sim.rules, sim.rng, 1, battle.ambush, foe)
 		sim.timeline.units.append(unit)
-	sim._resolver = BattleResolver.new(battle.rules, sim.rng, sim.timeline, battle.statuses, sim.roll_rng, sim.rolls_enabled)
+	sim._resolver = BattleResolver.new(battle.rules, sim.rng, sim.timeline, battle.statuses, sim.roll_rng, sim.rolls_enabled, battle.actions)
 	sim.items = BattleItems.new(sim.bag, sim.timeline, battle.consumables)
 	return sim
+
+
+## Predicted timeline position of target after being hit by actor's action (pure query; no state modified).
+func knockback_preview(actor: UnitState, action: ActionDef, target: UnitState) -> int:
+	if target == null or action == null:
+		return 0
+	if target.phase == UnitState.Phase.CAST and action.cancels_cast and not target.interrupt_immune():
+		return Timeline.INTERRUPT_POS
+	var bonus: int = actor.def.knockback_bonus if actor != null else 0
+	var shift: int = roundi((action.knockback + bonus) * (1.0 - target.def.interrupt_resist))
+	var lowest: int = Timeline.COMMAND_POINT if target.phase == UnitState.Phase.CAST else 0
+	var current_pos: int = target.pos
+	if target.phase == UnitState.Phase.COMMAND:
+		current_pos = Timeline.COMMAND_POINT - 1
+	return maxi(lowest, current_pos - shift)
 
 
 ## True when the actor's cast of this action (COMMAND to ACT at its cast speed, statuses included) finishes
@@ -140,6 +157,10 @@ func choose(unit_id: StringName, action: ActionDef, target_id: StringName) -> St
 	var unit: UnitState = timeline.waiting_for
 	unit.sp -= action.sp_cost
 	action_rules.spend_use(unit_id, action)
+	if action != null and action.cast_status != &"" and statuses.has(action.cast_status):
+		var st: StatusDef = statuses[action.cast_status]
+		unit.apply_status(st)
+		pending_events.append(TimelineEvent.new(&"status", unit_id, st.turns, st.id))
 	return timeline.choose(unit_id, action, BattleTargets.chosen_ids(timeline, unit, action, target_id))
 
 
