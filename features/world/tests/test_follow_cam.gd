@@ -73,3 +73,26 @@ func test_input_rotation_by_yaw() -> void:
 func test_arm_shortening() -> void:
 	check(is_equal_approx(FollowCam.shorten_arm(4.0, 2.0, 0.2), 3.8), "shortens to hit distance minus margin")
 	check(is_equal_approx(FollowCam.shorten_arm(1.5, 2.0, 0.2), 2.0), "clamped to minimum 2.0 m")
+
+
+func test_follow_cam_settles_at_side_angle() -> void:
+	var rig := ContentDB.get_def("camera_rig", &"explore") as CameraRigDef
+	var cam := FollowCam.new(rig)
+	check(is_equal_approx(cam.follow_side_deg, deg_to_rad(32.0)), "side angle is 32 deg from camera.json")
+	cam.yaw = 0.0
+	# Move in -Z direction (straight ahead). Straight behind is 0 yaw. With 32 deg side offset, target is +32 deg.
+	for i: int in 300:
+		cam.update(Vector3.ZERO, Vector3(0.0, 0.0, -1.0), 1.0 / 60.0)
+	check(is_equal_approx(cam.yaw, deg_to_rad(32.0)), "yaw settles 32 deg right of straight behind (got %.2f deg)" % rad_to_deg(cam.yaw))
+
+
+func test_camera_zone_roll_ease() -> void:
+	var cam := FollowCam.new()
+	cam.enter_zone(deg_to_rad(45.0), deg_to_rad(15.0), 10.0, 40.0, deg_to_rad(6.0))
+	for i: int in 72:
+		cam.update(Vector3.ZERO, Vector3.ZERO, 1.0 / 60.0)
+	check(is_equal_approx(cam.roll, deg_to_rad(6.0)), "eased to zone roll 6 deg")
+	cam.exit_zone()
+	for i: int in 72:
+		cam.update(Vector3.ZERO, Vector3.ZERO, 1.0 / 60.0)
+	check(is_equal_approx(cam.roll, 0.0), "eased back to 0 roll outside zone")
