@@ -23,6 +23,7 @@ var walk_toward_dot: float = -0.3
 var manual_orbit_speed: float = 1.5
 var manual_orbit_pause: float = 2.0
 var zone_ease_duration: float = 1.2
+var wall_rise: float = 0.0
 
 var _steady_move_time: float = 0.0
 var _manual_orbit_timer: float = 0.0
@@ -79,8 +80,16 @@ static func rotate_input(input_vec: Vector2, cam_yaw: float) -> Vector3:
 	return Vector3(input_vec.x, 0.0, input_vec.y).rotated(Vector3.UP, cam_yaw)
 
 
-static func shorten_arm(hit_distance: float, min_distance: float = 2.0, margin: float = 0.2) -> float:
+static func shorten_arm(hit_distance: float, min_distance: float = 4.0, margin: float = 0.2) -> float:
 	return maxf(min_distance, hit_distance - margin)
+
+
+func camera_position(override_distance: float = -1.0, override_pitch: float = NAN) -> Vector3:
+	var d: float = distance if override_distance < 0.0 else override_distance
+	var p: float = pitch if is_nan(override_pitch) else override_pitch
+	var offset_h: float = d * cos(p)
+	var offset_y: float = d * sin(p)
+	return aim + Vector3(sin(yaw) * offset_h, offset_y, cos(yaw) * offset_h)
 
 
 func enter_zone(z_yaw: float, z_pitch: float, z_dist: float, z_fov: float, z_roll: float = 0.0) -> void:
@@ -109,13 +118,6 @@ func is_in_zone() -> bool:
 
 func zone_blend_amount() -> float:
 	return _zone_blend
-
-
-func camera_position(override_distance: float = -1.0) -> Vector3:
-	var d: float = distance if override_distance < 0.0 else override_distance
-	var offset_h: float = d * cos(pitch)
-	var offset_y: float = d * sin(pitch)
-	return aim + Vector3(sin(yaw) * offset_h, offset_y, cos(yaw) * offset_h)
 
 
 func update(focus: Vector3, move_dir: Vector3, delta: float, orbit_input: float = 0.0,
