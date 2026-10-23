@@ -27,7 +27,10 @@ Two tracks: level 1 (session 15, branch claude/night-sanaa) and RPG + menus (ses
 - Judge the 4 menu renders against your mockups. No icon art exists (assets/icons/ is missing): 5 head icons
   (zayd, bilqis, concession_enforcer, survey_drone, abu_nabil) and 4 item icons (herb_pink, herb_yellow,
   herb_white, qishr_cup); letter discs stand in until you make them.
-- Play the Abu Nabil fight (session 14 notes); judge the five roofs and souq props when merged; play the camera.
+- Cloudflare DeepSeek (tools/cf_build.sh ready, untested): create a "Workers AI" API token, then in Git Bash:
+  `setx CLOUDFLARE_ACCOUNT_ID <id>` and `XDG_DATA_HOME=~/.local/share/oc-cli opencode auth login` (Cloudflare Workers
+  AI, paste the token). Needs Workers Paid or AI Gateway credits. Then Claude tests it. Spent: $0.
+- Play the Abu Nabil fight; judge the five roofs and souq props when merged; play the camera.
 
 ## Next steps (one per chat)
 1. Review and merge workshop-menu and equipment-polish; fix the pipeline zero-commit gap;
