@@ -1,6 +1,6 @@
 extends TestCase
 ## The pure maths behind live 3D characters: ClipTiming (wind-up, hold, strike, recovery and the events on that
-## curve), Locomotion (gait, stride to playback rate, lean) and YawTurn (the capped short-way turn).
+## curve), Locomotion (gait, stride to playback rate, lean, foot contacts passed) and YawTurn (the capped short-way turn).
 
 
 func _clip() -> ClipDef:
@@ -110,3 +110,13 @@ func test_yaw_turn() -> void:
 	for i: int in 60:
 		turned = YawTurn.step(turned, PI, deg_to_rad(900.0), 1.0 / 60.0)
 	check(YawTurn.arrived(turned, PI), "900 deg/s turns about backwards in a quarter second")
+
+
+func test_foot_contacts_passed_wrap_with_the_loop() -> void:
+	var contacts: Array[float] = [0.0, 0.667]
+	check_eq(Locomotion.contacts_passed(contacts, 1.333, 0.0, 0.6), 0, "the contact at the start was already counted")
+	check_eq(Locomotion.contacts_passed(contacts, 1.333, 0.6, 0.7), 1, "the second heel strike")
+	check_eq(Locomotion.contacts_passed(contacts, 1.333, 1.3, 1.4), 1, "the first heel strike again after the wrap")
+	check_eq(Locomotion.contacts_passed(contacts, 1.333, 0.1, 4.1), 6, "three laps, two steps each")
+	check_eq(Locomotion.contacts_passed(contacts, 1.333, 0.5, 0.5), 0, "no time, no step")
+	check_eq(Locomotion.contacts_passed([] as Array[float], 1.333, 0.0, 9.0), 0, "a clip without contacts is silent")

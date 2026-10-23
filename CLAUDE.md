@@ -1,6 +1,6 @@
 # game: rules for every Claude session
 
-An HD-2D timeline RPG in Godot 4.7.2 (typed GDScript). The owner, Feras, is the creative director: he decides,
+A painted 2.5D cyberpunk action RPG in Godot 4.7.2 (typed GDScript). The owner, Feras, is the creative director: he decides,
 plays and makes art; Claude writes the code and runs every check itself. He is on Claude Pro: spend little.
 
 @HANDOFF.md
@@ -19,8 +19,8 @@ plays and makes art; Claude writes the code and runs every check itself. He is o
   when judging art, small), or docs/research/gemini-blueprint-citations.md.
 - docs/research/gemini-blueprint.md is ~20k tokens: grep its headings, read one section at a time.
 - Edit, don't rewrite; no recaps; replies to the owner in a few lines.
-- Builders: agy first (docs/EFFICIENCY.md 3b: TEMPLATE brief, agy_task.sh, agy_review.sh, remove the worktree after the
-  merge). Claude subagents only where agy can't, at most 2. Keep briefs exact and reports short.
+- Builders: agy or opencode first (docs/EFFICIENCY.md 3b: TEMPLATE brief, own worktree, Claude reviews, remove the
+  worktree after the merge); cheap research too. Claude subagents only where they can't, at most 2. Exact briefs.
 - Check the 5-hour window and context (get_usage) at the start and before a big step.
 - Checks: `tools/check.sh` (read the FAIL lines). One test file: `tools/run_godot.sh -s res://tests/runner.gd -- <name>`.
 

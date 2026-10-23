@@ -29,6 +29,11 @@ static func floor_height(area: AreaDef) -> float:
 	return tile.height if tile != null else 0.0
 
 
+## True when a floor point lies inside a prop's collide box grown by the capsule radius (a body there would overlap it).
+static func on_prop(area: AreaDef, rules: ExploreRulesDef, point: Vector3) -> bool:
+	return _blocked(_prop_boxes(area, rules, floor_height(area)), Vector2(point.x, point.z))
+
+
 ## Floor-plane cell centres of the cells in `cells`, as points at floor_y.
 static func centers(cells: Dictionary[Vector2i, bool], floor_y: float) -> Array[Vector3]:
 	var out: Array[Vector3] = []

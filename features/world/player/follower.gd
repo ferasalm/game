@@ -12,7 +12,6 @@ var _guard: FollowGuard
 var _trail: Array[Vector3] = []
 var _keep_from: int = 0
 var _active: bool = true
-var _step_clock: float = 0.0
 
 
 func _init(rules: ExploreRulesDef, leader: Node3D) -> void:
@@ -25,6 +24,7 @@ func _init(rules: ExploreRulesDef, leader: Node3D) -> void:
 	_visual = CharacterVisual.new()
 	_visual.set_sprite(&"bilqis")
 	add_child(_visual)
+	_visual.clip_event.connect(_on_clip_event)
 	ActorBody.add_capsule(self, rules)
 
 
@@ -76,7 +76,6 @@ func _physics_process(delta: float) -> void:
 	if _guard.update(delta, to_target.length(), wanted, moved):
 		position = Vector3(target.x, position.y, target.z)
 	_visual.set_moving(moving)
-	_step_clock = AudioDirector.step(_step_clock, delta, moving, &"footstep_follower")
 	_prune()
 
 
@@ -106,3 +105,9 @@ func _prune() -> void:
 	while _keep_from > 0:
 		_trail.remove_at(0)
 		_keep_from -= 1
+
+
+## A foot touched the ground in the walk or run clip (ClipDef.contacts): the step sounds on it, only while she follows.
+func _on_clip_event(kind: StringName) -> void:
+	if kind == &"footstep" and _active:
+		AudioDirector.play_sfx(&"footstep_follower")

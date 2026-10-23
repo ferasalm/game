@@ -1,7 +1,7 @@
 class_name Locomotion
 extends RefCounted
 ## Pure walking maths for a model: which gait a ground speed means, the playback rate that keeps feet from sliding
-## (speed / stride), a smoothed speed and the lean into acceleration. No nodes here.
+## (speed / stride), a smoothed speed, the lean into acceleration and the foot contacts a gait loop passes. No nodes here.
 
 
 ## &"idle", &"walk" or &"run" for a speed (m/s). `was_moving` keeps a gait a little longer (no flicker at the edge).
@@ -28,3 +28,18 @@ static func smooth(current: float, sample: float, delta: float, rate: float) -> 
 ## The lean (degrees, signed) of a body that accelerates by `accel` m/s^2 along its facing, at most `max_degrees`.
 static func lean(accel: float, per_accel: float, max_degrees: float) -> float:
 	return clampf(accel * per_accel, -max_degrees, max_degrees)
+
+
+## How many foot contacts (clip seconds, ascending, inside 0..seconds) a looping clip passes going from clip time
+## `from` to `to` (to may run past the end; the loop wraps). A contact exactly at `from` was counted last time.
+static func contacts_passed(contacts: Array[float], seconds: float, from: float, to: float) -> int:
+	if seconds <= 0.0 or to <= from:
+		return 0
+	var passed: int = 0
+	var lap: float = floorf(from / seconds) * seconds
+	while lap < to:
+		for at: float in contacts:
+			if lap + at > from and lap + at <= to:
+				passed += 1
+		lap += seconds
+	return passed

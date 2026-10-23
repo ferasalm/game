@@ -22,12 +22,15 @@ var safe_return_distance: float = 3.5
 var unstuck_patrol_distance: float = 3.0
 ## How many standing-still spots are remembered for unstuck.
 var safe_ring: int = 8
-## The workshop bench mesh (a box): size in metres and colour.
-var bench_size: Vector3 = Vector3(1.6, 0.9, 0.7)
-var bench_color: Color = Color.SADDLE_BROWN
+## The workshop bench: footprint and height in metres (the prompt floats above the height) and how fast its lamp
+## light fades in (the bench itself is the prop 'workbench', content/world/props/workbench.json).
+var bench_size: Vector3 = Vector3(1.8, 1.8, 0.8)
+var bench_light_fade: float = 3.0
 var touch_radius: float = 0.0
 var interact_radius: float = 0.0
 var capsule_radius: float = 0.3
+## Clearance (m) between a stall keeper's body and the end of his counter (StallKeeper).
+var keeper_gap: float = 0.15
 var capsule_height: float = 1.6
 var wall_height: float = 3.0
 var prompt_height: float = 0.0
@@ -58,10 +61,11 @@ func read(r: DefReader) -> void:
 	var bench: Array[float] = r.float_list("bench_size", 0.1, 10.0)
 	if bench.size() == 3:
 		bench_size = Vector3(bench[0], bench[1], bench[2])
-	bench_color = r.color("bench_color", bench_color, false)
+	bench_light_fade = r.number("bench_light_fade", 0.1, 100.0, 3.0, false)
 	touch_radius = r.number("touch_radius", 0.1, 5.0)
 	interact_radius = r.number("interact_radius", 0.1, 5.0)
 	capsule_radius = r.number("capsule_radius", 0.05, 2.0)
+	keeper_gap = r.number("keeper_gap", 0.0, 2.0)
 	capsule_height = r.number("capsule_height", 0.2, 4.0)
 	wall_height = r.number("wall_height", 0.5, 20.0)
 	prompt_height = r.number("prompt_height", 0.0, 3.0)

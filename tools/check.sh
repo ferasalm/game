@@ -15,6 +15,6 @@ step docs $py tools/doc_check.py
 step lint $py tools/lint_gd.py
 step import tools/run_godot.sh --import
 step art_tools sh -c "$py tools/art/test_pixelize.py && $py tools/art/test_sprite_png.py && $py tools/art/test_portrait.py && $py tools/art/test_painterly_bake.py"
-step tests env GODOT_TIMEOUT=300 tools/run_godot.sh -s res://tests/runner.gd
+step tests env GODOT_TIMEOUT=600 tools/run_godot.sh -s res://tests/runner.gd
 grep -h '^tests:' .check/tests.log 2>/dev/null | sed 's/^/     /'
 if [ $fails -eq 0 ]; then echo "all checks passed"; else echo "$fails check(s) FAILED"; exit 1; fi

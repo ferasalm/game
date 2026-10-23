@@ -6,7 +6,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 
 ## (root)
 - `.godot-version`
+- `AGENTS.md`
 - `GEMINI.md`
+- `opencode.json`: content: ? x0
 - `project.godot`
 
 ## .agents
@@ -64,6 +66,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/world/look.json`: content: look x5
 - `content/world/mist.json`: content: mist x3
 - `content/world/props.json`: content: prop x25
+- `content/world/props/workbench.json`: content: prop x1
 - `content/world/sky.json`: content: sky x1
 - `content/world/skyline.json`: content: skyline x1
 - `content/world/tiles.json`: content: tile x8
@@ -111,15 +114,15 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/art/defs/sprite_def.gd`: One pixel sprite: rows of palette letters ('.' = transparent), all the same width, feet on the last row
 - `features/art/defs/visual_rules_def.gd`: Numbers for how a CharacterVisual looks and moves: art scale, idle breathing, walking (bob, squash and stretch, lean, dust), turning, the blob shadow, and the battle motions (anticipation, lunge with afterimages, recoil, hurt, knocked out, revive, victory hop)
 - `features/art/logic/clip_timing.gd`: Pure retiming of a one-shot clip (ClipDef): real seconds <-> clip seconds
-- `features/art/logic/locomotion.gd`: Pure walking maths for a model: which gait a ground speed means, the playback rate that keeps feet from sliding (speed / stride), a smoothed speed and the lean into acceleration
+- `features/art/logic/locomotion.gd`: Pure walking maths for a model: which gait a ground speed means, the playback rate that keeps feet from sliding (speed / stride), a smoothed speed, the lean into acceleration and the foot contacts a gait loop passes
 - `features/art/logic/model_gait.gd`: Pure choice of a model's looping clip: which gait (idle, walk, run) its measured ground speed and the state the facade asked for mean, and the playback rate that keeps its feet on the ground
 - `features/art/logic/pixel_art.gd`: Turns a palette-indexed sprite (rows of letters) into an Image or texture
 - `features/art/logic/pose_match.gd`: Pure maths of pose retargeting between two humanoid rigs with the same bone names but other bone axes and rest poses (a Rodin body driven by the Quaternius library): a constant per-bone offset so the target bone always points where the source bone points, and the hips' travel scaled from one leg length to the other
 - `features/art/logic/yaw_turn.gd`: Pure turning for a model: the yaw (radians, about +y; 0 faces +z) of a ground direction and a capped step toward it that always takes the short way round
 - `features/art/tests/test_character_motion.gd`: CharacterVisual motion: the shader material carries the data (minimum light, rim), knocked out / revived snap to the right look, the battle motions and the little effects (dust, afterimages, shadow) run without errors, and the sprite stays crisp (nearest filtering)
 - `features/art/tests/test_model_defs.gd`: The data behind live 3D characters (content/art/models.json, clips.json) against the imported assets: every model maps all nine states to clips that exist, every clip names a real animation of the shared library with its length and an impact inside it, the bodies keep the rig's bone names, every anchor and part bone resolves, and the budgets hold (bones, triangles, surfaces, textures)
-- `features/art/tests/test_model_logic.gd`: The pure maths behind live 3D characters: ClipTiming (wind-up, hold, strike, recovery and the events on that curve), Locomotion (gait, stride to playback rate, lean) and YawTurn (the capped short-way turn)
-- `features/art/tests/test_model_source.gd`: The live 3D source behind the CharacterVisual facade: the model is built and painted, clips announce impact and end on the retimed curve (and wait for the hit pause), the body turns by yaw and never by a negative scale, the feet pace the ground, a knocked-out body stays down, the grandfather's hilt is drawn for a strike and sheathed after, and a CharacterVisual without a model def falls back to the pixel sprite
+- `features/art/tests/test_model_logic.gd`: The pure maths behind live 3D characters: ClipTiming (wind-up, hold, strike, recovery and the events on that curve), Locomotion (gait, stride to playback rate, lean, foot contacts passed) and YawTurn (the capped short-way turn)
+- `features/art/tests/test_model_source.gd`: The live 3D source behind the CharacterVisual facade: the model is built and painted, clips announce impact and end on the retimed curve (and wait for the hit pause), the body turns by yaw and never by a negative scale, the feet pace the ground and sound a footstep on each foot contact, a knocked-out body stays down, the grandfather's hilt is drawn for a strike and sheathed after, and a CharacterVisual without a model def falls back to the pixel sprite
 - `features/art/tests/test_pose_match.gd`: Retargeting (PoseMatch, PoseFollow): the swing turns one direction into another, the per-bone offset makes the target bone point where the source bone points (at rest and after a turn), the hips travel scales with hip height, and a pose_source model's body follows its hidden source (Zayd's Rodin model stands up with the hand below the head); mirrored, the other arm does the move (Zayd's cast raises his prosthetic right arm)
 - `features/art/tests/test_rodin_parts.gd`: Feras's Rodin pieces after tools/rodin: Zayd's baked dagger is pressed flat onto his chest (the code hilt is his only jambiyah), the grandfather's hilt is the Rodin grip above the belt origin and the Rodin sheath below it curving forward (the blade stays the code one), and the survey drone's hull is the Rodin mesh at hover height
 - `features/art/tests/test_sprites.gd`: Prototype T7: every sprite is well formed and uses only palette letters; PixelArt and CharacterVisual work
@@ -153,10 +156,10 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/audio/defs/audio_rules_def.gd`: Mixer and behaviour numbers of the AudioDirector (content/audio/rules.json): bus volumes, voice pools, music fade and duck, hit weight, text blip rate, item chime boost per rarity, and which sound each move uses
 - `features/audio/defs/music_def.gd`: One music track (content/audio/music.json): its file, volume, whether it loops, and an optional fallback track
 - `features/audio/defs/screen_music_def.gd`: Maps one screen id (from the Screens stack) to the music track id it plays while open
-- `features/audio/defs/sound_def.gd`: One sound effect (content/audio/sounds.json): file variants (one is picked each play), the bus it plays on, its volume, a random pitch range so repeats differ, an optional repeat interval (footsteps) and whether it ducks the music (stingers)
+- `features/audio/defs/sound_def.gd`: One sound effect (content/audio/sounds.json): file variants (one is picked each play), the bus it plays on, its volume, a random pitch range so repeats differ and whether it ducks the music (stingers)
 - `features/audio/logic/music_logic.gd`: Pure rules for music playback: fallback resolution when audio files are missing, and mapping screen ids
 - `features/audio/logic/music_stack.gd`: Pure stack of open screen ids deciding which music track plays (content/audio/screen_music.json)
-- `features/audio/logic/sound_logic.gd`: Pure sound rules: which variant to play, which sound a move uses, when the next footstep is due, and the item chime boost for a rarity
+- `features/audio/logic/sound_logic.gd`: Pure sound rules: which variant to play, which sound a move uses and the item chime boost for a rarity
 - `features/audio/tests/test_audio.gd`: Audio: every sound and music entry is well formed, every sfx file exists, every vfx id has a sound, the pure sound rules hold, and the AudioDirector builds its buses, plays headless and skips missing music
 - `features/audio/tests/test_music_choices.gd`: The owner's music choices (DECISIONS 2026-10-22): menus and the herb stall keep the area music (no screen maps them), every patrol names one of the three battle themes and all three are used, and every track's file exists
 - `features/audio/tests/test_music_contexts.gd`: Tests for music contexts: pure stack resolution across all branches, missing file fallback resolution, validation of screen_music definitions, pause process mode, and track resume positions
@@ -402,7 +405,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/defs/area_def.gd`: A level as data: equal-width rows of tile characters, a legend (character -> tile id), two markers (S spawn, W workshop bench) that each appear once and stand on floor, and typed places (PlaceDef: stall, sabil, patrols...)
 - `features/world/defs/building_def.gd`: One Sana'a tower-house as data: footprint (metres), floors (the lowest stone_floors are basalt), window columns per facade, frieze style, qamariya glass letters, lit-window ratio, parapet style and roof extras
 - `features/world/defs/camera_preset_def.gd`: Stub (v0.3 registry, filled by the level builder): one named camera pose with its own field of view and depth of field, e.g
-- `features/world/defs/camera_rig_def.gd`: Camera language for exploring (content/world/camera.json): the opening establishing shot as keyframes (camera and target positions relative to the player, field of view, depth-of-field scale, seconds) and the "vista" pose the camera eases to inside a vista zone
+- `features/world/defs/camera_rig_def.gd`: Camera language for exploring (content/world/camera.json): intro shots, presets, limits, and follow/framed modes
+- `features/world/defs/camera_room_def.gd`: Specification and authored dimensions for the framed shot grey-box test room (content/world/camera.json)
 - `features/world/defs/canyon_spec.gd`: The sunken street (al-Saila) under the area: two walls from bottom_y up to top_y between x0 and x1 (the street's width) over the area's z range z0..z1, continued extend metres beyond both ends up to ext_top_y only, with a stone base of base_height under a brick upper wall and a thin water channel down the middle
 - `features/world/defs/explore_rules_def.gd`: Numbers for walking around an area: player speed and size, follower, camera, patrol, touch and interact ranges, collision wall height and the workshop prompt
 - `features/world/defs/light_spec.gd`: One practical light: where it is, its colour, a real OmniLight (energy, range; only the nearest few are alive at once) and a fake light pool (an additive quad on the floor or a wall, radius in metres, cheap and always on)
@@ -427,17 +431,22 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/interact/sabil_spot.gd`: The sabil fountain: interact opens the "Drink to rest?" screen
 - `features/world/interact/stall_spot.gd`: The herb stall: stand at the counter and press interact to open the shop screen (Screens id &"shop")
 - `features/world/interact/talk_spot.gd`: An interact spot for talking to an NPC (e.g
+- `features/world/interior/camera_room.gd`: Grey-box interior test room demonstrating FramedShots and FollowCameraRig in framed indoor mode
+- `features/world/interior/camera_room.tscn`: scene
 - `features/world/logic/camera_limits.gd`: The exploration camera's frame rules: the camera target is the player clamped into the area's limits (x and z ranges from camera.json), so the camera never leaves the commons even when the player walks to the east roof
 - `features/world/logic/facade_details.gd`: Sana'a facade parts painted with palette letters at 32 px/m: gypsum friezes (zigzag, triangles, rosettes), windows with thick white gypsum frames, the qamariya (a semicircle of coloured glass over the window) and arched wooden doors
 - `features/world/logic/facade_painter.gd`: Paints one Sana'a tower-house facade at 32 px/m from a FacadeSpec: basalt stone floors at the bottom (door on the ground floor), fired-brick floors above, a gypsum frieze at the top of each brick floor, and on every brick floor windows with gypsum frames under qamariya arches
 - `features/world/logic/facade_spec.gd`: What one painted facade needs: width in metres, floors (the lowest stone_floors are basalt, the rest brick), window columns, frieze style, qamariya glass letters, lit and shutter ratios, a door, floor height in pixels and the seed
+- `features/world/logic/follow_cam.gd`: Close third-person follow camera logic: focus, lazy auto-yaw, a scripted orbit (never player input: owner 2026-10-23), zone easing and arm shortening
 - `features/world/logic/follow_guard.gd`: Keeps the follower from sticking: it asks to be put back on the leader's trail when it is farther than the leash, or when it wanted to move but barely got closer to the target (wedged on a corner) for stuck_seconds
+- `features/world/logic/framed_shots.gd`: Indoor framed shots logic: shot picking with hysteresis, clamped tracking, and input basis retention at cuts
 - `features/world/logic/light_pick.gd`: Which practical lights get a real OmniLight: the nearest few to a focus point (the rest keep only their fake light pool), plus the fade and flicker maths
 - `features/world/logic/masonry.gd`: Brick courses and stone slabs painted with palette letters
 - `features/world/logic/patrol_safety.gd`: Where the party may stand with respect to the patrols: distance to a patrol lane (a segment, flat on the floor), the spot to stand on after a battle (the old one if it is clear, else the nearest clear cell) and the spot "Unstuck" picks (the newest remembered spot that is clear and not where the player is wedged, else the nearest safe place)
 - `features/world/logic/pixel_canvas.gd`: A pixel canvas painted with palette letters, with an optional emission layer (black = no glow)
 - `features/world/logic/safe_spot.gd`: Remembers where the player last stood still (the "unstuck" targets)
 - `features/world/logic/skyline_layout.gd`: Where the city blocks stand: for each band a jittered grid of cells between the band's distances from the play area, minus the al-Saila corridor and the landmark clearings, thinned by the band's fill
+- `features/world/logic/stall_keeper.gd`: Where a stall keeper stands, pure: at the open end of his counter (the prop's -x end in its own frame), clear of its collide box by his body radius and a gap, so his body never pokes through the counter
 - `features/world/logic/surface_painter.gd`: Seamless 128x128 surface textures (4 m at 32 px/m) for the playable tiles, painted with palette letters: lime-plaster roof floor, worn plaster, white gypsum, wooden planks, stone paving (al-Saila), basalt, brick, and the dotted window texture of far silhouettes
 - `features/world/logic/walk_graph.gd`: The walk graph of an area: which one-metre cells can be stood on, which can be reached from a start, which belong to a free 2 x 2 block (a corridor under 2 m has none), where the cells are traps and where a step is too high
 - `features/world/look_test/look_test.gd`: HD-2D look test (the M1 rendering spike): a block diorama, a pixel-art billboard hero (CharacterVisual), tilt-shift depth of field, bloom and a low sun with shadows
@@ -464,14 +473,16 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/tests/test_ambush.gd`: Which side struck first: the patrol's walking direction, and last_touch_ambush() after a touch (0 nobody, 1 the patrol caught the player from behind, 2 the player caught the patrol from behind)
 - `features/world/tests/test_area.gd`: Area, tile and look content: the rooftop layout is well formed and every probe of a broken layout is caught
 - `features/world/tests/test_camera_limits.gd`: The exploration camera frame (docs/design/rooftop-v3.md section 2): CameraLimits maths, the limits in camera.json, and on the shipped rooftop for every walkable cell: the camera (pitch 35/45/55 x distance 14/17/20, and the shipped hades preset) never stands inside a building, a prop or a skyline tower of the near and mid bands
-- `features/world/tests/test_chests_signs.gd`: Chests (prompt, one-time opening, the lid animation, the Rooftop signal) and the neon signs (localization keys, Musnad text from the CSV, text fitted to the board)
+- `features/world/tests/test_chests_signs.gd`: Chests (prompt, one-time opening, the lid animation, the Rooftop signal, the lid state per chest closed, opened and looted after a load, an open chest shows its dark inside and the raised lid its lining) and the neon signs (localization keys, Musnad text from the CSV, text fitted to the board)
 - `features/world/tests/test_dressing.gd`: Rooftop dressing as data: props and building placements are valid and stand on solid cells, prop parts use palette letters, the light maths (nearest few, fades, flicker), the real-light budget and the fake pools, the canyon and the nested DefReader reads
 - `features/world/tests/test_explore_camera.gd`: ExploreCamera on the rooftop: follow offset, the vista pose inside the zone (lower pitch, eases back out), the opening shot (keyframes, frozen actors, skip by key, ends on the exploring pose) and the DoF scale
 - `features/world/tests/test_facade.gd`: Night Sana'a textures: the facade painter (size, determinism, lit windows and qamariya glass in the emission map, a door, every pixel painted), the surface patterns (tile 4 m, deterministic, tileable) and the tile content
+- `features/world/tests/test_follow_cam.gd`: FollowCam tests: defaults, focus, lazy yaw, walk toward camera, manual orbit, zone blend, input rotation, arm shortening
+- `features/world/tests/test_framed_shots.gd`: FramedShots tests: shot picking, 0.5 m hysteresis, +-15 deg clamp, and input basis retention
 - `features/world/tests/test_look_test.gd`: The look-test scene builds without errors (headless: no pixels are drawn, but every node and resource is made)
 - `features/world/tests/test_night.gd`: Night look: the sky def feeds every shader uniform, look "night" builds a sky environment with fog and a fill light while "v1" stays the flat daytime look, bad look keys are caught, the vista zone and mist layers load
 - `features/world/tests/test_painted.gd`: Painted diorama look spike: the three painted looks read and differ, their camera presets put the camera at the preset pitch, world materials switch to the painted shader only while a painted look is in use, the baked textures load (and fall back when missing), every bake matches the current painter inputs (re-bake when this fails), the grade LUT is the identity at amount 0, and a painted rooftop gets its outline, screen pass and figure
-- `features/world/tests/test_places.gd`: The typed places of the rooftop (docs/design/rooftop-v3.md section 3): valid ids and references, every standing point and patrol end reachable, the props they use stand next to them, and the patrol lanes keep away from the commons; PatrolSafety's lane maths and the unstuck and return picks
+- `features/world/tests/test_places.gd`: The typed places of the rooftop (docs/design/rooftop-v3.md section 3): valid ids and references, every standing point and patrol end reachable, the props they use stand next to them, and the patrol lanes keep away from the commons; PatrolSafety's lane maths and the unstuck and return picks; a keeper stands at his counter's end facing his customers (StallKeeper) and no NPC overlaps a prop's collision
 - `features/world/tests/test_rooftop.gd`: The rooftop scene builds headless; walking, the follower, the patrol touch, the ambush direction, the exploring switch, the patrol respawn, the workshop prompt and the camera
 - `features/world/tests/test_rooftop_actors.gd`: Rooftop actors: the workshop bench is a mesh, dialogue framing aims at the speaker's head, and Bilqis never sticks
 - `features/world/tests/test_sabil_patrols.gd`: The rooftop's living rules: the sabil drink (save, refill, patrols return), beaten patrols and the grace time, the party's safe return and unstuck, the stall, the bench mesh, dialogue framing, and Bilqis never sticking
@@ -479,6 +490,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/tests/test_safe_spot.gd`: SafeSpot: a place counts after standing still, walking resets the clock, the newest spot is skipped when the player is wedged right there, and only the two newest spots are kept
 - `features/world/tests/test_skyline.gd`: Night Sana'a city: building and skyline content, the layout rules (outside the area, out of the al-Saila corridor, inside the band, deterministic), the tower-house mesh, the landmarks and the draw-call budget
 - `features/world/tests/test_walk_graph.gd`: WalkGraph rules on small grids (reachability, diagonals, 2 x 2 width, traps, steps) and on every shipped area (docs/design/rooftop-v3.md section 5): everything is reachable from the spawn, no corridor is under 2 m, no cell is a trap, no step is too tall, and the bridge keeps three rows
+- `features/world/tests/test_workbench.gd`: The jambiyah smith's workbench: built from the prop 'workbench' (content/world/props/workbench.json), within the triangle and material budgets, carrying its lamp's light, with the prompt and footprint of the old box
 - `features/world/view/area_builder.gd`: Builds an area's blocks: one MultiMeshInstance3D per tile type (bodies, and caps drawn with the cap tile's material; tiles with a pattern get its painted triplanar texture), plus one StaticBody3D holding a box per run of solid tiles and walls that close the area's edges
 - `features/world/view/area_dressing.gd`: Everything an area has on top of its tiles: tower-houses and props (PropBuilder), neon signs, the practical lights with their fake pools (AreaLights) and the chests (one Chest each, interactive)
 - `features/world/view/area_lights.gd`: The area's practical lights
@@ -486,6 +498,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/view/diorama.gd`: Static helpers that build the HD-2D look from a LookDef: WorldEnvironment, low sun, tilt-shift camera, and the nearest-filtered block material
 - `features/world/view/explore_camera.gd`: The exploration camera and its language: it follows the player at the look's offset, eases to a low "vista" pose while the player stands in the area's vista zone (so the sky and moon show above the skyline), and can play the opening establishing shot (keyframes from CameraRigDef; any key, click or button skips it)
 - `features/world/view/far_landmarks.gd`: The far landmarks, built into an unshaded buffer (faces are shaded by a fake light so low-poly facets read): the ridge of Jabal Nuqum, the Haddah megacity of 2150 (slim towers with cyan and magenta neon edges) and the village of Bayt Baws on its rocky crag
+- `features/world/view/follow_camera_rig.gd`: Drives Camera3D in follow mode (FollowCam), framed mode (FramedShots), or legacy fixed mode (ExploreCamera)
 - `features/world/view/landmark_builder.gd`: Builds all landmarks of a SkylineDef into one ArrayMesh with two surfaces: 0 lit (minarets, Bab al-Yaman: vertex colours shaded by the scene lights) and 1 glow (ridge, megacity, village: unshaded, boosted above 1 so neon and lit windows bloom)
 - `features/world/view/mist_builder.gd`: Builds one mist layer from a MistDef: a big flat plane over the area at the def's height, with the scrolling noise shader and a seamless noise texture made once here
 - `features/world/view/neon_sign.gd`: One neon sign: a dark board, a glowing frame and the text (Label3D in the Musnad font, unshaded and boosted above 1 so it blooms)
@@ -509,6 +522,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/view/shaders/painted_light.gdshaderinc`
 - `features/world/view/shaders/painted_screen.gdshader`
 - `features/world/view/shaders/painted_world.gdshader`
+- `features/world/view/shaders/painterly_filter.gdshader`
 - `features/world/view/shaders/prop_water.gdshader`
 - `features/world/view/sky_builder.gd`: Builds the night Sky resource from a SkyDef: the sky shader with every uniform filled from the def, and the three direction vectors (moon, city glow, milky way normal) computed from its angles
 - `features/world/view/skyline_builder.gd`: Builds the old city of Sana'a around a play area from the "skyline" content: tower-houses in depth bands (one MultiMeshInstance3D per building type, shared meshes and materials), far unshaded silhouettes (one MultiMesh), the landmarks (one mesh), the street-level ground and the al-Saila street
@@ -517,7 +531,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/view/surface_buffer.gd`: Collects flat-shaded, vertex-coloured faces (boxes, prisms, polygons) for one surface of an ArrayMesh
 - `features/world/view/surface_materials.gd`: Cached textures and materials for the painted world, so 100+ buildings share a handful of draw materials: tile patterns (world-space triplanar, so texels stay square across tiles), tower-house facades (front and side painted side by side in one atlas, lit windows in an emission map), vertex-coloured trim, unshaded HDR glow, and the dotted far silhouettes
 - `features/world/view/tower_house.gd`: Builds one Sana'a tower-house mesh from a BuildingDef: four textured facades (one atlas), a roof, a white gypsum parapet with merlons and stepped or horned corners, and roof extras
-- `features/world/workshop/workshop_spot.gd`: The workshop bench: a plain box mesh (size and colour from explore.json; it is scenery, not a character) and the interact prompt
+- `features/world/workshop/workshop_spot.gd`: The workshop bench: a jambiyah smith's workbench built from the prop 'workbench' (content/world/props/workbench.json: one mesh in the painted world's materials) with its brass lamp's light, plus the interact prompt
 
 ## localization
 - `localization/arena.csv`
@@ -564,13 +578,18 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/lint_gd.py`: GDScript rules Godot itself doesn't enforce (docs/ARCHITECTURE.md, "Code rules"); exit 1 on any break.
 - `tools/map.py`: Writes docs/MAP.md from each file's purpose line, so the map never drifts. --check: exit 1 if stale.
 - `tools/musnad.py`: Transliterate Arabic to Musnad (Old South Arabian) letter by letter; scan files for Arabic.
+- `tools/oc_review.sh`: Reviews an opencode task (branch oc/<task>) the same cheap way as an agy one: report, check result, commits, stats,
+- `tools/oc_task.sh`: Runs opencode on one task brief inside its own git worktree, never in the main checkout (DECISIONS 2026-10-23).
 - `tools/rodin/rewrite_glb.py`: Rebuild a Rodin glb with new triangle indices (from Godot, winding flipped back; IDX_BIN '-' keeps its own), no
 - `tools/rodin/slim_indices.gd`: Rodin step 1: simplifies a Rodin glb mesh with Godot's LOD generator and writes the index buffer (env SRC, IDX, MAX_TRIS, DST); rewrite_glb.py then builds the slim glb (usage: docs/design/characters-3d.md 8)
 - `tools/run_godot.sh`: Runs the pinned Godot headless on this project with the given arguments; fails on a non-zero exit or on
 - `tools/shot_arena.gd`: Builds one battle arena on its own (no rooftop, no Router): the BattleRunner with the default encounter, heroes on auto-play, the HUD hidden when the user argument "hud=off" is given, so the painted arena can be judged alone
 - `tools/shot_battle.gd`: Starts the prototype and, after a moment of walking, makes the patrol touch the player so the battle (camera swoop, effects) can be filmed with the movie writer
+- `tools/shot_camera_v2.gd`: Renders rooftop and camera_room scenes in follow and framed camera modes to C:/dev/game/inbox/camera_v2_*.png
+- `tools/shot_camera_v2.tscn`: scene
 - `tools/shot_hud.gd`: Renders the battle HUD to PNG files (not headless; needs a window)
 - `tools/shot_models.gd`: Model gallery for renders (docs/design/characters-3d.md): the cast in a row on a floor under the painted look, each doing a state, close enough to judge the stand-ins
 - `tools/shot_scene.gd`: Plays a scene (or a Node script) for the movie writer (frames to a folder): the battle demo with its heroes on auto_play, or any scene
 - `tools/shot_shatter.gd`: Shows the qamariya shatter on a stand-in frame (a stripe pattern) so the glass can be judged without a fight
+- `tools/shot_workbench.gd`: Renders the workbench prop close up and in the rooftop from the play camera to inbox PNGs (960x540)
 - `tools/vfx_gallery.gd`: Effect gallery: plays every battle effect kind one after another (one per second) on a night stage, for the movie writer

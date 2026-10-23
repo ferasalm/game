@@ -1,5 +1,6 @@
 extends TestCase
-## Chests (prompt, one-time opening, the lid animation, the Rooftop signal) and the neon signs (localization keys,
+## Chests (prompt, one-time opening, the lid animation, the Rooftop signal, the lid state per chest closed, opened
+## and looted after a load, an open chest shows its dark inside and the raised lid its lining) and the neon signs (localization keys,
 ## Musnad text from the CSV, text fitted to the board).
 
 const DT: float = 1.0 / 60.0
@@ -51,6 +52,56 @@ func test_chest_prompt_open_signal_and_lid() -> void:
 	chest._unhandled_input(_press())
 	check_eq(opened.size(), 1, "a chest opens once")
 	rooftop.free()
+
+
+func test_each_chest_lid_is_closed_then_opened_and_stays_open_after_a_load() -> void:
+	GameState.start_new()
+	var rooftop: Rooftop = _make()
+	for chest: Chest in rooftop.dressing.chests:
+		check(not chest.is_open and is_zero_approx(chest.hinge.rotation.x), "%s: closed, its lid down" % chest.chest_id)
+		check_eq(chest.hinge.get_child_count(), 1, "%s: one lid, on the hinge" % chest.chest_id)
+	var open_x: float = -deg_to_rad((ContentDB.get_def("explore_rules", &"default") as ExploreRulesDef).chest_open_angle)
+	var mafraj: Chest = rooftop.dressing.chest(&"chest_mafraj")
+	mafraj._interact()
+	for i: int in 60:
+		mafraj._process(DT)
+	check(is_equal_approx(mafraj.hinge.rotation.x, open_x), "opened: the lid rests open")
+	check(is_zero_approx(rooftop.dressing.chest(&"chest_saila").hinge.rotation.x), "the other chest stays shut")
+	rooftop.free()
+	GameState.flags[Chests.flag(&"chest_mafraj")] = true
+	var saved: Dictionary = GameState.to_dict()
+	GameState.reset()
+	GameState.from_dict(saved)
+	rooftop = _make()
+	var looted: Chest = rooftop.dressing.chest(&"chest_mafraj")
+	check(looted.is_open and is_equal_approx(looted.hinge.rotation.x, open_x), "looted, after a load: built open")
+	check(not looted._can_interact(), "and offers nothing")
+	check(is_zero_approx(rooftop.dressing.chest(&"chest_saila").hinge.rotation.x), "the unlooted one loads shut")
+	rooftop.free()
+	GameState.reset()
+
+
+func test_an_open_chest_shows_its_inside_and_the_lid_its_lining() -> void:
+	var def := ContentDB.get_def("prop", &"chest") as PropDef
+	var palette := ContentDB.get_def("palette", &"main") as PaletteDef
+	var lid: ArrayMesh = PropMesh.mesh(def, palette, Chest.LID_GROUP)
+	check(_faces(lid, Vector3.DOWN) > 0, "the lid has an underside (a raised lid is not hollow)")
+	var body: ArrayMesh = PropMesh.mesh(def, palette, Chest.BODY_GROUP)
+	check(_faces(body, Vector3.UP, def.lid_hinge.y, true) > 0, "the box has a dark inside at its rim")
+
+
+## Vertices facing `dir` (above `min_y`; only near-black ones when `dark`) in a mesh.
+func _faces(mesh: ArrayMesh, dir: Vector3, min_y: float = -INF, dark: bool = false) -> int:
+	var found: int = 0
+	for surface: int in mesh.get_surface_count():
+		var arrays: Array = mesh.surface_get_arrays(surface)
+		var points: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+		var normals: PackedVector3Array = arrays[Mesh.ARRAY_NORMAL]
+		var colors: PackedColorArray = arrays[Mesh.ARRAY_COLOR]
+		for i: int in points.size():
+			var shade_ok: bool = not dark or colors[i].get_luminance() < 0.12
+			found += 1 if normals[i].dot(dir) > 0.9 and points[i].y > min_y and shade_ok else 0
+	return found
 
 
 func test_chests_obey_set_exploring() -> void:

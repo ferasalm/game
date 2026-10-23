@@ -4,32 +4,30 @@
   {
    "id": "footstep_zayd",
    "files": [
-    "impact_sounds/footstep_concrete_000.ogg",
-    "impact_sounds/footstep_concrete_001.ogg",
-    "impact_sounds/footstep_concrete_002.ogg",
-    "impact_sounds/footstep_concrete_003.ogg",
-    "impact_sounds/footstep_concrete_004.ogg"
+    "impact_sounds/footstep_carpet_000.ogg",
+    "impact_sounds/footstep_carpet_001.ogg",
+    "impact_sounds/footstep_carpet_002.ogg",
+    "impact_sounds/footstep_carpet_003.ogg",
+    "impact_sounds/footstep_carpet_004.ogg"
    ],
    "bus": "SFX",
-   "volume_db": -8.0,
+   "volume_db": -15.0,
    "pitch_min": 0.92,
-   "pitch_max": 1.08,
-   "interval": 0.34
+   "pitch_max": 1.06
   },
   {
    "id": "footstep_follower",
    "files": [
-    "impact_sounds/footstep_concrete_000.ogg",
-    "impact_sounds/footstep_concrete_001.ogg",
-    "impact_sounds/footstep_concrete_002.ogg",
-    "impact_sounds/footstep_concrete_003.ogg",
-    "impact_sounds/footstep_concrete_004.ogg"
+    "impact_sounds/footstep_carpet_000.ogg",
+    "impact_sounds/footstep_carpet_001.ogg",
+    "impact_sounds/footstep_carpet_002.ogg",
+    "impact_sounds/footstep_carpet_003.ogg",
+    "impact_sounds/footstep_carpet_004.ogg"
    ],
    "bus": "SFX",
-   "volume_db": -16.0,
+   "volume_db": -21.0,
    "pitch_min": 0.95,
-   "pitch_max": 1.12,
-   "interval": 0.36
+   "pitch_max": 1.1
   },
   {
    "id": "menu_move",

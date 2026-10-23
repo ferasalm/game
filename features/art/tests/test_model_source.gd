@@ -1,7 +1,7 @@
 extends TestCase
 ## The live 3D source behind the CharacterVisual facade: the model is built and painted, clips announce impact and
 ## end on the retimed curve (and wait for the hit pause), the body turns by yaw and never by a negative scale, the
-## feet pace the ground, a knocked-out body stays down, the grandfather's hilt is drawn for a strike and sheathed after,
+## feet pace the ground and sound a footstep on each foot contact, a knocked-out body stays down, the grandfather's hilt is drawn for a strike and sheathed after,
 ## and a CharacterVisual without a model def falls back to the pixel sprite.
 
 const DT: float = 1.0 / 60.0
@@ -133,6 +133,25 @@ func test_feet_pace_the_ground_and_gait_follows_speed() -> void:
 	visual.play(&"idle")
 	_run(visual, 1.0)
 	check_eq((source._clips.current() as ClipDef).id, &"idle", "standing still idles")
+	visual.free()
+
+
+func test_footsteps_fall_on_the_foot_contacts_of_the_gait() -> void:
+	var visual: CharacterVisual = _visual()
+	var source := visual.source as ModelSource
+	var steps: Array[StringName] = []
+	visual.clip_event.connect(func(kind: StringName) -> void: if kind == &"footstep": steps.append(kind))
+	visual.play(&"walk", Vector2.RIGHT)
+	for i: int in 180:
+		visual.position.x += 1.6 * DT
+		visual._process(DT)
+	var clip: ClipDef = source._clips.current()
+	var expected: float = 3.0 * source.rig.player.speed_scale * clip.contacts.size() / clip.seconds
+	check(steps.size() >= 3 and absf(steps.size() - expected) <= 1.5, "3 s of walking: one step per contact (%d, about %.1f)" % [steps.size(), expected])
+	steps.clear()
+	visual.play(&"idle")
+	_run(visual, 2.0)
+	check_eq(steps.size(), 0, "standing still makes no footsteps")
 	visual.free()
 
 

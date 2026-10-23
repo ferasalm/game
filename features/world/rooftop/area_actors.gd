@@ -26,8 +26,13 @@ static func build(parent: Node3D, area: AreaDef, rules: ExploreRulesDef, floor_y
 		var patrol := Patrol.new(rules, place, floor_y, out.player)
 		out.patrols.append(patrol)
 		parent.add_child(patrol)
-	out.workshop = WorkshopSpot.new(rules, out.player)
-	out.workshop.position = marker_of(area, AreaDef.WORKSHOP, floor_y)
+	var workshop_place: PlaceDef = area.place(&"workshop")
+	out.workshop = WorkshopSpot.new(rules, out.player, workshop_place)
+	if workshop_place != null:
+		out.workshop.position = _at(workshop_place, floor_y)
+		out.workshop.rotation.y = deg_to_rad(workshop_place.yaw)
+	else:
+		out.workshop.position = marker_of(area, AreaDef.WORKSHOP, floor_y)
 	parent.add_child(out.workshop)
 	out._add_places(parent, area, rules, floor_y)
 	return out
@@ -56,8 +61,13 @@ func _add_places(parent: Node3D, area: AreaDef, rules: ExploreRulesDef, floor_y:
 		sabil.position = _at(place, floor_y)
 		parent.add_child(sabil)
 	for place: PlaceDef in area.places_of(PlaceDef.NPC):
-		var person := Bystander.new(place.sprite, place.yaw)
-		person.position = _at(place, floor_y)
+		var counter: Placement = kept_prop(area, place)
+		var at: Vector3 = _at(place, floor_y) if counter == null else keeper_point(counter, rules, floor_y)
+		var yaw: float = place.yaw
+		if counter != null:
+			yaw = StallKeeper.facing(Vector2(at.x, at.z), Vector2(place.pos.x, place.pos.z))
+		var person := Bystander.new(place.sprite, yaw)
+		person.position = at
 		bystanders.append(person)
 		bystander_places.append(place)
 		parent.add_child(person)
@@ -65,6 +75,28 @@ func _add_places(parent: Node3D, area: AreaDef, rules: ExploreRulesDef, floor_y:
 		spot.position = _at(place, floor_y)
 		talk_spots.append(spot)
 		parent.add_child(spot)
+
+
+## The prop an NPC keeps (his place's `prop`, the nearest placement of it), or null: he then stands on his place.
+static func kept_prop(area: AreaDef, place: PlaceDef) -> Placement:
+	var best: Placement = null
+	for p: Placement in area.props:
+		if p.ref == place.prop and (best == null or _flat(p.pos, place.pos) < _flat(best.pos, place.pos)):
+			best = p
+	return best
+
+
+## Where a keeper stands: at the end of his counter, clear of its collide box (StallKeeper), facing his place,
+## where the player talks to him from.
+static func keeper_point(counter: Placement, rules: ExploreRulesDef, floor_y: float) -> Vector3:
+	var def := ContentDB.get_def("prop", counter.ref) as PropDef
+	var at := Vector2(counter.pos.x, counter.pos.z)
+	var spot: Vector2 = StallKeeper.at_end(at, counter.yaw, def.collide, rules.capsule_radius, rules.keeper_gap)
+	return Vector3(spot.x, floor_y, spot.y)
+
+
+static func _flat(a: Vector3, b: Vector3) -> float:
+	return Vector2(a.x - b.x, a.z - b.z).length()
 
 
 static func _at(place: PlaceDef, floor_y: float) -> Vector3:

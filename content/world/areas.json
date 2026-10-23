@@ -68,15 +68,16 @@
           "id": "workshop",
           "x": 28.5,
           "z": 14.5,
-          "yaw": 270
+          "yaw": 270,
+          "prop": "workbench"
         },
         {
           "kind": "npc",
           "id": "herb_seller",
           "x": 5.0,
-          "z": 12.5,
-          "yaw": 90,
-          "sprite": "abu_nabil"
+          "z": 13.6,
+          "sprite": "abu_nabil",
+          "prop": "herb_stall"
         },
         {
           "kind": "shop",
@@ -118,6 +119,20 @@
             14,
             3
           ]
+        },
+        {
+          "kind": "camera_zone",
+          "id": "camera_zone_overlook",
+          "rect": [
+            6.0,
+            1.0,
+            14.0,
+            3.0
+          ],
+          "yaw": 0.0,
+          "pitch": 20.0,
+          "distance": 8.0,
+          "fov": 45.0
         },
         {
           "kind": "patrol",
@@ -306,12 +321,12 @@
         },
         {
           "ref": "basil_pot",
-          "x": 4.0,
+          "x": 3.7,
           "z": 12.0
         },
         {
           "ref": "basil_pot",
-          "x": 4.0,
+          "x": 3.7,
           "z": 13.0
         },
         {

@@ -1,38 +1,36 @@
 # HANDOFF (current state only; rewritten by /handoff; max 60 lines)
-Last updated: 2026-10-22, session 11 (Opus 5.5, `claude-opus-5-5`, side session of 10, high): v0.3 "Painted Rooftops",
-Phase 2. Specs in docs/design/: v03-plan, characters-3d (8 = Rodin pipeline), identity, zayd-moves, hilt-stones, music.
+Last updated: 2026-10-23, session 13 (Opus 5.5, `claude-opus-5-5`): demo push, M1. Plans in docs/design/:
+demo-plan, level-1 (five roofs), valve-puzzles; older: characters-3d, identity, music.
 
 ## Status
-- Branch claude/night-sanaa, merged to main. 587 tests.
-- Merged: agy save-slots (3 slots picked at the sabil with overwrite confirm; title menu Continue / New Game / Load;
-  pause Load; retry loads the last slot; per-checkout test save folders). Worktree and branch removed.
-- All Feras's Rodin models are in game: Bilqis (7.9k tris, casts with her prosthetic right arm), Abu Nabil (8.2k),
-  the Concession enforcer (7.5k, baked baton, attack now sword_attack), the drone hull (5.2k, part kind `mesh`), and
-  the grandfather hilt as Rodin grip + sheath (HiltParts `scene`/`sheath_scene`; the blade is still HiltMesh's).
-  Stand-in garments are gone. Zayd's baked dagger is pressed flat (`--press`); his hilt now sits at his belly front,
-  curving sideways, over the pressed spot (a faint paint remnant shows beside it).
-- tools/rodin/rewrite_glb.py: rigid models (no skin lift), `--cut/--keep/--press/--place` (characters-3d.md 8 step 6).
-- Music in game: 10 tracks (title, explore_souq, sabil, workshop, 3 battle themes per encounter, boss_abu_nabil,
-  victory); menus and the stall keep the area music. Abu Nabil spec: docs/design/abu-nabil-boss.md; agy part A
-  (combat, brief docs/briefs/abu-nabil-combat.md) running in ../game-wt/abu-nabil-combat.
-- Renders judged by Claude only (scratch); the owner has not seen the new cast yet.
-- Old WIP worktrees (unmerged, kept): bench prop worktree-agent-a4cf40c0e9518e744; balance worktree-agent-a7a39e37292830460.
+- Branch claude/night-sanaa, merged to main. 622 tests, all checks pass.
+- Look: route B (repainted textures on live 3D; inbox/painted_routes.png). Route A's filter is only a frame-tool
+  option (rooftop_shot.gd `route=a`).
+- Camera-v2 merged and reviewed: follow camera with no player control, no tilt-shift blur, Brothers framing; framed
+  corner shots indoors (owner approved). Side angle (32 deg) and zone roll: in the level1-blockout brief, not built.
+- Workbench prop merged (screen glows too pale); it moves into the tayramana's corner (tayramana brief item 0).
+  WIP worktree agent-a4cf40c0e9518e744 is superseded: remove it.
+- Level 1 redesigned to the owner's brief (five roofs, five crossings, rain, concept art in chat); the first
+  blockout run (old two-terrace layout) was stopped unbuilt; its brief is rewritten for five roofs.
+- opencode CLI 1.19.4 installed (own data folder), tools/oc_task.sh + oc_review.sh, AGENTS.md, opencode.json. Free
+  models said "Free usage limit reached"; owner: wait for the reset ($0). No completed opencode run yet.
+- skin-bake merged: painted skins in assets/textures/painted/skin/ (not wired into models.json yet). The Abu Nabil session (local_fcbcec7e...) runs agy abu-nabil-world and owns features/combat, dialogue, items, economy, prototype until it merges. Max 3 runs total.
 
 ## Waiting on the owner
-- Look at the rooftop v2 renders (inbox/rooftop_v2_*.png): keep the layout and dress it, or ask for another layout.
-- Look at the cast in game (Rodin models): run the prototype, or ask for a render into inbox/.
+- A Google Flow concept of the five roofs (prompt given in chat 2026-10-23), saved to inbox/.
+- Play the new camera once the blockout is in (M1 gate).
 
 ## Next steps (one per chat)
-1. Abu Nabil: review + merge agy part A (`bash tools/agy_review.sh abu-nabil-combat`), then brief and run part B
-   (dialogue choices, haggle talk, greedy prices, spar) per the spec's build split. Model: Opus. Effort: medium.
-2. Rooftop v2 dressing (stair head, mafraj, tanks in the `T` corners; workshop off the bridge tiles; Abu Nabil's stall
-   late on the roof with a sneak path past the patrols) via agy. Model: Sonnet. Effort: medium.
-3. Architecture fixes via agy (audit top 5). Model: Opus. Effort: medium.
-4. Zayd kit, then hilt stones via agy. Model: Opus. Effort: medium.
-5. Balance (WIP branch), bench + hook motif, then Phase 3 + Checkpoint 2. Model: Sonnet. Effort: medium.
+1. Wire the painted skins (assets/textures/painted/skin/) into content/art/models.json; launch level1-blockout
+   (docs/briefs/level1-blockout.md); review it with renders for Feras; then crossings, tayramana (after the Abu
+   Nabil merge), storm, valve-puzzles briefs (level-1.md 8). Retry opencode with a tiny prompt first.
+   Model: Opus. Effort: high.
+2. Route B look pass: softer, flatter character light, judged against inbox/route_b.png. Model: Opus. Effort: high.
+3. Action combat overhaul after the demo. Model: Opus. Effort: high.
+4. Architecture fixes (audit top 5) and balance (worktree agent-a7a39e37292830460). Model: Sonnet. Effort: medium.
 
 ## Paste-ready prompt
 ```
-Continue the game repo (ferasalm/game), v0.3. Read HANDOFF.md. Do Next step 1 only: review and merge the agy run
-abu-nabil-combat, then write and run part B of docs/design/abu-nabil-boss.md via agy; check.sh, /handoff.
+Continue the game repo (ferasalm/game). Read HANDOFF.md. Do Next step 1 as manager of cheap builders; play back
+to Feras and ask before each new step; check.sh, /handoff.
 ```

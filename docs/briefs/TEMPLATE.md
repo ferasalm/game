@@ -1,5 +1,5 @@
 # Brief: <task> (copy to docs/briefs/<task>.md; <= 60 lines)
-You are in your own worktree on branch gemini/<task> (made from claude/night-sanaa). Follow GEMINI.md, including
+You are in your own worktree on branch <gemini|oc>/<task> (made from claude/night-sanaa). Follow GEMINI.md, including
 <review_misses>. Load the <skill> skill (.agents/skills/<skill>) if one fits.
 
 ## Why
@@ -19,4 +19,4 @@ You are in your own worktree on branch gemini/<task> (made from claude/night-san
 
 ## Proof
 `bash tools/check.sh` raw last 15 lines; renders (if any) to C:/dev/game/inbox/<name>.png; small WIP commits; final
-message ends with `Built-by: Gemini 3.8 Flash (agy)`.
+message ends with `Built-by: Gemini 3.8 Flash (agy)` (opencode: `Built-by: <model> (opencode)`).
