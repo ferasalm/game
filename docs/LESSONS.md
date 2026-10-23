@@ -63,6 +63,9 @@
 - OpenRouter :free = 50 requests/day under $10 bought credit, shared by Inkling and all :free models (2026-10-23).
 - 4 opencode + 2 agy + Godot hit the 16 GB commit limit (fork failed) -> <= 3 runs; check free memory (2026-10-23).
 
+- opencode Inkling on balance-gear ran the harness, hit permission rejections and committed nothing (the WIP commits were empty) -> `git diff base...branch` empty = nothing built; rerun on agy (2026-10-23).
+- check.sh failed once on `exit code 124` and once on exit 139 ("Parameter mem is null" = out of memory) while other Godot runs were open; the failing test passed alone and the rerun was green -> rerun before debugging; and never push before reading the final check line (2026-10-23).
+
 ## 5. Art, browser, night look (2026-10-21)
 - "3 FPS" was a --write-movie render -> real FPS only via fps_probe.gd.
 - The browser pane's downloads are invisible to Claude; Flow links need the owner's cookies -> he saves files to
