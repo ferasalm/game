@@ -11,7 +11,9 @@ static func on_damage(event_player: BattleEventPlayer, event: TimelineEvent) -> 
 	var target: CharacterVisual = event_player._fighters.visual(event.unit_id)
 	if target != null:
 		if event_player._pending_crit.get(event.unit_id, false):
-			BattleNumbers.pop(event_player._fighters, str(event.value), target.anchor_position(&"head"), event_player._view.number_font_size, Color("#f2a93a"), 1.3, event_player._view, event_player._juice.def, 0.0)
+			var amber: Color = Ui.style().colour(&"c_qam_amber")
+			BattleNumbers.pop(event_player._fighters, str(event.value), target.anchor_position(&"head"),
+					event_player._view.number_font_size, amber, 1.3, event_player._view, event_player._juice.def, 0.0)
 			event_player._pending_crit.erase(event.unit_id)
 		else:
 			event_player._fighters.float_number(event.unit_id, event.value)

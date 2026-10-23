@@ -33,7 +33,7 @@ static func from_sim(sim: BattleSim, final_result: StringName = &"") -> BattleOu
 		if unit.side != 0:
 			continue
 		var hp: int = unit.hp
-		if hp <= 0 and out.result == VICTORY:
+		if hp <= 0 and (out.result == VICTORY or out.result == FLED):  # rpg-systems.md 3
 			hp = mini(sim.setup.ko_stand_hp, unit.def.max_hp)
 		Vitals.store(out.vitals, unit.unit_id, hp, unit.sp)
 	out.bag = sim.bag.snapshot()

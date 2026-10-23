@@ -23,6 +23,7 @@ func test_move_applies_the_status_to_a_living_target() -> void:
 	var foes: Array[CombatantDef] = [BattleProbe.fighter(&"f", {"agility": 1})]
 	heroes[0].actions = [&"net"] as Array[StringName]
 	var sim: BattleSim = BattleProbe.sim(heroes, [0] as Array[int], foes, [0] as Array[int], moves, {}, statuses)
+	sim.rolls_enabled = false  # no resist roll: this test pins the status landing
 	var picker := func(s: BattleSim, hero: UnitState) -> void:
 		s.choose(hero.unit_id, s.actions[&"net"], &"f_1")
 	var trace: Array[TimelineEvent] = BattleProbe.play_until(sim, &"act", picker)

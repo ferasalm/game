@@ -28,3 +28,13 @@ func test_fled_keeps_vitals_and_bag() -> void:
 	check(sim.flee_fails == 1, "flee failed when rolls disabled")
 	check(events.any(func(e: TimelineEvent) -> bool: return e.kind == &"flee_failed"), "flee_failed event emitted")
 	check_eq(events.size(), 1, "one try = one event")
+
+
+func test_fled_stands_downed_heroes_up() -> void:
+	var sim: BattleSim = BattleProbe.sim([BattleProbe.fighter(&"h"), BattleProbe.fighter(&"g")], [0, 1] as Array[int],
+			[BattleProbe.fighter(&"f")], [0] as Array[int], [BattleProbe.move(&"flee")], {})
+	sim.setup.ko_stand_hp = 7
+	sim.timeline.find(&"g").hp = 0
+	var outcome: BattleOutcome = BattleOutcome.from_sim(sim, BattleOutcome.FLED)
+	check_eq(outcome.result, BattleOutcome.FLED, "the outcome is FLED")
+	check_eq(Vitals.hp_of(outcome.vitals, &"g", 999), 7, "a downed hero stands up after fleeing (rpg-systems.md 3)")

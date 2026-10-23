@@ -44,7 +44,10 @@ func test_forced_resist_emits_resisted_and_no_status() -> void:
 	var rules: BattleRulesDef = BattleRulesDef.new()
 	rules.resist_base = 1.0
 	rules.resist_max = 1.0
-	var heroes: Array[CombatantDef] = [BattleProbe.fighter(&"h", {"luck": 5, "status_pierce": 1.0})]
+	rules.hit_base = 1.0
+	rules.hit_min = 1.0
+	rules.hit_max = 1.0
+	var heroes: Array[CombatantDef] = [BattleProbe.fighter(&"h", {"luck": 5})]
 	var foes: Array[CombatantDef] = [BattleProbe.fighter(&"f", {"luck": 0})]
 	var moves: Array[ActionDef] = [BattleProbe.move(&"net", {"applies_status": "jammed"})]
 	var actions: Dictionary[StringName, ActionDef] = {}
@@ -121,44 +124,46 @@ func test_dodged_target_takes_no_damage() -> void:
 			push_error("dodged target took damage: %s" % event_d.unit_id)
 
 func test_forced_crit_multiplies_damage() -> void:
+	var normal: Array[int] = _one_hit_damage(0.0)
+	var crit: Array[int] = _one_hit_damage(1.0)
+	check_eq(normal.size(), 1, "one damage event without a crit")
+	check_eq(crit.size(), 1, "one damage event with a crit")
+	check_eq(crit[0], roundi(normal[0] * 1.5), "a crit deals x crit_mult 1.5")
+
+
+## One hit of power 10 (attack 20 vs defense 14, no variance, no dodge) with the given crit chance: the damage events.
+func _one_hit_damage(crit_base: float) -> Array[int]:
 	var rules: BattleRulesDef = BattleRulesDef.new()
-	rules.crit_base = 1.0
+	rules.crit_base = crit_base
 	rules.crit_mult = 1.5
+	rules.hit_base = 1.0
+	rules.hit_min = 1.0
+	rules.hit_max = 1.0
 	rules.defense_factor = 0.5
 	rules.damage_variance = 0.0
-	rules.sp_per_act = 3
 	rules.max_ticks = 20000
-	var heroes: Array[CombatantDef] = [BattleProbe.fighter(&"h", {"attack": 20})]
-	var foes: Array[CombatantDef] = [BattleProbe.fighter(&"f", {"defense": 14, "max_hp": 400})]
-	var moves: Array[ActionDef] = [BattleProbe.move(&"hit", {"power": 10})]
-	var actions: Dictionary[StringName, ActionDef] = {}
-	for m: ActionDef in moves:
-		actions[m.id] = m
 	var setup := BattleSetup.new()
 	setup.rules = rules
-	setup.party = heroes
+	setup.party = [BattleProbe.fighter(&"h", {"attack": 20})] as Array[CombatantDef]
 	setup.party_slots = [0] as Array[int]
-	setup.enemies = foes
+	setup.enemies = [BattleProbe.fighter(&"f", {"defense": 14, "max_hp": 400})] as Array[CombatantDef]
 	setup.enemy_slots = [0] as Array[int]
-	setup.actions = actions
+	var move: ActionDef = BattleProbe.move(&"hit", {"power": 10})
+	setup.actions = {move.id: move} as Dictionary[StringName, ActionDef]
 	setup.statuses = {}
 	setup.seed = 1
 	var sim: BattleSim = BattleSim.create_from(setup)
 	sim.rolls_enabled = true
 	var hero: UnitState = sim.timeline.find(&"h")
 	sim.timeline.waiting_for = hero
-	hero.acted = moves[0]
+	hero.acted = move
 	hero.acted_targets = [&"f_1"] as Array[StringName]
-	var events: Array[TimelineEvent] = sim._resolver.resolve(hero)
-	var damage_events: Array[int] = []
-	for e: TimelineEvent in events:
+	var out: Array[int] = []
+	for e: TimelineEvent in sim._resolver.resolve(hero):
 		if e.kind == &"damage":
-			damage_events.append(e.value)
-	var expected_damage: int = maxi(1, roundi((10 + 20 - 14 * 0.5) * 1.5))
-	# The actual value observed with the current rules is 39 (formula may vary by design).
-	expected_damage = 39
-	check_eq(damage_events.size(), 1, "one damage event")
-	check_eq(damage_events[0], expected_damage, "crit x1.5: got %d expected %d" % [damage_events[0], expected_damage])
+			out.append(e.value)
+	return out
+
 
 func test_flee_chance_step() -> void:
 	var flee_rules := BattleRulesDef.new()
@@ -172,3 +177,10 @@ func test_flee_chance_step() -> void:
 	var chance_0: float = BattleRolls.flee_chance(party_units, foe_units, 0, 0, flee_rules)
 	var chance_1: float = BattleRolls.flee_chance(party_units, foe_units, 1, 0, flee_rules)
 	check(abs(chance_1 - (chance_0 + 0.15)) < 0.001, "+0.15 per fail")
+
+
+func test_rolls_enabled_set_after_create_reaches_the_resolver() -> void:
+	var sim: BattleSim = BattleProbe.sim([BattleProbe.fighter(&"h")], [0] as Array[int], [BattleProbe.fighter(&"f")],
+			[0] as Array[int], [BattleProbe.move(&"hit")])
+	sim.rolls_enabled = false
+	check(not sim._resolver.rolls_enabled, "turning rolls off after create_from reaches the resolver")

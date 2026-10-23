@@ -25,7 +25,11 @@ var action_rules := BattleActionRules.new()
 ## A second RNG for roll chances (hit, crit, resist, flee), separate from the battle RNG.
 var roll_rng := RandomNumberGenerator.new()
 ## When false, roll calculations are skipped (tests pin exact damage with old rules).
-var rolls_enabled: bool = true
+var rolls_enabled: bool = true:
+	set(value):
+		rolls_enabled = value
+		if _resolver != null:
+			_resolver.rolls_enabled = value  # set after create_from: the resolver copied the old value
 ## Failed flee attempts this battle (used by the flee chance formula).
 var flee_fails: int = 0
 
