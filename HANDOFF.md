@@ -25,15 +25,19 @@ demo-plan, level-1 (five roofs), valve-puzzles. Owner concepts: inbox/level1_con
 - Owner camera rule (DECISIONS): blocked by a wall, the camera rises toward isometric, never closes in on faces.
   Test it on the five roofs with the 32-degree side angle; fix if it persists.
 - Session notes: side-session-notes/local_60fae4fe.../level1-session-notes.md (concept reading of the roofs).
+- Session 16: RPG + menus on claude/menus-rpg-5089fa (docs, unmerged); Feras approved rpg-systems.md, rpg-menus.md,
+  zayd-moves.md 7. RUNNING opencode oc/rpg-rolls-flee (game-wt). Briefs: zayd-kit, rpg-progression (after it).
 
 ## Waiting on the owner
 - Play the Abu Nabil fight (session 14 notes): stall at the market roof, pick B or C, win, talk again, Spar.
+- Paint 7 menu backdrops (Gemini prompts: docs/design/rpg-menus.md 7) -> inbox/ui_bg_<id>.png.
 - Judge the renders of the five roofs and the souq props when they are merged; play the new camera (M1 gate).
 
 ## Next steps (one per chat)
 1. Review and merge level1-blockout-fix and souq-props-2 (above); renders to Feras next to his concepts; storm on
    the new area; camera wall test; then launch tayramana, crossings (set moves), valve-puzzles (level-1.md 8).
    Model: Opus. Effort: high.
+1b. RPG + menus: merge rpg-rolls-flee, run zayd-kit + rpg-progression, brief the menus. Model: Opus. Effort: high.
 2. Route B look pass: softer, flatter character light, judged against inbox/route_b.png. Model: Opus. Effort: high.
 3. Retest DeepSeek V4.1 Flash and GLM-5.3-Flash on the saved model test when opencode's free allowance resets
    (docs/research/model-test/README.md; ~10 min). Model: Sonnet. Effort: medium.

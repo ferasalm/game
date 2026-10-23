@@ -56,6 +56,7 @@
 - agy passes check.sh yet misses what a player sees -> GEMINI.md review_misses + tools/agy_review.sh (2026-10-22).
 - agy is not creative (owner): a described look (herbs, a sabil) came back as cones and gems -> creative briefs give
   geometry recipes with numbers, colours and the concept path; judge renders from the play camera (2026-10-23).
+- An approved design with no brief was never built (zayd-moves.md) -> brief it the same day (2026-10-23).
 - An agy run reported "done" with 14 failing tests after a timeout -> never trust its report; run check.sh (2026-10-23).
 
 ## 5. Art, browser, night look (2026-10-21)
