@@ -1,5 +1,5 @@
 extends Node
-## purpose: Renders prop close-up and play views to inbox PNGs (960x540).
+## Renders a prop close-up from play camera height to an inbox PNG (960x540).
 ## Run: bash tools/run_godot.sh --resolution 960x540 res://tools/shot_prop.tscn -- <prop_id> [close|play]
 
 const OUT_DIR: String = "C:/dev/game/inbox"

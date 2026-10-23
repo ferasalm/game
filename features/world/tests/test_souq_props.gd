@@ -1,5 +1,5 @@
 extends TestCase
-## purpose: Tests for souq props: the wall niche sabil and herb stall recipes and budgets.
+## Tests for souq props: the wall niche sabil with 7-colour qamariya and the herb stall within budgets.
 
 const MAX_TRIANGLES: int = 3000
 const MAX_MATERIALS: int = 6
