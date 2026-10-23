@@ -21,6 +21,16 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `.agents/skills/narrative-designer/SKILL.md`
 - `.agents/skills/technical-artist/SKILL.md`
 
+## .opencode
+- `.opencode/agent/blender-addon-engineer.md`
+- `.opencode/agent/game-audio-engineer.md`
+- `.opencode/agent/game-designer.md`
+- `.opencode/agent/godot-gameplay-scripter.md`
+- `.opencode/agent/godot-shader-developer.md`
+- `.opencode/agent/level-designer.md`
+- `.opencode/agent/narrative-designer.md`
+- `.opencode/agent/technical-artist.md`
+
 ## content
 - `content/art/clips.json`: content: clip x15
 - `content/art/models.json`: content: model x5
@@ -31,7 +41,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/audio/rules.json`: content: audio_rules x1
 - `content/audio/screen_music.json`: content: screen_music x3
 - `content/audio/sounds.json`: content: sound x34
-- `content/combat/actions.json`: content: action x21
+- `content/combat/actions.json`: content: action x22
 - `content/combat/arena_skyline.json`: content: skyline x1
 - `content/combat/arenas.json`: content: arena x1
 - `content/combat/camera.json`: content: battle_camera x1
@@ -39,8 +49,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/combat/encounters.json`: content: encounter x6
 - `content/combat/juice.json`: content: battle_juice x1
 - `content/combat/rules.json`: content: battle_rules x1
-- `content/combat/statuses.json`: content: status x4
-- `content/combat/vfx.json`: content: vfx x15
+- `content/combat/statuses.json`: content: status x6
+- `content/combat/vfx.json`: content: vfx x16
 - `content/combat/view.json`: content: battle_view x1
 - `content/dialogue/box.json`: content: dialogue_style x1
 - `content/dialogue/dialogues.json`: content: dialogue x16
@@ -48,17 +58,28 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/dialogue/talks.json`: content: talk x1
 - `content/economy/rules.json`: content: economy_rules x1
 - `content/economy/shops.json`: content: shop x1
+- `content/items/armor.json`: content: armor x5
 - `content/items/chests.json`: content: chest x4
 - `content/items/consumables.json`: content: consumable x4
-- `content/items/perks.json`: content: perk x6
+- `content/items/materials.json`: content: material x3
+- `content/items/perks.json`: content: perk x16
 - `content/items/rarities.json`: content: rarity x6
 - `content/jambiyah/blades.json`: content: blade x3
+- `content/jambiyah/heirloom.json`: content: heirloom x3
 - `content/jambiyah/hilts.json`: content: hilt x3
 - `content/jambiyah/loadouts.json`: content: loadout x2
+- `content/jambiyah/stones.json`: content: stone x12
+- `content/progression/classes.json`: content: class x2
+- `content/progression/levels.json`: content: levels x1
 - `content/prosthetics/prosthetics.json`: content: prosthetic x6
 - `content/prototype/flow.json`: content: flow_rules x1
+- `content/puzzles/light_lock.json`: content: light_lock x1
+- `content/puzzles/water_net.json`: content: water_net x1
+- `content/ui/backdrops.json`: content: backdrop x7
 - `content/ui/style.json`: content: ui_style x1
 - `content/ui/transitions.json`: content: transition x3
+- `content/workshop/recipes.json`: content: recipe x4
+- `content/workshop/upgrades.json`: content: upgrade_costs x1
 - `content/world/areas.json`: content: area x2
 - `content/world/buildings.json`: content: building x15
 - `content/world/camera.json`: content: camera_rig x1
@@ -69,6 +90,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/world/props/workbench.json`: content: prop x1
 - `content/world/sky.json`: content: sky x1
 - `content/world/skyline.json`: content: skyline x1
+- `content/world/storm.json`: content: storm x1
 - `content/world/tiles.json`: content: tile x18
 
 ## core
@@ -177,16 +199,20 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/defs/vfx_def.gd`: One battle effect kind (content/combat/vfx.json, id = an ActionDef.VFX_KINDS entry): when the hit lands, the hitstop and camera shake / push it earns, and the layers of pooled sprites it paints
 - `features/combat/defs/vfx_layer.gd`: One layer of a VfxDef: `count` sprites of one texture that start at an anchor (plus an offset), grow from size to size_end, drift or travel, spin and fade
 - `features/combat/harness/balance.gd`: Balance harness: seeded battles per gear pairing with BattleAI playing both sides, one table
-- `features/combat/harness/battle_loader.gd`: Gathers the battle content from a loaded ContentDB (passed in as a Node) and builds ready-to-run BattleSims for the default encounter
+- `features/combat/harness/battle_loader.gd`: Gathers the battle content from a loaded ContentDB and builds ready-to-run BattleSims for the default encounter
 - `features/combat/harness/item_policy.gd`: The balance harness's opt-in herb use (docs/design/economy.md section 9): a white herb on a downed hero, a pink herb on the living hero below 40% HP, a yellow herb when a hero cannot pay for his cheapest move
 - `features/combat/logic/battle_action_rules.gd`: Move uses per battle, miss roll for confused units, and status cures for BattleSim and BattleResolver
 - `features/combat/logic/battle_ai.gd`: The one battle policy (enemies in play, both sides in the balance harness), in this order: 1
+- `features/combat/logic/battle_ai_tactics.gd`: Tactics evaluation for BattleAI (section 4): stance against incoming melee, shove near COMMAND, arc on spread/jammed
+- `features/combat/logic/battle_flee_logic.gd`: Flee resolution logic, extracted to keep battle_sim.gd under 200 lines
 - `features/combat/logic/battle_items.gd`: The Items command of a battle (docs/design/economy.md section 5)
 - `features/combat/logic/battle_outcome.gd`: What a finished battle hands back: result (victory, defeat, retry, load, title), the party's vitals and bag after the fight, and the rewards (money, equippable items, consumables) still to be applied to GameState by the Router
 - `features/combat/logic/battle_request.gd`: What the Router hands to a battle: encounter, arena, ambush, seed, party order, and the pre-battle snapshot (vitals, bag, money) that "Retry fight" restores
 - `features/combat/logic/battle_resolver.gd`: Resolves one landed act (docs/design/combat.md, "Resolving an action"): targets, damage or heal per target, timeline effect per hit, status, SP gain, regen, status turns
+- `features/combat/logic/battle_rolls.gd`: Pure roll calculations (no timeline dependency): hit, crit, resist, flee
 - `features/combat/logic/battle_setup.gd`: Everything BattleSim.create_from needs for one fight, in one object: the built party (in party order, one CombatantDef per hero) and the enemies with their formation slots, the rules and move tables, the carried vitals and bag, the gear snapshot, the seed, the ambush, which encounter and arena, and the stage anchor
 - `features/combat/logic/battle_sim.gd`: One battle (docs/design/combat.md): builds the units, steps the Timeline one tick at a time, asks the player (heroes) or BattleAI (enemies) for choices, resolves acts and decides victory or defeat
+- `features/combat/logic/battle_sim_runner.gd`: Step loop logic extracted to keep battle_sim.gd under 200 lines
 - `features/combat/logic/battle_targets.gd`: Who can do what in a battle: a unit's moves, which of them it can pay for, and who a move may target
 - `features/combat/logic/formation.gd`: Two rows per side: slots 0-1 are the vanguard, 2-3 the rearguard, and slot n+2 stands behind slot n
 - `features/combat/logic/hud_layout.gd`: Pure screen-rectangle maths for the battle HUD: the box around projected points, where a panel may sit beside a fighter without covering any fighter, which fighter the mouse points at, and how an info card fades
@@ -214,6 +240,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/tests/test_battle_menu_support.gd`: The command menu with tech moves: an ally move lists the allies (not the foes), self and all-moves skip the target list and commit at once, and the party is built from saved gear
 - `features/combat/tests/test_battle_outcome.gd`: The battle contract: BattleSetup carries carried vitals and the bag into units, hero ids come from the party list, BattleOutcome reports vitals after (a downed hero stands at ko_stand_hp after a victory only) and the bag, and the speed / melee numbers come from the battle rules
 - `features/combat/tests/test_battle_perks.gd`: Perks in battle (sp_per_act, hp_regen, start_bonus, bonus_knockback), Perks.apply on a fighter copy, and the rarity rule that only Rare and above may carry a perk
+- `features/combat/tests/test_battle_rolls.gd`: Battle rolls: hit, crit, resist, flee formulas at clamps and middle values
 - `features/combat/tests/test_battle_rules.gd`: T5: damage, SP, cover, retargeting and status turns follow docs/design/combat.md
 - `features/combat/tests/test_battle_sim.gd`: BattleSim: unit ids, determinism (T1), every battle ends (T2), refused choices, event order, stall guard
 - `features/combat/tests/test_battle_stage.gd`: BattleStage headless (instant mode): it builds with 5 fighters, 5 timeline icons and a camera; an auto-played battle ends once; the command menu opens for a waiting hero, lists that hero's moves and the sim's valid targets, and choosing through its confirm path calls sim.choose; enemy intent labels; tips; the end panel
@@ -221,6 +248,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/tests/test_battle_status.gd`: T5 (statuses): applied by a move, refreshed on re-apply, one turn lost per act of the afflicted unit, and the cast-speed / knockback-bonus numbers of a CombatantDef
 - `features/combat/tests/test_battle_tech.gd`: Tech moves: ally / self / all-target moves, heals (never above max HP, downed allies stay down unless the move revives), the guarded and overclocked statuses, and the damage-taken multiplier
 - `features/combat/tests/test_battle_view3d.gd`: The battle view is ready for 3D models: it waits on the actor's clip events (never a timer), faces by direction with a lean toward the camera and never a negative scale, freezes both fighters at impact, places effects, numbers and markers from the characters' anchors, spaces lunges by width, plays the ko state, and keeps SceneTreeTimers out
+- `features/combat/tests/test_flee.gd`: Flee: chance, refusal on boss, interrupted flee, FLED outcome rules
 - `features/combat/tests/test_formation.gd`: Formation rows: cover and melee multipliers
 - `features/combat/tests/test_hud_layout.gd`: HudLayout (pure rect maths) and UnitLetters: boxes around points, panels that dodge fighters, which fighter the mouse points at, the info card's fade, and the A / B letters of same-kind units
 - `features/combat/tests/test_item_policy.gd`: ItemPolicy (balance harness): herbs only when the bag has them, deterministic, battles still end
@@ -228,19 +256,23 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/tests/test_reverse_stab.gd`: The reverse stab: only when the party was ambushed, Zayd strikes the lowest-slot living enemy first
 - `features/combat/tests/test_timeline.gd`: Timeline rules: command pause, cast and act, interrupts, knockback limits, determinism
 - `features/combat/tests/test_vfx.gd`: Battle effects: every ActionDef vfx kind has data, every texture paints, the effect player builds and plays each kind (single target and all foes) without errors and gives its sprites back to the pool, and the juice numbers (hitstop, shake, zoom) come from data and rank heavy above light
+- `features/combat/tests/test_zayd_kit.gd`: Tests for Zayd's redesigned kit (zayd-moves.md section 5 and brief): damage split, sp_gain, after_act_pos, cast_status, bonus vs status, poised counter, shove, and content comparisons
 - `features/combat/view/arena_builder.gd`: Builds a battle arena from its ArenaDef: a painted roof slab whose top is at the arena origin, a parapet round three sides (the fourth is the camera's), the dressing (props, lanterns, the city behind) and the look's key light, placed far from the exploring area (content/combat/arenas.json)
 - `features/combat/view/arena_dressing.gd`: The things standing on and around an arena's roof, built with the world's own helpers so the painted look applies: props (PropBuilder; no collision, nothing walks here), the lanterns' light (AreaLights, a few real OmniLights plus fake pools), and the city behind (SkylineBuilder) centred on the roof
 - `features/combat/view/battle_action_player.gd`: Plays the swing of one move: the camera leans toward the actor, the actor plays its clip (attack, cast or item) while a melee actor anticipates and dashes, and the call returns when the CLIP says the hit lands (its `impact` event, never a timer; a ranged move then waits out its effect's flight)
 - `features/combat/view/battle_camera.gd`: The cinematic battle camera
 - `features/combat/view/battle_camera_rig.gd`: Builds a BattleStage's camera: the Camera3D with the arena's Environment and the cinematic BattleCamera that moves it, and the painted look's ink outline and grade on top
 - `features/combat/view/battle_command_menu.gd`: The compact command menu (in the turn panel, beside the hero) for the hero waiting at COMMAND: first one Button per move (unaffordable ones disabled; name, SP cost, a "cancels" / target tag; the focused move's description below), then one Button per valid target (foes or allies; self and all-moves skip this list)
+- `features/combat/view/battle_damage_events.gd`: Damage-related event handlers extracted to keep battle_event_player.gd under 200 lines
 - `features/combat/view/battle_demo.gd`: Battle view demo: a plain floor in the accepted HD-2D look and a BattleStage fighting the rooftop patrol (swift hilt, keen blade, seed 7, ambushed so the reverse stab shows)
 - `features/combat/view/battle_demo.tscn`: scene
 - `features/combat/view/battle_end_panel.gd`: The end-of-battle panel in the middle of the screen
 - `features/combat/view/battle_ending.gd`: How a fight leaves the screen
+- `features/combat/view/battle_event_extra.gd`: Extra event handlers (dodged, crit, resisted, fled, flee_failed) to keep battle_event_player.gd under 200 lines
 - `features/combat/view/battle_event_player.gd`: Plays a batch of TimelineEvents one after another with the animation each one deserves: the swing and its effect (BattleActionPlayer), the flinch, hitstop and popping numbers of a hit, the BREAK! stamp of a cut cast, collapses and revives
 - `features/combat/view/battle_event_targets.gd`: Finds unit targets touched by a move from the timeline events that follow it (hits, heals, misses)
 - `features/combat/view/battle_fighters.gd`: The 3D side of a battle: one CharacterVisual per unit on the stage, popping damage / heal numbers and status text, the BREAK! stamp, intent labels over casting enemies, and the bouncing target marker
+- `features/combat/view/battle_flee_button.gd`: Helper to build the FLEE command-menu button (extracted to keep battle_command_menu.gd under 200 lines)
 - `features/combat/view/battle_hero_card.gd`: The acting hero's full card, on top of the turn panel: name, HP and SP with numbers
 - `features/combat/view/battle_hud.gd`: The battle HUD (v3), built in code and minimal at rest: a thin timeline on top (with the chosen target's name), a slim vitals strip under each hero's feet, and nothing else
 - `features/combat/view/battle_info_card.gd`: The small card beside a fighter that is pointed at (mouse over it, or the focus on it while targeting)
@@ -255,9 +287,11 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/view/battle_shatter.gd`: The warp into a fight: the last frame of the area breaks into qamariya-glass shards that fall away and uncover the arena (battle_shatter.gdshader)
 - `features/combat/view/battle_shatter.gdshader`
 - `features/combat/view/battle_stage.gd`: The battle screen (wait mode): places the fighters and the camera, runs the HUD, steps a BattleSim a few ticks per physics frame and plays the resulting events
+- `features/combat/view/battle_stage_extra.gd`: End-stage helpers extracted to keep battle_stage.gd under 200 lines
 - `features/combat/view/battle_strips.gd`: The resting vitals of the battle: a slim BattleUnitStrip under each hero's feet (always there) and under a foe while it was hit lately or is pointed at (it fades after the view's delay)
 - `features/combat/view/battle_style.gd`: Small builders for the battle screen's look (labels, bars, names, head icons)
 - `features/combat/view/battle_timeline_bar.gd`: The thin top bar of the battle: a slim brass track from 0 to ACT_POINT with a COMMAND mark and a tinted cast zone (BattleTrackArt, compact), one small head icon per living unit at its timeline position (foes above the track, the party below it), and at the left the name of the chosen target
+- `features/combat/view/battle_timeline_ghost.gd`: Ghost landing marker on the timeline bar for previewing knockback (section 3 and 6)
 - `features/combat/view/battle_track_art.gd`: The painted brass track of the timeline bar: dark glass, brass rails, tick marks, the tinted cast zone, a gypsum zigzag frieze along the bottom, the COMMAND mark (a brass line with diamonds) and an end cap at ACT
 - `features/combat/view/battle_turn_panel.gd`: What a hero's turn shows, in one framed panel: that hero's full card over the compact command menu (or the herb list), placed beside the hero on the side where no fighter stands
 - `features/combat/view/battle_unit_strip.gd`: One slim vitals strip under a fighter's feet: a name initial (the letter for same-kind foes) and a thin HP bar, for a hero also a thinner SP bar
@@ -291,19 +325,31 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/dialogue/view/dialogue_layout.gd`: Builds the dialogue box's controls in code (Hades II style; sizes from the UI style, laid out for 1920x1080): a big portrait at the left that slides in, an ornate glass text box at the bottom right with a frieze, a nameplate tab on the box's top edge (name in brass, epithet under it) and the button hints
 - `features/dialogue/view/portraits.gd`: Finds the portrait texture for (speaker, expression): res://assets/portraits/<speaker>_<expression>.png when it exists (loaded straight from the file, the "keep" importer needs no import step), else the speaker's painted neutral (a painted face beats a stand-in), else a stand-in disc with the expression's brows and mouth (StandinPortrait)
 - `features/equipment/logic/equipment_options.gd`: Pure rules of the equipment screen: which slots a hero has, which OWNED items fit a slot (best rarity first), which items a hero wears now, the fighter built from a staged set of items, and writing a staged set into the saved equipment through Inventory.equip
-- `features/equipment/tests/test_equipment.gd`: The equipment screen: the pure options rules (owned items only, rarer first, per hero and slot), the screen listing only owned items in rarity colours, staging, Confirm writing every slot through Inventory.equip, back changing nothing, and the stat comparison
+- `features/equipment/tests/test_equipment.gd`: purpose: Tests the pure EquipmentOptions rules (owned items only, rarer first, per hero and slot)
+- `features/equipment/tests/test_equipment_menu.gd`: purpose: Tests EquipmentMenu layout, 3D hologram stage, slot boxes, equipping, preview and focus
+- `features/equipment/tests/test_equipment_polish.gd`: purpose: Tests equipment polish features: hologram override, slot box name/dim ring, stats header, hero header Lv 1
+- `features/equipment/view/equipment_boxes.gd`: purpose: Manages the 5 equipment slot boxes, their positions, visibility per hero and focus navigation
 - `features/equipment/view/equipment_data.gd`: What the equipment screen needs from ContentDB, read once: every equippable by id, the perks, the rarity order, and each hero's start loadout (heroes in loadout order)
-- `features/equipment/view/equipment_demo.gd`: Manual check: opens the equipment screen over a plain background (F6 in the editor) with a few owned items
-- `features/equipment/view/equipment_demo.tscn`: scene
+- `features/equipment/view/equipment_desc_bar.gd`: purpose: Description bar (1760x90 at 80,900) showing item name, rarity, description and combat effect
 - `features/equipment/view/equipment_detail.gd`: The right-hand side of the equipment screen: the focused item (name in its rarity colour, tag, text, perk and the tech moves it teaches) above the stat comparison (base, with the staged kit, an up / down arrow)
+- `features/equipment/view/equipment_hero_header.gd`: purpose: Hero info box (520x110 at 80,124) with portrait face, name, class, Lv N, and HP/SP/XP bars
 - `features/equipment/view/equipment_item_button.gd`: Builds one owned item as a menu button: its name in the rarity colour, the rarity tag and an "Equipped" mark on the right
-- `features/equipment/view/equipment_page.gd`: The equipment layout: title and hero tabs on top, the slot lists on the left, the item detail and stat comparison on the right, Confirm with the back hint at the bottom
-- `features/equipment/view/equipment_screen.gd`: The equipment screen (the bench): a tab per hero (Zayd: hilt, blade, prosthetic; Bilqis: prosthetic), the OWNED items of each slot with rarity colours and tags, the perk and tech moves of the focused item, and the stat comparison base vs
+- `features/equipment/view/equipment_menu.gd`: purpose: Equipment menu with 3D hologram hero, slot boxes, owned list, stats comparison and tabs
+- `features/equipment/view/equipment_owned_list.gd`: purpose: Owned items panel (420x620 at 80,240) populated with ListRows and worn "E" chips
+- `features/equipment/view/equipment_stats_panel.gd`: purpose: Stats preview panel (440x560) showing now vs after comparison and derived battle rolls
+- `features/equipment/view/equipment_tabs_bar.gd`: purpose: Top bar (1760x64 at 80,40) with title pair and menu tabs (Equipment, Items, Map)
+- `features/equipment/view/grid_disc.gdshader`
+- `features/equipment/view/hologram.gdshader`
+- `features/equipment/view/hologram_stage.gd`: purpose: 800x760 SubViewportContainer with 3D hologram hero, camera, disc and leader lines
+- `features/equipment/view/slot_box.gd`: purpose: 150x150 equipment slot box showing slot label, item icon or gemstone sockets
+- `features/equipment/view/slot_socket_draw.gd`: purpose: Draws socket border and stone icon for gemstone slots in equipment boxes
+- `features/items/defs/armor_def.gd`: Armor worn in slot "<hero>.armor": raises HP, DEF, alters AGI and WT (content/items/armor.json)
 - `features/items/defs/chest_def.gd`: A chest holding an equippable (an id of a hilt, blade or prosthetic), riyal and/or consumables; at least one
 - `features/items/defs/consumable_def.gd`: A stackable item used from the bag, in the field or in battle (feathered herbs, the qishr cup)
 - `features/items/defs/count_map.gd`: Reads an optional {"id": count} JSON object (rewards, the start bag) as {StringName: int}, each count 1 or more
 - `features/items/defs/economy_rules_def.gd`: The money and rest numbers (content/economy/rules.json, id "default"): start purse and bag, the cap, the repeat-win payout share, the HP a downed hero stands up with after a victory, the patrol respawn guards
 - `features/items/defs/equip_def.gd`: Shared base of everything a hero can wear or wield (hilt, blade, prosthetic): names, a rarity tier and an optional perk (Rare and above only; rules in docs/design/prosthetics.md)
+- `features/items/defs/material_def.gd`: purpose: Defines a crafting or upgrade material with rarity and display information
 - `features/items/defs/perk_def.gd`: One perk an item can carry: a kind that battle logic implements and an amount
 - `features/items/defs/rarity_def.gd`: One rarity tier: its name, display colour, sort order, whether it is story-only (never loot) and whether gear of this tier may carry a perk
 - `features/items/defs/shop_def.gd`: A stall: who keeps it, her greeting and the consumable ids on sale (price and sell come from the ConsumableDef)
@@ -311,7 +357,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/items/logic/bag.gd`: The party's stackable consumables: counts per id plus RESERVATIONS made by pending battle casts
 - `features/items/logic/chests.gd`: Chest rules: opening gives the item once, and the opened state is a saved flag
 - `features/items/logic/field_use.gd`: Using a consumable outside battle, pure: the item must be usable in the field, aimed at living allies, and must change something (a full hero is refused)
-- `features/items/logic/gear.gd`: Builds a hero's fighter from the shared base plus worn gear: base -> hilt -> blade -> prosthetic -> perks (caps are applied by each step)
+- `features/items/logic/gear.gd`: Builds a hero's fighter from base stats, class level growth, armor, weapons, prosthetic, socketed gemstones, item upgrades, and perks
+- `features/items/logic/gear_state.gd`: Holds all worn gear, progression level, socketed stones, upgrades, and perks for building a hero fighter
 - `features/items/logic/holdings.gd`: What rewards are paid into: riyal, the consumable Bag, the unique-item inventory and the flags
 - `features/items/logic/inventory.gd`: Which unique items the party owns and whether a hero may wear one in a slot
 - `features/items/logic/item_effect.gd`: What a consumable does to one hero: gains() computes the real change from current numbers (never past the maximum, a herb never helps a downed hero, a white herb only a downed one); apply() writes it into carried vitals
@@ -331,14 +378,24 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/items/tests/test_rewards.gd`: Rewards: the first win pays everything and sets patrol_paid_<id>, a repeat win pays half the riyal and nothing else, herbs over the stack turn into riyal, the purse has a cap, a chest pays once
 - `features/items/tests/test_shop.gd`: The herb stall: buy and sell rules and their edge cases (economy.md section 9), the ShopService purse signal, and using consumables in the field (FieldUse, ItemService)
 - `features/jambiyah/defs/blade_def.gd`: A jambiyah blade: adds to attack, adds knockback to every hit the wielder lands, adds weight
+- `features/jambiyah/defs/heirloom_def.gd`: Maps heirloom restoration rank to open stone slots and story flags (content/jambiyah/heirloom.json)
 - `features/jambiyah/defs/hilt_def.gd`: A jambiyah hilt: adds to agility, multiplies cast speed, adds weight, and grants exactly one move
 - `features/jambiyah/defs/loadout_def.gd`: A hero's starting gear: which hilt, blade and prosthetic they own and wear at the start (each optional)
+- `features/jambiyah/defs/stone_def.gd`: A gemstone socketed into a jambiyah hilt (content/jambiyah/stones.json)
 - `features/jambiyah/logic/jambiyah.gd`: Builds Zayd's fighter from a base CombatantDef plus one hilt and one blade (docs/design/combat.md)
 - `features/jambiyah/logic/loadout.gd`: Which gear a hero wears: the saved choice per slot ("<hero>.<part>" in GameState.equipment), else the starting gear
 - `features/jambiyah/logic/stat_row.gd`: One line of the workshop comparison: label key, value now (base) and value with the chosen pair
+- `features/jambiyah/logic/stones.gd`: Pure rules for jambiyah hilt gemstones: open socket counts, rarity fitting rules, and socket mutations
 - `features/jambiyah/logic/workshop_stats.gd`: The comparison rows the equipment screen shows: base fighter against the fighter built by Jambiyah.equip
 - `features/jambiyah/tests/test_jambiyah.gd`: T3: every hilt + blade pairing gives a different Zayd stat sets, inside the timeline caps; each hilt adds exactly one move; the shared base definition is never changed
 - `features/jambiyah/tests/test_loadout.gd`: The loadout fallback: a hero wears the saved item per slot, else the start loadout
+- `features/progression/defs/class_def.gd`: A hero's RPG class: growth stats added per level above 1 and a passive perk (content/progression/classes.json)
+- `features/progression/defs/levels_def.gd`: Thresholds of total XP required to reach each level (content/progression/levels.json)
+- `features/progression/logic/level_up.gd`: Holds the details of a hero's level advancement: from/to levels and stat gains
+- `features/progression/logic/progression.gd`: Pure RPG progression rules: level calculation from XP thresholds, stat growth from class definitions, XP awards to party members, and encounter XP calculation
+- `features/progression/tests/test_battle_progression.gd`: Tests for battle progression integration: LevelUp HP/SP increases on win, and battle end panel formatting
+- `features/progression/tests/test_progression.gd`: Tests for RPG progression: level thresholds, class stat growth, XP awards, and gear merge order
+- `features/progression/tests/test_stones.gd`: Tests for jambiyah hilt gemstones: rarity fit rules, heirloom slot progression, and socket operations
 - `features/prosthetics/defs/prosthetic_def.gd`: A high-tech prosthetic: one slot per hero
 - `features/prosthetics/logic/prosthetics.gd`: Merges a prosthetic into a fighter (docs/design/prosthetics.md), like Jambiyah.equip: stat adds, then the granted moves, then the caps
 - `features/prosthetics/tests/test_prosthetics.gd`: Prosthetics: the merge (base -> hilt -> blade -> prosthetic -> perks -> caps) builds new fighters and never touches the shared defs; each hero's prosthetics grant 1-2 tech moves; a prosthetic fits only its wearer
@@ -352,12 +409,27 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/prototype/tests/test_router_battle.gd`: The Router's battle round trip: the area is hidden and stopped while the arena fights, then restored; Retry and defeat restore the pre-battle snapshot; vitals and herbs carry (a downed hero stands up after a victory); the first win pays everything and a repeat pays half
 - `features/prototype/tests/test_smoke_flow.gd`: Smoke test of the whole flow, headless through the Router: a new game, a fight on auto-play, the outcome applied to GameState, a save, a load that restores exactly that state
 - `features/prototype/tests/test_talk_interact.gd`: Interaction test: walking up to herb_seller and confirming plays abu_nabil_first on the first visit, and abu_nabil_chat_1 on the next visit; sabil plays party_sabil_first before opening screen
+- `features/puzzles/defs/light_lock_def.gd`: purpose: Defines the qamariya light lock puzzle layout (windows, mirrors, and hint timings)
+- `features/puzzles/defs/light_lock_mirror.gd`: purpose: One rotatable mirror in a light lock puzzle with four directional targets
+- `features/puzzles/defs/light_lock_window.gd`: purpose: One colored qamariya window in a light lock puzzle
+- `features/puzzles/defs/water_net_def.gd`: purpose: Defines a water routing network puzzle (valves, splits, gates, spouts, outlets)
+- `features/puzzles/defs/water_node_def.gd`: purpose: One node in a water network puzzle (source, split, gate, spout, or outlet)
+- `features/puzzles/logic/light_lock.gd`: purpose: Pure logic for light lock beam tracing, shutter toggling, mirror rotation, and solution check
+- `features/puzzles/logic/light_lock_state.gd`: purpose: Runtime state of a light lock puzzle (shutter open/closed and mirror turn angles)
+- `features/puzzles/logic/puzzle_hints.gd`: purpose: Computes how many puzzle hints are due based on elapsed stalled time
+- `features/puzzles/logic/water_net.gd`: purpose: Pure logic for water net gate toggling, unjamming, spout swinging, and flow calculation
+- `features/puzzles/logic/water_net_state.gd`: purpose: Runtime state of a water routing network (gate open/freed states and spout directions)
+- `features/puzzles/tests/test_light_lock.gd`: purpose: Tests qamariya light lock puzzle logic, state, beam tracing, routes, loops, and def validation
+- `features/puzzles/tests/test_water_net.gd`: purpose: Tests water routing network logic, unjamming, spout routing, conservation, def errors, and hints
+- `features/ui/defs/backdrop_def.gd`: Backdrop definition for full-screen menu backgrounds
 - `features/ui/defs/ui_style_def.gd`: The look of every menu and HUD (content/ui/style.json): three font files, named colours (c_*), sizes in pixels at 1920x1080 (s_*) and times in seconds (t_*)
 - `features/ui/logic/pause_logic.gd`: Pure rules of the pause menu: which entries show and in what order, which ask "are you sure", the vitals of a hero with a missing record (= full), and the play-time clock text
 - `features/ui/logic/prompt_glyph.gd`: Pure: the localization key of the button glyph for an action on keyboard or gamepad ("accept" -> Enter / A), and the fade of a world-space interaction prompt with distance
 - `features/ui/logic/toast_queue.gd`: Pure: toasts wait in order and are shown one at a time
 - `features/ui/tests/node_walk.gd`: Test helper (not a test): every descendant of a node, depth first
 - `features/ui/tests/test_items_shop.gd`: The Items and Shop screens on the Screens stack, and the riyal banner of the loot popup
+- `features/ui/tests/test_menu_polish.gd`: Menu polish tests: portrait faces, pause hero progression, icon disc fallback, label font sizes, glass panel colour
+- `features/ui/tests/test_menu_skins.gd`: Menu skins test: backdrops, fallback, child 0, party rows, thumbnails, shop money-after, rects
 - `features/ui/tests/test_musnad.gd`: The written language of Sana'a in 2150 is Musnad only: no Arabic script in any CSV, JSON or script; every *_MUSNAD and WORLD_SIGN_* text holds only Musnad letters, spaces and arrows; the Musnad font draws it
 - `features/ui/tests/test_pause_menu.gd`: The pause menu rules (PauseLogic) and the screen built from them
 - `features/ui/tests/test_popups.gd`: The loot popup (queues item_obtained in order, skippable), the area title card, the title overlay (any key dismisses it once) and the opening shot held on the moon until then
@@ -370,23 +442,35 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/area_title_card.gd`: The area title card (centre left, no panel) that fades in when the opening shot ends: the Musnad name big over the English name, a gypsum frieze drawing left to right, a subtitle (place and year), then fading out
 - `features/ui/view/character_icons.gd`: Head icons for timeline medallions and party cards
 - `features/ui/view/interaction_prompt.gd`: A small glass pill above an object in the world: the interact glyph and a verb ("Drink", "Talk", "Open")
+- `features/ui/view/item_icons.gd`: Resolves item icon textures from content paths; where the image file is missing, draws a rarity-coloured disc with the item's first letter
 - `features/ui/view/list_row.gd`: One row of a menu list: icon | name (rarity colour) | "x3" count | tag chip on the right
 - `features/ui/view/loot_popup.gd`: The "Obtained" banner: listens to EventBus.item_obtained and shows each new item centred high on the screen with its name in the rarity colour, a light sweep for Rare and above and a rarity jingle (AudioDirector.play_item)
+- `features/ui/view/menu_backdrop.gd`: Full-screen painted menu backdrop with blur fallback
+- `features/ui/view/menu_blur.gdshader`
 - `features/ui/view/money_counter.gd`: A pill with the riyal amount in brass
 - `features/ui/view/party_card.gd`: A hero card: portrait icon, name, HP and SP bars with numbers
+- `features/ui/view/portrait_faces.gd`: Caches painted hero portraits cropped to the head (top 38% of the image, centred square)
 - `features/ui/view/prompt_strip.gd`: The Hades-style button hints along the bottom: "[Enter] Select   [Esc] Back"
 - `features/ui/view/screens/choice_screen.gd`: Base of the small centred "pick one" screens (Sabil, Defeat): a framed panel with the Musnad + English title pair and a column of buttons in focus order
 - `features/ui/view/screens/confirm_dialog.gd`: A centred Yes/No question over the scrim
 - `features/ui/view/screens/defeat_screen.gd`: The defeat screen (Screens id &"defeat"): the arena darkens over t_defeat_fade, then DEFEATED offers Retry fight (default), Load last save (greyed with no save) and Title (asks first)
-- `features/ui/view/screens/equipment_host.gd`: Puts the existing EquipmentScreen (the bench, a CanvasLayer with its own open()/closed API) on the Screens stack as the screen &"equipment"
 - `features/ui/view/screens/items_screen.gd`: The Items screen (Screens id &"items", opened from the pause menu): the bag on the left, the chosen item's description and effect on the right, and under it the hero picker
 - `features/ui/view/screens/items_text.gd`: Item screen wording: the effect line ("HP +120") and a hero's "HP 200 -> 320" preview
-- `features/ui/view/screens/pause_menu.gd`: The pause screen (opened by Screens on the menu action while exploring): the entries on the left (Resume, Items, Equipment, Load last save or Restart, Unstuck, Title, Quit), the party on the right
-- `features/ui/view/screens/pause_party.gd`: The right half of the pause screen: a PartyCard per hero (portrait, name, HP and SP bars, KO tag), the worn gear of each hero, and under a frieze the area name, play time and riyal
+- `features/ui/view/screens/pause_hero_row.gd`: One hero row in the pause party panel: face 160x160, name, class, HP/SP bars, KO state
+- `features/ui/view/screens/pause_menu.gd`: Pause menu screen: command panel (80,80), info box (80,880), party panel (540,80), prompt strip (0,1020)
+- `features/ui/view/screens/pause_party.gd`: Party panel for the pause screen: one row per hero (h 200)
 - `features/ui/view/screens/sabil_screen.gd`: The sabil fountain question (Screens id &"sabil"): "Drink to rest? This saves your game and restores everyone." Closes with &"drink" (default) or &"leave" (Not now, or back)
-- `features/ui/view/screens/shop_detail.gd`: The right half of the shop: the riyal counter, the focused item's name, description and effect, then price, owned count, "money after" (red when the trade is not affordable) and the quantity
-- `features/ui/view/screens/shop_screen.gd`: The herb stall (Screens id &"shop"; open with Screens.open(&"shop", {"shop": &"herb_stall"}), optional "after_battle": true for the keeper's other greeting)
-- `features/ui/view/screens/slot_picker_screen.gd`: Slot picker screen: one row per save slot showing summary or Empty
+- `features/ui/view/screens/shop_cell.gd`: One cell in the shop item grid: 220x170, icon 96, name, price c_brass, rarity glow, sold out dim
+- `features/ui/view/screens/shop_detail.gd`: Shop detail panel at (840,140) 560x760: icon 160, name, desc, effect, and per-hero comparison
+- `features/ui/view/screens/shop_grid.gd`: Shop grid panel at (80,140) 720x560: tabs [Buy][Sell] and 3-column items grid
+- `features/ui/view/screens/shop_keeper_box.gd`: Keeper box: portrait 220x260 and typed greeting in a glass box at (80,720) 620x260
+- `features/ui/view/screens/shop_layout.gd`: Builds panels for ShopScreen: brass title plate, money counter pill, and sub-panels
+- `features/ui/view/screens/shop_party_mini.gd`: Party mini cards panel at (1440,600) 400x300: compact HP and SP bars for each hero with painted portraits
+- `features/ui/view/screens/shop_screen.gd`: Shop screen: title (80,40), grid (80,140), keeper (80,720), detail (840,140), summary (1440,140), party (1440,600)
+- `features/ui/view/screens/shop_summary.gd`: Shop summary panel at (1440,140) 400x420: quantity, owned, price, money after (c_bad when < 0)
+- `features/ui/view/screens/slot_detail.gd`: Details panel for the focused save slot: header, thumbnail 440x248, area, party, riyal, play time
+- `features/ui/view/screens/slot_picker_screen.gd`: Slot picker screen: title (560,60), 3 slot rows (440,180), details (1380,180), buttons (500,880)
+- `features/ui/view/screens/slot_row.gd`: One save slot row: thumbnail 300x170, slot label, area, play time, date, or empty slot
 - `features/ui/view/title_overlay.gd`: The game's title over the opening sky: "Qarnaw" in Musnad (big) and Latin with a pulsing "Press any key"
 - `features/ui/view/toast_host.gd`: Shows toasts top-centre one at a time (ToastQueue order): fade in, hold t_toast_hold, fade out, next
 - `features/ui/view/ui.gd`: Entry point of the shared UI look: the style (content/ui/style.json), the one cached Theme, and small builders (labels, screen roots, the zigzag divider)
@@ -402,7 +486,26 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/ui_theme.gd`: Builds the one Godot Theme every menu and HUD uses: Amiri for reading, Reem Kufi for titles, names and numbers, ornate panels, brass-focus buttons, gradient bars
 - `features/ui/view/ui_transition.gd`: The qamariya screen wipe: five stained-glass shards (red, amber, green, blue, violet) drop over the screen one after another, cover it, then lift away
 - `features/ui/view/ui_type.gd`: Typed text: a label reveals one character per t_text_char with the typing blip; confirm finishes the line
+- `features/workshop/defs/recipe_def.gd`: purpose: Defines a workshop crafting recipe producing consumables or gemstones
+- `features/workshop/defs/upgrade_costs_def.gd`: purpose: Defines upgrade progression costs (riyal, rarity multipliers, and materials per level)
+- `features/workshop/logic/crafting.gd`: purpose: Pure rules for crafting recipes (consumables and unique gemstones)
+- `features/workshop/logic/materials.gd`: purpose: Pure inventory math for crafting and upgrade materials, capped at 99
+- `features/workshop/logic/upgrades.gd`: purpose: Pure rules and cost calculations for equipment upgrades (+1 to +3)
+- `features/workshop/logic/workshop_holdings.gd`: purpose: Plain working copy of player state for pure workshop operations
+- `features/workshop/tests/test_workshop_logic.gd`: purpose: Tests pure workshop upgrade costs, refusals, crafting rules, caps, and stone operations
+- `features/workshop/tests/test_workshop_loot.gd`: purpose: Tests material payouts on battle victory and repeat victories
+- `features/workshop/tests/test_workshop_menu.gd`: purpose: Tests opening WorkshopMenu via Screens stack, tab counts, and disabled reasons when short
+- `features/workshop/view/workshop_hologram.gd`: purpose: 760x620 SubViewport displaying a turning 3D hologram jambiyah or 256px item icon
+- `features/workshop/view/workshop_items_list.gd`: purpose: Left list panel (460x760 at 80,140) displaying upgradeable gear, gemstones, or craft recipes
+- `features/workshop/view/workshop_materials_bar.gd`: purpose: Panel (760x120 at 580,780) showing required materials, have/need counts, and riyal cost
+- `features/workshop/view/workshop_menu.gd`: purpose: Workshop screen (upgrades, hilt gemstones, crafting) with 3D hologram and live stat comparison
+- `features/workshop/view/workshop_presenter.gd`: purpose: Prepares stat comparison defs and status reasons for workshop views
+- `features/workshop/view/workshop_preview_panel.gd`: purpose: Stats preview panel (460x620 at 1380,140) comparing now vs after or recipe description
+- `features/workshop/view/workshop_sockets_row.gd`: purpose: Displays the worn hilt's 3 gemstone sockets (96px circles) under the hologram
+- `features/workshop/view/workshop_tabs_bar.gd`: purpose: Header bar (1760x64 at 80,40) with title pair, mode tabs, and money counter
+- `features/workshop/workshop_service.gd`: purpose: Executes workshop operations against GameState and emits toasts and bus events
 - `features/world/defs/area_def.gd`: A level as data: equal-width rows of tile characters, a legend (character -> tile id), two markers (S spawn, W workshop bench) that each appear once and stand on floor, and typed places (PlaceDef: stall, sabil, patrols...)
+- `features/world/defs/area_problems.gd`: Checks an AreaDef for layout problems: row widths, unmapped tiles, missing markers, out-of-bounds places
 - `features/world/defs/building_def.gd`: One Sana'a tower-house as data: footprint (metres), floors (the lowest stone_floors are basalt), window columns per facade, frieze style, qamariya glass letters, lit-window ratio, parapet style and roof extras
 - `features/world/defs/camera_preset_def.gd`: Stub (v0.3 registry, filled by the level builder): one named camera pose with its own field of view and depth of field, e.g
 - `features/world/defs/camera_rig_def.gd`: Camera language for exploring (content/world/camera.json): intro shots, presets, limits, and follow/framed modes
@@ -536,6 +639,16 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/view/surface_buffer.gd`: Collects flat-shaded, vertex-coloured faces (boxes, prisms, polygons) for one surface of an ArrayMesh
 - `features/world/view/surface_materials.gd`: Cached textures and materials for the painted world, so 100+ buildings share a handful of draw materials: tile patterns (world-space triplanar, so texels stay square across tiles), tower-house facades (front and side painted side by side in one atlas, lit windows in an emission map), vertex-coloured trim, unshaded HDR glow, and the dotted far silhouettes
 - `features/world/view/tower_house.gd`: Builds one Sana'a tower-house mesh from a BuildingDef: four textured facades (one atlas), a roof, a white gypsum parapet with merlons and stepped or horned corners, and roof extras
+- `features/world/weather/defs/storm_def.gd`: Weather preset for rain, splashes, puddles, drips, steam and lightning (content/world/storm.json)
+- `features/world/weather/storm_preview.gd`: Preview scene for the storm layer on the rooftop: used for fps_probe profiling and inbox renders
+- `features/world/weather/storm_preview.tscn`: scene
+- `features/world/weather/tests/test_storm.gd`: Storm weather tests: StormDef validation, particle caps, puddle placement, emitters per point, lightning flag, and area weather hook
+- `features/world/weather/view/puddle_builder.gd`: Builds wet floor puddles with animated ripple shaders scattered across walkable floor tiles
+- `features/world/weather/view/shaders/puddle.gdshader`
+- `features/world/weather/view/shaders/rain.gdshader`
+- `features/world/weather/view/shaders/splash.gdshader`
+- `features/world/weather/view/storm_builder.gd`: Builds the storm weather layer (rain, splashes, puddles, drips, steam, lightning) from an AreaDef and StormDef
+- `features/world/weather/view/storm_host.gd`: Runtime coordinator for storm effects: positions rain and splashes around the active camera and runs lightning
 - `features/world/workshop/workshop_spot.gd`: The workshop bench: a jambiyah smith's workbench built from the prop 'workbench' (content/world/props/workbench.json: one mesh in the painted world's materials) with its brass lamp's light, plus the interact prompt
 
 ## localization
@@ -575,6 +688,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/audio/arc_synth.py`: Synthesizes the Arc Discharge sound (vfx_arc_all): 3 seeded variations as 44.1 kHz mono 16-bit WAV.
 - `tools/audio/levels.py`: Loudness table for the sound effects: reads the audio of a Godot movie capture (.avi, PCM) made by
 - `tools/audio/measure_levels.gd`: Plays every sfx file of content/audio/sounds.json one after another at 0 dB for the movie writer's audio capture; prints "SLOT <path> <start seconds> <seconds>" lines for tools/audio/levels.py
+- `tools/build_gate.py`: Build gate: judges a builder run before Claude reads it (NOWORK, BREACH, FAIL or PASS plus a WARN checklist).
+- `tools/build_pipeline.sh`: Free builder pipeline (DECISIONS 2026-10-23): builder run -> check.sh -> one free fix pass fed the FAIL lines ->
+- `tools/cf_build.sh`: Paid fallback builder (DECISIONS 2026-10-23: Cloudflare Workers AI DeepSeek V4.1 Flash, Workers Paid, <= $10 usage): runs
 - `tools/check.sh`: One command for every check (docs, lint, Godot import, tests). One ok/FAIL line per step; logs in .check/.
 - `tools/doc_check.py`: Keeps the always-loaded notes small and well-formed (docs/EFFICIENCY.md); exit 1 on any failure.
 - `tools/export_atlases.gd`: Exports the code-painted world atlases (PaintedAtlases) to PNG for the offline painterly bake
@@ -582,7 +698,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.
 - `tools/lint_gd.py`: GDScript rules Godot itself doesn't enforce (docs/ARCHITECTURE.md, "Code rules"); exit 1 on any break.
 - `tools/map.py`: Writes docs/MAP.md from each file's purpose line, so the map never drifts. --check: exit 1 if stale.
+- `tools/merge_run.sh`: Merges one gated builder run into the current branch (DECISIONS 2026-10-23): only a PASS .result; a fast-forward onto
 - `tools/musnad.py`: Transliterate Arabic to Musnad (Old South Arabian) letter by letter; scan files for Arabic.
+- `tools/oc_agents.py`: Makes one opencode subagent per game skill (.agents/skills/<name> -> .opencode/agent/<name>.md); --check fails when stale.
 - `tools/oc_review.sh`: Reviews an opencode task (branch oc/<task>) the same cheap way as an agy one: report, check result, commits, stats,
 - `tools/oc_task.sh`: Runs opencode on one task brief inside its own git worktree, never in the main checkout (DECISIONS 2026-10-23).
 - `tools/rodin/rewrite_glb.py`: Rebuild a Rodin glb with new triangle indices (from Godot, winding flipped back; IDX_BIN '-' keeps its own), no
@@ -597,8 +715,11 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_hud.gd`: Renders the battle HUD to PNG files (not headless; needs a window)
 - `tools/shot_level1.gd`: Renders level 1 blockout roofs R1-R5 and crossing X3 from play camera to C:/dev/game/inbox/level1_*.png
 - `tools/shot_level1.tscn`: scene
+- `tools/shot_menu.gd`: Renders pause, save, or shop menu at 1920x1080 to an inbox PNG
+- `tools/shot_menu.tscn`: scene
 - `tools/shot_models.gd`: Model gallery for renders (docs/design/characters-3d.md): the cast in a row on a floor under the painted look, each doing a state, close enough to judge the stand-ins
 - `tools/shot_scene.gd`: Plays a scene (or a Node script) for the movie writer (frames to a folder): the battle demo with its heroes on auto_play, or any scene
 - `tools/shot_shatter.gd`: Shows the qamariya shatter on a stand-in frame (a stripe pattern) so the glass can be judged without a fight
 - `tools/shot_workbench.gd`: Renders the workbench prop close up and in the rooftop from the play camera to inbox PNGs (960x540)
+- `tools/test_build_gate.py`: Self-test for build_gate.py: python tools/test_build_gate.py (temp git repos, plain asserts, exit 1 on failure).
 - `tools/vfx_gallery.gd`: Effect gallery: plays every battle effect kind one after another (one per second) on a night stage, for the movie writer

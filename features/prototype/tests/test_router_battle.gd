@@ -77,14 +77,14 @@ func test_vitals_carry_and_a_downed_hero_stands_up_after_victory() -> void:
 	sim.timeline.find(&"bilqis").hp = 40
 	sim.timeline.find(&"bilqis").sp = 3
 	main.stage.ended.emit(&"victory")
-	check_eq(Vitals.hp_of(GameState.vitals, &"zayd", 999), 1, "the downed hero stands at ko_stand_hp")
-	check_eq(Vitals.hp_of(GameState.vitals, &"bilqis", 999), 40, "a living hero keeps her HP")
-	check_eq(Vitals.sp_of(GameState.vitals, &"bilqis", 999), 3, "and her SP")
+	check_eq(Vitals.hp_of(GameState.vitals, &"zayd", 999), 31, "the downed hero stands at ko_stand_hp + level up gain")
+	check_eq(Vitals.hp_of(GameState.vitals, &"bilqis", 999), 60, "a living hero keeps her HP + level up gain")
+	check_eq(Vitals.sp_of(GameState.vitals, &"bilqis", 999), 7, "and her SP + level up gain")
 	_fight_again(main)
-	check_eq(_hero_hp(main, &"zayd"), 1, "the next fight starts with that 1 HP")
-	check_eq(_hero_hp(main, &"bilqis"), 40, "and her HP")
+	check_eq(_hero_hp(main, &"zayd"), 31, "the next fight starts with that 31 HP")
+	check_eq(_hero_hp(main, &"bilqis"), 60, "and her HP")
 	main.stage.ended.emit(&"defeat")
-	check_eq(Vitals.hp_of(GameState.vitals, &"zayd", 999), 1, "a defeat restores the snapshot, not the wounds")
+	check_eq(Vitals.hp_of(GameState.vitals, &"zayd", 999), 31, "a defeat restores the snapshot, not the wounds")
 	main.free()
 	h.finish()
 

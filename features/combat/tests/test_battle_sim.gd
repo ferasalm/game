@@ -2,8 +2,9 @@ extends TestCase
 ## BattleSim: unit ids, determinism (T1), every battle ends (T2), refused choices, event order, stall guard.
 
 const RANK: Dictionary[StringName, int] = {
-	&"damage": 1, &"interrupted": 1, &"knocked_back": 1, &"status": 3, &"status_ended": 4, &"down": 5,
-	&"fizzled": 1, &"victory": 6, &"defeat": 6,
+	&"dodged": 1, &"crit": 1, &"damage": 1, &"interrupted": 1, &"knocked_back": 1, &"status": 3,
+	&"resisted": 3, &"status_ended": 4, &"down": 5, &"fizzled": 1, &"flee_failed": 1, &"fled": 6,
+	&"victory": 6, &"defeat": 6,
 }
 
 var _loader: BattleLoader

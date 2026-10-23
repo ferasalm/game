@@ -79,16 +79,32 @@ static func panel(title_en: String = "", title_musnad: String = "") -> UiPanel:
 	return UiPanel.new().setup(title_en, title_musnad)
 
 
-## A title row: English left in Reem Kufi, Musnad right in dim brass.
-static func title_pair(english: String, musnad: String) -> Control:
+## A title row: English left in Reem Kufi, Musnad right in dim brass (or both sides when both_sides is true).
+static func title_pair(english: String, musnad: String, both_sides: bool = false) -> Control:
 	var row := HBoxContainer.new()
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if both_sides and not musnad.is_empty():
+		row.alignment = BoxContainer.ALIGNMENT_CENTER
+		row.add_theme_constant_override("separation", style().size(&"s_pad"))
+		var m_left: Label = label(musnad, &"MusnadLabel")
+		row.add_child(m_left)
 	var left: Label = label(english, &"TitleLabel")
-	left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	if not both_sides:
+		left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	else:
+		left.add_theme_font_size_override("font_size", style().size(&"s_font_title") + 8)
 	row.add_child(left)
 	if not musnad.is_empty():
 		row.add_child(label(musnad, &"MusnadLabel"))
 	return row
+
+
+## Screen title sitting in a brass plate with Musnad on both sides (s_font_title + 8).
+static func title_plate(english: String, musnad: String) -> PanelContainer:
+	var plate := PanelContainer.new()
+	plate.add_theme_stylebox_override("panel", UiBoxes.panel(style(), &"plate"))
+	plate.add_child(title_pair(english, musnad, true))
+	return plate
 
 
 ## The qamariya focus sweep under a control (see UiSweep).
@@ -121,8 +137,11 @@ static func party_card(hero_id: StringName) -> PartyCard:
 
 
 ## The riyal pill; set_amount(n, animate) counts there.
-static func money_counter() -> MoneyCounter:
-	return MoneyCounter.new()
+static func money_counter(as_pill: bool = false) -> MoneyCounter:
+	var counter := MoneyCounter.new()
+	if as_pill:
+		counter.set_pill_style()
+	return counter
 
 
 ## Button hints along the bottom: pairs of {"key": action, "text": localization key}.

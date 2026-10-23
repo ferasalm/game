@@ -98,6 +98,9 @@
       {"tex": "glow", "from": "target", "w": 0.64, "h": 0.64, "w_end": 1.44, "h_end": 1.44, "color": "#ffe36a", "energy": 1.35, "time": 0.16, "delay": 0.08},
       {"tex": "spark", "from": "target", "w": 0.3, "h": 0.3, "w_end": 0.0, "h_end": 0.0, "color": "#fff0b0", "energy": 3.5, "count": 9, "radial": true, "move_x": 1.3, "time": 0.28, "delay": 0.1, "roll": 45},
       {"tex": "bolt2", "from": "target", "w": 1.0, "h": 0.6, "color": "#ffe36a", "energy": 2.1, "time": 0.14, "delay": 0.1, "roll": 60}
+    ]},
+    {"id": "none", "impact": 0.0, "hitstop": 0.0, "shake": 0.0, "zoom": 0.0, "knock": 0.0, "layers": [
+      {"tex": "glow", "from": "target", "w": 0.01, "h": 0.01, "w_end": 0.01, "h_end": 0.01, "color": "#000000", "energy": 0.0, "time": 0.02}
     ]}
   ]
 }

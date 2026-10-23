@@ -1,4 +1,5 @@
 # Zayd's moves: audit and redesigned kit (design v1, 2026-10-22; numbers are [PLACEHOLDER] until the harness)
+Demo combat stays these timeline battles; action combat (DECISIONS 2026-10-23) replaces them after the demo.
 Owner ask (2026-10-22): Zayd's moves overlap; each should have its own creative job so combat is unique and fun.
 Fixed facts kept: timeline with interrupts, readable intent + "will interrupt" preview, knockback bonus on the
 first hit only, reverse-stab ambush, prosthetics grant tech moves paid from SP, hilt + blade swapped separately.
@@ -105,3 +106,13 @@ for every hilt x prosthetic stay 65-90% and 40-90 s.
 - The heirloom trades elder_cut for the counter stance (Elder's Patience).
 - No enemy interrupts Zayd in v0.3: "exposed" is Flash Flood's only risk.
 - Buttons show the English name; the description line adds the Yemeni name in Latin letters (no Arabic script).
+
+## 7. Damage fix (2026-10-23, Feras: "his SP moves are weaker than his normal attack ... basically useless")
+Cause: combat.md step 3 adds the attacker's full ATK (and subtracts DEF) on EVERY hit, so the free 2-hit Jambiyah
+Strike (58) beat every SP move (Breaker 37, Elder's Cut 31, Piston Jab 27). Fix: ATK - DEF x defense_factor is split
+across the hits: per hit = max(1, round((power + (attack - defense x defense_factor) / hit_count) x row x variance)).
+Single-hit moves are unchanged. Numbers at Atk 26 vs an enforcer (Def 14): Strike 12 x 2 -> 43 total; Breaker power
+30 -> 49 + cancel (7 SP); Flash Flood 58 -> 77; Gazelle Step 10 -> 29 + tempo; Piston Shove 6 -> 25 + 2600 push; Arc
+Discharge 14 -> 33 to every foe (x1.5 on jammed). Rule (test): at base stats every SP move whose job is damage
+(Breaker, Flash Flood, Arc Discharge on 2+ foes) out-damages the strike on the same target; tempo and delay moves
+trade damage for their effect. The harness re-tunes enemies afterwards (65-90%).

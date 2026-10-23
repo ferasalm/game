@@ -1,0 +1,23 @@
+{
+  "kind": "heirloom",
+  "items": [
+    {
+      "id": "rank_1",
+      "rank": 1,
+      "slots": 1,
+      "flag": ""
+    },
+    {
+      "id": "rank_2",
+      "rank": 2,
+      "slots": 2,
+      "flag": "heirloom_rank_2"
+    },
+    {
+      "id": "rank_3",
+      "rank": 3,
+      "slots": 3,
+      "flag": "heirloom_rank_3"
+    }
+  ]
+}

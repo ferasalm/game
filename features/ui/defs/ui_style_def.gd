@@ -4,7 +4,7 @@ extends Def
 ## at 1920x1080 (s_*) and times in seconds (t_*). Screens ask for a name; they never hold a number or colour.
 
 const COLOURS: Array[StringName] = [
-	&"c_glass", &"c_glass_deep", &"c_indigo", &"c_indigo_lit", &"c_brass", &"c_brass_dim", &"c_gypsum",
+	&"c_glass", &"c_glass_deep", &"c_glass_menu", &"c_indigo", &"c_indigo_lit", &"c_brass", &"c_brass_dim", &"c_gypsum",
 	&"c_gypsum_dim", &"c_text", &"c_muted", &"c_cyan", &"c_magenta", &"c_hp_a", &"c_hp_b", &"c_sp_a", &"c_sp_b",
 	&"c_good", &"c_bad", &"c_party", &"c_enemy", &"c_cast", &"c_shadow", &"c_scrim", &"c_title_shade",
 	&"c_glass_lit", &"c_epithet", &"c_disabled", &"c_qam_red", &"c_qam_amber", &"c_qam_green", &"c_qam_blue", &"c_qam_violet"]
@@ -17,7 +17,8 @@ const SIZES: Array[StringName] = [
 	&"s_sweep_h", &"s_slide", &"s_loot_top", &"s_loot_w", &"s_end_button_w", &"s_end_button_h", &"s_cmd_desc_h",
 	&"s_head_icon", &"s_timeline_w", &"s_timeline_top", &"s_prompt_near", &"s_prompt_far", &"s_toast_top",
 	&"s_strip_bottom", &"s_defeat_w", &"s_defeat_h", &"s_portrait_x", &"s_portrait_slide", &"s_dialog_right",
-	&"s_dialog_bottom", &"s_plate_w", &"s_plate_lift", &"s_dialog_inset", &"s_area_x", &"s_area_y", &"s_area_w"]
+	&"s_dialog_bottom", &"s_plate_w", &"s_plate_lift", &"s_dialog_inset", &"s_area_x", &"s_area_y", &"s_area_w",
+	&"s_backdrop_blur"]
 const TIMES: Array[StringName] = [
 	&"t_loot_fade", &"t_loot_hold", &"t_loot_shine", &"t_title_fade", &"t_pulse", &"t_card_in", &"t_card_hold",
 	&"t_card_out",

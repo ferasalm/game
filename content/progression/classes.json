@@ -1,0 +1,35 @@
+{
+  "kind": "class",
+  "items": [
+    {
+      "id": "courier",
+      "name_key": "CLASS_COURIER_NAME",
+      "desc_key": "CLASS_COURIER_DESC",
+      "hero": "zayd",
+      "growth": {
+        "max_hp": 30,
+        "max_sp": 2,
+        "attack": 2,
+        "defense": 2,
+        "agility": 1,
+        "luck": 1
+      },
+      "passive": "couriers_footing"
+    },
+    {
+      "id": "rigger",
+      "name_key": "CLASS_RIGGER_NAME",
+      "desc_key": "CLASS_RIGGER_DESC",
+      "hero": "bilqis",
+      "growth": {
+        "max_hp": 20,
+        "max_sp": 4,
+        "attack": 2,
+        "defense": 1,
+        "agility": 1,
+        "luck": 2
+      },
+      "passive": "clean_code"
+    }
+  ]
+}

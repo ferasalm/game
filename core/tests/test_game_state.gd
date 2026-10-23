@@ -30,8 +30,8 @@ func test_round_trip_through_json() -> void:
 
 func test_unknown_versions_are_refused() -> void:
 	var state: Node = _state()
-	check_eq(state.call("from_dict", {"version": 99}), "save version 99, expected 4", "newer version refused")
-	check_eq(state.call("from_dict", {"version": 0}), "save version 0, expected 4", "no version refused")
+	check_eq(state.call("from_dict", {"version": 99}), "save version 99, expected 5", "newer version refused")
+	check_eq(state.call("from_dict", {"version": 0}), "save version 0, expected 5", "no version refused")
 	state.free()
 
 
@@ -41,9 +41,9 @@ func test_version_one_save_migrates_with_empty_equipment() -> void:
 	var old: Dictionary = {"version": 1, "flags": {"met_bilqis": true}, "counters": {}, "party": ["zayd"],
 		"area_id": "ch1_ridge", "spawn_id": ""}
 	check_eq(state.call("from_dict", old), "", "version 1 accepted")
-	check((state.get("equipment") as Dictionary).is_empty(), "equipment empty after migration")
+	check_eq((state.get("equipment") as Dictionary).get(&"zayd.armor"), &"courier_jacket", "start armor given")
 	check_eq((state.get("area_id") as StringName), &"ch1_ridge", "other fields kept")
-	check_eq((state.call("to_dict") as Dictionary)["version"], 4, "saved again as version 4")
+	check_eq((state.call("to_dict") as Dictionary)["version"], 5, "saved again as version 5")
 	state.free()
 
 
@@ -64,7 +64,8 @@ func test_version_two_save_migrates_slot_keys_and_owns_what_is_worn() -> void:
 	check_eq(equipment.get(&"zayd.hilt"), &"anvil_hilt", "hilt moves to zayd.hilt")
 	check_eq(equipment.get(&"zayd.blade"), &"broad_blade", "blade moves to zayd.blade")
 	check(not equipment.has(&"hilt") and not equipment.has(&"blade"), "the old keys are gone")
-	check_eq((state.get("inventory") as Array), [&"anvil_hilt", &"broad_blade"], "worn items count as owned")
+	var inv: Array = state.get("inventory")
+	check(inv.has(&"anvil_hilt") and inv.has(&"broad_blade"), "worn items count as owned")
 	state.free()
 
 
@@ -73,4 +74,29 @@ func test_reset_clears_inventory() -> void:
 	(state.get("inventory") as Array).append(&"keen_blade")
 	state.call("reset")
 	check((state.get("inventory") as Array).is_empty(), "reset clears the inventory")
+	state.free()
+
+
+func test_version_four_save_migrates_to_version_five() -> void:
+	var state: Node = _state()
+	var old: Dictionary = {
+		"version": 4, "flags": {}, "counters": {}, "party": ["zayd", "bilqis"],
+		"place": {"area": "ch1_ridge", "save_point": "sp_1"},
+		"equipment": {"zayd.hilt": "grandfather_hilt", "zayd.blade": "rustwire_blade"},
+		"inventory": ["grandfather_hilt", "rustwire_blade"],
+		"money": 150, "bag": {"pink_herb": 2}, "vitals": {}, "cleared_patrols": [], "play_seconds": 12.0
+	}
+	check_eq(state.call("from_dict", old), "", "version 4 accepted")
+	var equipment: Dictionary = state.get("equipment")
+	check_eq(equipment.get(&"zayd.armor"), &"courier_jacket", "start armor courier_jacket equipped on zayd")
+	check_eq(equipment.get(&"bilqis.armor"), &"rig_shawl", "start armor rig_shawl equipped on bilqis")
+	var inv: Array = state.get("inventory")
+	check(inv.has(&"courier_jacket") and inv.has(&"rig_shawl"), "both armors added to inventory")
+	check(inv.has(&"aqiq_red"), "Red Aqiq added to inventory")
+	var sockets: Dictionary = state.get("sockets")
+	check_eq(sockets.get(&"grandfather_hilt"), [&"aqiq_red"], "Red Aqiq socketed in grandfather_hilt")
+	var xp: Dictionary = state.get("xp")
+	check_eq(xp.get(&"zayd"), 0, "zayd xp 0")
+	check_eq(xp.get(&"bilqis"), 0, "bilqis xp 0")
+	check_eq((state.call("to_dict") as Dictionary)["version"], 5, "saved as version 5")
 	state.free()

@@ -10,8 +10,7 @@ deal. The player should laugh, feel clever (cancel his spice cloud, cure it with
 - Safe to practise: after the first win he is a risk-free sparring partner.
 
 ## Where and when
-- His stall stands late on the roof (past the patrol loop). A path lets the player sneak past the patrols to reach
-  him; the rooftop dressing step (HANDOFF) places it so.
+- His stall stands on R2, the market roof, a home roof with no patrols (DECISIONS 2026-10-23).
 - He only sells the feathered herbs: pink, yellow, white. qishr_cup leaves his stock (chests, loot and his gift).
 
 ## States (flags in GameState.flags)

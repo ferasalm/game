@@ -35,6 +35,8 @@ func begin(request: BattleRequest) -> bool:
 	stage.hud.end_panel.set_loot([] if request.practice else _loot_shown(loader.encounter))
 	var reward: RewardResult = _reward_preview(loader) if not request.practice else RewardResult.new()
 	stage.hud.end_panel.set_rewards(reward.money, reward.consumables)
+	if not request.practice:
+		stage.hud.end_panel.set_level_ups(_level_up_preview(loader))
 	return true
 
 
@@ -42,7 +44,7 @@ func begin(request: BattleRequest) -> bool:
 ## changes with each retry so a retry is not a replay.
 func _setup(loader: BattleLoader, request: BattleRequest, def: ArenaDef) -> BattleSetup:
 	var heroes: Array[StringName] = request.party if not request.party.is_empty() else GameState.party
-	var party: Array[CombatantDef] = loader.party_from_equipment(GameState.equipment, heroes)
+	var party: Array[CombatantDef] = loader.party_from_state(GameState, heroes)
 	var setup: BattleSetup = loader.make_setup(party, request.seed + request.retry_count, request.ambush)
 	if request.encounter_id == &"abu_nabil_duel" or request.opening == BattleRequest.OPENING_ENEMY_FIRST:
 		setup.actions = loader.actions.duplicate()
@@ -68,3 +70,11 @@ func _reward_preview(loader: BattleLoader) -> RewardResult:
 	held.inventory = held.inventory.duplicate()
 	held.flags = held.flags.duplicate()
 	return Rewards.victory(loader.encounter, held, loader.economy, loader.consumables)
+
+
+func _level_up_preview(loader: BattleLoader) -> Array:
+	var was_cleared: bool = GameState.cleared_patrols.has(loader.encounter.id)
+	var share: float = loader.economy.repeat_xp_share if (was_cleared and loader.economy != null) else 1.0
+	var xp_amount: int = floori(Progression.encounter_xp(loader.encounter, loader.combatants) * share)
+	var temp_xp: Dictionary[StringName, int] = GameState.xp.duplicate()
+	return Progression.award(temp_xp, GameState.party, xp_amount, loader.levels, loader.classes)

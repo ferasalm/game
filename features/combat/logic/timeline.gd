@@ -43,6 +43,8 @@ func choose(unit_id: StringName, chosen: ActionDef, target_ids: Array[StringName
 func hit(target_id: StringName, by: ActionDef, bonus_knockback: int = 0) -> TimelineEvent:
 	var target: UnitState = find(target_id)
 	if target.phase == UnitState.Phase.CAST and by.cancels_cast and not target.interrupt_immune():
+		if target.action != null and target.action.cast_status != &"":
+			target.remove_status(target.action.cast_status)
 		target.phase = UnitState.Phase.WAIT
 		target.action = null
 		target.targets.clear()
@@ -78,9 +80,17 @@ func _advance(unit: UnitState, events: Array[TimelineEvent]) -> void:
 		unit.pos = mini(ACT_POINT, unit.pos + unit.speed())
 		if unit.pos == ACT_POINT:
 			events.append(TimelineEvent.new(&"act", unit.unit_id, unit.pos))
+			if unit.action != null and unit.action.cast_status != &"":
+				var cs: StringName = unit.action.cast_status
+				if unit.remove_status(cs):
+					events.append(TimelineEvent.new(&"status_ended", unit.unit_id, 0, cs))
 			unit.acted = unit.action
 			unit.acted_targets = unit.targets.duplicate()
-			unit.pos = maxi(0, AFTER_ACT_POS - unit.action.recovery)
+			if unit.action != null and unit.action.after_act_pos >= 0:
+				unit.pos = unit.action.after_act_pos
+			else:
+				var rec: int = unit.action.recovery if unit.action != null else 0
+				unit.pos = maxi(0, AFTER_ACT_POS - rec)
 			unit.phase = UnitState.Phase.WAIT
 			unit.action = null
 			unit.targets.clear()

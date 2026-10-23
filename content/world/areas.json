@@ -4,6 +4,7 @@
     {
       "id": "souq_rooftops",
       "name_key": "WORLD_ROOFTOP_NAME",
+      "weather": "storm",
       "mist": [
         "saila_fog",
         "saila_floor",

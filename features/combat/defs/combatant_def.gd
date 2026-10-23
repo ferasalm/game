@@ -25,6 +25,12 @@ var sp_per_act_bonus: int = 0
 var hp_regen: int = 0
 var start_bonus: int = 0
 var actions: Array[StringName] = []
+## Roll stats (docs/design/rpg-systems.md): luck for crit/resist, xp value, dodge/crit/status modifiers.
+var luck: int = 5
+var xp: int = 0
+var dodge_bonus: float = 0.0
+var crit_bonus: float = 0.0
+var status_pierce: float = 0.0
 
 
 func read(r: DefReader) -> void:
@@ -43,6 +49,11 @@ func read(r: DefReader) -> void:
 	hp_regen = r.integer("hp_regen", 0, 9999, 0, false)
 	start_bonus = r.integer("start_bonus", 0, 6999, 0, false)
 	actions = r.id_list("actions")
+	luck = r.integer("luck", 0, 99, 5, false)
+	xp = r.integer("xp", 0, 9999, 0, false)
+	dodge_bonus = r.number("dodge_bonus", 0.0, 1.0, 0.0, false)
+	crit_bonus = r.number("crit_bonus", 0.0, 1.0, 0.0, false)
+	status_pierce = r.number("status_pierce", 0.0, 1.0, 0.0, false)
 
 
 ## A new CombatantDef with the same values (gear merges build on a copy, never on the shared def).

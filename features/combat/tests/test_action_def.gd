@@ -47,8 +47,10 @@ func test_target_kinds_and_pickers() -> void:
 
 
 func test_every_shipped_action_has_a_known_vfx() -> void:
-	check_eq(ActionDef.VFX_KINDS.size(), 14, "fourteen effect kinds")
+	check_eq(ActionDef.VFX_KINDS.size(), 15, "fifteen effect kinds (including none)")
 	for action_id: StringName in ContentDB.ids("action"):
+		if action_id == &"flee":
+			continue
 		var action := ContentDB.get_def("action", action_id) as ActionDef
 		check(ActionDef.VFX_KINDS.has(action.vfx), "%s has vfx '%s'" % [action_id, action.vfx])
 		check(tr(action.name_key) != action.name_key, "%s has a name" % action_id)
@@ -57,7 +59,7 @@ func test_every_shipped_action_has_a_known_vfx() -> void:
 
 func test_the_tech_moves_have_the_designed_shape() -> void:
 	var jab := ContentDB.get_def("action", &"piston_jab") as ActionDef
-	check(jab.cancels_cast and jab.is_hostile(), "piston jab cancels a cast")
+	check(not jab.cancels_cast and jab.is_hostile(), "piston jab shoves without cancelling")
 	var arc := ContentDB.get_def("action", &"arc_discharge") as ActionDef
 	check_eq(arc.target, &"all_foes", "arc discharge hits all foes")
 	var guard := ContentDB.get_def("action", &"reactive_guard") as ActionDef

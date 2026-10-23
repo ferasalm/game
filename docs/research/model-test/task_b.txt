@@ -1,0 +1,47 @@
+Godot 4.7 GDScript. Find the root cause of this bug. Answer in at most 5 sentences, then give the smallest fix as code.
+
+Symptom: in the game, the player picks a used save slot, a Yes/No "overwrite?" dialog opens over the slot list, the player presses Yes. The save happens, but the slot list stays visible on screen forever. Pressing Esc now opens the pause menu UNDER the stuck slot list, and the game is not paused (characters keep moving).
+
+```gdscript
+# ui_screen.gd (base of every menu)
+class_name UiScreen extends Control
+signal closed(result: Variant)
+var _closing: bool = false
+func close(result: Variant = null) -> void:
+	if _closing: return
+	_closing = true
+	closed.emit(result)
+	var out: Tween = create_tween()
+	out.tween_property(self, "modulate:a", 0.0, 0.16)
+	out.finished.connect(queue_free)
+func set_covered(covered: bool) -> void:
+	process_mode = Node.PROCESS_MODE_DISABLED if covered else Node.PROCESS_MODE_ALWAYS
+
+# screens.gd (autoload stack)
+var _stack: Array[UiScreen] = []
+func push(screen: UiScreen) -> void:
+	if not _stack.is_empty(): _stack[-1].set_covered(true)
+	add_child(screen); _stack.append(screen)
+	screen.closed.connect(_on_closed.bind(screen))
+	get_tree().paused = true
+func _on_closed(_r: Variant, screen: UiScreen) -> void:
+	_stack.erase(screen)
+	if not _stack.is_empty(): _stack[-1].set_covered(false)
+	get_tree().paused = not _stack.is_empty()
+func _unhandled_input(e: InputEvent) -> void:
+	if _stack.is_empty() and e.is_action_pressed("menu"): open_pause()
+
+# confirm_dialog.gd
+signal answered(yes: bool)
+func answer(yes: bool) -> void:
+	answered.emit(yes)
+	close(yes)
+
+# slot_picker.gd
+func _on_slot_pressed(slot: int) -> void:
+	if has_save(slot):
+		var dialog := ConfirmDialog.new(); Screens.push(dialog)
+		var yes: bool = await dialog.answered
+		if not yes: return
+	close(slot)
+```

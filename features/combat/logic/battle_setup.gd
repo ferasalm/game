@@ -29,6 +29,8 @@ var arena_id: StringName = &""
 var anchor: Vector3 = Vector3.ZERO
 ## HP a downed hero stands up with after a victory (EconomyRulesDef.ko_stand_hp).
 var ko_stand_hp: int = 1
+## Whether this battle allows a flee attempt (false for boss encounters like abu_nabil_duel).
+var can_flee: bool = true
 
 
 ## The hero ids in party order.

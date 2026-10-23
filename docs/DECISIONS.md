@@ -5,7 +5,6 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 ## Log
 - 2026-10-22 | Superseded lines move to docs/decisions-archive.md unchanged | keeps this file under its cap | Claude
 - 2026-10-19 | Art budget $0: Gemini Pro, Google Flow, free tools, CC0/free packs; no paid artist or packs | Feras: "does not require spending money" | Feras
-- 2026-10-19 | Goal: the 30-minute Chapter 1 vertical slice first; decide on a full game after it | Feras | Feras
 - 2026-10-19 | Claude Pro ($20/month): Sonnet builds, Opus designs and reviews, Haiku for mechanical work | Feras's plan; Pro limits | Feras/Claude
 - 2026-10-19 | Godot 4.7.2 stable pinned in .godot-version; typed GDScript (untyped = error); Forward+ renderer; Windows first | free, text scenes, headless tests | Claude (owner may veto)
 - 2026-10-19 | Content as JSON read into read-only Def classes; runtime state in separate objects; saves = GameState dict with a version | one format, small diffs, tests; no shared-.tres HP bug | Claude
@@ -15,22 +14,17 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-19 | Laptop (Dell Latitude 5520, i7-1185G7, 16 GB, Iris Xe, 60 FPS look test) is the minimum target: Forward+ stays, effects must hold 60 FPS here | measured by owner | Claude
 - 2026-10-19 | World: cyberpunk futuristic Sana'a, Yemen (replaces pre-Islamic South Arabia and the Malik/Thurya/Dharib cast) | Feras BRIEFING q2 | Feras
 - 2026-10-19 | Cast: Claude invents it (docs/design/world.md), owner reviews | Feras: "come up with them" | Feras
-- 2026-10-19 | Language: English first, Arabic later | Feras BRIEFING q4 | Feras
 - 2026-10-19 | Standing OK: each session merges its checked work into main at the end | Feras BRIEFING q5 "ok to merge" | Feras
 - 2026-10-19 | Title stays "Qarnaw" for now, may change later | Feras BRIEFING q6 | Feras
 - 2026-10-19 | Hero's weapon is a djanbeyyah in two parts, hilt and blade, each upgraded or swapped separately (design: docs/design/world.md) | Feras: combos give varied combat styles | Feras
 - 2026-10-21 | Local development on Windows is primary: edit and check here, push a branch; Godot 4.7.2 win64 exes sit in the repo root (git-ignored) | Feras runs the editor here | Feras/Claude
 - 2026-10-21 | Every question to Feras: 2-4 multiple-choice options, a recommended first one with the why, plain words (beginner) | Feras is new to game dev | Feras
 - 2026-10-21 | The autonomous run pauses only for owner questions, logins, CAPTCHAs, downloads and anything that costs money; it never works around them | safety rules + $0 budget | Feras/Claude
-- 2026-10-21 | Prototype v0 = walk, then battle: one rooftop area, a workshop, a patrol, one battle in place (docs/design/prototype.md) | Feras chose it over "one battle" | Feras
-- 2026-10-21 | Prototype battle: Zayd + Bilqis vs 3 Concession enemies (2 enforcers, 1 drone) | Feras (recommended) | Feras
-- 2026-10-21 | Prototype has a small djanbeyyah pick: 2 hilts x 2 blades at a workshop | Feras (recommended) | Feras
 - 2026-10-21 | Player text: localization/<feature>.csv loaded at startup by a TextDB autoload, not Godot's CSV import | that import errors on a fresh clone (CI) and writes binaries | Claude
 - 2026-10-21 | The 8 game skills are copied from .agents/skills/ to .claude/skills/ (both kept) so Claude Code can load them inline | a skill costs ~2-4k tokens, an agent start 150k+ | Feras
 - 2026-10-21 | A Game Designer (loaded as a skill) reviews combat.md and prototype.md before the prototype build starts | second opinion before code, cheaply | Feras
 - 2026-10-21 | Dialogue: a chest-up painted portrait of the speaker beside the text box (owner's reference screenshot), 4 expressions each (neutral, happy, angry, surprised), made with Gemini | Feras: "full pictures of the characters"; AI art is strongest painted | Feras
 - 2026-10-21 | Prototype v0 gains one dialogue: Bilqis and Zayd at the workshop, 3-4 lines, stand-in portraits until Feras's Gemini art | Feras chose it over "build at M4" | Feras
-- 2026-10-21 | Slice: medium difficulty; Hamoud joins at beat 5; Idris escapes mid-fight; both a stealth walk and the sluice puzzle | Feras (slice.md questions) | Feras
 - 2026-10-21 | Ambush from behind: the hero answers with a djanbeyyah reverse stab (its hooked blade is made to strike behind, game fiction) before battle; first used in slice beat 3 | Feras's idea | Feras
 - 2026-10-21 | The reverse-stab ambush goes into prototype v0 (patrol touch from behind; party head start when Zayd reaches it from behind) | Feras (recommended) | Feras
 - 2026-10-21 | Prototype look: old Sana'a at night (tower-houses, glowing qamariya, moon, stars, clouds, fog) with neon accents and the 2150 megacity on the horizon; real place names (Souq al-Milh, al-Saila, Bab al-Yaman, Zubairi, Haddah, Bayt Baws) | Feras (recommended) | Feras
@@ -52,19 +46,25 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-22 | Hook motif: pointed tip; party hooks curl left, enemy hooks curl right (docs/design/identity.md); logo letter chosen from renders later | Feras (recommended) | Feras
 - 2026-10-22 | Hilt stone slots: the Heirloom grandfather hilt has 3, other hilts fewer by rarity (Common 0); stones add passives or stats; Zayd's moves each get a distinct combat job (redesign by Game Designer, owner reviews) | Feras | Feras
 - 2026-10-22 | Hilt stones (docs/design/hilt-stones.md): heirloom slots open with the story 1 -> 2 -> 3, no resonance; stones bought at the bench and found; free removal | Feras | Feras
-- 2026-10-22 | One task per chat, done directly; subagents only for big isolated builds or read-only audits, at most 2 at once | 7 parallel agents used 83% of the 5-h window in under an hour | Feras
-- 2026-10-22 | Gemini 3.8 Flash (agy) builds well-specified tasks from Claude's briefs in its own branch/worktree (rules: GEMINI.md); Claude reviews, runs check.sh, merges | Gemini usage is outside the Claude limit | Feras
 - 2026-10-22 | Claude runs agy with skip-permissions only via tools/agy_task.sh (own worktree per task) | faster | Feras
-- 2026-10-22 | Gemini (agy) builds whenever a task can be briefed exactly (code, content, tests, docs); Claude briefs, reviews renders and diffs, merges; Claude agents only where agy can't (art judgment loops, Opus review) | save the Claude limit | Feras
 - 2026-10-22 | Hyper3D Rodin (Feras's paid Creator plan) makes his 3D models: Claude drives its MCP, Gen-2.5-Medium Quad, UE rig, cost named first; RodinBridge plugin git-ignored | Feras (recommended) | Feras
 - 2026-10-22 | Saves: 3 slots, picked when saving at the sabil; Load in the title and pause menus | Feras | Feras
 - 2026-10-22 | Tech moves animate the prosthetic arm: Zayd's cast clips are mirrored so his cyber (right) arm casts | Feras | Feras
-- 2026-10-22 | Workflow: every briefable task goes to agy (docs/briefs/TEMPLATE.md, a do-not-edit list, GEMINI.md review_misses), reviewed with tools/agy_review.sh, at most 3 agy runs at once; Opus high leads (design, hard engineering, art), no ultracode; review-and-merge chats may run on Sonnet | session 9: 4 agy builds for ~0 Claude tokens, each needed small fixes | Feras/Claude
 - 2026-10-22 | LESSONS may grow to 100 lines before it is condensed back to ~70; always-loaded notes <= 27 KB (was 24); still one task, one model and effort per chat; /handoff every session | fewer condensing passes | Feras
 - 2026-10-22 | Music: Yemeni fusion from Google Flow (Feras makes it); 3 battle themes (battle, battle_2, battle_3); no menu or merchant tracks: menus and Abu Nabil's stall keep the area music (explore_souq) | Feras (supersedes the 2026-10-21 music line) | Feras
 - 2026-10-22 | Abu Nabil (docs/design/abu-nabil-boss.md): optional haggle (greedy x10 prices, branching talk choices with different outcomes), easy fight with spice-cloud confusion that qishr cures, then fair prices + a qishr gift he tries to charge for; risk-free rematches after the first win; sells only the feather herbs | Feras | Feras
 - 2026-10-23 | Combat becomes action (light/heavy attack, dodge, parry, counter, lock-on) in a battle arena; built after the environment work | Feras | Feras
-- 2026-10-23 | Builders: agy (Gemini 3.8 Flash) and opencode on Inkling :free (GLM-5.3-Flash fallback); OpenRouter :free only; laguna via the MCP for quick questions | model test (EFFICIENCY 3b) | Feras
 - 2026-10-23 | Painted look: route B, repainted textures on live 3D (oil-baked world, painted character skins, soft flat light); no screen filter, no sprite frames | Feras picked it from inbox/painted_routes.png | Feras
 - 2026-10-23 | Camera: close follow outdoors (Brothers), automatic, no player control, a three-quarter side angle (~32 deg) by default, a rolled horizon (5-8 deg) only in designed tension zones; corner framed shots indoors | Feras (inbox/camera_tilt_options.png) | Feras
 - 2026-10-23 | Demo = level 1 (demo-plan.md, level-1.md): 5 roofs of separate tower-houses joined by board, bridge, zipline, contextual leap, cable; Abu Nabil on the market roof; the tayramana the only room (majlis + workbench); night storm with rain, cyberpunk old Sana'a per his concept art; finale light lock + water routing (valve-puzzles.md); timeline battles kept | Feras | Feras
+- 2026-10-23 | Camera: when a wall blocks the view it rises toward an isometric view, never closes in on faces (test on the five roofs first) | Feras playtest | Feras
+- 2026-10-23 | RPG layer (docs/design/rpg-systems.md): XP, levels, a fixed class per hero, armor, Luck, dodge/crit/resist; flee = interruptible cast, never vs bosses (Abu Nabil too) | Feras (recommended) | Feras
+- 2026-10-23 | Menus (rpg-menus.md): own equipment menu (3D hologram hero); workshop = upgrade, gemstones, small crafting; menus pause over painted backdrops; holo map | Feras (recommended) | Feras
+- 2026-10-23 | Zayd's kit (zayd-moves.md 2026-10-22) gets built, plus ATK split across multi-hit moves so SP moves beat the free strike | Feras: SP moves "basically useless" | Feras/Claude
+- 2026-10-23 | Builds: build_pipeline.sh + build_gate.py; Claude reads PASS runs only; merge_run.sh reuses a fast-forward's check; merge chats on Sonnet | review tokens | Feras
+- 2026-10-23 | Builders: agy, opencode :free, Cloudflare DeepSeek V4.1 Flash (Workers Paid, Feras subscribed; <= $10 usage over the free neurons); opencode may call the 8 skill subagents | Feras | Feras
+- 2026-10-23 | Demo = level 1; slice.md parked until after it; workshop = the tayramana bench; Abu Nabil on R2, no patrols | audit | Feras
+- 2026-10-23 | Wall camera rises toward isometric (the built min-2 m arm is fixed); X4 leap two-way | audit | Feras
+- 2026-10-23 | Valve puzzles: walk up + interact per piece, ~5 min each (demo ~20-23 min); code in features/puzzles/ | audit | Feras
+- 2026-10-23 | Builders: up to 5 runs at once across all sessions (2 agy, 2 Cloudflare DeepSeek, 1 Inkling :free), each told the game-dev skills; Claude plans, orchestrates, reviews and owns quality; Claude subagents as needed at a fitting model and effort; one task per chat stays | save the Claude limit | Feras
+- 2026-10-23 | Claude delegates its own work to subagents: Haiku first (Haiku max effort beats Sonnet medium), Sonnet only when Haiku can't do it well; Claude reviews sensitive results | save the Claude limit without losing quality | Feras

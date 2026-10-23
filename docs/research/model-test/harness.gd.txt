@@ -1,0 +1,54 @@
+extends SceneTree
+## Scores model-written task A files: compiles each, then runs fixed cases.
+
+var _pass: int = 0
+var _total: int = 0
+
+
+func _initialize() -> void:
+	for f: String in DirAccess.get_files_at("res://.llmtest/models"):
+		if f.ends_with(".gd"):
+			_score("res://.llmtest/models/" + f)
+	quit()
+
+
+func _ok(cond: bool, label: String) -> void:
+	_total += 1
+	if cond:
+		_pass += 1
+	else:
+		print("   miss: ", label)
+
+
+func _score(path: String) -> void:
+	_pass = 0
+	_total = 0
+	var s: GDScript = load(path) as GDScript
+	if s == null or not s.can_instantiate():
+		print("%s: COMPILE FAIL" % path.get_file())
+		return
+	var half: float = s.shortest_yaw(350.0, 10.0, 0.5)
+	_ok(absf(half) < 0.001, "yaw 350->10 half = 0")
+	_ok(is_equal_approx(s.shortest_yaw(10.0, 350.0, 0.75), 355.0), "yaw 10->350 0.75 = 355")
+	_ok(is_equal_approx(s.shortest_yaw(30.0, 90.0, 0.25), 45.0), "yaw 30->90 0.25 = 45")
+	_ok(is_equal_approx(s.shortest_yaw(-30.0, 30.0, 1.0), 30.0), "yaw -30->30 1 = 30")
+	var r: float = s.shortest_yaw(350.0, 10.0, 1.0)
+	_ok(r >= 0.0 and r < 360.0 and is_equal_approx(r, 10.0), "yaw wraps into [0,360)")
+	_ok(s.regions(PackedFloat32Array([0, 0, 0.5, 0.5, 0]), 0.1) == PackedInt32Array([0, 0, 1, 1, 2]), "regions break and renumber")
+	_ok(s.regions(PackedFloat32Array([0, 0.05, 0.1]), 0.1) == PackedInt32Array([0, 0, 0]), "regions chain within step")
+	_ok(s.regions(PackedFloat32Array(), 0.1).is_empty(), "regions empty")
+	var good: Dictionary = s.parse_crossing({"id": "x1", "kind": "board", "from": [1, 2], "to": [3.5, 4]})
+	_ok(good.get("ok", false) == true, "valid crossing ok")
+	if good.get("ok", false):
+		var v: Dictionary = good["value"]
+		_ok(v["from"] == Vector2(1, 2) and v["to"] == Vector2(3.5, 4), "from/to as Vector2")
+		_ok(v["one_way"] == false, "one_way default false")
+	var bad: Dictionary = s.parse_crossing({"kind": "rope", "from": [1, 2, 3], "to": [0, 0], "one_way": "yes"})
+	_ok(bad.get("ok", true) == false, "bad crossing not ok")
+	var errs: PackedStringArray = bad.get("errors", PackedStringArray())
+	var joined: String = " | ".join(errs)
+	_ok("id" in joined and "kind" in joined and "from" in joined and "one_way" in joined, "every bad field reported")
+	_ok(errs.size() == 4, "exactly 4 errors (to is valid)")
+	_ok(s.parse_crossing({"id": "", "kind": "leap", "from": [0, 0], "to": [1, 1]}).get("ok", true) == false, "empty id rejected")
+	_ok(s.parse_crossing({"id": "a", "kind": "leap", "from": ["0", 0], "to": [1, 1]}).get("ok", true) == false, "non-number in from rejected")
+	print("%s: %d/%d" % [path.get_file(), _pass, _total])

@@ -50,21 +50,20 @@ reboot_pulse (ally; 14; heal 60 + Atk x0.5, revives a downed ally), elder_cut (f
 300 seeded battles per row, BattleAI plays both sides (it heals an ally under 40% HP, revives, guards before a
 big cast); Bilqis in her wrist_rig. Rows are Zayd hilt + blade + prosthetic; noise is about +-3 points.
 ```
-obtainable now                                       win %   secs
-grandfather + rustwire + salvage_arm                  73.0   64.8
-grandfather + rustwire + arc_arm                      78.7   65.0
-grandfather + keen + salvage_arm                      76.0   64.5
-grandfather + keen + arc_arm                          83.3   63.2
-swift + rustwire + salvage_arm                        80.0   64.1
-swift + rustwire + arc_arm                            82.0   64.7
-swift + keen + salvage_arm                            87.7   61.9
-swift + keen + arc_arm                                84.3   63.5
-anvil + rustwire + salvage_arm                        84.3   63.3
-anvil + rustwire + arc_arm                            80.7   63.9
-anvil + keen + salvage_arm                            88.3   62.3
-anvil + keen + arc_arm                                86.7   62.6
-Bilqis wrist_rig (start) / lens_array (chest)         73.0 / 82.3   64.8 / 63.3
-not obtainable yet: cradle_spine rows 72.7-92.0 (66-79 s); broad_blade rows 72-90; dawn_lens 90.7 (61.8 s)
+obtainable now (2026-10-23 zayd-kit redesign, 300 battles each):  win %   secs
+grandfather + rustwire + salvage_arm                  82.7   63.9
+grandfather + rustwire + arc_arm                      97.0   51.3
+grandfather + keen + salvage_arm                      89.3   62.0
+grandfather + keen + arc_arm                          98.0   49.3
+swift + rustwire + salvage_arm                        89.3   58.9
+swift + rustwire + arc_arm                            97.7   48.4
+swift + keen + salvage_arm                            91.7   57.3
+swift + keen + arc_arm                                98.3   46.9
+anvil + rustwire + salvage_arm                        92.0   57.7
+anvil + rustwire + arc_arm                            99.0   44.3
+anvil + keen + salvage_arm                            95.3   56.8
+anvil + keen + arc_arm                                99.3   42.8
+bilqis: wrist_rig                                     82.7   63.9
+bilqis: lens_array                                    87.3   61.6
 ```
-Target met for everything obtainable: 73-88% wins (65-90 asked), 61-65 s battles (40-90). Enemies were
-strengthened to offset the party's heals and guards (enforcer HP 420->450, Atk 28->31; drone Atk 20->23).
+Target met: start gear 82.7% (65-90% window), all durations 42.8-63.9 s (40-90 s window). Enemy numbers tuned: enforcer HP 420->390, Atk 28->27; drone HP 220->190, Atk 24->23.

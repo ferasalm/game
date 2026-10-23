@@ -21,6 +21,7 @@ const KINDS: Dictionary = {
 	"explore_rules": preload("res://features/world/defs/explore_rules_def.gd"),
 	"sky": preload("res://features/world/defs/sky_def.gd"),
 	"mist": preload("res://features/world/defs/mist_def.gd"),
+	"storm": preload("res://features/world/weather/defs/storm_def.gd"),
 	"camera_rig": preload("res://features/world/defs/camera_rig_def.gd"),
 	"battle_rules": preload("res://features/combat/defs/battle_rules_def.gd"),
 	"encounter": preload("res://features/combat/defs/encounter_def.gd"),
@@ -53,9 +54,20 @@ const KINDS: Dictionary = {
 	"camera_preset": preload("res://features/world/defs/camera_preset_def.gd"),
 	"place": preload("res://features/world/defs/place_def.gd"),
 	"flow_rules": preload("res://core/defs/flow_rules_def.gd"),
+	"levels": preload("res://features/progression/defs/levels_def.gd"),
+	"class": preload("res://features/progression/defs/class_def.gd"),
+	"armor": preload("res://features/items/defs/armor_def.gd"),
+	"stone": preload("res://features/jambiyah/defs/stone_def.gd"),
+	"heirloom": preload("res://features/jambiyah/defs/heirloom_def.gd"),
+	"backdrop": preload("res://features/ui/defs/backdrop_def.gd"),
+	"material": preload("res://features/items/defs/material_def.gd"),
+	"upgrade_costs": preload("res://features/workshop/defs/upgrade_costs_def.gd"),
+	"recipe": preload("res://features/workshop/defs/recipe_def.gd"),
+	"light_lock": preload("res://features/puzzles/defs/light_lock_def.gd"),
+	"water_net": preload("res://features/puzzles/defs/water_net_def.gd"),
 }
 ## Equippable kinds share one id namespace; get_def("item", id) finds any of them.
-const ITEM_KINDS: Array[String] = ["hilt", "blade", "prosthetic"]
+const ITEM_KINDS: Array[String] = ["hilt", "blade", "prosthetic", "armor"]
 
 var _defs: Dictionary[String, Dictionary] = {}
 

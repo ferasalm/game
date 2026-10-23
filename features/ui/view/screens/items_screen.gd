@@ -22,6 +22,7 @@ var _empty: Label
 
 func _init() -> void:
 	super()
+	backdrop_id = &"items"
 	prompts = [{"key": "accept", "text": "ITEMS_PROMPT_USE"}, {"key": "back", "text": "ITEMS_PROMPT_BACK"}]
 
 
@@ -52,6 +53,8 @@ func build(_args: Dictionary) -> void:
 
 
 func focus_default() -> void:
+	if not is_inside_tree():
+		return
 	if _picking and _selected != &"" and focus_first_hero():
 		return
 	if _rows.has(_selected):

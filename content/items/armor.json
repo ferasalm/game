@@ -1,0 +1,66 @@
+{
+  "kind": "armor",
+  "items": [
+    {
+      "id": "courier_jacket",
+      "name_key": "ARMOR_COURIER_JACKET",
+      "desc_key": "ARMOR_COURIER_JACKET_DESC",
+      "rarity": "common",
+      "heroes": ["zayd"],
+      "max_hp": 20,
+      "defense": 2,
+      "agility": 0,
+      "weight": 0.5,
+      "upgrade": {"max_hp": 15, "defense": 1}
+    },
+    {
+      "id": "rig_shawl",
+      "name_key": "ARMOR_RIG_SHAWL",
+      "desc_key": "ARMOR_RIG_SHAWL_DESC",
+      "rarity": "common",
+      "heroes": ["bilqis"],
+      "max_hp": 12,
+      "defense": 1,
+      "agility": 0,
+      "weight": 0.3,
+      "upgrade": {"max_hp": 15, "defense": 1}
+    },
+    {
+      "id": "souq_leather",
+      "name_key": "ARMOR_SOUQ_LEATHER",
+      "desc_key": "ARMOR_SOUQ_LEATHER_DESC",
+      "rarity": "uncommon",
+      "heroes": ["zayd", "bilqis"],
+      "max_hp": 40,
+      "defense": 4,
+      "agility": 0,
+      "weight": 1.5,
+      "upgrade": {"max_hp": 15, "defense": 1}
+    },
+    {
+      "id": "mesh_abaya",
+      "name_key": "ARMOR_MESH_ABAYA",
+      "desc_key": "ARMOR_MESH_ABAYA_DESC",
+      "rarity": "uncommon",
+      "heroes": ["bilqis"],
+      "max_hp": 30,
+      "defense": 3,
+      "agility": 1,
+      "weight": 0.5,
+      "upgrade": {"max_hp": 15, "defense": 1}
+    },
+    {
+      "id": "concession_plate",
+      "name_key": "ARMOR_CONCESSION_PLATE",
+      "desc_key": "ARMOR_CONCESSION_PLATE_DESC",
+      "rarity": "rare",
+      "perk": "heavy_hand",
+      "heroes": ["zayd"],
+      "max_hp": 70,
+      "defense": 7,
+      "agility": -2,
+      "weight": 3.0,
+      "upgrade": {"max_hp": 15, "defense": 1}
+    }
+  ]
+}

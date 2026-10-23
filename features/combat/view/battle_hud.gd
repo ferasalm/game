@@ -167,4 +167,10 @@ func _on_target_focused(unit_id: StringName) -> void:
 	var unit: UnitState = _sim.timeline.find(unit_id) if unit_id != &"" else null
 	var caption: String = BattleStyle.text("BATTLE_TARGET") % BattleStyle.unit_name(_sim, unit) if unit != null else ""
 	timeline_bar.set_target(unit_id, caption)
+	var move: ActionDef = menu._move if menu != null else null
+	var hero: UnitState = menu.hero() if menu != null else null
+	if unit_id != &"" and move != null and move.id == &"piston_jab" and hero != null and unit != null:
+		timeline_bar.show_ghost(unit_id, _sim.knockback_preview(hero, move, unit))
+	else:
+		timeline_bar.hide_ghost()
 	target_focused.emit(unit_id)

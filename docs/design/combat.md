@@ -1,4 +1,5 @@
 # Combat rules (v0, for the prototype; numbers are starting values in content/, tuned by the harness)
+Demo combat stays these timeline battles; action combat (DECISIONS 2026-10-23) replaces them after the demo.
 Timeline basics are built and tested (docs/ARCHITECTURE.md, "Combat"; features/combat/logic/timeline.gd).
 Every number below lives in content JSON; code reads it from Defs. Each rule here has a test.
 
@@ -55,9 +56,9 @@ Every number below lives in content JSON; code reads it from Defs. Each rule her
   (downed ones too for a revive); self: the actor; all_allies: every living ally.
 - Perks (features/items): start_bonus adds to the unit's starting timeline position (capped below COMMAND_POINT);
   see docs/design/prosthetics.md.
-- Events (TimelineEvent: kind, unit_id, value, detail), in order: reverse_stab (opening only), command, act (actor), missed (actor, action id), damage (target, amount),
-  interrupted / knocked_back (target, new position), healed (target, HP restored, detail = action id or regen),
-  revived (target), status (target), status_ended, down (target), fizzled, victory, defeat. The view plays them in this order.
+- Events (TimelineEvent: kind, unit_id, value, detail), in order: reverse_stab (opening only), command, act (actor), missed (actor, action id), dodged (target, action id),
+  crit (target), damage (target, amount), interrupted / knocked_back (target, new position), healed (target, HP restored, detail = action id or regen),
+  revived (target), status (target), resisted (target, status id), status_ended, down (target), fizzled, flee_failed (actor, fails + 1), fled (actor), victory, defeat. The view plays them in this order.
 
 ## BattleAI (the same policy plays enemies and, in the harness, the party)
 1. If an opposing unit is casting and this unit has an affordable cancel move that can target it: use it on

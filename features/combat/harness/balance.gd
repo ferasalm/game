@@ -1,15 +1,23 @@
 extends SceneTree
 ## Balance harness: seeded battles per gear pairing with BattleAI playing both sides, one table.
-## Run: GODOT_TIMEOUT=1800 tools/run_godot.sh -s res://features/combat/harness/balance.gd -- [battles] [all|obtainable] [name filter] [encounter id] [herbs, e.g. pink_herb=2,white_herb=1]
-## Default 1000 battles per row and only the items the prototype hands out; "all" adds every item in the data.
+## Run: GODOT_TIMEOUT=1800 tools/run_godot.sh -s res://features/combat/harness/balance.gd -- [battles] [all|obtainable] [name filter] [encounter id] [herbs] [level]
 ## Rows: Zayd's hilt x blade x prosthetic (Bilqis in her start rig), then Bilqis's prosthetics (Zayd in his
 ## start gear). Tune content/*.json, not code.
+
+const ENCOUNTER_LEVELS: Dictionary[StringName, int] = {
+	&"patrol_pair": 1,
+	&"patrol_drone": 2,
+	&"patrol_gate": 3,
+	&"abu_nabil_duel": 1,
+	&"rooftop_patrol": 1,
+}
 
 var _battles: int = 1000
 var _all: bool = false
 var _filter: String = ""
 var _encounter: StringName = &"rooftop_patrol"
 var _bag: Dictionary = {}
+var _level: int = 1
 var _loader: BattleLoader
 
 
@@ -18,11 +26,16 @@ func _process(_delta: float) -> bool:
 	if args.size() > 0:
 		_battles = maxi(1, args[0].to_int())
 	_all = args.size() > 1 and args[1] == "all"
-	_filter = args[2] if args.size() > 2 else ""
-	if args.size() > 3:
+	if args.size() > 2 and args[2] != "-" and args[2] != "none" and args[2] != "all":
+		_filter = args[2]
+	if args.size() > 3 and args[3] != "-":
 		_encounter = StringName(args[3])
-	if args.size() > 4:
+	if args.size() > 4 and args[4] != "-" and args[4] != "none":
 		_bag = _parse_bag(args[4])
+	if args.size() > 5 and args[5] != "-":
+		_level = maxi(1, args[5].to_int())
+	else:
+		_level = ENCOUNTER_LEVELS.get(_encounter, 1)
 	var db: Node = load("res://core/content_db.gd").new()
 	var problems: PackedStringArray = db.call("load_all")
 	if not problems.is_empty():
@@ -30,6 +43,7 @@ func _process(_delta: float) -> bool:
 	_loader = BattleLoader.from_db(db, _encounter)
 	_loader.start_bag = _bag
 	db.free()
+	print("encounter: %s | hero level: %d" % [_encounter, _level])
 	print("%-52s win %%   secs   interrupts  heals  herbs" % "zayd gear (bilqis in her start rig)")
 	for hilt_id: StringName in _pool(_loader.hilts.keys(), [&"grandfather_hilt", &"swift_hilt", &"anvil_hilt"]):
 		for blade_id: StringName in _pool(_loader.blades.keys(), [&"rustwire_blade", &"keen_blade"]):
@@ -76,7 +90,7 @@ func _row(label: String, hilt_id: StringName, blade_id: StringName, arm_id: Stri
 	var heals: int = 0
 	var herbs: int = 0
 	for battle_seed: int in range(1, _battles + 1):
-		var sim: BattleSim = _loader.make_sim(hilt_id, blade_id, battle_seed, 0, arm_id, rig_id)
+		var sim: BattleSim = _loader.make_sim(hilt_id, blade_id, battle_seed, 0, arm_id, rig_id, _level)
 		for event: TimelineEvent in BattleLoader.autoplay(sim, not _bag.is_empty()):
 			interrupts += 1 if event.kind == &"interrupted" else 0
 			heals += 1 if event.kind == &"healed" and event.detail != &"regen" else 0
@@ -88,7 +102,6 @@ func _row(label: String, hilt_id: StringName, blade_id: StringName, arm_id: Stri
 		float(interrupts) / _battles, float(heals) / _battles, float(herbs) / _battles]
 
 
-## "pink_herb=2,white_herb=1" -> {pink_herb: 2, white_herb: 1}. With herbs the heroes use ItemPolicy.
 func _parse_bag(text: String) -> Dictionary:
 	var out: Dictionary = {}
 	for pair: String in text.split(","):

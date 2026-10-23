@@ -21,8 +21,8 @@ bump into a Concession patrol, win or lose a timeline battle, return. Rules: doc
    move "will interrupt" when it lands before that enemy's charge (BattleSim.lands_before). One-time tips at
    the first command ("time stops while you choose") and the first enemy charge ("hit it with a cancels move").
 7. Win: every enemy down -> "Victory" -> back on the rooftop. Lose: both heroes down -> "Defeated" -> retry
-   the battle or go back. HP and SP refill after each battle. The patrol returns to its route a few seconds
-   later, so another pairing can be tried.
+   the battle or go back. HP and SP carry over between fights; the sabil refills them (DECISIONS 2026-10-21
+   save spot). The patrol returns to its route a few seconds later, so another pairing can be tried.
 
 ## Built from
 - Logic (pure, tested): BattleSim (damage, SP, statuses, deaths, victory), BattleAI, the jambiyah merge,

@@ -1,0 +1,26 @@
+{
+  "kind": "material",
+  "items": [
+    {
+      "id": "scrap_copper",
+      "name_key": "MATERIAL_SCRAP_COPPER",
+      "desc_key": "MATERIAL_SCRAP_COPPER_DESC",
+      "rarity": "common",
+      "icon": "scrap_copper"
+    },
+    {
+      "id": "drone_coil",
+      "name_key": "MATERIAL_DRONE_COIL",
+      "desc_key": "MATERIAL_DRONE_COIL_DESC",
+      "rarity": "uncommon",
+      "icon": "drone_coil"
+    },
+    {
+      "id": "salt_crystal",
+      "name_key": "MATERIAL_SALT_CRYSTAL",
+      "desc_key": "MATERIAL_SALT_CRYSTAL_DESC",
+      "rarity": "uncommon",
+      "icon": "salt_crystal"
+    }
+  ]
+}

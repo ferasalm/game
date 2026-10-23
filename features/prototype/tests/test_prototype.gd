@@ -145,9 +145,9 @@ func test_first_workshop_visit_talks_then_opens_the_menu() -> void:
 
 func test_a_new_game_owns_the_start_gear() -> void:
 	var main: PrototypeMain = _make()
-	for item_id: StringName in [&"grandfather_hilt", &"rustwire_blade", &"salvage_arm", &"wrist_rig"]:
+	for item_id: StringName in [&"grandfather_hilt", &"rustwire_blade", &"salvage_arm", &"wrist_rig", &"courier_jacket", &"rig_shawl", &"aqiq_red"]:
 		check(GameState.inventory.has(item_id), "owns %s" % item_id)
-	check_eq(GameState.inventory.size(), 4, "and nothing else")
+	check_eq(GameState.inventory.size(), 7, "and nothing else")
 	main.free()
 	GameState.reset()
 

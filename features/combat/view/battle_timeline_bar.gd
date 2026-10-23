@@ -13,6 +13,7 @@ var _rings: Dictionary[StringName, Panel] = {}
 var _track: BattleTrackArt
 var _target_label: Label
 var _target_id: StringName = &""
+var _ghost: BattleTimelineGhost
 
 
 func setup(sim: BattleSim, view: BattleViewDef, shown_hp: Dictionary[StringName, int]) -> void:
@@ -33,6 +34,8 @@ func setup(sim: BattleSim, view: BattleViewDef, shown_hp: Dictionary[StringName,
 	_target_label.position = Vector2(view.margin, _track.position.y + view.timeline_track / 2.0 - view.target_font)
 	_target_label.size = Vector2(0.0, view.target_font * 2.0)
 	add_child(_target_label)
+	_ghost = BattleTimelineGhost.create(view)
+	add_child(_ghost)
 	for unit: UnitState in sim.timeline.units:
 		_add_icon(unit)
 
@@ -88,6 +91,24 @@ func is_ringed(unit_id: StringName) -> bool:
 	return _rings.has(unit_id) and _rings[unit_id].visible
 
 
+func show_ghost(unit_id: StringName, pos: int) -> void:
+	if _ghost != null:
+		_ghost.show_at(unit_id, pos)
+
+
+func hide_ghost() -> void:
+	if _ghost != null:
+		_ghost.hide_ghost()
+
+
+func has_ghost() -> bool:
+	return _ghost != null and _ghost.visible
+
+
+func ghost_pos() -> int:
+	return _ghost.pos if _ghost != null else -1
+
+
 func _process(_delta: float) -> void:
 	if _sim == null:
 		return
@@ -97,6 +118,8 @@ func _process(_delta: float) -> void:
 	_target_label.size.x = maxf(0.0, track_x - _view.margin * 2.0)
 	for unit: UnitState in _sim.timeline.units:
 		_place(unit, track_x)
+	if _ghost != null:
+		_ghost.update_position(_sim, _view, track_x)
 
 
 func _place(unit: UnitState, track_x: float) -> void:

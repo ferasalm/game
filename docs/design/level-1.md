@@ -30,7 +30,7 @@ edge has a parapet except at a crossing; nobody can fall (no fall state anywhere
 | X1 | R1 -> R2 | wooden board | 4 m, rises 0.8 m | a scaffold plank across the alley; teaches "edges have crossings"; both ways |
 | X2 | R2 -> R3 | simple bridge | 6 m, rises 1.6 m | planks on two cables with rope rails, sways a little under the pair; both ways |
 | X3 | R3 -> R4 | zipline | 16 m over al-Saila, drops 4.8 m | one way; a courier's pulley handle on a steel cable; Bilqis rides a second line |
-| X4 | R4 -> R5 | leap | 1.8 m gap, same height | contextual: a chalk hook mark on the ledge; interact, the pair leaps in a set move |
+| X4 | R4 -> R5 | leap | 1.8 m gap, same height | contextual: a chalk hook mark on the ledge; interact, the pair leaps in a set move; both ways |
 | X5 | R4 -> R1 | cable traverse | 10 m, rises 2.4 m | hand-over-hand along a thick power-cable bundle over a ledge; both ways; the way home |
 Loop: R1 -> R2 -> R3 -> (zip) R4 -> (cable) R1, so the player can always return to the stall and the sabil; R5 hangs
 off R4 by the leap. Crossings are interact-started set moves (input locked, 1.5-4 s), each with its own camera zone

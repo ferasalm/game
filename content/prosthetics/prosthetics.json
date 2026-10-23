@@ -7,7 +7,7 @@
      "perk": "mender_loop", "wearer": "zayd", "part": "spine", "hp": 10, "defense": 1, "agility": -2, "weight": 2.5,
      "actions": ["reactive_guard"]},
     {"id": "arc_arm", "name_key": "PROSTHETIC_ARC_ARM", "desc_key": "PROSTHETIC_ARC_ARM_DESC", "rarity": "epic",
-     "perk": "surge_current", "wearer": "zayd", "part": "arm", "sp": 6, "attack": 4, "agility": 1, "weight": 1.5,
+     "perk": "surge_current", "wearer": "zayd", "part": "arm", "sp": 0, "attack": 0, "agility": -2, "weight": 4.2,
      "actions": ["arc_discharge", "piston_jab"]},
     {"id": "wrist_rig", "name_key": "PROSTHETIC_WRIST_RIG", "desc_key": "PROSTHETIC_WRIST_RIG_DESC", "rarity": "common",
      "wearer": "bilqis", "part": "arm", "sp": 4, "weight": 0.3, "actions": ["nanite_mend"]},

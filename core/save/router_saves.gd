@@ -17,7 +17,16 @@ static func newest_slot(dir: String) -> int:
 
 static func save_slot(dir: String, slot: int) -> String:
 	var service := SaveService.new(dir)
-	return "" if service.write(slot, GameState.to_dict()) else service.last_error
+	var ok: bool = service.write(slot, GameState.to_dict())
+	if ok:
+		var img: Image = null
+		if DisplayServer.get_name() != "headless" and Engine.get_main_loop() is SceneTree:
+			var root: Viewport = (Engine.get_main_loop() as SceneTree).root
+			if root != null and root.get_texture() != null:
+				img = root.get_texture().get_image()
+		service.write_thumbnail(slot, img)
+		return ""
+	return service.last_error
 
 
 static func load_slot_data(dir: String, slot: int) -> Array:

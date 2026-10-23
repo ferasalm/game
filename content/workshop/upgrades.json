@@ -1,0 +1,22 @@
+{
+  "kind": "upgrade_costs",
+  "items": [
+    {
+      "id": "default",
+      "max_level": 3,
+      "riyal": [40, 80, 140],
+      "rarity_factor": {
+        "common": 1.0,
+        "uncommon": 1.25,
+        "rare": 1.5,
+        "epic": 2.0,
+        "legendary": 2.5
+      },
+      "materials": [
+        {"scrap_copper": 2},
+        {"scrap_copper": 3, "drone_coil": 1},
+        {"drone_coil": 2, "salt_crystal": 1}
+      ]
+    }
+  ]
+}

@@ -5,11 +5,11 @@ extends RefCounted
 ## the saved equipment through Inventory.equip. Items and perks are passed in (looked up by the view).
 
 
-## "zayd" -> hilt, blade, prosthetic; every other hero -> prosthetic only.
+## "zayd" -> blade, hilt, armor, prosthetic; every other hero -> armor, prosthetic.
 static func parts_for(hero: StringName) -> Array[StringName]:
 	if hero == Jambiyah.WIELDER:
-		return [&"hilt", &"blade", &"prosthetic"]
-	return [&"prosthetic"]
+		return [&"blade", &"hilt", &"armor", &"prosthetic"]
+	return [&"armor", &"prosthetic"]
 
 
 ## The owned items that may be worn in the hero's slot, rarer first, then by id. rarity_order: rarity id -> order.

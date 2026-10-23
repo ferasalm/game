@@ -7,7 +7,7 @@
      "font_title": "res://assets/fonts/reem_kufi.ttf",
      "font_musnad": "res://assets/fonts/noto_sans_old_south_arabian.ttf",
 
-     "c_glass": "#161230ea", "c_glass_deep": "#0d0a1ef0", "c_indigo": "#2b2540", "c_indigo_lit": "#3d3a73",
+     "c_glass": "#161230ea", "c_glass_deep": "#0d0a1ef0", "c_glass_menu": "#161230b8", "c_indigo": "#2b2540", "c_indigo_lit": "#3d3a73",
      "c_title_shade": "#0b0818b8", "c_brass": "#e8c070", "c_brass_dim": "#9a7a3c", "c_gypsum": "#f2ead8", "c_gypsum_dim": "#a89d88",
      "c_text": "#f2ead8", "c_muted": "#b8aecb", "c_cyan": "#3df0e0", "c_magenta": "#ff3d9a",
      "c_hp_a": "#b8282e", "c_hp_b": "#ff8a2a", "c_sp_a": "#2f78c8", "c_sp_b": "#3df0e0",
@@ -29,6 +29,7 @@
      "s_toast_top": 96, "s_strip_bottom": 40, "s_defeat_w": 640, "s_defeat_h": 420, "s_portrait_x": 60,
      "s_portrait_slide": 80, "s_dialog_right": 80, "s_dialog_bottom": 80, "s_plate_w": 420, "s_plate_lift": 16,
      "s_dialog_inset": 40, "s_area_x": 160, "s_area_y": 420, "s_area_w": 900,
+     "s_backdrop_blur": 6,
 
      "t_loot_fade": 0.35, "t_loot_hold": 2.2, "t_loot_shine": 0.9,
      "t_title_fade": 0.9, "t_pulse": 1.6, "t_card_in": 0.9, "t_card_hold": 2.8, "t_card_out": 1.1,

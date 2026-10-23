@@ -68,13 +68,21 @@ func _on_stage_ended(result: StringName) -> void:
 		_restore_snapshot()
 	elif result == BattleOutcome.VICTORY:
 		_win(outcome)
+	elif result == BattleOutcome.FLED:
+		# Fled: keep vitals and bag, pay nothing, never clear patrol.
+		GameState.set_vitals(outcome.vitals)
+		GameState.set_bag(outcome.bag)
+		# The area return path stays as after a defeat (patrol reset, grace time handled by Router),
+		# but vitals and bag are preserved.
 	else:
 		_restore_snapshot()
 	finished.emit(outcome)
 
 
-## Carries the fight's vitals and herbs into the game and pays the encounter's rewards once.
+## Carries the fight's vitals and herbs into the game, awards XP and level-ups, and pays rewards once.
 func _win(outcome: BattleOutcome) -> void:
+	var was_cleared: bool = GameState.cleared_patrols.has(outcome.encounter_id)
+	_award_battle_xp(outcome, was_cleared)
 	GameState.set_vitals(outcome.vitals)
 	GameState.set_bag(outcome.bag)
 	var reward: RewardResult = RewardApplier.victory(outcome.encounter_id)
@@ -82,8 +90,43 @@ func _win(outcome: BattleOutcome) -> void:
 	outcome.items = reward.items
 	outcome.consumables = reward.consumables.duplicate()
 	outcome.rewarded = true
-	if not GameState.cleared_patrols.has(outcome.encounter_id):
+	_award_battle_materials(outcome.encounter_id, was_cleared)
+	if not was_cleared:
 		GameState.cleared_patrols.append(outcome.encounter_id)
+
+
+func _award_battle_materials(encounter_id: StringName, was_cleared: bool) -> void:
+	var enc := ContentDB.get_def("encounter", encounter_id) as EncounterDef
+	if enc == null or enc.materials.is_empty():
+		return
+	var rules := ContentDB.get_def("economy_rules", &"default") as EconomyRulesDef
+	var share: float = rules.repeat_payout if (was_cleared and rules != null) else 1.0
+	for mat_id: StringName in enc.materials:
+		var count: int = floori(float(enc.materials[mat_id]) * share)
+		if count > 0:
+			Materials.add(GameState.materials, mat_id, count)
+
+
+func _award_battle_xp(outcome: BattleOutcome, was_cleared: bool) -> void:
+	var encounter_def := ContentDB.get_def("encounter", outcome.encounter_id) as EncounterDef
+	var combatants: Dictionary[StringName, CombatantDef] = {}
+	for cid: StringName in ContentDB.ids("combatant"):
+		combatants[cid] = ContentDB.get_def("combatant", cid) as CombatantDef
+	var xp_base: int = Progression.encounter_xp(encounter_def, combatants)
+	var rules := ContentDB.get_def("economy_rules", &"default") as EconomyRulesDef
+	var share: float = rules.repeat_xp_share if (was_cleared and rules != null) else 1.0
+	var xp_amount: int = floori(xp_base * share)
+	var levels_def := ContentDB.get_def("levels", &"default") as LevelsDef
+	var classes: Dictionary[StringName, ClassDef] = {}
+	for class_id: StringName in ContentDB.ids("class"):
+		var c := ContentDB.get_def("class", class_id) as ClassDef
+		classes[c.hero] = c
+	outcome.level_ups = Progression.award(GameState.xp, GameState.party, xp_amount, levels_def, classes)
+	for lu: LevelUp in outcome.level_ups:
+		if outcome.vitals.has(lu.hero):
+			var vit: Dictionary = outcome.vitals[lu.hero]
+			vit["hp"] = int(vit.get("hp", 0)) + lu.gains.get(&"max_hp", 0)
+			vit["sp"] = int(vit.get("sp", 0)) + lu.gains.get(&"max_sp", 0)
 
 
 func restore_snapshot() -> void:

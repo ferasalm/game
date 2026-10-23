@@ -14,6 +14,9 @@ missing prerequisites.
 - If what you observe contradicts the brief, stop that step and report it instead of redesigning.
 - Quote the exact rule, file line or command output you rely on.
 - Before finishing, run `bash tools/check.sh` and paste its raw last 15 lines. A check counts only if you ran it.
+- Skills: .agents/skills/<name>/SKILL.md (godot-gameplay-scripter, godot-shader-developer, technical-artist,
+  level-designer, game-designer, narrative-designer, game-audio-engineer, blender-addon-engineer). Read the one
+  your brief names before you start; where it differs from these rules (typed GDScript, no C#), these rules win.
 </operating_rules>
 
 <code_rules>
@@ -24,8 +27,8 @@ missing prerequisites.
   migrate through SaveCodec one version at a time.
 - No node lookups by path: `@export` or `%UniqueName`. No gameplay numbers in code. Player text = localization keys.
 - Every rule and every fixed bug gets a test (tests/test_*.gd style; helpers in tests/ must not start with test_).
-- Where is X: grep docs/MAP.md. After adding files: `python tools/map.py`. After new class_names:
-  `bash tools/run_godot.sh --import`. One test file: `bash tools/run_godot.sh -s res://tests/runner.gd -- <name>`.
+- Where is X: grep docs/MAP.md. After adding files: `python tools/map.py`. After new class_names, and FIRST in a
+  fresh worktree (else "Could not find type"): `bash tools/run_godot.sh --import`. One test file: `bash tools/run_godot.sh -s res://tests/runner.gd -- <name>`.
 </code_rules>
 
 <scope>

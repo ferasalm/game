@@ -46,8 +46,9 @@ static func _paint_frame(style: UiStyleDef, kind: StringName) -> Image:
 	var side: int = cell * 3
 	var line: int = style.size(&"s_frame_line")
 	var inner: int = 1 + line + style.size(&"s_frame_gap")
-	var outer_colour: Color = style.colour(&"c_brass" if kind == &"plate" else &"c_brass_dim")
-	var back: Color = style.colour(&"c_indigo") if kind == &"plate" else style.colour(&"c_glass")
+	var is_brass_frame: bool = (kind == &"plate" or kind == &"panel" or kind == &"glass")
+	var outer_colour: Color = style.colour(&"c_brass" if is_brass_frame else &"c_brass_dim")
+	var back: Color = style.colour(&"c_indigo") if kind == &"plate" else (style.colour(&"c_glass_menu") if (kind == &"panel" or kind == &"glass") else style.colour(&"c_glass"))
 	var img := Image.create_empty(side, side, false, Image.FORMAT_RGBA8)
 	for y: int in side:
 		for x: int in side:

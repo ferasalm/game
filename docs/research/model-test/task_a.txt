@@ -1,0 +1,12 @@
+Write one typed GDScript file for Godot 4.7 that starts with `extends RefCounted` and contains exactly these three static functions (no class_name, no other code, no comments needed). Every variable and parameter must be statically typed (an untyped declaration is a compile error in this project). Output only the code in one ```gdscript block.
+
+1. static func shortest_yaw(from_deg: float, to_deg: float, t: float) -> float
+   Interpolates from from_deg toward to_deg along the SHORTEST way round the circle by fraction t (0..1). The result is wrapped into [0, 360).
+
+2. static func regions(heights: PackedFloat32Array, step: float) -> PackedInt32Array
+   heights is one row of floor cells. Two neighbouring cells belong to the same region when the absolute height difference is <= step. Return one region id per cell; ids are numbered 0, 1, 2... in order of first appearance from the left. A new region starts every time the chain breaks, even if a later cell has the same height as an earlier region.
+
+3. static func parse_crossing(d: Dictionary) -> Dictionary
+   Validates a crossing record: "id" a non-empty String; "kind" one of "board", "bridge", "zipline", "leap", "cable"; "from" and "to" each an Array of exactly two numbers [x, z]; "one_way" an optional bool (default false).
+   On success return {"ok": true, "value": {"id": String, "kind": String, "from": Vector2, "to": Vector2, "one_way": bool}}.
+   On failure return {"ok": false, "errors": PackedStringArray} with ONE message per bad field, each message containing that field's name. Report every bad field, not just the first.
