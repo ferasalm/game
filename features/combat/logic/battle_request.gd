@@ -3,6 +3,10 @@ extends RefCounted
 ## What the Router hands to a battle: encounter, arena, ambush, seed, party order, and the pre-battle snapshot
 ## (vitals, bag, money) that "Retry fight" restores. Plain data; built by the area, read by the Router and BattleRunner.
 
+const OPENING_EVEN: StringName = &"even"
+const OPENING_PARTY_FIRST: StringName = &"party_first"
+const OPENING_ENEMY_FIRST: StringName = &"enemy_first"
+
 var encounter_id: StringName = &""
 var arena_id: StringName = &""
 ## 0 none, 1 the party was ambushed, 2 the party ambushed the enemy (BattleSim.ambush).
@@ -18,6 +22,17 @@ var money_before: int = 0
 var snapshotted: bool = false
 ## How many times this fight was retried; it shifts the seed.
 var retry_count: int = 0
+var practice: bool = false
+var opening: StringName = OPENING_EVEN:
+	set(value):
+		opening = value
+		match value:
+			OPENING_ENEMY_FIRST:
+				ambush = 1
+			OPENING_PARTY_FIRST:
+				ambush = 2
+			_:
+				ambush = 0
 
 
 ## Copies the carried vitals, the bag and the purse. Does nothing the second time.

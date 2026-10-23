@@ -1,7 +1,16 @@
 {
   "kind": "shop",
   "items": [
-    {"id": "herb_stall", "name_key": "SHOP_HERB_STALL", "keeper_key": "NPC_HERB_SELLER",
-     "greeting_key": "SHOP_GREET_FIRST", "stock": ["pink_herb", "yellow_herb", "white_herb", "qishr_cup"]}
+    {
+      "id": "herb_stall",
+      "name_key": "SHOP_HERB_STALL",
+      "keeper_key": "NPC_HERB_SELLER",
+      "greeting_key": "SHOP_GREET_FIRST",
+      "stock": ["pink_herb", "yellow_herb", "white_herb"],
+      "price_flag_multipliers": {
+        "!abu_nabil_beaten": 10.0,
+        "abu_nabil_beaten": 1.0
+      }
+    }
   ]
 }

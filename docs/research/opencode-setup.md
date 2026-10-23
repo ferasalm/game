@@ -81,7 +81,10 @@ npm install -g opencode-ai
 # 2. Check installation
 opencode --version
 
-# 3. (Optional) Connect OpenCode Zen or OpenRouter if using account-backed free/paid models:
-opencode
-# Inside TUI: type /connect -> select "OpenCode Zen" or "OpenRouter" -> paste API key
+# 3. (Optional) OpenRouter (verified 2026-10-23 with CLI 1.19.4): the CLI keeps its own data folder (tools/oc_task.sh),
+#    so log in with the same XDG_DATA_HOME; the key lands in ~/.local/share/oc-cli/opencode/auth.json (outside the repo).
+#    The owner types the key himself; Claude never types or stores it.
+XDG_DATA_HOME="$HOME/.local/share/oc-cli" opencode auth login   # pick OpenRouter, paste the key
+XDG_DATA_HOME="$HOME/.local/share/oc-cli" opencode auth list    # shows 1 credential
+XDG_DATA_HOME="$HOME/.local/share/oc-cli" opencode models openrouter | grep ':free'
 ```

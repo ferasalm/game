@@ -27,12 +27,13 @@ func begin(request: BattleRequest) -> bool:
 	stage.environment = ArenaBuilder.environment(def)
 	stage.look = ArenaBuilder.look_of(def)
 	stage.warp_frame = Router.last_frame if request.retry_count == 0 else null  # a retry has no frame to break
+	stage.practice = request.practice
 	add_child(stage)
 	stage.ended.connect(ended.emit)
 	stage_created.emit(stage)
 	stage.start(BattleSim.create_from(setup), setup.anchor)
-	stage.hud.end_panel.set_loot(_loot_shown(loader.encounter))
-	var reward: RewardResult = _reward_preview(loader)
+	stage.hud.end_panel.set_loot([] if request.practice else _loot_shown(loader.encounter))
+	var reward: RewardResult = _reward_preview(loader) if not request.practice else RewardResult.new()
 	stage.hud.end_panel.set_rewards(reward.money, reward.consumables)
 	return true
 
@@ -43,6 +44,9 @@ func _setup(loader: BattleLoader, request: BattleRequest, def: ArenaDef) -> Batt
 	var heroes: Array[StringName] = request.party if not request.party.is_empty() else GameState.party
 	var party: Array[CombatantDef] = loader.party_from_equipment(GameState.equipment, heroes)
 	var setup: BattleSetup = loader.make_setup(party, request.seed + request.retry_count, request.ambush)
+	if request.encounter_id == &"abu_nabil_duel" or request.opening == BattleRequest.OPENING_ENEMY_FIRST:
+		setup.actions = loader.actions.duplicate()
+		setup.actions.erase(&"reverse_stab")
 	setup.vitals = Vitals.copy(request.vitals_before)
 	setup.bag = request.bag_before.duplicate()
 	setup.equipment = GameState.equipment.duplicate()

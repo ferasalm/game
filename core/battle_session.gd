@@ -50,6 +50,7 @@ func free_runner() -> void:
 
 func _on_stage_ended(result: StringName) -> void:
 	var outcome: BattleOutcome = BattleOutcome.from_sim(_runner.stage.sim, result)
+	outcome.practice = request.practice
 	free_runner()
 	if result == BattleOutcome.RETRY:
 		_restore_snapshot()
@@ -63,7 +64,9 @@ func _on_stage_ended(result: StringName) -> void:
 		if Router.load_slot(Router.last_slot).is_empty():
 			return
 		outcome.result = BattleOutcome.DEFEAT  # the save could not be read: back to the area, as after a defeat
-	if result == BattleOutcome.VICTORY:
+	if request.practice:
+		_restore_snapshot()
+	elif result == BattleOutcome.VICTORY:
 		_win(outcome)
 	else:
 		_restore_snapshot()
@@ -81,6 +84,10 @@ func _win(outcome: BattleOutcome) -> void:
 	outcome.rewarded = true
 	if not GameState.cleared_patrols.has(outcome.encounter_id):
 		GameState.cleared_patrols.append(outcome.encounter_id)
+
+
+func restore_snapshot() -> void:
+	_restore_snapshot()
 
 
 func _restore_snapshot() -> void:

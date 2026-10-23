@@ -40,13 +40,15 @@ static func greeting(def: ShopDef, after_battle: bool) -> String:
 
 
 ## How many of the item can change hands now (purse and stack for a buy; bag and purse cap for a sell).
-static func limit(item_id: StringName, selling: bool) -> int:
+static func limit(item_id: StringName, selling: bool, shop_id: StringName = &"herb_stall") -> int:
 	var def: ConsumableDef = consumables().get(item_id)
 	if def == null:
 		return 0
 	if selling:
 		return Shop.max_sell(def, GameState.holdings(), rules())
-	return Shop.max_buy(def, GameState.money, GameState.bag.get(item_id, 0))
+	var sh: ShopDef = shop(shop_id)
+	var price: int = Shop.unit_buy_price(sh, def, GameState.flags)
+	return Shop.max_buy(def, GameState.money, GameState.bag.get(item_id, 0), price)
 
 
 static func rules() -> EconomyRulesDef:

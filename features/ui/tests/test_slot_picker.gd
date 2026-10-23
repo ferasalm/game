@@ -45,6 +45,8 @@ func test_slot_picker_overwrite_confirm() -> void:
 	dialog.answer(true)
 	check_eq(screen.chosen_slot, 1, "picked slot 1 after confirm")
 	check(not Screens.is_open(), "picker closed after confirm")
+	# Playtest 2026-10-23: the picker closed while the dialog still covered it, stayed frozen and never faded out.
+	check(screen.process_mode != Node.PROCESS_MODE_DISABLED, "the closing picker is not left frozen (it fades and frees)")
 	_clean()
 
 

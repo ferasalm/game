@@ -17,4 +17,7 @@ func references() -> Array[Array]:
 	var out: Array[Array] = []
 	for line: DialogueLine in lines:
 		out.append(["speaker", line.speaker])
+		for choice: DialogueChoice in line.choices:
+			if not choice.next.is_empty() and choice.next != &"end":
+				out.append(["dialogue", choice.next])
 	return out

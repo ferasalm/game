@@ -47,6 +47,8 @@
 - See a scene without the owner: non-headless `"$(tools/godot.sh)" --path . --write-movie DIR/f.png --fixed-fps 60
   --quit-after N [scene]`, then view 1-2 frames scaled to 640x360 with Pillow (2026-10-21).
 
+- Harness said 99.8% party HP: its AI chain-interrupted the boss, he never acted -> print one seed's events (2026-10-23).
+
 ## 3. From reem-bot and feras-career (verified there)
 - A check that only prints never fails -> every check exits non-zero; probe each new rule with one bad case.
 - A subagent costs 150-290k tokens -> delegate only when the worker reads far more than its brief (reem-bot).
@@ -67,7 +69,6 @@
   agent in that worktree; after a limit reset start a NEW chat (an old transcript is re-sent uncached).
 - Plan mode in the lead paused every background builder -> only while none run. `cd` into a worktree moved the
   session's directory -> `git -C <path>`. lint skips .claude/.
-- B4 "needed a builder" but was one tuning pass from done -> run check.sh in a WIP worktree first (2026-10-22).
 - Parallel worktrees share one user:// folder -> save tests flake when two checkouts run tests at once -> per-checkout
   test save dir (brief save-slots) (2026-10-22).
 - `check.sh | tail && git commit` committed a failing run (tail succeeds) -> grep .check/*.log for FAIL first.
@@ -93,5 +94,5 @@
 - opencode CLI (npm opencode-ai 1.19.4): npm blocks its postinstall (no binary) -> `npm install -g
   --allow-scripts=opencode-ai opencode-ai`; "Database is not empty and has no session table" = the owner's opencode
   desktop app owns ~/.local/share/opencode -> the CLI gets its own XDG_DATA_HOME (tools/oc_task.sh) (2026-10-23).
-- opencode free models answered "Free usage limit reached" and `opencode run` then hung with an empty log -> read
-  ~/.local/share/oc-cli/opencode/log, taskkill the CLI's opencode.exe (not opencode-cli.exe, the app) (2026-10-23).
+- opencode 'Free usage limit reached', then `opencode run` hung -> read ~/.local/share/oc-cli/opencode/log, taskkill
+  opencode.exe (not opencode-cli.exe); with OpenRouter it chose a PAID title model -> small_model :free (2026-10-23).
