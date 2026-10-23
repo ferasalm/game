@@ -1,6 +1,5 @@
-# Brief: interact-focus (<= 60 lines; run ONLY AFTER gemini/level1-blockout-fix merges, and after the level-1 session
-# confirms features/world/interact/ and features/world/workshop/workshop_spot.gd are free)
-You are in your own worktree on branch oc/interact-focus (made from claude/menus-rpg-5089fa). Follow GEMINI.md,
+# Brief: interact-focus (<= 60 lines; the level-1 blockout is merged into main; tayramana is merged: the workbench is in its room)
+You are in your own worktree on branch oc/interact-focus (made from claude/level1-review). Follow GEMINI.md,
 including <review_misses>. Load the godot-gameplay-scripter skill (.agents/skills/) if one fits.
 
 ## Why
@@ -37,9 +36,23 @@ framing idea); features/world/player/player.gd (set_active); features/ui/view/ui
 4. Interact during an ease, or a second spot pressed, does nothing.
 
 ## Do NOT edit
-features/world/logic/follow_cam.gd, features/world/view/follow_camera_rig.gd, features/world/defs/camera_rig_def.gd,
-place_def.gd, content/world/** (camera.json, areas.json, props), framed_shots.gd, rooftop_camera.gd, rooftop.gd, their
-tests, features/combat/**, features/ui/view/screens/**, docs/DECISIONS.md, HANDOFF.md, any *.import.
+`features/world/logic/follow_cam.gd`
+`features/world/view/follow_camera_rig.gd`
+`features/world/defs/camera_rig_def.gd`
+`features/world/defs/place_def.gd`
+`content/world/`
+`features/world/logic/framed_shots.gd`
+`features/world/rooftop/rooftop_camera.gd`
+`features/world/rooftop/rooftop.gd`
+`features/world/interact/door_spot.gd`
+`features/combat/`
+`features/ui/view/screens/`
+`features/puzzles/`
+`docs/DECISIONS.md`
+`HANDOFF.md`
+`*.import`
+Also leave the tests of those files alone. The workbench now sits in the tayramana room (features/world/interior/):
+hook only the existing workbench open path, one line.
 
 ## Tests (features/world/tests/test_interact_focus.gd)
 After focus_open the current camera is the focus camera at spot + offset (after t_focus_zoom of process frames) with

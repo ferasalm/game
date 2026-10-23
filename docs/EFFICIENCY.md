@@ -68,8 +68,8 @@ prompts: only this public repo goes into a brief, never keys or the owner's priv
 entered by him with `XDG_DATA_HOME=~/.local/share/oc-cli opencode auth login` (pass the model as oc_task.sh's 4th arg). The
 OpenRouter MCP connector (send-message) answers one-shot questions; slugs end in `:free` only (the account holds paid credit,
 never spend it); poolside/laguna-s-2.1:free answered a GDScript question correctly 2026-10-23. At most 5 runs at once
-across all sessions (DECISIONS 2026-10-23): 2 agy, 2 Cloudflare DeepSeek (item 6), 1 Inkling :free; count with
-`git worktree list` (game-wt/*) before a launch. Pick: agy for Godot code with tests and UI with renders; DeepSeek
+across all sessions (DECISIONS 2026-10-23): 2 agy, 2 Cloudflare DeepSeek (item 6), 1 Inkling :free; run
+`bash tools/slots.sh` before a launch (exit 1 = that builder is full). Pick: agy for Godot code with tests and UI with renders; DeepSeek
 for code and scenes when agy is full; Inkling for docs, content, research and second opinions. Every brief names
 one game-dev skill (.agents/skills/: godot-gameplay-scripter, godot-shader-developer, technical-artist,
 level-designer, game-designer, narrative-designer, game-audio-engineer, blender-addon-engineer); build_pipeline
@@ -79,7 +79,7 @@ pastes it into the prompt and opencode may hand parts to its skill subagents (AG
    <brief> <base>` (build, check.sh, one free fix pass, check, tools/build_gate.py -> ../game-wt/<task>.result).
 3. Read the .result's first line only: NOWORK (nothing real built), BREACH (touched a Do NOT edit path) or FAIL =
    rerun or fix the brief, read nothing else. PASS: read its WARN lines, then `bash tools/agy_review.sh <task>` only
-   for what a WARN names, and the renders.
+   for what a WARN names, and the renders. Then a Haiku subagent (max effort) compares the diff with the brief and its Checklist and lists the misses; Opus reads only that list, the WARN lines and the renders.
 4. `bash tools/merge_run.sh <task> <gemini|oc>`: a fast-forward onto the checked commit reuses the check, any other
    merge runs check.sh; it removes the worktree and branch. Review-and-merge chats run on Sonnet. A repeated miss
    goes into GEMINI.md <review_misses>.

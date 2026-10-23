@@ -18,6 +18,12 @@ of them into BREACH; shared files go in prose below them: smallest edit>
 ## Tests
 <one line per rule or bug that must get a test>
 
+## Checklist
+- file: features/combat/logic/battle_sim.gd
+- has: features/combat/logic/battle_sim.gd :: func lands_before
+- test: features/combat/tests/test_battle_rolls.gd :: test_crit_chance_formula
+- key: localization/combat.csv :: MOVE_DESC_BREAKER
+
 ## Proof
 `bash tools/check.sh` raw last 15 lines; renders (if any) to C:/dev/game/inbox/<name>.png; small WIP commits; final
 message ends with `Built-by: Gemini 3.8 Flash (agy)` (opencode: `Built-by: <model> (opencode)`).

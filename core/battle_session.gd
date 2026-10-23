@@ -109,7 +109,7 @@ func _award_battle_materials(encounter_id: StringName, was_cleared: bool) -> voi
 
 func _award_battle_xp(outcome: BattleOutcome, was_cleared: bool) -> void:
 	var encounter_def := ContentDB.get_def("encounter", outcome.encounter_id) as EncounterDef
-	var combatants: Dictionary = {}
+	var combatants: Dictionary[StringName, CombatantDef] = {}
 	for cid: StringName in ContentDB.ids("combatant"):
 		combatants[cid] = ContentDB.get_def("combatant", cid) as CombatantDef
 	var xp_base: int = Progression.encounter_xp(encounter_def, combatants)
@@ -117,7 +117,7 @@ func _award_battle_xp(outcome: BattleOutcome, was_cleared: bool) -> void:
 	var share: float = rules.repeat_xp_share if (was_cleared and rules != null) else 1.0
 	var xp_amount: int = floori(xp_base * share)
 	var levels_def := ContentDB.get_def("levels", &"default") as LevelsDef
-	var classes: Dictionary = {}
+	var classes: Dictionary[StringName, ClassDef] = {}
 	for class_id: StringName in ContentDB.ids("class"):
 		var c := ContentDB.get_def("class", class_id) as ClassDef
 		classes[c.hero] = c

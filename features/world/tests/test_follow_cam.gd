@@ -71,5 +71,78 @@ func test_input_rotation_by_yaw() -> void:
 
 
 func test_arm_shortening() -> void:
-	check(is_equal_approx(FollowCam.shorten_arm(4.0, 2.0, 0.2), 3.8), "shortens to hit distance minus margin")
-	check(is_equal_approx(FollowCam.shorten_arm(1.5, 2.0, 0.2), 2.0), "clamped to minimum 2.0 m")
+	check(is_equal_approx(FollowCam.shorten_arm(5.0, 4.0, 0.2), 4.8), "shortens to hit distance minus margin")
+	check(is_equal_approx(FollowCam.shorten_arm(3.5, 4.0, 0.2), 4.0), "clamped to minimum 4.0 m")
+
+
+func test_follow_cam_settles_at_side_angle() -> void:
+	var rig := ContentDB.get_def("camera_rig", &"explore") as CameraRigDef
+	var cam := FollowCam.new(rig)
+	check(is_equal_approx(cam.follow_side_deg, deg_to_rad(32.0)), "side angle is 32 deg from camera.json")
+	cam.yaw = 0.0
+	# Move in -Z direction (straight ahead). Straight behind is 0 yaw. With 32 deg side offset, target is +32 deg.
+	for i: int in 300:
+		cam.update(Vector3.ZERO, Vector3(0.0, 0.0, -1.0), 1.0 / 60.0)
+	check(is_equal_approx(cam.yaw, deg_to_rad(32.0)), "yaw settles 32 deg right of straight behind (got %.2f deg)" % rad_to_deg(cam.yaw))
+
+
+func test_camera_zone_roll_ease() -> void:
+	var cam := FollowCam.new()
+	cam.enter_zone(deg_to_rad(45.0), deg_to_rad(15.0), 10.0, 40.0, deg_to_rad(6.0))
+	for i: int in 72:
+		cam.update(Vector3.ZERO, Vector3.ZERO, 1.0 / 60.0)
+	check(is_equal_approx(cam.roll, deg_to_rad(6.0)), "eased to zone roll 6 deg")
+	cam.exit_zone()
+	for i: int in 72:
+		cam.update(Vector3.ZERO, Vector3.ZERO, 1.0 / 60.0)
+	check(is_equal_approx(cam.roll, 0.0), "eased back to 0 roll outside zone")
+
+
+func test_rise_candidates_order_and_end() -> void:
+	var cands := FollowCamWall.rise_candidates(deg_to_rad(28.0), deg_to_rad(62.0), deg_to_rad(4.0))
+	check(is_equal_approx(cands[0], deg_to_rad(28.0)), "first candidate is base pitch")
+	check(is_equal_approx(cands[-1], deg_to_rad(62.0)), "last candidate is max pitch included")
+	check(cands.size() >= 2, "at least base and max")
+
+
+func test_ease_wall_rise_rises_faster_than_falls() -> void:
+	var current: float = 0.0
+	var target: float = 1.0
+	# Rise fast
+	var after_rise: float = FollowCamWall.ease_wall_rise(current, target, 1.0, 10.0, 0.5)
+	check(after_rise > 0.7, "rises quickly (got %.2f)" % after_rise)
+	# Fall slow (using down_rate < up_rate)
+	current = 1.0
+	var after_fall: float = FollowCamWall.ease_wall_rise(current, 0.0, 1.0, 10.0, 0.5)
+	check(after_fall > 0.5, "falls slowly relative to rise (got %.2f)" % after_fall)
+
+
+func test_ease_wall_rise_never_passes_target() -> void:
+	var current: float = 0.5
+	var target: float = 0.8
+	for i: int in 20:
+		current = FollowCamWall.ease_wall_rise(current, target, 0.5, 6.0, 1.5)
+		check(current <= target + 0.001, "never exceeds target (%.4f > %.4f)" % [current, target])
+
+
+func test_camera_position_with_override_pitch() -> void:
+	var cam := FollowCam.new()
+	cam.yaw = 0.0
+	cam.aim = Vector3.ZERO
+	cam.pitch = deg_to_rad(28.0)
+	cam.distance = 6.5
+	var pos_default := cam.camera_position()
+	var pos_high := cam.camera_position(6.5, deg_to_rad(62.0))
+	check(pos_high.y > pos_default.y, "higher pitch raises camera y")
+
+
+func test_wall_rise_headless_wall_blocks_camera() -> void:
+	# This is a headless physics concept test: with a wall between aim and camera,
+	# the camera should rise. Since this is pure logic and no scene is set up,
+	# we verify the ease and rise logic directly.
+	var cam := FollowCam.new()
+	cam.wall_rise = 0.0
+	var target: float = deg_to_rad(62.0) - cam.pitch
+	for i: int in 120:
+		cam.wall_rise = FollowCamWall.ease_wall_rise(cam.wall_rise, target, 1.0 / 60.0, 6.0, 1.5)
+	check(cam.wall_rise > 0.5, "wall rises above default after frames (got %.2f)" % rad_to_deg(cam.wall_rise))

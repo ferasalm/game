@@ -44,3 +44,4 @@
 - ~~2026-10-19 | Language: English first, Arabic later | Feras BRIEFING q4 | Feras~~ (superseded 2026-10-22: Musnad only, no Arabic script)
 - ~~2026-10-22 | One task per chat, done directly; subagents only for big isolated builds or read-only audits, at most 2 at once | 7 parallel agents used 83% of the 5-h window in under an hour | Feras~~ superseded 2026-10-23: 5 builder runs (2 agy, 2 DeepSeek, 1 Inkling), subagents as needed
 - ~~2026-10-22 | Gemini (agy) builds whenever a task can be briefed exactly (code, content, tests, docs); Claude briefs, reviews renders and diffs, merges; Claude agents only where agy can't (art judgment loops, Opus review) | save the Claude limit | Feras~~ superseded 2026-10-23: 5 builder runs (2 agy, 2 DeepSeek, 1 Inkling), subagents as needed
+- ~~2026-10-22 | Claude runs agy with skip-permissions only via tools/agy_task.sh (own worktree per task) | faster | Feras~~ superseded 2026-10-23: tools/build_pipeline.sh runs every builder

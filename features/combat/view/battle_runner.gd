@@ -76,5 +76,5 @@ func _level_up_preview(loader: BattleLoader) -> Array:
 	var was_cleared: bool = GameState.cleared_patrols.has(loader.encounter.id)
 	var share: float = loader.economy.repeat_xp_share if (was_cleared and loader.economy != null) else 1.0
 	var xp_amount: int = floori(Progression.encounter_xp(loader.encounter, loader.combatants) * share)
-	var temp_xp: Dictionary = GameState.xp.duplicate()
+	var temp_xp: Dictionary[StringName, int] = GameState.xp.duplicate()
 	return Progression.award(temp_xp, GameState.party, xp_amount, loader.levels, loader.classes)

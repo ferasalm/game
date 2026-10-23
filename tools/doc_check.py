@@ -30,8 +30,8 @@ check(size <= LOADED_BYTES, f"always-loaded notes are {size} bytes (max {LOADED_
 for name in ("HANDOFF.md", "docs/DECISIONS.md", "docs/LESSONS.md"):
     check(f"@{name}" in texts["CLAUDE.md"], f"CLAUDE.md loads @{name}")
 
-steps = texts["HANDOFF.md"].split("## Next steps", 1)[-1].split("\n## ", 1)[0]
-items = re.findall(r"^\d+\. .*(?:\n(?!\d+\. ).*)*", steps, re.M)
+steps = texts["HANDOFF.md"]  # every numbered step: the shared ones and each track's
+items = re.findall(r"^\d+\. .*(?:\n(?!\d+\. |#|`|- ).*)*", steps, re.M)
 check(bool(items), "HANDOFF.md has numbered next steps")
 for item in items:
     check(re.search(r"Model: (Haiku|Sonnet|Opus)", item) and re.search(r"Effort: (low|medium|high)", item),

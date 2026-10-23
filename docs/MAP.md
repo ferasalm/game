@@ -53,9 +53,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/combat/vfx.json`: content: vfx x16
 - `content/combat/view.json`: content: battle_view x1
 - `content/dialogue/box.json`: content: dialogue_style x1
-- `content/dialogue/dialogues.json`: content: dialogue x16
+- `content/dialogue/dialogues.json`: content: dialogue x18
 - `content/dialogue/speakers.json`: content: speaker x3
-- `content/dialogue/talks.json`: content: talk x1
+- `content/dialogue/talks.json`: content: talk x2
 - `content/economy/rules.json`: content: economy_rules x1
 - `content/economy/shops.json`: content: shop x1
 - `content/items/armor.json`: content: armor x5
@@ -80,18 +80,20 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/ui/transitions.json`: content: transition x3
 - `content/workshop/recipes.json`: content: recipe x4
 - `content/workshop/upgrades.json`: content: upgrade_costs x1
-- `content/world/areas.json`: content: area x1
-- `content/world/buildings.json`: content: building x10
+- `content/world/areas.json`: content: area x2
+- `content/world/buildings.json`: content: building x15
 - `content/world/camera.json`: content: camera_rig x1
 - `content/world/explore.json`: content: explore_rules x1
 - `content/world/look.json`: content: look x5
-- `content/world/mist.json`: content: mist x3
-- `content/world/props.json`: content: prop x25
+- `content/world/mist.json`: content: mist x6
+- `content/world/props.json`: content: prop x26
+- `content/world/props/tayramana.json`: content: prop x8
 - `content/world/props/workbench.json`: content: prop x1
+- `content/world/rooms.json`: content: room x1
 - `content/world/sky.json`: content: sky x1
 - `content/world/skyline.json`: content: skyline x1
 - `content/world/storm.json`: content: storm x1
-- `content/world/tiles.json`: content: tile x8
+- `content/world/tiles.json`: content: tile x18
 
 ## core
 - `core/area_port.gd`: What the Router needs from the area that is playing (a base class to override; the default does nothing)
@@ -399,7 +401,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/prosthetics/defs/prosthetic_def.gd`: A high-tech prosthetic: one slot per hero
 - `features/prosthetics/logic/prosthetics.gd`: Merges a prosthetic into a fighter (docs/design/prosthetics.md), like Jambiyah.equip: stat adds, then the granted moves, then the caps
 - `features/prosthetics/tests/test_prosthetics.gd`: Prosthetics: the merge (base -> hilt -> blade -> prosthetic -> perks -> caps) builds new fighters and never touches the shared defs; each hero's prosthetics grant 1-2 tech moves; a prosthetic fits only its wearer
-- `features/prototype/prototype_battle_flow.gd`: Handles battle conclusion effects for the prototype (patrol wins, Abu Nabil boss and spar)
+- `features/prototype/prototype_battle_flow.gd`: purpose: Handles battle creation and conclusion effects for the prototype (patrol wins, Abu Nabil boss and spar)
 - `features/prototype/prototype_main.gd`: The playable prototype's composition root: builds the rooftop, the workshop dialogue and menu, the title overlay, area title card and loot banners, registers the rooftop with the Router and wires the features' public signals
 - `features/prototype/prototype_main.tscn`: scene
 - `features/prototype/rooftop_port.gd`: The rooftop as the Router sees it: hide and disable it during a battle (it stays in the tree, so its awaits, signals and camera keep working), bring it back, and move the party for unstuck and loading
@@ -521,6 +523,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/defs/prop_def.gd`: A rooftop prop as data (content/world/props.json): a list of simple parts (PropPart), an optional practical light it carries, an optional box that blocks walking (collide = width, height, depth, centred on the prop's base) and, for a chest, the lid's hinge (lid_hinge x, y, z) so the "lid" part group can swing open
 - `features/world/defs/prop_part.gd`: One solid piece of a prop: a box (size = width, height, depth; at = centre) or a frustum (size = bottom radius, top radius, height; at = base centre), a palette letter, an optional yaw/tilt (degrees), and how it is drawn: glow (unshaded, boosted, blooms), blink (a glow that pulses), water (rippling or falling painted water), pattern (a painted tile texture instead of the letter), group (a named sub-mesh that can move, such as a chest lid)
 - `features/world/defs/prop_splash.gd`: Water drops a prop throws up where its stream lands (the sabil): a small burst of additive quads, drawn from a CPUParticles3D at `at` (prop space)
+- `features/world/defs/room_def.gd`: purpose: Room content definition (content/world/rooms.json): dimensions, walls, qamariya, props, shots, spots
 - `features/world/defs/sign_spec.gd`: One neon sign: a localization key (a place name in Musnad letters only), a dark board with a glowing frame, the glow colour, a position and yaw, the text height in metres (size) and how much it flickers
 - `features/world/defs/sky_def.gd`: The night sky as data (content/world/sky.json): gradient, stars, milky way, moon, two cloud layers and the megacity glow
 - `features/world/defs/skyline_band.gd`: One depth band of the skyline: city blocks on a jittered grid between min_dist and max_dist metres from the play area's edge
@@ -528,19 +531,28 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/defs/skyline_landmark.gd`: One landmark placed by data: kind, position on the ground (x east, z south; the play area is x 0..26, z 0..18 and -Z is north), facing in degrees, main size (height or length in metres), a part count, a seed and a radius kept free of ordinary city blocks
 - `features/world/defs/tile_def.gd`: One kind of block: height in metres, colour (an art-bible palette letter or #hex), whether it blocks walking, an optional glow, an optional cap tile drawn on top of it (gypsum trim on a tower) and an optional surface pattern (a SurfacePainter texture painted over the colour, 4 m repeat, 32 px = 1 m), or hidden (blocks only)
 - `features/world/interact/chest.gd`: A treasure chest: the prop's body and a lid that swings open on a hinge when the player interacts
+- `features/world/interact/crossing_spot.gd`: Interactive rooftop crossing: stand-in mesh, interact prompt at usable ends, and instant party teleport with fade
+- `features/world/interact/door_spot.gd`: Interactive door spot: shows enter prompt and logs transition on interact
 - `features/world/interact/interact_spot.gd`: Something the player can press interact next to: a floating prompt (a localization key) that shows while he is within the interact radius, and a virtual _interact() that runs on the key press
 - `features/world/interact/pill_spot.gd`: An interact spot whose prompt is the UI's glass pill ("[E] Verb", Ui.interaction_prompt) instead of a 3D label: the pill follows the spot through the camera and shows while the player is in range
 - `features/world/interact/sabil_drink.gd`: What drinking at the sabil does to the game: the whole party is refilled (no carried vitals = full), the cleared patrols are forgotten (they return), the save point is the sabil and the game is written to a slot
 - `features/world/interact/sabil_spot.gd`: The sabil fountain: interact opens the "Drink to rest?" screen
 - `features/world/interact/stall_spot.gd`: The herb stall: stand at the counter and press interact to open the shop screen (Screens id &"shop")
 - `features/world/interact/talk_spot.gd`: An interact spot for talking to an NPC (e.g
+- `features/world/interact/valve_spot.gd`: Interactive valve spot: shows turn prompt and triggers on interact
 - `features/world/interior/camera_room.gd`: Grey-box interior test room demonstrating FramedShots and FollowCameraRig in framed indoor mode
 - `features/world/interior/camera_room.tscn`: scene
+- `features/world/interior/room_builder.gd`: purpose: Builds room view: shell geometry, painted qamariya arches, and props via PropBuilder
+- `features/world/interior/room_mesh_builder.gd`: purpose: Builds room shell geometry: floor, walls, ceiling, qamariya stained-glass arches, and collisions
+- `features/world/interior/room_sit_spot.gd`: purpose: Interactive sit spot at a majlis cushion
+- `features/world/interior/tayramana_flow.gd`: purpose: Manages transitions into and out of Tayramana room, fade overlays, sit flow and workshop inside room
+- `features/world/interior/tayramana_room.gd`: purpose: View and controller for the Tayramana rooftop majlis room: shell, props, framed shots, sit and workshop
 - `features/world/logic/camera_limits.gd`: The exploration camera's frame rules: the camera target is the player clamped into the area's limits (x and z ranges from camera.json), so the camera never leaves the commons even when the player walks to the east roof
 - `features/world/logic/facade_details.gd`: Sana'a facade parts painted with palette letters at 32 px/m: gypsum friezes (zigzag, triangles, rosettes), windows with thick white gypsum frames, the qamariya (a semicircle of coloured glass over the window) and arched wooden doors
 - `features/world/logic/facade_painter.gd`: Paints one Sana'a tower-house facade at 32 px/m from a FacadeSpec: basalt stone floors at the bottom (door on the ground floor), fired-brick floors above, a gypsum frieze at the top of each brick floor, and on every brick floor windows with gypsum frames under qamariya arches
 - `features/world/logic/facade_spec.gd`: What one painted facade needs: width in metres, floors (the lowest stone_floors are basalt, the rest brick), window columns, frieze style, qamariya glass letters, lit and shutter ratios, a door, floor height in pixels and the seed
 - `features/world/logic/follow_cam.gd`: Close third-person follow camera logic: focus, lazy auto-yaw, a scripted orbit (never player input: owner 2026-10-23), zone easing and arm shortening
+- `features/world/logic/follow_cam_wall.gd`: Wall-rise helpers for FollowCam
 - `features/world/logic/follow_guard.gd`: Keeps the follower from sticking: it asks to be put back on the leader's trail when it is farther than the leash, or when it wanted to move but barely got closer to the target (wedged on a corner) for stuck_seconds
 - `features/world/logic/framed_shots.gd`: Indoor framed shots logic: shot picking with hysteresis, clamped tracking, and input basis retention at cuts
 - `features/world/logic/light_pick.gd`: Which practical lights get a real OmniLight: the nearest few to a focus point (the rest keep only their fake light pool), plus the fade and flicker maths
@@ -562,13 +574,14 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/player/follower.gd`: Bilqis: trails the leader along the path he recently walked, at the follower distance, closing in with a little lag
 - `features/world/player/player.gd`: Zayd: 8-way walking from the move_* actions (up = -Z), stopped by solid tiles
 - `features/world/rooftop/actor_body.gd`: The collision capsule of a walking actor (Zayd, Bilqis): radius and height come from ExploreRulesDef (explore.json; builder B4 later reads them from the ModelDef instead)
-- `features/world/rooftop/area_actors.gd`: The living things of an area, built from its markers and places: Zayd, Bilqis, one Patrol per patrol place, the workshop bench, the herb stall and its seller, and the sabil
+- `features/world/rooftop/area_actors.gd`: The living things of an area, built from its markers and places: Zayd, Bilqis, one Patrol per patrol place, the workshop bench, the herb stall and its seller, the sabil, crossings, doors and valves
 - `features/world/rooftop/area_walk.gd`: The walk graph of an area built from content: a cell can be stood on when its tile is not solid and no prop's collide box (turned by its yaw, grown by the capsule radius) covers the cell centre at the height Zayd stands
 - `features/world/rooftop/patrol_director.gd`: The rules for the patrols of an area: those beaten since the last sabil drink (GameState.cleared_patrols) stay gone, the one that fought goes back to its lane start after a battle, nobody can touch for touch_grace seconds after a battle, a drink or an unstuck, and a drink brings every patrol back (docs/design/economy.md section 6)
 - `features/world/rooftop/rooftop.gd`: The rooftop exploration scene: builds the diorama (RooftopWorld), the actors (AreaActors) and the patrol rules (PatrolDirector); battle and menu scenes use only the public API below
 - `features/world/rooftop/rooftop.tscn`: scene
 - `features/world/rooftop/rooftop_camera.gd`: What the exploration camera looks at: the player clamped into the rig's limits (so it never leaves the commons), or, during dialogue, the speaker's head
 - `features/world/rooftop/rooftop_debug.gd`: The F3 debug labels of an area: frames per second and the area name
+- `features/world/rooftop/rooftop_party.gd`: purpose: Manages party teleportation and save point placement on the rooftop
 - `features/world/rooftop/rooftop_safety.gd`: Where the party may be put by the game: after a battle (the old spot if it is clear of every patrol, else the nearest clear walkable cell) and by "Unstuck" (the newest remembered still spot that is clear, else the nearest `safe` place)
 - `features/world/rooftop/rooftop_shot.gd`: Frame tool: the rooftop with Zayd put at chosen floor coordinates (and an optional free camera), for rendering pictures
 - `features/world/rooftop/rooftop_shot.tscn`: scene
@@ -582,16 +595,19 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/tests/test_facade.gd`: Night Sana'a textures: the facade painter (size, determinism, lit windows and qamariya glass in the emission map, a door, every pixel painted), the surface patterns (tile 4 m, deterministic, tileable) and the tile content
 - `features/world/tests/test_follow_cam.gd`: FollowCam tests: defaults, focus, lazy yaw, walk toward camera, manual orbit, zone blend, input rotation, arm shortening
 - `features/world/tests/test_framed_shots.gd`: FramedShots tests: shot picking, 0.5 m hysteresis, +-15 deg clamp, and input basis retention
+- `features/world/tests/test_level1_blockout.gd`: Unit tests for Level 1 blockout: area souq_rooftops_v4, crossings X1-X5, walk-graph regions, reachability, loop, and clearances
 - `features/world/tests/test_look_test.gd`: The look-test scene builds without errors (headless: no pixels are drawn, but every node and resource is made)
 - `features/world/tests/test_night.gd`: Night look: the sky def feeds every shader uniform, look "night" builds a sky environment with fog and a fill light while "v1" stays the flat daytime look, bad look keys are caught, the vista zone and mist layers load
 - `features/world/tests/test_painted.gd`: Painted diorama look spike: the three painted looks read and differ, their camera presets put the camera at the preset pitch, world materials switch to the painted shader only while a painted look is in use, the baked textures load (and fall back when missing), every bake matches the current painter inputs (re-bake when this fails), the grade LUT is the identity at amount 0, and a painted rooftop gets its outline, screen pass and figure
 - `features/world/tests/test_places.gd`: The typed places of the rooftop (docs/design/rooftop-v3.md section 3): valid ids and references, every standing point and patrol end reachable, the props they use stand next to them, and the patrol lanes keep away from the commons; PatrolSafety's lane maths and the unstuck and return picks; a keeper stands at his counter's end facing his customers (StallKeeper) and no NPC overlaps a prop's collision
-- `features/world/tests/test_rooftop.gd`: The rooftop scene builds headless; walking, the follower, the patrol touch, the ambush direction, the exploring switch, the patrol respawn, the workshop prompt and the camera
+- `features/world/tests/test_rooftop.gd`: The rooftop scene builds headless; walking, the follower, the patrol touch, the ambush direction, the exploring switch, the patrol respawn and parapet collision
 - `features/world/tests/test_rooftop_actors.gd`: Rooftop actors: the workshop bench is a mesh, dialogue framing aims at the speaker's head, and Bilqis never sticks
+- `features/world/tests/test_rooftop_systems.gd`: Rooftop exploration systems: follower trailing, workshop prompt, camera restore and debug overlay
 - `features/world/tests/test_sabil_patrols.gd`: The rooftop's living rules: the sabil drink (save, refill, patrols return), beaten patrols and the grace time, the party's safe return and unstuck, the stall, the bench mesh, dialogue framing, and Bilqis never sticking
 - `features/world/tests/test_sabil_slots.gd`: Tests for Sabil saving into the slot chosen via the slot picker
 - `features/world/tests/test_safe_spot.gd`: SafeSpot: a place counts after standing still, walking resets the clock, the newest spot is skipped when the player is wedged right there, and only the two newest spots are kept
 - `features/world/tests/test_skyline.gd`: Night Sana'a city: building and skyline content, the layout rules (outside the area, out of the al-Saila corridor, inside the band, deterministic), the tower-house mesh, the landmarks and the draw-call budget
+- `features/world/tests/test_tayramana.gd`: purpose: Tests for Tayramana room: def parsing, prop building, enter/leave transition, input locks, and qishr sit rewards
 - `features/world/tests/test_walk_graph.gd`: WalkGraph rules on small grids (reachability, diagonals, 2 x 2 width, traps, steps) and on every shipped area (docs/design/rooftop-v3.md section 5): everything is reachable from the spawn, no corridor is under 2 m, no cell is a trap, no step is too tall, and the bridge keeps three rows
 - `features/world/tests/test_workbench.gd`: The jambiyah smith's workbench: built from the prop 'workbench' (content/world/props/workbench.json), within the triangle and material budgets, carrying its lamp's light, with the prompt and footprint of the old box
 - `features/world/view/area_builder.gd`: Builds an area's blocks: one MultiMeshInstance3D per tile type (bodies, and caps drawn with the cap tile's material; tiles with a pattern get its painted triplanar texture), plus one StaticBody3D holding a box per run of solid tiles and walls that close the area's edges
@@ -685,11 +701,13 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/audio/measure_levels.gd`: Plays every sfx file of content/audio/sounds.json one after another at 0 dB for the movie writer's audio capture; prints "SLOT <path> <start seconds> <seconds>" lines for tools/audio/levels.py
 - `tools/build_gate.py`: Build gate: judges a builder run before Claude reads it (NOWORK, BREACH, FAIL or PASS plus a WARN checklist).
 - `tools/build_pipeline.sh`: Free builder pipeline (DECISIONS 2026-10-23): builder run -> check.sh -> one free fix pass fed the FAIL lines ->
-- `tools/cf_build.sh`: Paid fallback builder (DECISIONS 2026-10-23: Cloudflare Workers AI DeepSeek V4.1 Flash, Workers Paid, <= $10 usage): runs
+- `tools/cf_build.sh`: Rates (USD per million tokens)
 - `tools/check.sh`: One command for every check (docs, lint, Godot import, tests). One ok/FAIL line per step; logs in .check/.
+- `tools/check_slot.sh`: Test-run slots shared by every worktree on this machine: at most CHECK_SLOTS Godot test suites at once. Four at once
 - `tools/doc_check.py`: Keeps the always-loaded notes small and well-formed (docs/EFFICIENCY.md); exit 1 on any failure.
 - `tools/export_atlases.gd`: Exports the code-painted world atlases (PaintedAtlases) to PNG for the offline painterly bake
 - `tools/fps_probe.gd`: FPS probe: plays a scene with vsync off and prints the average and worst frames per second after a warm-up
+- `tools/gate_checklist.py`: Checklist parsing and verification for build_gate.
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.
 - `tools/lint_gd.py`: GDScript rules Godot itself doesn't enforce (docs/ARCHITECTURE.md, "Code rules"); exit 1 on any break.
 - `tools/map.py`: Writes docs/MAP.md from each file's purpose line, so the map never drifts. --check: exit 1 if stale.
@@ -708,11 +726,19 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_dialogue.gd`: Renders one dialogue line over the rooftop to an inbox PNG, to judge the portrait and box layout by eye
 - `tools/shot_dialogue.tscn`: scene
 - `tools/shot_hud.gd`: Renders the battle HUD to PNG files (not headless; needs a window)
+- `tools/shot_level1.gd`: Renders level 1 blockout roofs R1-R5 and crossing X3 from play camera to C:/dev/game/inbox/level1_*.png
+- `tools/shot_level1.tscn`: scene
 - `tools/shot_menu.gd`: Renders pause, save, or shop menu at 1920x1080 to an inbox PNG
 - `tools/shot_menu.tscn`: scene
 - `tools/shot_models.gd`: Model gallery for renders (docs/design/characters-3d.md): the cast in a row on a floor under the painted look, each doing a state, close enough to judge the stand-ins
 - `tools/shot_scene.gd`: Plays a scene (or a Node script) for the movie writer (frames to a folder): the battle demo with its heroes on auto_play, or any scene
 - `tools/shot_shatter.gd`: Shows the qamariya shatter on a stand-in frame (a stripe pattern) so the glass can be judged without a fight
+- `tools/shot_tayramana.gd`: Renders Tayramana framed shots with the party seated to C:/dev/game/inbox/tayramana_*.png (960x540)
+- `tools/shot_tayramana.tscn`: scene
 - `tools/shot_workbench.gd`: Renders the workbench prop close up and in the rooftop from the play camera to inbox PNGs (960x540)
+- `tools/slots.sh`: Slots reporter and DeepSeek spend tracker (DECISIONS 2026-10-23)
 - `tools/test_build_gate.py`: Self-test for build_gate.py: python tools/test_build_gate.py (temp git repos, plain asserts, exit 1 on failure).
+- `tools/test_check_slot.py`: check_slot.sh: a full set of slots makes the next run wait; a released or stale slot lets it in.
+- `tools/test_gate_checklist.py`: Tests for brief checklist verification in build_gate.
+- `tools/test_slots.py`: Self-test for tools/slots.sh: python tools/test_slots.py (temp dirs, plain asserts, exit 1 on failure).
 - `tools/vfx_gallery.gd`: Effect gallery: plays every battle effect kind one after another (one per second) on a night stage, for the movie writer

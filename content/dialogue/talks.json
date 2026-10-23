@@ -11,6 +11,13 @@
         "abu_nabil_chat_3",
         "abu_nabil_chat_4"
       ]
+    },
+    {
+      "id": "tayramana_qishr",
+      "first": "tayramana_qishr_first",
+      "chats": [
+        "tayramana_qishr_later"
+      ]
     }
   ]
 }

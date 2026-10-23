@@ -25,13 +25,14 @@ var stage: BattleStage:
 	get:
 		return Router.stage
 var _port: RooftopPort
+var _room_flow: TayramanaFlow
 var _battles: int = 0
 
 
 func _ready() -> void:
 	if GameState.party.is_empty():
 		GameState.start_new()
-	_grant_start_gear()
+	PrototypeBattleFlow.grant_start_gear()
 	rooftop = ROOFTOP_SCENE.instantiate() as Rooftop
 	add_child(rooftop)
 	dialogue = DialogueBox.new()
@@ -53,6 +54,10 @@ func _ready() -> void:
 	menu.closed.connect(_on_menu_closed)
 	GameState.area_id = rooftop.area_id
 	_port = RooftopPort.new(rooftop, self)
+	_room_flow = TayramanaFlow.new()
+	_room_flow.setup(self, rooftop, _port, dialogue)
+	rooftop.door_entered.connect(_room_flow.enter_room)
+	_room_flow.workshop_opened.connect(_on_workshop_opened)
 	Router.register_area(_port)
 	Router.stage_created.connect(_on_stage_created)
 	EventBus.battle_started.connect(_on_battle_started)
@@ -98,7 +103,10 @@ func _on_intro_finished() -> void:
 
 
 func _on_workshop_opened() -> void:
-	rooftop.set_exploring(false)
+	if _room_flow != null and _room_flow.is_in_room():
+		_room_flow.freeze_room(true)
+	else:
+		rooftop.set_exploring(false)
 	Router.set_busy(true)
 	RewardApplier.chests_at(BENCH_PLACE)  # the bench stock; chests already opened give nothing
 	if GameState.flags.get(WORKSHOP_FLAG, false):
@@ -127,6 +135,8 @@ func _on_battle_ended(encounter_id: StringName, victory: bool) -> void:
 
 
 func _on_dialogue_finished(dialogue_id: StringName) -> void:
+	if _room_flow != null and _room_flow.handle_dialogue_finished(dialogue_id):
+		return
 	if dialogue_id == WORKSHOP_DIALOGUE:
 		GameState.flags[WORKSHOP_FLAG] = true
 		Screens.notify_opened(&"workshop")
@@ -156,17 +166,15 @@ func _end_talk() -> void:
 func _on_menu_closed(_result: Variant = null) -> void:
 	Screens.notify_closed(&"workshop")
 	Router.set_busy(false)
-	rooftop.set_exploring(true)
+	if _room_flow != null and _room_flow.is_in_room():
+		_room_flow.freeze_room(false)
+	else:
+		rooftop.set_exploring(true)
 
 
 func _on_encounter_touched(encounter_id: StringName, _from_behind: bool) -> void:
 	_battles += 1
-	var request := BattleRequest.new()
-	request.encounter_id = encounter_id
-	request.ambush = rooftop.last_touch_ambush()
-	request.seed = hash([_battles, Time.get_ticks_usec()])
-	request.party = GameState.party.duplicate()
-	Router.start_battle(request)
+	PrototypeBattleFlow.start_battle(encounter_id, rooftop, _battles)
 
 
 func _on_stage_created(new_stage: BattleStage) -> void:
@@ -180,11 +188,3 @@ func _on_battle_started(_encounter_id: StringName) -> void:
 ## A chest on the map was opened: its ChestDef (same id) pays out once.
 func _on_chest_opened(chest_id: StringName) -> void:
 	RewardApplier.chest(chest_id)
-
-
-## A new game owns each hero's starting gear (they wear it through the loadout fallback).
-func _grant_start_gear() -> void:
-	if GameState.inventory.has(&"grandfather_hilt"):
-		return
-	for loadout_id: StringName in ContentDB.ids("loadout"):
-		Inventory.add_all(GameState.inventory, (ContentDB.get_def("loadout", loadout_id) as LoadoutDef).item_ids())

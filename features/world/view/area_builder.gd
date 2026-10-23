@@ -29,12 +29,17 @@ static func _groups(area: AreaDef) -> Dictionary[StringName, Array]:
 	for z: int in area.depth():
 		for x: int in area.width():
 			var tile := ContentDB.get_def("tile", area.tile_id_at(x, z)) as TileDef
-			if tile.hidden:
+			if tile == null or tile.hidden:
 				continue
-			_add(out, tile.id, _box(x, z, 0.0, tile.height))
+			var top: float = tile.height
+			var thickness: float = 0.5
+			if tile.solid:
+				thickness = tile.height if tile.height > 0.0 and tile.height <= 1.2 else 1.2
+			var y0: float = top - thickness
+			_add(out, tile.id, _box(x, z, y0, thickness))
 			var cap := ContentDB.get_def("tile", tile.cap) as TileDef
 			if cap != null:
-				_add(out, cap.id, _box(x, z, tile.height, cap.height))
+				_add(out, cap.id, _box(x, z, top, cap.height))
 	return out
 
 
@@ -77,9 +82,10 @@ static func _collision(area: AreaDef, rules: ExploreRulesDef) -> StaticBody3D:
 				x += 1
 				continue
 			var start: int = x
-			while x < area.width() and _solid(area, x, z):
+			var base_y: float = _base_y(area, start, z)
+			while x < area.width() and _solid(area, x, z) and is_equal_approx(_base_y(area, x, z), base_y):
 				x += 1
-			_shape(body, Vector3(x - start, h, 1.0), Vector3((start + x) / 2.0, h / 2.0, z + 0.5))
+			_shape(body, Vector3(x - start, h, 1.0), Vector3((start + x) / 2.0, base_y + h / 2.0, z + 0.5))
 	var w: float = area.width()
 	var d: float = area.depth()
 	var t: float = EDGE_THICKNESS
@@ -88,6 +94,11 @@ static func _collision(area: AreaDef, rules: ExploreRulesDef) -> StaticBody3D:
 	_shape(body, Vector3(t, h, d), Vector3(-t / 2.0, h / 2.0, d / 2.0))
 	_shape(body, Vector3(t, h, d), Vector3(w + t / 2.0, h / 2.0, d / 2.0))
 	return body
+
+
+static func _base_y(area: AreaDef, x: int, z: int) -> float:
+	var tile := ContentDB.get_def("tile", area.tile_id_at(x, z)) as TileDef
+	return (tile.height - 1.2) if (tile != null and tile.solid and tile.height < 0.0) else 0.0
 
 
 static func _solid(area: AreaDef, x: int, z: int) -> bool:

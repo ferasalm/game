@@ -14,6 +14,8 @@ static func build(host: Node3D, area: AreaDef, rules: ExploreRulesDef, look: Loo
 	var out := RooftopWorld.new()
 	PaintedLook.begin(look)
 	out.env = Diorama.make_environment(look)
+	if not is_nan(area.fog_height):
+		out.env.environment.fog_height = area.fog_height
 	host.add_child(out.env)
 	host.add_child(Diorama.make_sun(look))
 	out.blocks = AreaBuilder.build(area, rules)

@@ -1,5 +1,5 @@
-# Brief: tayramana (<= 60 lines; start only after camera-v2 and level1-blockout are merged)
-You are in your own worktree on branch gemini/tayramana (made from claude/night-sanaa). Follow GEMINI.md, including
+# Brief: tayramana (<= 60 lines; camera-v2 and the level-1 blockout are merged into main)
+You are in your own worktree on branch gemini/tayramana (made from main). Follow GEMINI.md, including
 <review_misses>. Load the godot-gameplay-scripter skill (.agents/skills/godot-gameplay-scripter).
 
 ## Why
@@ -8,12 +8,14 @@ Owner playtest 2026-10-23 item 6: a Sana'ani tayramana (rooftop room with large 
 
 ## Read first
 docs/design/level-1.md section 6; docs/MAP.md lines for camera-v2's framed_shots and camera_room, the door place
-(level1-blockout), dialogue (dialogues.json, talks.json, dialogue box), talk_spot, rooftop freeze_actors, the router.
+door_tayramana (content/world/areas.json souq_rooftops_v4, R3 x 30.5 z 4.5; features/world/interact/door_spot.gd),
+dialogue (dialogues.json, talks.json, dialogue box), talk_spot, rooftop freeze_actors, the router.
 
 ## What to build
 0. One room only (owner: "keep the Tayramana", no other rooms): its east corner holds the workbench (the prop
    content/world/props/workbench.json); interacting with it opens the existing workshop talk and equipment menu
-   exactly as the outdoor workshop spot does today; remove the outdoor workshop spot from the area.
+   exactly as the outdoor workshop spot does today; souq_rooftops_v4 has no outdoor workshop spot (the
+   old souq_rooftops keeps its own).
 1. content/world/rooms.json (new kind "room", Def + ContentDB registration): id "tayramana", size 7 x 5 x 3 m,
    wall colour letters, qamariya arches on three walls (lit), the props of level-1 section 6
    as prop JSON (cushions, armrests, carpet, brass tray, jamana pot, cups, shelf, radio, holo-frame), two framed
@@ -34,8 +36,18 @@ docs/design/level-1.md section 6; docs/MAP.md lines for camera-v2's framed_shots
    7 BILQIS: "Still hot. Drink, then go."
 
 ## Do NOT edit
-features/combat/, content/combat/, localization/combat.csv, camera-v2's logic files (use them), docs/design/,
-HANDOFF.md, docs/DECISIONS.md.
+`features/combat/`
+`content/combat/`
+`localization/combat.csv`
+`features/world/logic/follow_cam.gd`
+`features/world/view/follow_camera_rig.gd`
+`features/world/interact/stall_spot.gd`
+`features/world/interact/sabil_spot.gd`
+`features/puzzles/`
+`docs/design/`
+`HANDOFF.md`
+`docs/DECISIONS.md`
+Shared: content/world/areas.json (only the door place's fields), docs/MAP.md (regenerate with tools/map.py).
 
 ## Tests
 Room def parses; the builder makes every prop; enter and leave move the party and restore the rooftop; input is locked
