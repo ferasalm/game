@@ -64,7 +64,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/world/camera.json`: content: camera_rig x1
 - `content/world/explore.json`: content: explore_rules x1
 - `content/world/look.json`: content: look x5
-- `content/world/mist.json`: content: mist x3
+- `content/world/mist.json`: content: mist x6
 - `content/world/props.json`: content: prop x26
 - `content/world/props/workbench.json`: content: prop x1
 - `content/world/sky.json`: content: sky x1

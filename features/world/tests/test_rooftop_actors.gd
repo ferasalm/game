@@ -10,6 +10,7 @@ func _save_dir() -> String:
 
 func _make() -> Rooftop:
 	var rooftop := (load("res://features/world/rooftop/rooftop.tscn") as PackedScene).instantiate() as Rooftop
+	rooftop.area_id = &"souq_rooftops_v4"
 	tree.root.add_child(rooftop)
 	return rooftop
 
