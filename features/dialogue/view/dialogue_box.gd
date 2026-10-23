@@ -1,11 +1,9 @@
 class_name DialogueBox
 extends CanvasLayer
-## The dialogue box, Hades II style: a big portrait slides in when the speaker changes, a nameplate with the
-## speaker's name and epithet sits on the box, the line is typed out (confirm finishes it, then moves on). `back`
-## ceases the whole conversation at once. Built in code. The last advance (or cease) hides the box and emits finished.
-## Use: add it to the scene, call play(&"dialogue_id"), listen to finished.
+## The dialogue box, Hades II style: a big portrait slides in when the speaker changes, a nameplate sits on the box,
+## lines are typed out, and choice buttons offer branching dialogue.
 
-## Emitted once when the conversation has ended (last line dismissed, or ceased).
+## Emitted once when the conversation has ended (last line dismissed, ceased, or choice ended).
 signal finished(dialogue_id: StringName)
 
 var _style: DialogueStyleDef
@@ -17,6 +15,8 @@ var _typing: Tween = null
 var _slide: Tween = null
 var _started_frame: int = -1
 var _clock: float = 0.0
+var _choice_list: DialogueChoiceList
+var _showing_choices: bool = false
 
 
 func _ready() -> void:
@@ -25,10 +25,10 @@ func _ready() -> void:
 	var root: Control = Ui.screen_root()
 	add_child(root)
 	_layout.build(root, _style)
+	_choice_list = DialogueChoiceList.new(_layout.choice_box)
 	_set_playing_visuals(false)
 
 
-## Starts a dialogue from the beginning; an unknown id is reported and ignored.
 func play(dialogue_id: StringName) -> void:
 	var def := ContentDB.get_def("dialogue", dialogue_id) as DialogueDef
 	if def == null:
@@ -49,30 +49,42 @@ func is_playing() -> bool:
 	return _run != null
 
 
-## The id of the currently playing (or last played) dialogue.
 func dialogue_id() -> StringName:
 	return _dialogue_id
 
 
-## True while the current line is still being typed.
 func is_typing() -> bool:
 	return _run != null and UiType.is_typing(_layout.text_label, _typing)
 
 
-## Completes the typing of the current line, or moves to the next line (or ends) when it is complete.
+func choice_buttons() -> Array[Button]:
+	return _choice_list.buttons if _choice_list != null else []
+
+
+func is_showing_choices() -> bool:
+	return _showing_choices
+
+
+func choose(index: int) -> void:
+	_on_choice_pressed(index)
+
+
 func advance() -> void:
 	if _run == null:
 		return
 	AudioDirector.play_ui(&"ui_confirm")
 	if is_typing():
 		_type_all()
+		if _run.has_choices():
+			_display_choices()
+	elif _run.has_choices():
+		_display_choices()
 	elif _run.advance():
 		_show_line()
 	else:
 		_finish()
 
 
-## Closes the conversation at once (the Cease button).
 func cease() -> void:
 	if _run != null:
 		_finish()
@@ -80,6 +92,11 @@ func cease() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if _run == null or Engine.get_process_frames() == _started_frame:
+		return
+	if _showing_choices:
+		if event.is_action_pressed(&"back"):
+			cease()
+			get_viewport().set_input_as_handled()
 		return
 	if event.is_action_pressed(&"interact") or event.is_action_pressed(&"ui_accept"):
 		advance()
@@ -93,10 +110,13 @@ func _process(delta: float) -> void:
 	_clock += delta
 	if _run != null:
 		_layout.arrow.position.y = sin(_clock * _style.arrow_speed) * _style.arrow_bob
-		_layout.arrow.visible = not is_typing()
+		_layout.arrow.visible = not is_typing() and not _showing_choices
+		if not is_typing() and _run.has_choices() and not _showing_choices:
+			_display_choices()
 
 
 func _show_line() -> void:
+	_clear_choices()
 	var line: DialogueLine = _run.current()
 	var speaker := ContentDB.get_def("speaker", line.speaker) as SpeakerDef
 	_layout.name_label.text = Ui.text(speaker.name_key)
@@ -112,7 +132,37 @@ func _show_line() -> void:
 	_layout.arrow.visible = false
 
 
-## The portrait enters from the left over t_portrait_in (the old speaker's one is simply replaced).
+func _display_choices() -> void:
+	if _showing_choices or _run == null or not _run.has_choices():
+		return
+	_showing_choices = true
+	_layout.arrow.visible = false
+	_choice_list.show_choices(_run.choices(), _on_choice_pressed)
+
+
+func _on_choice_pressed(index: int) -> void:
+	if _run == null or not _run.has_choices():
+		return
+	AudioDirector.play_ui(&"ui_confirm")
+	var choice: DialogueChoice = _run.choose(index)
+	_clear_choices()
+	DialogueEffects.apply_all(choice.effects)
+	if choice.next.is_empty() or choice.next == &"end":
+		_finish()
+	elif choice.next == &"chat" or choice.next == &"abu_nabil_chat":
+		var talk_def := ContentDB.get_def("talk", &"herb_seller") as TalkDef
+		var chat_id: StringName = TalkPicker.pick_chat(talk_def, GameState.flags)
+		play(chat_id if not chat_id.is_empty() else &"abu_nabil_chat_1")
+	else:
+		play(choice.next)
+
+
+func _clear_choices() -> void:
+	_showing_choices = false
+	if _choice_list != null:
+		_choice_list.clear()
+
+
 func _slide_portrait_in() -> void:
 	var portrait: TextureRect = _layout.portrait
 	if _slide != null:
@@ -140,6 +190,7 @@ func _type_all() -> void:
 func _finish() -> void:
 	_run = null
 	_type_all()
+	_clear_choices()
 	_set_playing_visuals(false)
 	finished.emit(_dialogue_id)
 
