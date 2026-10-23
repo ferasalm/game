@@ -2,7 +2,7 @@
 ## World
 Sana'a in 2150: the Old City's tower-houses (stained-glass qamariyya windows, white gypsum trim) are the core
 of a neon megacity. Water is the scarce power: the Concession (a corporation) rations it. Mood: warm
-brick, indigo night, neon in Arabic script, drones among minarets. Chapter 1 slice: Old City souq and rooftops.
+brick, indigo night, neon in Musnad letters, drones among minarets. Chapter 1 slice: Old City souq and rooftops.
 ## Cast (invented; names are placeholders)
 - Zayd al-Sana'ani, 28: hero, a courier-fixer of the souq guild. Carries his grandfather's jambiyah.
 - Bilqis, 26: hacker-engineer, runs a coffee stall as cover; drones and debuffs.

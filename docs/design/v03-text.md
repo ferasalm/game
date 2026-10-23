@@ -92,14 +92,14 @@ pause_confirm_yes,Yes
 pause_confirm_no,No
 ```
 
-## Arabic screen titles (separate list, not in the CSV rows)
-| Key (screen) | en | ar note |
+## Musnad screen titles (separate list, not in the CSV rows)
+| Key (screen) | en | musnad note |
 |---|---|---|
-| shop_heading | Herb stall | دكان الأعشاب |
-| pause_heading | Paused | متوقف |
-| battle_defeat_heading | Defeated | مهزوم |
+| shop_heading | Herb stall | 𐩵𐩫𐩱𐩬 𐩱𐩡𐩱𐩲𐩪𐩱𐩨 |
+| pause_heading | Paused | 𐩣𐩩𐩥𐩤𐩰 |
+| battle_defeat_heading | Defeated | 𐩠𐩸𐩣𐩩𐩣 |
 
-Arabic lines get a native review later (Respect notes). The sabil inscription's Arabic original is not written here.
+Musnad lines get a native review later (Respect notes). The sabil inscription's Musnad original is not written here.
 
 ## Respect and review notes
 - Abu Nabil is a shopkeeper, not a symbol of hospitality. His warmth is in his bluntness and his fair weights.

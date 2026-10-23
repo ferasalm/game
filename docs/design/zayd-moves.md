@@ -1,4 +1,5 @@
 # Zayd's moves: audit and redesigned kit (design v1, 2026-10-22; numbers are [PLACEHOLDER] until the harness)
+Demo combat stays these timeline battles; action combat (DECISIONS 2026-10-23) replaces them after the demo.
 Owner ask (2026-10-22): Zayd's moves overlap; each should have its own creative job so combat is unique and fun.
 Fixed facts kept: timeline with interrupts, readable intent + "will interrupt" preview, knockback bonus on the
 first hit only, reverse-stab ambush, prosthetics grant tech moves paid from SP, hilt + blade swapped separately.

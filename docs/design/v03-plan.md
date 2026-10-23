@@ -121,7 +121,7 @@ Opus red-team of this draft. All of their fixes are folded in.
 | Agent | Model, effort | Writes |
 |---|---|---|
 | Game Designer | Sonnet, high | docs/design/economy.md: items, prices, sources and sinks, the item-in-battle rules, KO after victory (proposal: back at 1 HP), defeat/retry, patrol respawn, numbers marked [PLACEHOLDER] |
-| UI Designer | Sonnet, medium | ui.md v2: night-glass panels framed in gypsum tracery, a qamariya colour sweep on focus, Arabic + English titles; text wireframes for pause, items, shop, sabil, defeat, dialogue, battle HUD and prompts; the style.json keys to add |
+| UI Designer | Sonnet, medium | ui.md v2: night-glass panels framed in gypsum tracery, a qamariya colour sweep on focus, Musnad + English titles; text wireframes for pause, items, shop, sabil, defeat, dialogue, battle HUD and prompts; the style.json keys to add |
 | Level Designer | Sonnet, medium | rooftop v3 layout: the stuck fix (a wider bridge, houses clear of camera paths), places for the stall, sabil, 3 patrols, chests and the NPC, sightlines for the new camera |
 | Narrative Designer | Haiku, low | herb seller and sabil lines, item descriptions, nameplate epithets, as CSV rows |
 | Image Prompt Engineer | Haiku, low | Flow prompt for the herb seller's full-body picture; Gemini prompts for parts sheets and herb icons (all optional for Feras) |

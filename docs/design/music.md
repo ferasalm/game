@@ -1,4 +1,4 @@
-# Music: one track per place and menu (DECISIONS 2026-10-22)
+# Music: no menu or merchant tracks; menus and Abu Nabil's stall keep explore_souq (DECISIONS 2026-10-22)
 Each track has its own identity: one lead instrument and one motif the player remembers. Shared colour: Sana'a 2150,
 qanbus oud (short-neck Yemeni lute), mirwas and tasa hand drums, synth bass and analog pads. Loops are seamless.
 Feras makes them in Google Flow Music from the prompts below and drops each into inbox/music/ under the id's name
