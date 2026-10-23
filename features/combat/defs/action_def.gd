@@ -35,6 +35,11 @@ var cures: Array[StringName] = []
 var uses_per_battle: int = 0
 ## Never dodged (e.g. reverse stab skips dodge anyway; a forced sure_hit always lands).
 var sure_hit: bool = false
+var sp_gain: int = 0
+var after_act_pos: int = -1
+var cast_status: StringName = &""
+var bonus_vs_status: StringName = &""
+var bonus_mult: float = 1.0
 
 
 func read(r: DefReader) -> void:
@@ -56,6 +61,11 @@ func read(r: DefReader) -> void:
 	cures = r.id_list("cures")
 	uses_per_battle = r.integer("uses_per_battle", 0, 99, 0, false)
 	sure_hit = r.flag("sure_hit")
+	sp_gain = r.integer("sp_gain", 0, 99, 0, false)
+	after_act_pos = r.integer("after_act_pos", -1, 10000, -1, false)
+	cast_status = StringName(r.text("cast_status", "", false))
+	bonus_vs_status = StringName(r.text("bonus_vs_status", "", false))
+	bonus_mult = r.number("bonus_mult", 0.1, 10.0, 1.0, false)
 	_read_target_and_vfx(r)
 
 
@@ -75,6 +85,10 @@ func references() -> Array[Array]:
 		out.append(["status", applies_status])
 	for status_id: StringName in cures:
 		out.append(["status", status_id])
+	if cast_status != &"":
+		out.append(["status", cast_status])
+	if bonus_vs_status != &"":
+		out.append(["status", bonus_vs_status])
 	return out
 
 

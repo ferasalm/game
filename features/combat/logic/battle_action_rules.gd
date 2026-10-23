@@ -72,6 +72,30 @@ static func apply_cures(target: UnitState, cures: Array[StringName], events: Arr
 			events.append(TimelineEvent.new(&"status_ended", target.unit_id, 0, status_id))
 
 
+static func calculate_damage(
+		actor: UnitState, action: ActionDef, target: UnitState, rules: BattleRulesDef, rng: RandomNumberGenerator) -> int:
+	var hits: float = float(maxi(1, action.hit_count))
+	var net: float = (actor.def.attack - target.def.defense * rules.defense_factor) / hits
+	var raw: float = action.power + net
+	var row: float = Formation.melee_multiplier(actor.slot, target.slot, rules) if action.is_melee else 1.0
+	var variance: float = rng.randf_range(1.0 - rules.damage_variance, 1.0 + rules.damage_variance)
+	var bonus: float = action.bonus_mult if (action.bonus_vs_status != &"" and target.status_turns.has(action.bonus_vs_status)) else 1.0
+	return maxi(1, roundi(raw * row * variance * bonus))
+
+
+static func bring_down(target: UnitState, timeline: Timeline, events: Array[TimelineEvent]) -> void:
+	if target.action != null and target.action.cast_status != &"":
+		var cs: StringName = target.action.cast_status
+		if target.remove_status(cs):
+			events.append(TimelineEvent.new(&"status_ended", target.unit_id, 0, cs))
+	target.phase = UnitState.Phase.WAIT
+	target.action = null
+	target.targets.clear()
+	if timeline.waiting_for == target:
+		timeline.waiting_for = null
+	events.append(TimelineEvent.new(&"down", target.unit_id, 0))
+
+
 static func start_pos(
 		rules: BattleRulesDef, rng: RandomNumberGenerator, side: int, ambush: int,
 		fighter: CombatantDef) -> int:

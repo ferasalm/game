@@ -59,7 +59,7 @@ func test_every_shipped_action_has_a_known_vfx() -> void:
 
 func test_the_tech_moves_have_the_designed_shape() -> void:
 	var jab := ContentDB.get_def("action", &"piston_jab") as ActionDef
-	check(jab.cancels_cast and jab.is_hostile(), "piston jab cancels a cast")
+	check(not jab.cancels_cast and jab.is_hostile(), "piston jab shoves without cancelling")
 	var arc := ContentDB.get_def("action", &"arc_discharge") as ActionDef
 	check_eq(arc.target, &"all_foes", "arc discharge hits all foes")
 	var guard := ContentDB.get_def("action", &"reactive_guard") as ActionDef

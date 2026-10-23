@@ -10,6 +10,8 @@ var cast_speed: float = 1.0
 var interrupt_immune: bool = false
 var damage_taken: float = 1.0
 var miss_chance: float = 0.0
+var counter_action: StringName = &""
+var counter_ranged: bool = false
 
 
 func read(r: DefReader) -> void:
@@ -21,3 +23,12 @@ func read(r: DefReader) -> void:
 	interrupt_immune = r.flag("interrupt_immune")
 	damage_taken = r.number("damage_taken", 0.1, 5.0, 1.0, false)
 	miss_chance = r.number("miss_chance", 0.0, 1.0, 0.0, false)
+	counter_action = StringName(r.text("counter_action", "", false))
+	counter_ranged = r.flag("counter_ranged")
+
+
+func references() -> Array[Array]:
+	var out: Array[Array] = []
+	if counter_action != &"":
+		out.append(["action", counter_action])
+	return out
