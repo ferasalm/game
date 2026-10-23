@@ -69,6 +69,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/world/props/workbench.json`: content: prop x1
 - `content/world/sky.json`: content: sky x1
 - `content/world/skyline.json`: content: skyline x1
+- `content/world/storm.json`: content: storm x1
 - `content/world/tiles.json`: content: tile x8
 
 ## core
@@ -395,6 +396,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/ui_transition.gd`: The qamariya screen wipe: five stained-glass shards (red, amber, green, blue, violet) drop over the screen one after another, cover it, then lift away
 - `features/ui/view/ui_type.gd`: Typed text: a label reveals one character per t_text_char with the typing blip; confirm finishes the line
 - `features/world/defs/area_def.gd`: A level as data: equal-width rows of tile characters, a legend (character -> tile id), two markers (S spawn, W workshop bench) that each appear once and stand on floor, and typed places (PlaceDef: stall, sabil, patrols...)
+- `features/world/defs/area_problems.gd`: Checks an AreaDef for layout problems: row widths, unmapped tiles, missing markers, out-of-bounds places
 - `features/world/defs/building_def.gd`: One Sana'a tower-house as data: footprint (metres), floors (the lowest stone_floors are basalt), window columns per facade, frieze style, qamariya glass letters, lit-window ratio, parapet style and roof extras
 - `features/world/defs/camera_preset_def.gd`: Stub (v0.3 registry, filled by the level builder): one named camera pose with its own field of view and depth of field, e.g
 - `features/world/defs/camera_rig_def.gd`: Camera language for exploring (content/world/camera.json): intro shots, presets, limits, and follow/framed modes
@@ -523,6 +525,16 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/view/surface_buffer.gd`: Collects flat-shaded, vertex-coloured faces (boxes, prisms, polygons) for one surface of an ArrayMesh
 - `features/world/view/surface_materials.gd`: Cached textures and materials for the painted world, so 100+ buildings share a handful of draw materials: tile patterns (world-space triplanar, so texels stay square across tiles), tower-house facades (front and side painted side by side in one atlas, lit windows in an emission map), vertex-coloured trim, unshaded HDR glow, and the dotted far silhouettes
 - `features/world/view/tower_house.gd`: Builds one Sana'a tower-house mesh from a BuildingDef: four textured facades (one atlas), a roof, a white gypsum parapet with merlons and stepped or horned corners, and roof extras
+- `features/world/weather/defs/storm_def.gd`: Weather preset for rain, splashes, puddles, drips, steam and lightning (content/world/storm.json)
+- `features/world/weather/storm_preview.gd`: Preview scene for the storm layer on the rooftop: used for fps_probe profiling and inbox renders
+- `features/world/weather/storm_preview.tscn`: scene
+- `features/world/weather/tests/test_storm.gd`: Storm weather tests: StormDef validation, particle caps, puddle placement, emitters per point, lightning flag, and area weather hook
+- `features/world/weather/view/puddle_builder.gd`: Builds wet floor puddles with animated ripple shaders scattered across walkable floor tiles
+- `features/world/weather/view/shaders/puddle.gdshader`
+- `features/world/weather/view/shaders/rain.gdshader`
+- `features/world/weather/view/shaders/splash.gdshader`
+- `features/world/weather/view/storm_builder.gd`: Builds the storm weather layer (rain, splashes, puddles, drips, steam, lightning) from an AreaDef and StormDef
+- `features/world/weather/view/storm_host.gd`: Runtime coordinator for storm effects: positions rain and splashes around the active camera and runs lightning
 - `features/world/workshop/workshop_spot.gd`: The workshop bench: a jambiyah smith's workbench built from the prop 'workbench' (content/world/props/workbench.json: one mesh in the painted world's materials) with its brass lamp's light, plus the interact prompt
 
 ## localization
