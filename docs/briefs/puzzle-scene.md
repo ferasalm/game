@@ -1,6 +1,7 @@
 # Brief: puzzle-scene (<= 60 lines; a self-contained grey-box scene on the merged puzzle logic)
-You are in your own worktree on branch gemini/puzzle-scene (made from claude/puzzles-streamline-f7ef2d). Follow
-GEMINI.md, including <review_misses>. Load the godot-gameplay-scripter skill.
+You are in your own worktree on branch oc/puzzle-scene (made from claude/puzzles-streamline-f7ef2d). Follow
+GEMINI.md (incl. <review_misses>) and AGENTS.md. Load the godot-gameplay-scripter skill; you may give the beam and
+water visuals to the technical-artist subagent and the render tool to godot-gameplay-scripter; you own the tests.
 
 ## Why
 Feras: both valve puzzles, light lock first, then the water; no fail state; visible feedback on every move.
@@ -64,4 +65,4 @@ content/puzzles/*.json; tools/shot_menu.gd + tools/shot_menu.tscn (the render-to
 ## Proof
 `bash tools/check.sh` raw last 15 lines; renders C:/dev/game/inbox/puzzle_start.png, puzzle_light_solved.png,
 puzzle_water_half.png, puzzle_water_solved.png; small WIP commits; final message ends with
-`Built-by: Gemini 3.8 Flash (agy)`.
+`Built-by: deepseek-v4.1-flash (opencode, Cloudflare)`.
