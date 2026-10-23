@@ -1,5 +1,5 @@
 # Brief: zayd-kit (<= 60 lines; run AFTER rpg-rolls-flee is merged into claude/menus-rpg-5089fa)
-You are in your own worktree on branch oc/zayd-kit (made from claude/menus-rpg-5089fa). Follow GEMINI.md,
+You are in your own worktree on branch gemini/zayd-kit (made from claude/menus-rpg-5089fa). Follow GEMINI.md,
 including <review_misses>. Load the godot-gameplay-scripter skill (.agents/skills/) if one fits.
 
 ## Why
