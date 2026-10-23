@@ -9,14 +9,17 @@ static var _icon_cache: Dictionary[String, Texture2D] = {}
 
 
 ## The expected file path for an item's icon.
-static func icon_path(def: ConsumableDef) -> String:
-	if def == null or def.icon.is_empty():
+static func icon_path(def: Def) -> String:
+	if def == null:
 		return ""
-	return "res://assets/icons/%s.png" % def.icon
+	var icon_name: String = str(def.get("icon")) if "icon" in def else ""
+	if icon_name.is_empty():
+		return ""
+	return "res://assets/icons/%s.png" % icon_name
 
 
 ## Loads the icon file texture, or null when the file does not exist.
-static func texture(def: ConsumableDef) -> Texture2D:
+static func texture(def: Def) -> Texture2D:
 	var path: String = icon_path(def)
 	if path.is_empty() or not FileAccess.file_exists(path):
 		return null
@@ -29,10 +32,11 @@ static func texture(def: ConsumableDef) -> Texture2D:
 
 
 ## First letter of the item's translated name ("?" when unknown).
-static func initial(def: ConsumableDef) -> String:
+static func initial(def: Def) -> String:
 	if def == null:
 		return "?"
-	var shown: String = Ui.text(def.name_key)
+	var key: String = str(def.get("name_key")) if "name_key" in def else ""
+	var shown: String = Ui.text(key) if not key.is_empty() else ""
 	return shown.left(1).to_upper() if not shown.is_empty() else "?"
 
 
@@ -53,8 +57,30 @@ static func disc(colour: Color, side: int = DEFAULT_SIDE) -> Texture2D:
 	return tex
 
 
+## Draws an anti-aliased dim ring representing an empty equipment slot.
+static func dim_ring(side: int = DEFAULT_SIDE) -> Texture2D:
+	var key: String = "dim_ring_%d" % side
+	if _disc_cache.has(key):
+		return _disc_cache[key]
+	var out: Image = Image.create_empty(side, side, false, Image.FORMAT_RGBA8)
+	var centre := Vector2(side, side) * 0.5
+	var outer_r: float = side * 0.44
+	var inner_r: float = outer_r - 4.0
+	var col: Color = Ui.style().colour(&"c_muted")
+	col.a = 0.4
+	for y: int in side:
+		for x: int in side:
+			var d: float = Vector2(x + 0.5, y + 0.5).distance_to(centre)
+			if d <= outer_r and d >= inner_r:
+				var edge: float = minf(clampf((outer_r - d) / 1.0, 0.0, 1.0), clampf((d - inner_r) / 1.0, 0.0, 1.0))
+				out.set_pixel(x, y, Color(col.r, col.g, col.b, col.a * edge))
+	var tex: ImageTexture = ImageTexture.create_from_image(out)
+	_disc_cache[key] = tex
+	return tex
+
+
 ## Sets the icon texture on target TextureRect; applies disc fallback with initial if file is missing.
-static func apply(target: TextureRect, def: ConsumableDef, side: int = DEFAULT_SIDE) -> void:
+static func apply(target: TextureRect, def: Def, side: int = DEFAULT_SIDE) -> void:
 	if target == null:
 		return
 	target.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR

@@ -315,19 +315,22 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/equipment/logic/equipment_options.gd`: Pure rules of the equipment screen: which slots a hero has, which OWNED items fit a slot (best rarity first), which items a hero wears now, the fighter built from a staged set of items, and writing a staged set into the saved equipment through Inventory.equip
 - `features/equipment/tests/test_equipment.gd`: purpose: Tests the pure EquipmentOptions rules (owned items only, rarer first, per hero and slot)
 - `features/equipment/tests/test_equipment_menu.gd`: purpose: Tests EquipmentMenu layout, 3D hologram stage, slot boxes, equipping, preview and focus
+- `features/equipment/tests/test_equipment_polish.gd`: purpose: Tests equipment polish features: hologram override, slot box name/dim ring, stats header, hero header Lv 1
 - `features/equipment/view/equipment_boxes.gd`: purpose: Manages the 5 equipment slot boxes, their positions, visibility per hero and focus navigation
 - `features/equipment/view/equipment_data.gd`: What the equipment screen needs from ContentDB, read once: every equippable by id, the perks, the rarity order, and each hero's start loadout (heroes in loadout order)
 - `features/equipment/view/equipment_desc_bar.gd`: purpose: Description bar (1760x90 at 80,900) showing item name, rarity, description and combat effect
 - `features/equipment/view/equipment_detail.gd`: The right-hand side of the equipment screen: the focused item (name in its rarity colour, tag, text, perk and the tech moves it teaches) above the stat comparison (base, with the staged kit, an up / down arrow)
-- `features/equipment/view/equipment_hero_header.gd`: purpose: Hero info box (520x96 at 80,124) with name, class epithet, level and cyan XP progress bar
+- `features/equipment/view/equipment_hero_header.gd`: purpose: Hero info box (520x110 at 80,124) with portrait face, name, class, Lv N, and HP/SP/XP bars
 - `features/equipment/view/equipment_item_button.gd`: Builds one owned item as a menu button: its name in the rarity colour, the rarity tag and an "Equipped" mark on the right
 - `features/equipment/view/equipment_menu.gd`: purpose: Equipment menu with 3D hologram hero, slot boxes, owned list, stats comparison and tabs
 - `features/equipment/view/equipment_owned_list.gd`: purpose: Owned items panel (420x620 at 80,240) populated with ListRows and worn "E" chips
 - `features/equipment/view/equipment_stats_panel.gd`: purpose: Stats preview panel (440x560) showing now vs after comparison and derived battle rolls
 - `features/equipment/view/equipment_tabs_bar.gd`: purpose: Top bar (1760x64 at 80,40) with title pair and menu tabs (Equipment, Items, Map)
+- `features/equipment/view/grid_disc.gdshader`
 - `features/equipment/view/hologram.gdshader`
 - `features/equipment/view/hologram_stage.gd`: purpose: 800x760 SubViewportContainer with 3D hologram hero, camera, disc and leader lines
 - `features/equipment/view/slot_box.gd`: purpose: 150x150 equipment slot box showing slot label, item icon or gemstone sockets
+- `features/equipment/view/slot_socket_draw.gd`: purpose: Draws socket border and stone icon for gemstone slots in equipment boxes
 - `features/items/defs/armor_def.gd`: Armor worn in slot "<hero>.armor": raises HP, DEF, alters AGI and WT (content/items/armor.json)
 - `features/items/defs/chest_def.gd`: A chest holding an equippable (an id of a hilt, blade or prosthetic), riyal and/or consumables; at least one
 - `features/items/defs/consumable_def.gd`: A stackable item used from the bag, in the field or in battle (feathered herbs, the qishr cup)

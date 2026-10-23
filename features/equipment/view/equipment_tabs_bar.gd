@@ -23,7 +23,7 @@ func _ready() -> void:
 func _build_ui() -> void:
 	for c: Node in get_children():
 		c.queue_free()
-	var title_box := Ui.title_pair(Ui.text("EQUIP_TITLE"), Ui.text("EQUIP_TITLE_MUSNAD"))
+	var title_box := Ui.title_plate(Ui.text("EQUIP_TITLE"), Ui.text("EQUIP_TITLE_MUSNAD"))
 	title_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	add_child(title_box)
 
@@ -33,15 +33,18 @@ func _build_ui() -> void:
 
 	_eq_btn = Button.new()
 	_eq_btn.text = Ui.text("EQUIP_TAB_EQUIPMENT")
+	_eq_btn.theme_type_variation = &"TabButton"
 	_eq_btn.focus_mode = Control.FOCUS_NONE
 	tabs_row.add_child(_eq_btn)
 
 	_items_btn = Button.new()
 	_items_btn.text = Ui.text("EQUIP_TAB_ITEMS")
+	_items_btn.theme_type_variation = &"TabButton"
 	_items_btn.pressed.connect(items_requested.emit)
 	tabs_row.add_child(_items_btn)
 
 	_map_btn = Button.new()
 	_map_btn.text = Ui.text("EQUIP_TAB_MAP")
+	_map_btn.theme_type_variation = &"TabButton"
 	_map_btn.disabled = true
 	tabs_row.add_child(_map_btn)
