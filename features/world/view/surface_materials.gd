@@ -130,7 +130,7 @@ static func _atlas(front: Image, side: Image) -> Image:
 static func _base(texture: Texture2D) -> StandardMaterial3D:
 	var mat := StandardMaterial3D.new()
 	mat.albedo_texture = texture
-	mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
+	mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
 	mat.roughness = 1.0
 	return mat
 

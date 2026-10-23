@@ -110,11 +110,12 @@ func _follow_camera() -> void:
 	if cam == null:
 		return
 	var cam_pos: Vector3 = cam.global_position
+	var cur_floor_y: float = cam_pos.y - 4.9 if cam_pos.y > 2.0 else floor_y
 	if rain_particles != null:
 		rain_particles.global_position.x = cam_pos.x
 		rain_particles.global_position.z = cam_pos.z
-		rain_particles.global_position.y = floor_y - def.rain_floor_margin + (def.rain_box.y * 0.5)
+		rain_particles.global_position.y = cur_floor_y - def.rain_floor_margin + (def.rain_box.y * 0.5)
 	if splash_particles != null:
 		splash_particles.global_position.x = cam_pos.x
 		splash_particles.global_position.z = cam_pos.z
-		splash_particles.global_position.y = floor_y + def.puddle_height_offset
+		splash_particles.global_position.y = cur_floor_y + def.splash_height_offset

@@ -117,16 +117,39 @@ static func _build_splashes(def: StormDef) -> GPUParticles3D:
 	emitter.local_coords = false
 	var mat := ParticleProcessMaterial.new()
 	mat.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_BOX
-	mat.emission_box_extents = Vector3(def.splash_box.x * 0.5, 0.05, def.splash_box.y * 0.5)
+	mat.emission_box_extents = Vector3(def.splash_box.x * 0.5, 0.0, def.splash_box.y * 0.5)
 	mat.gravity = Vector3.ZERO
 	mat.scale_min = 0.3
 	mat.scale_max = 1.0
+	mat.alpha_curve = _splash_alpha_curve()
+	mat.scale_curve = _splash_scale_curve()
 	emitter.process_material = mat
 	var plane := PlaneMesh.new()
 	plane.size = Vector2(def.splash_size, def.splash_size)
 	var smat := ShaderMaterial.new()
 	smat.shader = SPLASH_SHADER
+	smat.render_priority = 2
 	smat.set_shader_parameter(&"splash_color", Color(def.splash_color.r, def.splash_color.g, def.splash_color.b, def.splash_alpha))
 	plane.material = smat
 	emitter.draw_pass_1 = plane
 	return emitter
+
+
+static func _splash_alpha_curve() -> CurveTexture:
+	var curve := Curve.new()
+	curve.add_point(Vector2(0.0, 0.0))
+	curve.add_point(Vector2(0.2, 1.0))
+	curve.add_point(Vector2(0.7, 0.7))
+	curve.add_point(Vector2(1.0, 0.0))
+	var tex := CurveTexture.new()
+	tex.curve = curve
+	return tex
+
+
+static func _splash_scale_curve() -> CurveTexture:
+	var curve := Curve.new()
+	curve.add_point(Vector2(0.0, 0.25))
+	curve.add_point(Vector2(1.0, 1.0))
+	var tex := CurveTexture.new()
+	tex.curve = curve
+	return tex

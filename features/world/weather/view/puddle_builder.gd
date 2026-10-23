@@ -18,10 +18,13 @@ static func build(area: AreaDef, def: StormDef, floor_y: float) -> Node3D:
 		var psize: float = rng.randf_range(def.puddle_size_min, def.puddle_size_max)
 		pmesh.size = Vector2(psize, psize * rng.randf_range(0.8, 1.2))
 		puddle.mesh = pmesh
-		puddle.position = Vector3(spot.x, floor_y + def.puddle_height_offset, spot.y)
+		var tile := ContentDB.get_def("tile", area.tile_id_at(floori(spot.x), floori(spot.y))) as TileDef
+		var tile_y: float = tile.height if tile != null else floor_y
+		puddle.position = Vector3(spot.x, tile_y + def.puddle_height_offset, spot.y)
 		puddle.rotation.y = rng.randf_range(0.0, TAU)
 		var smat := ShaderMaterial.new()
 		smat.shader = PUDDLE_SHADER
+		smat.render_priority = 1
 		smat.set_shader_parameter(&"darken_factor", def.puddle_darken)
 		smat.set_shader_parameter(&"roughness", def.puddle_roughness)
 		smat.set_shader_parameter(&"sky_ambient", def.puddle_sky_ambient)

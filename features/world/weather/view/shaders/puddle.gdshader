@@ -38,15 +38,18 @@ void fragment() {
 	float l2 = length(d2);
 
 	if (l0 > 0.01) {
-		float w0 = sin(abs(l0 - t0 * 0.7) * ripple_frequency) * exp(-abs(l0 - t0 * 0.7) * 16.0) * (1.0 - t0);
+		float fade0 = smoothstep(0.0, 0.2, t0) * (1.0 - t0);
+		float w0 = sin(abs(l0 - t0 * 0.7) * ripple_frequency) * exp(-abs(l0 - t0 * 0.7) * 16.0) * fade0;
 		ripple_norm += (d0 / l0) * w0 * 0.22;
 	}
 	if (l1 > 0.01) {
-		float w1 = sin(abs(l1 - t1 * 0.7) * ripple_frequency) * exp(-abs(l1 - t1 * 0.7) * 16.0) * (1.0 - t1);
+		float fade1 = smoothstep(0.0, 0.2, t1) * (1.0 - t1);
+		float w1 = sin(abs(l1 - t1 * 0.7) * ripple_frequency) * exp(-abs(l1 - t1 * 0.7) * 16.0) * fade1;
 		ripple_norm += (d1 / l1) * w1 * 0.22;
 	}
 	if (l2 > 0.01) {
-		float w2 = sin(abs(l2 - t2 * 0.7) * ripple_frequency) * exp(-abs(l2 - t2 * 0.7) * 16.0) * (1.0 - t2);
+		float fade2 = smoothstep(0.0, 0.2, t2) * (1.0 - t2);
+		float w2 = sin(abs(l2 - t2 * 0.7) * ripple_frequency) * exp(-abs(l2 - t2 * 0.7) * 16.0) * fade2;
 		ripple_norm += (d2 / l2) * w2 * 0.22;
 	}
 

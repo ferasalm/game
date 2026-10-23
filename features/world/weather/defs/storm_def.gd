@@ -22,11 +22,12 @@ var splash_lifetime: float = 0.3
 var splash_size: float = 0.2
 var splash_color: Color = Color(0.77, 0.86, 1.0)
 var splash_alpha: float = 0.4
+var splash_height_offset: float = 0.035
 
 var puddle_count_min: int = 6
 var puddle_count_max: int = 10
 var puddle_wall_margin: float = 0.6
-var puddle_height_offset: float = 0.01
+var puddle_height_offset: float = 0.02
 var puddle_roughness: float = 0.08
 var puddle_darken: float = 0.65
 var puddle_sky_ambient: Color = Color(0.08, 0.11, 0.18)
@@ -103,6 +104,7 @@ func _read_splashes(r: DefReader) -> void:
 	splash_size = r.number("splash_size", 0.01, 2.0)
 	splash_color = r.color("splash_color")
 	splash_alpha = r.number("splash_alpha", 0.05, 1.0)
+	splash_height_offset = r.number("splash_height_offset", 0.0, 1.0, 0.035, false)
 
 
 func _read_puddles(r: DefReader) -> void:

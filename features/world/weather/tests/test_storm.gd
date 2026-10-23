@@ -13,6 +13,8 @@ func test_storm_def_parses_every_field() -> void:
 	check(is_equal_approx(def.splash_lifetime, 0.3), "splash lifetime 0.3s")
 	check(def.puddle_count_min == 6 and def.puddle_count_max == 10, "puddle range 6..10")
 	check(is_equal_approx(def.puddle_wall_margin, 0.6), "puddle wall margin 0.6m")
+	check(is_equal_approx(def.puddle_height_offset, 0.02), "puddle height offset 0.02m")
+	check(is_equal_approx(def.splash_height_offset, 0.035), "splash height offset 0.035m")
 	check(def.lightning_enabled, "lightning enabled by default")
 	check(def.steam_count_max == 40, "steam cap 40")
 
@@ -119,3 +121,14 @@ func test_area_without_weather_builds_no_storm() -> void:
 	empty_area.weather = ""
 	var result := StormBuilder.build(empty_area)
 	check(result == null, "area without weather builds no storm")
+
+
+func test_splash_alpha_curve_and_fade() -> void:
+	var def := ContentDB.get_def("storm", &"night_storm") as StormDef
+	var area := ContentDB.get_def("area", &"souq_rooftops") as AreaDef
+	var storm := StormBuilder.build(area) as StormHost
+	check(storm != null, "storm built")
+	var mat := storm.splash_particles.process_material as ParticleProcessMaterial
+	check(mat != null, "process material exists")
+	check(mat.alpha_curve != null or mat.color_ramp != null, "splash particles have fade in/out curve")
+	storm.free()
