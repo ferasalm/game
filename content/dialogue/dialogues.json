@@ -92,6 +92,17 @@
       {"speaker": "zayd", "expression": "neutral", "text": "DLG_PARTY_SABIL_FIRST_2"},
       {"speaker": "bilqis", "expression": "neutral", "text": "DLG_PARTY_SABIL_FIRST_3"},
       {"speaker": "zayd", "expression": "happy", "text": "DLG_PARTY_SABIL_FIRST_4"}
+    ]},
+    {"id": "tayramana_qishr_first", "lines": [
+      {"speaker": "bilqis", "expression": "happy", "text": "DLG_TAYRAMANA_QISHR_1"},
+      {"speaker": "zayd", "expression": "neutral", "text": "DLG_TAYRAMANA_QISHR_2"},
+      {"speaker": "bilqis", "expression": "surprised", "text": "DLG_TAYRAMANA_QISHR_3"},
+      {"speaker": "zayd", "expression": "neutral", "text": "DLG_TAYRAMANA_QISHR_4"},
+      {"speaker": "bilqis", "expression": "angry", "text": "DLG_TAYRAMANA_QISHR_5"},
+      {"speaker": "bilqis", "expression": "neutral", "text": "DLG_TAYRAMANA_QISHR_6"}
+    ]},
+    {"id": "tayramana_qishr_later", "lines": [
+      {"speaker": "bilqis", "expression": "neutral", "text": "DLG_TAYRAMANA_QISHR_7"}
     ]}
   ]
 }
