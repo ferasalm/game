@@ -57,6 +57,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/jambiyah/loadouts.json`: content: loadout x2
 - `content/prosthetics/prosthetics.json`: content: prosthetic x6
 - `content/prototype/flow.json`: content: flow_rules x1
+- `content/ui/backdrops.json`: content: backdrop x7
 - `content/ui/style.json`: content: ui_style x1
 - `content/ui/transitions.json`: content: transition x3
 - `content/world/areas.json`: content: area x1
@@ -353,6 +354,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/prototype/tests/test_router_battle.gd`: The Router's battle round trip: the area is hidden and stopped while the arena fights, then restored; Retry and defeat restore the pre-battle snapshot; vitals and herbs carry (a downed hero stands up after a victory); the first win pays everything and a repeat pays half
 - `features/prototype/tests/test_smoke_flow.gd`: Smoke test of the whole flow, headless through the Router: a new game, a fight on auto-play, the outcome applied to GameState, a save, a load that restores exactly that state
 - `features/prototype/tests/test_talk_interact.gd`: Interaction test: walking up to herb_seller and confirming plays abu_nabil_first on the first visit, and abu_nabil_chat_1 on the next visit; sabil plays party_sabil_first before opening screen
+- `features/ui/defs/backdrop_def.gd`: Backdrop definition for full-screen menu backgrounds
 - `features/ui/defs/ui_style_def.gd`: The look of every menu and HUD (content/ui/style.json): three font files, named colours (c_*), sizes in pixels at 1920x1080 (s_*) and times in seconds (t_*)
 - `features/ui/logic/pause_logic.gd`: Pure rules of the pause menu: which entries show and in what order, which ask "are you sure", the vitals of a hero with a missing record (= full), and the play-time clock text
 - `features/ui/logic/prompt_glyph.gd`: Pure: the localization key of the button glyph for an action on keyboard or gamepad ("accept" -> Enter / A), and the fade of a world-space interaction prompt with distance
@@ -373,6 +375,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/interaction_prompt.gd`: A small glass pill above an object in the world: the interact glyph and a verb ("Drink", "Talk", "Open")
 - `features/ui/view/list_row.gd`: One row of a menu list: icon | name (rarity colour) | "x3" count | tag chip on the right
 - `features/ui/view/loot_popup.gd`: The "Obtained" banner: listens to EventBus.item_obtained and shows each new item centred high on the screen with its name in the rarity colour, a light sweep for Rare and above and a rarity jingle (AudioDirector.play_item)
+- `features/ui/view/menu_backdrop.gd`: Full-screen painted menu backdrop with blur fallback
+- `features/ui/view/menu_blur.gdshader`
 - `features/ui/view/money_counter.gd`: A pill with the riyal amount in brass
 - `features/ui/view/party_card.gd`: A hero card: portrait icon, name, HP and SP bars with numbers
 - `features/ui/view/prompt_strip.gd`: The Hades-style button hints along the bottom: "[Enter] Select   [Esc] Back"
@@ -382,12 +386,20 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/screens/equipment_host.gd`: Puts the existing EquipmentScreen (the bench, a CanvasLayer with its own open()/closed API) on the Screens stack as the screen &"equipment"
 - `features/ui/view/screens/items_screen.gd`: The Items screen (Screens id &"items", opened from the pause menu): the bag on the left, the chosen item's description and effect on the right, and under it the hero picker
 - `features/ui/view/screens/items_text.gd`: Item screen wording: the effect line ("HP +120") and a hero's "HP 200 -> 320" preview
-- `features/ui/view/screens/pause_menu.gd`: The pause screen (opened by Screens on the menu action while exploring): the entries on the left (Resume, Items, Equipment, Load last save or Restart, Unstuck, Title, Quit), the party on the right
-- `features/ui/view/screens/pause_party.gd`: The right half of the pause screen: a PartyCard per hero (portrait, name, HP and SP bars, KO tag), the worn gear of each hero, and under a frieze the area name, play time and riyal
+- `features/ui/view/screens/pause_hero_row.gd`: One hero row in the pause party panel: face 160x160, name, class, HP/SP bars, KO state
+- `features/ui/view/screens/pause_menu.gd`: Pause menu screen: command panel (80,80), info box (80,880), party panel (540,80), prompt strip (0,1020)
+- `features/ui/view/screens/pause_party.gd`: Party panel for the pause screen: one row per hero (h 200)
 - `features/ui/view/screens/sabil_screen.gd`: The sabil fountain question (Screens id &"sabil"): "Drink to rest? This saves your game and restores everyone." Closes with &"drink" (default) or &"leave" (Not now, or back)
-- `features/ui/view/screens/shop_detail.gd`: The right half of the shop: the riyal counter, the focused item's name, description and effect, then price, owned count, "money after" (red when the trade is not affordable) and the quantity
-- `features/ui/view/screens/shop_screen.gd`: The herb stall (Screens id &"shop"; open with Screens.open(&"shop", {"shop": &"herb_stall"}), optional "after_battle": true for the keeper's other greeting)
-- `features/ui/view/screens/slot_picker_screen.gd`: Slot picker screen: one row per save slot showing summary or Empty
+- `features/ui/view/screens/shop_cell.gd`: One cell in the shop item grid: 220x170, icon 96, name, price c_brass, rarity glow, sold out dim
+- `features/ui/view/screens/shop_detail.gd`: Shop detail panel at (840,140) 560x760: icon 160, name, desc, effect, and per-hero comparison
+- `features/ui/view/screens/shop_grid.gd`: Shop grid panel at (80,140) 720x560: tabs [Buy][Sell] and 3-column items grid
+- `features/ui/view/screens/shop_keeper_box.gd`: Keeper box: portrait 220x260 and typed greeting in a glass box at (80,720) 620x260
+- `features/ui/view/screens/shop_party_mini.gd`: Party mini cards panel at (1440,600) 400x300: compact HP and SP bars for each hero
+- `features/ui/view/screens/shop_screen.gd`: Shop screen: title (80,40), grid (80,140), keeper (80,720), detail (840,140), summary (1440,140), party (1440,600)
+- `features/ui/view/screens/shop_summary.gd`: Shop summary panel at (1440,140) 400x420: quantity, owned, price, money after (c_bad when < 0)
+- `features/ui/view/screens/slot_detail.gd`: Details panel for the focused save slot: header, thumbnail 440x248, area, party, riyal, play time
+- `features/ui/view/screens/slot_picker_screen.gd`: Slot picker screen: title (560,60), 3 slot rows (440,180), details (1380,180), buttons (500,880)
+- `features/ui/view/screens/slot_row.gd`: One save slot row: thumbnail 300x170, slot label, area, play time, date, or empty slot
 - `features/ui/view/title_overlay.gd`: The game's title over the opening sky: "Qarnaw" in Musnad (big) and Latin with a pulsing "Press any key"
 - `features/ui/view/toast_host.gd`: Shows toasts top-centre one at a time (ToastQueue order): fade in, hold t_toast_hold, fade out, next
 - `features/ui/view/ui.gd`: Entry point of the shared UI look: the style (content/ui/style.json), the one cached Theme, and small builders (labels, screen roots, the zigzag divider)

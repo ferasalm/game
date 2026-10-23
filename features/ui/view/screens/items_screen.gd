@@ -22,6 +22,7 @@ var _empty: Label
 
 func _init() -> void:
 	super()
+	backdrop_id = &"items"
 	prompts = [{"key": "accept", "text": "ITEMS_PROMPT_USE"}, {"key": "back", "text": "ITEMS_PROMPT_BACK"}]
 
 

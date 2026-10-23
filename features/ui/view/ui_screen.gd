@@ -14,6 +14,8 @@ var wants_pause: bool = true
 var layer_id: int = UiLayers.SCREEN
 ## Bottom prompt strip pairs: [{"key": "accept", "text": "UI_SELECT"}, ...] for the PromptStrip.
 var prompts: Array[Dictionary] = []
+## Backdrop id to display (empty = plain scrim).
+var backdrop_id: StringName = &""
 
 var _closing: bool = false
 var _scrim: ColorRect
@@ -26,13 +28,21 @@ func _init() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 
 
-## Shows the screen: scrim, content from build(args), the entry fade. Screens calls it right after adding.
+## Shows the screen: scrim or backdrop, content from build(args), the entry fade.
 func open(args: Dictionary = {}) -> void:
-	_scrim = ColorRect.new()
-	_scrim.color = Ui.style().colour(&"c_scrim")
-	_scrim.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_scrim.mouse_filter = Control.MOUSE_FILTER_STOP
-	add_child(_scrim)
+	if backdrop_id != &"":
+		var fallback_frame: Image = null
+		if DisplayServer.get_name() != "headless" and is_inside_tree() and get_viewport() != null and get_viewport().get_texture() != null:
+			fallback_frame = get_viewport().get_texture().get_image()
+		var backdrop := MenuBackdrop.new()
+		backdrop.setup(backdrop_id, fallback_frame)
+		add_child(backdrop)
+	else:
+		_scrim = ColorRect.new()
+		_scrim.color = Ui.style().colour(&"c_scrim")
+		_scrim.set_anchors_preset(Control.PRESET_FULL_RECT)
+		_scrim.mouse_filter = Control.MOUSE_FILTER_STOP
+		add_child(_scrim)
 	build(args)
 	_add_prompt_strip()
 	UiMotion.screen_in(self)
