@@ -8,3 +8,5 @@ Results: Inkling 16/16 + right cause; laguna logic 16/16 but untyped (compile fa
 (close before emitting) for $0.016 both tasks; ties Inkling. Nemotron 3 Ultra :free not run: OpenRouter refused with
 "free-models-per-day" (accounts under $10 of purchased credit get 50 free requests a day, shared with Inkling :free).
 Run tests with stdin closed (`< /dev/null`): an open stdin made opencode wait 25 min and print nothing.
+2026-10-23: Cloudflare Workers AI DeepSeek V4.1 Flash (`cloudflare-workers-ai/@cf/deepseek-ai/deepseek-v4.1-flash-1017`,
+Workers Paid) 16/16 typed + right cause (close before emitting), ~2 min per task via opencode; ties Inkling and Ling.

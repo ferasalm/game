@@ -81,7 +81,7 @@ across both builders. Pick: agy for Godot code with tests; opencode for research
 5. agy runs are processes of the chat that started them: a chat that ends early leaves them running only while its
    session stays open. The next chat checks `git -C ../game-wt/<task> log` and the log; a dead run is restarted with
    the same command (the worktree and its commits are kept).
-6. Paid fallback (Workers Paid, Feras's account), only when agy and the :free models are out of quota: `bash tools/cf_build.sh <task> <brief>
+6. Cloudflare DeepSeek (Workers Paid; model test 16/16 + right cause 2026-10-23), when agy and the :free models are out of quota or a brief suits opencode: `bash tools/cf_build.sh <task> <brief>
    <base>` (Cloudflare Workers AI `@cf/deepseek-ai/deepseek-v4.1-flash-1017` via opencode; $0.30/M input, $0.006/M
    cached input, $1.20/M output; 10,000 free neurons a day; up to $10 usage over the free neurons, Feras 2026-10-23). Needs Workers
    Paid or prepaid AI Gateway credits. Spend: Cloudflare dashboard -> AI -> Workers AI; note it in HANDOFF after each run.
