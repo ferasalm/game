@@ -94,5 +94,5 @@
 - opencode CLI (npm opencode-ai 1.19.4): npm blocks its postinstall (no binary) -> `npm install -g
   --allow-scripts=opencode-ai opencode-ai`; "Database is not empty and has no session table" = the owner's opencode
   desktop app owns ~/.local/share/opencode -> the CLI gets its own XDG_DATA_HOME (tools/oc_task.sh) (2026-10-23).
-- opencode free models answered "Free usage limit reached" and `opencode run` then hung with an empty log -> read
-  ~/.local/share/oc-cli/opencode/log, taskkill the CLI's opencode.exe (not opencode-cli.exe, the app) (2026-10-23).
+- opencode 'Free usage limit reached', then `opencode run` hung -> read ~/.local/share/oc-cli/opencode/log, taskkill
+  opencode.exe (not opencode-cli.exe); with OpenRouter it chose a PAID title model -> small_model :free (2026-10-23).
