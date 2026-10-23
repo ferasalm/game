@@ -14,7 +14,11 @@ PromptStrip, ConfirmDialog, Toast, UiRarity. Hologram accents use c_cyan; brass 
 - Backdrop TextureRect full screen, layer under the screen's panels, `stretch_mode` keep-aspect-covered.
 - Camera zoom (shop, workshop, sabil): pressing interact eases the world camera in t_focus_zoom 0.6 s to the spot's
   framed shot (content: spot "focus" {offset, look_at, fov}), then opens the menu; on close it eases back
-  t_focus_zoom. Input is blocked during the ease. Reuses the dialogue framing helper.
+  t_focus_zoom. Input is blocked during the ease; it is automatic (the player never controls the camera). Build it in
+  a new file features/world/view/interact_focus.gd that takes the Camera3D the way rooftop_camera.gd's dialogue
+  framing does and hands it back; use framed_shots.gd read only. The focus pose lives in its own content entry (or
+  the stall/sabil/workbench spot content), NOT in PlaceDef. Off limits until gemini/level1-blockout-fix merges:
+  follow_cam.gd, follow_camera_rig.gd, camera_rig_def.gd, content/world/camera.json, place_def.gd and their tests.
 
 ## 1. Pause / main menu (ref 02)
 ```
