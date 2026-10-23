@@ -1,5 +1,5 @@
 # Brief: equipment-menu (<= 60 lines; run AFTER rpg-progression AND menu-skins merge)
-You are in your own worktree on branch oc/equipment-menu (made from claude/menus-rpg-5089fa). Follow GEMINI.md,
+You are in your own worktree on branch gemini/equipment-menu (made from claude/menus-rpg-5089fa). Follow GEMINI.md,
 including <review_misses>. Load the godot-gameplay-scripter skill (.agents/skills/) if one fits.
 
 ## Why: Feras approved an equipment menu of its own (rpg-menus.md 2): a turning cyan hologram hero, slots around it.
@@ -35,8 +35,8 @@ sockets).
    Inventory.equip into GameState.equipment (no Confirm step); focusing an item updates the stats preview; B returns
    to the boxes, B again closes. Q/E switch hero.
 5. Stats rows (label | now | arrow | after, after c_good if higher, c_bad if lower): HP, SP, ATK, DEF, AGI, LCK, WT,
-   then Hit %, Crit %, Flee % vs an AGI-40 foe (BattleRolls' pure formulas; read only). "Now" = Gear.build_hero with
-   the worn set, "after" = with the focused item swapped in.
+   then Hit %, Crit %, Flee % vs an AGI-40 foe (BattleRolls' pure formulas; read only). "Now" = BattleLoader.hero_from_state(hero, GameState) (features/combat/harness/battle_loader.gd: the
+   real GearState build; reuse it, do not copy it), "after" = with the focused item swapped in.
 6. Register: in ui_stack.gd BOTH `register(EQUIPMENT_ID, ...)` and `register(WORKSHOP_ID, ...)` return EquipmentMenu.new()
    (only those two lines; workshop-menu takes WORKSHOP_ID later). Delete
    features/ui/view/screens/equipment_host.gd, features/equipment/view/equipment_screen.gd, equipment_page.gd,
@@ -56,4 +56,4 @@ CharacterVisual child and keeps turning while paused; rects match the spec withi
 
 ## Proof
 `bash tools/check.sh` raw last 15 lines; render C:/dev/game/inbox/menu_equipment.png (a .tscn wrapper like
-tools/shot_dialogue.tscn, non-headless); small WIP commits; final message ends with `Built-by: <model> (opencode)`.
+tools/shot_dialogue.tscn, non-headless); small WIP commits; final message ends with `Built-by: Gemini 3.8 Flash (agy)`.

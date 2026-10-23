@@ -1,5 +1,5 @@
 # Brief: workshop-menu (<= 60 lines; run AFTER rpg-progression, menu-skins AND equipment-menu merge)
-You are in your own worktree on branch oc/workshop-menu (made from claude/menus-rpg-5089fa). Follow GEMINI.md,
+You are in your own worktree on branch gemini/workshop-menu (made from claude/menus-rpg-5089fa). Follow GEMINI.md,
 including <review_misses>. Load the godot-gameplay-scripter skill (.agents/skills/) if one fits.
 
 ## Why: Feras approved the workshop: upgrade gear to +3, set hilt stones, craft from won materials; nothing fails.
@@ -57,4 +57,4 @@ opens by id with 3 tabs and the button disabled with its reason when short.
 
 ## Proof
 `bash tools/check.sh` raw last 15 lines; renders C:/dev/game/inbox/menu_workshop_<tab>.png (a .tscn wrapper,
-non-headless); small WIP commits; final message ends with `Built-by: <model> (opencode)`.
+non-headless); small WIP commits; final message ends with `Built-by: Gemini 3.8 Flash (agy)`.
