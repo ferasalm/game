@@ -87,6 +87,8 @@ func test_sabil_plays_party_dialogue_before_first_drink() -> void:
 	check(main.dialogue.is_playing(), "party_sabil_first plays before sabil screen")
 	check_eq(main.dialogue.dialogue_id(), &"party_sabil_first", "dialogue is party_sabil_first")
 	_talk_through(main)
+	if InteractFocus.current != null:
+		InteractFocus.current.advance(0.6)
 	check(bool(GameState.flags.get(&"party_sabil_first_done", false)), "party_sabil_first_done set")
 	check(Screens.is_open(), "sabil screen opened after dialogue")
 	Screens.clear()

@@ -28,7 +28,7 @@ func _interact() -> void:
 
 
 func open_screen() -> void:
-	var screen: UiScreen = Screens.open(Screens.SABIL_ID)
+	var screen: UiScreen = await InteractFocus.open_spot(self, place_id, _player, Screens.SABIL_ID)
 	if screen != null:
 		screen.closed.connect(_on_closed)
 
