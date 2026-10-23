@@ -585,6 +585,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_camera_v2.gd`: Renders rooftop and camera_room scenes in follow and framed camera modes to C:/dev/game/inbox/camera_v2_*.png
 - `tools/shot_camera_v2.tscn`: scene
 - `tools/shot_hud.gd`: Renders the battle HUD to PNG files (not headless; needs a window)
+- `tools/shot_level1.gd`: Renders level 1 blockout roofs R1-R5 and crossing X3 from play camera to C:/dev/game/inbox/level1_*.png
+- `tools/shot_level1.tscn`: scene
 - `tools/shot_models.gd`: Model gallery for renders (docs/design/characters-3d.md): the cast in a row on a floor under the painted look, each doing a state, close enough to judge the stand-ins
 - `tools/shot_scene.gd`: Plays a scene (or a Node script) for the movie writer (frames to a folder): the battle demo with its heroes on auto_play, or any scene
 - `tools/shot_shatter.gd`: Shows the qamariya shatter on a stand-in frame (a stripe pattern) so the glass can be judged without a fight
