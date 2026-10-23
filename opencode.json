@@ -7,6 +7,11 @@
   ],
   "permission": {
     "edit": "allow",
-    "bash": "allow"
+    "bash": "allow",
+    "external_directory": {
+      "*": "deny",
+      "C:\\dev\\game\\inbox\\*": "allow",
+      "C:/dev/game/inbox/*": "allow"
+    }
   }
 }

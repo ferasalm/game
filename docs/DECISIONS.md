@@ -21,7 +21,6 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-21 | The autonomous run pauses only for owner questions, logins, CAPTCHAs, downloads and anything that costs money; it never works around them | safety rules + $0 budget | Feras/Claude
 - 2026-10-21 | Player text: localization/<feature>.csv loaded at startup by a TextDB autoload, not Godot's CSV import | that import errors on a fresh clone (CI) and writes binaries | Claude
 - 2026-10-21 | The 8 game skills are copied from .agents/skills/ to .claude/skills/ (both kept) so Claude Code can load them inline | a skill costs ~2-4k tokens, an agent start 150k+ | Feras
-- 2026-10-21 | A Game Designer (loaded as a skill) reviews combat.md and prototype.md before the prototype build starts | second opinion before code, cheaply | Feras
 - 2026-10-21 | Dialogue: a chest-up painted portrait of the speaker beside the text box (owner's reference screenshot), 4 expressions each (neutral, happy, angry, surprised), made with Gemini | Feras: "full pictures of the characters"; AI art is strongest painted | Feras
 - 2026-10-21 | Prototype v0 gains one dialogue: Bilqis and Zayd at the workshop, 3-4 lines, stand-in portraits until Feras's Gemini art | Feras chose it over "build at M4" | Feras
 - 2026-10-21 | Ambush from behind: the hero answers with a djanbeyyah reverse stab (its hooked blade is made to strike behind, game fiction) before battle; first used in slice beat 3 | Feras's idea | Feras
@@ -68,3 +67,4 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-23 | Emergency mode (.claude/skills/emergency-efficiency): one Claude director chat, builders build, merge, test and review on backup branches; Opus reviews resume after the weekly reset | 50% of the window in 30 min | Feras
 - 2026-10-24 | Bilqis: rivet pistol, frame + barrel parts upgraded like Zayd's hilt and blade | Feras (recommended) | Feras
 - 2026-10-24 | Every hero: accessory slot (ring) with 1-2 gem sockets by rarity; grandfather hilt keeps its 3 | Feras (recommended) | Feras
+- 2026-10-24 | Cloudflare builds and generate_patch use DeepSeek V4.1 Flash, not Kimi; triage_trace stays GLM-5.3 Flash | Feras | Feras
