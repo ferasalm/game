@@ -62,6 +62,7 @@ func update(delta: float, rects: Dictionary[StringName, Rect2], screen: Rect2) -
 			_on_hit(unit, strip)
 		_last_hp[unit.unit_id] = hp
 		strip.set_values(hp, unit.sp)
+		strip.set_exposed(unit.status_turns.has(&"exposed"))
 		_idle[unit.unit_id] += delta
 		_fade(unit, strip, hp)
 		if strip.visible:

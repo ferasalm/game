@@ -10,6 +10,9 @@ static func step(sim: BattleSim) -> Array[TimelineEvent]:
 
 static func _step(sim: BattleSim) -> Array[TimelineEvent]:
 	var out: Array[TimelineEvent] = []
+	if not sim.pending_events.is_empty():
+		out.append_array(sim.pending_events)
+		sim.pending_events.clear()
 	if sim.result != &"" or sim.timeline.waiting_for != null:
 		return out
 	if not sim._opened:
@@ -36,6 +39,9 @@ static func handle_event(sim: BattleSim, event: TimelineEvent, out: Array[Timeli
 		out.append(event)
 		if unit.side == 1:
 			sim.auto_choose(unit)
+			if not sim.pending_events.is_empty():
+				out.append_array(sim.pending_events)
+				sim.pending_events.clear()
 	elif event.kind == &"act" and unit.acted is ItemAction:
 		out.append(event)
 		out.append_array(sim.items.resolve(unit))
@@ -51,3 +57,5 @@ static func handle_event(sim: BattleSim, event: TimelineEvent, out: Array[Timeli
 		elif BattleTargets.side_is_down(sim.timeline, 0):
 			sim.result = &"defeat"
 			out.append(TimelineEvent.new(&"defeat", &"", sim.ticks))
+	else:
+		out.append(event)

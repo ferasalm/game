@@ -82,16 +82,8 @@ func _play_one(events: Array[TimelineEvent], i: int) -> void:
 			_on_sp_restored(event)
 		&"fizzled":
 			_float_status(event, BattleStyle.text("BATTLE_ITEM_FIZZLED"))
-		&"dodged":
-			await _extra.on_dodged(event)
-		&"crit":
-			await _extra.on_crit(event)
-		&"resisted":
-			await _extra.on_resisted(event)
-		&"fled":
-			await _extra.on_fled(event)
-		&"flee_failed":
-			await _extra.on_flee_failed(event)
+		&"dodged", &"crit", &"resisted", &"countered", &"conducted", &"fled", &"flee_failed":
+			await _extra.play(event)
 
 
 func _on_command(event: TimelineEvent) -> void:

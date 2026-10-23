@@ -35,17 +35,11 @@ PROSTHETIC_DAWN_LENS,Dawn Lens
 PROSTHETIC_DAWN_LENS_DESC,A lens that catches first light over Marib. Grants Overload Lance and Reboot Pulse.
 STATUS_GUARDED,Guarded
 STATUS_OVERCLOCKED,Overclocked
-ACTION_ELDER_CUT,Elder Cut
-ACTION_PISTON_JAB,Piston Jab
-ACTION_ARC_DISCHARGE,Arc Discharge
 ACTION_REACTIVE_GUARD,Reactive Guard
 ACTION_NANITE_MEND,Nanite Mend
 ACTION_OVERCLOCK_LINK,Overclock Link
 ACTION_OVERLOAD_LANCE,Overload Lance
 ACTION_REBOOT_PULSE,Reboot Pulse
-MOVE_DESC_ELDER_CUT,A clean old family cut that breaks a charge.
-MOVE_DESC_PISTON_JAB,A steel fist driven by a piston. Breaks a charge.
-MOVE_DESC_ARC_DISCHARGE,Lightning across every foe at once.
 MOVE_DESC_REACTIVE_GUARD,Plates lock in place. Take 40% less damage for 2 turns.
 MOVE_DESC_NANITE_MEND,Nanites knit one ally's wounds.
 MOVE_DESC_OVERCLOCK_LINK,Pushes the whole party faster for 3 turns.

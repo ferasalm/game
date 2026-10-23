@@ -36,9 +36,9 @@ func test_damage_formula_with_row_multiplier() -> void:
 		BattleProbe.move(&"shot", {"power": 14, "is_melee": false})]
 	var sim: BattleSim = _duel({"attack": 20}, {"defense": 14, "max_hp": 400}, moves)
 	var trace: Array[TimelineEvent] = _act_once(sim, &"hit")
-	# (10 + 20 - 14 * 0.5) * 1.15 (front hits front) = 26.45 -> 26, once per hit
-	check_eq(_values(trace, &"damage"), [26, 26] as Array[int], "two melee hits")
-	check_eq(sim.timeline.find(&"f_1").hp, 348, "hp after both hits")
+	# (10 + (20 - 14 * 0.5) / 2) * 1.15 (front hits front) = 18.975 -> 19, once per hit
+	check_eq(_values(trace, &"damage"), [19, 19] as Array[int], "two melee hits")
+	check_eq(sim.timeline.find(&"f_1").hp, 362, "hp after both hits")
 	var ranged: BattleSim = _duel({"attack": 16}, {"defense": 14, "max_hp": 400}, moves)
 	check_eq(_values(_act_once(ranged, &"shot"), &"damage"), [23] as Array[int], "ranged: 14 + 16 - 7, no row bonus")
 
@@ -62,7 +62,7 @@ func test_variance_stays_in_range() -> void:
 	var sim: BattleSim = _duel({"attack": 20}, {"defense": 14, "max_hp": 9999}, moves, {"damage_variance": 0.1})
 	var seen: Dictionary[int, bool] = {}
 	for amount: int in _values(_act_once(sim, &"hit"), &"damage"):
-		check(amount >= 24 and amount <= 29, "26.45 +-10%% stays in 24..29, got %d" % amount)
+		check(amount >= 11 and amount <= 15, "13.16 +-10%% stays in 11..15, got %d" % amount)
 		seen[amount] = true
 	check(seen.size() > 1, "variance actually varies")
 
