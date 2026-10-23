@@ -65,6 +65,7 @@ const KINDS: Dictionary = {
 	"recipe": preload("res://features/workshop/defs/recipe_def.gd"),
 	"light_lock": preload("res://features/puzzles/defs/light_lock_def.gd"),
 	"water_net": preload("res://features/puzzles/defs/water_net_def.gd"),
+	"puzzle_yard": preload("res://features/puzzles/defs/puzzle_yard_def.gd"),
 }
 ## Equippable kinds share one id namespace; get_def("item", id) finds any of them.
 const ITEM_KINDS: Array[String] = ["hilt", "blade", "prosthetic", "armor"]

@@ -5,3 +5,4 @@ extends RefCounted
 var id: StringName = &""
 var targets: Array[StringName] = []
 var start: int = 0
+var at: Vector3 = Vector3.ZERO

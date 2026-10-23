@@ -5,3 +5,4 @@ extends RefCounted
 var id: StringName = &""
 var bits: int = 0
 var target: StringName = &""
+var at: Vector3 = Vector3.ZERO
