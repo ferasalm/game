@@ -1,6 +1,22 @@
 class_name PrototypeBattleFlow
 extends RefCounted
-## Handles battle conclusion effects for the prototype (patrol wins, Abu Nabil boss and spar).
+## purpose: Handles battle creation and conclusion effects for the prototype (patrol wins, Abu Nabil boss and spar).
+
+
+static func start_battle(encounter_id: StringName, rooftop: Rooftop, count: int) -> void:
+	var request := BattleRequest.new()
+	request.encounter_id = encounter_id
+	request.ambush = rooftop.last_touch_ambush()
+	request.seed = hash([count, Time.get_ticks_usec()])
+	request.party = GameState.party.duplicate()
+	Router.start_battle(request)
+
+
+static func grant_start_gear() -> void:
+	if GameState.inventory.has(&"grandfather_hilt"):
+		return
+	for loadout_id: StringName in ContentDB.ids("loadout"):
+		Inventory.add_all(GameState.inventory, (ContentDB.get_def("loadout", loadout_id) as LoadoutDef).item_ids())
 
 
 static func handle_battle_ended(

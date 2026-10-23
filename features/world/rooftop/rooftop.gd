@@ -10,6 +10,8 @@ signal encounter_touched(encounter_id: StringName, from_behind: bool)
 signal workshop_opened
 ## The player opened a chest (named in the area's props); nothing is saved here, the owner of the inventory listens.
 signal chest_opened(chest_id: StringName)
+## The player entered a door.
+signal door_entered(target: StringName)
 
 const RIG_ID: StringName = &"explore"
 ## A frame length long enough that the camera's smoothing finishes in one update (a jump cut).
@@ -128,22 +130,14 @@ func last_safe_position() -> Vector3:
 	return _safety.unstuck_target(player.position, patrols)
 
 
-## Moves Zayd to pos and Bilqis beside him (her trail restarts there) and the camera jumps to follow. Patrols
-## cannot touch for touch_grace seconds (when grace is true).
+## Moves Zayd to pos and Bilqis beside him and the camera jumps to follow.
 func teleport_party(pos: Vector3, grace: bool = true) -> void:
-	player.position = pos
-	follower.stand_by_player()
-	if grace:
-		_director.hold_all()
-	if not camera_rig.is_intro_playing():
-		camera_rig.update(SNAP_SECONDS, _aim.subject(pos))
+	RooftopParty.teleport(player, follower, _director, camera_rig, _aim, pos, grace)
 
 
-## Puts the party at a save point (a place id of this area); an unknown, empty or unwalkable id lands on spawn_start.
+## Puts the party at a save point; an unknown or unwalkable id lands on spawn_start.
 func place_party(save_point: StringName) -> void:
-	var place: PlaceDef = _area.place(save_point)
-	var valid: bool = place != null and _area.is_walkable(place.cell.x, place.cell.y)
-	teleport_party(_area.spawn_position_for(save_point, _floor_y), valid)
+	RooftopParty.place(_area, _floor_y, save_point, teleport_party)
 
 
 ## Dialogue framing: the camera looks at this speaker's head (&"zayd", &"bilqis", a bystander's place id or sprite).
@@ -182,7 +176,8 @@ func _build_actors() -> void:
 	talk_spots = _actors.talk_spots
 	for p: Patrol in patrols:
 		p.touched.connect(_on_touched.bind(p))
-	workshop.opened.connect(workshop_opened.emit)
+	if workshop != null:
+		workshop.opened.connect(workshop_opened.emit)
 	if sabil != null:
 		sabil.drunk.connect(_director.after_drink)
 	dressing = AreaDressing.build(_area, _rules, player, _floor_y)
