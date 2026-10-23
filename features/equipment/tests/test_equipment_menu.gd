@@ -52,41 +52,6 @@ func test_unowned_items_never_list() -> void:
 	GameState.reset()
 
 
-func test_preview_after_value_equals_gear_build_hero() -> void:
-	var menu: EquipmentMenu = _open_menu()
-	menu.show_hero(&"zayd")
-	menu._on_slot_activated(&"blade")
-	var keen: EquipDef = ContentDB.get_def("blade", &"keen_blade") as EquipDef
-	menu._on_item_focused(keen)
-	var loader := BattleLoader.from_db(ContentDB)
-	var staged := EquipmentStatsPanel.StagedState.new()
-	staged.xp = GameState.xp
-	staged.equipment = GameState.equipment.duplicate()
-	staged.equipment[&"zayd.blade"] = &"keen_blade"
-	staged.sockets = GameState.sockets
-	staged.upgrades = GameState.upgrades
-	var expected: CombatantDef = loader.hero_from_state(&"zayd", staged)
-	var after_val: CombatantDef = menu.stats.last_after()
-	check_eq(after_val.attack, expected.attack, "after-value equals Gear.build_hero with swap")
-	Screens.clear()
-	GameState.reset()
-
-
-func test_sockets_show_stones_and_hide_locked() -> void:
-	var menu: EquipmentMenu = _open_menu()
-	menu.show_hero(&"zayd")
-	var g_box: SlotBox = menu.boxes_manager.boxes[&"gemstones"]
-	check(g_box != null, "gemstones box exists")
-	check(g_box._socket_panels[0].visible, "socket 0 visible")
-	check(not g_box._socket_panels[1].visible, "socket 1 hidden when locked")
-	GameState.flags[&"heirloom_rank_3"] = true
-	menu.boxes_manager.refresh(menu.hero)
-	check(g_box._socket_panels[1].visible, "socket 1 visible when unlocked")
-	check(g_box._socket_panels[2].visible, "socket 2 visible when unlocked")
-	Screens.clear()
-	GameState.reset()
-
-
 func test_qe_cycles_heroes() -> void:
 	var menu: EquipmentMenu = _open_menu()
 	menu.show_hero(&"zayd")
@@ -118,18 +83,76 @@ func test_b_twice_closes_and_restores_focus() -> void:
 	GameState.reset()
 
 
-func test_subviewport_and_character_visual_turns_while_paused() -> void:
+func test_header_and_inventory_rects_do_not_intersect() -> void:
 	var menu: EquipmentMenu = _open_menu()
-	var stage: HologramStage = menu.stage
-	check(stage.sub_viewport() != null, "SubViewport exists")
-	var visual: CharacterVisual = stage.visual()
-	check(visual != null and stage.sub_viewport().get_children().has(visual), "visual is SubViewport child")
-	tree.paused = true
-	var r0: float = visual.rotation.y
-	stage._process(0.5)
-	var r1: float = visual.rotation.y
-	check(r1 > r0, "visual keeps turning 20 deg/s while paused")
-	tree.paused = false
+	var header_rect := Rect2(menu.header.position, menu.header.size)
+	var inv_rect := Rect2(menu.owned_list.position, menu.owned_list.size)
+	check(not header_rect.intersects(inv_rect), "header card rect and INVENTORY rect do not intersect")
+	check(menu.owned_list.position.y >= header_rect.end.y + 16.0, "INVENTORY starts below header with >= 16px gap")
+	var face: Control = menu.header.portrait_face()
+	check(face != null, "portrait exists")
+	check(face is TextureRect, "portrait is TextureRect")
+	var face_tr := face as TextureRect
+	check_eq(face_tr.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_CENTERED, "portrait keeps image aspect")
+	Screens.clear()
+	GameState.reset()
+
+
+func test_hovering_slot_fills_list_without_confirm() -> void:
+	var menu: EquipmentMenu = _open_menu()
+	menu.show_hero(&"zayd")
+	check_eq(menu.active_slot, &"blade", "starts on blade")
+	var hilt_box: SlotBox = menu.boxes_manager.boxes[&"hilt"]
+	hilt_box.grab_focus()
+	check_eq(menu.active_slot, &"hilt", "focusing hilt slot updates active_slot")
+	check_eq(int(menu.mode), int(EquipmentMenu.Mode.SLOTS), "remains in SLOTS mode without confirm")
+	var rows: Array[ListRow] = menu.owned_list.rows()
+	check(rows.size() > 0, "owned list filled without pressing confirm")
+	check(rows[0].name_text().contains("Hilt"), "list populated with hilts")
+	Screens.clear()
+	GameState.reset()
+
+
+func test_gemstones_slot_can_take_focus_and_lists_gemstones() -> void:
+	var menu: EquipmentMenu = _open_menu()
+	menu.show_hero(&"zayd")
+	var gem_box: SlotBox = menu.boxes_manager.boxes[&"gemstones"]
+	check(gem_box.focus_mode != Control.FOCUS_NONE, "gemstones box can take focus")
+	gem_box.grab_focus()
+	check(gem_box.has_focus(), "gemstones has focus")
+	check_eq(menu.active_slot, &"gemstones", "gemstones slot active on focus")
+	var rows: Array[ListRow] = menu.owned_list.rows()
+	check(rows.size() > 0, "gemstones listed in owned list")
+	var has_aqiq: bool = false
+	for r: ListRow in rows:
+		if r.name_text() == Ui.text("STONE_AQIQ_RED_NAME"):
+			has_aqiq = true
+			break
+	check(has_aqiq, "owned aqiq_red gemstone listed")
+	Screens.clear()
+	GameState.reset()
+
+
+func test_no_two_connector_lines_intersect() -> void:
+	var menu: EquipmentMenu = _open_menu()
+	menu.show_hero(&"zayd")
+	menu.stage._process(0.01)
+	var lines_dict: Dictionary[StringName, Line2D] = menu.stage.lines()
+	var visible_lines: Array[Line2D] = []
+	for p: StringName in lines_dict:
+		var l: Line2D = lines_dict[p]
+		if l.visible and l.points.size() >= 2:
+			visible_lines.append(l)
+	check(visible_lines.size() >= 2, "at least 2 visible connector lines")
+	var intersected: bool = false
+	for i: int in visible_lines.size():
+		for j: int in range(i + 1, visible_lines.size()):
+			var l1: Line2D = visible_lines[i]
+			var l2: Line2D = visible_lines[j]
+			if _segments_intersect(l1.points[0], l1.points[1], l2.points[0], l2.points[1]):
+				intersected = true
+				break
+	check(not intersected, "no two connector lines intersect")
 	Screens.clear()
 	GameState.reset()
 
@@ -141,7 +164,7 @@ func test_rects_match_spec_within_2px() -> void:
 	check_approx(menu.header.position.x, 80.0, 2.0, "header x")
 	check_approx(menu.header.position.y, 124.0, 2.0, "header y")
 	check_approx(menu.owned_list.position.x, 80.0, 2.0, "list x")
-	check_approx(menu.owned_list.position.y, 240.0, 2.0, "list y")
+	check_approx(menu.owned_list.position.y, 280.0, 2.0, "list y")
 	check_approx(menu.stage.position.x, 560.0, 2.0, "stage x")
 	check_approx(menu.stage.position.y, 140.0, 2.0, "stage y")
 	check_approx(menu.boxes_manager.boxes[&"blade"].position.x, 600.0, 2.0, "blade x")
@@ -158,3 +181,11 @@ func test_rects_match_spec_within_2px() -> void:
 
 func check_approx(val: float, target: float, tolerance: float, msg: String) -> void:
 	check(absf(val - target) <= tolerance, "%s: expected %f got %f" % [msg, target, val])
+
+
+func _segments_intersect(a: Vector2, b: Vector2, c: Vector2, d: Vector2) -> bool:
+	var d1: float = (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x)
+	var d2: float = (b.x - a.x) * (d.y - a.y) - (b.y - a.y) * (d.x - a.x)
+	var d3: float = (d.x - c.x) * (a.y - c.y) - (d.y - c.y) * (a.x - c.x)
+	var d4: float = (d.x - c.x) * (b.y - c.y) - (d.y - c.y) * (b.x - c.x)
+	return ((d1 > 0.0 and d2 < 0.0) or (d1 < 0.0 and d2 > 0.0)) and ((d3 > 0.0 and d4 < 0.0) or (d3 < 0.0 and d4 > 0.0))

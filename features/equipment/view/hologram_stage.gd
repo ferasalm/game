@@ -12,6 +12,7 @@ var _visual: CharacterVisual
 var _holo_mat: ShaderMaterial
 var _lines: Dictionary[StringName, Line2D] = {}
 var _box_anchors: Dictionary[StringName, Dictionary] = {}
+var _active_slot: StringName = &"blade"
 
 
 func _init() -> void:
@@ -44,6 +45,11 @@ func set_hero(hero: StringName) -> void:
 	_visual.play(&"idle")
 	_sub_viewport.add_child(_visual)
 	_apply_hologram()
+
+
+func set_active_slot(slot_name: StringName) -> void:
+	_active_slot = slot_name
+	_update_line_styles()
 
 
 func register_box(part_name: StringName, box: Control, anchor_name: StringName) -> void:
@@ -79,6 +85,10 @@ func model_meshes() -> Array[MeshInstance3D]:
 
 func sub_viewport() -> SubViewport:
 	return _sub_viewport
+
+
+func lines() -> Dictionary[StringName, Line2D]:
+	return _lines
 
 
 func _build_stage() -> void:
@@ -138,7 +148,7 @@ func _apply_hologram() -> void:
 
 
 func _update_leader_lines() -> void:
-	if _camera == null or _visual == null:
+	if _camera == null:
 		return
 	for part_name: StringName in _box_anchors:
 		var entry: Dictionary = _box_anchors[part_name]
@@ -150,31 +160,37 @@ func _update_leader_lines() -> void:
 			line.visible = false
 			continue
 		line.visible = true
-		var box_x: float = box.global_position.x + (box.size.x if box.global_position.x < 800.0 else 0.0)
+		var is_left: bool = box.global_position.x < 800.0
+		var box_x: float = box.global_position.x + (box.size.x if is_left else 0.0)
 		var box_edge := Vector2(box_x, box.global_position.y + box.size.y * 0.5)
-		var body_3d: Vector3 = _get_anchor_pos(entry["anchor"] as StringName)
+		var body_3d: Vector3 = _get_anchor_pos(entry["anchor"] as StringName, is_left)
 		var proj: Vector2 = _camera.unproject_position(body_3d)
 		var body_screen: Vector2 = global_position + proj
 		line.points = PackedVector2Array([box_edge, body_screen])
+	_update_line_styles()
 
 
-func _get_anchor_pos(anchor_name: StringName) -> Vector3:
-	if _visual == null:
-		return Vector3.ZERO
-	var pos: Vector3 = _visual.anchor_position(anchor_name)
-	if pos == _visual.global_position + _visual.root.position:
-		var h: float = _visual.height()
-		if h <= 0.0:
-			h = 1.8
-		match anchor_name:
-			&"chest":
-				pos.y += h * 0.7
-			&"belt":
-				pos.y += h * 0.5
-			&"arm":
-				pos.y += h * 0.6
-				pos.x -= 0.25
-			&"hand":
-				pos.y += h * 0.45
-				pos.x += 0.3
-	return pos
+func _get_anchor_pos(anchor_name: StringName, is_left: bool) -> Vector3:
+	var x_offset: float = -0.15 if is_left else 0.15
+	match anchor_name:
+		&"chest":
+			return Vector3(x_offset, 1.25, 0.0)
+		&"hand":
+			return Vector3(x_offset * 1.2, 0.95, 0.0)
+		&"hip":
+			return Vector3(x_offset, 0.65, 0.0)
+	return Vector3(x_offset, 0.95, 0.0)
+
+
+func _update_line_styles() -> void:
+	var style: UiStyleDef = Ui.style()
+	for part_name: StringName in _lines:
+		var line: Line2D = _lines[part_name]
+		if part_name == _active_slot:
+			line.default_color = style.colour(&"c_brass")
+			line.width = 3.0
+			line.z_index = 1
+		else:
+			line.default_color = style.colour(&"c_cyan")
+			line.width = 2.0
+			line.z_index = 0

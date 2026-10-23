@@ -1,6 +1,6 @@
 extends Node
-## Renders pause, save, or shop menu at 1920x1080 to an inbox PNG.
-## Run: "$(tools/godot.sh)" --path . --resolution 1920x1080 res://tools/shot_menu.tscn -- <menu_kind>
+## purpose: Renders pause, save, shop, or equipment menu at 1920x1080 to an inbox PNG.
+## Run: tools/run_godot.sh res://tools/shot_menu.tscn -- <menu_kind>
 
 const OUT_DIR: String = "C:/dev/game/inbox"
 const SETTLE_FRAMES: int = 15
@@ -27,20 +27,27 @@ func _ready() -> void:
 
 func _build_screen() -> void:
 	match _menu_kind:
-		"pause":
-			_screen = PauseMenu.new()
-			_sub_vp.add_child(_screen)
-			_screen.open()
+		"pause", "fix_pause":
+			_setup_pause()
 		"save":
 			_setup_save()
 		"shop":
 			_screen = ShopScreen.new()
 			_sub_vp.add_child(_screen)
 			_screen.open({"shop": &"herb_stall"})
-		"equipment":
-			_setup_equipment()
+		"equipment", "fix_equip_zayd":
+			_setup_equipment(&"zayd")
+		"fix_equip_bilqis":
+			_setup_equipment(&"bilqis")
 		"workshop_upgrade", "workshop_gemstones", "workshop_crafting":
 			_setup_workshop()
+
+
+func _setup_pause() -> void:
+	GameState.start_new()
+	_screen = PauseMenu.new()
+	_sub_vp.add_child(_screen)
+	_screen.open()
 
 
 func _setup_save() -> void:
@@ -54,13 +61,18 @@ func _setup_save() -> void:
 	_screen.open({"mode": SlotPickerScreen.MODE_SAVE})
 
 
-func _setup_equipment() -> void:
+func _setup_equipment(hero_name: StringName = &"zayd") -> void:
 	GameState.start_new()
-	for item_id: StringName in [&"swift_hilt", &"keen_blade", &"arc_arm", &"concession_plate", &"mesh_abaya"]:
+	var items: Array[StringName] = [
+		&"swift_hilt", &"keen_blade", &"arc_arm", &"concession_plate", &"mesh_abaya",
+		&"sulaimani", &"fayruz", &"jaz_black", &"aqiq_red"
+	]
+	for item_id: StringName in items:
 		Inventory.add(GameState.inventory, item_id)
 	_screen = EquipmentMenu.new()
 	_sub_vp.add_child(_screen)
 	_screen.open()
+	(_screen as EquipmentMenu).show_hero(hero_name)
 
 
 func _setup_workshop() -> void:
@@ -90,7 +102,8 @@ func _process(_delta: float) -> void:
 	_frame += 1
 	if _frame >= SETTLE_FRAMES:
 		var img: Image = _sub_vp.get_texture().get_image()
-		var out_path: String = OUT_DIR.path_join("menu_%s.png" % _menu_kind)
+		var file_name: String = "%s.png" % _menu_kind if _menu_kind.begins_with("fix_") else "menu_%s.png" % _menu_kind
+		var out_path: String = OUT_DIR.path_join(file_name)
 		img.save_png(out_path)
 		print("Saved render to %s (%dx%d)" % [out_path, img.get_width(), img.get_height()])
 		get_tree().quit()

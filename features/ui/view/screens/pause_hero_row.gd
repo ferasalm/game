@@ -1,6 +1,6 @@
 class_name PauseHeroRow
 extends PanelContainer
-## One hero row in the pause party panel: face 160x160, name, class, HP/SP bars, KO state.
+## purpose: One hero row in the pause party panel: face 160x160, name, class, HP/SP bars, KO state.
 
 var hero_id: StringName = &""
 var _face: TextureRect
@@ -50,6 +50,7 @@ func _build_face(parent: Control, style: UiStyleDef, hero: StringName) -> void:
 
 func _build_middle(parent: Control, style: UiStyleDef, def: CombatantDef, hero: StringName) -> void:
 	var middle := VBoxContainer.new()
+	middle.custom_minimum_size.x = 480.0
 	middle.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	middle.alignment = BoxContainer.ALIGNMENT_CENTER
 	middle.add_theme_constant_override("separation", 2)
@@ -95,14 +96,11 @@ func _refresh_progression(hero: StringName) -> void:
 		if c != null and c.hero == hero:
 			cdef = c
 			break
-	var class_name_str: String = Ui.text(cdef.name_key) if cdef != null else ""
-	_class_label.text = class_name_str
-
+	_class_label.text = Ui.text(cdef.name_key) if cdef != null else ""
 	var levels_def := ContentDB.get_def("levels", &"default") as LevelsDef
 	var xp_amount: int = int(GameState.xp.get(hero, 0))
 	var lv: int = Progression.level(xp_amount, levels_def)
 	_lv_node.text = "Lv %d" % lv
-
 	var next_xp: int = levels_def.xp_total[lv] if (levels_def != null and lv < levels_def.xp_total.size()) else xp_amount
 	_xp_bar.max_value = next_xp
 	_xp_bar.value = xp_amount
@@ -112,7 +110,7 @@ func _refresh_progression(hero: StringName) -> void:
 func _build_stats(parent: Control, style: UiStyleDef, def: CombatantDef, hero: StringName) -> void:
 	var stats := VBoxContainer.new()
 	stats.alignment = BoxContainer.ALIGNMENT_CENTER
-	stats.custom_minimum_size.x = 450
+	stats.custom_minimum_size.x = 550.0
 	parent.add_child(stats)
 
 	var max_hp: int = def.max_hp if def != null else 1
@@ -175,17 +173,18 @@ func face_rect() -> TextureRect:
 func _stat_bar(parent: Control, tag_key: String, kind: StringName, maximum: int, is_hp: bool) -> ProgressBar:
 	var line := HBoxContainer.new()
 	var tag: Label = Ui.label(Ui.text(tag_key), &"CaptionLabel")
-	tag.custom_minimum_size.x = 32
+	tag.custom_minimum_size.x = 36.0
 	line.add_child(tag)
 	var bar := ProgressBar.new()
 	bar.theme_type_variation = kind
 	bar.show_percentage = false
 	bar.max_value = maximum
-	bar.custom_minimum_size = Vector2(420, 14)
+	bar.custom_minimum_size = Vector2(420.0, 14.0)
 	bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	line.add_child(bar)
 	var numbers: Label = Ui.label("", &"NumberLabel")
-	numbers.custom_minimum_size.x = 90
+	numbers.custom_minimum_size.x = 90.0
+	numbers.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	line.add_child(numbers)
 	if is_hp:
 		_hp_text = numbers

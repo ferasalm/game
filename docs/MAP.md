@@ -337,13 +337,13 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/equipment/tests/test_equipment_menu.gd`: purpose: Tests EquipmentMenu layout, 3D hologram stage, slot boxes, equipping, preview and focus
 - `features/equipment/tests/test_equipment_polish.gd`: purpose: Tests equipment polish features: hologram override, slot box name/dim ring, stats header, hero header Lv 1
 - `features/equipment/view/equipment_boxes.gd`: purpose: Manages the 5 equipment slot boxes, their positions, visibility per hero and focus navigation
-- `features/equipment/view/equipment_data.gd`: What the equipment screen needs from ContentDB, read once: every equippable by id, the perks, the rarity order, and each hero's start loadout (heroes in loadout order)
+- `features/equipment/view/equipment_data.gd`: purpose: What the equipment screen needs from ContentDB, read once
 - `features/equipment/view/equipment_desc_bar.gd`: purpose: Description bar (1760x90 at 80,900) showing item name, rarity, description and combat effect
 - `features/equipment/view/equipment_detail.gd`: The right-hand side of the equipment screen: the focused item (name in its rarity colour, tag, text, perk and the tech moves it teaches) above the stat comparison (base, with the staged kit, an up / down arrow)
 - `features/equipment/view/equipment_hero_header.gd`: purpose: Hero info box (520x110 at 80,124) with portrait face, name, class, Lv N, and HP/SP/XP bars
 - `features/equipment/view/equipment_item_button.gd`: Builds one owned item as a menu button: its name in the rarity colour, the rarity tag and an "Equipped" mark on the right
 - `features/equipment/view/equipment_menu.gd`: purpose: Equipment menu with 3D hologram hero, slot boxes, owned list, stats comparison and tabs
-- `features/equipment/view/equipment_owned_list.gd`: purpose: Owned items panel (420x620 at 80,240) populated with ListRows and worn "E" chips
+- `features/equipment/view/equipment_owned_list.gd`: purpose: Owned items panel (420x620 at 80,260) populated with ListRows and worn "E" chips
 - `features/equipment/view/equipment_stats_panel.gd`: purpose: Stats preview panel (440x560) showing now vs after comparison and derived battle rolls
 - `features/equipment/view/equipment_tabs_bar.gd`: purpose: Top bar (1760x64 at 80,40) with title pair and menu tabs (Equipment, Items, Map)
 - `features/equipment/view/grid_disc.gdshader`
@@ -473,7 +473,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/tests/test_menu_polish.gd`: Menu polish tests: portrait faces, pause hero progression, icon disc fallback, label font sizes, glass panel colour
 - `features/ui/tests/test_menu_skins.gd`: Menu skins test: backdrops, fallback, child 0, party rows, thumbnails, shop money-after, rects
 - `features/ui/tests/test_musnad.gd`: The written language of Sana'a in 2150 is Musnad only: no Arabic script in any CSV, JSON or script; every *_MUSNAD and WORLD_SIGN_* text holds only Musnad letters, spaces and arrows; the Musnad font draws it
-- `features/ui/tests/test_pause_menu.gd`: The pause menu rules (PauseLogic) and the screen built from them
+- `features/ui/tests/test_pause_menu.gd`: purpose: The pause menu rules (PauseLogic) and the screen built from them
 - `features/ui/tests/test_popups.gd`: The loot popup (queues item_obtained in order, skippable), the area title card, the title overlay (any key dismisses it once) and the opening shot held on the moon until then
 - `features/ui/tests/test_sabil_defeat.gd`: The Sabil question and the Defeat screen: registered ids, focus order, results, back handling
 - `features/ui/tests/test_screens.gd`: The Screens stack: push/pop pause the tree and emit game_paused, focus returns to the control that had it, back goes to the top screen, an unhandled menu opens pause only while exploring with nothing open, screens open by id
@@ -491,14 +491,14 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/menu_blur.gdshader`
 - `features/ui/view/money_counter.gd`: A pill with the riyal amount in brass
 - `features/ui/view/party_card.gd`: A hero card: portrait icon, name, HP and SP bars with numbers
-- `features/ui/view/portrait_faces.gd`: Caches painted hero portraits cropped to the head (top 38% of the image, centred square)
+- `features/ui/view/portrait_faces.gd`: purpose: Caches uncropped painted hero portraits
 - `features/ui/view/prompt_strip.gd`: The Hades-style button hints along the bottom: "[Enter] Select   [Esc] Back"
 - `features/ui/view/screens/choice_screen.gd`: Base of the small centred "pick one" screens (Sabil, Defeat): a framed panel with the Musnad + English title pair and a column of buttons in focus order
 - `features/ui/view/screens/confirm_dialog.gd`: A centred Yes/No question over the scrim
 - `features/ui/view/screens/defeat_screen.gd`: The defeat screen (Screens id &"defeat"): the arena darkens over t_defeat_fade, then DEFEATED offers Retry fight (default), Load last save (greyed with no save) and Title (asks first)
 - `features/ui/view/screens/items_screen.gd`: The Items screen (Screens id &"items", opened from the pause menu): the bag on the left, the chosen item's description and effect on the right, and under it the hero picker
 - `features/ui/view/screens/items_text.gd`: Item screen wording: the effect line ("HP +120") and a hero's "HP 200 -> 320" preview
-- `features/ui/view/screens/pause_hero_row.gd`: One hero row in the pause party panel: face 160x160, name, class, HP/SP bars, KO state
+- `features/ui/view/screens/pause_hero_row.gd`: purpose: One hero row in the pause party panel: face 160x160, name, class, HP/SP bars, KO state
 - `features/ui/view/screens/pause_menu.gd`: Pause menu screen: command panel (80,80), info box (80,880), party panel (540,80), prompt strip (0,1020)
 - `features/ui/view/screens/pause_party.gd`: Party panel for the pause screen: one row per hero (h 200)
 - `features/ui/view/screens/sabil_screen.gd`: The sabil fountain question (Screens id &"sabil"): "Drink to rest? This saves your game and restores everyone." Closes with &"drink" (default) or &"leave" (Not now, or back)
@@ -783,7 +783,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_hud.gd`: Renders the battle HUD to PNG files (not headless; needs a window)
 - `tools/shot_level1.gd`: Renders level 1 blockout roofs R1-R5 and crossing X3 from play camera to C:/dev/game/inbox/level1_*.png
 - `tools/shot_level1.tscn`: scene
-- `tools/shot_menu.gd`: Renders pause, save, or shop menu at 1920x1080 to an inbox PNG
+- `tools/shot_menu.gd`: purpose: Renders pause, save, shop, or equipment menu at 1920x1080 to an inbox PNG
 - `tools/shot_menu.tscn`: scene
 - `tools/shot_models.gd`: Model gallery for renders (docs/design/characters-3d.md): the cast in a row on a floor under the painted look, each doing a state, close enough to judge the stand-ins
 - `tools/shot_prop.gd`: Renders a prop close-up from play camera height to an inbox PNG (960x540)

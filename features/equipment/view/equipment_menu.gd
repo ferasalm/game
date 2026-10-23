@@ -18,6 +18,7 @@ var stage: HologramStage
 var boxes_manager := EquipmentBoxes.new()
 var stats: EquipmentStatsPanel
 var desc: EquipmentDescBar
+var _data := EquipmentData.new()
 var _is_open: bool = false
 
 
@@ -109,7 +110,7 @@ func _build_components() -> void:
 	desc = EquipmentDescBar.new()
 	for n: Control in [tabs, header, owned_list, stage, stats, desc]:
 		root.add_child(n)
-	boxes_manager.build(root, stage, _on_slot_activated)
+	boxes_manager.build(root, stage, _on_slot_activated, _on_slot_focused)
 
 
 func show_hero(hero_id: StringName) -> void:
@@ -119,6 +120,19 @@ func show_hero(hero_id: StringName) -> void:
 	boxes_manager.refresh(hero)
 	var parts: Array[StringName] = EquipmentOptions.parts_for(hero)
 	active_slot = parts[0] if not parts.is_empty() else &"armor"
+	boxes_manager.set_active_slot(active_slot)
+	stage.set_active_slot(active_slot)
+	owned_list.populate(hero, active_slot)
+	stats.update_stats(hero)
+	_update_desc_from_worn()
+
+
+func _on_slot_focused(slot_name: StringName) -> void:
+	if active_slot == slot_name and mode == Mode.SLOTS:
+		return
+	active_slot = slot_name
+	boxes_manager.set_active_slot(active_slot)
+	stage.set_active_slot(active_slot)
 	owned_list.populate(hero, active_slot)
 	stats.update_stats(hero)
 	_update_desc_from_worn()
@@ -126,19 +140,23 @@ func show_hero(hero_id: StringName) -> void:
 
 func _on_slot_activated(slot_name: StringName) -> void:
 	active_slot = slot_name
+	boxes_manager.set_active_slot(active_slot)
+	stage.set_active_slot(active_slot)
 	owned_list.populate(hero, active_slot)
 	mode = Mode.LIST
 	owned_list.focus_first()
 
 
 func _on_item_focused(item: EquipDef) -> void:
-	stats.update_stats(hero, Inventory.slot_key(hero, active_slot), item.id)
+	if active_slot != &"gemstones":
+		stats.update_stats(hero, Inventory.slot_key(hero, active_slot), item.id)
 	desc.set_item(item)
 
 
 func _on_item_pressed(item: EquipDef) -> void:
-	var slot_key: StringName = Inventory.slot_key(hero, active_slot)
-	Inventory.equip(GameState.equipment, GameState.inventory, slot_key, item)
+	if active_slot != &"gemstones":
+		var slot_key: StringName = Inventory.slot_key(hero, active_slot)
+		Inventory.equip(GameState.equipment, GameState.inventory, slot_key, item)
 	boxes_manager.refresh(hero)
 	owned_list.populate(hero, active_slot)
 	stats.update_stats(hero)
@@ -146,20 +164,7 @@ func _on_item_pressed(item: EquipDef) -> void:
 
 
 func _update_desc_from_worn() -> void:
-	var slot_key: StringName = Inventory.slot_key(hero, active_slot)
-	var worn_id: StringName = GameState.equipment.get(slot_key, &"")
-	if worn_id == &"" and not GameState.equipment.has(slot_key):
-		for l_id: StringName in ContentDB.ids("loadout"):
-			var l := ContentDB.get_def("loadout", l_id) as LoadoutDef
-			if l != null and l.hero == hero:
-				if active_slot == &"hilt":
-					worn_id = l.hilt
-				elif active_slot == &"blade":
-					worn_id = l.blade
-				elif active_slot == &"prosthetic":
-					worn_id = l.prosthetic
-				break
-	var item: EquipDef = ContentDB.get_def("item", worn_id) as EquipDef
+	var item: EquipDef = _data.worn_item(GameState.equipment, hero, active_slot)
 	desc.set_item(item)
 
 

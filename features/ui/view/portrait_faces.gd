@@ -1,13 +1,11 @@
 class_name PortraitFaces
 extends RefCounted
-## Caches painted hero portraits cropped to the head (top 38% of the image, centred square).
-## Falls back to CharacterIcons.texture when a portrait file does not exist.
+## purpose: Caches uncropped painted hero portraits. Falls back to CharacterIcons.texture.
 
-const HEAD_RATIO: float = 0.38
 static var _cache: Dictionary[StringName, Texture2D] = {}
 
 
-## The cropped head texture of hero, or CharacterIcons.texture fallback.
+## The uncropped painted portrait texture of hero, or CharacterIcons.texture fallback.
 static func texture(hero: StringName) -> Texture2D:
 	if _cache.has(hero):
 		return _cache[hero]
@@ -15,10 +13,7 @@ static func texture(hero: StringName) -> Texture2D:
 	if FileAccess.file_exists(path):
 		var img: Image = Image.load_from_file(path)
 		if img != null:
-			var side: int = int(round(float(img.get_height()) * HEAD_RATIO))
-			var x: int = maxi(0, (img.get_width() - side) / 2)
-			var cropped: Image = img.get_region(Rect2i(x, 0, side, side))
-			var tex: ImageTexture = ImageTexture.create_from_image(cropped)
+			var tex: ImageTexture = ImageTexture.create_from_image(img)
 			_cache[hero] = tex
 			return tex
 	var fallback: Texture2D = CharacterIcons.texture(hero)

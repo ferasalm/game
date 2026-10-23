@@ -1,5 +1,5 @@
 extends TestCase
-## The pause menu rules (PauseLogic) and the screen built from them.
+## purpose: The pause menu rules (PauseLogic) and the screen built from them.
 
 
 func test_entries_follow_registered_screens_and_saves() -> void:
@@ -63,3 +63,31 @@ func test_equipment_opens_the_menu() -> void:
 		check(not Screens.is_open(), "back closes the menu")
 	Screens.clear()
 	tree.paused = false
+
+
+func test_pause_party_portraits_fill_frame_and_bars_aligned_in_column() -> void:
+	Router.state = Router.STATE_EXPLORING
+	Screens.open(&"pause")
+	var menu: PauseMenu = Screens.top() as PauseMenu
+	check(menu != null, "pause opens")
+	var rows: Array[PauseHeroRow] = menu.party().rows()
+	check(rows.size() >= 2, "at least 2 hero rows in pause party")
+	var first_hp_w: float = -1.0
+	for row: PauseHeroRow in rows:
+		var face: TextureRect = row.face_rect()
+		check(face != null, "face exists")
+		check_eq(face.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_CENTERED, "face keeps aspect ratio")
+		check_eq(face.custom_minimum_size, Vector2(160, 160), "face frame is 160x160")
+		var hp: ProgressBar = row.hp_bar()
+		check(hp != null, "hp bar exists")
+		check_eq(hp.custom_minimum_size, Vector2(420, 14), "hp bar size is 420x14")
+		var sp: ProgressBar = row.sp_bar()
+		check(sp != null, "sp bar exists")
+		check_eq(sp.custom_minimum_size, Vector2(420, 14), "sp bar size is 420x14")
+		if first_hp_w < 0.0:
+			first_hp_w = hp.custom_minimum_size.x
+		else:
+			check_eq(hp.custom_minimum_size.x, first_hp_w, "bars aligned on one column")
+	Screens.clear()
+	tree.paused = false
+	Router.state = Router.STATE_TITLE

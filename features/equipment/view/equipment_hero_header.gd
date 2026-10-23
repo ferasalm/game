@@ -18,8 +18,8 @@ var _face: Control
 func _init() -> void:
 	var style: UiStyleDef = Ui.style()
 	position = Vector2(80.0, 124.0)
-	custom_minimum_size = Vector2(520.0, 104.0)
-	size = Vector2(520.0, 104.0)
+	custom_minimum_size = Vector2(520.0, 132.0)
+	size = Vector2(520.0, 132.0)
 	var panel_box: StyleBoxTexture = UiBoxes.panel(style, &"panel")
 	panel_box.content_margin_top = 4.0
 	panel_box.content_margin_bottom = 4.0

@@ -11,22 +11,31 @@ const POS: Dictionary[StringName, Vector2] = {
 	&"prosthetic": Vector2(1210.0, 420.0),
 }
 const ANCHORS: Dictionary[StringName, StringName] = {
-	&"blade": &"hand", &"hilt": &"belt", &"gemstones": &"belt", &"armor": &"chest", &"prosthetic": &"arm",
+	&"blade": &"chest", &"hilt": &"hand", &"gemstones": &"hip", &"armor": &"chest", &"prosthetic": &"hand",
 }
 
 var boxes: Dictionary[StringName, SlotBox] = {}
 
 
-func build(root: Control, stage: HologramStage, on_activated: Callable) -> void:
+func build(root: Control, stage: HologramStage, on_activated: Callable, on_focused: Callable = Callable()) -> void:
 	for slot_name: StringName in SLOTS:
 		var box := SlotBox.new()
 		box.position = POS[slot_name]
 		box.setup(slot_name, Ui.text("EQUIP_SLOT_" + slot_name.to_upper()), slot_name == &"gemstones")
 		box.slot_activated.connect(on_activated)
+		if on_focused.is_valid():
+			box.slot_focused.connect(on_focused)
 		root.add_child(box)
 		boxes[slot_name] = box
 		stage.register_box(slot_name, box, ANCHORS[slot_name])
 	_wire_focus()
+
+
+func set_active_slot(active_name: StringName) -> void:
+	for slot_name: StringName in boxes:
+		var box: SlotBox = boxes[slot_name]
+		box.is_selected = (slot_name == active_name)
+		box.queue_redraw()
 
 
 func refresh(hero: StringName) -> void:
@@ -75,9 +84,8 @@ func visible_boxes() -> Array[SlotBox]:
 
 func focus_first() -> void:
 	for b: SlotBox in visible_boxes():
-		if not b.is_gemstones:
-			b.grab_focus()
-			break
+		b.grab_focus()
+		break
 
 
 func focus_slot(slot_name: StringName) -> void:
@@ -91,7 +99,10 @@ func _wire_focus() -> void:
 	boxes[&"blade"].focus_neighbor_bottom = boxes[&"hilt"].get_path()
 	boxes[&"blade"].focus_neighbor_right = boxes[&"armor"].get_path()
 	boxes[&"hilt"].focus_neighbor_top = boxes[&"blade"].get_path()
+	boxes[&"hilt"].focus_neighbor_bottom = boxes[&"gemstones"].get_path()
 	boxes[&"hilt"].focus_neighbor_right = boxes[&"prosthetic"].get_path()
+	boxes[&"gemstones"].focus_neighbor_top = boxes[&"hilt"].get_path()
+	boxes[&"gemstones"].focus_neighbor_right = boxes[&"prosthetic"].get_path()
 	boxes[&"armor"].focus_neighbor_bottom = boxes[&"prosthetic"].get_path()
 	boxes[&"armor"].focus_neighbor_left = boxes[&"blade"].get_path()
 	boxes[&"prosthetic"].focus_neighbor_top = boxes[&"armor"].get_path()

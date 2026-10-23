@@ -83,3 +83,38 @@ func test_stats_preview_shows_arrow_indicators() -> void:
 	check(atk_after_lbl.text.contains("▲"), "improved ATK has up arrow")
 	Screens.clear()
 	GameState.reset()
+
+
+func test_preview_after_value_equals_gear_build_hero() -> void:
+	var menu: EquipmentMenu = _open_menu()
+	menu.show_hero(&"zayd")
+	menu._on_slot_activated(&"blade")
+	var keen: EquipDef = ContentDB.get_def("blade", &"keen_blade") as EquipDef
+	menu._on_item_focused(keen)
+	var loader := BattleLoader.from_db(ContentDB)
+	var staged := EquipmentStatsPanel.StagedState.new()
+	staged.xp = GameState.xp
+	staged.equipment = GameState.equipment.duplicate()
+	staged.equipment[&"zayd.blade"] = &"keen_blade"
+	staged.sockets = GameState.sockets
+	staged.upgrades = GameState.upgrades
+	var expected: CombatantDef = loader.hero_from_state(&"zayd", staged)
+	var after_val: CombatantDef = menu.stats.last_after()
+	check_eq(after_val.attack, expected.attack, "after-value equals Gear.build_hero with swap")
+	Screens.clear()
+	GameState.reset()
+
+
+func test_sockets_show_stones_and_hide_locked() -> void:
+	var menu: EquipmentMenu = _open_menu()
+	menu.show_hero(&"zayd")
+	var g_box: SlotBox = menu.boxes_manager.boxes[&"gemstones"]
+	check(g_box != null, "gemstones box exists")
+	check(g_box._socket_panels[0].visible, "socket 0 visible")
+	check(not g_box._socket_panels[1].visible, "socket 1 hidden when locked")
+	GameState.flags[&"heirloom_rank_3"] = true
+	menu.boxes_manager.refresh(menu.hero)
+	check(g_box._socket_panels[1].visible, "socket 1 visible when unlocked")
+	check(g_box._socket_panels[2].visible, "socket 2 visible when unlocked")
+	Screens.clear()
+	GameState.reset()
