@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CAP_AGY=2; CAP_CF=3; CAP_OC=0
+CAP_AGY=${CAP_AGY:-0}; CAP_CF=${CAP_CF:-3}; CAP_OC=${CAP_OC:-0}  # env overrides for tests
 # Slots reporter and DeepSeek spend tracker (DECISIONS 2026-10-23)
 set -uo pipefail
 
