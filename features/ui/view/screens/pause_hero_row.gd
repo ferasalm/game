@@ -71,8 +71,7 @@ func _build_middle(parent: Control, style: UiStyleDef, def: CombatantDef, hero: 
 	_lv_node.name = "LvNode"
 	xp_row.add_child(_lv_node)
 
-	var xp_tag := Ui.label("XP", &"CaptionLabel", style.colour(&"c_cyan"))
-	xp_row.add_child(xp_tag)
+	xp_row.add_child(Ui.label("XP", &"CaptionLabel", style.colour(&"c_cyan")))
 
 	_xp_bar = ProgressBar.new()
 	_xp_bar.name = "XpBar"

@@ -59,11 +59,13 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/dialogue/talks.json`: content: talk x2
 - `content/economy/rules.json`: content: economy_rules x1
 - `content/economy/shops.json`: content: shop x1
+- `content/items/accessories.json`: content: accessory x4
 - `content/items/armor.json`: content: armor x5
 - `content/items/chests.json`: content: chest x4
 - `content/items/consumables.json`: content: consumable x4
 - `content/items/materials.json`: content: material x3
 - `content/items/perks.json`: content: perk x16
+- `content/items/pistols.json`: content: pistol x4
 - `content/items/rarities.json`: content: rarity x6
 - `content/jambiyah/blades.json`: content: blade x3
 - `content/jambiyah/heirloom.json`: content: heirloom x3
@@ -127,11 +129,12 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `core/tests/fixtures/bad_text/dup_a.csv`
 - `core/tests/fixtures/bad_text/dup_b.csv`
 - `core/tests/fixtures/save_v3.json`: content: ? x0
+- `core/tests/fixtures/save_v5.json`: content: ? x0
 - `core/tests/test_asset_manifest.gd`: Asset manifest: every shipped asset has a source and licence; the checker catches missing entries, empty licences and entries without files (fixtures), and ignores notes, .import files and the manifest
 - `core/tests/test_content_db.gd`: The shipped content loads with no problems, and the validator catches broken content
 - `core/tests/test_def_reader.gd`: DefReader int lists and cross-key problems, and the encounter definition built on them
 - `core/tests/test_game_state.gd`: Save data survives a round trip through JSON, a version-1 save migrates, and an unknown version is refused
-- `core/tests/test_save_codec.gd`: SaveCodec: a v3 fixture migrates to v4, unknown versions are refused, unknown content ids are dropped with a warning, and the full v4 state (money, bag, vitals with hp 0, cleared patrols) round trips through GameState
+- `core/tests/test_save_codec.gd`: SaveCodec: a v3 fixture migrates to v6, unknown versions are refused, unknown content ids are dropped with a warning, the full v4 state (money, bag, vitals with hp 0, cleared patrols) round trips through GameState, and the v5 fixture gains Bilqis's pistol and every hero's ring with nothing else changed
 - `core/tests/test_save_service.gd`: SaveService: round trip, summary, an existing slot is replaced (the rename overwrites on Windows too) with the old save kept as .bak, and corrupt files give a clear error
 - `core/tests/test_text_db.gd`: Player text: every localization CSV loads, keys translate, and a malformed file is reported
 - `core/text_db.gd`: Player text (autoload TextDB): loads every res://localization/*.csv (header "keys,<lang>,...") into the TranslationServer at startup, so tr("KEY") works
@@ -143,6 +146,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/art/defs/palette_def.gd`: The locked colour palette: one letter per colour ("." is transparent and never listed here)
 - `features/art/defs/sprite_def.gd`: One pixel sprite: rows of palette letters ('.' = transparent), all the same width, feet on the last row
 - `features/art/defs/visual_rules_def.gd`: Numbers for how a CharacterVisual looks and moves: art scale, idle breathing, walking (bob, squash and stretch, lean, dust), turning, the blob shadow, and the battle motions (anticipation, lunge with afterimages, recoil, hurt, knocked out, revive, victory hop)
+- `features/art/logic/body_anchor.gd`: purpose: The fallback body anchor points of a model with no rigged anchor bone (a rigid model, or a bone the def does not name): shares of the body's own height and width, as a distance from the feet
 - `features/art/logic/clip_timing.gd`: Pure retiming of a one-shot clip (ClipDef): real seconds <-> clip seconds
 - `features/art/logic/locomotion.gd`: Pure walking maths for a model: which gait a ground speed means, the playback rate that keeps feet from sliding (speed / stride), a smoothed speed, the lean into acceleration and the foot contacts a gait loop passes
 - `features/art/logic/model_gait.gd`: Pure choice of a model's looping clip: which gait (idle, walk, run) its measured ground speed and the state the facade asked for mean, and the playback rate that keeps its feet on the ground
@@ -163,7 +167,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/art/view/character_hull.gdshader`
 - `features/art/view/character_motion.gd`: The root moves of a CharacterVisual: they slide `root` and nothing else (the picture and its squash belong to the VisualSource)
 - `features/art/view/character_skin.gdshader`
-- `features/art/view/character_visual.gd`: A character standing in the 3D world (feet on the node's origin): the facade the game talks to
+- `features/art/view/character_visual.gd`: A character standing in the 3D world (feet on the node's origin): the facade the game talks to (play, anchors, the clip_event signal)
 - `features/art/view/garment_mesh.gd`: Stand-in clothing built in code from a ModelPartDef (until Feras's own models): a lathe (a skirt, a coat, a head wrap) turned from a radius profile, and `prim`, which adds a coloured primitive to a SurfaceTool so a whole prop (the jambiyah) is one mesh with vertex colours (the skin shader multiplies COLOR into the albedo)
 - `features/art/view/hilt_mesh.gd`: The stand-in for Zayd's grandfather's jambiyah (Heirloom `grandfather_hilt`), built in code from the part's colours until Feras's picture becomes a model: a curved horn grip with two silver bands, a T pommel with a carnelian stone, a curved blade, and a curved leather sheath with silver throat and tip
 - `features/art/view/hilt_parts.gd`: The grandfather's jambiyah as nodes (the part's Rodin grip and sheath scenes, else HiltMesh's stand-in; the blade is always HiltMesh's): a sheath and the hilt with its blade sit at the belt (`root`); draw() carries the hilt to the hand bone for a strike (the blade shows, the sheath stays), sheathe() puts it back
@@ -209,6 +213,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/harness/balance.gd`: Balance harness: seeded battles per gear pairing with BattleAI playing both sides, one table
 - `features/combat/harness/battle_loader.gd`: Gathers the battle content from a loaded ContentDB and builds ready-to-run BattleSims for the default encounter
 - `features/combat/harness/item_policy.gd`: The balance harness's opt-in herb use (docs/design/economy.md section 9): a white herb on a downed hero, a pink herb on the living hero below 40% HP, a yellow herb when a hero cannot pay for his cheapest move
+- `features/combat/harness/party_builder.gd`: Fills GearStates and builds hero fighters / parties from saved equipment or a GameState through one BattleLoader's content dictionaries (used through BattleLoader's hero_from_state / party_* delegates)
 - `features/combat/logic/battle_action_rules.gd`: Move uses per battle, miss roll for confused units, and status cures for BattleSim and BattleResolver
 - `features/combat/logic/battle_ai.gd`: The one battle policy (enemies in play, both sides in the balance harness), in this order: 1
 - `features/combat/logic/battle_ai_tactics.gd`: Tactics evaluation for BattleAI (section 4): stance against incoming melee, shove near COMMAND, arc on spread/jammed
@@ -336,8 +341,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/equipment/tests/test_equipment.gd`: purpose: Tests the pure EquipmentOptions rules (owned items only, rarer first, per hero and slot)
 - `features/equipment/tests/test_equipment_layout.gd`: purpose: Tests EquipmentMenu layout rects, header label widths, and connector lines
 - `features/equipment/tests/test_equipment_menu.gd`: purpose: Tests EquipmentMenu layout, 3D hologram stage, slot boxes, equipping, preview and focus
+- `features/equipment/tests/test_equipment_new_slots.gd`: purpose: The gear-slots menu tests: Bilqis's frame and barrel boxes, the accessory box and its sockets, and equipping through the new slots
 - `features/equipment/tests/test_equipment_polish.gd`: purpose: Tests equipment polish features: hologram override, slot box name/dim ring, stats header, hero header Lv 1
-- `features/equipment/view/equipment_boxes.gd`: purpose: Manages the 5 equipment slot boxes, their positions, visibility per hero and focus navigation
+- `features/equipment/view/equipment_boxes.gd`: purpose: Manages the 8 equipment slot boxes, their positions, visibility per hero and focus navigation
 - `features/equipment/view/equipment_data.gd`: purpose: What the equipment screen needs from ContentDB, read once
 - `features/equipment/view/equipment_desc_bar.gd`: purpose: Description bar (1760x90 at 80,900) showing item name, rarity, description and combat effect
 - `features/equipment/view/equipment_detail.gd`: The right-hand side of the equipment screen: the focused item (name in its rarity colour, tag, text, perk and the tech moves it teaches) above the stat comparison (base, with the staged kit, an up / down arrow)
@@ -352,6 +358,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/equipment/view/hologram_stage.gd`: purpose: 800x760 SubViewportContainer with 3D hologram hero, camera, disc and leader lines
 - `features/equipment/view/slot_box.gd`: purpose: 150x150 equipment slot box showing slot label, item icon or gemstone sockets
 - `features/equipment/view/slot_socket_draw.gd`: purpose: Draws socket border and stone icon for gemstone slots in equipment boxes
+- `features/items/defs/accessory_def.gd`: A ring any hero can wear (content/items/accessories.json)
 - `features/items/defs/armor_def.gd`: Armor worn in slot "<hero>.armor": raises HP, DEF, alters AGI and WT (content/items/armor.json)
 - `features/items/defs/chest_def.gd`: A chest holding an equippable (an id of a hilt, blade or prosthetic), riyal and/or consumables; at least one
 - `features/items/defs/consumable_def.gd`: A stackable item used from the bag, in the field or in battle (feathered herbs, the qishr cup)
@@ -360,18 +367,21 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/items/defs/equip_def.gd`: Shared base of everything a hero can wear or wield (hilt, blade, prosthetic): names, a rarity tier and an optional perk (Rare and above only; rules in docs/design/prosthetics.md)
 - `features/items/defs/material_def.gd`: purpose: Defines a crafting or upgrade material with rarity and display information
 - `features/items/defs/perk_def.gd`: One perk an item can carry: a kind that battle logic implements and an amount
+- `features/items/defs/pistol_def.gd`: One part of Bilqis's rivet pistol (content/items/pistols.json): a frame (the grip: agility, cast speed, weight and an optional granted move, like a hilt) or a barrel (attack, knockback, weight, like a blade)
 - `features/items/defs/rarity_def.gd`: One rarity tier: its name, display colour, sort order, whether it is story-only (never loot) and whether gear of this tier may carry a perk
 - `features/items/defs/shop_def.gd`: A stall: who keeps it, her greeting and the consumable ids on sale (price and sell come from the ConsumableDef)
 - `features/items/item_service.gd`: Uses a consumable on the party outside battle against GameState: FieldUse does the rules on copies, this writes the bag and the carried vitals back only when the use worked
+- `features/items/logic/accessory.gd`: Pure rules for ring gem sockets: which stones fit a ring
 - `features/items/logic/bag.gd`: The party's stackable consumables: counts per id plus RESERVATIONS made by pending battle casts
 - `features/items/logic/chests.gd`: Chest rules: opening gives the item once, and the opened state is a saved flag
 - `features/items/logic/field_use.gd`: Using a consumable outside battle, pure: the item must be usable in the field, aimed at living allies, and must change something (a full hero is refused)
 - `features/items/logic/gear.gd`: Builds a hero's fighter from base stats, class level growth, armor, weapons, prosthetic, socketed gemstones, item upgrades, and perks
-- `features/items/logic/gear_state.gd`: Holds all worn gear, progression level, socketed stones, upgrades, and perks for building a hero fighter
+- `features/items/logic/gear_state.gd`: Holds all worn gear (weapons, armor, prosthetic, accessory ring), progression level, socketed stones (the hilt's and the ring's), upgrades, and perks for building a hero fighter
 - `features/items/logic/holdings.gd`: What rewards are paid into: riyal, the consumable Bag, the unique-item inventory and the flags
 - `features/items/logic/inventory.gd`: Which unique items the party owns and whether a hero may wear one in a slot
 - `features/items/logic/item_effect.gd`: What a consumable does to one hero: gains() computes the real change from current numbers (never past the maximum, a herb never helps a downed hero, a white herb only a downed one); apply() writes it into carried vitals
 - `features/items/logic/perks.gd`: Applies perks to a fighter
+- `features/items/logic/pistol.gd`: The hero who carries the rivet pistol: the frame and barrel slots exist for this combatant only (the mirror of Jambiyah.WIELDER for the jambiyah pair)
 - `features/items/logic/reward_result.gd`: What a reward really changed: riyal added (after the cap), the equippables that were new, the consumables that fit in the bag, and riyal that came from herbs which did not fit (sold at their sell price)
 - `features/items/logic/rewards.gd`: Rewards for a won battle or an opened chest, paid straight into a Holdings
 - `features/items/logic/shop.gd`: The herb stall's rules, pure: buy (refused when the stock lacks it, the purse is short or the stack is full) and sell (bag consumables only, never reserved ones; gear is not a consumable so it can never be sold)
@@ -381,15 +391,17 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/items/shop_service.gd`: Runs the stall against GameState: Shop does the rules on a Holdings copy, this takes the copy back and announces it
 - `features/items/tests/fixtures/bad_items/hilts.json`: content: hilt x3
 - `features/items/tests/fixtures/bad_items/rarities.json`: content: rarity x2
+- `features/items/tests/test_accessories.gd`: Rings (accessories): socket counts follow rarity (Common 1 
 - `features/items/tests/test_bag.gd`: Bag: stack caps with overflow, removal, and reservations (two heroes cannot both claim the last herb; release gives the claim back; consume uses it up)
 - `features/items/tests/test_inventory.gd`: Inventory (unique owned items, equip checks per slot), chests (open once, saved flag) and the item_obtained signal on the EventBus
 - `features/items/tests/test_items.gd`: Rarity tiers and the shipped items: six tiers with the owner's colours, every equippable has a real rarity, ids are unique across hilts / blades / prosthetics, the Heirloom is story-only and never loot, and bad content (an unknown rarity, a bad colour) is reported
+- `features/items/tests/test_pistols.gd`: Bilqis's rivet pistol: the frame merges like a hilt, the barrel like a blade; both fit only their wielder; the start loadout wears the Common pair; upgrades add per level; the ring every hero wears starts empty
 - `features/items/tests/test_rewards.gd`: Rewards: the first win pays everything and sets patrol_paid_<id>, a repeat win pays half the riyal and nothing else, herbs over the stack turn into riyal, the purse has a cap, a chest pays once
 - `features/items/tests/test_shop.gd`: The herb stall: buy and sell rules and their edge cases (economy.md section 9), the ShopService purse signal, and using consumables in the field (FieldUse, ItemService)
 - `features/jambiyah/defs/blade_def.gd`: A jambiyah blade: adds to attack, adds knockback to every hit the wielder lands, adds weight
 - `features/jambiyah/defs/heirloom_def.gd`: Maps heirloom restoration rank to open stone slots and story flags (content/jambiyah/heirloom.json)
 - `features/jambiyah/defs/hilt_def.gd`: A jambiyah hilt: adds to agility, multiplies cast speed, adds weight, and grants exactly one move
-- `features/jambiyah/defs/loadout_def.gd`: A hero's starting gear: which hilt, blade and prosthetic they own and wear at the start (each optional)
+- `features/jambiyah/defs/loadout_def.gd`: A hero's starting gear: which weapon parts, prosthetic and accessory they own and wear at the start (each optional)
 - `features/jambiyah/defs/stone_def.gd`: A gemstone socketed into a jambiyah hilt (content/jambiyah/stones.json)
 - `features/jambiyah/logic/jambiyah.gd`: Builds Zayd's fighter from a base CombatantDef plus one hilt and one blade (docs/design/combat.md)
 - `features/jambiyah/logic/loadout.gd`: Which gear a hero wears: the saved choice per slot ("<hero>.<part>" in GameState.equipment), else the starting gear
@@ -469,6 +481,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/logic/pause_logic.gd`: Pure rules of the pause menu: which entries show and in what order, which ask "are you sure", the vitals of a hero with a missing record (= full), and the play-time clock text
 - `features/ui/logic/prompt_glyph.gd`: Pure: the localization key of the button glyph for an action on keyboard or gamepad ("accept" -> Enter / A), and the fade of a world-space interaction prompt with distance
 - `features/ui/logic/toast_queue.gd`: Pure: toasts wait in order and are shown one at a time
+- `features/ui/tests/layout_settle.gd`: purpose: Test helper: lays out Containers now (top-down), since tests measure before the deferred sort runs
 - `features/ui/tests/node_walk.gd`: Test helper (not a test): every descendant of a node, depth first
 - `features/ui/tests/test_items_shop.gd`: The Items and Shop screens on the Screens stack, and the riyal banner of the loot popup
 - `features/ui/tests/test_menu_polish.gd`: Menu polish tests: portrait faces, pause hero progression, icon disc fallback, label font sizes, glass panel colour

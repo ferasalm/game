@@ -74,19 +74,7 @@ func test_pause_party_portraits_fill_frame_and_bars_aligned_in_column() -> void:
 	check(rows.size() >= 2, "at least 2 hero rows in pause party")
 	for row: PauseHeroRow in rows:
 		LayoutSettle.run(row.get_tree().root)
-		var face: TextureRect = row.face_rect()
-		check(face != null, "face exists")
-		check(face.texture != null, "face texture assigned")
-		var frame: PanelContainer = row.face_box()
-		check(frame != null, "face frame exists")
-		var inner: Rect2 = _inner_rect(frame)
-		var rect: Rect2 = face.get_global_rect()
-		check_approx(rect.position.x, inner.position.x, 2.0, "face left fills the frame")
-		check_approx(rect.position.y, inner.position.y, 2.0, "face top fills the frame")
-		check_approx(rect.size.x, inner.size.x, 2.0, "face width fills the frame")
-		check_approx(rect.size.y, inner.size.y, 2.0, "face height fills the frame")
-		var drawn: Vector2 = _drawn_size(face.texture, inner.size)
-		check(drawn.x >= inner.size.x - 2.0 and drawn.y >= inner.size.y - 2.0, "the face texture covers its frame (no empty band)")
+		_check_face_fills_frame(row)
 	rows[0].update(37, 5)
 	rows[1].update(210, 29)
 	LayoutSettle.run(rows[0].get_tree().root)
@@ -107,6 +95,22 @@ func test_pause_party_portraits_fill_frame_and_bars_aligned_in_column() -> void:
 	Screens.clear()
 	tree.paused = false
 	Router.state = Router.STATE_TITLE
+
+
+func _check_face_fills_frame(row: PauseHeroRow) -> void:
+	var face: TextureRect = row.face_rect()
+	check(face != null, "face exists")
+	check(face.texture != null, "face texture assigned")
+	var frame: PanelContainer = row.face_box()
+	check(frame != null, "face frame exists")
+	var inner: Rect2 = _inner_rect(frame)
+	var rect: Rect2 = face.get_global_rect()
+	check_approx(rect.position.x, inner.position.x, 2.0, "face left fills the frame")
+	check_approx(rect.position.y, inner.position.y, 2.0, "face top fills the frame")
+	check_approx(rect.size.x, inner.size.x, 2.0, "face width fills the frame")
+	check_approx(rect.size.y, inner.size.y, 2.0, "face height fills the frame")
+	var drawn: Vector2 = _drawn_size(face.texture, inner.size)
+	check(drawn.x >= inner.size.x - 2.0 and drawn.y >= inner.size.y - 2.0, "the face texture covers its frame (no empty band)")
 
 
 func _inner_rect(frame: Control) -> Rect2:
