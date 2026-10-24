@@ -47,4 +47,6 @@ func _sorted_ids(prefix: String, words: Array[String]) -> Array[String]:
 		owned.append(armor.id)
 	var order: Dictionary[StringName, int] = {&"common": 0}
 	var sorted: Array[EquipDef] = EquipmentOptions.options(owned, items, &"zayd", &"armor", order)
-	return sorted.map(func(item: EquipDef) -> String: return String(item.id).trim_prefix("zz_%s_" % prefix))
+	var out: Array[String] = []
+	out.assign(sorted.map(func(item: EquipDef) -> String: return String(item.id).trim_prefix("zz_%s_" % prefix)))
+	return out

@@ -175,7 +175,6 @@ func face_rect() -> TextureRect:
 func face_box() -> PanelContainer:
 	return _face_box
 
-
 func _stat_bar(parent: Control, tag_key: String, kind: StringName, maximum: int, is_hp: bool) -> ProgressBar:
 	var line := HBoxContainer.new()
 	var tag: Label = Ui.label(Ui.text(tag_key), &"CaptionLabel")

@@ -65,12 +65,8 @@ func test_equipment_opens_the_menu() -> void:
 	tree.paused = false
 
 
-func test_pause_party_portraits_fill_frame_and_bars_aligned_in_column() -> void:
-	Router.state = Router.STATE_EXPLORING
-	Screens.open(&"pause")
-	var menu: PauseMenu = Screens.top() as PauseMenu
-	check(menu != null, "pause opens")
-	var rows: Array[PauseHeroRow] = menu.party().rows()
+func test_pause_party_portraits_fill_frame() -> void:
+	var rows: Array[PauseHeroRow] = _open_pause()
 	check(rows.size() >= 2, "at least 2 hero rows in pause party")
 	for row: PauseHeroRow in rows:
 		LayoutSettle.run(row.get_tree().root)
@@ -87,6 +83,11 @@ func test_pause_party_portraits_fill_frame_and_bars_aligned_in_column() -> void:
 		check_approx(rect.size.y, inner.size.y, 2.0, "face height fills the frame")
 		var drawn: Vector2 = _drawn_size(face.texture, inner.size)
 		check(drawn.x >= inner.size.x - 2.0 and drawn.y >= inner.size.y - 2.0, "the face texture covers its frame (no empty band)")
+	_close_pause()
+
+
+func test_pause_party_bars_aligned_in_column() -> void:
+	var rows: Array[PauseHeroRow] = _open_pause()
 	rows[0].update(37, 5)
 	rows[1].update(210, 29)
 	LayoutSettle.run(rows[0].get_tree().root)
@@ -104,6 +105,18 @@ func test_pause_party_portraits_fill_frame_and_bars_aligned_in_column() -> void:
 	var spr1: Rect2 = sp1.get_global_rect()
 	check_approx(spr0.position.x, spr1.position.x, 2.0, "both cards SP bars aligned on same X column")
 	check_approx(spr0.size.x, spr1.size.x, 2.0, "both cards SP bars have same real width")
+	_close_pause()
+
+
+func _open_pause() -> Array[PauseHeroRow]:
+	Router.state = Router.STATE_EXPLORING
+	Screens.open(&"pause")
+	var menu: PauseMenu = Screens.top() as PauseMenu
+	check(menu != null, "pause opens")
+	return menu.party().rows()
+
+
+func _close_pause() -> void:
 	Screens.clear()
 	tree.paused = false
 	Router.state = Router.STATE_TITLE

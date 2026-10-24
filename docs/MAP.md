@@ -167,6 +167,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/art/view/garment_mesh.gd`: Stand-in clothing built in code from a ModelPartDef (until Feras's own models): a lathe (a skirt, a coat, a head wrap) turned from a radius profile, and `prim`, which adds a coloured primitive to a SurfaceTool so a whole prop (the jambiyah) is one mesh with vertex colours (the skin shader multiplies COLOR into the albedo)
 - `features/art/view/hilt_mesh.gd`: The stand-in for Zayd's grandfather's jambiyah (Heirloom `grandfather_hilt`), built in code from the part's colours until Feras's picture becomes a model: a curved horn grip with two silver bands, a T pommel with a carnelian stone, a curved blade, and a curved leather sheath with silver throat and tip
 - `features/art/view/hilt_parts.gd`: The grandfather's jambiyah as nodes (the part's Rodin grip and sheath scenes, else HiltMesh's stand-in; the blade is always HiltMesh's): a sheath and the hilt with its blade sit at the belt (`root`); draw() carries the hilt to the hand bone for a strike (the blade shows, the sheath stays), sheathe() puts it back
+- `features/art/view/model_anchors.gd`: purpose: Body points (feet, head, chest, belt, hip, arm, hand) from a model's height, width and rig
 - `features/art/view/model_clips.gd`: Drives a MANUAL AnimationPlayer
 - `features/art/view/model_materials.gd`: The materials of live 3D characters: every surface (body, eyes, brows, hair, garments, the hilt) is a ShaderMaterial of character_skin.gdshader, so the painted light of the look reaches all of them through `materials()` (PaintedLook feeds the shared light uniforms), and one `set_all` call drives the flash, desat and glow of the whole character
 - `features/art/view/model_move.gd`: What a model's body does on the ground: the ground speed it is really moving at (measured from its own position, so animation and feet agree whoever moves it), the yaw it eases toward at the model's turn speed, and the lean into an acceleration
@@ -346,7 +347,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/equipment/view/equipment_menu.gd`: purpose: Equipment menu with 3D hologram hero, slot boxes, owned list, stats comparison and tabs
 - `features/equipment/view/equipment_owned_list.gd`: purpose: Owned items panel (420x620 at 80,260) populated with ListRows and worn "E" chips
 - `features/equipment/view/equipment_stats_panel.gd`: purpose: Stats preview panel (440x560) showing now vs after comparison and derived battle rolls
-- `features/equipment/view/equipment_tabs_bar.gd`: purpose: Top bar (1760x64 at 80,40) with title pair and menu tabs (Equipment, Items, Map)
+- `features/equipment/view/equipment_tabs_bar.gd`: purpose: Shared top bar (1760x64 at 80,40) with the screen title and the Equipment / Items / Map tabs
 - `features/equipment/view/grid_disc.gdshader`
 - `features/equipment/view/hologram.gdshader`
 - `features/equipment/view/hologram_stage.gd`: purpose: 800x760 SubViewportContainer with 3D hologram hero, camera, disc and leader lines
@@ -469,10 +470,13 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/logic/pause_logic.gd`: Pure rules of the pause menu: which entries show and in what order, which ask "are you sure", the vitals of a hero with a missing record (= full), and the play-time clock text
 - `features/ui/logic/prompt_glyph.gd`: Pure: the localization key of the button glyph for an action on keyboard or gamepad ("accept" -> Enter / A), and the fade of a world-space interaction prompt with distance
 - `features/ui/logic/toast_queue.gd`: Pure: toasts wait in order and are shown one at a time
+- `features/ui/tests/layout_settle.gd`: purpose: Test helper: lays out Containers now (top-down), since tests measure before the deferred sort runs
 - `features/ui/tests/node_walk.gd`: Test helper (not a test): every descendant of a node, depth first
+- `features/ui/tests/test_items_menu.gd`: The Items screen: Equipment-style layout, party-card previews clamped by missing HP, and the use flow
 - `features/ui/tests/test_items_shop.gd`: The Items and Shop screens on the Screens stack, and the riyal banner of the loot popup
 - `features/ui/tests/test_menu_polish.gd`: Menu polish tests: portrait faces, pause hero progression, icon disc fallback, label font sizes, glass panel colour
 - `features/ui/tests/test_menu_skins.gd`: Menu skins test: backdrops, fallback, child 0, party rows, thumbnails, shop money-after, rects
+- `features/ui/tests/test_menu_tabs.gd`: The shared Equipment / Items / Map tabs bar: every screen reaches every other tab by confirm and LB/RB or Q/E
 - `features/ui/tests/test_musnad.gd`: The written language of Sana'a in 2150 is Musnad only: no Arabic script in any CSV, JSON or script; every *_MUSNAD and WORLD_SIGN_* text holds only Musnad letters, spaces and arrows; the Musnad font draws it
 - `features/ui/tests/test_pause_menu.gd`: purpose: The pause menu rules (PauseLogic) and the screen built from them
 - `features/ui/tests/test_popups.gd`: The loot popup (queues item_obtained in order, skippable), the area title card, the title overlay (any key dismisses it once) and the opening shot held on the moon until then
@@ -497,7 +501,11 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/screens/choice_screen.gd`: Base of the small centred "pick one" screens (Sabil, Defeat): a framed panel with the Musnad + English title pair and a column of buttons in focus order
 - `features/ui/view/screens/confirm_dialog.gd`: A centred Yes/No question over the scrim
 - `features/ui/view/screens/defeat_screen.gd`: The defeat screen (Screens id &"defeat"): the arena darkens over t_defeat_fade, then DEFEATED offers Retry fight (default), Load last save (greyed with no save) and Title (asks first)
-- `features/ui/view/screens/items_screen.gd`: The Items screen (Screens id &"items", opened from the pause menu): the bag on the left, the chosen item's description and effect on the right, and under it the hero picker
+- `features/ui/view/screens/items_desc_bar.gd`: purpose: Bottom description box (1760x90 at 80,900) of the Items screen: name, owned count, text and effect
+- `features/ui/view/screens/items_hero_card.gd`: purpose: A hero card you can pick as an item target: the PartyCard look plus the item's gain preview
+- `features/ui/view/screens/items_list_panel.gd`: purpose: The left bag list of the Items screen: one ListRow per field-usable consumable, with count and effect
+- `features/ui/view/screens/items_party_panel.gd`: purpose: Right side of the Items screen: one selectable PartyCard per hero, each previewing the item
+- `features/ui/view/screens/items_screen.gd`: The Items screen (Screens id &"items"): the bag on the left, a PartyCard per hero on the right with the selected item's real gain previewed on each, and the item's description at the bottom
 - `features/ui/view/screens/items_text.gd`: Item screen wording: the effect line ("HP +120") and a hero's "HP 200 -> 320" preview
 - `features/ui/view/screens/pause_hero_row.gd`: purpose: One hero row in the pause party panel: face 160x160, name, class, HP/SP bars, KO state
 - `features/ui/view/screens/pause_menu.gd`: Pause menu screen: command panel (80,80), info box (80,880), party panel (540,80), prompt strip (0,1020)

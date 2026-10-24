@@ -7,6 +7,7 @@ const ID: StringName = &"map"
 var canvas: HoloMapCanvas
 var legend: HoloMapLegend
 var city_preview: HoloMapCityPreview
+var tabs: EquipmentTabsBar
 var player_pos_override: Variant = null
 
 var _root: Control
@@ -20,6 +21,7 @@ func _init() -> void:
 	prompts = [
 		{"key": "y", "text": "MAP_PROMPT_CITY_AREA"},
 		{"key": "back", "text": "MAP_PROMPT_BACK"},
+		{"key": "tab", "text": "EQUIP_PROMPT_TAB"},
 	]
 
 
@@ -40,23 +42,9 @@ func _load_area() -> void:
 
 
 func _build_header() -> void:
-	var bar := HBoxContainer.new()
-	bar.position = Vector2(80.0, 40.0)
-	bar.custom_minimum_size = Vector2(1760.0, 64.0)
-	bar.size = Vector2(1760.0, 64.0)
-	bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_root.add_child(bar)
-
-	var title_plate := Ui.title_plate(Ui.text("MAP_TITLE"), "𐩱𐩡𐩭𐩧𐩺𐩷𐩠")
-	title_plate.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	bar.add_child(title_plate)
-
-	var right_box := VBoxContainer.new()
-	right_box.alignment = BoxContainer.ALIGNMENT_CENTER
 	var area_name: String = Ui.text(_area_def.name_key) if _area_def != null else "Souq al-Milh"
-	right_box.add_child(Ui.label(area_name, &"NameLabel", Ui.style().colour(&"c_brass")))
-	right_box.add_child(Ui.label("SANA'A SECTOR 01", &"SmallLabel", Ui.style().colour(&"c_cyan")))
-	bar.add_child(right_box)
+	tabs = EquipmentTabsBar.new().setup(EquipmentTabsBar.Tab.MAP, area_name, Ui.text("MAP_SECTOR_01"))
+	_root.add_child(tabs)
 
 
 func _build_panels() -> void:
@@ -92,6 +80,9 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if tabs != null and tabs.handle_input(event):
+		get_viewport().set_input_as_handled()
+		return
 	var y_pressed: bool = (event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_Y) or (event is InputEventJoypadButton and event.pressed and event.button_index == JOY_BUTTON_Y)
 	if not y_pressed and InputMap.has_action(&"action_y") and event.is_action_pressed(&"action_y"):
 		y_pressed = true
