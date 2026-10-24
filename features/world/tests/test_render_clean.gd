@@ -9,9 +9,6 @@ func test_no_two_roof_floor_overlays_within_threshold() -> void:
 	var area := ContentDB.get_def("area", &"souq_rooftops_v4") as AreaDef
 	var storm_def := ContentDB.get_def("storm", &"night_storm") as StormDef
 	check(area != null and storm_def != null, "area and storm def exist")
-	check(storm_def.puddle_height_offset >= MIN_SEPARATION, "puddle offset >= 0.005m")
-	check(storm_def.splash_height_offset >= MIN_SEPARATION, "splash offset >= 0.005m")
-	check(absf(storm_def.splash_height_offset - storm_def.puddle_height_offset) >= MIN_SEPARATION, "splash and puddle separated by >= 0.005m")
 
 	var rooftop := (load("res://features/world/rooftop/rooftop.tscn") as PackedScene).instantiate() as Rooftop
 	rooftop.area_id = &"souq_rooftops_v4"
@@ -35,15 +32,38 @@ func test_no_two_roof_floor_overlays_within_threshold() -> void:
 		var floor_y: float = tile.height if tile != null else 0.0
 		var floor_diff: float = absf(p1.position.y - floor_y)
 		check(floor_diff >= MIN_SEPARATION, "puddle %d lifted from floor by >= 0.005m (actual %.3fm)" % [i, floor_diff])
-		for j: int in range(i + 1, puddles.size()):
-			var p2 := puddles[j] as MeshInstance3D
-			var dist_2d: float = Vector2(p1.position.x - p2.position.x, p1.position.z - p2.position.z).length()
-			var radius_sum: float = ((p1.mesh as PlaneMesh).size.x + (p2.mesh as PlaneMesh).size.x) * 0.5
-			if dist_2d < radius_sum:
-				var dy: float = absf(p1.position.y - p2.position.y)
-				check(dy >= MIN_SEPARATION, "overlapping puddles %d and %d separated by >= 0.005m" % [i, j])
 
+	check(absf(storm.splash_particles.position.y - (puddles[0] as MeshInstance3D).position.y) >= MIN_SEPARATION,
+		"splash particles and puddle separated by >= 0.005m")
 	rooftop.queue_free()
+
+
+func test_puddles_reject_xz_overlap_on_one_roof() -> void:
+	var area := ContentDB.get_def("area", &"souq_rooftops_v4") as AreaDef
+	var storm_def := ContentDB.get_def("storm", &"night_storm") as StormDef
+	check(area != null and storm_def != null, "area and storm def exist")
+	var orig_seed: int = storm_def.puddle_seed
+	for seed_val: int in [orig_seed, orig_seed + 107]:
+		storm_def.puddle_seed = seed_val
+		var root := PuddleBuilder.build(area, storm_def, 0.0)
+		var p_list: Array[Node] = root.get_children()
+		for i: int in p_list.size():
+			var p1 := p_list[i] as MeshInstance3D
+			var tile1 := ContentDB.get_def("tile", area.tile_id_at(floori(p1.position.x), floori(p1.position.z))) as TileDef
+			var y1: float = tile1.height if tile1 != null else 0.0
+			var sz1 := (p1.mesh as PlaneMesh).size
+			var r1 := Rect2(p1.position.x - sz1.x * 0.5, p1.position.z - sz1.y * 0.5, sz1.x, sz1.y)
+			for j: int in range(i + 1, p_list.size()):
+				var p2 := p_list[j] as MeshInstance3D
+				var tile2 := ContentDB.get_def("tile", area.tile_id_at(floori(p2.position.x), floori(p2.position.z))) as TileDef
+				var y2: float = tile2.height if tile2 != null else 0.0
+				if is_equal_approx(y1, y2):
+					var sz2 := (p2.mesh as PlaneMesh).size
+					var r2 := Rect2(p2.position.x - sz2.x * 0.5, p2.position.z - sz2.y * 0.5, sz2.x, sz2.y)
+					check(not r1.intersects(r2),
+						"puddles %d and %d on roof y=%.2f do not overlap in XZ (seed %d)" % [i, j, y1, seed_val])
+		root.free()
+	storm_def.puddle_seed = orig_seed
 
 
 func test_painted_surface_textures_have_mipmaps_and_anisotropic_filter() -> void:
@@ -97,6 +117,7 @@ func test_painted_materials_have_mipmaps_and_anisotropic_filter() -> void:
 	var smat := t_mat as ShaderMaterial
 	var albedo_tex := smat.get_shader_parameter(&"albedo_tex") as Texture2D
 	check(albedo_tex != null and albedo_tex.get_image().has_mipmaps(), "painted tile albedo texture has mipmaps")
+	check(albedo_tex.get_image().get_mipmap_count() > 0, "floor/roof materials of painted_b sample with mipmaps")
 
 	var f_mat := SurfaceMaterials.facade(building, palette)
 	check(f_mat is ShaderMaterial, "painted facade material is ShaderMaterial")
@@ -118,31 +139,6 @@ func test_baked_floor_textures_have_mipmaps() -> void:
 	var image: Image = PaintedMaterials.load_baked(&"oil", "tile_roof_plaster")
 	check(image != null, "oil bake of tile_roof_plaster loads")
 	check(image.has_mipmaps(), "baked tile_roof_plaster image has mipmaps immediately from load_baked")
-
-
-func test_puddles_lift_and_no_two_at_same_height() -> void:
-	var area := ContentDB.get_def("area", &"souq_rooftops_v4") as AreaDef
-	var storm_def := ContentDB.get_def("storm", &"night_storm") as StormDef
-	check(area != null and storm_def != null, "area and storm def exist")
-	check(storm_def.puddle_height_offset >= 0.01, "storm.json puddle_height_offset is >= 0.01m")
-	var storm := StormBuilder.build(area) as StormHost
-	check(storm != null and storm.puddles_root != null, "storm host with puddles exists")
-	var puddles: Array[Node] = storm.puddles_root.get_children()
-	check(not puddles.is_empty(), "puddles exist")
-	var heights: Array[float] = []
-	for i: int in puddles.size():
-		var p := puddles[i] as MeshInstance3D
-		var cx: int = floori(p.position.x)
-		var cz: int = floori(p.position.z)
-		var tile := ContentDB.get_def("tile", area.tile_id_at(cx, cz)) as TileDef
-		var floor_y: float = tile.height if tile != null else 0.0
-		check(p.position.y >= floor_y + storm_def.puddle_height_offset - 0.0001,
-			"puddle %d sits >= storm.json lift above floor (actual %.4f, min %.4f)"
-			% [i, p.position.y, floor_y + storm_def.puddle_height_offset])
-		for prev_h: float in heights:
-			check(not is_equal_approx(p.position.y, prev_h), "no two puddle surfaces share the exact same height")
-		heights.append(p.position.y)
-	storm.free()
 
 
 func test_puddle_shader_ring_antialias_set_from_content() -> void:

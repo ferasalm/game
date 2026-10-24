@@ -120,8 +120,8 @@ static func _build_splashes(def: StormDef) -> GPUParticles3D:
 	mat.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_BOX
 	mat.emission_box_extents = Vector3(def.splash_box.x * 0.5, 0.0, def.splash_box.y * 0.5)
 	mat.gravity = Vector3.ZERO
-	mat.scale_min = 0.3
-	mat.scale_max = 1.0
+	mat.scale_min = def.splash_scale_min
+	mat.scale_max = def.splash_scale_max
 	mat.alpha_curve = _splash_alpha_curve(def)
 	mat.scale_curve = _splash_scale_curve(def)
 	emitter.process_material = mat
@@ -140,7 +140,7 @@ static func _splash_alpha_curve(def: StormDef) -> CurveTexture:
 	var curve := Curve.new()
 	curve.add_point(Vector2(0.0, 0.0))
 	curve.add_point(Vector2(def.splash_fade_in, 1.0))
-	curve.add_point(Vector2(def.splash_fade_out, def.splash_fade_out))
+	curve.add_point(Vector2(def.splash_fade_out, def.splash_fade_out_alpha))
 	curve.add_point(Vector2(1.0, 0.0))
 	var tex := CurveTexture.new()
 	tex.curve = curve

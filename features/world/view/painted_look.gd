@@ -18,13 +18,8 @@ const AA: Dictionary = {
 	&"msaa2": [Viewport.SCREEN_SPACE_AA_DISABLED, Viewport.MSAA_2X],
 }
 
-static var override_look: StringName = &""
-
-
 ## The look to build: a "look=<id>" user argument (after "--") overrides the scene's own look id.
 static func pick(default_id: StringName) -> StringName:
-	if override_look != &"":
-		return override_look
 	return user_arg("look=", default_id)
 
 

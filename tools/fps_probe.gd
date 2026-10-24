@@ -21,8 +21,6 @@ func _initialize() -> void:
 			scene_path = arg
 		elif not arg.is_empty():
 			look_arg = StringName(arg)
-	if look_arg != &"":
-		(load("res://features/world/view/painted_look.gd") as GDScript).override_look = look_arg
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	var inst: Node
 	if scene_path.ends_with(".gd"):

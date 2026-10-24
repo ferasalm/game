@@ -112,6 +112,7 @@ static func far(palette: PaletteDef, texture_m: float) -> StandardMaterial3D:
 	var key: String = "far:%s" % texture_m
 	if not _cache.has(key):
 		var mat := _base(ImageTexture.create_from_image(SurfacePainter.paint(&"far_windows", palette.colors)[0]))
+		mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
 		mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 		mat.vertex_color_use_as_albedo = true
 		mat.vertex_color_is_srgb = true

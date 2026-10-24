@@ -107,7 +107,7 @@ static func material(color: Color, glow: float = 0.0) -> Material:
 		return PaintedMaterials.flat(color)
 	var mat := StandardMaterial3D.new()
 	mat.albedo_color = color
-	mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+	mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
 	if glow > 0.0:
 		mat.emission_enabled = true
 		mat.emission = color

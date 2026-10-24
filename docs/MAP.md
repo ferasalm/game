@@ -704,6 +704,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/weather/storm_preview.gd`: Preview scene for the storm layer on the rooftop: used for fps_probe profiling and inbox renders
 - `features/world/weather/storm_preview.tscn`: scene
 - `features/world/weather/tests/test_storm.gd`: Storm weather tests: StormDef validation, particle caps, puddle placement, emitters per point, lightning flag, and area weather hook
+- `features/world/weather/tests/test_storm_puddles.gd`: purpose: Tests for storm puddles: wall margins, repeatability, shader fade uniforms, and ALPHA blend
 - `features/world/weather/view/puddle_builder.gd`: Builds wet floor puddles with animated ripple shaders scattered across walkable floor tiles
 - `features/world/weather/view/shaders/puddle.gdshader`
 - `features/world/weather/view/shaders/rain.gdshader`
@@ -758,6 +759,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/check_slot.sh`: Test-run slots shared by every worktree on this machine: at most CHECK_SLOTS Godot test suites at once. Four at once
 - `tools/doc_check.py`: Keeps the always-loaded notes small and well-formed (docs/EFFICIENCY.md); exit 1 on any failure.
 - `tools/export_atlases.gd`: Exports the code-painted world atlases (PaintedAtlases) to PNG for the offline painterly bake
+- `tools/flicker_helper.py`: Helper for flicker_probe: computes heat map, masks rain, and saves flicker_walk.gif.
 - `tools/flicker_probe.gd`: purpose: Measures floor flicker across 60 frames of party walk in default look (painted_b)
 - `tools/flicker_probe.tscn`: scene
 - `tools/fps_probe.gd`: FPS probe: plays a scene with vsync off and prints the average and worst frames per second after a warm-up

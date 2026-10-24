@@ -52,3 +52,6 @@ func _save_image(path: String) -> void:
 		img.resize(960, 540, Image.INTERPOLATE_LANCZOS)
 	var err: Error = img.save_png(path)
 	print("Saved render: ", path, " err=", err)
+	var local_path := path.replace("C:/dev/game/inbox/", "inbox/")
+	if DirAccess.dir_exists_absolute("inbox") and local_path != path:
+		img.save_png(local_path)
