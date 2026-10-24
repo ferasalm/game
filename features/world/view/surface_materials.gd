@@ -10,6 +10,7 @@ const GLOW_BOOST: float = 1.6
 const BLINK_SHADER: Shader = preload("res://features/world/view/shaders/blink.gdshader")
 const WATER_SHADER: Shader = preload("res://features/world/view/shaders/prop_water.gdshader")
 static var _cache: Dictionary[String, Material] = {}
+static var _facade_cache: Dictionary[String, Array] = {}
 
 
 static func clear() -> void:
@@ -48,9 +49,14 @@ static func facade(def: BuildingDef, palette: PaletteDef) -> Material:
 
 ## A building's facade atlas images: [albedo, emission], front on the left, side on the right.
 static func facade_images(def: BuildingDef, palette: PaletteDef) -> Array[Image]:
-	var front: Array[Image] = FacadePainter.paint(def.facade_spec(false), palette.colors)
-	var side: Array[Image] = FacadePainter.paint(def.facade_spec(true), palette.colors)
-	return [_atlas(front[0], side[0]), _atlas(front[1], side[1])]
+	var key: String = String(def.id) + ":" + String(palette.id)
+	if not _facade_cache.has(key):
+		var front: Array[Image] = FacadePainter.paint(def.facade_spec(false), palette.colors)
+		var side: Array[Image] = FacadePainter.paint(def.facade_spec(true), palette.colors)
+		_facade_cache[key] = [_atlas(front[0], side[0]), _atlas(front[1], side[1])]
+	var cached: Array = _facade_cache[key]
+	var res: Array[Image] = [cached[0] as Image, cached[1] as Image]
+	return res
 
 
 ## Vertex-coloured gypsum, roofs and roof extras; lit by the scene.
@@ -106,6 +112,7 @@ static func far(palette: PaletteDef, texture_m: float) -> StandardMaterial3D:
 	var key: String = "far:%s" % texture_m
 	if not _cache.has(key):
 		var mat := _base(ImageTexture.create_from_image(SurfacePainter.paint(&"far_windows", palette.colors)[0]))
+		mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
 		mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 		mat.vertex_color_use_as_albedo = true
 		mat.vertex_color_is_srgb = true
@@ -130,7 +137,7 @@ static func _atlas(front: Image, side: Image) -> Image:
 static func _base(texture: Texture2D) -> StandardMaterial3D:
 	var mat := StandardMaterial3D.new()
 	mat.albedo_texture = texture
-	mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
+	mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
 	mat.roughness = 1.0
 	return mat
 

@@ -10,6 +10,11 @@ uniform vec4 neon_magenta : source_color = vec4(1.0, 0.11, 0.47, 1.0);
 uniform vec4 neon_cyan : source_color = vec4(0.0, 0.83, 1.0, 1.0);
 uniform float ripple_speed = 2.4;
 uniform float ripple_frequency = 14.0;
+uniform float ripple_fade_in : hint_range(0.01, 1.0) = 0.2;
+uniform float ripple_wave_speed : hint_range(0.1, 5.0) = 0.7;
+uniform float ripple_decay : hint_range(1.0, 50.0) = 16.0;
+uniform float ripple_normal_weight : hint_range(0.01, 1.0) = 0.22;
+uniform float ripple_antialias : hint_range(0.001, 1.0) = 0.025;
 
 void fragment() {
 	vec2 local = (UV - vec2(0.5)) * 2.0;
@@ -37,17 +42,33 @@ void fragment() {
 	float l1 = length(d1);
 	float l2 = length(d2);
 
+	float ring_fade = 0.0;
 	if (l0 > 0.01) {
-		float w0 = sin(abs(l0 - t0 * 0.7) * ripple_frequency) * exp(-abs(l0 - t0 * 0.7) * 16.0) * (1.0 - t0);
-		ripple_norm += (d0 / l0) * w0 * 0.22;
+		float fade0 = smoothstep(0.0, ripple_fade_in, t0) * (1.0 - t0);
+		float ring_dist0 = abs(l0 - t0 * ripple_wave_speed);
+		float fw0 = fwidth(ring_dist0);
+		float aa0 = 1.0 - smoothstep(0.0, ripple_antialias, fw0);
+		float w0 = sin(ring_dist0 * ripple_frequency) * exp(-ring_dist0 * ripple_decay) * aa0;
+		ripple_norm += (d0 / l0) * w0 * ripple_normal_weight;
+		ring_fade = max(ring_fade, fade0);
 	}
 	if (l1 > 0.01) {
-		float w1 = sin(abs(l1 - t1 * 0.7) * ripple_frequency) * exp(-abs(l1 - t1 * 0.7) * 16.0) * (1.0 - t1);
-		ripple_norm += (d1 / l1) * w1 * 0.22;
+		float fade1 = smoothstep(0.0, ripple_fade_in, t1) * (1.0 - t1);
+		float ring_dist1 = abs(l1 - t1 * ripple_wave_speed);
+		float fw1 = fwidth(ring_dist1);
+		float aa1 = 1.0 - smoothstep(0.0, ripple_antialias, fw1);
+		float w1 = sin(ring_dist1 * ripple_frequency) * exp(-ring_dist1 * ripple_decay) * aa1;
+		ripple_norm += (d1 / l1) * w1 * ripple_normal_weight;
+		ring_fade = max(ring_fade, fade1);
 	}
 	if (l2 > 0.01) {
-		float w2 = sin(abs(l2 - t2 * 0.7) * ripple_frequency) * exp(-abs(l2 - t2 * 0.7) * 16.0) * (1.0 - t2);
-		ripple_norm += (d2 / l2) * w2 * 0.22;
+		float fade2 = smoothstep(0.0, ripple_fade_in, t2) * (1.0 - t2);
+		float ring_dist2 = abs(l2 - t2 * ripple_wave_speed);
+		float fw2 = fwidth(ring_dist2);
+		float aa2 = 1.0 - smoothstep(0.0, ripple_antialias, fw2);
+		float w2 = sin(ring_dist2 * ripple_frequency) * exp(-ring_dist2 * ripple_decay) * aa2;
+		ripple_norm += (d2 / l2) * w2 * ripple_normal_weight;
+		ring_fade = max(ring_fade, fade2);
 	}
 
 	NORMAL = normalize(NORMAL + vec3(ripple_norm.x, 0.0, ripple_norm.y));
@@ -65,5 +86,5 @@ void fragment() {
 	ROUGHNESS = roughness;
 	METALLIC = 0.0;
 	SPECULAR = 0.85;
-	ALPHA = edge_alpha;
+	ALPHA = edge_alpha * ring_fade;
 }

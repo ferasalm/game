@@ -686,6 +686,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/tests/test_night.gd`: Night look: the sky def feeds every shader uniform, look "night" builds a sky environment with fog and a fill light while "v1" stays the flat daytime look, bad look keys are caught, the vista zone and mist layers load
 - `features/world/tests/test_painted.gd`: Painted diorama look spike: the three painted looks read and differ, their camera presets put the camera at the preset pitch, world materials switch to the painted shader only while a painted look is in use, the baked textures load (and fall back when missing), every bake matches the current painter inputs (re-bake when this fails), the grade LUT is the identity at amount 0, and a painted rooftop gets its outline, screen pass and figure
 - `features/world/tests/test_places.gd`: The typed places of the rooftop (docs/design/rooftop-v3.md section 3): valid ids and references, every standing point and patrol end reachable, the props they use stand next to them, and the patrol lanes keep away from the commons; PatrolSafety's lane maths and the unstuck and return picks; a keeper stands at his counter's end facing his customers (StallKeeper) and no NPC overlaps a prop's collision
+- `features/world/tests/test_render_clean.gd`: purpose: Tests for render-clean: roof-floor overlay z-spacing, texture mipmaps, and anisotropic filtering
 - `features/world/tests/test_rooftop.gd`: The rooftop scene builds headless; walking, the follower, the patrol touch, the ambush direction, the exploring switch, the patrol respawn and parapet collision
 - `features/world/tests/test_rooftop_actors.gd`: Rooftop actors: the workshop bench is a mesh, dialogue framing aims at the speaker's head, and Bilqis never sticks
 - `features/world/tests/test_rooftop_systems.gd`: Rooftop exploration systems: follower trailing, workshop prompt, camera restore and debug overlay
@@ -744,6 +745,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/weather/storm_preview.gd`: Preview scene for the storm layer on the rooftop: used for fps_probe profiling and inbox renders
 - `features/world/weather/storm_preview.tscn`: scene
 - `features/world/weather/tests/test_storm.gd`: Storm weather tests: StormDef validation, particle caps, puddle placement, emitters per point, lightning flag, and area weather hook
+- `features/world/weather/tests/test_storm_puddles.gd`: purpose: Tests for storm puddles: wall margins, repeatability, shader fade uniforms, and ALPHA blend
 - `features/world/weather/view/puddle_builder.gd`: Builds wet floor puddles with animated ripple shaders scattered across walkable floor tiles
 - `features/world/weather/view/shaders/puddle.gdshader`
 - `features/world/weather/view/shaders/rain.gdshader`
@@ -798,6 +800,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/check_slot.sh`: Test-run slots shared by every worktree on this machine: at most CHECK_SLOTS Godot test suites at once. Four at once
 - `tools/doc_check.py`: Keeps the always-loaded notes small and well-formed (docs/EFFICIENCY.md); exit 1 on any failure.
 - `tools/export_atlases.gd`: Exports the code-painted world atlases (PaintedAtlases) to PNG for the offline painterly bake
+- `tools/flicker_helper.py`: Helper for flicker_probe: computes heat map, masks rain, and saves flicker_walk.gif.
+- `tools/flicker_probe.gd`: purpose: Measures floor flicker across 60 frames of party walk in default look (painted_b)
+- `tools/flicker_probe.tscn`: scene
 - `tools/fps_probe.gd`: FPS probe: plays a scene with vsync off and prints the average and worst frames per second after a warm-up
 - `tools/gate_checklist.py`: Checklist parsing and verification for build_gate.
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.

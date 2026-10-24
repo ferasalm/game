@@ -7,6 +7,7 @@ var env: WorldEnvironment
 var blocks: Node3D
 var camera: Camera3D
 var camera_rig: FollowCameraRig
+var storm: StormHost = null
 
 
 static func build(host: Node3D, area: AreaDef, rules: ExploreRulesDef, look: LookDef, rig: CameraRigDef,
@@ -21,7 +22,9 @@ static func build(host: Node3D, area: AreaDef, rules: ExploreRulesDef, look: Loo
 	out.blocks = AreaBuilder.build(area, rules)
 	host.add_child(out.blocks)
 	host.add_child(MistBuilder.build_area(area))
-	if area.weather == "storm": host.add_child(StormBuilder.build(area))
+	if area.weather == "storm":
+		out.storm = StormBuilder.build(area) as StormHost
+		host.add_child(out.storm)
 	host.add_child(SkylineBuilder.build(area))
 	out.camera = Diorama.make_camera(look)
 	host.add_child(out.camera)

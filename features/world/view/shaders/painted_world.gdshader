@@ -8,7 +8,7 @@ render_mode diffuse_lambert, specular_disabled;
 #include "res://features/world/view/shaders/occlusion_dither.gdshaderinc"
 
 uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
-uniform sampler2D emission_tex : source_color, filter_linear_mipmap, repeat_enable;
+uniform sampler2D emission_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform bool use_texture = true;
 uniform bool use_triplanar = false;
 uniform bool use_vertex_color = false;
