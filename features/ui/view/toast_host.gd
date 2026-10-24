@@ -20,8 +20,8 @@ func _ready() -> void:
 	add_child(_root)
 
 
-func show_toast(text_key: String, kind: StringName = &"info") -> void:
-	_queue.push(text_key, kind)
+func show_toast(text_key: String, kind: StringName = &"info", args: Array = []) -> void:
+	_queue.push(text_key, kind, args)
 	if _current == null:
 		_next()
 
@@ -59,6 +59,8 @@ func _next() -> void:
 	_current.offset_top = style.size(&"s_toast_top")
 	_current.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_current_text = Ui.text(item["text"])
+	if item.has("args") and not (item["args"] as Array).is_empty():
+		_current_text = _current_text % item["args"]
 	var line: Label = Ui.label(_current_text, &"NameLabel", tone)
 	line.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_current.add_child(line)

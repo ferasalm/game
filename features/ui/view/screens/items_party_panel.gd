@@ -8,6 +8,8 @@ var _grid: GridContainer
 var _hint: Label
 var _cards: Dictionary[StringName, ItemsHeroCard] = {}
 var _picking: bool = false
+var _has_preview: bool = false
+var _party_item: bool = false
 
 
 func _init() -> void:
@@ -41,22 +43,32 @@ func setup_party(party: Array[StringName]) -> ItemsPartyPanel:
 	return self
 
 
-## Shows the selected item's gain on every card (the rules come from FieldUse).
+## Shows the selected item's gain on every card (the rules come from FieldUse). A whole-party item stays
+## usable on a full hero while any other hero can still gain, because one confirm heals the party.
 func show_preview(def: ConsumableDef, vitals: Dictionary, maxes: Dictionary) -> void:
+	_has_preview = true
+	_party_item = def.target == &"all_allies"
+	var party_usable: bool = FieldUse.can_use(def, vitals, _heroes(), maxes)
 	for hero: StringName in _cards:
 		var card: ItemsHeroCard = _cards[hero]
 		var gain: Dictionary = FieldUse.preview(def, vitals, hero, maxes)
-		var usable: bool = FieldUse.can_target(def, vitals, hero, maxes)
+		var usable: bool = party_usable if _party_item else FieldUse.can_target(def, vitals, hero, maxes)
 		var text: String = ItemsText.gain(gain)
 		var cures: String = ItemsText.cures(def)
-		if not cures.is_empty():
-			text = cures if text.is_empty() else "%s  %s" % [text, cures]
+		if not ItemEffect.changes(gain):
+			text = Ui.text("ITEMS_FULL")
+		elif not cures.is_empty():
+			text = "%s  %s" % [text, cures]
 		card.show_preview(int(gain["hp"]), int(gain["sp"]), text, usable)
+	_refresh_hint()
 
 
 func clear_preview() -> void:
+	_has_preview = false
+	_party_item = false
 	for card: ItemsHeroCard in _cards.values():
 		card.clear_preview()
+	_refresh_hint()
 
 
 ## Re-reads the party's HP/SP after an item changed them.
@@ -71,10 +83,32 @@ func refresh_vitals() -> void:
 ## Cards only take focus and clicks while an item is being aimed.
 func set_picking(on: bool) -> void:
 	_picking = on
-	_hint.text = Ui.text("ITEMS_TARGET_HINT" if on else "ITEMS_SELECT_HINT")
+	_refresh_hint()
 	for card: ItemsHeroCard in _cards.values():
 		card.disabled = not on or not card.preview_usable()
 		card.focus_mode = Control.FOCUS_NONE if card.disabled else Control.FOCUS_ALL
+
+
+func hint_visible() -> bool:
+	return _hint.visible
+
+
+func hint_text() -> String:
+	return _hint.text
+
+
+func _refresh_hint() -> void:
+	_hint.visible = _picking or not _has_preview
+	if _picking:
+		_hint.text = Ui.text("ITEMS_USE_PARTY" if _party_item else "ITEMS_TARGET_HINT")
+	else:
+		_hint.text = Ui.text("ITEMS_SELECT_HINT")
+
+
+func _heroes() -> Array[StringName]:
+	var out: Array[StringName] = []
+	out.assign(_cards.keys())
+	return out
 
 
 func focus_first_usable() -> bool:

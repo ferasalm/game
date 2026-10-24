@@ -42,7 +42,7 @@ func _load_area() -> void:
 
 
 func _build_header() -> void:
-	var area_name: String = Ui.text(_area_def.name_key) if _area_def != null else "Souq al-Milh"
+	var area_name: String = Ui.text(_area_def.name_key) if _area_def != null else Ui.text("AREA_SOUQ_NAME")
 	tabs = EquipmentTabsBar.new().setup(EquipmentTabsBar.Tab.MAP, area_name, Ui.text("MAP_SECTOR_01"))
 	_root.add_child(tabs)
 

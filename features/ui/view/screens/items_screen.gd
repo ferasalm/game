@@ -125,12 +125,13 @@ func use_on(hero: StringName) -> void:
 	var def := ContentDB.get_def("consumable", _selected) as ConsumableDef
 	var result: Dictionary = ItemService.use(_selected, hero)
 	if not result["ok"]:
-		Ui.toast(Ui.text("ITEMS_FULL"), &"bad")
+		Ui.toast("ITEMS_FULL", &"bad")
 		return
 	var name_text: String = Ui.text(def.name_key)
-	var used_text: String = Ui.text("ITEMS_USED_PARTY") % name_text if def.target == &"all_allies" \
-			else Ui.text("ITEMS_USED") % [name_text, _hero_name(hero)]
-	Ui.toast(used_text, &"good")
+	if def.target == &"all_allies":
+		Ui.toast("ITEMS_USED_PARTY", &"good", [name_text])
+	else:
+		Ui.toast("ITEMS_USED", &"good", [name_text, _hero_name(hero)])
 	party_panel.refresh_vitals()
 	var keep: StringName = _selected
 	list.populate()

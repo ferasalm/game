@@ -12,9 +12,11 @@ var _hp_text: Label
 var _sp_text: Label
 var _ko: Label
 var _face: Control
+var _frame: PanelContainer
 var _preview: VBoxContainer
 var _preview_text: Label
-var _preview_bar: ProgressBar
+var _hp_gain: ColorRect
+var _sp_gain: ColorRect
 var _preview_hp: int = 0
 var _preview_sp: int = 0
 var _preview_usable: bool = true
@@ -33,13 +35,13 @@ func setup(hero: StringName, tint: Color = Color.TRANSPARENT) -> PartyCard:
 	var line := HBoxContainer.new()
 	line.add_theme_constant_override("separation", style.size(&"s_pad"))
 	add_child(line)
-	var frame := PanelContainer.new()
-	frame.add_theme_stylebox_override("panel", UiBoxes.medallion(style, style.colour(&"c_brass")))
-	frame.custom_minimum_size = Vector2.ONE * style.size(&"s_card_portrait")
-	frame.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	_face = CharacterIcons.face(hero, tint if tint.a > 0.0 else style.colour(&"c_party"))
-	frame.add_child(_face)
-	line.add_child(frame)
+	_frame = PanelContainer.new()
+	_frame.add_theme_stylebox_override("panel", UiBoxes.medallion(style, style.colour(&"c_brass")))
+	_frame.custom_minimum_size = Vector2.ONE * style.size(&"s_card_portrait")
+	_frame.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	_face = PortraitFaces.bust(hero, tint if tint.a > 0.0 else style.colour(&"c_party"))
+	_frame.add_child(_face)
+	line.add_child(_frame)
 	var column := VBoxContainer.new()
 	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	column.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -89,7 +91,7 @@ func set_active(on: bool) -> void:
 	add_theme_stylebox_override("panel", UiBoxes.panel(style, &"plate" if on else &"inset"))
 
 
-## Shows what an item would give this hero: a green segment and line; an unusable hero greys out.
+## Shows what an item would give this hero: a green gain segment on the bars and a line; an unusable hero greys out.
 func set_item_preview(hp_gain: int, sp_gain: int, text: String, usable: bool) -> void:
 	_preview_hp = hp_gain
 	_preview_sp = sp_gain
@@ -98,11 +100,8 @@ func set_item_preview(hp_gain: int, sp_gain: int, text: String, usable: bool) ->
 	var style: UiStyleDef = Ui.style()
 	_preview_text.text = text if usable else Ui.text("ITEMS_FULL")
 	_preview_text.add_theme_color_override("font_color", style.colour(&"c_good" if usable else &"c_disabled"))
-	var gain: int = hp_gain if hp_gain > 0 else sp_gain
-	_preview_bar.visible = usable and gain > 0
-	var top: float = _hp_bar.max_value if hp_gain > 0 else _sp_bar.max_value
-	_preview_bar.max_value = maxf(top, 1.0)
-	_preview_bar.value = float(gain)
+	PartyCardGain.paint(_hp_gain, _hp_bar, _current_value(_hp_bar), hp_gain, usable)
+	PartyCardGain.paint(_sp_gain, _sp_bar, _current_value(_sp_bar), sp_gain, usable)
 	modulate = Color.WHITE if usable else style.colour(&"c_disabled")
 
 
@@ -113,7 +112,16 @@ func clear_item_preview() -> void:
 	_preview_usable = true
 	if _preview != null:
 		_preview.visible = false
+	PartyCardGain.hide(_hp_gain)
+	PartyCardGain.hide(_sp_gain)
 	modulate = Color.WHITE
+
+
+## Grows the portrait frame for larger cards (the Items screen); returns self.
+func set_portrait_size(side: float) -> PartyCard:
+	if _frame != null:
+		_frame.custom_minimum_size = Vector2.ONE * side
+	return self
 
 
 func preview_hp_gain() -> int:
@@ -155,16 +163,15 @@ func _build_preview(parent: Control) -> void:
 	_preview.visible = false
 	_preview_text = Ui.label("", &"SmallLabel", style.colour(&"c_good"))
 	_preview.add_child(_preview_text)
-	_preview_bar = ProgressBar.new()
-	_preview_bar.show_percentage = false
-	_preview_bar.custom_minimum_size.y = 6.0
-	_preview_bar.add_theme_stylebox_override("background", UiBoxes.bar_back(style))
-	var fill := StyleBoxFlat.new()
-	fill.bg_color = style.colour(&"c_good")
-	fill.set_corner_radius_all(2)
-	_preview_bar.add_theme_stylebox_override("fill", fill)
-	_preview.add_child(_preview_bar)
 	parent.add_child(_preview)
+
+
+func _current_value(bar: ProgressBar) -> float:
+	if bar == _hp_bar and _target_hp >= 0:
+		return float(_target_hp)
+	if bar == _sp_bar and _target_sp >= 0:
+		return float(_target_sp)
+	return bar.value
 
 
 func _stat(parent: Control, tag_key: String, kind: StringName, maximum: int) -> ProgressBar:
@@ -184,7 +191,9 @@ func _stat(parent: Control, tag_key: String, kind: StringName, maximum: int) -> 
 	line.add_child(numbers)
 	if kind == &"HpBar":
 		_hp_text = numbers
+		_hp_gain = PartyCardGain.overlay(bar)
 	else:
 		_sp_text = numbers
+		_sp_gain = PartyCardGain.overlay(bar)
 	parent.add_child(line)
 	return bar

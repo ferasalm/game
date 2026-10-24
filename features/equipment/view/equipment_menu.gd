@@ -27,8 +27,8 @@ func _init() -> void:
 	visible = false
 	backdrop_id = ID
 	prompts = [
-		{"key": "accept", "text": "EQUIP_PROMPT_EQUIP"}, {"key": "back", "text": "EQUIP_PROMPT_BACK"},
-		{"key": "tab", "text": "EQUIP_PROMPT_TAB"},
+		{"key": "accept", "text": "EQUIP_PROMPT_EQUIP"}, {"key": "hero", "text": "EQUIP_PROMPT_HERO"},
+		{"key": "back", "text": "EQUIP_PROMPT_BACK"}, {"key": "tab", "text": "EQUIP_PROMPT_TAB"},
 	]
 
 
@@ -84,6 +84,11 @@ func on_back() -> bool:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	var step: int = EquipmentTabsBar.event_step(event)
+	if step != 0:
+		cycle_hero(step)
+		get_viewport().set_input_as_handled()
+		return
 	if tabs != null and tabs.handle_input(event):
 		get_viewport().set_input_as_handled()
 

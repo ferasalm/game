@@ -12,11 +12,12 @@ var _card: PartyCard
 ## Builds the card for a hero; returns self.
 func setup(hero: StringName) -> ItemsHeroCard:
 	hero_id = hero
-	custom_minimum_size = Vector2(520.0, 170.0)
+	custom_minimum_size = Vector2(550.0, 330.0)
 	focus_mode = Control.FOCUS_ALL
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	flat = true
 	_card = PartyCard.new().setup(hero)
+	_card.set_portrait_size(Ui.style().size(&"s_card_portrait") * 2.0)
 	_card.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_card.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_card)

@@ -497,6 +497,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/menu_blur.gdshader`
 - `features/ui/view/money_counter.gd`: A pill with the riyal amount in brass
 - `features/ui/view/party_card.gd`: A hero card: portrait icon, name, HP and SP bars with numbers
+- `features/ui/view/party_card_gain.gd`: purpose: Paints an item's gain as a green segment on a PartyCard stat bar, from now to now+gain capped at max
 - `features/ui/view/portrait_faces.gd`: purpose: Caches painted hero portraits (cropped head and uncropped bust)
 - `features/ui/view/prompt_strip.gd`: The Hades-style button hints along the bottom: "[Enter] Select   [Esc] Back"
 - `features/ui/view/screens/choice_screen.gd`: Base of the small centred "pick one" screens (Sabil, Defeat): a framed panel with the Musnad + English title pair and a column of buttons in focus order
@@ -507,7 +508,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/screens/items_list_panel.gd`: purpose: The left bag list of the Items screen: one ListRow per field-usable consumable, with count and effect
 - `features/ui/view/screens/items_party_panel.gd`: purpose: Right side of the Items screen: one selectable PartyCard per hero, each previewing the item
 - `features/ui/view/screens/items_screen.gd`: The Items screen (Screens id &"items"): the bag on the left, a PartyCard per hero on the right with the selected item's real gain previewed on each, and the item's description at the bottom
-- `features/ui/view/screens/items_text.gd`: Item screen wording: the effect line ("HP +120") and a hero's "HP 200 -> 320" preview
+- `features/ui/view/screens/items_text.gd`: Item screen wording: the effect line ("HP +120"), a card's gain line and the statuses an item cures
 - `features/ui/view/screens/pause_hero_row.gd`: purpose: One hero row in the pause party panel: face 160x160, name, class, HP/SP bars, KO state
 - `features/ui/view/screens/pause_menu.gd`: Pause menu screen: command panel (80,80), info box (80,880), party panel (540,80), prompt strip (0,1020)
 - `features/ui/view/screens/pause_party.gd`: Party panel for the pause screen: one row per hero (h 200)

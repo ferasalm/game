@@ -7,8 +7,11 @@ const KINDS: Array[StringName] = [&"info", &"good", &"bad"]
 var _items: Array[Dictionary] = []
 
 
-func push(text_key: String, kind: StringName = &"info") -> void:
-	_items.append({"text": text_key, "kind": kind if KINDS.has(kind) else &"info"})
+func push(text_key: String, kind: StringName = &"info", args: Array = []) -> void:
+	var item: Dictionary = {"text": text_key, "kind": kind if KINDS.has(kind) else &"info"}
+	if not args.is_empty():
+		item["args"] = args
+	_items.append(item)
 
 
 func size() -> int:

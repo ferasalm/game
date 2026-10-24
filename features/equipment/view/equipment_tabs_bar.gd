@@ -12,6 +12,8 @@ var current: Tab = Tab.EQUIPMENT
 var _buttons: Dictionary[int, Button] = {}
 var _info_main: String = ""
 var _info_sub: String = ""
+var _lt_down: bool = false
+var _rt_down: bool = false
 
 
 func _init() -> void:
@@ -50,16 +52,28 @@ func cycle(step: int) -> void:
 	_open_tab((int(current) + step + IDS.size()) % IDS.size())
 
 
-## Handles the quick-switch keys: returns true when it switched.
+## Handles the tab keys and quick-switch keys: returns true when it switched.
 func handle_input(event: InputEvent) -> bool:
-	var step: int = event_step(event)
+	var step: int = tab_step(event)
+	if step == 0:
+		step = event_step(event)
 	if step == 0:
 		return false
 	cycle(step)
 	return true
 
 
-## -1 for LB/Q, 1 for RB/E, 0 for anything else.
+## Tab / Shift+Tab and LT/RT move between the screens; 0 for anything else.
+func tab_step(event: InputEvent) -> int:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_TAB or event.physical_keycode == KEY_TAB:
+			return -1 if event.shift_pressed else 1
+	elif event is InputEventJoypadMotion:
+		return _trigger_step(event)
+	return 0
+
+
+## -1 for LB/Q, 1 for RB/E, 0 for anything else (the hero switch on Equipment).
 static func event_step(event: InputEvent) -> int:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_Q or event.physical_keycode == KEY_Q:
@@ -72,6 +86,28 @@ static func event_step(event: InputEvent) -> int:
 		if event.button_index == JOY_BUTTON_RIGHT_SHOULDER:
 			return 1
 	return 0
+
+
+func _trigger_step(event: InputEventJoypadMotion) -> int:
+	var down: bool = event.axis_value > 0.5
+	if event.axis == JOY_AXIS_TRIGGER_LEFT:
+		var was_left: bool = _lt_down
+		_lt_down = down
+		return -1 if down and not was_left else 0
+	if event.axis == JOY_AXIS_TRIGGER_RIGHT:
+		var was_right: bool = _rt_down
+		_rt_down = down
+		return 1 if down and not was_right else 0
+	return 0
+
+
+## Tab is consumed by the focus system before _unhandled_input, so the bar claims it first.
+func _input(event: InputEvent) -> void:
+	var step: int = tab_step(event)
+	if step == 0:
+		return
+	cycle(step)
+	get_viewport().set_input_as_handled()
 
 
 func _build_ui() -> void:

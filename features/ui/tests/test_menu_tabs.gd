@@ -15,8 +15,8 @@ func test_every_screen_reaches_every_other_tab_by_confirm() -> void:
 	_clean()
 
 
-func test_every_screen_cycles_tabs_with_lb_and_rb() -> void:
-	for start: StringName in IDS:
+func test_items_and_map_cycle_tabs_with_lb_and_rb() -> void:
+	for start: StringName in [&"items", &"map"]:
 		var screen: UiScreen = _open(start)
 		screen._unhandled_input(_pad(JOY_BUTTON_RIGHT_SHOULDER))
 		check_eq(_top_id(), _neighbour(start, 1), "%s -> next by RB" % start)
@@ -27,8 +27,8 @@ func test_every_screen_cycles_tabs_with_lb_and_rb() -> void:
 	_clean()
 
 
-func test_every_screen_cycles_tabs_with_q_and_e() -> void:
-	for start: StringName in IDS:
+func test_items_and_map_cycle_tabs_with_q_and_e() -> void:
+	for start: StringName in [&"items", &"map"]:
 		var screen: UiScreen = _open(start)
 		screen._unhandled_input(_key(KEY_E))
 		check_eq(_top_id(), _neighbour(start, 1), "%s -> next by E" % start)
@@ -36,6 +36,50 @@ func test_every_screen_cycles_tabs_with_q_and_e() -> void:
 		screen = _open(start)
 		screen._unhandled_input(_key(KEY_Q))
 		check_eq(_top_id(), _neighbour(start, -1), "%s -> previous by Q" % start)
+	_clean()
+
+
+func test_q_and_e_change_the_hero_on_the_equipment_menu() -> void:
+	var menu: EquipmentMenu = _open(&"equipment") as EquipmentMenu
+	check_eq(menu.hero, &"zayd", "starts on the first hero")
+	menu._unhandled_input(_key(KEY_E))
+	check_eq(menu.hero, &"bilqis", "E switches to the next hero")
+	check_eq(_top_id(), &"equipment", "E stays on the Equipment screen")
+	menu._unhandled_input(_key(KEY_Q))
+	check_eq(menu.hero, &"zayd", "Q switches back")
+	_clean()
+
+
+func test_lb_and_rb_change_the_hero_on_the_equipment_menu() -> void:
+	var menu: EquipmentMenu = _open(&"equipment") as EquipmentMenu
+	menu._unhandled_input(_pad(JOY_BUTTON_RIGHT_SHOULDER))
+	check_eq(menu.hero, &"bilqis", "RB switches to the next hero")
+	check_eq(_top_id(), &"equipment", "RB stays on the Equipment screen")
+	menu._unhandled_input(_pad(JOY_BUTTON_LEFT_SHOULDER))
+	check_eq(menu.hero, &"zayd", "LB switches back")
+	_clean()
+
+
+func test_tab_and_shift_tab_switch_tabs_on_every_screen() -> void:
+	for start: StringName in IDS:
+		var screen: UiScreen = _open(start)
+		screen._unhandled_input(_key(KEY_TAB))
+		check_eq(_top_id(), _neighbour(start, 1), "%s -> next by Tab" % start)
+		_clean()
+		screen = _open(start)
+		screen._unhandled_input(_shift_tab())
+		check_eq(_top_id(), _neighbour(start, -1), "%s -> previous by Shift+Tab" % start)
+	_clean()
+
+
+func test_clicking_a_tab_button_switches_the_screen() -> void:
+	var screen: UiScreen = _open(&"equipment")
+	_bar_of(screen).tab_button(EquipmentTabsBar.Tab.ITEMS).pressed.emit()
+	check_eq(_top_id(), &"items", "a click on the Items tab opens Items")
+	_clean()
+	screen = _open(&"items")
+	_bar_of(screen).tab_button(EquipmentTabsBar.Tab.MAP).pressed.emit()
+	check_eq(_top_id(), &"map", "a click on the Map tab opens Map")
 	_clean()
 
 
@@ -55,6 +99,16 @@ func test_prompt_strip_shows_the_tab_switch() -> void:
 		for pair: Dictionary in screen.prompts:
 			keys.append(String(pair["key"]))
 		check(keys.has("tab"), "%s prompts show the tab switch" % id)
+	_clean()
+
+
+func test_equipment_prompt_strip_shows_the_hero_switch_too() -> void:
+	var screen: UiScreen = _open(&"equipment")
+	var keys: Array[String] = []
+	for pair: Dictionary in screen.prompts:
+		keys.append(String(pair["key"]))
+	check(keys.has("hero"), "Equipment prompts show the hero switch")
+	check(keys.has("tab"), "Equipment prompts still show the tab switch")
 	_clean()
 
 
@@ -110,6 +164,12 @@ func _key(keycode: Key) -> InputEventKey:
 	var event := InputEventKey.new()
 	event.keycode = keycode
 	event.pressed = true
+	return event
+
+
+func _shift_tab() -> InputEventKey:
+	var event := _key(KEY_TAB)
+	event.shift_pressed = true
 	return event
 
 
