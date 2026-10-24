@@ -169,21 +169,7 @@ func _update_leader_lines() -> void:
 func _get_anchor_pos(anchor_name: StringName) -> Vector3:
 	if _visual == null:
 		return Vector3.ZERO
-	var pos: Vector3 = _visual.anchor_position(anchor_name)
-	if pos == _visual.global_position + _visual.root.position:
-		var h: float = _visual.height() if _visual.height() > 0.0 else 1.8
-		match anchor_name:
-			&"chest":
-				pos.y += h * 0.7
-			&"belt", &"hip":
-				pos.y += h * 0.5
-			&"arm":
-				pos.y += h * 0.6
-				pos.x -= 0.25
-			&"hand":
-				pos.y += h * 0.45
-				pos.x += 0.3
-	return pos
+	return _visual.anchor_position(anchor_name)
 
 
 func _update_line_styles() -> void:

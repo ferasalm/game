@@ -68,7 +68,7 @@ static func bust(hero: StringName, tint: Color = Color.WHITE) -> Control:
 	holder.texture = tex
 	holder.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	holder.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	holder.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	holder.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	return holder
 

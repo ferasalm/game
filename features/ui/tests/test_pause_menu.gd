@@ -75,25 +75,53 @@ func test_pause_party_portraits_fill_frame_and_bars_aligned_in_column() -> void:
 	for row: PauseHeroRow in rows:
 		var face: TextureRect = row.face_rect()
 		check(face != null, "face exists")
-		check_eq(face.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_CENTERED, "face keeps aspect ratio")
-		check_eq(face.custom_minimum_size, Vector2(160, 160), "face frame is 160x160")
+		check(face.texture != null, "face texture assigned")
+		var frame: PanelContainer = row.face_box()
+		check(frame != null, "face frame exists")
+		var inner: Rect2 = _inner_rect(frame)
+		var rect: Rect2 = face.get_global_rect()
+		check_approx(rect.position.x, inner.position.x, 2.0, "face left fills the frame")
+		check_approx(rect.position.y, inner.position.y, 2.0, "face top fills the frame")
+		check_approx(rect.size.x, inner.size.x, 2.0, "face width fills the frame")
+		check_approx(rect.size.y, inner.size.y, 2.0, "face height fills the frame")
+		var drawn: Vector2 = _drawn_size(face.texture, inner.size)
+		check(drawn.x >= inner.size.x - 2.0 and drawn.y >= inner.size.y - 2.0, "the face texture covers its frame (no empty band)")
+	rows[0].update(37, 5)
+	rows[1].update(210, 29)
 	var hp0: ProgressBar = rows[0].hp_bar()
 	var hp1: ProgressBar = rows[1].hp_bar()
 	check(hp0 != null and hp1 != null, "hp bars exist")
 	var r0: Rect2 = hp0.get_global_rect()
 	var r1: Rect2 = hp1.get_global_rect()
 	check_approx(r0.position.x, r1.position.x, 2.0, "both cards HP bars aligned on same X column")
-	check_approx(r0.size.x, r1.size.x, 2.0, "both cards HP bars have same width")
+	check(r0.size.x > hp0.custom_minimum_size.x + 1.0, "HP bars use their laid-out width, not the 420 minimum")
+	check_approx(r0.size.x, r1.size.x, 2.0, "both cards HP bars have same real width")
 	var sp0: ProgressBar = rows[0].sp_bar()
 	var sp1: ProgressBar = rows[1].sp_bar()
 	check(sp0 != null and sp1 != null, "sp bars exist")
 	var spr0: Rect2 = sp0.get_global_rect()
 	var spr1: Rect2 = sp1.get_global_rect()
 	check_approx(spr0.position.x, spr1.position.x, 2.0, "both cards SP bars aligned on same X column")
-	check_approx(spr0.size.x, spr1.size.x, 2.0, "both cards SP bars have same width")
+	check(spr0.size.x > sp0.custom_minimum_size.x + 1.0, "SP bars use their laid-out width, not the 420 minimum")
+	check_approx(spr0.size.x, spr1.size.x, 2.0, "both cards SP bars have same real width")
 	Screens.clear()
 	tree.paused = false
 	Router.state = Router.STATE_TITLE
+
+
+func _inner_rect(frame: Control) -> Rect2:
+	var box: StyleBox = frame.get_theme_stylebox("panel")
+	var frame_rect: Rect2 = frame.get_global_rect()
+	var left: float = box.get_content_margin(SIDE_LEFT)
+	var top: float = box.get_content_margin(SIDE_TOP)
+	var right: float = box.get_content_margin(SIDE_RIGHT)
+	var bottom: float = box.get_content_margin(SIDE_BOTTOM)
+	return Rect2(frame_rect.position + Vector2(left, top), frame_rect.size - Vector2(left + right, top + bottom))
+
+
+func _drawn_size(texture: Texture2D, into: Vector2) -> Vector2:
+	var tex_size: Vector2 = texture.get_size()
+	return tex_size * maxf(into.x / tex_size.x, into.y / tex_size.y)
 
 
 func check_approx(val: float, target: float, tolerance: float, msg: String) -> void:

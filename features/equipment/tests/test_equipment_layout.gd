@@ -48,30 +48,34 @@ func test_no_two_connector_lines_intersect() -> void:
 			visible_lines.append(l)
 	check(visible_lines.size() >= 2, "at least 2 visible connector lines")
 	var intersected: bool = false
+	var shared: bool = false
 	for i: int in visible_lines.size():
 		for j: int in range(i + 1, visible_lines.size()):
 			var l1: Line2D = visible_lines[i]
 			var l2: Line2D = visible_lines[j]
 			if _segments_intersect(l1.points[0], l1.points[1], l2.points[0], l2.points[1]):
 				intersected = true
-				break
+			if l1.points[1].distance_to(l2.points[1]) < 8.0:
+				shared = true
 	check(not intersected, "no two connector lines intersect")
+	check(not shared, "no two connector lines share an end point")
 	Screens.clear()
 	GameState.reset()
 
 
-func test_header_labels_text_width_fits_rect() -> void:
+func test_header_labels_lie_inside_the_header_rect() -> void:
 	var menu: EquipmentMenu = _open_menu()
+	var header_rect: Rect2 = menu.header.get_global_rect()
 	for hero_id: StringName in [&"zayd", &"bilqis"]:
 		menu.show_hero(hero_id)
 		for node: Node in NodeScan.of_type(menu.header, &"Label"):
 			var l := node as Label
 			if l.text.is_empty():
 				continue
-			var font: Font = l.get_theme_font(&"font")
-			var fsize: int = l.get_theme_font_size(&"font_size")
-			var text_w: float = font.get_string_size(l.text, HORIZONTAL_ALIGNMENT_LEFT, -1, fsize).x
-			check(text_w <= l.size.x + 1.0, "%s label '%s' width (%.1f) fits rect (%.1f)" % [hero_id, l.text, text_w, l.size.x])
+			var rect: Rect2 = l.get_global_rect()
+			check(rect.position.x >= header_rect.position.x - 1.0 and rect.position.y >= header_rect.position.y - 1.0
+					and rect.end.x <= header_rect.end.x + 1.0 and rect.end.y <= header_rect.end.y + 1.0,
+					"%s label '%s' lies inside the header rect" % [hero_id, l.text])
 	Screens.clear()
 	GameState.reset()
 

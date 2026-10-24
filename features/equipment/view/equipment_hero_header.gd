@@ -194,5 +194,7 @@ func _update_face(hero_id: StringName) -> void:
 		_face_box.remove_child(c)
 		c.queue_free()
 	_face = PortraitFaces.bust(hero_id)
-	_face.custom_minimum_size = Vector2(96.0, 96.0)
+	_face.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_face.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_face.custom_minimum_size = Vector2.ZERO
 	_face_box.add_child(_face)

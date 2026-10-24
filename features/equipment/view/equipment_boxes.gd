@@ -11,7 +11,7 @@ const POS: Dictionary[StringName, Vector2] = {
 	&"prosthetic": Vector2(1210.0, 420.0),
 }
 const ANCHORS: Dictionary[StringName, StringName] = {
-	&"blade": &"chest", &"hilt": &"hand", &"gemstones": &"hip", &"armor": &"chest", &"prosthetic": &"hand",
+	&"blade": &"hand_left", &"hilt": &"belt", &"gemstones": &"hip", &"armor": &"chest", &"prosthetic": &"arm_left",
 }
 
 var boxes: Dictionary[StringName, SlotBox] = {}

@@ -110,14 +110,37 @@ func test_header_and_inventory_rects_do_not_intersect() -> void:
 	check(face is TextureRect, "portrait is TextureRect")
 	var face_tr := face as TextureRect
 	check(face_tr.texture != null, "portrait texture assigned")
-	check_eq(face_tr.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_CENTERED, "portrait keeps image aspect")
 	var frame: Control = menu.header.face_box()
 	check(frame != null, "portrait frame exists")
-	var frame_rect: Rect2 = frame.get_global_rect()
+	var inner: Rect2 = _inner_rect(frame)
 	var port_rect: Rect2 = face_tr.get_global_rect()
-	check(port_rect.size.x <= frame_rect.size.x + 1.0 and port_rect.size.y <= frame_rect.size.y + 1.0, "portrait rect inside frame")
+	check_approx(port_rect.position.x, inner.position.x, 2.0, "portrait left fills the frame")
+	check_approx(port_rect.position.y, inner.position.y, 2.0, "portrait top fills the frame")
+	check_approx(port_rect.size.x, inner.size.x, 2.0, "portrait width fills the frame")
+	check_approx(port_rect.size.y, inner.size.y, 2.0, "portrait height fills the frame")
+	var drawn: Vector2 = _drawn_size(face_tr.texture, inner.size)
+	check(drawn.x >= inner.size.x - 2.0 and drawn.y >= inner.size.y - 2.0, "the texture covers the frame (no empty band)")
 	Screens.clear()
 	GameState.reset()
+
+
+func _inner_rect(frame: Control) -> Rect2:
+	var box: StyleBox = frame.get_theme_stylebox("panel")
+	var frame_rect: Rect2 = frame.get_global_rect()
+	var left: float = box.get_content_margin(SIDE_LEFT)
+	var top: float = box.get_content_margin(SIDE_TOP)
+	var right: float = box.get_content_margin(SIDE_RIGHT)
+	var bottom: float = box.get_content_margin(SIDE_BOTTOM)
+	return Rect2(frame_rect.position + Vector2(left, top), frame_rect.size - Vector2(left + right, top + bottom))
+
+
+func _drawn_size(texture: Texture2D, into: Vector2) -> Vector2:
+	var tex_size: Vector2 = texture.get_size()
+	return tex_size * maxf(into.x / tex_size.x, into.y / tex_size.y)
+
+
+func check_approx(val: float, target: float, tolerance: float, msg: String) -> void:
+	check(absf(val - target) <= tolerance, "%s: expected %f got %f" % [msg, target, val])
 
 
 func test_hovering_slot_fills_list_without_confirm() -> void:

@@ -24,7 +24,7 @@ static func options(
 	out.sort_custom(func(a: EquipDef, b: EquipDef) -> bool:
 		var by_a: int = rarity_order.get(a.rarity, 0)
 		var by_b: int = rarity_order.get(b.rarity, 0)
-		return a.id < b.id if by_a == by_b else by_a > by_b)
+		return String(a.id) < String(b.id) if by_a == by_b else by_a > by_b)
 	return out
 
 

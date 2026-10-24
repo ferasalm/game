@@ -41,9 +41,10 @@ func _build_face(parent: Control, style: UiStyleDef, hero: StringName) -> void:
 	_face = TextureRect.new()
 	var tex: Texture2D = PortraitFaces.bust_texture(hero)
 	_face.texture = tex if tex != null else CharacterIcons.disc(style.colour(&"c_party").darkened(0.45))
-	_face.custom_minimum_size = Vector2(160, 160)
+	_face.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_face.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_face.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_face.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_face.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	_face_box.add_child(_face)
 	parent.add_child(_face_box)
 
@@ -111,6 +112,7 @@ func _build_stats(parent: Control, style: UiStyleDef, def: CombatantDef, hero: S
 	var stats := VBoxContainer.new()
 	stats.alignment = BoxContainer.ALIGNMENT_CENTER
 	stats.custom_minimum_size.x = 550.0
+	stats.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	parent.add_child(stats)
 
 	var max_hp: int = def.max_hp if def != null else 1
@@ -170,6 +172,10 @@ func face_rect() -> TextureRect:
 	return _face
 
 
+func face_box() -> PanelContainer:
+	return _face_box
+
+
 func _stat_bar(parent: Control, tag_key: String, kind: StringName, maximum: int, is_hp: bool) -> ProgressBar:
 	var line := HBoxContainer.new()
 	var tag: Label = Ui.label(Ui.text(tag_key), &"CaptionLabel")
@@ -180,6 +186,7 @@ func _stat_bar(parent: Control, tag_key: String, kind: StringName, maximum: int,
 	bar.show_percentage = false
 	bar.max_value = maximum
 	bar.custom_minimum_size = Vector2(420.0, 14.0)
+	bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	line.add_child(bar)
 	var numbers: Label = Ui.label("", &"NumberLabel")
