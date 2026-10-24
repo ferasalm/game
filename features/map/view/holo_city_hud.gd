@@ -34,49 +34,46 @@ static func _draw_corner_brackets(canvas: CanvasItem, size: Vector2, look: HoloC
 	var blen: float = look.get_size("corner_bracket_len")
 	var bw: float = look.get_width("hud_bracket")
 
-	# Top-left
 	canvas.draw_line(Vector2(margin, margin + blen), Vector2(margin, margin), cyan, bw)
 	canvas.draw_line(Vector2(margin, margin), Vector2(margin + blen, margin), cyan, bw)
-	# Top-right
 	canvas.draw_line(Vector2(size.x - margin - blen, margin), Vector2(size.x - margin, margin), cyan, bw)
 	canvas.draw_line(Vector2(size.x - margin, margin), Vector2(size.x - margin, margin + blen), cyan, bw)
-	# Bottom-left
 	canvas.draw_line(Vector2(margin, size.y - margin - blen), Vector2(margin, size.y - margin), cyan, bw)
 	canvas.draw_line(Vector2(margin, size.y - margin), Vector2(margin + blen, size.y - margin), cyan, bw)
-	# Bottom-right
 	canvas.draw_line(Vector2(size.x - margin - blen, size.y - margin), Vector2(size.x - margin, size.y - margin), cyan, bw)
 	canvas.draw_line(Vector2(size.x - margin, size.y - margin - blen), Vector2(size.x - margin, size.y - margin), cyan, bw)
 
 
 static func _draw_compass(canvas: CanvasItem, look: HoloCityLook, font: Font) -> void:
-	var cx: float = look.get_size("compass_center_x")
-	var cy: float = look.get_size("compass_center_y")
-	var pos := Vector2(cx, cy)
+	var pos: Vector2 = look.get_point("compass_center")
 	var r: float = look.get_size("compass_radius")
 	var cyan: Color = look.get_color("cyan")
 
-	look.draw_neon_circle(canvas, pos, r, cyan, 36)
-	canvas.draw_arc(pos, r * 0.7, 0.0, TAU, 24, Color(cyan.r, cyan.g, cyan.b, 0.35), 1.0)
+	look.draw_neon_circle(canvas, pos, r, cyan, look.get_count("compass_segments"))
+	canvas.draw_arc(pos, r * look.get_size("compass_inner_ratio"), 0.0, TAU,
+		look.get_count("compass_inner_segments"), Color(cyan.r, cyan.g, cyan.b, look.get_alpha("compass_inner")), 1.0)
 
+	var pw: float = look.get_size("compass_pointer_w")
+	var pr: float = r * look.get_size("compass_pointer_ratio")
 	var pointer := PackedVector2Array([
-		pos + Vector2(0.0, -r + 2.0),
-		pos + Vector2(4.0, -r * 0.3),
-		pos + Vector2(-4.0, -r * 0.3)
+		pos + Vector2(0.0, -r + 2),
+		pos + Vector2(pw, -pr),
+		pos + Vector2(-pw, -pr)
 	])
 	canvas.draw_colored_polygon(pointer, cyan)
-	canvas.draw_string(font, pos + Vector2(-5.0, 5.0), "N", HORIZONTAL_ALIGNMENT_CENTER, -1, 14, cyan)
+	canvas.draw_string(font, pos + look.get_point("compass_text_offset"), "N",
+		HORIZONTAL_ALIGNMENT_CENTER, -1, int(look.get_size("compass_font_size")), cyan)
 
 
 static func _draw_captions(canvas: CanvasItem, look: HoloCityLook, font: Font) -> void:
 	var cyan: Color = look.get_color("cyan")
-	var tx: float = look.get_size("hud_title_x")
-	var ty1: float = look.get_size("hud_title_y")
-	var ty2: float = look.get_size("hud_coords_y")
+	var tpos: Vector2 = look.get_point("hud_title_pos")
+	var cpos: Vector2 = look.get_point("hud_coords_pos")
 
 	var title_text: String = Ui.text("MAP_METROPOLIS_SECTOR")
 	var coords_text: String = Ui.text("MAP_COORDINATES")
 
-	canvas.draw_string(font, Vector2(tx, ty1), title_text, HORIZONTAL_ALIGNMENT_LEFT, -1,
+	canvas.draw_string(font, tpos, title_text, HORIZONTAL_ALIGNMENT_LEFT, -1,
 		int(look.get_size("font_hud_title")), cyan)
-	canvas.draw_string(font, Vector2(tx, ty2), coords_text, HORIZONTAL_ALIGNMENT_LEFT, -1,
-		int(look.get_size("font_hud_coords")), Color(cyan.r, cyan.g, cyan.b, 0.7))
+	canvas.draw_string(font, cpos, coords_text, HORIZONTAL_ALIGNMENT_LEFT, -1,
+		int(look.get_size("font_hud_coords")), Color(cyan.r, cyan.g, cyan.b, look.get_alpha("hud_coords")))

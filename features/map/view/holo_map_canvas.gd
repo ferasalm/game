@@ -6,18 +6,18 @@ enum Mode { AREA, CITY }
 
 const _CYAN: Color = Color("#23E6F0")
 const _CITY_MARGIN: float = 0.08
+const CANVAS_SIZE: Vector2 = Vector2(1200.0, 800.0)
+const CANVAS_POS: Vector2 = Vector2(360.0, 140.0)
 
 var mode: Mode = Mode.AREA
 var player_world_pos: Vector3 = Vector3.ZERO
 var area_def: AreaDef = null
 var flags: Dictionary = {}
 var pulse_time: float = 0.0
+var clip_rect: Rect2 = Rect2(Vector2.ZERO, CANVAS_SIZE)
 
 var _style: UiStyleDef
 var _c_cyan: Color
-var _c_good: Color
-var _c_brass: Color
-var _c_amber: Color
 var _plan: Dictionary = {}
 var _fit: Dictionary = {}
 var _markers: Array[Dictionary] = []
@@ -33,21 +33,20 @@ var _radial: Dictionary = {}
 
 
 func _init() -> void:
-	position = Vector2(360.0, 140.0)
-	custom_minimum_size = Vector2(1200.0, 800.0)
-	size = Vector2(1200.0, 800.0)
+	position = CANVAS_POS
+	custom_minimum_size = CANVAS_SIZE
+	size = CANVAS_SIZE
+	clip_contents = true
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_style = Ui.style()
 	_c_cyan = _CYAN
-	_c_good = _style.colour(&"c_good")
-	_c_brass = _style.colour(&"c_brass")
-	_c_amber = _style.colour(&"c_qam_amber")
 	_setup_layers()
 	_load_city_data()
 
 
 func _setup_layers() -> void:
 	_neon_layer = Control.new()
+	_neon_layer.clip_contents = true
 	_neon_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_neon_layer.set_anchors_preset(Control.PRESET_FULL_RECT)
 	var add_mat := CanvasItemMaterial.new()
@@ -57,6 +56,7 @@ func _setup_layers() -> void:
 	add_child(_neon_layer)
 
 	_overlay_layer = Control.new()
+	_overlay_layer.clip_contents = true
 	_overlay_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_overlay_layer.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_overlay_layer.draw.connect(_on_overlay_draw)
@@ -104,7 +104,7 @@ func _draw() -> void:
 		_overlay_layer.visible = false
 		var rect := Rect2(Vector2.ZERO, size)
 		draw_rect(rect, _style.colour(&"c_glass_menu"), true)
-		draw_rect(rect, HoloMapStyle.alpha(_c_cyan, 0.4), false, 2.0)
+		draw_rect(rect, HoloMapStyle.alpha(_c_cyan, 0.5), false, 2)
 		_draw_area_plan()
 	else:
 		_neon_layer.visible = true
@@ -113,6 +113,7 @@ func _draw() -> void:
 		_overlay_layer.queue_redraw()
 		var look := HoloCityLook.load_from_content()
 		HoloCityHud.draw_background_and_grid(self, size, look)
+		HoloCityOldTown.draw_background_disc(self, look)
 
 
 func _on_neon_draw() -> void:
@@ -120,10 +121,11 @@ func _on_neon_draw() -> void:
 		return
 	var look := HoloCityLook.load_from_content()
 	var flick: Dictionary = _flicker()
-	var pulse: float = sin(pulse_time * TAU / maxf(float(flick["period"]), 0.1)) * 0.5 + 0.5
+	var period: float = float(flick.get("period", 1.0))
+	var pulse: float = sin(pulse_time * TAU / maxf(period, 1.0)) * 0.5 + 0.5
 	var pin_active: bool = _is_current_area_active()
 	HoloCityOldTown.draw(_neon_layer, look, pulse, pin_active)
-	HoloCityDistricts.draw(_neon_layer, look)
+	HoloCityDistricts.draw(_neon_layer, look, clip_rect)
 
 
 func _on_overlay_draw() -> void:
@@ -132,10 +134,11 @@ func _on_overlay_draw() -> void:
 	var font: Font = Ui.theme().default_font
 	var look := HoloCityLook.load_from_content()
 	var labels: Array[HoloMapLabel] = city_label_set(font)
-	var pin_screen := Vector2(781.0, 392.0)
-	var pin_rect := Rect2(pin_screen - Vector2(16.0, 16.0), Vector2(32.0, 32.0))
+	var pin_screen := look.get_point("old_city_center") + look.get_point("pin_offset")
+	var pin_r: float = look.get_size("pin_reticle_r")
+	var pin_rect := Rect2(pin_screen - Vector2(pin_r, pin_r), Vector2(pin_r, pin_r) * 2)
 	var obstacles: Array[Rect2] = [pin_rect]
-	var resolved: Array[HoloMapLabel] = HoloMapLabels.resolve(labels, Rect2(Vector2.ZERO, size), obstacles)
+	var resolved: Array[HoloMapLabel] = HoloMapLabels.resolve(labels, clip_rect, obstacles)
 	HoloMapLabels.draw_all(_overlay_layer, resolved, font)
 	HoloCityHud.draw_overlay(_overlay_layer, size, look, font)
 
@@ -144,7 +147,8 @@ func _draw_area_plan() -> void:
 	if _plan.is_empty() or not _fit.has("scale"):
 		return
 	var colors := {
-		&"default": _c_cyan, &"npc": _c_good, &"vendor": _c_brass, &"quest": _c_amber,
+		&"default": _c_cyan, &"npc": _style.colour(&"c_good"),
+		&"vendor": _style.colour(&"c_brass"), &"quest": _style.colour(&"c_qam_amber"),
 		&"muted": _style.colour(&"c_muted"),
 	}
 	HoloMapAreaView.draw(self, _plan, _fit, _markers, player_world_pos, colors, Ui.theme().default_font)
@@ -175,7 +179,7 @@ func _flicker() -> Dictionary:
 	for f: CityDistrictDef in _features:
 		if f.feature == &"flicker":
 			return {"period": f.flicker_period, "base": f.flicker_base, "amplitude": f.flicker_amplitude}
-	return {"period": 1.6, "base": 0.85, "amplitude": 0.15}
+	return {}
 
 
 func _is_current_area_active() -> bool:

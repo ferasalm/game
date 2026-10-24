@@ -8,6 +8,7 @@ var _widths: Dictionary = {}
 var _sizes: Dictionary = {}
 var _counts: Dictionary = {}
 var _seeds: Dictionary = {}
+var _arrays: Dictionary = {}
 
 
 static func load_from_content() -> HoloCityLook:
@@ -27,6 +28,7 @@ func _init_from_data(data: Dictionary) -> void:
 	_sizes = data.get("sizes", {}) as Dictionary
 	_counts = data.get("counts", {}) as Dictionary
 	_seeds = data.get("seeds", {}) as Dictionary
+	_arrays = data.get("arrays", {}) as Dictionary
 
 
 func has_key(section: String, key: String) -> bool:
@@ -77,9 +79,46 @@ func get_seed(key: String) -> int:
 	return int(val) if val != null else 0
 
 
-func color_alpha(color_key: String, alpha_key: String) -> Color:
-	var c: Color = get_color(color_key)
-	return Color(c.r, c.g, c.b, get_alpha(alpha_key))
+func get_point(key: String) -> Vector2:
+	var val: Variant = require_key("arrays", key)
+	if val is Array and (val as Array).size() >= 2:
+		return Vector2(float((val as Array)[0]), float((val as Array)[1]))
+	return Vector2.ZERO
+
+
+func get_points(key: String) -> PackedVector2Array:
+	var out := PackedVector2Array()
+	var val: Variant = require_key("arrays", key)
+	if val is Array:
+		for item: Variant in (val as Array):
+			if item is Array and (item as Array).size() >= 2:
+				out.append(Vector2(float((item as Array)[0]), float((item as Array)[1])))
+	return out
+
+
+func get_floats(key: String) -> PackedFloat32Array:
+	var out := PackedFloat32Array()
+	var val: Variant = require_key("arrays", key)
+	if val is Array:
+		for item: Variant in (val as Array):
+			if item is float or item is int:
+				out.append(float(item))
+	return out
+
+
+func get_blocks(key: String) -> Array[PackedVector2Array]:
+	var out: Array[PackedVector2Array] = []
+	var val: Variant = require_key("arrays", key)
+	if val is Array:
+		for poly: Variant in (val as Array):
+			if poly is Array:
+				var pts := PackedVector2Array()
+				for item: Variant in (poly as Array):
+					if item is Array and (item as Array).size() >= 2:
+						pts.append(Vector2(float((item as Array)[0]), float((item as Array)[1])))
+				if pts.size() > 2:
+					out.append(pts)
+	return out
 
 
 func draw_neon_line(canvas: CanvasItem, from: Vector2, to: Vector2, col: Color) -> void:
@@ -100,8 +139,9 @@ func draw_neon_polyline(canvas: CanvasItem, pts: PackedVector2Array, col: Color,
 	canvas.draw_polyline(line_pts, Color(col.r, col.g, col.b, get_alpha("neon_core")), get_width("neon_core"))
 
 
-func draw_neon_circle(canvas: CanvasItem, center: Vector2, radius: float, col: Color, segments: int = 48) -> void:
-	draw_neon_arc(canvas, center, radius, 0.0, TAU, segments, col)
+func draw_neon_circle(canvas: CanvasItem, center: Vector2, radius: float, col: Color, segments: int = 0) -> void:
+	var segs: int = segments if segments > 0 else get_count("compass_segments")
+	draw_neon_arc(canvas, center, radius, 0.0, TAU, segs, col)
 
 
 func draw_neon_arc(canvas: CanvasItem, center: Vector2, radius: float, start_a: float, end_a: float,
@@ -114,6 +154,22 @@ func draw_neon_arc(canvas: CanvasItem, center: Vector2, radius: float, start_a: 
 		Color(col.r, col.g, col.b, get_alpha("neon_core")), get_width("neon_core"))
 
 
+func draw_maze_line(canvas: CanvasItem, from: Vector2, to: Vector2, col: Color) -> void:
+	canvas.draw_line(from, to, Color(col.r, col.g, col.b, get_alpha("neon_wide")), get_width("maze_wide"))
+	canvas.draw_line(from, to, Color(col.r, col.g, col.b, get_alpha("neon_mid")), get_width("maze_mid"))
+	canvas.draw_line(from, to, Color(col.r, col.g, col.b, get_alpha("neon_core")), get_width("maze_line"))
+
+
+func draw_maze_arc(canvas: CanvasItem, center: Vector2, radius: float, start_a: float, end_a: float,
+		segments: int, col: Color) -> void:
+	canvas.draw_arc(center, radius, start_a, end_a, segments,
+		Color(col.r, col.g, col.b, get_alpha("neon_wide")), get_width("maze_wide"))
+	canvas.draw_arc(center, radius, start_a, end_a, segments,
+		Color(col.r, col.g, col.b, get_alpha("neon_mid")), get_width("maze_mid"))
+	canvas.draw_arc(center, radius, start_a, end_a, segments,
+		Color(col.r, col.g, col.b, get_alpha("neon_core")), get_width("maze_line"))
+
+
 func _section_dict(section: String) -> Dictionary:
 	match section:
 		"colors": return _colors
@@ -122,4 +178,5 @@ func _section_dict(section: String) -> Dictionary:
 		"sizes": return _sizes
 		"counts": return _counts
 		"seeds": return _seeds
+		"arrays": return _arrays
 		_: return {}

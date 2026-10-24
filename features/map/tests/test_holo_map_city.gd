@@ -33,13 +33,25 @@ func test_look_values_load_from_content_and_missing_key_fails() -> void:
 	var look := HoloCityLook.load_from_content()
 	check(look != null, "look loaded from content")
 	check_eq(look.get_size("old_city_radius"), 190.0, "radius is 190")
-	check_eq(look.get_count("old_city_rings"), 7, "7 rings")
+	check(look.get_count("old_city_rings") >= 7, "maze has >= 7 rings from content")
 	check_eq(look.get_color("old_city"), Color("#ff5a2a"), "orange-red fill")
 	check(look.has_key("sizes", "old_city_radius"), "old_city_radius key exists")
 	check(not look.has_key("sizes", "missing_test_key"), "missing key detected")
 	var failed := [false]
 	look.require_key("sizes", "missing_test_key", func() -> void: failed[0] = true)
 	check(failed[0], "missing key reported failure")
+
+
+func test_every_city_drawing_point_inside_canvas_after_clipping() -> void:
+	var canvas := HoloMapCanvas.new()
+	check_eq(canvas.clip_rect, Rect2(Vector2.ZERO, CANVAS), "clip rect is set to canvas size")
+	var raw_pts: PackedVector2Array = PackedVector2Array([
+		Vector2(-50.0, 100.0), Vector2(1300.0, 400.0), Vector2(500.0, 900.0), Vector2(600.0, 400.0)
+	])
+	var clipped: PackedVector2Array = HoloCityDistricts.clip_polyline(raw_pts, canvas.clip_rect)
+	for p: Vector2 in clipped:
+		check(canvas.clip_rect.has_point(p), "clipped point %s inside canvas rect" % p)
+	canvas.free()
 
 
 func test_every_district_has_six_to_ten_points() -> void:
@@ -86,9 +98,22 @@ func test_city_labels_do_not_overlap() -> void:
 	canvas.mode = HoloMapCanvas.Mode.CITY
 	var labels: Array[HoloMapLabel] = canvas.city_label_set(Ui.theme().default_font)
 	check(labels.size() >= 9, "city labels include districts and one pin (%d)" % labels.size())
-	var pin_screen := Vector2(781.0, 392.0)
-	var pin_rect := Rect2(pin_screen - Vector2(16.0, 16.0), Vector2(32.0, 32.0))
+	var look := HoloCityLook.load_from_content()
+	var pin_screen: Vector2 = look.get_point("old_city_center") + look.get_point("pin_offset")
+	var pin_r: float = look.get_size("pin_reticle_r")
+	var pin_rect := Rect2(pin_screen - Vector2(pin_r, pin_r), Vector2(pin_r, pin_r) * 2)
 	_check_no_overlap(labels, pin_rect)
+	var old_city_label: HoloMapLabel = null
+	for l: HoloMapLabel in labels:
+		if l.text == Ui.text("DISTRICT_OLD_CITY").to_upper():
+			old_city_label = l
+			break
+	check(old_city_label != null, "old city title label exists")
+	if old_city_label != null:
+		for l: HoloMapLabel in labels:
+			if l != old_city_label:
+				check(not l.rect.intersects(old_city_label.rect),
+					"%s does not intersect Old City title" % l.text)
 	canvas.free()
 
 

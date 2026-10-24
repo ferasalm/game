@@ -2,7 +2,6 @@ class_name HoloMapCityView
 extends RefCounted
 ## purpose: Builds city-map district and area-pin labels and collapses pins that share one real place.
 
-const PIN_LABEL_OFFSET: Vector2 = Vector2(0.0, 36.0)
 const MUSNAD_FONT_PATH: String = "res://assets/fonts/noto_sans_old_south_arabian.ttf"
 
 
@@ -16,20 +15,25 @@ static func labels(font: Font, districts: Array[CityDistrictDef], pins: Array[Ci
 	for d: CityDistrictDef in districts:
 		var pos: Vector2 = d.schematic_center if d.has_schematic() else HoloMapGeo.centroid(
 			HoloMapGeo.to_screen_polygon(d.polygon, scale, offset, center, k, r))
+		var anchor: Vector2 = pos
+		if d.has_schematic() and d.schematic.has("reticle_center"):
+			var ret_raw: Array = d.schematic["reticle_center"] as Array
+			anchor = Vector2(float(ret_raw[0]), float(ret_raw[1]))
 		var musnad_text: String = ""
 		if not d.musnad_key.is_empty():
 			musnad_text = TranslationServer.translate(StringName(d.musnad_key))
-		out.append(HoloMapLabels.make_boxed(font, musnad_font, pos, Ui.text(d.name_key), musnad_text, look))
+		var lbl: HoloMapLabel = HoloMapLabels.make_boxed(font, musnad_font, pos, Ui.text(d.name_key), musnad_text, look)
+		lbl.anchor = anchor
+		out.append(lbl)
 
 	for pin: Dictionary in unique_pins(pins, current_area_id):
 		var p: CityDistrictDef = pin["def"]
-		var pin_pos: Vector2 = p.schematic_center if p.has_schematic() else (
-			HoloMapGeo.project(p.center, scale, offset, center, k, r))
-		var pos: Vector2 = pin_pos + PIN_LABEL_OFFSET
-		var musnad_text: String = ""
-		if not p.musnad_key.is_empty():
-			musnad_text = TranslationServer.translate(StringName(p.musnad_key))
-		out.append(HoloMapLabels.make_boxed(font, musnad_font, pos, Ui.text(p.name_key), musnad_text, look))
+		var pin_pos: Vector2 = look.get_point("old_city_center") + look.get_point("pin_offset")
+		var pos: Vector2 = p.schematic_center if p.has_schematic() else pin_pos
+		var font_sz: int = int(look.get_size("font_tooltip"))
+		var lbl: HoloMapLabel = HoloMapLabels.make_boxed(font, musnad_font, pos, Ui.text(p.name_key), "", look, font_sz)
+		lbl.anchor = pin_pos
+		out.append(lbl)
 	return out
 
 

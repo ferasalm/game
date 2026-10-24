@@ -19,13 +19,13 @@ static func make(font: Font, pos: Vector2, text: String, color: Color, font_size
 
 
 static func make_boxed(font: Font, musnad_font: Font, pos: Vector2, text: String, musnad_text: String,
-		look: HoloCityLook) -> HoloMapLabel:
+		look: HoloCityLook, font_size: int = 0) -> HoloMapLabel:
 	var label := HoloMapLabel.new()
 	label.text = text.to_upper()
 	label.musnad_text = musnad_text
 	label.anchor = pos
 	label.pos = pos
-	label.font_size = int(look.get_size("font_en"))
+	label.font_size = font_size if font_size > 0 else int(look.get_size("font_en"))
 	label.musnad_font = musnad_font
 	label.musnad_font_size = int(look.get_size("font_musnad"))
 	label.is_boxed = true
@@ -37,17 +37,19 @@ static func make_boxed(font: Font, musnad_font: Font, pos: Vector2, text: String
 	var pad_y: float = look.get_size("label_pad_y")
 	var gap: float = look.get_size("label_gap")
 
+	var has_mus: bool = musnad_font != null and not musnad_text.is_empty()
 	var en_size: Vector2 = font.get_string_size(label.text, HORIZONTAL_ALIGNMENT_CENTER, -1, label.font_size)
-	var mus_size: Vector2 = musnad_font.get_string_size(label.musnad_text, HORIZONTAL_ALIGNMENT_CENTER, -1, label.musnad_font_size)
+	var mus_size: Vector2 = musnad_font.get_string_size(label.musnad_text, HORIZONTAL_ALIGNMENT_CENTER, -1,
+		label.musnad_font_size) if has_mus else Vector2.ZERO
 	var content_w: float = maxf(en_size.x, mus_size.x)
-	var content_h: float = en_size.y + mus_size.y + gap
-	label.size = Vector2(content_w + pad_x * 2.0, content_h + pad_y * 2.0)
+	var content_h: float = en_size.y + (mus_size.y + gap if has_mus else 0.0)
+	label.size = Vector2(content_w + pad_x * 2, content_h + pad_y * 2)
 	return label
 
 
 static func resolve(labels: Array[HoloMapLabel], bounds: Rect2, obstacles: Array[Rect2] = []) -> Array[HoloMapLabel]:
 	for label: HoloMapLabel in labels:
-		label.pos = _clamp_label(label, label.anchor, bounds)
+		label.pos = _clamp_label(label, label.pos, bounds)
 	for _pass_idx: int in range(MAX_PASSES):
 		var moved: bool = false
 		for i: int in range(labels.size()):
@@ -120,11 +122,13 @@ static func _draw_boxed_label(canvas: Control, label: HoloMapLabel, font: Font) 
 		label.box_bg_alpha), true)
 	canvas.draw_rect(box, label.box_border_color, false, 1.0)
 
-	var en_y: float = box.position.y + 6.0 + font.get_ascent(label.font_size)
+	var has_musnad: bool = label.musnad_font != null and not label.musnad_text.is_empty()
+	var en_y: float = box.position.y + (box.size.y * 0.5 + font.get_ascent(label.font_size) * 0.5) if not has_musnad else (
+		box.position.y + font.get_ascent(label.font_size) + 1.0)
 	canvas.draw_string(font, Vector2(box.position.x, en_y), label.text, HORIZONTAL_ALIGNMENT_CENTER,
 		box.size.x, label.font_size, Color.WHITE)
-	if label.musnad_font != null and not label.musnad_text.is_empty():
-		var mus_y: float = en_y + font.get_descent(label.font_size) + 4.0 + label.musnad_font.get_ascent(label.musnad_font_size)
+	if has_musnad:
+		var mus_y: float = en_y + font.get_descent(label.font_size) + label.musnad_font.get_ascent(label.musnad_font_size)
 		canvas.draw_string(label.musnad_font, Vector2(box.position.x, mus_y), label.musnad_text,
 			HORIZONTAL_ALIGNMENT_CENTER, box.size.x, label.musnad_font_size, label.box_border_color)
 
