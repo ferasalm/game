@@ -1,6 +1,6 @@
 class_name EquipmentHeroHeader
 extends PanelContainer
-## purpose: Hero info box (520x110 at 80,124) with portrait face, name, class, Lv N, and HP/SP/XP bars.
+## purpose: Hero info box (500x140 at 80,124) with portrait bust, name, class, Lv N, and HP/SP/XP bars.
 
 var _name_lbl: Label
 var _class_lbl: Label
@@ -18,8 +18,8 @@ var _face: Control
 func _init() -> void:
 	var style: UiStyleDef = Ui.style()
 	position = Vector2(80.0, 124.0)
-	custom_minimum_size = Vector2(520.0, 132.0)
-	size = Vector2(520.0, 132.0)
+	custom_minimum_size = Vector2(500.0, 140.0)
+	size = Vector2(500.0, 140.0)
 	var panel_box: StyleBoxTexture = UiBoxes.panel(style, &"panel")
 	panel_box.content_margin_top = 4.0
 	panel_box.content_margin_bottom = 4.0
@@ -43,6 +43,8 @@ func set_hero(hero_id: StringName) -> void:
 			c_def = c
 			break
 	_class_lbl.text = "(%s)" % Ui.text(c_def.name_key) if c_def != null else ""
+	_name_lbl.reset_size()
+	_class_lbl.reset_size()
 	_update_vitals(hero_id, def)
 	_update_xp(hero_id)
 	_update_face(hero_id)
@@ -58,6 +60,10 @@ func lv_label() -> Label:
 
 func portrait_face() -> Control:
 	return _face
+
+
+func face_box() -> PanelContainer:
+	return _face_box
 
 
 func _build_ui() -> void:
@@ -93,13 +99,19 @@ func _build_top_line(parent: Control, style: UiStyleDef) -> void:
 	parent.add_child(top_line)
 
 	_name_lbl = Ui.label("", &"NameLabel", style.colour(&"c_brass"))
-	_name_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_name_lbl.add_theme_font_size_override("font_size", style.size(&"s_font_number"))
 	top_line.add_child(_name_lbl)
 
 	_class_lbl = Ui.label("", &"CaptionLabel", style.colour(&"c_epithet"))
+	_class_lbl.add_theme_font_size_override("font_size", style.size(&"s_font_small"))
 	top_line.add_child(_class_lbl)
 
+	var spacer := Control.new()
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	top_line.add_child(spacer)
+
 	_lv_lbl = Ui.label("Lv 1", &"CaptionLabel", style.colour(&"c_text"))
+	_lv_lbl.add_theme_font_size_override("font_size", style.size(&"s_font_small"))
 	top_line.add_child(_lv_lbl)
 
 
@@ -139,7 +151,7 @@ func _make_bar_row(parent: Control, tag_text: String, kind: StringName, bar_h: f
 	bar.add_theme_stylebox_override("background", UiBoxes.bar_back(style))
 	row.add_child(bar)
 	var text_lbl: Label = Ui.label("", &"SmallLabel")
-	text_lbl.custom_minimum_size.x = 64.0
+	text_lbl.custom_minimum_size.x = 84.0
 	text_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	text_lbl.add_theme_font_size_override("font_size", style.size(&"s_font_small"))
 	row.add_child(text_lbl)
@@ -179,7 +191,8 @@ func _update_face(hero_id: StringName) -> void:
 	if _face_box == null:
 		return
 	for c: Node in _face_box.get_children():
+		_face_box.remove_child(c)
 		c.queue_free()
-	_face = PortraitFaces.face(hero_id)
+	_face = PortraitFaces.bust(hero_id)
 	_face.custom_minimum_size = Vector2(96.0, 96.0)
 	_face_box.add_child(_face)

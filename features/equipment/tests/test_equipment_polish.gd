@@ -118,3 +118,42 @@ func test_sockets_show_stones_and_hide_locked() -> void:
 	check(g_box._socket_panels[2].visible, "socket 2 visible when unlocked")
 	Screens.clear()
 	GameState.reset()
+
+
+func test_gemstones_on_fresh_game_shows_e_chip_and_description() -> void:
+	GameState.start_new()
+	var menu: EquipmentMenu = Screens.open(&"equipment") as EquipmentMenu
+	menu.show_hero(&"zayd")
+	menu._on_slot_activated(&"gemstones")
+	var aqiq_row: ListRow = null
+	for r: ListRow in menu.owned_list.rows():
+		if r.name_text() == Ui.text("STONE_AQIQ_RED_NAME"):
+			aqiq_row = r
+			break
+	check(aqiq_row != null, "aqiq_red listed on fresh game")
+	if aqiq_row != null:
+		check_eq(aqiq_row.chip_text(), "E", "aqiq_red shows 'E' chip on fresh game")
+	check_eq(menu.desc.title_text(), Ui.text("STONE_AQIQ_RED_NAME"), "description shows aqiq_red on fresh game")
+	Screens.clear()
+	GameState.reset()
+
+
+func test_armor_on_fresh_game_description_and_e_chip_agree_no_prosthetic_fallback() -> void:
+	GameState.start_new()
+	var menu: EquipmentMenu = Screens.open(&"equipment") as EquipmentMenu
+	menu.show_hero(&"zayd")
+	menu._on_slot_activated(&"armor")
+	var courier_def: EquipDef = ContentDB.get_def("armor", &"courier_jacket") as EquipDef
+	var courier_name: String = Ui.text(courier_def.name_key)
+	var courier_row: ListRow = null
+	for r: ListRow in menu.owned_list.rows():
+		if r.name_text() == courier_name:
+			courier_row = r
+			break
+	check(courier_row != null, "courier jacket in armor list on fresh game")
+	if courier_row != null:
+		check_eq(courier_row.chip_text(), "E", "courier jacket shows 'E' chip")
+	check_eq(menu.desc.title_text(), courier_name, "description matches worn armor")
+	check(not menu.desc.title_text().contains("Arm"), "armor never falls back to prosthetic")
+	Screens.clear()
+	GameState.reset()

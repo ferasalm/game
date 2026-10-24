@@ -39,6 +39,10 @@ func set_item(item: EquipDef) -> void:
 	_effect.text = effect_text
 
 
+func title_text() -> String:
+	return _title.text if _title != null else ""
+
+
 func _build_ui() -> void:
 	for c: Node in get_children():
 		c.queue_free()

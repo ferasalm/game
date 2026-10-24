@@ -38,7 +38,6 @@ func set_hero(hero: StringName) -> void:
 	if _visual != null:
 		_sub_viewport.remove_child(_visual)
 		_visual.queue_free()
-		_visual = null
 	_visual = CharacterVisual.new()
 	_visual.process_mode = Node.PROCESS_MODE_ALWAYS
 	_visual.set_sprite(hero)
@@ -55,7 +54,7 @@ func set_active_slot(slot_name: StringName) -> void:
 func register_box(part_name: StringName, box: Control, anchor_name: StringName) -> void:
 	var style: UiStyleDef = Ui.style()
 	var line := Line2D.new()
-	line.width = 2.0
+	line.width = float(style.size(&"s_frame_line"))
 	line.default_color = style.colour(&"c_cyan")
 	line.top_level = true
 	add_child(line)
@@ -105,7 +104,6 @@ func _build_stage() -> void:
 	_camera.fov = 40.0
 	_camera.current = true
 	_sub_viewport.add_child(_camera)
-
 	_light = DirectionalLight3D.new()
 	_light.rotation_degrees = Vector3(-15.0, 0.0, 0.0)
 	_light.light_energy = 1.0
@@ -117,7 +115,6 @@ func _build_stage() -> void:
 func _build_grid_disc() -> void:
 	var disc_mesh := PlaneMesh.new()
 	disc_mesh.size = Vector2(2.2, 2.2)
-
 	var grid_shader: Shader = load("res://features/equipment/view/grid_disc.gdshader") as Shader
 	var disc_mat := ShaderMaterial.new()
 	disc_mat.shader = grid_shader
@@ -125,7 +122,6 @@ func _build_grid_disc() -> void:
 	disc_mat.set_shader_parameter(&"grid_color", Color(cyan.r, cyan.g, cyan.b, 0.85))
 	disc_mat.set_shader_parameter(&"grid_spacing", 0.15)
 	disc_mat.set_shader_parameter(&"disc_radius", 1.05)
-
 	_disc = MeshInstance3D.new()
 	_disc.mesh = disc_mesh
 	_disc.material_override = disc_mat
@@ -148,7 +144,7 @@ func _apply_hologram() -> void:
 
 
 func _update_leader_lines() -> void:
-	if _camera == null:
+	if _camera == null or _visual == null:
 		return
 	for part_name: StringName in _box_anchors:
 		var entry: Dictionary = _box_anchors[part_name]
@@ -163,34 +159,40 @@ func _update_leader_lines() -> void:
 		var is_left: bool = box.global_position.x < 800.0
 		var box_x: float = box.global_position.x + (box.size.x if is_left else 0.0)
 		var box_edge := Vector2(box_x, box.global_position.y + box.size.y * 0.5)
-		var body_3d: Vector3 = _get_anchor_pos(entry["anchor"] as StringName, is_left)
+		var body_3d: Vector3 = _get_anchor_pos(entry["anchor"] as StringName)
 		var proj: Vector2 = _camera.unproject_position(body_3d)
 		var body_screen: Vector2 = global_position + proj
 		line.points = PackedVector2Array([box_edge, body_screen])
 	_update_line_styles()
 
 
-func _get_anchor_pos(anchor_name: StringName, is_left: bool) -> Vector3:
-	var x_offset: float = -0.15 if is_left else 0.15
-	match anchor_name:
-		&"chest":
-			return Vector3(x_offset, 1.25, 0.0)
-		&"hand":
-			return Vector3(x_offset * 1.2, 0.95, 0.0)
-		&"hip":
-			return Vector3(x_offset, 0.65, 0.0)
-	return Vector3(x_offset, 0.95, 0.0)
+func _get_anchor_pos(anchor_name: StringName) -> Vector3:
+	if _visual == null:
+		return Vector3.ZERO
+	var pos: Vector3 = _visual.anchor_position(anchor_name)
+	if pos == _visual.global_position + _visual.root.position:
+		var h: float = _visual.height() if _visual.height() > 0.0 else 1.8
+		match anchor_name:
+			&"chest":
+				pos.y += h * 0.7
+			&"belt", &"hip":
+				pos.y += h * 0.5
+			&"arm":
+				pos.y += h * 0.6
+				pos.x -= 0.25
+			&"hand":
+				pos.y += h * 0.45
+				pos.x += 0.3
+	return pos
 
 
 func _update_line_styles() -> void:
 	var style: UiStyleDef = Ui.style()
+	var w_active: float = float(style.size(&"s_sweep_h"))
+	var w_norm: float = float(style.size(&"s_frame_line"))
 	for part_name: StringName in _lines:
 		var line: Line2D = _lines[part_name]
-		if part_name == _active_slot:
-			line.default_color = style.colour(&"c_brass")
-			line.width = 3.0
-			line.z_index = 1
-		else:
-			line.default_color = style.colour(&"c_cyan")
-			line.width = 2.0
-			line.z_index = 0
+		var is_act: bool = (part_name == _active_slot)
+		line.default_color = style.colour(&"c_brass" if is_act else &"c_cyan")
+		line.width = w_active if is_act else w_norm
+		line.z_index = 1 if is_act else 0

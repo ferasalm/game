@@ -8,6 +8,7 @@ signal slot_focused(part: StringName)
 var part: StringName = &""
 var is_gemstones: bool = false
 var is_selected: bool = false
+var allow_hover_focus: bool = true
 var _label: Label
 var _icon: TextureRect
 var _name_label: Label
@@ -162,7 +163,8 @@ func _on_focus_entered() -> void:
 
 
 func _on_mouse_entered() -> void:
-	grab_focus()
+	if allow_hover_focus:
+		grab_focus()
 
 
 func _on_pressed() -> void:

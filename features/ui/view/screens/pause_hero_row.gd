@@ -39,7 +39,7 @@ func _build_face(parent: Control, style: UiStyleDef, hero: StringName) -> void:
 	_face_box.custom_minimum_size = Vector2(160, 160)
 	_face_box.add_theme_stylebox_override("panel", UiBoxes.medallion(style, style.colour(&"c_brass")))
 	_face = TextureRect.new()
-	var tex: Texture2D = PortraitFaces.texture(hero)
+	var tex: Texture2D = PortraitFaces.bust_texture(hero)
 	_face.texture = tex if tex != null else CharacterIcons.disc(style.colour(&"c_party").darkened(0.45))
 	_face.custom_minimum_size = Vector2(160, 160)
 	_face.expand_mode = TextureRect.EXPAND_IGNORE_SIZE

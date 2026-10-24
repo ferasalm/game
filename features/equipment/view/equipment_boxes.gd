@@ -38,6 +38,11 @@ func set_active_slot(active_name: StringName) -> void:
 		box.queue_redraw()
 
 
+func set_allow_hover_focus(allowed: bool) -> void:
+	for box: SlotBox in boxes.values():
+		box.allow_hover_focus = allowed
+
+
 func refresh(hero: StringName) -> void:
 	var allowed: Array[StringName] = EquipmentOptions.parts_for(hero)
 	var loadout: LoadoutDef = null

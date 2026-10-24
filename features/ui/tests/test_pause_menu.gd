@@ -72,22 +72,29 @@ func test_pause_party_portraits_fill_frame_and_bars_aligned_in_column() -> void:
 	check(menu != null, "pause opens")
 	var rows: Array[PauseHeroRow] = menu.party().rows()
 	check(rows.size() >= 2, "at least 2 hero rows in pause party")
-	var first_hp_w: float = -1.0
 	for row: PauseHeroRow in rows:
 		var face: TextureRect = row.face_rect()
 		check(face != null, "face exists")
 		check_eq(face.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_CENTERED, "face keeps aspect ratio")
 		check_eq(face.custom_minimum_size, Vector2(160, 160), "face frame is 160x160")
-		var hp: ProgressBar = row.hp_bar()
-		check(hp != null, "hp bar exists")
-		check_eq(hp.custom_minimum_size, Vector2(420, 14), "hp bar size is 420x14")
-		var sp: ProgressBar = row.sp_bar()
-		check(sp != null, "sp bar exists")
-		check_eq(sp.custom_minimum_size, Vector2(420, 14), "sp bar size is 420x14")
-		if first_hp_w < 0.0:
-			first_hp_w = hp.custom_minimum_size.x
-		else:
-			check_eq(hp.custom_minimum_size.x, first_hp_w, "bars aligned on one column")
+	var hp0: ProgressBar = rows[0].hp_bar()
+	var hp1: ProgressBar = rows[1].hp_bar()
+	check(hp0 != null and hp1 != null, "hp bars exist")
+	var r0: Rect2 = hp0.get_global_rect()
+	var r1: Rect2 = hp1.get_global_rect()
+	check_approx(r0.position.x, r1.position.x, 2.0, "both cards HP bars aligned on same X column")
+	check_approx(r0.size.x, r1.size.x, 2.0, "both cards HP bars have same width")
+	var sp0: ProgressBar = rows[0].sp_bar()
+	var sp1: ProgressBar = rows[1].sp_bar()
+	check(sp0 != null and sp1 != null, "sp bars exist")
+	var spr0: Rect2 = sp0.get_global_rect()
+	var spr1: Rect2 = sp1.get_global_rect()
+	check_approx(spr0.position.x, spr1.position.x, 2.0, "both cards SP bars aligned on same X column")
+	check_approx(spr0.size.x, spr1.size.x, 2.0, "both cards SP bars have same width")
 	Screens.clear()
 	tree.paused = false
 	Router.state = Router.STATE_TITLE
+
+
+func check_approx(val: float, target: float, tolerance: float, msg: String) -> void:
+	check(absf(val - target) <= tolerance, "%s: expected %f got %f" % [msg, target, val])

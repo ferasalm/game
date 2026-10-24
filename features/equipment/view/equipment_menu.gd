@@ -76,6 +76,7 @@ func focus_default() -> void:
 func on_back() -> bool:
 	if mode == Mode.LIST:
 		mode = Mode.SLOTS
+		boxes_manager.set_allow_hover_focus(true)
 		boxes_manager.focus_slot(active_slot)
 		return true
 	close()
@@ -117,7 +118,9 @@ func show_hero(hero_id: StringName) -> void:
 	hero = hero_id
 	header.set_hero(hero)
 	stage.set_hero(hero)
+	mode = Mode.SLOTS
 	boxes_manager.refresh(hero)
+	boxes_manager.set_allow_hover_focus(true)
 	var parts: Array[StringName] = EquipmentOptions.parts_for(hero)
 	active_slot = parts[0] if not parts.is_empty() else &"armor"
 	boxes_manager.set_active_slot(active_slot)
@@ -144,6 +147,7 @@ func _on_slot_activated(slot_name: StringName) -> void:
 	stage.set_active_slot(active_slot)
 	owned_list.populate(hero, active_slot)
 	mode = Mode.LIST
+	boxes_manager.set_allow_hover_focus(false)
 	owned_list.focus_first()
 
 

@@ -39,6 +39,8 @@ func populate(hero: StringName, slot_name: StringName) -> void:
 	if slot_name == &"gemstones":
 		var stones: Array[EquipDef] = _gemstone_options(order)
 		var hilt_id: StringName = GameState.equipment.get(Inventory.slot_key(hero, &"hilt"), &"")
+		if hilt_id == &"":
+			hilt_id = _fallback_worn(hero, &"hilt")
 		var sock_list: Array = GameState.sockets.get(hilt_id, [])
 		_create_rows(stones, &"", sock_list)
 		return
@@ -77,7 +79,7 @@ func _gemstone_options(order: Dictionary[StringName, int]) -> Array[EquipDef]:
 	out.sort_custom(func(a: EquipDef, b: EquipDef) -> bool:
 		var by_a: int = order.get(a.rarity, 0)
 		var by_b: int = order.get(b.rarity, 0)
-		return a.id < b.id if by_a == by_b else by_a > by_b)
+		return String(a.id) < String(b.id) if by_a == by_b else by_a > by_b)
 	return out
 
 

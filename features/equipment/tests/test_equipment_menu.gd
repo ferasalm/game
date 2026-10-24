@@ -83,6 +83,22 @@ func test_b_twice_closes_and_restores_focus() -> void:
 	GameState.reset()
 
 
+func test_subviewport_and_character_visual_turns_while_paused() -> void:
+	var menu: EquipmentMenu = _open_menu()
+	var stage: HologramStage = menu.stage
+	check(stage.sub_viewport() != null, "SubViewport exists")
+	var visual: CharacterVisual = stage.visual()
+	check(visual != null and stage.sub_viewport().get_children().has(visual), "visual is SubViewport child")
+	tree.paused = true
+	var r0: float = visual.rotation.y
+	stage._process(0.5)
+	var r1: float = visual.rotation.y
+	check(r1 > r0, "visual keeps turning 20 deg/s while paused")
+	tree.paused = false
+	Screens.clear()
+	GameState.reset()
+
+
 func test_header_and_inventory_rects_do_not_intersect() -> void:
 	var menu: EquipmentMenu = _open_menu()
 	var header_rect := Rect2(menu.header.position, menu.header.size)
@@ -93,7 +109,13 @@ func test_header_and_inventory_rects_do_not_intersect() -> void:
 	check(face != null, "portrait exists")
 	check(face is TextureRect, "portrait is TextureRect")
 	var face_tr := face as TextureRect
+	check(face_tr.texture != null, "portrait texture assigned")
 	check_eq(face_tr.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_CENTERED, "portrait keeps image aspect")
+	var frame: Control = menu.header.face_box()
+	check(frame != null, "portrait frame exists")
+	var frame_rect: Rect2 = frame.get_global_rect()
+	var port_rect: Rect2 = face_tr.get_global_rect()
+	check(port_rect.size.x <= frame_rect.size.x + 1.0 and port_rect.size.y <= frame_rect.size.y + 1.0, "portrait rect inside frame")
 	Screens.clear()
 	GameState.reset()
 
@@ -121,10 +143,9 @@ func test_gemstones_slot_can_take_focus_and_lists_gemstones() -> void:
 	gem_box.grab_focus()
 	check(gem_box.has_focus(), "gemstones has focus")
 	check_eq(menu.active_slot, &"gemstones", "gemstones slot active on focus")
-	var rows: Array[ListRow] = menu.owned_list.rows()
-	check(rows.size() > 0, "gemstones listed in owned list")
+	check(menu.owned_list.rows().size() > 0, "gemstones listed in owned list")
 	var has_aqiq: bool = false
-	for r: ListRow in rows:
+	for r: ListRow in menu.owned_list.rows():
 		if r.name_text() == Ui.text("STONE_AQIQ_RED_NAME"):
 			has_aqiq = true
 			break
@@ -133,59 +154,16 @@ func test_gemstones_slot_can_take_focus_and_lists_gemstones() -> void:
 	GameState.reset()
 
 
-func test_no_two_connector_lines_intersect() -> void:
+func test_slot_hover_does_not_steal_focus_in_list_mode() -> void:
 	var menu: EquipmentMenu = _open_menu()
 	menu.show_hero(&"zayd")
-	menu.stage._process(0.01)
-	var lines_dict: Dictionary[StringName, Line2D] = menu.stage.lines()
-	var visible_lines: Array[Line2D] = []
-	for p: StringName in lines_dict:
-		var l: Line2D = lines_dict[p]
-		if l.visible and l.points.size() >= 2:
-			visible_lines.append(l)
-	check(visible_lines.size() >= 2, "at least 2 visible connector lines")
-	var intersected: bool = false
-	for i: int in visible_lines.size():
-		for j: int in range(i + 1, visible_lines.size()):
-			var l1: Line2D = visible_lines[i]
-			var l2: Line2D = visible_lines[j]
-			if _segments_intersect(l1.points[0], l1.points[1], l2.points[0], l2.points[1]):
-				intersected = true
-				break
-	check(not intersected, "no two connector lines intersect")
+	menu._on_slot_activated(&"blade")
+	check_eq(int(menu.mode), int(EquipmentMenu.Mode.LIST), "in list mode")
+	var rows: Array[ListRow] = menu.owned_list.rows()
+	check(rows.size() > 0 and rows[0].has_focus(), "first list row has focus")
+	var hilt_box: SlotBox = menu.boxes_manager.boxes[&"hilt"]
+	hilt_box._on_mouse_entered()
+	check(not hilt_box.has_focus(), "hover did not steal focus in list mode")
+	check(rows[0].has_focus(), "list row kept focus")
 	Screens.clear()
 	GameState.reset()
-
-
-func test_rects_match_spec_within_2px() -> void:
-	var menu: EquipmentMenu = _open_menu()
-	check_approx(menu.tabs.position.x, 80.0, 2.0, "tabs x")
-	check_approx(menu.tabs.position.y, 40.0, 2.0, "tabs y")
-	check_approx(menu.header.position.x, 80.0, 2.0, "header x")
-	check_approx(menu.header.position.y, 124.0, 2.0, "header y")
-	check_approx(menu.owned_list.position.x, 80.0, 2.0, "list x")
-	check_approx(menu.owned_list.position.y, 280.0, 2.0, "list y")
-	check_approx(menu.stage.position.x, 560.0, 2.0, "stage x")
-	check_approx(menu.stage.position.y, 140.0, 2.0, "stage y")
-	check_approx(menu.boxes_manager.boxes[&"blade"].position.x, 600.0, 2.0, "blade x")
-	check_approx(menu.boxes_manager.boxes[&"blade"].position.y, 180.0, 2.0, "blade y")
-	check_approx(menu.boxes_manager.boxes[&"armor"].position.x, 1210.0, 2.0, "armor x")
-	check_approx(menu.boxes_manager.boxes[&"armor"].position.y, 180.0, 2.0, "armor y")
-	check_approx(menu.stats.position.x, 1400.0, 2.0, "stats x")
-	check_approx(menu.stats.position.y, 140.0, 2.0, "stats y")
-	check_approx(menu.desc.position.x, 80.0, 2.0, "desc x")
-	check_approx(menu.desc.position.y, 900.0, 2.0, "desc y")
-	Screens.clear()
-	GameState.reset()
-
-
-func check_approx(val: float, target: float, tolerance: float, msg: String) -> void:
-	check(absf(val - target) <= tolerance, "%s: expected %f got %f" % [msg, target, val])
-
-
-func _segments_intersect(a: Vector2, b: Vector2, c: Vector2, d: Vector2) -> bool:
-	var d1: float = (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x)
-	var d2: float = (b.x - a.x) * (d.y - a.y) - (b.y - a.y) * (d.x - a.x)
-	var d3: float = (d.x - c.x) * (a.y - c.y) - (d.y - c.y) * (a.x - c.x)
-	var d4: float = (d.x - c.x) * (b.y - c.y) - (d.y - c.y) * (b.x - c.x)
-	return ((d1 > 0.0 and d2 < 0.0) or (d1 < 0.0 and d2 > 0.0)) and ((d3 > 0.0 and d4 < 0.0) or (d3 < 0.0 and d4 > 0.0))

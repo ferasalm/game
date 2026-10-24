@@ -32,11 +32,14 @@ func all_items() -> Array[EquipDef]:
 func worn_item(equipment: Dictionary, hero_name: StringName, part: StringName) -> EquipDef:
 	if part == &"gemstones":
 		var hilt_id: StringName = equipment.get(Inventory.slot_key(hero_name, &"hilt"), &"")
+		if hilt_id == &"" and starts.has(hero_name):
+			hilt_id = Loadout.worn(equipment, starts[hero_name], &"hilt")
 		var socks: Array = GameState.sockets.get(hilt_id, [])
 		var s_id: StringName = StringName(str(socks[0])) if not socks.is_empty() else &""
 		return ContentDB.get_def("stone", s_id) as EquipDef
 	var key: StringName = Inventory.slot_key(hero_name, part)
 	var id: StringName = equipment.get(key, &"")
-	if id == &"" and starts.has(hero_name):
-		id = Loadout.worn(equipment, starts[hero_name], part)
+	if id == &"" and not equipment.has(key) and starts.has(hero_name):
+		if part != &"armor":
+			id = Loadout.worn(equipment, starts[hero_name], part)
 	return ContentDB.get_def("item", id) as EquipDef
