@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CAP_AGY=2; CAP_CF=2; CAP_OC=1
+CAP_AGY=2; CAP_CF=3; CAP_OC=0
 # Slots reporter and DeepSeek spend tracker (DECISIONS 2026-10-23)
 set -uo pipefail
 

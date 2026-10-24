@@ -68,3 +68,5 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-24 | Every hero: accessory slot (ring) with 1-2 gem sockets by rarity; grandfather hilt keeps its 3 | Feras (recommended) | Feras
 - 2026-10-24 | No Kimi; patch, builds DeepSeek V4.1 Flash, triage GLM-5.3 Flash; skills: design V4 Pro/Nemotron/Gemini, code GLM-5.3 | Feras | Feras
 - 2026-10-24 | Environment overhaul as its own track after Feras tests the next merge: level layout per concept art, full buildings, visible streets, sky and storm clouds, a farther camera, no stray wall; cyber-look folds into it | Feras | Feras
+- 2026-10-24 | The Inkling :free builder slot becomes a third Cloudflare opencode slot running GLM-5.3 (`tools/cf_build.sh <task> <brief> <base> cloudflare-workers-ai/@cf/zai-org/glm-5.3`); 5 runs = 2 agy, 2 DeepSeek V4.1 Flash, 1 GLM-5.3 | Feras: "replace inkling with a better model"; GLM-5.3 is already the code model (2026-10-24) | Feras
+- 2026-10-24 | Menu keys: Q/E (LB/RB) switch the hero again; Tab / Shift+Tab (LT/RT) and mouse clicks switch the Equipment / Items / Map tabs | Feras (recommended) | Feras
