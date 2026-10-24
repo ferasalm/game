@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stdio MCP server: triage_trace (GLM-5.3 Flash) and generate_patch (DeepSeek V4.1 Flash) on Cloudflare Workers AI."""
+"""Stdio MCP server: triage_trace (GLM-5.3 Flash), generate_patch (DeepSeek V4.1 Flash), optional .agents persona."""
 # Feras's two-tier debug workflow (2026-10-24): Claude passes repo paths, the server reads the files, so code and logs
 # never enter Claude's context. Needs CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN (Workers AI permission) in the
 # environment or the Windows user environment; Feras sets them, Claude never reads them. Standard library only.
@@ -44,6 +44,8 @@ TOOLS = [
             "trace": {"type": "string", "description": "Error trace, failing test output or bug report."},
             "files": {"type": "array", "items": {"type": "string"}, "description": "Repo-relative paths to include."},
             "context": {"type": "string", "description": "Extra notes (design rules, what was already ruled out)."},
+            "agent": {"type": "string", "description": "Optional persona: a .agents/skills/<name> (e.g. "
+                      "godot-gameplay-scripter, minimal-change-engineer); its SKILL.md leads the system prompt."},
         }},
     },
     {
@@ -53,6 +55,8 @@ TOOLS = [
             "diagnosis": {"type": "string", "description": "The triage result to implement."},
             "files": {"type": "array", "items": {"type": "string"}, "description": "Repo-relative paths to patch."},
             "tests": {"type": "string", "description": "Failing tests or the test to add."},
+            "agent": {"type": "string", "description": "Optional persona: a .agents/skills/<name> (e.g. "
+                      "godot-gameplay-scripter, minimal-change-engineer); its SKILL.md leads the system prompt."},
         }},
     },
 ]
@@ -83,6 +87,15 @@ def _read_files(paths: list) -> str:
     return "\n\n".join(parts)
 
 
+def _system(tool: str, agent: str) -> str:
+    """The persona (an .agents/skills SKILL.md without its frontmatter) first; the tool's rules last, so they win."""
+    path = ROOT / ".agents" / "skills" / agent / "SKILL.md"
+    if not agent or not agent.replace("-", "").isalnum() or not path.is_file():
+        return SYSTEM[tool]
+    body = path.read_text(encoding="utf-8").split("\n---\n", 1)[-1].strip()[:MAX_FILE_CHARS]
+    return f"{body}\n\n## Rules for this answer (they win over the persona above)\n{SYSTEM[tool]}"
+
+
 def _user_message(tool: str, args: dict) -> str:
     files = _read_files(args.get("files", []))
     if tool == "triage_trace":
@@ -101,7 +114,7 @@ def _log_spend(tool: str, usage: dict) -> None:
 
 def call_model(tool: str, args: dict) -> str:
     body = {"model": MODELS[tool], "messages": [
-        {"role": "system", "content": SYSTEM[tool]},
+        {"role": "system", "content": _system(tool, str(args.get("agent", "")))},
         {"role": "user", "content": _user_message(tool, args)},
     ]}
     if os.environ.get("CF_MCP_DRY") == "1":

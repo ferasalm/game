@@ -7,6 +7,8 @@ disable-model-invocation: false
 
 # Architecting a game system
 
+Opus is the state controller, planner and terminal executor only: it writes briefs, tests and specs-of-record, runs commands and reviews; the models below write the long text, the math and the log reading.
+
 Claude plans and reviews; builders reason and write (CLAUDE.md, docs/EFFICIENCY.md 3b). Before briefing, grep
 docs/MAP.md and the area's section of docs/ARCHITECTURE.md, and keep every spec inside the code rules (typed GDScript,
 `logic/` pure, content in JSON Defs, live numbers in state objects, saves in GameState).
@@ -21,6 +23,10 @@ calls DeepSeek V4 Pro, Nemotron or Gemini. Those run as builders, each in its ow
 | NPC or enemy state trees, transitions | Nemotron 3 120B | `bash tools/cf_build.sh <task> <brief> main cloudflare-workers-ai/@cf/nvidia/nemotron-3-120b-a12b` |
 | Math: vectors, quaternions, curves, collision, Godot 4.7 API checks | Gemini 3.8 Flash | `bash tools/build_pipeline.sh agy <task> <brief> main` |
 | Math fallback when agy is out of quota | Gemma 4 26B | `bash tools/cf_build.sh <task> <brief> main cloudflare-workers-ai/@cf/google/gemma-4-26b-a4b-it` |
+
+Personas: name them in the brief as "<name> skill" (build_pipeline pastes up to 2 from .agents/skills):
+DeepSeek V4 Pro = software-architect + game-designer (rules, economy) or level-designer (spaces); Nemotron =
+workflow-architect; Gemini or Gemma math = godot-gameplay-scripter (or godot-shader-developer, technical-artist).
 
 `bash tools/slots.sh` first (5 runs at most across all sessions; cf runs are paid, logged in ../game-wt/cf_spend.csv).
 
