@@ -52,6 +52,10 @@ func _process(_delta: float) -> bool:
 	print("%-52s win %%   secs   interrupts  heals  herbs" % "bilqis rig (zayd in his start gear)")
 	for rig_id: StringName in _pool(_bilqis_rigs(), [&"wrist_rig", &"lens_array"]):
 		print(_row("bilqis: %s" % rig_id, &"grandfather_hilt", &"rustwire_blade", &"salvage_arm", rig_id))
+	print("%-52s win %%   secs   interrupts  heals  herbs" % "bilqis pistol (zayd in his start gear)")
+	for frame_id: StringName in _pool(_pistol_parts(&"frame"), [&"rivet_frame", &"machined_frame"]):
+		for barrel_id: StringName in _pool(_pistol_parts(&"barrel"), [&"rivet_barrel", &"choke_barrel"]):
+			print(_pistol_row("%s + %s" % [frame_id, barrel_id], frame_id, barrel_id))
 	quit(0)
 	return true
 
@@ -81,7 +85,24 @@ func _worn_by(hero_id: StringName) -> Array[StringName]:
 	return out
 
 
-func _row(label: String, hilt_id: StringName, blade_id: StringName, arm_id: StringName, rig_id: StringName) -> String:
+func _pistol_parts(part: StringName) -> Array[StringName]:
+	var out: Array[StringName] = []
+	for part_def: PistolDef in _loader.pistols.values():
+		if part_def.part == part:
+			out.append(part_def.id)
+	return out
+
+
+## A row with Bilqis's pistol parts set explicitly (Zayd in his start gear, Bilqis in the wrist rig).
+func _pistol_row(label: String, frame_id: StringName, barrel_id: StringName) -> String:
+	if not _filter.is_empty() and not label.contains(_filter):
+		return "(skipped) " + label
+	return _row("%s (rig: wrist_rig)" % label, &"grandfather_hilt", &"rustwire_blade", &"salvage_arm", &"wrist_rig", frame_id, barrel_id)
+
+
+func _row(
+		label: String, hilt_id: StringName, blade_id: StringName, arm_id: StringName, rig_id: StringName,
+		frame_id: StringName = &"", barrel_id: StringName = &"") -> String:
 	if not _filter.is_empty() and not label.contains(_filter):
 		return "(skipped) " + label
 	var wins: int = 0
@@ -90,7 +111,8 @@ func _row(label: String, hilt_id: StringName, blade_id: StringName, arm_id: Stri
 	var heals: int = 0
 	var herbs: int = 0
 	for battle_seed: int in range(1, _battles + 1):
-		var sim: BattleSim = _loader.make_sim(hilt_id, blade_id, battle_seed, 0, arm_id, rig_id, _level)
+		var sim: BattleSim = _loader.make_sim(
+			hilt_id, blade_id, battle_seed, 0, arm_id, rig_id, _level, frame_id, barrel_id)
 		for event: TimelineEvent in BattleLoader.autoplay(sim, not _bag.is_empty()):
 			interrupts += 1 if event.kind == &"interrupted" else 0
 			heals += 1 if event.kind == &"healed" and event.detail != &"regen" else 0

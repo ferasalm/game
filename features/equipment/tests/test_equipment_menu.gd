@@ -21,16 +21,6 @@ func test_screens_open_gives_equipment_menu() -> void:
 	GameState.reset()
 
 
-func test_bilqis_shows_two_boxes_zayd_five() -> void:
-	var menu: EquipmentMenu = _open_menu()
-	menu.show_hero(&"zayd")
-	check_eq(menu.boxes_manager.visible_boxes().size(), 5, "Zayd shows 5 boxes")
-	menu.show_hero(&"bilqis")
-	check_eq(menu.boxes_manager.visible_boxes().size(), 2, "Bilqis shows 2 boxes")
-	Screens.clear()
-	GameState.reset()
-
-
 func test_equipping_writes_game_state_equipment() -> void:
 	var menu: EquipmentMenu = _open_menu()
 	menu.show_hero(&"zayd")

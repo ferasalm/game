@@ -1,0 +1,13 @@
+{
+  "kind": "pistol",
+  "items": [
+    {"id": "rivet_frame", "name_key": "PISTOL_RIVET_FRAME", "desc_key": "PISTOL_RIVET_FRAME_DESC", "rarity": "common",
+     "part": "frame", "agility": 0, "cast_speed": 1.0, "weight": 0.8, "upgrade": {"agility": 1}},
+    {"id": "machined_frame", "name_key": "PISTOL_MACHINED_FRAME", "desc_key": "PISTOL_MACHINED_FRAME_DESC",
+     "rarity": "uncommon", "part": "frame", "agility": 1, "cast_speed": 0.95, "weight": 1.2, "upgrade": {"agility": 1}},
+    {"id": "rivet_barrel", "name_key": "PISTOL_RIVET_BARREL", "desc_key": "PISTOL_RIVET_BARREL_DESC", "rarity": "common",
+     "part": "barrel", "attack": 2, "knockback": 0, "weight": 0.4, "upgrade": {"attack": 2}},
+    {"id": "choke_barrel", "name_key": "PISTOL_CHOKE_BARREL", "desc_key": "PISTOL_CHOKE_BARREL_DESC",
+     "rarity": "uncommon", "part": "barrel", "attack": 3, "knockback": 400, "weight": 0.9, "upgrade": {"attack": 2}}
+  ]
+}

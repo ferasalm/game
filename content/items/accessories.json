@@ -1,0 +1,13 @@
+{
+  "kind": "accessory",
+  "items": [
+    {"id": "silver_band", "name_key": "ACCESSORY_SILVER_BAND", "desc_key": "ACCESSORY_SILVER_BAND_DESC",
+     "rarity": "common", "sockets": 1},
+    {"id": "lattice_ring", "name_key": "ACCESSORY_LATTICE_RING", "desc_key": "ACCESSORY_LATTICE_RING_DESC",
+     "rarity": "uncommon", "sockets": 1},
+    {"id": "qamariya_ring", "name_key": "ACCESSORY_QAMARIYA_RING", "desc_key": "ACCESSORY_QAMARIYA_RING_DESC",
+     "rarity": "rare", "sockets": 2},
+    {"id": "sheba_signet", "name_key": "ACCESSORY_SHEBA_SIGNET", "desc_key": "ACCESSORY_SHEBA_SIGNET_DESC",
+     "rarity": "epic", "sockets": 2}
+  ]
+}

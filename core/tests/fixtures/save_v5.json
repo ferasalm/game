@@ -1,0 +1,28 @@
+{
+  "version": 5,
+  "flags": {"workshop_talk_done": true, "chest_opened_chest_saila": true},
+  "equipment": {
+    "zayd.hilt": "grandfather_hilt",
+    "zayd.blade": "rustwire_blade",
+    "zayd.armor": "courier_jacket",
+    "zayd.prosthetic": "salvage_arm",
+    "bilqis.armor": "rig_shawl",
+    "bilqis.prosthetic": "wrist_rig"
+  },
+  "inventory": [
+    "grandfather_hilt", "swift_hilt", "rustwire_blade", "keen_blade", "salvage_arm",
+    "wrist_rig", "lens_array", "courier_jacket", "rig_shawl", "aqiq_red"
+  ],
+  "counters": {"battles": 3},
+  "party": ["zayd", "bilqis"],
+  "place": {"area": "souq_rooftops", "save_point": "sabil"},
+  "money": 130,
+  "bag": {"pink_herb": 2},
+  "vitals": {"zayd": {"hp": 312, "sp": 18}, "bilqis": {"hp": 240, "sp": 30}},
+  "cleared_patrols": ["patrol_scouts"],
+  "play_seconds": 742.5,
+  "xp": {"zayd": 120, "bilqis": 90},
+  "sockets": {"grandfather_hilt": ["aqiq_red"]},
+  "upgrades": {"rustwire_blade": 1},
+  "materials": {"scrap_copper": 3}
+}

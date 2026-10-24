@@ -1,7 +1,9 @@
 {
   "kind": "loadout",
   "items": [
-    {"id": "zayd_start", "hero": "zayd", "hilt": "grandfather_hilt", "blade": "rustwire_blade", "prosthetic": "salvage_arm"},
-    {"id": "bilqis_start", "hero": "bilqis", "prosthetic": "wrist_rig"}
+    {"id": "zayd_start", "hero": "zayd", "hilt": "grandfather_hilt", "blade": "rustwire_blade",
+     "prosthetic": "salvage_arm", "accessory": "silver_band"},
+    {"id": "bilqis_start", "hero": "bilqis", "prosthetic": "wrist_rig", "frame": "rivet_frame",
+     "barrel": "rivet_barrel", "accessory": "silver_band"}
   ]
 }

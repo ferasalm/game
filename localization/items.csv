@@ -33,6 +33,22 @@ PROSTHETIC_LENS_ARRAY,Lens Array
 PROSTHETIC_LENS_ARRAY_DESC,An ocular implant that reads the whole street at once. Grants Nanite Mend and Overclock Link.
 PROSTHETIC_DAWN_LENS,Dawn Lens
 PROSTHETIC_DAWN_LENS_DESC,A lens that catches first light over Marib. Grants Overload Lance and Reboot Pulse.
+PISTOL_RIVET_FRAME,Rivet Frame
+PISTOL_RIVET_FRAME_DESC,The grip of Bilqis's rivet pistol, rebuilt from rooftop salvage. Plain, reliable, hers.
+PISTOL_MACHINED_FRAME,Machined Frame
+PISTOL_MACHINED_FRAME_DESC,A pre-fall machined frame, trued on the bench. It cycles faster than the old one.
+PISTOL_RIVET_BARREL,Rivet Barrel
+PISTOL_RIVET_BARREL_DESC,A rough-turned barrel that fires roofing rivets. Short, loud, honest.
+PISTOL_CHOKE_BARREL,Choke Barrel
+PISTOL_CHOKE_BARREL_DESC,A narrowed barrel that bites the wind; the rivet leaves it hard and straight.
+ACCESSORY_SILVER_BAND,Silver Band
+ACCESSORY_SILVER_BAND_DESC,A thin silver band from the souq smiths. It takes one small stone.
+ACCESSORY_LATTICE_RING,Lattice Ring
+ACCESSORY_LATTICE_RING_DESC,Filigree lattice-work silver; one stone sits in its heart.
+ACCESSORY_QAMARIYA_RING,Qamariya Ring
+ACCESSORY_QAMARIYA_RING_DESC,A ring like a qamariya window; light gathers in its two stones.
+ACCESSORY_SHEBA_SIGNET,Sheba Signet
+ACCESSORY_SHEBA_SIGNET_DESC,An old queen's signet. Two sockets, cut for great stones.
 STATUS_GUARDED,Guarded
 STATUS_OVERCLOCKED,Overclocked
 ACTION_REACTIVE_GUARD,Reactive Guard

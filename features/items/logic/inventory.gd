@@ -30,7 +30,8 @@ static func add_all(owned: Array[StringName], item_ids: Array[StringName]) -> Ar
 
 
 ## "" when the hero may wear this item in this slot now; else why not. Hilts and blades fit only the
-## jambiyah wielder; a prosthetic fits only its own wearer.
+## jambiyah wielder, pistol parts only the pistol wielder; a prosthetic fits only its own wearer; any hero
+## may wear an accessory.
 static func equip_problem(owned: Array[StringName], slot: StringName, item: EquipDef) -> String:
 	if item == null:
 		return "no such item"
@@ -45,12 +46,22 @@ static func equip_problem(owned: Array[StringName], slot: StringName, item: Equi
 			return "" if item is HiltDef and hero == Jambiyah.WIELDER else "'%s' is not a hilt for %s" % [item.id, hero]
 		"blade":
 			return "" if item is BladeDef and hero == Jambiyah.WIELDER else "'%s' is not a blade for %s" % [item.id, hero]
+		"frame":
+			var frame := item as PistolDef
+			return "" if frame != null and frame.part == &"frame" and hero == Pistol.WIELDER \
+					else "'%s' is not a frame for %s" % [item.id, hero]
+		"barrel":
+			var barrel := item as PistolDef
+			return "" if barrel != null and barrel.part == &"barrel" and hero == Pistol.WIELDER \
+					else "'%s' is not a barrel for %s" % [item.id, hero]
 		"prosthetic":
 			var worn := item as ProstheticDef
 			return "" if worn != null and worn.wearer == hero else "'%s' does not fit %s" % [item.id, hero]
 		"armor":
 			var armor := item as ArmorDef
 			return "" if armor != null and armor.heroes.has(hero) else "'%s' is not armor for %s" % [item.id, hero]
+		"accessory":
+			return "" if item is AccessoryDef else "'%s' is not an accessory" % item.id
 	return "'%s' is not a slot" % slot
 
 

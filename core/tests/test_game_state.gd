@@ -30,8 +30,8 @@ func test_round_trip_through_json() -> void:
 
 func test_unknown_versions_are_refused() -> void:
 	var state: Node = _state()
-	check_eq(state.call("from_dict", {"version": 99}), "save version 99, expected 5", "newer version refused")
-	check_eq(state.call("from_dict", {"version": 0}), "save version 0, expected 5", "no version refused")
+	check_eq(state.call("from_dict", {"version": 99}), "save version 99, expected 6", "newer version refused")
+	check_eq(state.call("from_dict", {"version": 0}), "save version 0, expected 6", "no version refused")
 	state.free()
 
 
@@ -43,7 +43,7 @@ func test_version_one_save_migrates_with_empty_equipment() -> void:
 	check_eq(state.call("from_dict", old), "", "version 1 accepted")
 	check_eq((state.get("equipment") as Dictionary).get(&"zayd.armor"), &"courier_jacket", "start armor given")
 	check_eq((state.get("area_id") as StringName), &"ch1_ridge", "other fields kept")
-	check_eq((state.call("to_dict") as Dictionary)["version"], 5, "saved again as version 5")
+	check_eq((state.call("to_dict") as Dictionary)["version"], 6, "saved again as version 6")
 	state.free()
 
 
@@ -98,5 +98,5 @@ func test_version_four_save_migrates_to_version_five() -> void:
 	var xp: Dictionary = state.get("xp")
 	check_eq(xp.get(&"zayd"), 0, "zayd xp 0")
 	check_eq(xp.get(&"bilqis"), 0, "bilqis xp 0")
-	check_eq((state.call("to_dict") as Dictionary)["version"], 5, "saved as version 5")
+	check_eq((state.call("to_dict") as Dictionary)["version"], 6, "saved as version 6")
 	state.free()

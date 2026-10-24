@@ -81,8 +81,9 @@ weight, heroes (who may wear it), upgrade. Weight slows the timeline (existing s
 | concession_plate | Rare | zayd | HP +70, DEF +7, AGI -2, WT +3 | patrol_gate loot |
 
 ## 7. Gear merge (Gear.build; one new CombatantDef, the shared one never changes)
-base -> level growth (class x level) -> armor -> hilt -> blade -> stones (the worn hilt's sockets) -> prosthetic ->
-upgrades (each worn item's upgrade x its level) -> perks (gear perks + class passive) -> caps (AGI 1-99, cast 0.5-2.0).
+base -> level growth (class x level) -> armor -> hilt -> blade -> pistol (frame, barrel) -> stones (the worn
+hilt's and ring's sockets) -> prosthetic -> upgrades (each worn item's upgrade x its level) -> perks (gear perks
++ class passive) -> caps (AGI 1-99, cast 0.5-2.0).
 
 ## 8. Hilt stones
 Built as docs/design/hilt-stones.md says (stones.json, rarities.json `stone_slots`, heirloom rank from flags).

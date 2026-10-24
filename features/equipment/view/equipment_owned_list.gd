@@ -100,11 +100,5 @@ func _fallback_worn(hero: StringName, slot_name: StringName) -> StringName:
 	for l_id: StringName in ContentDB.ids("loadout"):
 		var l := ContentDB.get_def("loadout", l_id) as LoadoutDef
 		if l != null and l.hero == hero:
-			if slot_name == &"hilt":
-				return l.hilt
-			elif slot_name == &"blade":
-				return l.blade
-			elif slot_name == &"prosthetic":
-				return l.prosthetic
-			break
+			return Loadout.worn({}, l, slot_name)
 	return &""

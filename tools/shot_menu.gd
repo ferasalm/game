@@ -37,7 +37,7 @@ func _build_screen() -> void:
 			_screen.open({"shop": &"herb_stall"})
 		"equipment", "fix_equip_zayd":
 			_setup_equipment(&"zayd")
-		"fix_equip_bilqis":
+		"fix_equip_bilqis", "gear_bilqis":
 			_setup_equipment(&"bilqis")
 		"workshop_upgrade", "workshop_gemstones", "workshop_crafting":
 			_setup_workshop()
@@ -65,7 +65,8 @@ func _setup_equipment(hero_name: StringName = &"zayd") -> void:
 	GameState.start_new()
 	var items: Array[StringName] = [
 		&"swift_hilt", &"keen_blade", &"arc_arm", &"concession_plate", &"mesh_abaya",
-		&"sulaimani", &"fayruz", &"jaz_black", &"aqiq_red"
+		&"sulaimani", &"fayruz", &"jaz_black", &"aqiq_red",
+		&"lens_array", &"machined_frame", &"choke_barrel", &"lattice_ring", &"qamariya_ring"
 	]
 	for item_id: StringName in items:
 		Inventory.add(GameState.inventory, item_id)
@@ -102,7 +103,8 @@ func _process(_delta: float) -> void:
 	_frame += 1
 	if _frame >= SETTLE_FRAMES:
 		var img: Image = _sub_vp.get_texture().get_image()
-		var file_name: String = "%s.png" % _menu_kind if _menu_kind.begins_with("fix_") else "menu_%s.png" % _menu_kind
+		var raw_name: bool = _menu_kind.begins_with("fix_") or _menu_kind.begins_with("gear_")
+		var file_name: String = "%s.png" % _menu_kind if raw_name else "menu_%s.png" % _menu_kind
 		var out_path: String = OUT_DIR.path_join(file_name)
 		img.save_png(out_path)
 		print("Saved render to %s (%dx%d)" % [out_path, img.get_width(), img.get_height()])

@@ -5,11 +5,14 @@ extends RefCounted
 ## the saved equipment through Inventory.equip. Items and perks are passed in (looked up by the view).
 
 
-## "zayd" -> blade, hilt, armor, prosthetic; every other hero -> armor, prosthetic.
+## "zayd" -> blade, hilt, armor, prosthetic, accessory; "bilqis" -> frame, barrel, armor, prosthetic,
+## accessory; every other hero -> armor, prosthetic, accessory.
 static func parts_for(hero: StringName) -> Array[StringName]:
 	if hero == Jambiyah.WIELDER:
-		return [&"blade", &"hilt", &"armor", &"prosthetic"]
-	return [&"armor", &"prosthetic"]
+		return [&"blade", &"hilt", &"armor", &"prosthetic", &"accessory"]
+	if hero == Pistol.WIELDER:
+		return [&"frame", &"barrel", &"armor", &"prosthetic", &"accessory"]
+	return [&"armor", &"prosthetic", &"accessory"]
 
 
 ## The owned items that may be worn in the hero's slot, rarer first, then by id. rarity_order: rarity id -> order.
@@ -40,10 +43,16 @@ static func worn(equipment: Dictionary[StringName, StringName], start: LoadoutDe
 static func fighter(
 		base: CombatantDef, hero: StringName, staged: Dictionary[StringName, StringName],
 		items: Dictionary[StringName, EquipDef], perks: Dictionary[StringName, PerkDef]) -> CombatantDef:
-	var hilt := items.get(staged.get(Inventory.slot_key(hero, &"hilt"), &"")) as HiltDef
-	var blade := items.get(staged.get(Inventory.slot_key(hero, &"blade"), &"")) as BladeDef
-	var prosthetic := items.get(staged.get(Inventory.slot_key(hero, &"prosthetic"), &"")) as ProstheticDef
-	return Gear.build(base, hilt, blade, prosthetic, perks)
+	var state := GearState.new()
+	state.base = base
+	state.perks = perks
+	state.hilt = items.get(staged.get(Inventory.slot_key(hero, &"hilt"), &"")) as HiltDef
+	state.blade = items.get(staged.get(Inventory.slot_key(hero, &"blade"), &"")) as BladeDef
+	state.prosthetic = items.get(staged.get(Inventory.slot_key(hero, &"prosthetic"), &"")) as ProstheticDef
+	state.frame = items.get(staged.get(Inventory.slot_key(hero, &"frame"), &"")) as PistolDef
+	state.barrel = items.get(staged.get(Inventory.slot_key(hero, &"barrel"), &"")) as PistolDef
+	state.accessory = items.get(staged.get(Inventory.slot_key(hero, &"accessory"), &"")) as AccessoryDef
+	return Gear.build_hero(hero, state)
 
 
 ## Writes every staged slot into equipment through Inventory.equip; returns what was refused (empty = all ok).

@@ -4,6 +4,7 @@ extends TestCase
 const OWNED: Array[StringName] = [
 	&"grandfather_hilt", &"swift_hilt", &"rustwire_blade", &"keen_blade", &"salvage_arm", &"arc_arm",
 	&"wrist_rig", &"lens_array", &"courier_jacket", &"rig_shawl",
+	&"rivet_frame", &"machined_frame", &"rivet_barrel", &"choke_barrel", &"silver_band", &"lattice_ring",
 ]
 
 
@@ -23,14 +24,26 @@ func test_options_are_owned_fitting_and_rarer_first() -> void:
 	var hers: Array[EquipDef] = EquipmentOptions.options(owned, items, &"bilqis", &"prosthetic", order)
 	check_eq(hers.map(func(item: EquipDef) -> StringName: return item.id), [&"lens_array", &"wrist_rig"], "Bilqis's own prosthetics")
 	check_eq(EquipmentOptions.options(owned, items, &"bilqis", &"hilt", order).size(), 0, "Bilqis has no hilt slot items")
-	check_eq(EquipmentOptions.parts_for(&"bilqis"), [&"armor", &"prosthetic"] as Array[StringName], "two slots for Bilqis")
-	check_eq(EquipmentOptions.parts_for(&"zayd").size(), 4, "four slots for Zayd")
+	var frames: Array[EquipDef] = EquipmentOptions.options(owned, items, &"bilqis", &"frame", order)
+	check_eq(frames.map(func(item: EquipDef) -> StringName: return item.id), [&"machined_frame", &"rivet_frame"], "Bilqis's pistol frames, rarer first")
+	check_eq(EquipmentOptions.options(owned, items, &"zayd", &"frame", order).size(), 0, "Zayd has no frame slot")
+	var rings: Array[EquipDef] = EquipmentOptions.options(owned, items, &"zayd", &"accessory", order)
+	check_eq(rings.map(func(item: EquipDef) -> StringName: return item.id), [&"lattice_ring", &"silver_band"], "Zayd's rings, rarer first")
+	check_eq(EquipmentOptions.options(owned, items, &"bilqis", &"accessory", order).size(), 2, "Bilqis may wear the same rings")
+	check_eq(EquipmentOptions.parts_for(&"bilqis"),
+		[&"frame", &"barrel", &"armor", &"prosthetic", &"accessory"] as Array[StringName],
+		"Bilqis's slots: frame, barrel, armor, prosthetic, accessory")
+	check_eq(EquipmentOptions.parts_for(&"zayd"),
+		[&"blade", &"hilt", &"armor", &"prosthetic", &"accessory"] as Array[StringName],
+		"Zayd's slots: blade, hilt, armor, prosthetic, accessory")
 
 
 func test_options_sort_by_string_not_stringname_address() -> void:
 	var suffix: String = str(Time.get_ticks_usec())
-	var first: Array[String] = _sorted_ids("a_" + suffix, ["zebra", "apple", "mango"])
-	var second: Array[String] = _sorted_ids("b_" + suffix, ["mango", "zebra", "apple"])
+	var first_words: Array[String] = ["zebra", "apple", "mango"]
+	var second_words: Array[String] = ["mango", "zebra", "apple"]
+	var first: Array[String] = _sorted_ids("a_" + suffix, first_words)
+	var second: Array[String] = _sorted_ids("b_" + suffix, second_words)
 	check_eq(first, ["apple", "mango", "zebra"], "one creation order sorts by String id")
 	check_eq(second, ["apple", "mango", "zebra"], "and another creation order gives the same rows")
 
@@ -47,4 +60,7 @@ func _sorted_ids(prefix: String, words: Array[String]) -> Array[String]:
 		owned.append(armor.id)
 	var order: Dictionary[StringName, int] = {&"common": 0}
 	var sorted: Array[EquipDef] = EquipmentOptions.options(owned, items, &"zayd", &"armor", order)
-	return sorted.map(func(item: EquipDef) -> String: return String(item.id).trim_prefix("zz_%s_" % prefix))
+	var out: Array[String] = []
+	for item: EquipDef in sorted:
+		out.append(String(item.id).trim_prefix("zz_%s_" % prefix))
+	return out

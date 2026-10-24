@@ -4,13 +4,14 @@ extends RefCounted
 ## (_v1_to_v2, _v2_to_v3, _v3_to_v4), and sanitize() drops content ids the game no longer knows.
 ## No file or node access: GameState reads and writes the result, SaveService stores it.
 
-const VERSION: int = 5
+const VERSION: int = 6
 ## Oldest save shape still accepted (version 1 had no equipment, version 2 no inventory).
 const OLDEST: int = 1
 const START_HERO: StringName = &"zayd"
+const START_RING: StringName = &"silver_band"
 
 
-## Returns {"ok": true, "data": <version-5 dictionary>} or {"ok": false, "error": "<reason>"}.
+## Returns {"ok": true, "data": <version-6 dictionary>} or {"ok": false, "error": "<reason>"}.
 static func migrate(raw: Dictionary) -> Dictionary:
 	var version: int = int(raw.get("version", 0))
 	if version < OLDEST or version > VERSION:
@@ -27,6 +28,9 @@ static func migrate(raw: Dictionary) -> Dictionary:
 		version = 4
 	if version == 4:
 		data = _v4_to_v5(data)
+		version = 5
+	if version == 5:
+		data = _v5_to_v6(data)
 	data["version"] = VERSION
 	return {"ok": true, "data": data}
 
@@ -82,6 +86,23 @@ static func _v4_to_v5(data: Dictionary) -> Dictionary:
 	data["sockets"] = {"grandfather_hilt": ["aqiq_red"]}
 	data["upgrades"] = {}
 	data["materials"] = {}
+	return data
+
+
+## Version 6 adds Bilqis's rivet pistol (frame and barrel) and every party hero's accessory ring to the
+## start gear, owned and worn; ring sockets start empty.
+static func _v5_to_v6(data: Dictionary) -> Dictionary:
+	var owned: Array = (data.get("inventory", []) as Array).duplicate()
+	var equipment: Dictionary = (data.get("equipment", {}) as Dictionary).duplicate()
+	equipment["bilqis.frame"] = "rivet_frame"
+	equipment["bilqis.barrel"] = "rivet_barrel"
+	for member: Variant in (data.get("party", []) as Array):
+		equipment["%s.accessory" % member] = String(START_RING)
+	for item: String in ["rivet_frame", "rivet_barrel", String(START_RING)]:
+		if not owned.has(item):
+			owned.append(item)
+	data["equipment"] = equipment
+	data["inventory"] = owned
 	return data
 
 

@@ -12,7 +12,8 @@ static func current(equipment: Dictionary[StringName, StringName], start: Loadou
 	return out
 
 
-## The item worn in one part slot ("hilt", "blade", "prosthetic") or &"" when neither saved nor in the start gear.
+## The item worn in one part slot ("hilt", "blade", "frame", "barrel", "accessory", "prosthetic") or
+## &"" when neither saved nor in the start gear.
 static func worn(equipment: Dictionary[StringName, StringName], start: LoadoutDef, part: StringName) -> StringName:
 	var saved: StringName = equipment.get(Inventory.slot_key(start.hero, part), &"")
 	if saved != &"":
@@ -22,4 +23,12 @@ static func worn(equipment: Dictionary[StringName, StringName], start: LoadoutDe
 			return start.hilt
 		&"blade":
 			return start.blade
-	return start.prosthetic
+		&"frame":
+			return start.frame
+		&"barrel":
+			return start.barrel
+		&"accessory":
+			return start.accessory
+		&"prosthetic":
+			return start.prosthetic
+	return &""

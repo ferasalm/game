@@ -1,17 +1,21 @@
 class_name EquipmentBoxes
 extends RefCounted
-## purpose: Manages the 5 equipment slot boxes, their positions, visibility per hero and focus navigation.
+## purpose: Manages the 8 equipment slot boxes, their positions, visibility per hero and focus navigation.
 
-const SLOTS: Array[StringName] = [&"blade", &"hilt", &"gemstones", &"armor", &"prosthetic"]
+const SLOTS: Array[StringName] = [&"blade", &"hilt", &"gemstones", &"frame", &"barrel", &"armor", &"prosthetic", &"accessory"]
 const POS: Dictionary[StringName, Vector2] = {
 	&"blade": Vector2(600.0, 180.0),
 	&"hilt": Vector2(600.0, 420.0),
 	&"gemstones": Vector2(600.0, 660.0),
+	&"frame": Vector2(600.0, 180.0),
+	&"barrel": Vector2(600.0, 420.0),
 	&"armor": Vector2(1210.0, 180.0),
 	&"prosthetic": Vector2(1210.0, 420.0),
+	&"accessory": Vector2(1210.0, 660.0),
 }
 const ANCHORS: Dictionary[StringName, StringName] = {
-	&"blade": &"hand_left", &"hilt": &"belt", &"gemstones": &"hip", &"armor": &"chest", &"prosthetic": &"arm_left",
+	&"blade": &"hand_left", &"hilt": &"belt", &"gemstones": &"hip", &"frame": &"belt", &"barrel": &"hand",
+	&"armor": &"chest", &"prosthetic": &"arm_left", &"accessory": &"feet",
 }
 
 var boxes: Dictionary[StringName, SlotBox] = {}
@@ -21,14 +25,15 @@ func build(root: Control, stage: HologramStage, on_activated: Callable, on_focus
 	for slot_name: StringName in SLOTS:
 		var box := SlotBox.new()
 		box.position = POS[slot_name]
-		box.setup(slot_name, Ui.text("EQUIP_SLOT_" + slot_name.to_upper()), slot_name == &"gemstones")
+		box.setup(
+			slot_name, Ui.text("EQUIP_SLOT_" + slot_name.to_upper()),
+			slot_name == &"gemstones", slot_name == &"accessory")
 		box.slot_activated.connect(on_activated)
 		if on_focused.is_valid():
 			box.slot_focused.connect(on_focused)
 		root.add_child(box)
 		boxes[slot_name] = box
 		stage.register_box(slot_name, box, ANCHORS[slot_name])
-	_wire_focus()
 
 
 func set_active_slot(active_name: StringName) -> void:
@@ -57,33 +62,44 @@ func refresh(hero: StringName) -> void:
 		if slot_name == &"gemstones":
 			fits = allowed.has(&"hilt")
 		box.visible = fits
-		if fits:
-			if slot_name == &"gemstones":
-				var hilt_id: StringName = GameState.equipment.get(Inventory.slot_key(hero, &"hilt"), &"")
-				if hilt_id == &"" and loadout != null:
-					hilt_id = Loadout.worn(GameState.equipment, loadout, &"hilt")
-				var sock_list: Array = GameState.sockets.get(hilt_id, [])
-				var hilt_def := ContentDB.get_def("hilt", hilt_id) as HiltDef
-				box.set_sockets(sock_list, Stones.open_slots(hilt_def, GameState.flags))
-			else:
-				var slot_key: StringName = Inventory.slot_key(hero, slot_name)
-				var worn_id: StringName = GameState.equipment.get(slot_key, &"")
-				if worn_id == &"" and not GameState.equipment.has(slot_key) and loadout != null:
-					if slot_name == &"hilt":
-						worn_id = loadout.hilt
-					elif slot_name == &"blade":
-						worn_id = loadout.blade
-					elif slot_name == &"prosthetic":
-						worn_id = loadout.prosthetic
-				var item: EquipDef = ContentDB.get_def("item", worn_id) as EquipDef
-				box.set_item(item)
+		if not fits:
+			continue
+		if slot_name == &"gemstones":
+			var hilt_id: StringName = GameState.equipment.get(Inventory.slot_key(hero, &"hilt"), &"")
+			if hilt_id == &"" and loadout != null:
+				hilt_id = Loadout.worn(GameState.equipment, loadout, &"hilt")
+			var sock_list: Array = GameState.sockets.get(hilt_id, [])
+			var hilt_def := ContentDB.get_def("hilt", hilt_id) as HiltDef
+			box.set_sockets(sock_list, Stones.open_slots(hilt_def, GameState.flags))
+		elif slot_name == &"accessory":
+			_refresh_accessory(box, hero, loadout)
+		else:
+			var slot_key: StringName = Inventory.slot_key(hero, slot_name)
+			var worn_id: StringName = GameState.equipment.get(slot_key, &"")
+			if worn_id == &"" and not GameState.equipment.has(slot_key) and loadout != null:
+				worn_id = Loadout.worn(GameState.equipment, loadout, slot_name)
+			var item: EquipDef = ContentDB.get_def("item", worn_id) as EquipDef
+			box.set_item(item)
+	_rewire_focus()
+
+
+## The ring worn in the accessory slot with its gem sockets (read only, like the hilt's gemstones).
+func _refresh_accessory(box: SlotBox, hero: StringName, loadout: LoadoutDef) -> void:
+	var slot_key: StringName = Inventory.slot_key(hero, &"accessory")
+	var ring_id: StringName = GameState.equipment.get(slot_key, &"")
+	if ring_id == &"" and not GameState.equipment.has(slot_key) and loadout != null:
+		ring_id = loadout.accessory
+	var ring := ContentDB.get_def("accessory", ring_id) as AccessoryDef
+	box.set_item(ring)
+	box.set_sockets(GameState.sockets.get(ring_id, []), ring.sockets if ring != null else 0)
 
 
 func visible_boxes() -> Array[SlotBox]:
 	var out: Array[SlotBox] = []
-	for b: SlotBox in boxes.values():
-		if b.visible:
-			out.append(b)
+	for slot_name: StringName in SLOTS:
+		var box: SlotBox = boxes.get(slot_name)
+		if box != null and box.visible:
+			out.append(box)
 	return out
 
 
@@ -100,15 +116,29 @@ func focus_slot(slot_name: StringName) -> void:
 		focus_first()
 
 
-func _wire_focus() -> void:
-	boxes[&"blade"].focus_neighbor_bottom = boxes[&"hilt"].get_path()
-	boxes[&"blade"].focus_neighbor_right = boxes[&"armor"].get_path()
-	boxes[&"hilt"].focus_neighbor_top = boxes[&"blade"].get_path()
-	boxes[&"hilt"].focus_neighbor_bottom = boxes[&"gemstones"].get_path()
-	boxes[&"hilt"].focus_neighbor_right = boxes[&"prosthetic"].get_path()
-	boxes[&"gemstones"].focus_neighbor_top = boxes[&"hilt"].get_path()
-	boxes[&"gemstones"].focus_neighbor_right = boxes[&"prosthetic"].get_path()
-	boxes[&"armor"].focus_neighbor_bottom = boxes[&"prosthetic"].get_path()
-	boxes[&"armor"].focus_neighbor_left = boxes[&"blade"].get_path()
-	boxes[&"prosthetic"].focus_neighbor_top = boxes[&"armor"].get_path()
-	boxes[&"prosthetic"].focus_neighbor_left = boxes[&"hilt"].get_path()
+## Rewires d-pad focus between the visible boxes: the nearest box in each direction wins (side distance
+## outweighs along distance, so up/down stay in a column and left/right cross at the same height).
+func _rewire_focus() -> void:
+	var vis: Array[SlotBox] = visible_boxes()
+	for box: SlotBox in vis:
+		box.focus_neighbor_top = _nearest(box, vis, Vector2(0.0, -1.0))
+		box.focus_neighbor_bottom = _nearest(box, vis, Vector2(0.0, 1.0))
+		box.focus_neighbor_left = _nearest(box, vis, Vector2(-1.0, 0.0))
+		box.focus_neighbor_right = _nearest(box, vis, Vector2(1.0, 0.0))
+
+
+func _nearest(from: SlotBox, pool: Array[SlotBox], dir: Vector2) -> NodePath:
+	var best: SlotBox = null
+	var best_rank: float = INF
+	for other: SlotBox in pool:
+		if other == from:
+			continue
+		var delta: Vector2 = other.position - from.position
+		var along: float = delta.dot(dir)
+		if along <= 0.0:
+			continue
+		var rank: float = absf(delta.x * dir.y - delta.y * dir.x) * 10.0 + along
+		if rank < best_rank:
+			best_rank = rank
+			best = other
+	return best.get_path() if best != null else NodePath()

@@ -89,7 +89,9 @@ func test_shipped_perks_sit_on_rare_and_above_only() -> void:
 		var item := ContentDB.get_def("item", item_id) as EquipDef
 		var tier := ContentDB.get_def("rarity", item.rarity) as RarityDef
 		check(item.perk_problem(tier).is_empty(), "%s: %s" % [item_id, item.perk_problem(tier)])
-		if tier.allows_perk:
+		if item is AccessoryDef:
+			check(item.perk == &"", "%s: accessories never carry a perk" % item_id)
+		elif tier.allows_perk:
 			check(item.perk != &"", "%s is %s and carries its extra perk" % [item_id, item.rarity])
 
 

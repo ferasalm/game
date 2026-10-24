@@ -7,6 +7,8 @@ signal slot_focused(part: StringName)
 
 var part: StringName = &""
 var is_gemstones: bool = false
+## Shows the worn item's gem sockets under the label instead of its icon (the accessory ring).
+var show_sockets: bool = false
 var is_selected: bool = false
 var allow_hover_focus: bool = true
 var _label: Label
@@ -34,15 +36,16 @@ func _ready() -> void:
 	_build_ui()
 
 
-func setup(part_name: StringName, display_label: String, gemstones: bool = false) -> SlotBox:
+func setup(part_name: StringName, display_label: String, gemstones: bool = false, with_sockets: bool = false) -> SlotBox:
 	part = part_name
 	is_gemstones = gemstones
+	show_sockets = with_sockets
 	if _label != null:
 		_label.text = display_label
 	if _sockets_row != null:
-		_sockets_row.visible = is_gemstones
+		_sockets_row.visible = is_gemstones or show_sockets
 	if _icon != null:
-		_icon.visible = not is_gemstones
+		_icon.visible = not is_gemstones and not show_sockets
 	queue_redraw()
 	return self
 
@@ -53,7 +56,11 @@ func set_item(item: EquipDef) -> void:
 	_worn_item = item
 	if item != null:
 		_has_dim_ring = false
-		ItemIcons.apply(_icon, item, 96)
+		if show_sockets:
+			_icon.visible = false
+			_sockets_row.visible = true
+		else:
+			ItemIcons.apply(_icon, item, 96)
 		if _name_label != null:
 			_name_label.text = Ui.text(item.name_key)
 			_name_label.add_theme_color_override("font_color", UiRarity.colour(item.rarity))
@@ -62,6 +69,9 @@ func set_item(item: EquipDef) -> void:
 		for c: Node in _icon.get_children():
 			c.queue_free()
 		_icon.texture = ItemIcons.dim_ring(96)
+		if show_sockets:
+			_icon.visible = true
+			_sockets_row.visible = false
 		if _name_label != null:
 			_name_label.text = ""
 			_name_label.remove_theme_color_override("font_color")
@@ -88,7 +98,7 @@ func icon_texture() -> Texture2D:
 
 
 func set_sockets(stones_list: Array, open_count: int) -> void:
-	if not is_gemstones:
+	if not is_gemstones and not show_sockets:
 		return
 	for i: int in range(3):
 		if i >= _socket_panels.size():
@@ -121,7 +131,7 @@ func _build_ui() -> void:
 	_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_icon.visible = not is_gemstones
+	_icon.visible = not is_gemstones and not show_sockets
 	column.add_child(_icon)
 
 	_build_sockets_row(column)
@@ -141,7 +151,7 @@ func _build_sockets_row(parent: Control) -> void:
 	_sockets_row.alignment = BoxContainer.ALIGNMENT_CENTER
 	_sockets_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_sockets_row.add_theme_constant_override("separation", 6)
-	_sockets_row.visible = is_gemstones
+	_sockets_row.visible = is_gemstones or show_sockets
 	_socket_panels.clear()
 	for i: int in range(3):
 		var socket := PanelContainer.new()

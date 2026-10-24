@@ -56,13 +56,11 @@ func focus_first() -> void:
 func _populate_upgrades() -> void:
 	var items: Array[StringName] = []
 	for id_name: StringName in GameState.inventory:
-		if ContentDB.get_def("blade", id_name) != null or ContentDB.get_def("armor", id_name) != null:
-			if not items.has(id_name):
-				items.append(id_name)
+		if _is_upgradeable(id_name) and not items.has(id_name):
+			items.append(id_name)
 	for slot_item: StringName in GameState.equipment.values():
-		if ContentDB.get_def("blade", slot_item) != null or ContentDB.get_def("armor", slot_item) != null:
-			if not items.has(slot_item):
-				items.append(slot_item)
+		if _is_upgradeable(slot_item) and not items.has(slot_item):
+			items.append(slot_item)
 	for item_id: StringName in items:
 		var item := ContentDB.get_def("item", item_id) as EquipDef
 		var lvl: int = int(GameState.upgrades.get(item_id, 0))
@@ -108,3 +106,10 @@ static func _recipe_name(recipe: RecipeDef) -> String:
 	if st != null and st.name_key != "":
 		return Ui.text(st.name_key)
 	return String(recipe.output)
+
+
+## Blades, armor and pistol parts carry upgrade levels (features/workshop/logic/upgrades.gd).
+static func _is_upgradeable(id_name: StringName) -> bool:
+	return ContentDB.get_def("blade", id_name) != null \
+		or ContentDB.get_def("armor", id_name) != null \
+		or ContentDB.get_def("pistol", id_name) != null

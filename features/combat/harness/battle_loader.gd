@@ -1,7 +1,7 @@
 class_name BattleLoader
 extends RefCounted
 ## Gathers the battle content from a loaded ContentDB and builds ready-to-run BattleSims
-## for the default encounter. Fighters come from the pure gear logic (Gear.build_hero).
+## for the default encounter. Fighters come from the pure gear logic (Gear.build_hero via PartyBuilder).
 
 var rules: BattleRulesDef
 var economy: EconomyRulesDef
@@ -14,6 +14,8 @@ var hilts: Dictionary[StringName, HiltDef] = {}
 var blades: Dictionary[StringName, BladeDef] = {}
 var prosthetics: Dictionary[StringName, ProstheticDef] = {}
 var armors: Dictionary[StringName, ArmorDef] = {}
+var pistols: Dictionary[StringName, PistolDef] = {}
+var accessories: Dictionary[StringName, AccessoryDef] = {}
 var stones: Dictionary[StringName, StoneDef] = {}
 var classes: Dictionary[StringName, ClassDef] = {}
 var levels: LevelsDef
@@ -43,6 +45,10 @@ static func from_db(db: Node, encounter_id: StringName = &"rooftop_patrol") -> B
 		loader.prosthetics[prosthetic_id] = db.call("get_def", "prosthetic", prosthetic_id) as ProstheticDef
 	for armor_id: StringName in db.call("ids", "armor"):
 		loader.armors[armor_id] = db.call("get_def", "armor", armor_id) as ArmorDef
+	for part_id: StringName in db.call("ids", "pistol"):
+		loader.pistols[part_id] = db.call("get_def", "pistol", part_id) as PistolDef
+	for ring_id: StringName in db.call("ids", "accessory"):
+		loader.accessories[ring_id] = db.call("get_def", "accessory", ring_id) as AccessoryDef
 	for stone_id: StringName in db.call("ids", "stone"):
 		loader.stones[stone_id] = db.call("get_def", "stone", stone_id) as StoneDef
 	for class_id: StringName in db.call("ids", "class"):
@@ -59,76 +65,30 @@ func fighter(hero_id: StringName, hilt_id: StringName, blade_id: StringName, pro
 	return Gear.build(combatants.get(hero_id), hilts.get(hilt_id), blades.get(blade_id), prosthetics.get(prosthetic_id), perks)
 
 
-func hero_from_state(hero_id: StringName, game_state: Object = null) -> CombatantDef:
-	var state := GearState.new()
-	state.base = combatants.get(hero_id)
-	state.perks = perks
-	for c: ClassDef in classes.values():
-		if c.hero == hero_id:
-			state.class_def = c
-			break
-	if game_state != null:
-		var hero_xp: int = int(game_state.get("xp").get(hero_id, 0)) if "xp" in game_state else 0
-		state.level = Progression.level(hero_xp, levels)
-		var equip: Dictionary = game_state.get("equipment") if "equipment" in game_state else {}
-		var start: LoadoutDef = _start_of(hero_id)
-		var hilt_id: StringName = Loadout.worn(equip, start, &"hilt")
-		var blade_id: StringName = Loadout.worn(equip, start, &"blade")
-		var prosthetic_id: StringName = Loadout.worn(equip, start, &"prosthetic")
-		var armor_id: StringName = equip.get(Inventory.slot_key(hero_id, &"armor"), &"")
-		state.armor = armors.get(armor_id)
-		state.hilt = hilts.get(hilt_id)
-		state.blade = blades.get(blade_id)
-		state.prosthetic = prosthetics.get(prosthetic_id)
-		if "sockets" in game_state and hilt_id != &"":
-			var sock_list: Array = game_state.get("sockets").get(hilt_id, [])
-			for stone_name: Variant in sock_list:
-				var s_id := StringName(str(stone_name))
-				if stones.has(s_id):
-					state.socketed_stones.append(stones[s_id])
-		if "upgrades" in game_state:
-			state.upgrades = game_state.get("upgrades")
-	return Gear.build_hero(hero_id, state)
-
-
 func zayd_with(hilt_id: StringName, blade_id: StringName, prosthetic_id: StringName = &"") -> CombatantDef:
 	return fighter(&"zayd", hilt_id, blade_id, prosthetic_id)
 
 
+## The hero's fighter from a GameState (equipment, sockets, upgrades, xp); the assembly lives in PartyBuilder.
+func hero_from_state(hero_id: StringName, game_state: Object = null) -> CombatantDef:
+	return PartyBuilder.hero(self, hero_id, game_state)
+
+
 func party_from_equipment(
 		equipment: Dictionary[StringName, StringName], hero_ids: Array[StringName] = []) -> Array[CombatantDef]:
-	var party: Array[CombatantDef] = []
-	var ids: Array[StringName] = hero_ids if not hero_ids.is_empty() else economy.start_party
-	for hero_id: StringName in ids:
-		var start: LoadoutDef = _start_of(hero_id)
-		var state := GearState.new()
-		state.base = combatants.get(hero_id)
-		state.perks = perks
-		for c: ClassDef in classes.values():
-			if c.hero == hero_id:
-				state.class_def = c
-				break
-		state.hilt = hilts.get(Loadout.worn(equipment, start, &"hilt"))
-		state.blade = blades.get(Loadout.worn(equipment, start, &"blade"))
-		state.prosthetic = prosthetics.get(Loadout.worn(equipment, start, &"prosthetic"))
-		var armor_id: StringName = equipment.get(Inventory.slot_key(hero_id, &"armor"), &"")
-		state.armor = armors.get(armor_id)
-		party.append(Gear.build_hero(hero_id, state))
-	return party
+	return PartyBuilder.party_from_equipment(self, equipment, hero_ids)
 
 
 func party_from_state(game_state: Object, hero_ids: Array[StringName] = []) -> Array[CombatantDef]:
-	var party: Array[CombatantDef] = []
-	var ids: Array[StringName] = hero_ids if not hero_ids.is_empty() else economy.start_party
-	for hero_id: StringName in ids:
-		party.append(hero_from_state(hero_id, game_state))
-	return party
+	return PartyBuilder.party_from_state(self, game_state, hero_ids)
 
 
+## A sim for the two start heroes: explicit Zayd gear, Bilqis's rig plus pistol parts
+## (empty ids fall back to her start pistol) at one hero level.
 func make_sim(
 		hilt_id: StringName, blade_id: StringName, battle_seed: int, ambush: int = 0,
 		zayd_prosthetic: StringName = &"", bilqis_prosthetic: StringName = &"",
-		hero_level: int = 1) -> BattleSim:
+		hero_level: int = 1, frame_id: StringName = &"", barrel_id: StringName = &"") -> BattleSim:
 	var zayd_state := GearState.new()
 	zayd_state.base = combatants.get(&"zayd")
 	zayd_state.hilt = hilts.get(hilt_id)
@@ -146,6 +106,10 @@ func make_sim(
 	bilqis_state.prosthetic = prosthetics.get(bilqis_prosthetic)
 	bilqis_state.level = hero_level
 	bilqis_state.perks = perks
+	var bilqis_start: LoadoutDef = _start_loadout_of(&"bilqis")
+	bilqis_state.frame = pistols.get(frame_id if frame_id != &"" else bilqis_start.frame)
+	bilqis_state.barrel = pistols.get(barrel_id if barrel_id != &"" else bilqis_start.barrel)
+	bilqis_state.accessory = accessories.get(bilqis_start.accessory)
 	for c: ClassDef in classes.values():
 		if c.hero == &"bilqis":
 			bilqis_state.class_def = c
@@ -191,7 +155,7 @@ static func autoplay(sim: BattleSim, use_items: bool = false) -> Array[TimelineE
 	return trace
 
 
-func _start_of(hero_id: StringName) -> LoadoutDef:
+func _start_loadout_of(hero_id: StringName) -> LoadoutDef:
 	for start: LoadoutDef in loadouts.values():
 		if start.hero == hero_id:
 			return start

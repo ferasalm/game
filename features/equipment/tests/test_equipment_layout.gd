@@ -38,27 +38,28 @@ func test_rects_match_spec_within_2px() -> void:
 
 func test_no_two_connector_lines_intersect() -> void:
 	var menu: EquipmentMenu = _open_menu()
-	menu.show_hero(&"zayd")
-	menu.stage._process(0.01)
-	var lines_dict: Dictionary[StringName, Line2D] = menu.stage.lines()
-	var visible_lines: Array[Line2D] = []
-	for p: StringName in lines_dict:
-		var l: Line2D = lines_dict[p]
-		if l.visible and l.points.size() >= 2:
-			visible_lines.append(l)
-	check(visible_lines.size() >= 2, "at least 2 visible connector lines")
-	var intersected: bool = false
-	var shared: bool = false
-	for i: int in visible_lines.size():
-		for j: int in range(i + 1, visible_lines.size()):
-			var l1: Line2D = visible_lines[i]
-			var l2: Line2D = visible_lines[j]
-			if _segments_intersect(l1.points[0], l1.points[1], l2.points[0], l2.points[1]):
-				intersected = true
-			if l1.points[1].distance_to(l2.points[1]) < 8.0:
-				shared = true
-	check(not intersected, "no two connector lines intersect")
-	check(not shared, "no two connector lines share an end point")
+	for hero_id: StringName in [&"zayd", &"bilqis"]:
+		menu.show_hero(hero_id)
+		menu.stage._process(0.01)
+		var lines_dict: Dictionary[StringName, Line2D] = menu.stage.lines()
+		var visible_lines: Array[Line2D] = []
+		for p: StringName in lines_dict:
+			var l: Line2D = lines_dict[p]
+			if l.visible and l.points.size() >= 2:
+				visible_lines.append(l)
+		check(visible_lines.size() >= 2, "%s: at least 2 visible connector lines" % hero_id)
+		var intersected: bool = false
+		var shared: bool = false
+		for i: int in visible_lines.size():
+			for j: int in range(i + 1, visible_lines.size()):
+				var l1: Line2D = visible_lines[i]
+				var l2: Line2D = visible_lines[j]
+				if _segments_intersect(l1.points[0], l1.points[1], l2.points[0], l2.points[1]):
+					intersected = true
+				if l1.points[1].distance_to(l2.points[1]) < 8.0:
+					shared = true
+		check(not intersected, "%s: no two connector lines intersect" % hero_id)
+		check(not shared, "%s: no two connector lines share an end point" % hero_id)
 	Screens.clear()
 	GameState.reset()
 

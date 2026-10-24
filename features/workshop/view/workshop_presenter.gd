@@ -18,7 +18,8 @@ static func preview_upgrade(item_id: StringName) -> Dictionary:
 	var prob: StringName = Upgrades.problem(item, lvl, costs, rarities, WorkshopService.holdings())
 
 	var loader := BattleLoader.from_db(ContentDB)
-	var now_def: CombatantDef = loader.hero_from_state(&"zayd", GameState)
+	var preview_hero: StringName = _hero_of(item_id)
+	var now_def: CombatantDef = loader.hero_from_state(preview_hero, GameState)
 	var staged := StagedState.new()
 	for up_k: StringName in GameState.upgrades:
 		staged.upgrades[up_k] = GameState.upgrades[up_k]
@@ -27,8 +28,15 @@ static func preview_upgrade(item_id: StringName) -> Dictionary:
 	staged.sockets = GameState.sockets
 	staged.xp = GameState.xp
 	staged.upgrades[item_id] = lvl + 1
-	var after_def: CombatantDef = loader.hero_from_state(&"zayd", staged)
+	var after_def: CombatantDef = loader.hero_from_state(preview_hero, staged)
 	return {"now": now_def, "after": after_def, "cost": cost, "prob": prob, "max": lvl >= costs.max_level}
+
+
+## The hero whose stats an upgrade changes: pistol parts are Bilqis's, everything else previews on Zayd.
+static func _hero_of(item_id: StringName) -> StringName:
+	if ContentDB.get_def("pistol", item_id) != null:
+		return Pistol.WIELDER
+	return &"zayd"
 
 
 static func preview_gemstone(stone_id: StringName, slot: int) -> Dictionary:
