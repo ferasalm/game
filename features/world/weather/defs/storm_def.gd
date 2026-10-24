@@ -23,6 +23,9 @@ var splash_size: float = 0.2
 var splash_color: Color = Color(0.77, 0.86, 1.0)
 var splash_alpha: float = 0.4
 var splash_height_offset: float = 0.035
+var splash_fade_in: float = 0.2
+var splash_fade_out: float = 0.7
+var splash_scale_start: float = 0.25
 
 var puddle_count_min: int = 6
 var puddle_count_max: int = 10
@@ -35,6 +38,10 @@ var puddle_neon_magenta: Color = Color(1.0, 0.11, 0.47)
 var puddle_neon_cyan: Color = Color(0.0, 0.83, 1.0)
 var puddle_ripple_speed: float = 2.4
 var puddle_ripple_frequency: float = 14.0
+var puddle_ripple_fade_in: float = 0.2
+var puddle_ripple_wave_speed: float = 0.7
+var puddle_ripple_decay: float = 16.0
+var puddle_ripple_normal_weight: float = 0.22
 var puddle_size_min: float = 1.2
 var puddle_size_max: float = 2.2
 var puddle_seed: int = 42
@@ -105,6 +112,9 @@ func _read_splashes(r: DefReader) -> void:
 	splash_color = r.color("splash_color")
 	splash_alpha = r.number("splash_alpha", 0.05, 1.0)
 	splash_height_offset = r.number("splash_height_offset", 0.0, 1.0, 0.035, false)
+	splash_fade_in = r.number("splash_fade_in", 0.01, 1.0, 0.2, false)
+	splash_fade_out = r.number("splash_fade_out", 0.01, 1.0, 0.7, false)
+	splash_scale_start = r.number("splash_scale_start", 0.01, 1.0, 0.25, false)
 
 
 func _read_puddles(r: DefReader) -> void:
@@ -121,6 +131,10 @@ func _read_puddles(r: DefReader) -> void:
 	puddle_neon_cyan = r.color("puddle_neon_cyan")
 	puddle_ripple_speed = r.number("puddle_ripple_speed", 0.1, 20.0)
 	puddle_ripple_frequency = r.number("puddle_ripple_frequency", 0.1, 50.0)
+	puddle_ripple_fade_in = r.number("puddle_ripple_fade_in", 0.01, 1.0, 0.2, false)
+	puddle_ripple_wave_speed = r.number("puddle_ripple_wave_speed", 0.1, 5.0, 0.7, false)
+	puddle_ripple_decay = r.number("puddle_ripple_decay", 1.0, 50.0, 16.0, false)
+	puddle_ripple_normal_weight = r.number("puddle_ripple_normal_weight", 0.01, 1.0, 0.22, false)
 	puddle_size_min = r.number("puddle_size_min", 0.1, 10.0)
 	puddle_size_max = r.number("puddle_size_max", 0.1, 10.0)
 	if puddle_size_max < puddle_size_min:

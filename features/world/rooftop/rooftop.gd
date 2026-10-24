@@ -70,6 +70,8 @@ func _ready() -> void:
 	camera_rig.intro_finished.connect(freeze_actors.bind(false))
 	_build_actors()
 	camera_rig.set_actors(player, follower)
+	if world.storm != null:
+		world.storm.party = player
 	camera_rig.set_zones(_area.places_of(&"camera_zone"))
 	_debug = RooftopDebug.new()
 	_debug.setup(_flow, tr(_area.name_key))

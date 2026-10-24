@@ -15,6 +15,7 @@ static func build(area: AreaDef, storm_id: StringName = &"night_storm") -> Node3
 	var host := StormHost.new()
 	host.name = "Storm"
 	host.def = def
+	host.area = area
 	host.floor_y = AreaWalk.floor_height(area)
 	host.rain_particles = _build_rain(def, host.floor_y)
 	host.add_child(host.rain_particles)
@@ -121,8 +122,8 @@ static func _build_splashes(def: StormDef) -> GPUParticles3D:
 	mat.gravity = Vector3.ZERO
 	mat.scale_min = 0.3
 	mat.scale_max = 1.0
-	mat.alpha_curve = _splash_alpha_curve()
-	mat.scale_curve = _splash_scale_curve()
+	mat.alpha_curve = _splash_alpha_curve(def)
+	mat.scale_curve = _splash_scale_curve(def)
 	emitter.process_material = mat
 	var plane := PlaneMesh.new()
 	plane.size = Vector2(def.splash_size, def.splash_size)
@@ -135,20 +136,20 @@ static func _build_splashes(def: StormDef) -> GPUParticles3D:
 	return emitter
 
 
-static func _splash_alpha_curve() -> CurveTexture:
+static func _splash_alpha_curve(def: StormDef) -> CurveTexture:
 	var curve := Curve.new()
 	curve.add_point(Vector2(0.0, 0.0))
-	curve.add_point(Vector2(0.2, 1.0))
-	curve.add_point(Vector2(0.7, 0.7))
+	curve.add_point(Vector2(def.splash_fade_in, 1.0))
+	curve.add_point(Vector2(def.splash_fade_out, def.splash_fade_out))
 	curve.add_point(Vector2(1.0, 0.0))
 	var tex := CurveTexture.new()
 	tex.curve = curve
 	return tex
 
 
-static func _splash_scale_curve() -> CurveTexture:
+static func _splash_scale_curve(def: StormDef) -> CurveTexture:
 	var curve := Curve.new()
-	curve.add_point(Vector2(0.0, 0.25))
+	curve.add_point(Vector2(0.0, def.splash_scale_start))
 	curve.add_point(Vector2(1.0, 1.0))
 	var tex := CurveTexture.new()
 	tex.curve = curve

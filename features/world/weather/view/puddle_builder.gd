@@ -32,6 +32,10 @@ static func build(area: AreaDef, def: StormDef, floor_y: float) -> Node3D:
 		smat.set_shader_parameter(&"neon_cyan", def.puddle_neon_cyan)
 		smat.set_shader_parameter(&"ripple_speed", def.puddle_ripple_speed)
 		smat.set_shader_parameter(&"ripple_frequency", def.puddle_ripple_frequency)
+		smat.set_shader_parameter(&"ripple_fade_in", def.puddle_ripple_fade_in)
+		smat.set_shader_parameter(&"ripple_wave_speed", def.puddle_ripple_wave_speed)
+		smat.set_shader_parameter(&"ripple_decay", def.puddle_ripple_decay)
+		smat.set_shader_parameter(&"ripple_normal_weight", def.puddle_ripple_normal_weight)
 		puddle.material_override = smat
 		root.add_child(puddle)
 	return root

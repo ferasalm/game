@@ -130,5 +130,48 @@ func test_splash_alpha_curve_and_fade() -> void:
 	check(storm != null, "storm built")
 	var mat := storm.splash_particles.process_material as ParticleProcessMaterial
 	check(mat != null, "process material exists")
-	check(mat.alpha_curve != null or mat.color_ramp != null, "splash particles have fade in/out curve")
+	var alpha_tex := mat.alpha_curve as CurveTexture
+	check(alpha_tex != null, "splash particles have an alpha curve")
+	check(alpha_tex.curve.sample(0.0) < 0.05 and alpha_tex.curve.sample(def.splash_fade_in) > 0.95,
+		"splash particles fade in")
+	check(alpha_tex.curve.sample(1.0) < 0.05, "splash particles fade out")
+	var scale_tex := mat.scale_curve as CurveTexture
+	check(scale_tex != null, "splash particles have a scale curve")
+	check(absf(scale_tex.curve.sample(0.0) - def.splash_scale_start) < 0.01, "scale curve starts at content scale")
 	storm.free()
+
+
+func test_splash_plane_height_on_two_roofs_and_speaker_framing() -> void:
+	var rooftop := (load("res://features/world/rooftop/rooftop.tscn") as PackedScene).instantiate() as Rooftop
+	rooftop.area_id = &"souq_rooftops_v4"
+	rooftop.look_id = &"painted_b"
+	tree.root.add_child(rooftop)
+	var storm: StormHost = null
+	for child: Node in rooftop.get_children():
+		if child is StormHost:
+			storm = child as StormHost
+			break
+	check(storm != null, "storm host exists")
+	var storm_def := ContentDB.get_def("storm", &"night_storm") as StormDef
+
+	rooftop.teleport_party(Vector3(25.5, -0.8, 30.5), false)
+	storm._follow_camera()
+	var expected_r1: float = -0.8 + storm_def.splash_height_offset
+	check(is_equal_approx(storm.splash_particles.global_position.y, expected_r1),
+		"roof R1 splash plane equals floor + content lift (actual %.3f, expected %.3f)"
+		% [storm.splash_particles.global_position.y, expected_r1])
+
+	rooftop.teleport_party(Vector3(30.5, 1.6, 6.0), false)
+	storm._follow_camera()
+	var expected_r3: float = 1.6 + storm_def.splash_height_offset
+	check(is_equal_approx(storm.splash_particles.global_position.y, expected_r3),
+		"roof R3 splash plane equals floor + content lift (actual %.3f, expected %.3f)"
+		% [storm.splash_particles.global_position.y, expected_r3])
+
+	var plane_y_before: float = storm.splash_particles.global_position.y
+	rooftop.frame_speaker(&"zayd")
+	storm._follow_camera()
+	check(is_equal_approx(storm.splash_particles.global_position.y, plane_y_before),
+		"splash plane height does not move when framing speaker")
+	rooftop.clear_speaker()
+	rooftop.free()

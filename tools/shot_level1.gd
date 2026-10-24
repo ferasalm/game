@@ -8,7 +8,7 @@ var _rooftop: Rooftop = null
 func _ready() -> void:
 	_rooftop = (load("res://features/world/rooftop/rooftop.tscn") as PackedScene).instantiate() as Rooftop
 	_rooftop.area_id = &"souq_rooftops_v4"
-	_rooftop.look_id = &"night"
+	_rooftop.look_id = &"painted_b"
 	add_child(_rooftop)
 	_set_party(Vector3(25.5, -0.8, 30.5))
 

@@ -67,3 +67,48 @@ func test_painted_surface_textures_have_mipmaps_and_anisotropic_filter() -> void
 	var f_mat := SurfaceMaterials.facade(building, palette) as StandardMaterial3D
 	check(f_mat != null, "facade material built")
 	check(f_mat.texture_filter == BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC, "facade uses linear anisotropic filter")
+
+
+func test_painted_b_viewport_aa_is_msaa2() -> void:
+	var look := ContentDB.get_def("look", &"painted_b") as LookDef
+	check(look != null and look.paint != null, "painted_b look and paint recipe exist")
+	check_eq(look.paint.aa, &"msaa2", "painted_b recipe specifies aa: msaa2")
+	var root := Node3D.new()
+	tree.root.add_child(root)
+	var env := Environment.new()
+	var cam := Camera3D.new()
+	root.add_child(cam)
+	PaintedLook.finish(root, look, env, cam, null)
+	var vp := root.get_viewport()
+	check_eq(vp.msaa_3d, Viewport.MSAA_2X, "viewport has MSAA 2x")
+	check_eq(vp.screen_space_aa, Viewport.SCREEN_SPACE_AA_DISABLED, "viewport has screen-space AA off")
+	root.free()
+	vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_DISABLED
+	vp.msaa_3d = Viewport.MSAA_2X
+
+
+func test_painted_materials_have_mipmaps_and_anisotropic_filter() -> void:
+	var look := ContentDB.get_def("look", &"painted_b") as LookDef
+	var palette := ContentDB.get_def("palette", PALETTE_ID) as PaletteDef
+	var building := ContentDB.get_def("building", &"tower_r1") as BuildingDef
+	PaintedMaterials.use(look.paint)
+	var t_mat := SurfaceMaterials.tile(&"roof_plaster", palette)
+	check(t_mat is ShaderMaterial, "painted tile material is ShaderMaterial")
+	var smat := t_mat as ShaderMaterial
+	var albedo_tex := smat.get_shader_parameter(&"albedo_tex") as Texture2D
+	check(albedo_tex != null and albedo_tex.get_image().has_mipmaps(), "painted tile albedo texture has mipmaps")
+
+	var f_mat := SurfaceMaterials.facade(building, palette)
+	check(f_mat is ShaderMaterial, "painted facade material is ShaderMaterial")
+	var fsmat := f_mat as ShaderMaterial
+	var f_albedo := fsmat.get_shader_parameter(&"albedo_tex") as Texture2D
+	var f_emit := fsmat.get_shader_parameter(&"emission_tex") as Texture2D
+	check(f_albedo != null and f_albedo.get_image().has_mipmaps(), "painted facade albedo texture has mipmaps")
+	check(f_emit != null and f_emit.get_image().has_mipmaps(), "painted facade emission texture has mipmaps")
+
+	var shader_code: String = fsmat.shader.code
+	check(shader_code.contains("albedo_tex : source_color, filter_linear_mipmap_anisotropic"),
+		"albedo_tex sampler has filter_linear_mipmap_anisotropic")
+	check(shader_code.contains("emission_tex : source_color, filter_linear_mipmap_anisotropic"),
+		"emission_tex sampler has filter_linear_mipmap_anisotropic")
+	PaintedMaterials.use(null)

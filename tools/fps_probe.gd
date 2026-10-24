@@ -10,15 +10,27 @@ var _last_usec: int = 0
 
 func _initialize() -> void:
 	var args := OS.get_cmdline_user_args()
-	var scene_path: String = args[0] if args.size() > 0 else "res://features/prototype/prototype_main.tscn"
-	if args.size() > 1:
-		_seconds = float(args[1])
+	var scene_path: String = "res://features/prototype/prototype_main.tscn"
+	var look_arg: StringName = &"painted_b"
+	for arg: String in args:
+		if arg.begins_with("look="):
+			look_arg = StringName(arg.substr(5))
+		elif arg.is_valid_float():
+			_seconds = float(arg)
+		elif arg.ends_with(".tscn") or arg.ends_with(".gd") or arg.contains("/"):
+			scene_path = arg
+		elif not arg.is_empty():
+			look_arg = StringName(arg)
+	if look_arg != &"":
+		(load("res://features/world/view/painted_look.gd") as GDScript).override_look = look_arg
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	var inst: Node
 	if scene_path.ends_with(".gd"):
 		inst = (load(scene_path) as GDScript).new() as Node
 	else:
 		inst = (load(scene_path) as PackedScene).instantiate()
+	if &"look_id" in inst:
+		inst.set(&"look_id", look_arg)
 	if &"auto_play" in inst:
 		inst.set(&"auto_play", true)  # a battle demo plays itself so the probe sees the effects
 	root.add_child(inst)

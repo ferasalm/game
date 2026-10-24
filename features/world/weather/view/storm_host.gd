@@ -3,6 +3,8 @@ extends Node3D
 ## Runtime coordinator for storm effects: positions rain and splashes around the active camera and runs lightning.
 
 var def: StormDef
+var area: AreaDef
+var party: Node3D
 var floor_y: float = 0.0
 var rain_particles: GPUParticles3D
 var splash_particles: GPUParticles3D
@@ -110,7 +112,7 @@ func _follow_camera() -> void:
 	if cam == null:
 		return
 	var cam_pos: Vector3 = cam.global_position
-	var cur_floor_y: float = cam_pos.y - 4.9 if cam_pos.y > 2.0 else floor_y
+	var cur_floor_y: float = _party_floor_y()
 	if rain_particles != null:
 		rain_particles.global_position.x = cam_pos.x
 		rain_particles.global_position.z = cam_pos.z
@@ -119,3 +121,11 @@ func _follow_camera() -> void:
 		splash_particles.global_position.x = cam_pos.x
 		splash_particles.global_position.z = cam_pos.z
 		splash_particles.global_position.y = cur_floor_y + def.splash_height_offset
+
+
+func _party_floor_y() -> float:
+	if party == null or area == null:
+		return floor_y
+	var pos: Vector3 = party.global_position
+	var tile := ContentDB.get_def("tile", area.tile_id_at(floori(pos.x), floori(pos.z))) as TileDef
+	return tile.height if tile != null else floor_y
