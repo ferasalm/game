@@ -10,11 +10,11 @@ Last updated: 2026-10-23, session 16 manager (Opus 5.5, `claude-opus-5-5`): per-
 2. Route B look pass (character light vs inbox/route_b.png). Model: Opus. Effort: high.
 3. Action combat overhaul after the demo. Model: Opus. Effort: high.
 
-## Track: Level 1 (owner: the next chat from this prompt)
-- Milestone on main: five roofs, camera-wall, tayramana, souq props, R5 puzzles, interact-focus, level1-polish + fix.
-- cf DeepSeek: NOWORK twice (10-23); reviews go to Haiku. Waiting on the owner: milestone playtest.
-1. Playtest notes; agy audit-fixes. Model: Opus. Effort: high.
-`Continue ferasalm/game on main. Read HANDOFF.md (Level 1). Do its next step as manager; /handoff.`
+## Track: Level 1 + playtest fixes (owner: the next chat from this prompt)
+- Playtest 2026-10-24: inbox/playtest_*.png, concept_*.png; crossing freeze fixed. docs/briefs/: render-clean,
+  menus-equip-fix, holo-map-real (+ their fix passes), then cyber-look, items-menu, gear-slots (save: line review).
+1. Review + merge the fix passes; launch round 2 (/debugging-games, /coding-gameplay). Model: Opus. Effort: medium.
+`Continue ferasalm/game on main. Read HANDOFF.md (Level 1 + playtest fixes). Do its next step; /handoff.`
 
 ## Track: RPG + menus (owner: the next chat from this prompt)
 - On main: rolls + flee, progression (XP, classes, armor, stones, save v5; no static state), Zayd's kit, menu skins +
@@ -26,9 +26,7 @@ Last updated: 2026-10-23, session 16 manager (Opus 5.5, `claude-opus-5-5`): per-
 `Continue ferasalm/game on main. Read HANDOFF.md (RPG + menus). Do its next step; /handoff.`
 
 ## Track: Puzzles (owner: none)
-- On main: features/puzzles/ logic + grey-box scene (puzzle_yard.tscn); renders inbox/puzzle_*.png sent.
-1. R5 placement via valve_spot (level-1 briefs it; render player on m2, gauge at edge). Model: Sonnet. Effort: medium.
-`Continue ferasalm/game on main. Read HANDOFF.md (Puzzles). Do its next step; /handoff.`
+- Done on main: features/puzzles/ logic, grey-box scene, R5 placement (puzzle-place, 2026-10-23).
 
 ## Track: Efficiency (owner: the next manager chat)
 - On main: per-track HANDOFF, milestone-only reports, gate checklists, tools/slots.sh, DeepSeek spend log

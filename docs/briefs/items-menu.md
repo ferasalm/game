@@ -1,6 +1,6 @@
 # Brief: items-menu (<= 60 lines; after menus-equip-fix merges)
 You are in your own worktree on branch gemini/items-menu (made from origin/main). Follow GEMINI.md, including
-<review_misses>. Load the godot-gameplay-scripter skill.
+<review_misses>. Load the ui-designer skill and the godot-gameplay-scripter skill.
 
 ## Why
 Feras's playtest (inbox/playtest_08.png): the Items menu "looks so plain, does not show character cards, how the item would affect, and does

@@ -1,6 +1,6 @@
 # Brief: gear-slots (<= 60 lines; after menus-equip-fix merges; touches the save: sensitive)
 You are in your own worktree on branch gemini/gear-slots (made from origin/main). Follow GEMINI.md, including
-<review_misses>. Load the game-designer skill.
+<review_misses>. Load the godot-gameplay-scripter skill and the game-designer skill.
 
 ## Why
 DECISIONS 2026-10-24: Bilqis carries a rivet pistol in two parts (frame + barrel), upgraded like Zayd's hilt and

@@ -1,6 +1,6 @@
 # Brief: cyber-look (<= 60 lines; after render-clean merges)
 You are in your own worktree on branch gemini/cyber-look (made from origin/main). Follow GEMINI.md, including
-<review_misses>. Load the technical-artist skill. agy is not creative: follow the numbers below exactly.
+<review_misses>. Load the technical-artist skill and the godot-shader-developer skill. agy is not creative: follow the numbers below exactly.
 
 ## Why
 Feras's playtest (inbox/playtest_04.png, inbox/playtest_05.png): "why are red bricks dominant? where is the cyberpunk aesthetic... neon lights and cyberpunk
@@ -27,7 +27,12 @@ content/world/buildings or areas.json (souq_rooftops_v4 blocks), content/world/s
    windows, a frieze and a neon strip like every other facade, or are lowered to <= 2.5 m above the roof.
 8. Rain: no streak may render closer than 1.5 m to the camera (a huge diagonal streak crossed render_clean_r1.png);
    streak length and near-clip distance from storm.json.
-9. Renders from the play camera: inbox/cyber_r1.png, cyber_r4.png, cyber_r5.png; fps_probe numbers in the final message.
+9. Sabil (R2, the prop "sabil" in content/world/props*): a qamariya half-moon window of stained glass (0.9 m wide,
+   0.45 m tall semicircle above the spout niche: white gypsum tracery 0.04 m, 7 glass panes red #D8322E, amber
+   #F2A93B, green #2FA36B, blue #2E6FD8 cycling) glowing from behind (emission 2.0), as on every Sana'a sabil.
+10. Feras (2026-10-24, rc.jpg): "where are the neon lights, why are the buildings red bricks" - judge every render
+   against inbox/concept_cyber_sanaa.png before finishing: neon on every roof edge in frame, no red-dominant frame.
+11. Renders from the play camera: inbox/cyber_r1.png, cyber_r2_sabil.png, cyber_r4.png, cyber_r5.png; fps_probe numbers in the final message.
 
 ## Do NOT edit
 `core/`
