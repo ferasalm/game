@@ -18,7 +18,33 @@ static func make(font: Font, pos: Vector2, text: String, color: Color, font_size
 	return label
 
 
-## Iteratively separates overlapping label rects and fixed obstacles (cap 64 passes).
+static func make_boxed(font: Font, musnad_font: Font, pos: Vector2, text: String, musnad_text: String,
+		look: HoloCityLook) -> HoloMapLabel:
+	var label := HoloMapLabel.new()
+	label.text = text.to_upper()
+	label.musnad_text = musnad_text
+	label.anchor = pos
+	label.pos = pos
+	label.font_size = int(look.get_size("font_en"))
+	label.musnad_font = musnad_font
+	label.musnad_font_size = int(look.get_size("font_musnad"))
+	label.is_boxed = true
+	label.box_bg_color = look.get_color("label_box")
+	label.box_border_color = look.get_color("cyan")
+	label.box_bg_alpha = look.get_alpha("label_box")
+
+	var pad_x: float = look.get_size("label_pad_x")
+	var pad_y: float = look.get_size("label_pad_y")
+	var gap: float = look.get_size("label_gap")
+
+	var en_size: Vector2 = font.get_string_size(label.text, HORIZONTAL_ALIGNMENT_CENTER, -1, label.font_size)
+	var mus_size: Vector2 = musnad_font.get_string_size(label.musnad_text, HORIZONTAL_ALIGNMENT_CENTER, -1, label.musnad_font_size)
+	var content_w: float = maxf(en_size.x, mus_size.x)
+	var content_h: float = en_size.y + mus_size.y + gap
+	label.size = Vector2(content_w + pad_x * 2.0, content_h + pad_y * 2.0)
+	return label
+
+
 static func resolve(labels: Array[HoloMapLabel], bounds: Rect2, obstacles: Array[Rect2] = []) -> Array[HoloMapLabel]:
 	for label: HoloMapLabel in labels:
 		label.pos = _clamp_label(label, label.anchor, bounds)
@@ -76,14 +102,42 @@ static func _obstacle_push(label: HoloMapLabel, obstacles: Array[Rect2]) -> Vect
 
 static func draw_all(canvas: Control, labels: Array[HoloMapLabel], font: Font) -> void:
 	for label: HoloMapLabel in labels:
-		if label.anchor.distance_to(label.pos) > LEADER_MIN:
-			var end: Vector2 = _closest_on_rect(label.glyph_rect, label.anchor)
-			canvas.draw_line(label.anchor, end, Color(label.color.r, label.color.g, label.color.b, 0.45), 1.0)
-			canvas.draw_circle(label.anchor, 2.0, Color(label.color.r, label.color.g, label.color.b, 0.6))
-		var ascent: float = font.get_ascent(label.font_size)
-		var descent: float = font.get_descent(label.font_size)
-		var baseline: Vector2 = label.pos + Vector2(-label.size.x * 0.5, (ascent - descent) * 0.5)
-		canvas.draw_string(font, baseline, label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, label.font_size, label.color)
+		if label.is_boxed:
+			_draw_boxed_label(canvas, label, font)
+		else:
+			_draw_plain_label(canvas, label, font)
+
+
+static func _draw_boxed_label(canvas: Control, label: HoloMapLabel, font: Font) -> void:
+	if label.anchor.distance_to(label.pos) > LEADER_MIN:
+		var end: Vector2 = _closest_on_rect(label.glyph_rect, label.anchor)
+		canvas.draw_line(label.anchor, end, Color(label.box_border_color.r, label.box_border_color.g,
+			label.box_border_color.b, 0.45), 1.0)
+		canvas.draw_circle(label.anchor, 2.0, Color(label.box_border_color.r, label.box_border_color.g,
+			label.box_border_color.b, 0.6))
+	var box: Rect2 = label.glyph_rect
+	canvas.draw_rect(box, Color(label.box_bg_color.r, label.box_bg_color.g, label.box_bg_color.b,
+		label.box_bg_alpha), true)
+	canvas.draw_rect(box, label.box_border_color, false, 1.0)
+
+	var en_y: float = box.position.y + 6.0 + font.get_ascent(label.font_size)
+	canvas.draw_string(font, Vector2(box.position.x, en_y), label.text, HORIZONTAL_ALIGNMENT_CENTER,
+		box.size.x, label.font_size, Color.WHITE)
+	if label.musnad_font != null and not label.musnad_text.is_empty():
+		var mus_y: float = en_y + font.get_descent(label.font_size) + 4.0 + label.musnad_font.get_ascent(label.musnad_font_size)
+		canvas.draw_string(label.musnad_font, Vector2(box.position.x, mus_y), label.musnad_text,
+			HORIZONTAL_ALIGNMENT_CENTER, box.size.x, label.musnad_font_size, label.box_border_color)
+
+
+static func _draw_plain_label(canvas: Control, label: HoloMapLabel, font: Font) -> void:
+	if label.anchor.distance_to(label.pos) > LEADER_MIN:
+		var end: Vector2 = _closest_on_rect(label.glyph_rect, label.anchor)
+		canvas.draw_line(label.anchor, end, Color(label.color.r, label.color.g, label.color.b, 0.45), 1.0)
+		canvas.draw_circle(label.anchor, 2.0, Color(label.color.r, label.color.g, label.color.b, 0.6))
+	var ascent: float = font.get_ascent(label.font_size)
+	var descent: float = font.get_descent(label.font_size)
+	var baseline: Vector2 = label.pos + Vector2(-label.size.x * 0.5, (ascent - descent) * 0.5)
+	canvas.draw_string(font, baseline, label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, label.font_size, label.color)
 
 
 static func _clamp_label(label: HoloMapLabel, pos: Vector2, bounds: Rect2) -> Vector2:
@@ -94,6 +148,4 @@ static func _clamp_label(label: HoloMapLabel, pos: Vector2, bounds: Rect2) -> Ve
 
 
 static func _closest_on_rect(rect: Rect2, point: Vector2) -> Vector2:
-	return Vector2(
-		clampf(point.x, rect.position.x, rect.end.x),
-		clampf(point.y, rect.position.y, rect.end.y))
+	return Vector2(clampf(point.x, rect.position.x, rect.end.x), clampf(point.y, rect.position.y, rect.end.y))

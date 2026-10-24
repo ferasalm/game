@@ -1,8 +1,9 @@
 class_name CityDistrictDef
 extends Def
-## purpose: Defines a city map feature: district polygon, road line, ring/contours or area pin.
+## purpose: Defines a city map feature: district polygon, road line, ring/contours, pin, or look.
 
 var name_key: String = ""
+var musnad_key: String = ""
 var feature: StringName = &"district"
 var polygon: PackedVector2Array = PackedVector2Array()
 var is_old_city: bool = false
@@ -20,11 +21,18 @@ var flicker_base: float = 0.85
 var flicker_amplitude: float = 0.15
 ## Radial compression parameter ("radial_k" metres).
 var radial_k: float = 0.0
+## Schematic layout and look data.
+var schematic: Dictionary = {}
+var schematic_center: Vector2 = Vector2.ZERO
+var schematic_shape: StringName = &""
+var schematic_color_id: StringName = &""
+var look_data: Dictionary = {}
 
 
 func read(r: DefReader) -> void:
 	id = r.id()
 	name_key = r.text("name_key")
+	musnad_key = r.text("musnad_key", "", false)
 	feature = StringName(r.text("feature", "district", false))
 	is_old_city = r.flag("is_old_city", false)
 	var raw_data: Dictionary = r.get("_data") as Dictionary
@@ -38,8 +46,24 @@ func read(r: DefReader) -> void:
 	flicker_base = r.number("base", 0.0, 1.0, 0.85, false)
 	flicker_amplitude = r.number("amplitude", 0.0, 1.0, 0.15, false)
 	radial_k = r.number("radial_k", 0.0, 50000.0, 0.0, false)
+	_read_schematic(raw_data)
+	if raw_data.has("look_data") and raw_data["look_data"] is Dictionary:
+		look_data = raw_data["look_data"] as Dictionary
 	if feature == &"district" and polygon.size() < 3:
 		r.problem("polygon", "needs at least 3 points")
+
+
+func has_schematic() -> bool:
+	return not schematic.is_empty()
+
+
+func _read_schematic(data: Dictionary) -> void:
+	if not data.has("schematic") or not (data["schematic"] is Dictionary):
+		return
+	schematic = data["schematic"] as Dictionary
+	schematic_center = _read_point(schematic, "center")
+	schematic_shape = StringName(str(schematic.get("shape", "")))
+	schematic_color_id = StringName(str(schematic.get("color_id", "")))
 
 
 func _read_points(data: Dictionary, key: String) -> PackedVector2Array:

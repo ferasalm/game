@@ -2,21 +2,34 @@ class_name HoloMapCityView
 extends RefCounted
 ## purpose: Builds city-map district and area-pin labels and collapses pins that share one real place.
 
-const PIN_LABEL_OFFSET: Vector2 = Vector2(14.0, 0.0)
+const PIN_LABEL_OFFSET: Vector2 = Vector2(0.0, 36.0)
+const MUSNAD_FONT_PATH: String = "res://assets/fonts/noto_sans_old_south_arabian.ttf"
 
 
 static func labels(font: Font, districts: Array[CityDistrictDef], pins: Array[CityDistrictDef],
-		scale: float, offset: Vector2, current_area_id: StringName, color: Color,
+		scale: float, offset: Vector2, current_area_id: StringName, _color: Color,
 		center: Vector2 = Vector2.ZERO, k: float = 0.0, r: float = HoloMapGeo.DEFAULT_RADIAL_R) -> Array[HoloMapLabel]:
 	var out: Array[HoloMapLabel] = []
+	var musnad_font: Font = load(MUSNAD_FONT_PATH) as Font
+	var look := HoloCityLook.load_from_content()
+
 	for d: CityDistrictDef in districts:
-		var pts: PackedVector2Array = HoloMapGeo.to_screen_polygon(d.polygon, scale, offset, center, k, r)
-		if pts.size() >= 3:
-			out.append(HoloMapLabels.make(font, HoloMapGeo.centroid(pts), Ui.text(d.name_key), color))
+		var pos: Vector2 = d.schematic_center if d.has_schematic() else HoloMapGeo.centroid(
+			HoloMapGeo.to_screen_polygon(d.polygon, scale, offset, center, k, r))
+		var musnad_text: String = ""
+		if not d.musnad_key.is_empty():
+			musnad_text = TranslationServer.translate(StringName(d.musnad_key))
+		out.append(HoloMapLabels.make_boxed(font, musnad_font, pos, Ui.text(d.name_key), musnad_text, look))
+
 	for pin: Dictionary in unique_pins(pins, current_area_id):
 		var p: CityDistrictDef = pin["def"]
-		var pos: Vector2 = HoloMapGeo.project(p.center, scale, offset, center, k, r) + PIN_LABEL_OFFSET
-		out.append(HoloMapLabels.make(font, pos, Ui.text(p.name_key), color))
+		var pin_pos: Vector2 = p.schematic_center if p.has_schematic() else (
+			HoloMapGeo.project(p.center, scale, offset, center, k, r))
+		var pos: Vector2 = pin_pos + PIN_LABEL_OFFSET
+		var musnad_text: String = ""
+		if not p.musnad_key.is_empty():
+			musnad_text = TranslationServer.translate(StringName(p.musnad_key))
+		out.append(HoloMapLabels.make_boxed(font, musnad_font, pos, Ui.text(p.name_key), musnad_text, look))
 	return out
 
 

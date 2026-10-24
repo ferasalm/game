@@ -5,6 +5,7 @@
     {
       "id": "old_city",
       "name_key": "DISTRICT_OLD_CITY",
+      "musnad_key": "DISTRICT_OLD_CITY_MUSNAD",
       "feature": "district",
       "is_old_city": true,
       "polygon": [
@@ -16,11 +17,17 @@
         [300, -500],
         [-250, -500],
         [-650, -100]
-      ]
+      ],
+      "schematic": {
+        "center": [760.0, 420.0],
+        "shape": "circle",
+        "color_id": "old_city"
+      }
     },
     {
       "id": "bab_al_yaman",
       "name_key": "DISTRICT_BAB_AL_YAMAN",
+      "musnad_key": "DISTRICT_BAB_AL_YAMAN_MUSNAD",
       "feature": "district",
       "is_old_city": false,
       "polygon": [
@@ -30,11 +37,17 @@
         [250, -750],
         [0, -820],
         [-250, -750]
-      ]
+      ],
+      "schematic": {
+        "center": [870.0, 560.0],
+        "shape": "target",
+        "color_id": "cyan"
+      }
     },
     {
       "id": "al_saila",
       "name_key": "DISTRICT_AL_SAILA",
+      "musnad_key": "DISTRICT_AL_SAILA_MUSNAD",
       "feature": "district",
       "is_old_city": false,
       "polygon": [
@@ -48,11 +61,17 @@
         [-560, -700],
         [-620, 0],
         [-590, 700]
-      ]
+      ],
+      "schematic": {
+        "center": [715.0, 420.0],
+        "shape": "channel",
+        "color_id": "cyan"
+      }
     },
     {
       "id": "zubairi",
       "name_key": "DISTRICT_ZUBAIRI",
+      "musnad_key": "DISTRICT_ZUBAIRI_MUSNAD",
       "feature": "district",
       "is_old_city": false,
       "polygon": [
@@ -64,11 +83,17 @@
         [0, -1880],
         [-1400, -1920],
         [-2700, -1900]
-      ]
+      ],
+      "schematic": {
+        "center": [300.0, 450.0],
+        "shape": "street",
+        "color_id": "cyan"
+      }
     },
     {
       "id": "haddah",
       "name_key": "DISTRICT_HADDAH",
+      "musnad_key": "DISTRICT_HADDAH_MUSNAD",
       "feature": "district",
       "is_old_city": false,
       "polygon": [
@@ -80,11 +105,17 @@
         [-4300, -7100],
         [-5600, -6600],
         [-6100, -5600]
-      ]
+      ],
+      "schematic": {
+        "center": [500.0, 640.0],
+        "shape": "blocks",
+        "color_id": "green"
+      }
     },
     {
       "id": "bayt_baws",
       "name_key": "DISTRICT_BAYT_BAWS",
+      "musnad_key": "DISTRICT_BAYT_BAWS_MUSNAD",
       "feature": "district",
       "is_old_city": false,
       "polygon": [
@@ -96,11 +127,17 @@
         [-2700, -8300],
         [-2900, -7600],
         [-2500, -7100]
-      ]
+      ],
+      "schematic": {
+        "center": [740.0, 690.0],
+        "shape": "towers",
+        "color_id": "cyan"
+      }
     },
     {
       "id": "tahrir",
       "name_key": "DISTRICT_TAHRIR",
+      "musnad_key": "DISTRICT_TAHRIR_MUSNAD",
       "feature": "district",
       "is_old_city": false,
       "polygon": [
@@ -112,11 +149,17 @@
         [-1150, -500],
         [-1450, -350],
         [-1600, -100]
-      ]
+      ],
+      "schematic": {
+        "center": [450.0, 420.0],
+        "shape": "fan",
+        "color_id": "cyan"
+      }
     },
     {
       "id": "al_hasaba",
       "name_key": "DISTRICT_AL_HASABA",
+      "musnad_key": "DISTRICT_AL_HASABA_MUSNAD",
       "feature": "district",
       "is_old_city": false,
       "polygon": [
@@ -126,57 +169,99 @@
         [0, 3500],
         [-500, 3500],
         [-900, 3100]
-      ]
+      ],
+      "schematic": {
+        "center": [620.0, 160.0],
+        "shape": "runway",
+        "color_id": "teal"
+      }
     },
     {
       "id": "al_saila_road",
       "name_key": "DISTRICT_AL_SAILA",
+      "musnad_key": "DISTRICT_AL_SAILA_MUSNAD",
       "feature": "line",
       "points": [
         [-430, 1110],
         [-430, -1440]
-      ]
+      ],
+      "schematic": {
+        "center": [715.0, 420.0],
+        "shape": "channel",
+        "color_id": "cyan"
+      }
     },
     {
       "id": "zubairi_street",
       "name_key": "DISTRICT_ZUBAIRI",
+      "musnad_key": "DISTRICT_ZUBAIRI_MUSNAD",
       "feature": "line",
       "points": [
         [-2690, -1660],
         [1080, -1660]
-      ]
+      ],
+      "schematic": {
+        "center": [300.0, 450.0],
+        "shape": "street",
+        "color_id": "cyan"
+      }
     },
     {
       "id": "ring_road",
       "name_key": "RING_ROAD",
+      "musnad_key": "RING_ROAD_MUSNAD",
       "feature": "ring",
       "center": [0, 0],
-      "radius": 3500
+      "radius": 3500,
+      "schematic": {
+        "center": [600.0, 400.0],
+        "shape": "ring_loop",
+        "color_id": "blue_magenta"
+      }
     },
     {
       "id": "jabal_nuqum",
       "name_key": "JABAL_NUQUM",
+      "musnad_key": "JABAL_NUQUM_MUSNAD",
       "feature": "contours",
       "center": [3230, 550],
-      "radii": [400, 700, 1000]
+      "radii": [400, 700, 1000],
+      "schematic": {
+        "center": [1060.0, 400.0],
+        "shape": "contours",
+        "color_id": "violet"
+      }
     },
     {
       "id": "area_souq_rooftops_v4",
       "name_key": "AREA_SOUQ_NAME",
+      "musnad_key": "AREA_SOUQ_NAME_MUSNAD",
       "feature": "area_pin",
       "area_id": "souq_rooftops_v4",
-      "center": [110, -110]
+      "center": [110, -110],
+      "schematic": {
+        "center": [781.0, 392.0],
+        "shape": "area_pin",
+        "color_id": "cyan"
+      }
     },
     {
       "id": "area_souq_rooftops",
       "name_key": "AREA_SOUQ_NAME",
+      "musnad_key": "AREA_SOUQ_NAME_MUSNAD",
       "feature": "area_pin",
       "area_id": "souq_rooftops",
-      "center": [110, -110]
+      "center": [110, -110],
+      "schematic": {
+        "center": [781.0, 392.0],
+        "shape": "area_pin",
+        "color_id": "cyan"
+      }
     },
     {
       "id": "hologram_flicker",
       "name_key": "MAP_TITLE",
+      "musnad_key": "MAP_TITLE_MUSNAD",
       "feature": "flicker",
       "period": 1.6,
       "base": 0.85,
@@ -185,9 +270,94 @@
     {
       "id": "radial_config",
       "name_key": "MAP_TITLE",
+      "musnad_key": "MAP_TITLE_MUSNAD",
       "feature": "radial",
       "center": [110, -110],
       "radial_k": 1200
+    },
+    {
+      "id": "look",
+      "name_key": "MAP_TITLE",
+      "musnad_key": "MAP_TITLE_MUSNAD",
+      "feature": "look",
+      "look_data": {
+        "colors": {
+          "navy_fill": "#0a1424",
+          "old_city": "#ff5a2a",
+          "cyan": "#3fe0ff",
+          "green": "#4cff6a",
+          "teal": "#20d0b0",
+          "yellow": "#ffe040",
+          "blue": "#4a6cff",
+          "magenta": "#c040ff",
+          "violet": "#7a4cff",
+          "label_box": "#08101c",
+          "white": "#ffffff"
+        },
+        "alphas": {
+          "navy_fill": 0.85,
+          "neon_wide": 0.12,
+          "neon_mid": 0.35,
+          "neon_core": 1.00,
+          "old_city_fill": 0.30,
+          "haddah_fill": 0.40,
+          "label_box": 0.80,
+          "grid": 0.07,
+          "contour_inner": 0.15,
+          "contour_outer": 0.65,
+          "leader_line": 0.45,
+          "compass_ring": 0.60
+        },
+        "widths": {
+          "neon_wide": 7.0,
+          "neon_mid": 3.0,
+          "neon_core": 1.5,
+          "maze_line": 1.5,
+          "label_border": 1.0,
+          "grid_line": 1.0,
+          "hud_bracket": 2.0,
+          "leader_line": 1.0,
+          "compass_ring": 2.0,
+          "runway_stripe": 8.0
+        },
+        "sizes": {
+          "old_city_radius": 190.0,
+          "ring_road_gap": 6.0,
+          "grid_spacing": 40.0,
+          "font_en": 18.0,
+          "font_musnad": 20.0,
+          "letter_spacing_en": 1.0,
+          "label_pad_x": 10.0,
+          "label_pad_y": 6.0,
+          "label_gap": 4.0,
+          "compass_radius": 26.0,
+          "compass_center_x": 1110.0,
+          "compass_center_y": 85.0,
+          "corner_bracket_len": 24.0,
+          "corner_bracket_margin": 16.0,
+          "hud_title_x": 36.0,
+          "hud_title_y": 42.0,
+          "hud_coords_y": 64.0,
+          "font_hud_title": 16.0,
+          "font_hud_coords": 13.0,
+          "reticle_outer_r": 20.0,
+          "reticle_mid_r": 12.0,
+          "reticle_inner_r": 4.0,
+          "roundabout_r": 14.0,
+          "pin_reticle_r": 16.0
+        },
+        "counts": {
+          "old_city_rings": 7,
+          "tahrir_spokes": 12,
+          "tahrir_arcs": 8,
+          "jabal_nuqum_contours": 12,
+          "bayt_baws_towers": 5
+        },
+        "seeds": {
+          "maze_seed": 1337,
+          "nuqum_seed": 2026
+        }
+      }
     }
   ]
 }

@@ -1,6 +1,6 @@
 class_name HoloMapCanvas
 extends Control
-## purpose: 1200x800 holographic map canvas: rooftop floor plan or full city map with cyan glow and scanlines.
+## purpose: 1200x800 holographic map canvas: rooftop floor plan or full city map with neon glow and HUD dressing.
 
 enum Mode { AREA, CITY }
 
@@ -25,6 +25,8 @@ var _districts: Array[CityDistrictDef] = []
 var _features: Array[CityDistrictDef] = []
 var _area_pins: Array[CityDistrictDef] = []
 var _scanlines: ColorRect
+var _neon_layer: Control
+var _overlay_layer: Control
 var _city_scale: float = 0.0
 var _city_offset: Vector2 = Vector2.ZERO
 var _radial: Dictionary = {}
@@ -40,11 +42,26 @@ func _init() -> void:
 	_c_good = _style.colour(&"c_good")
 	_c_brass = _style.colour(&"c_brass")
 	_c_amber = _style.colour(&"c_qam_amber")
-	_setup_scanlines()
+	_setup_layers()
 	_load_city_data()
 
 
-func _setup_scanlines() -> void:
+func _setup_layers() -> void:
+	_neon_layer = Control.new()
+	_neon_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_neon_layer.set_anchors_preset(Control.PRESET_FULL_RECT)
+	var add_mat := CanvasItemMaterial.new()
+	add_mat.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	_neon_layer.material = add_mat
+	_neon_layer.draw.connect(_on_neon_draw)
+	add_child(_neon_layer)
+
+	_overlay_layer = Control.new()
+	_overlay_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_overlay_layer.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_overlay_layer.draw.connect(_on_overlay_draw)
+	add_child(_overlay_layer)
+
 	_scanlines = ColorRect.new()
 	_scanlines.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_scanlines.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -63,12 +80,9 @@ func _load_city_data() -> void:
 		if d == null:
 			continue
 		match d.feature:
-			&"district":
-				_districts.append(d)
-			&"area_pin":
-				_area_pins.append(d)
-			_:
-				_features.append(d)
+			&"district": _districts.append(d)
+			&"area_pin": _area_pins.append(d)
+			_: _features.append(d)
 
 
 func refresh_plan() -> void:
@@ -85,13 +99,45 @@ func refresh_plan() -> void:
 
 
 func _draw() -> void:
-	var rect := Rect2(Vector2.ZERO, size)
-	draw_rect(rect, _style.colour(&"c_glass_menu"), true)
-	draw_rect(rect, HoloMapStyle.alpha(_c_cyan, 0.4), false, 2.0)
 	if mode == Mode.AREA:
+		_neon_layer.visible = false
+		_overlay_layer.visible = false
+		var rect := Rect2(Vector2.ZERO, size)
+		draw_rect(rect, _style.colour(&"c_glass_menu"), true)
+		draw_rect(rect, HoloMapStyle.alpha(_c_cyan, 0.4), false, 2.0)
 		_draw_area_plan()
 	else:
-		_draw_city_map()
+		_neon_layer.visible = true
+		_overlay_layer.visible = true
+		_neon_layer.queue_redraw()
+		_overlay_layer.queue_redraw()
+		var look := HoloCityLook.load_from_content()
+		HoloCityHud.draw_background_and_grid(self, size, look)
+
+
+func _on_neon_draw() -> void:
+	if mode != Mode.CITY:
+		return
+	var look := HoloCityLook.load_from_content()
+	var flick: Dictionary = _flicker()
+	var pulse: float = sin(pulse_time * TAU / maxf(float(flick["period"]), 0.1)) * 0.5 + 0.5
+	var pin_active: bool = _is_current_area_active()
+	HoloCityOldTown.draw(_neon_layer, look, pulse, pin_active)
+	HoloCityDistricts.draw(_neon_layer, look)
+
+
+func _on_overlay_draw() -> void:
+	if mode != Mode.CITY:
+		return
+	var font: Font = Ui.theme().default_font
+	var look := HoloCityLook.load_from_content()
+	var labels: Array[HoloMapLabel] = city_label_set(font)
+	var pin_screen := Vector2(781.0, 392.0)
+	var pin_rect := Rect2(pin_screen - Vector2(16.0, 16.0), Vector2(32.0, 32.0))
+	var obstacles: Array[Rect2] = [pin_rect]
+	var resolved: Array[HoloMapLabel] = HoloMapLabels.resolve(labels, Rect2(Vector2.ZERO, size), obstacles)
+	HoloMapLabels.draw_all(_overlay_layer, resolved, font)
+	HoloCityHud.draw_overlay(_overlay_layer, size, look, font)
 
 
 func _draw_area_plan() -> void:
@@ -102,53 +148,6 @@ func _draw_area_plan() -> void:
 		&"muted": _style.colour(&"c_muted"),
 	}
 	HoloMapAreaView.draw(self, _plan, _fit, _markers, player_world_pos, colors, Ui.theme().default_font)
-
-
-func _draw_city_map() -> void:
-	_ensure_city_fit()
-	var font: Font = Ui.theme().default_font
-	var flick: Dictionary = _flicker()
-	var pulse: float = sin(pulse_time * TAU / maxf(float(flick["period"]), 0.1)) * 0.5 + 0.5
-	var flicker: float = float(flick["base"]) + pulse * float(flick["amplitude"])
-	var labels: Array[HoloMapLabel] = city_label_set(font)
-
-	for d: CityDistrictDef in _districts:
-		if d.id == &"al_saila" or d.id == &"zubairi":
-			continue
-		var pts := HoloMapGeo.to_screen_polygon(d.polygon, _city_scale, _city_offset, _radial["center"], float(_radial["k"]), float(_radial["r"]))
-		if pts.size() < 3:
-			continue
-		draw_colored_polygon(pts, HoloMapStyle.alpha(_c_cyan, 0.18 if d.is_old_city else 0.06))
-		HoloMapStyle.glow_line(self, pts[-1], pts[0], _c_cyan, 2.0, 4.0)
-		for i: int in range(pts.size() - 1):
-			HoloMapStyle.glow_line(self, pts[i], pts[i + 1], _c_cyan, 2.0, 4.0)
-		if d.is_old_city:
-			var c: Vector2 = HoloMapGeo.centroid(pts)
-			draw_arc(c, 30.0 + pulse * 10.0, 0.0, TAU, 36, HoloMapStyle.alpha(_c_cyan, 0.6 + 0.4 * pulse), 3.0)
-
-	for f: CityDistrictDef in _features:
-		match f.feature:
-			&"line":
-				if f.line.size() >= 2:
-					var pts := HoloMapGeo.to_screen_polyline(f.line, _city_scale, _city_offset, _radial["center"], float(_radial["k"]), float(_radial["r"]))
-					draw_polyline(pts, HoloMapStyle.alpha(_c_cyan, 0.7), 2.0)
-			&"ring":
-				var cr: float = float(_radial["r"]) * f.radius / (f.radius + float(_radial["k"])) * _city_scale
-				HoloMapStyle.dashed_circle(self, _project(f.center), cr, HoloMapStyle.alpha(_c_cyan, 0.65 * flicker), 2.0, 12.0, 10.0, 64)
-			&"contours":
-				for r: float in f.radii:
-					var cr: float = float(_radial["r"]) * r / (r + float(_radial["k"])) * _city_scale
-					draw_arc(_project(f.center), cr, 0.0, TAU, 48, HoloMapStyle.alpha(_c_cyan, 0.45), 2.0)
-
-	var obstacles: Array[Rect2] = []
-	for pin: Dictionary in HoloMapCityView.unique_pins(_area_pins, _current_area_id()):
-		var p: CityDistrictDef = pin["def"]
-		var pin_pos: Vector2 = _project(p.center)
-		HoloMapMarkers.draw_area_pin(self, pin_pos, bool(pin["active"]), pulse, _c_cyan)
-		if bool(pin["active"]):
-			obstacles.append(Rect2(pin_pos - Vector2(16.0, 16.0), Vector2(32.0, 32.0)))
-
-	HoloMapLabels.draw_all(self, HoloMapLabels.resolve(labels, Rect2(Vector2.ZERO, size), obstacles), font)
 
 
 func city_label_set(font: Font) -> Array[HoloMapLabel]:
@@ -179,9 +178,18 @@ func _flicker() -> Dictionary:
 	return {"period": 1.6, "base": 0.85, "amplitude": 0.15}
 
 
+func _is_current_area_active() -> bool:
+	var cur: StringName = _current_area_id()
+	for p: CityDistrictDef in _area_pins:
+		if p.area_id == cur:
+			return true
+	return false
+
+
 func _current_area_id() -> StringName:
 	return area_def.id if area_def != null else &""
 
 
 func _project(geo: Vector2) -> Vector2:
-	return HoloMapGeo.project(geo, _city_scale, _city_offset, _radial.get("center", Vector2.ZERO), float(_radial.get("k", 0.0)), float(_radial.get("r", HoloMapGeo.DEFAULT_RADIAL_R)))
+	return HoloMapGeo.project(geo, _city_scale, _city_offset, _radial.get("center", Vector2.ZERO),
+		float(_radial.get("k", 0.0)), float(_radial.get("r", HoloMapGeo.DEFAULT_RADIAL_R)))
