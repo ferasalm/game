@@ -191,8 +191,10 @@ func height() -> float:
 func width() -> float:
 	return source.width()
 
+
 func tint_down(share: float) -> void:
 	source.tint_down(share)
+
 
 func _process(delta: float) -> void:
 	source.update(delta, _moving, _prop, _down, _facing)
