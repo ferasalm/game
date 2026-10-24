@@ -29,11 +29,13 @@ leftovers() {  # builders die mid-edit: keep their work as a WIP commit
   echo "builder $builder"; } > "$res"
 # The skill the brief names (".agents/skills/<name>") goes into the prompt itself: builders skipped optional skills.
 prompt="$(dirname "$wt")/$name.prompt.md"; cp "$brief" "$prompt"
-skill="$(grep -o -m1 -E '(godot|game|level|narrative|technical|blender)-[a-z-]+ skill' "$brief" | sed 's/ skill$//')"
-if [ -n "$skill" ] && [ -f "$here/../.agents/skills/$skill/SKILL.md" ]; then
+# Any .agents/skills name followed by " skill" counts (game skills and agency agents), at most 2 to cap the prompt.
+skills="$(grep -o -E '[a-z][a-z-]+ skill' "$brief" | sed 's/ skill$//' | awk '!seen[$0]++' |
+  while read -r s; do [ -f "$here/../.agents/skills/$s/SKILL.md" ] && echo "$s"; done | head -2)"
+for skill in $skills; do
   { echo; echo "## Skill: $skill (reference; GEMINI.md and this brief win where they differ: typed GDScript, no C#)"
     sed '1,/^---$/{/^---$/!d}; /^---$/d' "$here/../.agents/skills/$skill/SKILL.md"; } >> "$prompt"
-fi
+done
 [ -n "${SKIP_BUILD:-}" ] || run "$prompt"  # SKIP_BUILD=1: the build already ran; start at the check
 leftovers "build"; cp "$wt.log" "$wt.build.log" 2> /dev/null; fix_from=""
 if check; then :; else

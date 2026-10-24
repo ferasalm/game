@@ -149,9 +149,9 @@ static func prompt_strip(pairs: Array) -> PromptStrip:
 	return PromptStrip.new().setup(pairs)
 
 
-## Queues a toast (top-centre) on the toast layer; kind is info, good or bad.
-static func toast(text_key: String, kind: StringName = &"info") -> void:
-	Screens.toast(text_key, kind)
+## Queues a toast (top-centre) on the toast layer; kind is info, good or bad. args fill the key's placeholders.
+static func toast(text_key: String, kind: StringName = &"info", args: Array = []) -> void:
+	Screens.toast(text_key, kind, args)
 
 
 ## The world-space "[E] Verb" pill; call bind_world(target, viewer, lift) and add it under a HUD root.

@@ -12,6 +12,7 @@ const BAKED_DIR: String = "res://assets/textures/painted"
 static var paint: PaintDef = null
 static var _cache: Dictionary[String, Material] = {}
 static var _textures: Dictionary[String, Texture2D] = {}
+static var _baked_images: Dictionary[String, Image] = {}
 
 
 ## Starts (or, with null, ends) building with a painted recipe; clears every cached world material and the cached
@@ -93,10 +94,13 @@ static func load_baked(bake: StringName, atlas_id: String) -> Image:
 	var path: String = baked_path(bake, atlas_id)
 	if bake == &"" or not FileAccess.file_exists(path):
 		return null
-	var image := Image.new()
-	if image.load_webp_from_buffer(FileAccess.get_file_as_bytes(path)) != OK:
-		return null
-	return image
+	if not _baked_images.has(path):
+		var image := Image.new()
+		if image.load_webp_from_buffer(FileAccess.get_file_as_bytes(path)) != OK:
+			return null
+		image.generate_mipmaps()
+		_baked_images[path] = image
+	return _baked_images[path]
 
 
 static func baked_path(bake: StringName, atlas_id: String) -> String:

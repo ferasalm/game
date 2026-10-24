@@ -1,6 +1,6 @@
 # Brief: cyber-look (<= 60 lines; after render-clean merges)
 You are in your own worktree on branch gemini/cyber-look (made from origin/main). Follow GEMINI.md, including
-<review_misses>. Load the technical-artist skill. agy is not creative: follow the numbers below exactly.
+<review_misses>. Load the technical-artist skill and the godot-shader-developer skill. agy is not creative: follow the numbers below exactly.
 
 ## Why
 Feras's playtest (inbox/playtest_04.png, inbox/playtest_05.png): "why are red bricks dominant? where is the cyberpunk aesthetic... neon lights and cyberpunk
@@ -14,8 +14,10 @@ docs/MAP.md greps: facade_painter, facade_spec, masonry, building_def, sign_spec
 content/world/buildings or areas.json (souq_rooftops_v4 blocks), content/world/skyline.json, storm.json, palette.
 
 ## What to build (all numbers in content)
-1. Facade palette: brick becomes dark umber-brown (#5A3B2E base, #3E2A22 mortar), less saturated; gypsum friezes and
-   window frames stay white (#E8E2D6); basalt floors #2B2B30. Red no longer dominates any play-camera frame.
+1. Facade palette (sampled from Feras's references inbox/concept_bricks_tower.png and concept_bricks_rooftops.png,
+   2026-10-24: "the bricks should not look red"): brick a desaturated grey-brown #574A48 with light bricks #6A6266
+   and dark #4A383A, mortar #271E23; gypsum friezes and window frames a rain-cooled off-white #A6B3B9; basalt
+   #383237. Night ambient cool teal; warm only in lit windows. No frame from the play camera may read as red.
 2. Neon crowns: every tower-house roof edge in the area and the near skyline gets an emissive strip 0.08 m tall at the
    parapet top: magenta #FF2BD6 (60%) or cyan #23E6F0 (40%), energy 3.0, picked by a seeded hash; a soft OmniLight
    (range 4 m, energy 0.6, same colour) on 1 in 3 roofs only (budget).
@@ -27,7 +29,12 @@ content/world/buildings or areas.json (souq_rooftops_v4 blocks), content/world/s
    windows, a frieze and a neon strip like every other facade, or are lowered to <= 2.5 m above the roof.
 8. Rain: no streak may render closer than 1.5 m to the camera (a huge diagonal streak crossed render_clean_r1.png);
    streak length and near-clip distance from storm.json.
-9. Renders from the play camera: inbox/cyber_r1.png, cyber_r4.png, cyber_r5.png; fps_probe numbers in the final message.
+9. Sabil (R2, the prop "sabil" in content/world/props*): a qamariya half-moon window of stained glass (0.9 m wide,
+   0.45 m tall semicircle above the spout niche: white gypsum tracery 0.04 m, 7 glass panes red #D8322E, amber
+   #F2A93B, green #2FA36B, blue #2E6FD8 cycling) glowing from behind (emission 2.0), as on every Sana'a sabil.
+10. Feras (2026-10-24, rc.jpg): "where are the neon lights, why are the buildings red bricks" - judge every render
+   against inbox/concept_cyber_sanaa.png before finishing: neon on every roof edge in frame, no red-dominant frame.
+11. Renders from the play camera: inbox/cyber_r1.png, cyber_r2_sabil.png, cyber_r4.png, cyber_r5.png; fps_probe numbers in the final message.
 
 ## Do NOT edit
 `core/`

@@ -1,8 +1,8 @@
 class_name CharacterVisual
 extends Node3D
-## A character standing in the 3D world (feet on the node's origin): the facade the game talks to (play, anchors,
-## the clip_event signal). A VisualSource draws it (ModelSource: live 3D, PixelSource: the fallback sprite); the
-## root moves (lunge, dash, hurt push) are CharacterMotion's. Numbers: content/art/visual.json. Sprites face right.
+## A character standing in the 3D world (feet on the node's origin): the facade the game talks to. `play(state, facing)`
+## runs idle, walk, run, attack, cast, hurt, ko, victory and item; anchor_position answers feet / hand / hand_left /
+## head / chest / belt / hip / arm / arm_left; clip_event announces impact and end. Numbers: content/art/visual.json.
 
 ## A one-shot clip reached a named frame: &"impact" (the hit lands) or &"end" (the clip is over).
 signal clip_event(event: StringName)
@@ -92,7 +92,8 @@ func play(new_state: StringName, facing: Vector2 = Vector2.ZERO) -> void:
 			source.play_clip(new_state, _facing)
 
 
-## World position of a body spot (see ANCHORS): feet, hand, hand_left, head, chest, belt, hip, arm, arm_left.
+## World position of a body spot: &"feet", &"hand", &"hand_left", &"head", &"chest", &"belt", &"hip", &"arm"
+## or &"arm_left".
 func anchor_position(which: StringName) -> Vector3:
 	return global_position + root.position + source.anchor(which)
 

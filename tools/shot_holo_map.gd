@@ -28,11 +28,11 @@ func _process(_delta: float) -> void:
 	if _frame == 15:
 		_open_map()
 	elif _frame == 35:
-		_capture_and_save("menu_map_area.png")
+		_capture_and_save("map_area.png")
 		if _map != null:
 			_map.toggle_mode()
 	elif _frame == 55:
-		_capture_and_save("menu_map_city.png")
+		_capture_and_save("map_city.png")
 		get_tree().quit()
 
 

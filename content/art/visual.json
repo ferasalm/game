@@ -13,6 +13,8 @@
      "recoil_time": 0.26, "flash_time": 0.14, "hurt_shake": 0.1, "hurt_time": 0.24,
      "down_squash": 0.45, "ko_time": 0.38, "ko_desat": 0.9, "revive_time": 0.5, "revive_glow": 0.8,
      "revive_color": "#7dffb0", "hop_height": 0.55, "hop_time": 0.32, "hop_count": 2,
-     "trail_time": 0.2, "trail_color": "#ffe9b0", "smear_time": 0.14, "smear_size": 1.3, "smear_color": "#fff1cf"}
+     "trail_time": 0.2, "trail_color": "#ffe9b0", "smear_time": 0.14, "smear_size": 1.3, "smear_color": "#fff1cf",
+     "chest_height": 0.72, "belt_height": 0.55, "arm_height": 0.62, "hand_height": 0.5, "pixel_hand_height": 0.55,
+     "belt_depth": 0.4, "belt_side": 0.35, "arm_side": 0.45, "hand_side": 0.5, "fallback_height": 1.8}
   ]
 }

@@ -103,11 +103,11 @@ func open(id: StringName, args: Dictionary = {}) -> UiScreen:
 
 
 ## Queues a toast on the toast layer (Ui.toast calls this).
-func toast(text_key: String, kind: StringName = &"info") -> void:
+func toast(text_key: String, kind: StringName = &"info", args: Array = []) -> void:
 	if _toasts == null:
 		_toasts = ToastHost.new()
 		add_child(_toasts)
-	_toasts.show_toast(text_key, kind)
+	_toasts.show_toast(text_key, kind, args)
 
 
 func notify_opened(id: StringName) -> void:

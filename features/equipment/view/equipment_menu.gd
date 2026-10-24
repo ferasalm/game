@@ -27,8 +27,8 @@ func _init() -> void:
 	visible = false
 	backdrop_id = ID
 	prompts = [
-		{"key": "accept", "text": "EQUIP_PROMPT_EQUIP"}, {"key": "back", "text": "EQUIP_PROMPT_BACK"},
-		{"key": "hero", "text": "EQUIP_PROMPT_HERO"}, {"key": "tab", "text": "EQUIP_PROMPT_TAB"},
+		{"key": "accept", "text": "EQUIP_PROMPT_EQUIP"}, {"key": "hero", "text": "EQUIP_PROMPT_HERO"},
+		{"key": "back", "text": "EQUIP_PROMPT_BACK"}, {"key": "tab", "text": "EQUIP_PROMPT_TAB"},
 	]
 
 
@@ -84,22 +84,17 @@ func on_back() -> bool:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_Q:
-			cycle_hero(-1)
-		elif event.keycode == KEY_E:
-			cycle_hero(1)
-	elif event is InputEventJoypadButton and event.pressed:
-		if event.button_index == JOY_BUTTON_LEFT_SHOULDER:
-			cycle_hero(-1)
-		elif event.button_index == JOY_BUTTON_RIGHT_SHOULDER:
-			_open_items_in_place()
+	var step: int = EquipmentTabsBar.event_step(event)
+	if step != 0:
+		cycle_hero(step)
+		get_viewport().set_input_as_handled()
+		return
+	if tabs != null and tabs.handle_input(event):
+		get_viewport().set_input_as_handled()
 
 
 func _build_components() -> void:
-	tabs = EquipmentTabsBar.new()
-	tabs.items_requested.connect(_open_items_in_place)
-	tabs.map_requested.connect(_open_map_in_place)
+	tabs = EquipmentTabsBar.new().setup(EquipmentTabsBar.Tab.EQUIPMENT)
 	header = EquipmentHeroHeader.new()
 	owned_list = EquipmentOwnedList.new()
 	owned_list.item_focused.connect(_on_item_focused)
@@ -177,15 +172,3 @@ func cycle_hero(dir: int) -> void:
 	var next_idx: int = (idx + dir + heroes.size()) % heroes.size()
 	show_hero(heroes[next_idx])
 	boxes_manager.focus_first()
-
-
-func _open_items_in_place() -> void:
-	close()
-	if is_inside_tree():
-		Screens.open(&"items")
-
-
-func _open_map_in_place() -> void:
-	close()
-	if is_inside_tree():
-		Screens.open(&"map")

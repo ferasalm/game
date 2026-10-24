@@ -11,7 +11,7 @@ SCRIPT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "slots.sh")
 
 
 def run_slots(wt_dir, *args):
-    env = dict(os.environ, GAME_WT_DIR=wt_dir)
+    env = dict(os.environ, GAME_WT_DIR=wt_dir, CAP_AGY="2", CAP_CF="2", CAP_OC="1")
     return subprocess.run(["bash", SCRIPT, *args], env=env, capture_output=True, text=True)
 
 

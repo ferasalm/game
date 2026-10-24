@@ -13,24 +13,65 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `project.godot`
 
 ## .agents
+- `.agents/skills/AGENCY-LICENSE`
 - `.agents/skills/blender-addon-engineer/SKILL.md`
+- `.agents/skills/code-reviewer/SKILL.md`
+- `.agents/skills/codebase-archaeologist/SKILL.md`
+- `.agents/skills/codebase-onboarding-engineer/SKILL.md`
+- `.agents/skills/cultural-intelligence-strategist/SKILL.md`
+- `.agents/skills/devops-automator/SKILL.md`
+- `.agents/skills/feedback-synthesizer/SKILL.md`
 - `.agents/skills/game-audio-engineer/SKILL.md`
 - `.agents/skills/game-designer/SKILL.md`
+- `.agents/skills/git-workflow-master/SKILL.md`
 - `.agents/skills/godot-gameplay-scripter/SKILL.md`
 - `.agents/skills/godot-shader-developer/SKILL.md`
+- `.agents/skills/image-prompt-engineer/SKILL.md`
 - `.agents/skills/level-designer/SKILL.md`
+- `.agents/skills/mcp-builder/SKILL.md`
+- `.agents/skills/minimal-change-engineer/SKILL.md`
 - `.agents/skills/narrative-designer/SKILL.md`
+- `.agents/skills/performance-benchmarker/SKILL.md`
+- `.agents/skills/prompt-engineer/SKILL.md`
+- `.agents/skills/rapid-prototyper/SKILL.md`
+- `.agents/skills/software-architect/SKILL.md`
 - `.agents/skills/technical-artist/SKILL.md`
+- `.agents/skills/technical-writer/SKILL.md`
+- `.agents/skills/test-results-analyzer/SKILL.md`
+- `.agents/skills/ui-designer/SKILL.md`
+- `.agents/skills/ui-finish-gate-reviewer/SKILL.md`
+- `.agents/skills/ux-architect/SKILL.md`
+- `.agents/skills/workflow-architect/SKILL.md`
 
 ## .opencode
 - `.opencode/agent/blender-addon-engineer.md`
+- `.opencode/agent/code-reviewer.md`
+- `.opencode/agent/codebase-archaeologist.md`
+- `.opencode/agent/codebase-onboarding-engineer.md`
+- `.opencode/agent/cultural-intelligence-strategist.md`
+- `.opencode/agent/devops-automator.md`
+- `.opencode/agent/feedback-synthesizer.md`
 - `.opencode/agent/game-audio-engineer.md`
 - `.opencode/agent/game-designer.md`
+- `.opencode/agent/git-workflow-master.md`
 - `.opencode/agent/godot-gameplay-scripter.md`
 - `.opencode/agent/godot-shader-developer.md`
+- `.opencode/agent/image-prompt-engineer.md`
 - `.opencode/agent/level-designer.md`
+- `.opencode/agent/mcp-builder.md`
+- `.opencode/agent/minimal-change-engineer.md`
 - `.opencode/agent/narrative-designer.md`
+- `.opencode/agent/performance-benchmarker.md`
+- `.opencode/agent/prompt-engineer.md`
+- `.opencode/agent/rapid-prototyper.md`
+- `.opencode/agent/software-architect.md`
 - `.opencode/agent/technical-artist.md`
+- `.opencode/agent/technical-writer.md`
+- `.opencode/agent/test-results-analyzer.md`
+- `.opencode/agent/ui-designer.md`
+- `.opencode/agent/ui-finish-gate-reviewer.md`
+- `.opencode/agent/ux-architect.md`
+- `.opencode/agent/workflow-architect.md`
 
 ## content
 - `content/art/clips.json`: content: clip x15
@@ -89,7 +130,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/world/areas.json`: content: area x2
 - `content/world/buildings.json`: content: building x15
 - `content/world/camera.json`: content: camera_rig x1
-- `content/world/city_map.json`: content: city_district x8
+- `content/world/city_map.json`: content: city_district x17
 - `content/world/explore.json`: content: explore_rules x1
 - `content/world/look.json`: content: look x5
 - `content/world/map_markers.json`: content: map_marker x3
@@ -146,7 +187,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/art/defs/palette_def.gd`: The locked colour palette: one letter per colour ("." is transparent and never listed here)
 - `features/art/defs/sprite_def.gd`: One pixel sprite: rows of palette letters ('.' = transparent), all the same width, feet on the last row
 - `features/art/defs/visual_rules_def.gd`: Numbers for how a CharacterVisual looks and moves: art scale, idle breathing, walking (bob, squash and stretch, lean, dust), turning, the blob shadow, and the battle motions (anticipation, lunge with afterimages, recoil, hurt, knocked out, revive, victory hop)
-- `features/art/logic/body_anchor.gd`: purpose: The fallback body anchor points of a model with no rigged anchor bone (a rigid model, or a bone the def does not name): shares of the body's own height and width, as a distance from the feet
 - `features/art/logic/clip_timing.gd`: Pure retiming of a one-shot clip (ClipDef): real seconds <-> clip seconds
 - `features/art/logic/locomotion.gd`: Pure walking maths for a model: which gait a ground speed means, the playback rate that keeps feet from sliding (speed / stride), a smoothed speed, the lean into acceleration and the foot contacts a gait loop passes
 - `features/art/logic/model_gait.gd`: Pure choice of a model's looping clip: which gait (idle, walk, run) its measured ground speed and the state the facade asked for mean, and the playback rate that keeps its feet on the ground
@@ -160,6 +200,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/art/tests/test_pose_match.gd`: Retargeting (PoseMatch, PoseFollow): the swing turns one direction into another, the per-bone offset makes the target bone point where the source bone points (at rest and after a turn), the hips travel scales with hip height, and a pose_source model's body follows its hidden source (Zayd's Rodin model stands up with the hand below the head); mirrored, the other arm does the move (Zayd's cast raises his prosthetic right arm)
 - `features/art/tests/test_rodin_parts.gd`: Feras's Rodin pieces after tools/rodin: Zayd's baked dagger is pressed flat onto his chest (the code hilt is his only jambiyah), the grandfather's hilt is the Rodin grip above the belt origin and the Rodin sheath below it curving forward (the blade stays the code one), and the survey drone's hull is the Rodin mesh at hover height
 - `features/art/tests/test_sprites.gd`: Prototype T7: every sprite is well formed and uses only palette letters; PixelArt and CharacterVisual work
+- `features/art/tests/test_visual_anchors.gd`: purpose: Every body-anchor share is read from content/art/visual.json, and a missing key is a content error
 - `features/art/tests/test_visual_contract.gd`: The CharacterVisual contract: play(state, facing), the anchors, clip events, the pixel and puppet sources behind the facade, and the pulse flag that switches the whole-body squash off for puppets
 - `features/art/view/character.gdshader`
 - `features/art/view/character_fx.gd`: The small effects around one CharacterVisual: a soft blob shadow on the floor, dust puffs at the feet and the fading afterimages of a lunge
@@ -167,10 +208,11 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/art/view/character_hull.gdshader`
 - `features/art/view/character_motion.gd`: The root moves of a CharacterVisual: they slide `root` and nothing else (the picture and its squash belong to the VisualSource)
 - `features/art/view/character_skin.gdshader`
-- `features/art/view/character_visual.gd`: A character standing in the 3D world (feet on the node's origin): the facade the game talks to (play, anchors, the clip_event signal)
+- `features/art/view/character_visual.gd`: A character standing in the 3D world (feet on the node's origin): the facade the game talks to
 - `features/art/view/garment_mesh.gd`: Stand-in clothing built in code from a ModelPartDef (until Feras's own models): a lathe (a skirt, a coat, a head wrap) turned from a radius profile, and `prim`, which adds a coloured primitive to a SurfaceTool so a whole prop (the jambiyah) is one mesh with vertex colours (the skin shader multiplies COLOR into the albedo)
 - `features/art/view/hilt_mesh.gd`: The stand-in for Zayd's grandfather's jambiyah (Heirloom `grandfather_hilt`), built in code from the part's colours until Feras's picture becomes a model: a curved horn grip with two silver bands, a T pommel with a carnelian stone, a curved blade, and a curved leather sheath with silver throat and tip
 - `features/art/view/hilt_parts.gd`: The grandfather's jambiyah as nodes (the part's Rodin grip and sheath scenes, else HiltMesh's stand-in; the blade is always HiltMesh's): a sheath and the hilt with its blade sit at the belt (`root`); draw() carries the hilt to the hand bone for a strike (the blade shows, the sheath stays), sheathe() puts it back
+- `features/art/view/model_anchors.gd`: purpose: A live model's body anchors from its own height and width, with every share read from visual.json
 - `features/art/view/model_clips.gd`: Drives a MANUAL AnimationPlayer
 - `features/art/view/model_materials.gd`: The materials of live 3D characters: every surface (body, eyes, brows, hair, garments, the hilt) is a ShaderMaterial of character_skin.gdshader, so the painted light of the look reaches all of them through `materials()` (PaintedLook feeds the shared light uniforms), and one `set_all` call drives the flash, desat and glow of the whole character
 - `features/art/view/model_move.gd`: What a model's body does on the ground: the ground speed it is really moving at (measured from its own position, so animation and feet agree whoever moves it), the yaw it eases toward at the model's turn speed, and the lean into an acceleration
@@ -352,7 +394,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/equipment/view/equipment_menu.gd`: purpose: Equipment menu with 3D hologram hero, slot boxes, owned list, stats comparison and tabs
 - `features/equipment/view/equipment_owned_list.gd`: purpose: Owned items panel (420x620 at 80,260) populated with ListRows and worn "E" chips
 - `features/equipment/view/equipment_stats_panel.gd`: purpose: Stats preview panel (440x560) showing now vs after comparison and derived battle rolls
-- `features/equipment/view/equipment_tabs_bar.gd`: purpose: Top bar (1760x64 at 80,40) with title pair and menu tabs (Equipment, Items, Map)
+- `features/equipment/view/equipment_tabs_bar.gd`: purpose: Shared top bar (1760x64 at 80,40) with the screen title and the Equipment / Items / Map tabs
 - `features/equipment/view/grid_disc.gdshader`
 - `features/equipment/view/hologram.gdshader`
 - `features/equipment/view/hologram_stage.gd`: purpose: 800x760 SubViewportContainer with 3D hologram hero, camera, disc and leader lines
@@ -410,15 +452,27 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/jambiyah/logic/workshop_stats.gd`: The comparison rows the equipment screen shows: base fighter against the fighter built by Jambiyah.equip
 - `features/jambiyah/tests/test_jambiyah.gd`: T3: every hilt + blade pairing gives a different Zayd stat sets, inside the timeline caps; each hilt adds exactly one move; the shared base definition is never changed
 - `features/jambiyah/tests/test_loadout.gd`: The loadout fallback: a hero wears the saved item per slot, else the start loadout
-- `features/map/defs/city_district_def.gd`: purpose: Defines a city district with polygon boundaries in metres
+- `features/map/defs/city_district_def.gd`: purpose: Defines a city map feature: district polygon, road line, ring/contours, pin, or look
 - `features/map/defs/map_info_def.gd`: purpose: Defines map metadata including coordinates and sector key
 - `features/map/defs/map_marker_def.gd`: purpose: Defines a map marker pointing to a place (kind npc, vendor, quest) and optional quest flag
 - `features/map/logic/map_plan.gd`: purpose: Pure logic for planning area walkable cells, aspect fitting, and marker positioning
 - `features/map/tests/test_holo_map.gd`: purpose: Tests for holographic map planning, marker filtering, city districts, and screen view
+- `features/map/tests/test_holo_map_city.gd`: purpose: Tests city-map schematic blocks, look parameters, label de-overlap and localization rows
+- `features/map/view/holo_city_districts.gd`: purpose: Draws Tahrir fan, Haddah blocks, Bayt Baws towers, al-Hasaba, ring road, Zubairi and Jabal Nuqum
+- `features/map/view/holo_city_hud.gd`: purpose: Draws dark navy background, faint grid, corner brackets, compass and top captions
+- `features/map/view/holo_city_look.gd`: purpose: Reads, validates and applies holographic city map styling from content JSON
+- `features/map/view/holo_city_old_town.gd`: purpose: Draws Old City disc, seeded maze rings, Bab al-Yaman reticle, al-Saila channel and area pin
 - `features/map/view/holo_map.gd`: purpose: Holographic map screen with floor plan, markers, district radar, and city map toggle
-- `features/map/view/holo_map_canvas.gd`: purpose: 1200x800 holographic map canvas drawing area floor plan or full city map with scanlines
+- `features/map/view/holo_map_area_view.gd`: purpose: Draws the area floor plan with merged roof runs, a 45-degree hatch, crossings, markers and labels
+- `features/map/view/holo_map_canvas.gd`: purpose: 1200x800 holographic map canvas: rooftop floor plan or full city map with neon glow and HUD dressing
 - `features/map/view/holo_map_city_preview.gd`: purpose: Circular city map radar preview (300x300 at 1560,720) showing Sana'a district outlines
+- `features/map/view/holo_map_city_view.gd`: purpose: Builds city-map district and area-pin labels and collapses pins that share one real place
+- `features/map/view/holo_map_geo.gd`: purpose: Project city map features from world metres to screen space with optional radial compression
+- `features/map/view/holo_map_label.gd`: purpose: One map label candidate with a rect that can be pushed away from others
+- `features/map/view/holo_map_labels.gd`: purpose: Place 2D map labels apart from each other and obstacles, and draw them with leader lines
 - `features/map/view/holo_map_legend.gd`: purpose: Legend panel (260x260 at 80,140) showing marker icons and labels
+- `features/map/view/holo_map_markers.gd`: purpose: Draw map marker icons (player, npc, vendor, quest) used by the area view
+- `features/map/view/holo_map_style.gd`: purpose: Shared holographic map drawing helpers: glow lines, dashed ring, hatched fills
 - `features/map/view/holo_scan.gdshader`
 - `features/progression/defs/class_def.gd`: A hero's RPG class: growth stats added per level above 1 and a passive perk (content/progression/classes.json)
 - `features/progression/defs/levels_def.gd`: Thresholds of total XP required to reach each level (content/progression/levels.json)
@@ -483,9 +537,11 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/logic/toast_queue.gd`: Pure: toasts wait in order and are shown one at a time
 - `features/ui/tests/layout_settle.gd`: purpose: Test helper: lays out Containers now (top-down), since tests measure before the deferred sort runs
 - `features/ui/tests/node_walk.gd`: Test helper (not a test): every descendant of a node, depth first
+- `features/ui/tests/test_items_menu.gd`: The Items screen: Equipment-style layout, party-card previews clamped by missing HP, and the use flow
 - `features/ui/tests/test_items_shop.gd`: The Items and Shop screens on the Screens stack, and the riyal banner of the loot popup
 - `features/ui/tests/test_menu_polish.gd`: Menu polish tests: portrait faces, pause hero progression, icon disc fallback, label font sizes, glass panel colour
 - `features/ui/tests/test_menu_skins.gd`: Menu skins test: backdrops, fallback, child 0, party rows, thumbnails, shop money-after, rects
+- `features/ui/tests/test_menu_tabs.gd`: The shared Equipment / Items / Map tabs bar: every screen reaches every other tab by confirm and LB/RB or Q/E
 - `features/ui/tests/test_musnad.gd`: The written language of Sana'a in 2150 is Musnad only: no Arabic script in any CSV, JSON or script; every *_MUSNAD and WORLD_SIGN_* text holds only Musnad letters, spaces and arrows; the Musnad font draws it
 - `features/ui/tests/test_pause_menu.gd`: purpose: The pause menu rules (PauseLogic) and the screen built from them
 - `features/ui/tests/test_popups.gd`: The loot popup (queues item_obtained in order, skippable), the area title card, the title overlay (any key dismisses it once) and the opening shot held on the moon until then
@@ -505,16 +561,22 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/menu_blur.gdshader`
 - `features/ui/view/money_counter.gd`: A pill with the riyal amount in brass
 - `features/ui/view/party_card.gd`: A hero card: portrait icon, name, HP and SP bars with numbers
+- `features/ui/view/party_card_gain.gd`: purpose: Paints an item's gain as a green segment on a PartyCard stat bar, from now to now+gain capped at max
 - `features/ui/view/portrait_faces.gd`: purpose: Caches painted hero portraits (cropped head and uncropped bust)
 - `features/ui/view/prompt_strip.gd`: The Hades-style button hints along the bottom: "[Enter] Select   [Esc] Back"
 - `features/ui/view/screens/choice_screen.gd`: Base of the small centred "pick one" screens (Sabil, Defeat): a framed panel with the Musnad + English title pair and a column of buttons in focus order
 - `features/ui/view/screens/confirm_dialog.gd`: A centred Yes/No question over the scrim
 - `features/ui/view/screens/defeat_screen.gd`: The defeat screen (Screens id &"defeat"): the arena darkens over t_defeat_fade, then DEFEATED offers Retry fight (default), Load last save (greyed with no save) and Title (asks first)
-- `features/ui/view/screens/items_screen.gd`: The Items screen (Screens id &"items", opened from the pause menu): the bag on the left, the chosen item's description and effect on the right, and under it the hero picker
-- `features/ui/view/screens/items_text.gd`: Item screen wording: the effect line ("HP +120") and a hero's "HP 200 -> 320" preview
+- `features/ui/view/screens/items_desc_bar.gd`: purpose: Bottom description box (1760x90 at 80,900) of the Items screen: name, owned count, text and effect
+- `features/ui/view/screens/items_hero_card.gd`: purpose: A hero card you can pick as an item target: the PartyCard look plus the item's gain preview
+- `features/ui/view/screens/items_list_panel.gd`: purpose: The left bag list of the Items screen: one ListRow per field-usable consumable, with count and effect
+- `features/ui/view/screens/items_party_panel.gd`: purpose: Right side of the Items screen: one selectable PartyCard per hero, each previewing the item
+- `features/ui/view/screens/items_screen.gd`: The Items screen (Screens id &"items"): the bag on the left, a PartyCard per hero on the right with the selected item's real gain previewed on each, and the item's description at the bottom
+- `features/ui/view/screens/items_text.gd`: Item screen wording: the effect line ("HP +120"), a card's gain line and the statuses an item cures
 - `features/ui/view/screens/pause_hero_row.gd`: purpose: One hero row in the pause party panel: face 160x160, name, class, HP/SP bars, KO state
 - `features/ui/view/screens/pause_menu.gd`: Pause menu screen: command panel (80,80), info box (80,880), party panel (540,80), prompt strip (0,1020)
 - `features/ui/view/screens/pause_party.gd`: Party panel for the pause screen: one row per hero (h 200)
+- `features/ui/view/screens/pause_stat_bar.gd`: purpose: Builds one HP/SP bar line for a pause hero row: tag, bar and numbers; returns the bar and the label
 - `features/ui/view/screens/sabil_screen.gd`: The sabil fountain question (Screens id &"sabil"): "Drink to rest? This saves your game and restores everyone." Closes with &"drink" (default) or &"leave" (Not now, or back)
 - `features/ui/view/screens/shop_cell.gd`: One cell in the shop item grid: 220x170, icon 96, name, price c_brass, rarity glow, sold out dim
 - `features/ui/view/screens/shop_detail.gd`: Shop detail panel at (840,140) 560x760: icon 160, name, desc, effect, and per-hero comparison
@@ -659,6 +721,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/tests/test_night.gd`: Night look: the sky def feeds every shader uniform, look "night" builds a sky environment with fog and a fill light while "v1" stays the flat daytime look, bad look keys are caught, the vista zone and mist layers load
 - `features/world/tests/test_painted.gd`: Painted diorama look spike: the three painted looks read and differ, their camera presets put the camera at the preset pitch, world materials switch to the painted shader only while a painted look is in use, the baked textures load (and fall back when missing), every bake matches the current painter inputs (re-bake when this fails), the grade LUT is the identity at amount 0, and a painted rooftop gets its outline, screen pass and figure
 - `features/world/tests/test_places.gd`: The typed places of the rooftop (docs/design/rooftop-v3.md section 3): valid ids and references, every standing point and patrol end reachable, the props they use stand next to them, and the patrol lanes keep away from the commons; PatrolSafety's lane maths and the unstuck and return picks; a keeper stands at his counter's end facing his customers (StallKeeper) and no NPC overlaps a prop's collision
+- `features/world/tests/test_render_clean.gd`: purpose: Tests for render-clean: roof-floor overlay z-spacing, texture mipmaps, and anisotropic filtering
 - `features/world/tests/test_rooftop.gd`: The rooftop scene builds headless; walking, the follower, the patrol touch, the ambush direction, the exploring switch, the patrol respawn and parapet collision
 - `features/world/tests/test_rooftop_actors.gd`: Rooftop actors: the workshop bench is a mesh, dialogue framing aims at the speaker's head, and Bilqis never sticks
 - `features/world/tests/test_rooftop_systems.gd`: Rooftop exploration systems: follower trailing, workshop prompt, camera restore and debug overlay
@@ -717,6 +780,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/world/weather/storm_preview.gd`: Preview scene for the storm layer on the rooftop: used for fps_probe profiling and inbox renders
 - `features/world/weather/storm_preview.tscn`: scene
 - `features/world/weather/tests/test_storm.gd`: Storm weather tests: StormDef validation, particle caps, puddle placement, emitters per point, lightning flag, and area weather hook
+- `features/world/weather/tests/test_storm_puddles.gd`: purpose: Tests for storm puddles: wall margins, repeatability, shader fade uniforms, and ALPHA blend
 - `features/world/weather/view/puddle_builder.gd`: Builds wet floor puddles with animated ripple shaders scattered across walkable floor tiles
 - `features/world/weather/view/shaders/puddle.gdshader`
 - `features/world/weather/view/shaders/rain.gdshader`
@@ -765,15 +829,19 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/build_gate.py`: Build gate: judges a builder run before Claude reads it (NOWORK, BREACH, FAIL or PASS plus a WARN checklist).
 - `tools/build_pipeline.sh`: Free builder pipeline (DECISIONS 2026-10-23): builder run -> check.sh -> one free fix pass fed the FAIL lines ->
 - `tools/cf_build.sh`: Rates (USD per million tokens)
-- `tools/cf_mcp/server.py`: Stdio MCP server: triage_trace (GLM-5.3 Flash) and generate_patch (DeepSeek V4.1 Flash) on Cloudflare Workers AI.
+- `tools/cf_mcp/server.py`: Stdio MCP server: triage_trace (GLM-5.3 Flash), generate_patch (DeepSeek V4.1 Flash), optional .agents persona.
 - `tools/cf_mcp/test_server.py`: Tests for tools/cf_mcp/server.py over its real stdio protocol, in dry mode (no Cloudflare call, no credentials).
 - `tools/check.sh`: One command for every check (docs, lint, Godot import, tests). One ok/FAIL line per step; logs in .check/.
 - `tools/check_slot.sh`: Test-run slots shared by every worktree on this machine: at most CHECK_SLOTS Godot test suites at once. Four at once
 - `tools/doc_check.py`: Keeps the always-loaded notes small and well-formed (docs/EFFICIENCY.md); exit 1 on any failure.
 - `tools/export_atlases.gd`: Exports the code-painted world atlases (PaintedAtlases) to PNG for the offline painterly bake
+- `tools/flicker_helper.py`: Helper for flicker_probe: computes heat map, masks rain, and saves flicker_walk.gif.
+- `tools/flicker_probe.gd`: purpose: Measures floor flicker across 60 frames of party walk in default look (painted_b)
+- `tools/flicker_probe.tscn`: scene
 - `tools/fps_probe.gd`: FPS probe: plays a scene with vsync off and prints the average and worst frames per second after a warm-up
 - `tools/gate_checklist.py`: Checklist parsing and verification for build_gate.
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.
+- `tools/import_agents.py`: Copies the chosen agency agents (~/.claude/agents, MIT) into .agents/skills/<name>/SKILL.md for every builder.
 - `tools/lint_gd.py`: GDScript rules Godot itself doesn't enforce (docs/ARCHITECTURE.md, "Code rules"); exit 1 on any break.
 - `tools/map.py`: Writes docs/MAP.md from each file's purpose line, so the map never drifts. --check: exit 1 if stale.
 - `tools/merge_run.sh`: Merges one gated builder run into the current branch (DECISIONS 2026-10-23): only a PASS .result; a fast-forward onto
