@@ -108,7 +108,7 @@ func test_city_map_loads_eight_districts() -> void:
 		var d := ContentDB.get_def("city_district", d_id) as CityDistrictDef
 		if d != null and d.feature == &"district":
 			district_count += 1
-			check(d.polygon.size() >= 3, "%s has >= 3 points (%d)" % [d_id, d.polygon.size()])
+			check(d.polygon.size() >= 6, "%s has >= 6 points (%d)" % [d_id, d.polygon.size()])
 	check_eq(district_count, 8, "city_map has 8 district features")
 
 
@@ -141,7 +141,7 @@ func _district_centers() -> Dictionary:
 		else:
 			all_features.append(d)
 	var bounds: Rect2 = HoloMapGeo.city_bounds(districts, all_features, pins, Rect2(Vector2.ZERO, Vector2(1200.0, 800.0)))
-	var tr: Dictionary = HoloMapGeo.fit(bounds, Vector2(1200.0, 800.0), 40.0)
+	var tr: Dictionary = HoloMapGeo.fit(bounds, Vector2(1200.0, 800.0), 0.08)
 	var scale: float = float(tr.get("scale", 0.0))
 	var offset: Vector2 = tr.get("offset", Vector2.ZERO) as Vector2
 	var out: Dictionary = {}

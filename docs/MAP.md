@@ -87,7 +87,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/world/areas.json`: content: area x2
 - `content/world/buildings.json`: content: building x15
 - `content/world/camera.json`: content: camera_rig x1
-- `content/world/city_map.json`: content: city_district x14
+- `content/world/city_map.json`: content: city_district x15
 - `content/world/explore.json`: content: explore_rules x1
 - `content/world/look.json`: content: look x5
 - `content/world/map_markers.json`: content: map_marker x3
@@ -402,12 +402,15 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/map/defs/map_marker_def.gd`: purpose: Defines a map marker pointing to a place (kind npc, vendor, quest) and optional quest flag
 - `features/map/logic/map_plan.gd`: purpose: Pure logic for planning area walkable cells, aspect fitting, and marker positioning
 - `features/map/tests/test_holo_map.gd`: purpose: Tests for holographic map planning, marker filtering, city districts, and screen view
+- `features/map/tests/test_holo_map_city.gd`: purpose: Tests city-map projection bounds, real label sets, district polygons, pins and localization rows
 - `features/map/view/holo_map.gd`: purpose: Holographic map screen with floor plan, markers, district radar, and city map toggle
+- `features/map/view/holo_map_area_view.gd`: purpose: Draws the area floor plan with merged roof runs, a 45-degree hatch, crossings, markers and labels
 - `features/map/view/holo_map_canvas.gd`: purpose: 1200x800 holographic map canvas: rooftop floor plan or full city map with cyan glow and scanlines
 - `features/map/view/holo_map_city_preview.gd`: purpose: Circular city map radar preview (300x300 at 1560,720) showing Sana'a district outlines
+- `features/map/view/holo_map_city_view.gd`: purpose: Builds city-map district and area-pin labels and collapses pins that share one real place
 - `features/map/view/holo_map_geo.gd`: purpose: Project city map features from world metres to screen space and compute the fitting bounds
 - `features/map/view/holo_map_label.gd`: purpose: One map label candidate with a rect that can be pushed away from others
-- `features/map/view/holo_map_labels.gd`: purpose: Resolve overlapping 2D map labels by iterative repulsion, keeping them inside bounds
+- `features/map/view/holo_map_labels.gd`: purpose: Place 2D map labels apart from each other, keep them inside bounds, and draw them with leader lines
 - `features/map/view/holo_map_legend.gd`: purpose: Legend panel (260x260 at 80,140) showing marker icons and labels
 - `features/map/view/holo_map_markers.gd`: purpose: Draw map marker icons (player, npc, vendor, quest) used by the area view
 - `features/map/view/holo_map_style.gd`: purpose: Shared holographic map drawing helpers: glow lines, dashed ring, hatched fills

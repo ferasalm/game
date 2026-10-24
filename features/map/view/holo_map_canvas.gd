@@ -5,8 +5,7 @@ extends Control
 enum Mode { AREA, CITY }
 
 const _CYAN: Color = Color("#23E6F0")
-const _HATCH_SPACING: float = 24.0
-const _LABEL_FONT_SIZE: int = 16
+const _CITY_MARGIN: float = 0.08
 
 var mode: Mode = Mode.AREA
 var player_world_pos: Vector3 = Vector3.ZERO
@@ -97,47 +96,20 @@ func _draw() -> void:
 func _draw_area_plan() -> void:
 	if _plan.is_empty() or not _fit.has("scale"):
 		return
-	var scale_val: float = float(_fit["scale"])
-	var offset: Vector2 = _fit["offset"]
-	var font: Font = Ui.theme().default_font
-	var labels: Array[HoloMapLabel] = []
-
-	for run: Rect2i in _plan.get("runs", []):
-		var r := Rect2(Vector2(run.position) * scale_val + offset, Vector2(run.size) * scale_val)
-		draw_rect(r, HoloMapStyle.alpha(_c_cyan, 0.06), true)
-		draw_rect(r, _c_cyan, false, 1.5)
-		for seg: PackedVector2Array in HoloMapStyle.hatch_rect(r, _HATCH_SPACING):
-			draw_line(seg[0], seg[1], HoloMapStyle.alpha(_c_cyan, 0.35), 1.0)
-
-	for seg: PackedVector2Array in _plan.get("crossings", []):
-		if seg.size() >= 2:
-			HoloMapStyle.glow_line(self, seg[0] * scale_val + offset, seg[1] * scale_val + offset, _c_cyan, 2.0, 4.0)
-
-	for pl: Dictionary in _plan.get("places", []):
-		var name_key: String = pl.get("name_key", "")
-		if not name_key.is_empty():
-			var pos: Vector2 = pl.get("pos", Vector2.ZERO) * scale_val + offset
-			labels.append(HoloMapLabels.make(font, pos + Vector2(0.0, -22.0), Ui.text(name_key), _style.colour(&"c_muted"), _LABEL_FONT_SIZE))
-
-	_draw_labels(HoloMapLabels.resolve(labels, Rect2(Vector2.ZERO, size)), font)
-
-	var colors := {&"default": _c_cyan, &"npc": _c_good, &"vendor": _c_brass, &"quest": _c_amber}
-	for m: Dictionary in _markers:
-		var pos: Vector2 = m.get("pos", Vector2.ZERO) * scale_val + offset
-		HoloMapMarkers.draw_icon(self, pos, StringName(m.get("kind", "")), colors)
-
-	var p_screen: Vector2 = Vector2(player_world_pos.x, player_world_pos.z) * scale_val + offset
-	HoloMapMarkers.draw_icon(self, p_screen, &"player", colors)
+	var colors := {
+		&"default": _c_cyan, &"npc": _c_good, &"vendor": _c_brass, &"quest": _c_amber,
+		&"muted": _style.colour(&"c_muted"),
+	}
+	HoloMapAreaView.draw(self, _plan, _fit, _markers, player_world_pos, colors, Ui.theme().default_font)
 
 
 func _draw_city_map() -> void:
-	var tr: Dictionary = HoloMapGeo.fit(HoloMapGeo.city_bounds(_districts, _features, _area_pins, Rect2(Vector2.ZERO, size)), size, 40.0)
-	_city_scale = float(tr.get("scale", 0.0))
-	_city_offset = tr.get("offset", Vector2.ZERO) as Vector2
+	_ensure_city_fit()
 	var font: Font = Ui.theme().default_font
-	var pulse: float = sin(pulse_time * TAU / 1.6) * 0.5 + 0.5
-	var flicker: float = 0.85 + pulse * 0.15
-	var labels: Array[HoloMapLabel] = []
+	var flick: Dictionary = _flicker()
+	var pulse: float = sin(pulse_time * TAU / maxf(float(flick["period"]), 0.1)) * 0.5 + 0.5
+	var flicker: float = float(flick["base"]) + pulse * float(flick["amplitude"])
+	var labels: Array[HoloMapLabel] = city_label_set(font)
 
 	for d: CityDistrictDef in _districts:
 		var pts := HoloMapGeo.to_screen_polygon(d.polygon, _city_scale, _city_offset)
@@ -147,7 +119,6 @@ func _draw_city_map() -> void:
 		HoloMapStyle.glow_line(self, pts[-1], pts[0], _c_cyan, 2.0, 4.0)
 		for i: int in range(pts.size() - 1):
 			HoloMapStyle.glow_line(self, pts[i], pts[i + 1], _c_cyan, 2.0, 4.0)
-		labels.append(HoloMapLabels.make(font, HoloMapGeo.centroid(pts), Ui.text(d.name_key), _c_cyan, _LABEL_FONT_SIZE))
 		if d.is_old_city:
 			var c: Vector2 = HoloMapGeo.centroid(pts)
 			draw_arc(c, 30.0 + pulse * 10.0, 0.0, TAU, 36, HoloMapStyle.alpha(_c_cyan, 0.6 + 0.4 * pulse), 3.0)
@@ -163,29 +134,39 @@ func _draw_city_map() -> void:
 				for r: float in f.radii:
 					draw_arc(_project(f.center), r * _city_scale, 0.0, TAU, 48, HoloMapStyle.alpha(_c_cyan, 0.45), 2.0)
 
-	labels.append_array(_area_pin_labels(font))
-	_draw_labels(HoloMapLabels.resolve(labels, Rect2(Vector2.ZERO, size)), font)
+	HoloMapLabels.draw_all(self, HoloMapLabels.resolve(labels, Rect2(Vector2.ZERO, size)), font)
 
-	for p: CityDistrictDef in _area_pins:
-		HoloMapMarkers.draw_area_pin(self, _project(p.center), _is_current_area(p), _is_current_area(p), pulse, _c_cyan)
+	for pin: Dictionary in HoloMapCityView.unique_pins(_area_pins, _current_area_id()):
+		var p: CityDistrictDef = pin["def"]
+		HoloMapMarkers.draw_area_pin(self, _project(p.center), bool(pin["active"]), pulse, _c_cyan)
+
+
+func city_label_set(font: Font) -> Array[HoloMapLabel]:
+	_ensure_city_fit()
+	return HoloMapCityView.labels(font, _districts, _area_pins, _city_scale, _city_offset, _current_area_id(), _c_cyan)
+
+
+func area_label_set(font: Font) -> Array[HoloMapLabel]:
+	return HoloMapAreaView.label_set(font, _plan, _fit, _style.colour(&"c_muted"))
+
+
+func _ensure_city_fit() -> void:
+	var bounds: Rect2 = HoloMapGeo.city_bounds(_districts, _features, _area_pins, Rect2(Vector2.ZERO, size))
+	var tr: Dictionary = HoloMapGeo.fit(bounds, size, _CITY_MARGIN)
+	_city_scale = float(tr.get("scale", 0.0))
+	_city_offset = tr.get("offset", Vector2.ZERO) as Vector2
+
+
+func _flicker() -> Dictionary:
+	for f: CityDistrictDef in _features:
+		if f.feature == &"flicker":
+			return {"period": f.flicker_period, "base": f.flicker_base, "amplitude": f.flicker_amplitude}
+	return {"period": 1.6, "base": 0.85, "amplitude": 0.15}
+
+
+func _current_area_id() -> StringName:
+	return area_def.id if area_def != null else &""
 
 
 func _project(geo: Vector2) -> Vector2:
 	return HoloMapGeo.project(geo, _city_scale, _city_offset)
-
-
-func _area_pin_labels(font: Font) -> Array[HoloMapLabel]:
-	var out: Array[HoloMapLabel] = []
-	for p: CityDistrictDef in _area_pins:
-		var col := _c_cyan if _is_current_area(p) else HoloMapStyle.alpha(_c_cyan, 0.6)
-		out.append(HoloMapLabels.make(font, _project(p.center) + Vector2(14.0, 0.0), Ui.text(p.name_key), col, _LABEL_FONT_SIZE))
-	return out
-
-
-func _is_current_area(p: CityDistrictDef) -> bool:
-	return area_def != null and p.area_id == area_def.id
-
-
-func _draw_labels(labels: Array[HoloMapLabel], font: Font) -> void:
-	for lbl: HoloMapLabel in labels:
-		draw_string(font, lbl.pos - Vector2(lbl.size.x * 0.5, 0.0), lbl.text, HORIZONTAL_ALIGNMENT_LEFT, -1, lbl.font_size, lbl.color)

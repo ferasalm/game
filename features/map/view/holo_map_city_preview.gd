@@ -2,10 +2,14 @@ class_name HoloMapCityPreview
 extends Control
 ## purpose: Circular city map radar preview (300x300 at 1560,720) showing Sana'a district outlines.
 
+const RADAR_MARGIN: float = 0.08
+
 var _style: UiStyleDef
 var _c_cyan: Color
 var _c_brass: Color
 var _districts: Array[CityDistrictDef] = []
+var _features: Array[CityDistrictDef] = []
+var _pins: Array[CityDistrictDef] = []
 var _center: Vector2 = Vector2(150.0, 150.0)
 var _radius: float = 120.0
 var _scale: float = 0.0
@@ -20,27 +24,31 @@ func _init() -> void:
 	_style = Ui.style()
 	_c_cyan = _style.colour(&"c_cyan")
 	_c_brass = _style.colour(&"c_brass")
-	_load_districts()
+	_center = size * 0.5
+	_radius = minf(size.x, size.y) * 0.4
+	_load_city_data()
 
 
-func _load_districts() -> void:
+func _load_city_data() -> void:
 	_districts.clear()
-	var min_pt := Vector2(INF, INF)
-	var max_pt := Vector2(-INF, -INF)
+	_features.clear()
+	_pins.clear()
 	for d_id: StringName in ContentDB.ids("city_district"):
 		var def := ContentDB.get_def("city_district", d_id) as CityDistrictDef
-		if def != null and def.feature == &"district":
-			_districts.append(def)
-			for p: Vector2 in def.polygon:
-				min_pt = min_pt.min(p)
-				max_pt = max_pt.max(p)
-	var bounds: Rect2 = Rect2(Vector2.ZERO, Vector2.ONE)
-	if min_pt.x != INF:
-		bounds = Rect2(min_pt, max_pt - min_pt)
-	var avail: float = _radius * 1.7
-	_scale = avail / maxf(maxf(bounds.size.x, bounds.size.y), 1.0)
-	var fitted: Vector2 = bounds.size * _scale
-	_offset = _center - (bounds.position + fitted * 0.5)
+		if def == null:
+			continue
+		match def.feature:
+			&"district":
+				_districts.append(def)
+			&"area_pin":
+				_pins.append(def)
+			_:
+				_features.append(def)
+	var bounds: Rect2 = HoloMapGeo.city_bounds(_districts, _features, _pins, Rect2(Vector2.ZERO, Vector2.ONE))
+	var side: float = _radius * sqrt(2.0)
+	var tr: Dictionary = HoloMapGeo.fit(bounds, Vector2(side, side), RADAR_MARGIN)
+	_scale = float(tr.get("scale", 0.0))
+	_offset = (tr.get("offset", Vector2.ZERO) as Vector2) + _center - Vector2(side, side) * 0.5
 
 
 func _draw() -> void:
@@ -66,13 +74,12 @@ func _draw_radar_grid() -> void:
 
 func _draw_districts() -> void:
 	for d: CityDistrictDef in _districts:
-		var pts := PackedVector2Array()
-		for pt: Vector2 in d.polygon:
-			pts.append(_offset + Vector2(pt.x, -pt.y) * _scale)
+		var pts: PackedVector2Array = HoloMapGeo.to_screen_polygon(d.polygon, _scale, _offset)
 		if pts.size() >= 3:
 			var fill_color := Color(_c_cyan.r, _c_cyan.g, _c_cyan.b, 0.12 if d.is_old_city else 0.04)
 			draw_colored_polygon(pts, fill_color)
 			draw_polyline(pts, Color(_c_cyan.r, _c_cyan.g, _c_cyan.b, 0.7), 1.5)
 			draw_line(pts[-1], pts[0], Color(_c_cyan.r, _c_cyan.g, _c_cyan.b, 0.7), 1.5)
 		if d.is_old_city:
-			draw_arc(_center, 18.0, 0.0, TAU, 32, _c_cyan, 2.5)
+			var c: Vector2 = HoloMapGeo.centroid(pts)
+			draw_arc(c, 10.0, 0.0, TAU, 32, _c_cyan, 2.5)

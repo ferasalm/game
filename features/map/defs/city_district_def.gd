@@ -14,6 +14,10 @@ var radius: float = 0.0
 var radii: PackedFloat32Array = PackedFloat32Array()
 ## Area pin: which area id this pin represents.
 var area_id: StringName = &""
+## Hologram flicker (feature "flicker"): seconds per cycle, base alpha and added amplitude.
+var flicker_period: float = 1.6
+var flicker_base: float = 0.85
+var flicker_amplitude: float = 0.15
 
 
 func read(r: DefReader) -> void:
@@ -28,6 +32,9 @@ func read(r: DefReader) -> void:
 	radius = r.number("radius", 0.0, 20000.0, 0.0, false)
 	radii = _read_floats(raw_data, "radii")
 	area_id = StringName(r.text("area_id", "", false))
+	flicker_period = r.number("period", 0.1, 60.0, 1.6, false)
+	flicker_base = r.number("base", 0.0, 1.0, 0.85, false)
+	flicker_amplitude = r.number("amplitude", 0.0, 1.0, 0.15, false)
 	if feature == &"district" and polygon.size() < 3:
 		r.problem("polygon", "needs at least 3 points")
 

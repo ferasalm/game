@@ -49,9 +49,14 @@ static func centroid(pts: PackedVector2Array) -> Vector2:
 	return c / float(max(pts.size(), 1))
 
 
-static func fit(bounds: Rect2, target_size: Vector2, pad: float) -> Dictionary:
-	var avail: Vector2 = target_size - Vector2(pad * 2.0, pad * 2.0)
+## Fits bounds into target_size with a uniform scale, centred and inset by margin_ratio on every side.
+## The y axis is flipped by project(), so the top of the screen is bounds.end.y, not bounds.position.y.
+static func fit(bounds: Rect2, target_size: Vector2, margin_ratio: float = 0.08) -> Dictionary:
+	var inset: Vector2 = target_size * margin_ratio
+	var avail: Vector2 = target_size - inset * 2.0
 	var scale: float = minf(avail.x / maxf(bounds.size.x, 1.0), avail.y / maxf(bounds.size.y, 1.0))
 	var fitted: Vector2 = bounds.size * scale
-	var offset: Vector2 = (target_size - fitted) * 0.5 - bounds.position * scale
+	var offset := Vector2(
+		(target_size.x - fitted.x) * 0.5 - bounds.position.x * scale,
+		(target_size.y - fitted.y) * 0.5 + bounds.end.y * scale)
 	return {"scale": scale, "offset": offset}

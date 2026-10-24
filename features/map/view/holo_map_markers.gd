@@ -37,14 +37,13 @@ static func _vendor(canvas: Control, pos: Vector2, col: Color) -> void:
 	canvas.draw_circle(Vector2(pos.x + 6.0, pos.y + 11.0), 3.0, col)
 
 
-static func draw_area_pin(canvas: Control, pos: Vector2, active: bool, reached: bool, pulse: float, col: Color) -> void:
-	var alpha: float = 1.0 if reached else 0.35
+static func draw_area_pin(canvas: Control, pos: Vector2, active: bool, pulse: float, col: Color) -> void:
 	if active:
 		var ring_r: float = 14.0 + pulse * 8.0
-		canvas.draw_arc(pos, ring_r, 0.0, TAU, 32, HoloMapStyle.alpha(col, 0.5 * alpha), 2.5)
+		canvas.draw_arc(pos, ring_r, 0.0, TAU, 32, HoloMapStyle.alpha(col, 0.5 + 0.4 * pulse), 2.5)
 	var pts := PackedVector2Array([
 		Vector2(pos.x, pos.y - 10.0), Vector2(pos.x + 7.0, pos.y),
 		Vector2(pos.x, pos.y + 10.0), Vector2(pos.x - 7.0, pos.y)
 	])
-	canvas.draw_colored_polygon(pts, HoloMapStyle.alpha(col, alpha))
-	canvas.draw_polyline(pts, HoloMapStyle.alpha(Color.WHITE, alpha), 1.0)
+	canvas.draw_colored_polygon(pts, col)
+	canvas.draw_polyline(pts, Color.WHITE, 1.0)
