@@ -13,7 +13,8 @@ Last updated: 2026-10-23, session 16 manager (Opus 5.5, `claude-opus-5-5`): per-
 ## Track: Level 1 + playtest fixes (owner: the next chat from this prompt)
 - Playtest 2026-10-24: inbox/playtest_*.png, concept_*.png; crossing freeze fixed. docs/briefs/: render-clean,
   menus-equip-fix, holo-map-real (+ their fix passes), then cyber-look, items-menu, gear-slots (save: line review).
-1. Review + merge the fix passes; launch round 2 (/debugging-games, /coding-gameplay). Model: Opus. Effort: medium.
+1. Review + merge the fix passes, then Feras playtests; items-menu, gear-slots next. Model: Opus. Effort: medium.
+2. Environment overhaul (DECISIONS 10-24) via /architecting-games after his test. Model: Opus. Effort: high.
 `Continue ferasalm/game on main. Read HANDOFF.md (Level 1 + playtest fixes). Do its next step; /handoff.`
 
 ## Track: RPG + menus (owner: the next chat from this prompt)

@@ -19,7 +19,7 @@ features/world/logic/, builders in features/world/view/. Demo: `skyline_demo.tsc
 - Great Mosque minarets: (4, -58) 36 m and (28, -70) 30 m, north. Bab al-Yaman gate: (18, 95) south, at the end of
   al-Saila, towers 20 m. Jabal Nuqum ridge: (300, -140) running north-south, east. Haddah megacity: (-230, 240)
   south-west, 14 slim towers up to 220 m with cyan/magenta neon. Bayt Baws: (40, 260) far south, crag with 12 houses.
-- Camera facts: close follow outdoors, automatic, a three-quarter side angle of ~32 deg; when a wall blocks the
+- Camera facts (superseded 2026-10-24: too close, see the environment overhaul): close follow outdoors, automatic, a three-quarter side angle of ~32 deg; when a wall blocks the
   view it rises toward isometric (DECISIONS 2026-10-23). The camera (FOV 30) sees only ground inside ~19 m, so it
   shows the nearest rooftops only; the landmarks need a low or wide camera (the sky builder's vista camera).
   Looking north: both minarets, street canyon; east: ridge; south: Bab al-Yaman, village; south-west: megacity.

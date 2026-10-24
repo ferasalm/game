@@ -66,7 +66,7 @@ Look "night" (content/world/look.json) + sky "sanaa_night" (sky.json) + mist.jso
 - Fog: `fog_density` (depth, tinted by `fog_color` and the sky through `fog_aerial`), `fog_height*` pools it below y = 0.45
   (the street al-Saila). `volumetric_fog` is off: it is expensive on the Iris Xe (not measured); turn it on only for a "high quality" option.
 - Mist (`mist.json`): 2 planes (street y 0.32, roofs y 0.62), 1 noise + 1 depth sample, about 5-7 FPS together.
-- Camera: close follow outdoors, automatic, a three-quarter side angle of ~32 deg; when a wall blocks the view it
+- Camera (superseded 2026-10-24: too close, the environment overhaul sets a farther camera): close follow outdoors, automatic, a three-quarter side angle of ~32 deg; when a wall blocks the view it
   rises toward isometric (DECISIONS 2026-10-23). Vista zone (`vista` cells in areas.json) eases to a low, wide pose
   that shows sky. Opening shot = `keys` in camera.json (positions relative to Zayd, `dof` scales the blur so stars
   stay sharp); any key/click skips.
