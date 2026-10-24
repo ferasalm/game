@@ -110,6 +110,7 @@ func test_header_and_inventory_rects_do_not_intersect() -> void:
 	check(face is TextureRect, "portrait is TextureRect")
 	var face_tr := face as TextureRect
 	check(face_tr.texture != null, "portrait texture assigned")
+	LayoutSettle.run(menu)
 	var frame: Control = menu.header.face_box()
 	check(frame != null, "portrait frame exists")
 	var inner: Rect2 = _inner_rect(frame)
@@ -127,10 +128,10 @@ func test_header_and_inventory_rects_do_not_intersect() -> void:
 func _inner_rect(frame: Control) -> Rect2:
 	var box: StyleBox = frame.get_theme_stylebox("panel")
 	var frame_rect: Rect2 = frame.get_global_rect()
-	var left: float = box.get_content_margin(SIDE_LEFT)
-	var top: float = box.get_content_margin(SIDE_TOP)
-	var right: float = box.get_content_margin(SIDE_RIGHT)
-	var bottom: float = box.get_content_margin(SIDE_BOTTOM)
+	var left: float = box.get_margin(SIDE_LEFT)
+	var top: float = box.get_margin(SIDE_TOP)
+	var right: float = box.get_margin(SIDE_RIGHT)
+	var bottom: float = box.get_margin(SIDE_BOTTOM)
 	return Rect2(frame_rect.position + Vector2(left, top), frame_rect.size - Vector2(left + right, top + bottom))
 
 

@@ -71,7 +71,7 @@ func test_pause_party_row_progression_and_ko() -> void:
 	check_eq(row.xp_bar().custom_minimum_size, Vector2(360, 10), "xp bar 360x10")
 	check_eq(row.hp_bar().custom_minimum_size, Vector2(420, 14), "hp bar 420x14")
 	check_eq(row.sp_bar().custom_minimum_size, Vector2(420, 14), "sp bar 420x14")
-	check_eq(row.face_rect().custom_minimum_size, Vector2(160, 160), "face 160x160")
+	check_eq(row.face_box().custom_minimum_size, Vector2(160, 160), "face frame 160x160")
 
 	row.update(0, 0)
 	check(row.is_ko(), "KO state when hp <= 0")
