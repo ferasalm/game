@@ -8,10 +8,6 @@ extends VisualSource
 const RATE_MIN: float = 0.5
 const RATE_MAX: float = 2.4
 const DUST_BACK: float = 0.3
-const CHEST_HEIGHT: float = 0.72
-const BELT_HEIGHT: float = 0.55
-const ARM_HEIGHT: float = 0.62
-const HAND_HEIGHT: float = 0.5
 
 var def: ModelDef = null
 var rig: ModelRig = null
@@ -160,37 +156,7 @@ func width() -> float:
 
 
 func anchor(which: StringName) -> Vector3:
-	if def == null:
-		return Vector3.ZERO
-	match which:
-		&"feet":
-			return Vector3.ZERO
-		&"head":
-			return Vector3(0.0, height(), 0.0)
-	if rig != null and def.anchors.has(String(which)):
-		var point: Vector3 = _to_root(rig.bone_position(def.anchors[String(which)]))
-		if which == &"belt":
-			point.z += width() * 0.4
-		return point
-	return _fallback_anchor(which)
-
-
-## A body point for a rigid model (or a missing anchor), from its own height and width.
-func _fallback_anchor(which: StringName) -> Vector3:
-	var h: float = height() if height() > 0.0 else 1.8
-	var w: float = width()
-	match which:
-		&"chest":
-			return Vector3(0.0, h * CHEST_HEIGHT, 0.0)
-		&"belt":
-			return Vector3(0.0, h * BELT_HEIGHT, w * 0.4)
-		&"hip":
-			return Vector3(0.0, h * BELT_HEIGHT, 0.0)
-		&"arm", &"arm_left":
-			return Vector3(_facing * w * 0.45, h * ARM_HEIGHT, 0.0)
-		&"hand", &"hand_left":
-			return Vector3(_facing * w * 0.5, h * HAND_HEIGHT, 0.0)
-	return Vector3.ZERO
+	return ModelAnchors.anchor(def, rig, _facing, Vector2(width(), height()), _to_root, rules, which)
 
 
 func _clip(state: StringName) -> ClipDef:

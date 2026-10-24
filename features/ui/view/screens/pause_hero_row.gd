@@ -117,8 +117,12 @@ func _build_stats(parent: Control, style: UiStyleDef, def: CombatantDef, hero: S
 
 	var max_hp: int = def.max_hp if def != null else 1
 	var max_sp: int = def.max_sp if def != null else 1
-	_hp_bar = _stat_bar(stats, "UI_HP", &"HpBar", max_hp, true)
-	_sp_bar = _stat_bar(stats, "UI_SP", &"SpBar", max_sp, false)
+	var hp_pair: Array[Node] = PauseStatBar.build(stats, "UI_HP", &"HpBar", max_hp)
+	_hp_bar = hp_pair[0] as ProgressBar
+	_hp_text = hp_pair[1] as Label
+	var sp_pair: Array[Node] = PauseStatBar.build(stats, "UI_SP", &"SpBar", max_sp)
+	_sp_bar = sp_pair[0] as ProgressBar
+	_sp_text = sp_pair[1] as Label
 
 	_ko_label = Ui.label(Ui.text("PAUSE_KO"), &"NumberLabel", style.colour(&"c_bad"))
 	_ko_label.name = "KoLabel"
@@ -174,28 +178,3 @@ func face_rect() -> TextureRect:
 
 func face_box() -> PanelContainer:
 	return _face_box
-
-
-func _stat_bar(parent: Control, tag_key: String, kind: StringName, maximum: int, is_hp: bool) -> ProgressBar:
-	var line := HBoxContainer.new()
-	var tag: Label = Ui.label(Ui.text(tag_key), &"CaptionLabel")
-	tag.custom_minimum_size.x = 36.0
-	line.add_child(tag)
-	var bar := ProgressBar.new()
-	bar.theme_type_variation = kind
-	bar.show_percentage = false
-	bar.max_value = maximum
-	bar.custom_minimum_size = Vector2(420.0, 14.0)
-	bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	line.add_child(bar)
-	var numbers: Label = Ui.label("", &"NumberLabel")
-	numbers.custom_minimum_size.x = 90.0
-	numbers.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	line.add_child(numbers)
-	if is_hp:
-		_hp_text = numbers
-	else:
-		_sp_text = numbers
-	parent.add_child(line)
-	return bar

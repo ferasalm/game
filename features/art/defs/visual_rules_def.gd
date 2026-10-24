@@ -62,6 +62,17 @@ var trail_color: Color = Color.WHITE
 var smear_time: float = 0.14
 var smear_size: float = 1.2
 var smear_color: Color = Color.WHITE
+# body anchors, as shares of the character's own height and width
+var chest_height: float = 0.72
+var belt_height: float = 0.55
+var arm_height: float = 0.62
+var hand_height: float = 0.5
+var pixel_hand_height: float = 0.55
+var belt_depth: float = 0.4
+var belt_side: float = 0.35
+var arm_side: float = 0.45
+var hand_side: float = 0.5
+var fallback_height: float = 1.8
 
 
 func read(r: DefReader) -> void:
@@ -77,6 +88,7 @@ func read(r: DefReader) -> void:
 	_read_walk(r)
 	_read_battle(r)
 	_read_model(r)
+	_read_anchors(r)
 
 
 func _read_walk(r: DefReader) -> void:
@@ -130,3 +142,16 @@ func _read_model(r: DefReader) -> void:
 	smear_time = r.number("smear_time", 0.02, 2.0, smear_time, false)
 	smear_size = r.number("smear_size", 0.1, 5.0, smear_size, false)
 	smear_color = r.color("smear_color", smear_color, false)
+
+
+func _read_anchors(r: DefReader) -> void:
+	chest_height = r.number("chest_height", 0.0, 1.5)
+	belt_height = r.number("belt_height", 0.0, 1.5)
+	arm_height = r.number("arm_height", 0.0, 1.5)
+	hand_height = r.number("hand_height", 0.0, 1.5)
+	pixel_hand_height = r.number("pixel_hand_height", 0.0, 1.5)
+	belt_depth = r.number("belt_depth", 0.0, 1.5)
+	belt_side = r.number("belt_side", 0.0, 1.5)
+	arm_side = r.number("arm_side", 0.0, 1.5)
+	hand_side = r.number("hand_side", 0.0, 1.5)
+	fallback_height = r.number("fallback_height", 0.1, 5.0)

@@ -9,11 +9,6 @@ extends VisualSource
 const SHADER: Shader = preload("res://features/art/view/character.gdshader")
 const STEP_DUST_BACK: float = 0.3
 const DOWN_TINT: Color = Color(0.72, 0.72, 0.85)
-const HAND_HEIGHT: float = 0.55  ## the hand anchor's height as a share of the sprite height
-const HAND_REACH: float = 0.5  ## and its reach forward as a share of the sprite width
-const CHEST_HEIGHT: float = 0.72  ## chest, belt, hip and arm as shares of the sprite's own pixel bounds
-const BELT_HEIGHT: float = 0.55
-const ARM_HEIGHT: float = 0.62
 
 var material: ShaderMaterial
 var _motion: PixelMotion
@@ -154,19 +149,21 @@ func width() -> float:
 
 
 func anchor(which: StringName) -> Vector3:
+	var h: float = height()
+	var w: float = width()
 	match which:
 		&"head":
-			return Vector3(0.0, height(), 0.0)
+			return Vector3(0.0, h, 0.0)
 		&"chest":
-			return Vector3(0.0, height() * CHEST_HEIGHT, 0.0)
+			return Vector3(0.0, h * rules.chest_height, 0.0)
 		&"belt":
-			return Vector3(_facing * width() * 0.35, height() * BELT_HEIGHT, 0.0)
+			return Vector3(_facing * w * rules.belt_side, h * rules.belt_height, 0.0)
 		&"hip":
-			return Vector3(0.0, height() * BELT_HEIGHT, 0.0)
+			return Vector3(0.0, h * rules.belt_height, 0.0)
 		&"arm", &"arm_left":
-			return Vector3(_facing * width() * 0.45, height() * ARM_HEIGHT, 0.0)
+			return Vector3(_facing * w * rules.arm_side, h * rules.arm_height, 0.0)
 		&"hand", &"hand_left":
-			return Vector3(_facing * width() * HAND_REACH, height() * HAND_HEIGHT, 0.0)
+			return Vector3(_facing * w * rules.hand_side, h * rules.pixel_hand_height, 0.0)
 	return Vector3.ZERO
 
 

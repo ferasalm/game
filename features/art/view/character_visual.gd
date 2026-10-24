@@ -1,10 +1,8 @@
 class_name CharacterVisual
 extends Node3D
 ## A character standing in the 3D world (feet on the node's origin): the facade the game talks to. `play(state, facing)`
-## with the states idle, walk, run, attack, cast, hurt, ko, victory, item; the anchors feet / hand / hand_left / head /
-## chest / belt / hip / arm; the signal clip_event the battle waits on. A VisualSource draws it (ModelSource: live 3D,
-## PixelSource: the fallback sprite). The root moves (lunge, dash, hurt push) are CharacterMotion's. Numbers:
-## content/art/visual.json. Sprites face right.
+## runs idle, walk, run, attack, cast, hurt, ko, victory and item; anchor_position answers feet / hand / hand_left /
+## head / chest / belt / hip / arm / arm_left; clip_event announces impact and end. Numbers: content/art/visual.json.
 
 ## A one-shot clip reached a named frame: &"impact" (the hit lands) or &"end" (the clip is over).
 signal clip_event(event: StringName)

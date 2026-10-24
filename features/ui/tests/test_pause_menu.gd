@@ -65,7 +65,7 @@ func test_equipment_opens_the_menu() -> void:
 	tree.paused = false
 
 
-func test_pause_party_portraits_fill_frame_and_bars_aligned_in_column() -> void:
+func test_pause_party_portraits_fill_their_frame() -> void:
 	Router.state = Router.STATE_EXPLORING
 	Screens.open(&"pause")
 	var menu: PauseMenu = Screens.top() as PauseMenu
@@ -87,6 +87,18 @@ func test_pause_party_portraits_fill_frame_and_bars_aligned_in_column() -> void:
 		check_approx(rect.size.y, inner.size.y, 2.0, "face height fills the frame")
 		var drawn: Vector2 = _drawn_size(face.texture, inner.size)
 		check(drawn.x >= inner.size.x - 2.0 and drawn.y >= inner.size.y - 2.0, "the face texture covers its frame (no empty band)")
+	Screens.clear()
+	tree.paused = false
+	Router.state = Router.STATE_TITLE
+
+
+func test_pause_party_bars_aligned_in_a_column() -> void:
+	Router.state = Router.STATE_EXPLORING
+	Screens.open(&"pause")
+	var menu: PauseMenu = Screens.top() as PauseMenu
+	check(menu != null, "pause opens")
+	var rows: Array[PauseHeroRow] = menu.party().rows()
+	check(rows.size() >= 2, "at least 2 hero rows in pause party")
 	rows[0].update(37, 5)
 	rows[1].update(210, 29)
 	LayoutSettle.run(rows[0].get_tree().root)

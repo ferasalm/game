@@ -156,6 +156,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/art/tests/test_pose_match.gd`: Retargeting (PoseMatch, PoseFollow): the swing turns one direction into another, the per-bone offset makes the target bone point where the source bone points (at rest and after a turn), the hips travel scales with hip height, and a pose_source model's body follows its hidden source (Zayd's Rodin model stands up with the hand below the head); mirrored, the other arm does the move (Zayd's cast raises his prosthetic right arm)
 - `features/art/tests/test_rodin_parts.gd`: Feras's Rodin pieces after tools/rodin: Zayd's baked dagger is pressed flat onto his chest (the code hilt is his only jambiyah), the grandfather's hilt is the Rodin grip above the belt origin and the Rodin sheath below it curving forward (the blade stays the code one), and the survey drone's hull is the Rodin mesh at hover height
 - `features/art/tests/test_sprites.gd`: Prototype T7: every sprite is well formed and uses only palette letters; PixelArt and CharacterVisual work
+- `features/art/tests/test_visual_anchors.gd`: purpose: Every body-anchor share is read from content/art/visual.json, and a missing key is a content error
 - `features/art/tests/test_visual_contract.gd`: The CharacterVisual contract: play(state, facing), the anchors, clip events, the pixel and puppet sources behind the facade, and the pulse flag that switches the whole-body squash off for puppets
 - `features/art/view/character.gdshader`
 - `features/art/view/character_fx.gd`: The small effects around one CharacterVisual: a soft blob shadow on the floor, dust puffs at the feet and the fading afterimages of a lunge
@@ -167,6 +168,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/art/view/garment_mesh.gd`: Stand-in clothing built in code from a ModelPartDef (until Feras's own models): a lathe (a skirt, a coat, a head wrap) turned from a radius profile, and `prim`, which adds a coloured primitive to a SurfaceTool so a whole prop (the jambiyah) is one mesh with vertex colours (the skin shader multiplies COLOR into the albedo)
 - `features/art/view/hilt_mesh.gd`: The stand-in for Zayd's grandfather's jambiyah (Heirloom `grandfather_hilt`), built in code from the part's colours until Feras's picture becomes a model: a curved horn grip with two silver bands, a T pommel with a carnelian stone, a curved blade, and a curved leather sheath with silver throat and tip
 - `features/art/view/hilt_parts.gd`: The grandfather's jambiyah as nodes (the part's Rodin grip and sheath scenes, else HiltMesh's stand-in; the blade is always HiltMesh's): a sheath and the hilt with its blade sit at the belt (`root`); draw() carries the hilt to the hand bone for a strike (the blade shows, the sheath stays), sheathe() puts it back
+- `features/art/view/model_anchors.gd`: purpose: A live model's body anchors from its own height and width, with every share read from visual.json
 - `features/art/view/model_clips.gd`: Drives a MANUAL AnimationPlayer
 - `features/art/view/model_materials.gd`: The materials of live 3D characters: every surface (body, eyes, brows, hair, garments, the hilt) is a ShaderMaterial of character_skin.gdshader, so the painted light of the look reaches all of them through `materials()` (PaintedLook feeds the shared light uniforms), and one `set_all` call drives the flash, desat and glow of the whole character
 - `features/art/view/model_move.gd`: What a model's body does on the ground: the ground speed it is really moving at (measured from its own position, so animation and feet agree whoever moves it), the yaw it eases toward at the model's turn speed, and the lean into an acceleration
@@ -469,6 +471,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/logic/pause_logic.gd`: Pure rules of the pause menu: which entries show and in what order, which ask "are you sure", the vitals of a hero with a missing record (= full), and the play-time clock text
 - `features/ui/logic/prompt_glyph.gd`: Pure: the localization key of the button glyph for an action on keyboard or gamepad ("accept" -> Enter / A), and the fade of a world-space interaction prompt with distance
 - `features/ui/logic/toast_queue.gd`: Pure: toasts wait in order and are shown one at a time
+- `features/ui/tests/layout_settle.gd`: purpose: Test helper: lays out Containers now (top-down), since tests measure before the deferred sort runs
 - `features/ui/tests/node_walk.gd`: Test helper (not a test): every descendant of a node, depth first
 - `features/ui/tests/test_items_shop.gd`: The Items and Shop screens on the Screens stack, and the riyal banner of the loot popup
 - `features/ui/tests/test_menu_polish.gd`: Menu polish tests: portrait faces, pause hero progression, icon disc fallback, label font sizes, glass panel colour
@@ -502,6 +505,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/screens/pause_hero_row.gd`: purpose: One hero row in the pause party panel: face 160x160, name, class, HP/SP bars, KO state
 - `features/ui/view/screens/pause_menu.gd`: Pause menu screen: command panel (80,80), info box (80,880), party panel (540,80), prompt strip (0,1020)
 - `features/ui/view/screens/pause_party.gd`: Party panel for the pause screen: one row per hero (h 200)
+- `features/ui/view/screens/pause_stat_bar.gd`: purpose: Builds one HP/SP bar line for a pause hero row: tag, bar and numbers; returns the bar and the label
 - `features/ui/view/screens/sabil_screen.gd`: The sabil fountain question (Screens id &"sabil"): "Drink to rest? This saves your game and restores everyone." Closes with &"drink" (default) or &"leave" (Not now, or back)
 - `features/ui/view/screens/shop_cell.gd`: One cell in the shop item grid: 220x170, icon 96, name, price c_brass, rarity glow, sold out dim
 - `features/ui/view/screens/shop_detail.gd`: Shop detail panel at (840,140) 560x760: icon 160, name, desc, effect, and per-hero comparison
