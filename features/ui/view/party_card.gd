@@ -12,6 +12,12 @@ var _hp_text: Label
 var _sp_text: Label
 var _ko: Label
 var _face: Control
+var _preview: VBoxContainer
+var _preview_text: Label
+var _preview_bar: ProgressBar
+var _preview_hp: int = 0
+var _preview_sp: int = 0
+var _preview_usable: bool = true
 var _tween: Tween = null
 var _target_hp: int = -1
 var _target_sp: int = -1
@@ -30,11 +36,13 @@ func setup(hero: StringName, tint: Color = Color.TRANSPARENT) -> PartyCard:
 	var frame := PanelContainer.new()
 	frame.add_theme_stylebox_override("panel", UiBoxes.medallion(style, style.colour(&"c_brass")))
 	frame.custom_minimum_size = Vector2.ONE * style.size(&"s_card_portrait")
+	frame.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	_face = CharacterIcons.face(hero, tint if tint.a > 0.0 else style.colour(&"c_party"))
 	frame.add_child(_face)
 	line.add_child(frame)
 	var column := VBoxContainer.new()
 	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	column.alignment = BoxContainer.ALIGNMENT_CENTER
 	line.add_child(column)
 	var head := HBoxContainer.new()
 	var name_label: Label = Ui.label(Ui.text(def.name_key) if def != null else String(hero), &"NameLabel")
@@ -48,6 +56,7 @@ func setup(hero: StringName, tint: Color = Color.TRANSPARENT) -> PartyCard:
 	var max_sp: int = def.max_sp if def != null else 1
 	_hp_bar = _stat(column, "UI_HP", &"HpBar", max_hp)
 	_sp_bar = _stat(column, "UI_SP", &"SpBar", max_sp)
+	_build_preview(column)
 	var now: Vector2i = PauseLogic.vitals_of(GameState.get(&"vitals"), hero, max_hp, max_sp)
 	update(now.x, now.y, false)
 	return self
@@ -80,6 +89,49 @@ func set_active(on: bool) -> void:
 	add_theme_stylebox_override("panel", UiBoxes.panel(style, &"plate" if on else &"inset"))
 
 
+## Shows what an item would give this hero: a green segment and line; an unusable hero greys out.
+func set_item_preview(hp_gain: int, sp_gain: int, text: String, usable: bool) -> void:
+	_preview_hp = hp_gain
+	_preview_sp = sp_gain
+	_preview_usable = usable
+	_preview.visible = true
+	var style: UiStyleDef = Ui.style()
+	_preview_text.text = text if usable else Ui.text("ITEMS_FULL")
+	_preview_text.add_theme_color_override("font_color", style.colour(&"c_good" if usable else &"c_disabled"))
+	var gain: int = hp_gain if hp_gain > 0 else sp_gain
+	_preview_bar.visible = usable and gain > 0
+	var top: float = _hp_bar.max_value if hp_gain > 0 else _sp_bar.max_value
+	_preview_bar.max_value = maxf(top, 1.0)
+	_preview_bar.value = float(gain)
+	modulate = Color.WHITE if usable else style.colour(&"c_disabled")
+
+
+## Removes the item preview from this card.
+func clear_item_preview() -> void:
+	_preview_hp = 0
+	_preview_sp = 0
+	_preview_usable = true
+	if _preview != null:
+		_preview.visible = false
+	modulate = Color.WHITE
+
+
+func preview_hp_gain() -> int:
+	return _preview_hp
+
+
+func preview_sp_gain() -> int:
+	return _preview_sp
+
+
+func preview_text() -> String:
+	return _preview_text.text if _preview_text != null else ""
+
+
+func preview_usable() -> bool:
+	return _preview_usable
+
+
 func hp_text() -> String:
 	return _hp_text.text
 
@@ -94,6 +146,25 @@ func is_ko() -> bool:
 
 func hp_value() -> float:
 	return _hp_bar.value
+
+
+func _build_preview(parent: Control) -> void:
+	var style: UiStyleDef = Ui.style()
+	_preview = VBoxContainer.new()
+	_preview.add_theme_constant_override("separation", 2)
+	_preview.visible = false
+	_preview_text = Ui.label("", &"SmallLabel", style.colour(&"c_good"))
+	_preview.add_child(_preview_text)
+	_preview_bar = ProgressBar.new()
+	_preview_bar.show_percentage = false
+	_preview_bar.custom_minimum_size.y = 6.0
+	_preview_bar.add_theme_stylebox_override("background", UiBoxes.bar_back(style))
+	var fill := StyleBoxFlat.new()
+	fill.bg_color = style.colour(&"c_good")
+	fill.set_corner_radius_all(2)
+	_preview_bar.add_theme_stylebox_override("fill", fill)
+	_preview.add_child(_preview_bar)
+	parent.add_child(_preview)
 
 
 func _stat(parent: Control, tag_key: String, kind: StringName, maximum: int) -> ProgressBar:

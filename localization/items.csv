@@ -64,6 +64,9 @@ ENCOUNTER_PATROL_GATE,Gate patrol
 ITEMS_TITLE,Items
 ITEMS_TITLE_MUSNAD,𐩱𐩡𐩱𐩶𐩧𐩱𐩳
 ITEMS_OWNED,Owned %d
+ITEMS_BAG,BAG
+ITEMS_SELECT_HINT,Focus an item to preview it.
+ITEMS_TARGET_HINT,Choose a hero card to use it on.
 ITEMS_USE_ON,Use on
 ITEMS_USE_PARTY,Use on the whole party
 ITEMS_PREVIEW,%d -> %d
@@ -74,5 +77,8 @@ ITEMS_EMPTY,Nothing here
 ITEMS_EFFECT_HP,HP +%d
 ITEMS_EFFECT_SP,SP +%d
 ITEMS_EFFECT_REVIVE,Revives in battle
+ITEMS_GAIN_HP,+%d HP
+ITEMS_GAIN_SP,+%d SP
+ITEMS_CURES,Cures %s
 ITEMS_PROMPT_USE,Use
 ITEMS_PROMPT_BACK,Back

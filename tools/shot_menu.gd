@@ -39,6 +39,8 @@ func _build_screen() -> void:
 			_setup_equipment(&"zayd")
 		"fix_equip_bilqis":
 			_setup_equipment(&"bilqis")
+		"items", "items_target":
+			_setup_items(_menu_kind == "items_target")
 		"workshop_upgrade", "workshop_gemstones", "workshop_crafting":
 			_setup_workshop()
 
@@ -75,6 +77,21 @@ func _setup_equipment(hero_name: StringName = &"zayd") -> void:
 	(_screen as EquipmentMenu).show_hero(hero_name)
 
 
+func _setup_items(targeting: bool) -> void:
+	GameState.start_new()
+	GameState.set_vitals({&"zayd": {"hp": 250, "sp": 8}, &"bilqis": {"hp": 280, "sp": 20}})
+	GameState.set_bag({&"pink_herb": 3, &"yellow_herb": 2, &"qishr_cup": 1})
+	_screen = ItemsScreen.new()
+	_sub_vp.add_child(_screen)
+	_screen.open()
+	var items := _screen as ItemsScreen
+	if targeting:
+		items.choose(&"pink_herb")
+	else:
+		items.select_item(&"pink_herb")
+		items.list.focus_first()
+
+
 func _setup_workshop() -> void:
 	GameState.start_new()
 	GameState.money = 8450
@@ -98,11 +115,20 @@ func _setup_workshop() -> void:
 	(_screen as WorkshopMenu)._tabs.select_tab(tab_idx)
 
 
+func _file_name() -> String:
+	if _menu_kind == "items":
+		return "items_menu.png"
+	if _menu_kind == "items_target":
+		return "items_target.png"
+	return "%s.png" % _menu_kind if _menu_kind.begins_with("fix_") else "menu_%s.png" % _menu_kind
+
+
 func _process(_delta: float) -> void:
 	_frame += 1
 	if _frame >= SETTLE_FRAMES:
 		var img: Image = _sub_vp.get_texture().get_image()
-		var file_name: String = "%s.png" % _menu_kind if _menu_kind.begins_with("fix_") else "menu_%s.png" % _menu_kind
+		var file_name: String = _file_name()
+		DirAccess.make_dir_recursive_absolute(OUT_DIR)
 		var out_path: String = OUT_DIR.path_join(file_name)
 		img.save_png(out_path)
 		print("Saved render to %s (%dx%d)" % [out_path, img.get_width(), img.get_height()])
