@@ -5,6 +5,7 @@ extends Button
 
 var _name: Label
 var _count: Label
+var _tag: String = ""
 
 
 ## icon may be null; count below zero hides the count; tag empty = no chip.
@@ -32,6 +33,7 @@ func setup(icon: Texture2D, label: String, count: int, colour: Color, tag: Strin
 	_count = Ui.label("x%d" % count, &"NumberLabel", style.colour(&"c_muted"))
 	_count.visible = count >= 0
 	line.add_child(_count)
+	_tag = tag
 	if not tag.is_empty():
 		var chip := PanelContainer.new()
 		chip.add_theme_stylebox_override("panel", UiBoxes.pill(style, style.colour(&"c_cyan")))
@@ -58,3 +60,7 @@ func name_text() -> String:
 
 func count_text() -> String:
 	return _count.text if _count.visible else ""
+
+
+func chip_text() -> String:
+	return _tag

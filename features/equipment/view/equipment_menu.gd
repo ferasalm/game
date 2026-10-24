@@ -18,6 +18,7 @@ var stage: HologramStage
 var boxes_manager := EquipmentBoxes.new()
 var stats: EquipmentStatsPanel
 var desc: EquipmentDescBar
+var _data := EquipmentData.new()
 var _is_open: bool = false
 
 
@@ -26,8 +27,8 @@ func _init() -> void:
 	visible = false
 	backdrop_id = ID
 	prompts = [
-		{"key": "accept", "text": "EQUIP_PROMPT_EQUIP"}, {"key": "back", "text": "EQUIP_PROMPT_BACK"},
-		{"key": "hero", "text": "EQUIP_PROMPT_HERO"}, {"key": "tab", "text": "EQUIP_PROMPT_TAB"},
+		{"key": "accept", "text": "EQUIP_PROMPT_EQUIP"}, {"key": "hero", "text": "EQUIP_PROMPT_HERO"},
+		{"key": "back", "text": "EQUIP_PROMPT_BACK"}, {"key": "tab", "text": "EQUIP_PROMPT_TAB"},
 	]
 
 
@@ -75,6 +76,7 @@ func focus_default() -> void:
 func on_back() -> bool:
 	if mode == Mode.LIST:
 		mode = Mode.SLOTS
+		boxes_manager.set_allow_hover_focus(true)
 		boxes_manager.focus_slot(active_slot)
 		return true
 	close()
@@ -82,22 +84,17 @@ func on_back() -> bool:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_Q:
-			cycle_hero(-1)
-		elif event.keycode == KEY_E:
-			cycle_hero(1)
-	elif event is InputEventJoypadButton and event.pressed:
-		if event.button_index == JOY_BUTTON_LEFT_SHOULDER:
-			cycle_hero(-1)
-		elif event.button_index == JOY_BUTTON_RIGHT_SHOULDER:
-			_open_items_in_place()
+	var step: int = EquipmentTabsBar.event_step(event)
+	if step != 0:
+		cycle_hero(step)
+		get_viewport().set_input_as_handled()
+		return
+	if tabs != null and tabs.handle_input(event):
+		get_viewport().set_input_as_handled()
 
 
 func _build_components() -> void:
-	tabs = EquipmentTabsBar.new()
-	tabs.items_requested.connect(_open_items_in_place)
-	tabs.map_requested.connect(_open_map_in_place)
+	tabs = EquipmentTabsBar.new().setup(EquipmentTabsBar.Tab.EQUIPMENT)
 	header = EquipmentHeroHeader.new()
 	owned_list = EquipmentOwnedList.new()
 	owned_list.item_focused.connect(_on_item_focused)
@@ -109,16 +106,31 @@ func _build_components() -> void:
 	desc = EquipmentDescBar.new()
 	for n: Control in [tabs, header, owned_list, stage, stats, desc]:
 		root.add_child(n)
-	boxes_manager.build(root, stage, _on_slot_activated)
+	boxes_manager.build(root, stage, _on_slot_activated, _on_slot_focused)
 
 
 func show_hero(hero_id: StringName) -> void:
 	hero = hero_id
 	header.set_hero(hero)
 	stage.set_hero(hero)
+	mode = Mode.SLOTS
 	boxes_manager.refresh(hero)
+	boxes_manager.set_allow_hover_focus(true)
 	var parts: Array[StringName] = EquipmentOptions.parts_for(hero)
 	active_slot = parts[0] if not parts.is_empty() else &"armor"
+	boxes_manager.set_active_slot(active_slot)
+	stage.set_active_slot(active_slot)
+	owned_list.populate(hero, active_slot)
+	stats.update_stats(hero)
+	_update_desc_from_worn()
+
+
+func _on_slot_focused(slot_name: StringName) -> void:
+	if active_slot == slot_name and mode == Mode.SLOTS:
+		return
+	active_slot = slot_name
+	boxes_manager.set_active_slot(active_slot)
+	stage.set_active_slot(active_slot)
 	owned_list.populate(hero, active_slot)
 	stats.update_stats(hero)
 	_update_desc_from_worn()
@@ -126,19 +138,24 @@ func show_hero(hero_id: StringName) -> void:
 
 func _on_slot_activated(slot_name: StringName) -> void:
 	active_slot = slot_name
+	boxes_manager.set_active_slot(active_slot)
+	stage.set_active_slot(active_slot)
 	owned_list.populate(hero, active_slot)
 	mode = Mode.LIST
+	boxes_manager.set_allow_hover_focus(false)
 	owned_list.focus_first()
 
 
 func _on_item_focused(item: EquipDef) -> void:
-	stats.update_stats(hero, Inventory.slot_key(hero, active_slot), item.id)
+	if active_slot != &"gemstones":
+		stats.update_stats(hero, Inventory.slot_key(hero, active_slot), item.id)
 	desc.set_item(item)
 
 
 func _on_item_pressed(item: EquipDef) -> void:
-	var slot_key: StringName = Inventory.slot_key(hero, active_slot)
-	Inventory.equip(GameState.equipment, GameState.inventory, slot_key, item)
+	if active_slot != &"gemstones":
+		var slot_key: StringName = Inventory.slot_key(hero, active_slot)
+		Inventory.equip(GameState.equipment, GameState.inventory, slot_key, item)
 	boxes_manager.refresh(hero)
 	owned_list.populate(hero, active_slot)
 	stats.update_stats(hero)
@@ -146,20 +163,7 @@ func _on_item_pressed(item: EquipDef) -> void:
 
 
 func _update_desc_from_worn() -> void:
-	var slot_key: StringName = Inventory.slot_key(hero, active_slot)
-	var worn_id: StringName = GameState.equipment.get(slot_key, &"")
-	if worn_id == &"" and not GameState.equipment.has(slot_key):
-		for l_id: StringName in ContentDB.ids("loadout"):
-			var l := ContentDB.get_def("loadout", l_id) as LoadoutDef
-			if l != null and l.hero == hero:
-				if active_slot == &"hilt":
-					worn_id = l.hilt
-				elif active_slot == &"blade":
-					worn_id = l.blade
-				elif active_slot == &"prosthetic":
-					worn_id = l.prosthetic
-				break
-	var item: EquipDef = ContentDB.get_def("item", worn_id) as EquipDef
+	var item: EquipDef = _data.worn_item(GameState.equipment, hero, active_slot)
 	desc.set_item(item)
 
 
@@ -168,15 +172,3 @@ func cycle_hero(dir: int) -> void:
 	var next_idx: int = (idx + dir + heroes.size()) % heroes.size()
 	show_hero(heroes[next_idx])
 	boxes_manager.focus_first()
-
-
-func _open_items_in_place() -> void:
-	close()
-	if is_inside_tree():
-		Screens.open(&"items")
-
-
-func _open_map_in_place() -> void:
-	close()
-	if is_inside_tree():
-		Screens.open(&"map")

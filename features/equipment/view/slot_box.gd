@@ -3,9 +3,12 @@ extends Button
 ## purpose: 150x150 equipment slot box showing slot label, item icon or gemstone sockets.
 
 signal slot_activated(part: StringName)
+signal slot_focused(part: StringName)
 
 var part: StringName = &""
 var is_gemstones: bool = false
+var is_selected: bool = false
+var allow_hover_focus: bool = true
 var _label: Label
 var _icon: TextureRect
 var _name_label: Label
@@ -23,6 +26,7 @@ func _init() -> void:
 	flat = true
 	focus_entered.connect(_on_focus_entered)
 	focus_exited.connect(queue_redraw)
+	mouse_entered.connect(_on_mouse_entered)
 	pressed.connect(_on_pressed)
 
 
@@ -33,8 +37,6 @@ func _ready() -> void:
 func setup(part_name: StringName, display_label: String, gemstones: bool = false) -> SlotBox:
 	part = part_name
 	is_gemstones = gemstones
-	if is_gemstones:
-		focus_mode = Control.FOCUS_NONE
 	if _label != null:
 		_label.text = display_label
 	if _sockets_row != null:
@@ -157,11 +159,16 @@ func _draw_socket_content(panel: PanelContainer, stone_id: StringName) -> void:
 func _on_focus_entered() -> void:
 	Ui.sweep(self)
 	queue_redraw()
+	slot_focused.emit(part)
+
+
+func _on_mouse_entered() -> void:
+	if allow_hover_focus:
+		grab_focus()
 
 
 func _on_pressed() -> void:
-	if not is_gemstones:
-		slot_activated.emit(part)
+	slot_activated.emit(part)
 
 
 func _draw() -> void:
@@ -169,7 +176,7 @@ func _draw() -> void:
 	var rect := Rect2(Vector2.ZERO, size)
 	var bg_col: Color = style.colour(&"c_glass_menu")
 	draw_rect(rect, bg_col, true)
-	if has_focus():
+	if has_focus() or is_selected:
 		draw_rect(rect, style.colour(&"c_brass"), false, 3.0)
 	else:
 		draw_rect(rect, style.colour(&"c_cyan"), false, 2.0)

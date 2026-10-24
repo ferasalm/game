@@ -1,10 +1,11 @@
 class_name PortraitFaces
 extends RefCounted
-## Caches painted hero portraits cropped to the head (top 38% of the image, centred square).
-## Falls back to CharacterIcons.texture when a portrait file does not exist.
+## purpose: Caches painted hero portraits (cropped head and uncropped bust). Falls back to CharacterIcons.
 
 const HEAD_RATIO: float = 0.38
+
 static var _cache: Dictionary[StringName, Texture2D] = {}
+static var _bust_cache: Dictionary[StringName, Texture2D] = {}
 
 
 ## The cropped head texture of hero, or CharacterIcons.texture fallback.
@@ -41,5 +42,38 @@ static func face(hero: StringName, tint: Color = Color.WHITE) -> Control:
 	return holder
 
 
+## The uncropped painted bust texture of hero, or CharacterIcons.texture fallback.
+static func bust_texture(hero: StringName) -> Texture2D:
+	if _bust_cache.has(hero):
+		return _bust_cache[hero]
+	var path: String = "res://assets/portraits/%s_neutral.png" % hero
+	if FileAccess.file_exists(path):
+		var img: Image = Image.load_from_file(path)
+		if img != null:
+			var tex: ImageTexture = ImageTexture.create_from_image(img)
+			_bust_cache[hero] = tex
+			return tex
+	var fallback: Texture2D = CharacterIcons.texture(hero)
+	if fallback != null:
+		_bust_cache[hero] = fallback
+	return fallback
+
+
+## Whole bust display: uncropped painted portrait, or CharacterIcons.face fallback.
+static func bust(hero: StringName, tint: Color = Color.WHITE) -> Control:
+	var tex: Texture2D = bust_texture(hero)
+	if tex == null:
+		return CharacterIcons.face(hero, tint)
+	var holder := TextureRect.new()
+	holder.texture = tex
+	holder.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	holder.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	holder.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return holder
+
+
 static func clear_cache() -> void:
 	_cache.clear()
+	_bust_cache.clear()
+

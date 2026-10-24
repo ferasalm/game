@@ -1,7 +1,6 @@
 class_name EquipmentData
 extends RefCounted
-## What the equipment screen needs from ContentDB, read once: every equippable by id, the perks, the rarity
-## order, and each hero's start loadout (heroes in loadout order).
+## purpose: What the equipment screen needs from ContentDB, read once.
 
 var items: Dictionary[StringName, EquipDef] = {}
 var perks: Dictionary[StringName, PerkDef] = {}
@@ -28,3 +27,19 @@ func all_items() -> Array[EquipDef]:
 	var out: Array[EquipDef] = []
 	out.assign(items.values())
 	return out
+
+
+func worn_item(equipment: Dictionary, hero_name: StringName, part: StringName) -> EquipDef:
+	if part == &"gemstones":
+		var hilt_id: StringName = equipment.get(Inventory.slot_key(hero_name, &"hilt"), &"")
+		if hilt_id == &"" and starts.has(hero_name):
+			hilt_id = Loadout.worn(equipment, starts[hero_name], &"hilt")
+		var socks: Array = GameState.sockets.get(hilt_id, [])
+		var s_id: StringName = StringName(str(socks[0])) if not socks.is_empty() else &""
+		return ContentDB.get_def("stone", s_id) as EquipDef
+	var key: StringName = Inventory.slot_key(hero_name, part)
+	var id: StringName = equipment.get(key, &"")
+	if id == &"" and not equipment.has(key) and starts.has(hero_name):
+		if part != &"armor":
+			id = Loadout.worn(equipment, starts[hero_name], part)
+	return ContentDB.get_def("item", id) as EquipDef

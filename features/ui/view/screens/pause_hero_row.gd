@@ -1,6 +1,6 @@
 class_name PauseHeroRow
 extends PanelContainer
-## One hero row in the pause party panel: face 160x160, name, class, HP/SP bars, KO state.
+## purpose: One hero row in the pause party panel: face 160x160, name, class, HP/SP bars, KO state.
 
 var hero_id: StringName = &""
 var _face: TextureRect
@@ -39,17 +39,19 @@ func _build_face(parent: Control, style: UiStyleDef, hero: StringName) -> void:
 	_face_box.custom_minimum_size = Vector2(160, 160)
 	_face_box.add_theme_stylebox_override("panel", UiBoxes.medallion(style, style.colour(&"c_brass")))
 	_face = TextureRect.new()
-	var tex: Texture2D = PortraitFaces.texture(hero)
+	var tex: Texture2D = PortraitFaces.bust_texture(hero)
 	_face.texture = tex if tex != null else CharacterIcons.disc(style.colour(&"c_party").darkened(0.45))
-	_face.custom_minimum_size = Vector2(160, 160)
+	_face.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_face.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_face.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_face.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_face.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	_face_box.add_child(_face)
 	parent.add_child(_face_box)
 
 
 func _build_middle(parent: Control, style: UiStyleDef, def: CombatantDef, hero: StringName) -> void:
 	var middle := VBoxContainer.new()
+	middle.custom_minimum_size.x = 480.0
 	middle.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	middle.alignment = BoxContainer.ALIGNMENT_CENTER
 	middle.add_theme_constant_override("separation", 2)
@@ -95,14 +97,11 @@ func _refresh_progression(hero: StringName) -> void:
 		if c != null and c.hero == hero:
 			cdef = c
 			break
-	var class_name_str: String = Ui.text(cdef.name_key) if cdef != null else ""
-	_class_label.text = class_name_str
-
+	_class_label.text = Ui.text(cdef.name_key) if cdef != null else ""
 	var levels_def := ContentDB.get_def("levels", &"default") as LevelsDef
 	var xp_amount: int = int(GameState.xp.get(hero, 0))
 	var lv: int = Progression.level(xp_amount, levels_def)
 	_lv_node.text = "Lv %d" % lv
-
 	var next_xp: int = levels_def.xp_total[lv] if (levels_def != null and lv < levels_def.xp_total.size()) else xp_amount
 	_xp_bar.max_value = next_xp
 	_xp_bar.value = xp_amount
@@ -112,13 +111,18 @@ func _refresh_progression(hero: StringName) -> void:
 func _build_stats(parent: Control, style: UiStyleDef, def: CombatantDef, hero: StringName) -> void:
 	var stats := VBoxContainer.new()
 	stats.alignment = BoxContainer.ALIGNMENT_CENTER
-	stats.custom_minimum_size.x = 450
+	stats.custom_minimum_size.x = 550.0
+	stats.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	parent.add_child(stats)
 
 	var max_hp: int = def.max_hp if def != null else 1
 	var max_sp: int = def.max_sp if def != null else 1
-	_hp_bar = _stat_bar(stats, "UI_HP", &"HpBar", max_hp, true)
-	_sp_bar = _stat_bar(stats, "UI_SP", &"SpBar", max_sp, false)
+	var hp_pair: Array[Node] = PauseStatBar.build(stats, "UI_HP", &"HpBar", max_hp)
+	_hp_bar = hp_pair[0] as ProgressBar
+	_hp_text = hp_pair[1] as Label
+	var sp_pair: Array[Node] = PauseStatBar.build(stats, "UI_SP", &"SpBar", max_sp)
+	_sp_bar = sp_pair[0] as ProgressBar
+	_sp_text = sp_pair[1] as Label
 
 	_ko_label = Ui.label(Ui.text("PAUSE_KO"), &"NumberLabel", style.colour(&"c_bad"))
 	_ko_label.name = "KoLabel"
@@ -172,24 +176,5 @@ func face_rect() -> TextureRect:
 	return _face
 
 
-func _stat_bar(parent: Control, tag_key: String, kind: StringName, maximum: int, is_hp: bool) -> ProgressBar:
-	var line := HBoxContainer.new()
-	var tag: Label = Ui.label(Ui.text(tag_key), &"CaptionLabel")
-	tag.custom_minimum_size.x = 32
-	line.add_child(tag)
-	var bar := ProgressBar.new()
-	bar.theme_type_variation = kind
-	bar.show_percentage = false
-	bar.max_value = maximum
-	bar.custom_minimum_size = Vector2(420, 14)
-	bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	line.add_child(bar)
-	var numbers: Label = Ui.label("", &"NumberLabel")
-	numbers.custom_minimum_size.x = 90
-	line.add_child(numbers)
-	if is_hp:
-		_hp_text = numbers
-	else:
-		_sp_text = numbers
-	parent.add_child(line)
-	return bar
+func face_box() -> PanelContainer:
+	return _face_box

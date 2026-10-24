@@ -21,7 +21,8 @@ var radius: float = 0.3
 var girth: float = 1.0
 var tint: Color = Color.WHITE
 var outline_hull: bool = false
-## Bone names for the anchors &"hand", &"head", &"belt" (feet = the origin).
+## Bone names for the anchors &"hand", &"hand_left", &"head", &"belt", &"chest", &"hip", &"arm", &"arm_left"
+## (feet = the origin).
 var anchors: Dictionary[String, String] = {}
 ## Facade state -> ClipDef id (a skinned model) or motion name (a rigid one).
 var states: Dictionary[String, String] = {}

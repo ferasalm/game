@@ -156,16 +156,7 @@ func width() -> float:
 
 
 func anchor(which: StringName) -> Vector3:
-	if def == null:
-		return Vector3.ZERO
-	match which:
-		&"head":
-			return Vector3(0.0, height(), 0.0)
-		&"hand":
-			if rig != null and def.anchors.has("hand"):
-				return _to_root(rig.bone_position(def.anchors["hand"]))
-			return Vector3(_facing * width() * 0.5, height() * 0.5, 0.0)
-	return Vector3.ZERO
+	return ModelAnchors.anchor(def, rig, _facing, Vector2(width(), height()), _to_root, rules, which)
 
 
 func _clip(state: StringName) -> ClipDef:

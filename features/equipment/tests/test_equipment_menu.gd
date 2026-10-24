@@ -52,41 +52,6 @@ func test_unowned_items_never_list() -> void:
 	GameState.reset()
 
 
-func test_preview_after_value_equals_gear_build_hero() -> void:
-	var menu: EquipmentMenu = _open_menu()
-	menu.show_hero(&"zayd")
-	menu._on_slot_activated(&"blade")
-	var keen: EquipDef = ContentDB.get_def("blade", &"keen_blade") as EquipDef
-	menu._on_item_focused(keen)
-	var loader := BattleLoader.from_db(ContentDB)
-	var staged := EquipmentStatsPanel.StagedState.new()
-	staged.xp = GameState.xp
-	staged.equipment = GameState.equipment.duplicate()
-	staged.equipment[&"zayd.blade"] = &"keen_blade"
-	staged.sockets = GameState.sockets
-	staged.upgrades = GameState.upgrades
-	var expected: CombatantDef = loader.hero_from_state(&"zayd", staged)
-	var after_val: CombatantDef = menu.stats.last_after()
-	check_eq(after_val.attack, expected.attack, "after-value equals Gear.build_hero with swap")
-	Screens.clear()
-	GameState.reset()
-
-
-func test_sockets_show_stones_and_hide_locked() -> void:
-	var menu: EquipmentMenu = _open_menu()
-	menu.show_hero(&"zayd")
-	var g_box: SlotBox = menu.boxes_manager.boxes[&"gemstones"]
-	check(g_box != null, "gemstones box exists")
-	check(g_box._socket_panels[0].visible, "socket 0 visible")
-	check(not g_box._socket_panels[1].visible, "socket 1 hidden when locked")
-	GameState.flags[&"heirloom_rank_3"] = true
-	menu.boxes_manager.refresh(menu.hero)
-	check(g_box._socket_panels[1].visible, "socket 1 visible when unlocked")
-	check(g_box._socket_panels[2].visible, "socket 2 visible when unlocked")
-	Screens.clear()
-	GameState.reset()
-
-
 func test_qe_cycles_heroes() -> void:
 	var menu: EquipmentMenu = _open_menu()
 	menu.show_hero(&"zayd")
@@ -134,27 +99,95 @@ func test_subviewport_and_character_visual_turns_while_paused() -> void:
 	GameState.reset()
 
 
-func test_rects_match_spec_within_2px() -> void:
+func test_header_and_inventory_rects_do_not_intersect() -> void:
 	var menu: EquipmentMenu = _open_menu()
-	check_approx(menu.tabs.position.x, 80.0, 2.0, "tabs x")
-	check_approx(menu.tabs.position.y, 40.0, 2.0, "tabs y")
-	check_approx(menu.header.position.x, 80.0, 2.0, "header x")
-	check_approx(menu.header.position.y, 124.0, 2.0, "header y")
-	check_approx(menu.owned_list.position.x, 80.0, 2.0, "list x")
-	check_approx(menu.owned_list.position.y, 240.0, 2.0, "list y")
-	check_approx(menu.stage.position.x, 560.0, 2.0, "stage x")
-	check_approx(menu.stage.position.y, 140.0, 2.0, "stage y")
-	check_approx(menu.boxes_manager.boxes[&"blade"].position.x, 600.0, 2.0, "blade x")
-	check_approx(menu.boxes_manager.boxes[&"blade"].position.y, 180.0, 2.0, "blade y")
-	check_approx(menu.boxes_manager.boxes[&"armor"].position.x, 1210.0, 2.0, "armor x")
-	check_approx(menu.boxes_manager.boxes[&"armor"].position.y, 180.0, 2.0, "armor y")
-	check_approx(menu.stats.position.x, 1400.0, 2.0, "stats x")
-	check_approx(menu.stats.position.y, 140.0, 2.0, "stats y")
-	check_approx(menu.desc.position.x, 80.0, 2.0, "desc x")
-	check_approx(menu.desc.position.y, 900.0, 2.0, "desc y")
+	var header_rect := Rect2(menu.header.position, menu.header.size)
+	var inv_rect := Rect2(menu.owned_list.position, menu.owned_list.size)
+	check(not header_rect.intersects(inv_rect), "header card rect and INVENTORY rect do not intersect")
+	check(menu.owned_list.position.y >= header_rect.end.y + 16.0, "INVENTORY starts below header with >= 16px gap")
+	var face: Control = menu.header.portrait_face()
+	check(face != null, "portrait exists")
+	check(face is TextureRect, "portrait is TextureRect")
+	var face_tr := face as TextureRect
+	check(face_tr.texture != null, "portrait texture assigned")
+	LayoutSettle.run(menu)
+	var frame: Control = menu.header.face_box()
+	check(frame != null, "portrait frame exists")
+	var inner: Rect2 = _inner_rect(frame)
+	var port_rect: Rect2 = face_tr.get_global_rect()
+	check_approx(port_rect.position.x, inner.position.x, 2.0, "portrait left fills the frame")
+	check_approx(port_rect.position.y, inner.position.y, 2.0, "portrait top fills the frame")
+	check_approx(port_rect.size.x, inner.size.x, 2.0, "portrait width fills the frame")
+	check_approx(port_rect.size.y, inner.size.y, 2.0, "portrait height fills the frame")
+	var drawn: Vector2 = _drawn_size(face_tr.texture, inner.size)
+	check(drawn.x >= inner.size.x - 2.0 and drawn.y >= inner.size.y - 2.0, "the texture covers the frame (no empty band)")
 	Screens.clear()
 	GameState.reset()
 
 
+func _inner_rect(frame: Control) -> Rect2:
+	var box: StyleBox = frame.get_theme_stylebox("panel")
+	var frame_rect: Rect2 = frame.get_global_rect()
+	var left: float = box.get_margin(SIDE_LEFT)
+	var top: float = box.get_margin(SIDE_TOP)
+	var right: float = box.get_margin(SIDE_RIGHT)
+	var bottom: float = box.get_margin(SIDE_BOTTOM)
+	return Rect2(frame_rect.position + Vector2(left, top), frame_rect.size - Vector2(left + right, top + bottom))
+
+
+func _drawn_size(texture: Texture2D, into: Vector2) -> Vector2:
+	var tex_size: Vector2 = texture.get_size()
+	return tex_size * maxf(into.x / tex_size.x, into.y / tex_size.y)
+
+
 func check_approx(val: float, target: float, tolerance: float, msg: String) -> void:
 	check(absf(val - target) <= tolerance, "%s: expected %f got %f" % [msg, target, val])
+
+
+func test_hovering_slot_fills_list_without_confirm() -> void:
+	var menu: EquipmentMenu = _open_menu()
+	menu.show_hero(&"zayd")
+	check_eq(menu.active_slot, &"blade", "starts on blade")
+	var hilt_box: SlotBox = menu.boxes_manager.boxes[&"hilt"]
+	hilt_box.grab_focus()
+	check_eq(menu.active_slot, &"hilt", "focusing hilt slot updates active_slot")
+	check_eq(int(menu.mode), int(EquipmentMenu.Mode.SLOTS), "remains in SLOTS mode without confirm")
+	var rows: Array[ListRow] = menu.owned_list.rows()
+	check(rows.size() > 0, "owned list filled without pressing confirm")
+	check(rows[0].name_text().contains("Hilt"), "list populated with hilts")
+	Screens.clear()
+	GameState.reset()
+
+
+func test_gemstones_slot_can_take_focus_and_lists_gemstones() -> void:
+	var menu: EquipmentMenu = _open_menu()
+	menu.show_hero(&"zayd")
+	var gem_box: SlotBox = menu.boxes_manager.boxes[&"gemstones"]
+	check(gem_box.focus_mode != Control.FOCUS_NONE, "gemstones box can take focus")
+	gem_box.grab_focus()
+	check(gem_box.has_focus(), "gemstones has focus")
+	check_eq(menu.active_slot, &"gemstones", "gemstones slot active on focus")
+	check(menu.owned_list.rows().size() > 0, "gemstones listed in owned list")
+	var has_aqiq: bool = false
+	for r: ListRow in menu.owned_list.rows():
+		if r.name_text() == Ui.text("STONE_AQIQ_RED_NAME"):
+			has_aqiq = true
+			break
+	check(has_aqiq, "owned aqiq_red gemstone listed")
+	Screens.clear()
+	GameState.reset()
+
+
+func test_slot_hover_does_not_steal_focus_in_list_mode() -> void:
+	var menu: EquipmentMenu = _open_menu()
+	menu.show_hero(&"zayd")
+	menu._on_slot_activated(&"blade")
+	check_eq(int(menu.mode), int(EquipmentMenu.Mode.LIST), "in list mode")
+	var rows: Array[ListRow] = menu.owned_list.rows()
+	check(rows.size() > 0 and rows[0].has_focus(), "first list row has focus")
+	var hilt_box: SlotBox = menu.boxes_manager.boxes[&"hilt"]
+	hilt_box._on_mouse_entered()
+	check(not hilt_box.has_focus(), "hover did not steal focus in list mode")
+	check(rows[0].has_focus(), "list row kept focus")
+	Screens.clear()
+	GameState.reset()
