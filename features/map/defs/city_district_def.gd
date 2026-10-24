@@ -18,6 +18,8 @@ var area_id: StringName = &""
 var flicker_period: float = 1.6
 var flicker_base: float = 0.85
 var flicker_amplitude: float = 0.15
+## Radial compression parameter ("radial_k" metres).
+var radial_k: float = 0.0
 
 
 func read(r: DefReader) -> void:
@@ -35,6 +37,7 @@ func read(r: DefReader) -> void:
 	flicker_period = r.number("period", 0.1, 60.0, 1.6, false)
 	flicker_base = r.number("base", 0.0, 1.0, 0.85, false)
 	flicker_amplitude = r.number("amplitude", 0.0, 1.0, 0.15, false)
+	radial_k = r.number("radial_k", 0.0, 50000.0, 0.0, false)
 	if feature == &"district" and polygon.size() < 3:
 		r.problem("polygon", "needs at least 3 points")
 

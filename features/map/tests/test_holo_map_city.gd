@@ -2,6 +2,7 @@ extends TestCase
 ## purpose: Tests city-map projection bounds, real label sets, district polygons, pins and localization rows.
 
 const CANVAS: Vector2 = Vector2(1200.0, 800.0)
+const OLD_CITY_DISTRICTS: Array[StringName] = [&"old_city", &"bab_al_yaman", &"al_saila", &"tahrir", &"zubairi"]
 
 
 func test_every_district_has_six_to_ten_points() -> void:
@@ -12,16 +13,36 @@ func test_every_district_has_six_to_ten_points() -> void:
 
 
 func test_projected_districts_inside_canvas() -> void:
+	var canvas := HoloMapCanvas.new()
+	canvas.mode = HoloMapCanvas.Mode.CITY
+	canvas._ensure_city_fit()
 	var data: Dictionary = _city_data()
-	var bounds: Rect2 = HoloMapGeo.city_bounds(data["districts"], data["features"], data["pins"], Rect2(Vector2.ZERO, CANVAS))
-	var tr: Dictionary = HoloMapGeo.fit(bounds, CANVAS, 0.08)
-	var scale: float = float(tr["scale"])
-	var offset: Vector2 = tr["offset"] as Vector2
 	var canvas_rect := Rect2(Vector2.ZERO, CANVAS)
 	for d: CityDistrictDef in data["districts"]:
 		for p: Vector2 in d.polygon:
-			var screen: Vector2 = HoloMapGeo.project(p, scale, offset)
+			var screen: Vector2 = canvas._project(p)
 			check(canvas_rect.has_point(screen), "%s point %s inside canvas" % [d.id, screen])
+	canvas.free()
+
+
+func test_old_city_districts_span_canvas_width() -> void:
+	var canvas := HoloMapCanvas.new()
+	canvas.mode = HoloMapCanvas.Mode.CITY
+	canvas._ensure_city_fit()
+	var data: Dictionary = _city_data()
+	var min_x: float = INF
+	var max_x: float = -INF
+	for d: CityDistrictDef in data["districts"]:
+		if not OLD_CITY_DISTRICTS.has(d.id):
+			continue
+		for p: Vector2 in d.polygon:
+			var screen: Vector2 = canvas._project(p)
+			min_x = minf(min_x, screen.x)
+			max_x = maxf(max_x, screen.x)
+	var span: float = max_x - min_x
+	check(span >= CANVAS.x * 0.35,
+		"old-city districts span >= 35%% of canvas (got %.1f px = %.1f%%)" % [span, span / CANVAS.x * 100.0])
+	canvas.free()
 
 
 func test_city_map_name_keys_are_localized() -> void:
@@ -38,7 +59,9 @@ func test_city_labels_do_not_overlap() -> void:
 	canvas.mode = HoloMapCanvas.Mode.CITY
 	var labels: Array[HoloMapLabel] = canvas.city_label_set(Ui.theme().default_font)
 	check(labels.size() >= 9, "city labels include districts and one pin (%d)" % labels.size())
-	_check_no_overlap(labels)
+	var pin_screen: Vector2 = canvas._project(Vector2(110.0, -110.0))
+	var pin_rect := Rect2(pin_screen - Vector2(16.0, 16.0), Vector2(32.0, 32.0))
+	_check_no_overlap(labels, pin_rect)
 	canvas.free()
 
 
@@ -70,9 +93,14 @@ func test_flicker_values_come_from_content() -> void:
 		check_eq(flicker.flicker_amplitude, 0.15, "amplitude")
 
 
-func _check_no_overlap(labels: Array[HoloMapLabel]) -> void:
-	var resolved: Array[HoloMapLabel] = HoloMapLabels.resolve(labels, Rect2(Vector2.ZERO, CANVAS))
+func _check_no_overlap(labels: Array[HoloMapLabel], obstacle: Rect2 = Rect2()) -> void:
+	var obstacles: Array[Rect2] = []
+	if obstacle.size != Vector2.ZERO:
+		obstacles.append(obstacle)
+	var resolved: Array[HoloMapLabel] = HoloMapLabels.resolve(labels, Rect2(Vector2.ZERO, CANVAS), obstacles)
 	for i: int in range(resolved.size()):
+		if obstacle.size != Vector2.ZERO:
+			check(not resolved[i].rect.intersects(obstacle), "%s covers player pin" % resolved[i].text)
 		for j: int in range(i + 1, resolved.size()):
 			check(not resolved[i].rect.intersects(resolved[j].rect),
 				"%s and %s overlap" % [resolved[i].text, resolved[j].text])

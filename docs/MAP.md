@@ -87,7 +87,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/world/areas.json`: content: area x2
 - `content/world/buildings.json`: content: building x15
 - `content/world/camera.json`: content: camera_rig x1
-- `content/world/city_map.json`: content: city_district x15
+- `content/world/city_map.json`: content: city_district x16
 - `content/world/explore.json`: content: explore_rules x1
 - `content/world/look.json`: content: look x5
 - `content/world/map_markers.json`: content: map_marker x3
@@ -408,9 +408,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/map/view/holo_map_canvas.gd`: purpose: 1200x800 holographic map canvas: rooftop floor plan or full city map with cyan glow and scanlines
 - `features/map/view/holo_map_city_preview.gd`: purpose: Circular city map radar preview (300x300 at 1560,720) showing Sana'a district outlines
 - `features/map/view/holo_map_city_view.gd`: purpose: Builds city-map district and area-pin labels and collapses pins that share one real place
-- `features/map/view/holo_map_geo.gd`: purpose: Project city map features from world metres to screen space and compute the fitting bounds
+- `features/map/view/holo_map_geo.gd`: purpose: Project city map features from world metres to screen space with optional radial compression
 - `features/map/view/holo_map_label.gd`: purpose: One map label candidate with a rect that can be pushed away from others
-- `features/map/view/holo_map_labels.gd`: purpose: Place 2D map labels apart from each other, keep them inside bounds, and draw them with leader lines
+- `features/map/view/holo_map_labels.gd`: purpose: Place 2D map labels apart from each other and obstacles, and draw them with leader lines
 - `features/map/view/holo_map_legend.gd`: purpose: Legend panel (260x260 at 80,140) showing marker icons and labels
 - `features/map/view/holo_map_markers.gd`: purpose: Draw map marker icons (player, npc, vendor, quest) used by the area view
 - `features/map/view/holo_map_style.gd`: purpose: Shared holographic map drawing helpers: glow lines, dashed ring, hatched fills

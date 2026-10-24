@@ -27,6 +27,7 @@ var _area_pins: Array[CityDistrictDef] = []
 var _scanlines: ColorRect
 var _city_scale: float = 0.0
 var _city_offset: Vector2 = Vector2.ZERO
+var _radial: Dictionary = {}
 
 
 func _init() -> void:
@@ -112,7 +113,9 @@ func _draw_city_map() -> void:
 	var labels: Array[HoloMapLabel] = city_label_set(font)
 
 	for d: CityDistrictDef in _districts:
-		var pts := HoloMapGeo.to_screen_polygon(d.polygon, _city_scale, _city_offset)
+		if d.id == &"al_saila" or d.id == &"zubairi":
+			continue
+		var pts := HoloMapGeo.to_screen_polygon(d.polygon, _city_scale, _city_offset, _radial["center"], float(_radial["k"]), float(_radial["r"]))
 		if pts.size() < 3:
 			continue
 		draw_colored_polygon(pts, HoloMapStyle.alpha(_c_cyan, 0.18 if d.is_old_city else 0.06))
@@ -127,23 +130,31 @@ func _draw_city_map() -> void:
 		match f.feature:
 			&"line":
 				if f.line.size() >= 2:
-					HoloMapStyle.glow_line(self, _project(f.line[0]), _project(f.line[1]), _c_cyan, 3.0, 8.0)
+					var pts := HoloMapGeo.to_screen_polyline(f.line, _city_scale, _city_offset, _radial["center"], float(_radial["k"]), float(_radial["r"]))
+					draw_polyline(pts, HoloMapStyle.alpha(_c_cyan, 0.7), 2.0)
 			&"ring":
-				HoloMapStyle.dashed_circle(self, _project(f.center), f.radius * _city_scale, HoloMapStyle.alpha(_c_cyan, 0.65 * flicker), 2.0, 12.0, 10.0, 64)
+				var cr: float = float(_radial["r"]) * f.radius / (f.radius + float(_radial["k"])) * _city_scale
+				HoloMapStyle.dashed_circle(self, _project(f.center), cr, HoloMapStyle.alpha(_c_cyan, 0.65 * flicker), 2.0, 12.0, 10.0, 64)
 			&"contours":
 				for r: float in f.radii:
-					draw_arc(_project(f.center), r * _city_scale, 0.0, TAU, 48, HoloMapStyle.alpha(_c_cyan, 0.45), 2.0)
+					var cr: float = float(_radial["r"]) * r / (r + float(_radial["k"])) * _city_scale
+					draw_arc(_project(f.center), cr, 0.0, TAU, 48, HoloMapStyle.alpha(_c_cyan, 0.45), 2.0)
 
-	HoloMapLabels.draw_all(self, HoloMapLabels.resolve(labels, Rect2(Vector2.ZERO, size)), font)
-
+	var obstacles: Array[Rect2] = []
 	for pin: Dictionary in HoloMapCityView.unique_pins(_area_pins, _current_area_id()):
 		var p: CityDistrictDef = pin["def"]
-		HoloMapMarkers.draw_area_pin(self, _project(p.center), bool(pin["active"]), pulse, _c_cyan)
+		var pin_pos: Vector2 = _project(p.center)
+		HoloMapMarkers.draw_area_pin(self, pin_pos, bool(pin["active"]), pulse, _c_cyan)
+		if bool(pin["active"]):
+			obstacles.append(Rect2(pin_pos - Vector2(16.0, 16.0), Vector2(32.0, 32.0)))
+
+	HoloMapLabels.draw_all(self, HoloMapLabels.resolve(labels, Rect2(Vector2.ZERO, size), obstacles), font)
 
 
 func city_label_set(font: Font) -> Array[HoloMapLabel]:
 	_ensure_city_fit()
-	return HoloMapCityView.labels(font, _districts, _area_pins, _city_scale, _city_offset, _current_area_id(), _c_cyan)
+	return HoloMapCityView.labels(font, _districts, _area_pins, _city_scale, _city_offset, _current_area_id(), _c_cyan,
+		_radial["center"], float(_radial["k"]), float(_radial["r"]))
 
 
 func area_label_set(font: Font) -> Array[HoloMapLabel]:
@@ -151,7 +162,11 @@ func area_label_set(font: Font) -> Array[HoloMapLabel]:
 
 
 func _ensure_city_fit() -> void:
-	var bounds: Rect2 = HoloMapGeo.city_bounds(_districts, _features, _area_pins, Rect2(Vector2.ZERO, size))
+	_radial = HoloMapGeo.radial_params(_features, _area_pins, _current_area_id())
+	var center: Vector2 = _radial["center"]
+	var k: float = float(_radial["k"])
+	var r: float = float(_radial["r"])
+	var bounds: Rect2 = HoloMapGeo.city_bounds(_districts, _features, _area_pins, Rect2(Vector2.ZERO, size), center, k, r)
 	var tr: Dictionary = HoloMapGeo.fit(bounds, size, _CITY_MARGIN)
 	_city_scale = float(tr.get("scale", 0.0))
 	_city_offset = tr.get("offset", Vector2.ZERO) as Vector2
@@ -169,4 +184,4 @@ func _current_area_id() -> StringName:
 
 
 func _project(geo: Vector2) -> Vector2:
-	return HoloMapGeo.project(geo, _city_scale, _city_offset)
+	return HoloMapGeo.project(geo, _city_scale, _city_offset, _radial.get("center", Vector2.ZERO), float(_radial.get("k", 0.0)), float(_radial.get("r", HoloMapGeo.DEFAULT_RADIAL_R)))

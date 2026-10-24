@@ -1,5 +1,6 @@
 {
   "kind": "city_district",
+  "radial_k": 1200,
   "items": [
     {
       "id": "old_city",
@@ -180,6 +181,13 @@
       "period": 1.6,
       "base": 0.85,
       "amplitude": 0.15
+    },
+    {
+      "id": "radial_config",
+      "name_key": "MAP_TITLE",
+      "feature": "radial",
+      "center": [110, -110],
+      "radial_k": 1200
     }
   ]
 }
