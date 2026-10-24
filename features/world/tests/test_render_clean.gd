@@ -1,5 +1,5 @@
 extends TestCase
-## Tests for render-clean: roof-floor overlay z-spacing, texture mipmaps, and anisotropic filtering.
+## purpose: Tests for render-clean: roof-floor overlay z-spacing, texture mipmaps, and anisotropic filtering.
 
 const PALETTE_ID: StringName = &"main"
 const MIN_SEPARATION: float = 0.005
@@ -112,3 +112,53 @@ func test_painted_materials_have_mipmaps_and_anisotropic_filter() -> void:
 	check(shader_code.contains("emission_tex : source_color, filter_linear_mipmap_anisotropic"),
 		"emission_tex sampler has filter_linear_mipmap_anisotropic")
 	PaintedMaterials.use(null)
+
+
+func test_baked_floor_textures_have_mipmaps() -> void:
+	var image: Image = PaintedMaterials.load_baked(&"oil", "tile_roof_plaster")
+	check(image != null, "oil bake of tile_roof_plaster loads")
+	check(image.has_mipmaps(), "baked tile_roof_plaster image has mipmaps immediately from load_baked")
+
+
+func test_puddles_lift_and_no_two_at_same_height() -> void:
+	var area := ContentDB.get_def("area", &"souq_rooftops_v4") as AreaDef
+	var storm_def := ContentDB.get_def("storm", &"night_storm") as StormDef
+	check(area != null and storm_def != null, "area and storm def exist")
+	check(storm_def.puddle_height_offset >= 0.01, "storm.json puddle_height_offset is >= 0.01m")
+	var storm := StormBuilder.build(area) as StormHost
+	check(storm != null and storm.puddles_root != null, "storm host with puddles exists")
+	var puddles: Array[Node] = storm.puddles_root.get_children()
+	check(not puddles.is_empty(), "puddles exist")
+	var heights: Array[float] = []
+	for i: int in puddles.size():
+		var p := puddles[i] as MeshInstance3D
+		var cx: int = floori(p.position.x)
+		var cz: int = floori(p.position.z)
+		var tile := ContentDB.get_def("tile", area.tile_id_at(cx, cz)) as TileDef
+		var floor_y: float = tile.height if tile != null else 0.0
+		check(p.position.y >= floor_y + storm_def.puddle_height_offset - 0.0001,
+			"puddle %d sits >= storm.json lift above floor (actual %.4f, min %.4f)"
+			% [i, p.position.y, floor_y + storm_def.puddle_height_offset])
+		for prev_h: float in heights:
+			check(not is_equal_approx(p.position.y, prev_h), "no two puddle surfaces share the exact same height")
+		heights.append(p.position.y)
+	storm.free()
+
+
+func test_puddle_shader_ring_antialias_set_from_content() -> void:
+	var def := ContentDB.get_def("storm", &"night_storm") as StormDef
+	check(def != null and def.get(&"puddle_ripple_antialias") != null, "storm def specifies puddle_ripple_antialias")
+	var area := ContentDB.get_def("area", &"souq_rooftops_v4") as AreaDef
+	var storm := StormBuilder.build(area) as StormHost
+	check(storm != null and storm.puddles_root != null, "storm host with puddles exists")
+	var puddles: Array[Node] = storm.puddles_root.get_children()
+	check(not puddles.is_empty(), "puddles built")
+	var pmesh := puddles[0] as MeshInstance3D
+	var smat := pmesh.material_override as ShaderMaterial
+	check(smat != null, "puddle has ShaderMaterial")
+	var aa_val: Variant = smat.get_shader_parameter(&"ripple_antialias")
+	check(aa_val != null and is_equal_approx(float(aa_val), float(def.get(&"puddle_ripple_antialias"))),
+		"puddle shader uniform ripple_antialias matches storm.json content value")
+	check(smat.shader.code.contains("uniform float ripple_antialias"), "puddle.gdshader declares ripple_antialias uniform")
+	storm.free()
+

@@ -42,6 +42,7 @@ var puddle_ripple_fade_in: float = 0.2
 var puddle_ripple_wave_speed: float = 0.7
 var puddle_ripple_decay: float = 16.0
 var puddle_ripple_normal_weight: float = 0.22
+var puddle_ripple_antialias: float = 0.025
 var puddle_size_min: float = 1.2
 var puddle_size_max: float = 2.2
 var puddle_seed: int = 42
@@ -135,6 +136,7 @@ func _read_puddles(r: DefReader) -> void:
 	puddle_ripple_wave_speed = r.number("puddle_ripple_wave_speed", 0.1, 5.0, 0.7, false)
 	puddle_ripple_decay = r.number("puddle_ripple_decay", 1.0, 50.0, 16.0, false)
 	puddle_ripple_normal_weight = r.number("puddle_ripple_normal_weight", 0.01, 1.0, 0.22, false)
+	puddle_ripple_antialias = r.number("puddle_ripple_antialias", 0.001, 1.0, 0.025, false)
 	puddle_size_min = r.number("puddle_size_min", 0.1, 10.0)
 	puddle_size_max = r.number("puddle_size_max", 0.1, 10.0)
 	if puddle_size_max < puddle_size_min:

@@ -12,7 +12,8 @@ static func build(area: AreaDef, def: StormDef, floor_y: float) -> Node3D:
 	rng.seed = def.puddle_seed
 	var count: int = rng.randi_range(def.puddle_count_min, def.puddle_count_max)
 	var spots: Array[Vector2] = _puddle_spots(area, def.puddle_wall_margin, rng, count)
-	for spot: Vector2 in spots:
+	for i: int in spots.size():
+		var spot: Vector2 = spots[i]
 		var puddle := MeshInstance3D.new()
 		var pmesh := PlaneMesh.new()
 		var psize: float = rng.randf_range(def.puddle_size_min, def.puddle_size_max)
@@ -20,11 +21,12 @@ static func build(area: AreaDef, def: StormDef, floor_y: float) -> Node3D:
 		puddle.mesh = pmesh
 		var tile := ContentDB.get_def("tile", area.tile_id_at(floori(spot.x), floori(spot.y))) as TileDef
 		var tile_y: float = tile.height if tile != null else floor_y
-		puddle.position = Vector3(spot.x, tile_y + def.puddle_height_offset, spot.y)
+		var lift: float = def.puddle_height_offset + float(i) * 0.001
+		puddle.position = Vector3(spot.x, tile_y + lift, spot.y)
 		puddle.rotation.y = rng.randf_range(0.0, TAU)
 		var smat := ShaderMaterial.new()
 		smat.shader = PUDDLE_SHADER
-		smat.render_priority = 1
+		smat.render_priority = 1 + i
 		smat.set_shader_parameter(&"darken_factor", def.puddle_darken)
 		smat.set_shader_parameter(&"roughness", def.puddle_roughness)
 		smat.set_shader_parameter(&"sky_ambient", def.puddle_sky_ambient)
@@ -36,6 +38,7 @@ static func build(area: AreaDef, def: StormDef, floor_y: float) -> Node3D:
 		smat.set_shader_parameter(&"ripple_wave_speed", def.puddle_ripple_wave_speed)
 		smat.set_shader_parameter(&"ripple_decay", def.puddle_ripple_decay)
 		smat.set_shader_parameter(&"ripple_normal_weight", def.puddle_ripple_normal_weight)
+		smat.set_shader_parameter(&"ripple_antialias", def.puddle_ripple_antialias)
 		puddle.material_override = smat
 		root.add_child(puddle)
 	return root

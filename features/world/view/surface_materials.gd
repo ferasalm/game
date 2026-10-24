@@ -10,6 +10,7 @@ const GLOW_BOOST: float = 1.6
 const BLINK_SHADER: Shader = preload("res://features/world/view/shaders/blink.gdshader")
 const WATER_SHADER: Shader = preload("res://features/world/view/shaders/prop_water.gdshader")
 static var _cache: Dictionary[String, Material] = {}
+static var _facade_cache: Dictionary[String, Array] = {}
 
 
 static func clear() -> void:
@@ -48,9 +49,14 @@ static func facade(def: BuildingDef, palette: PaletteDef) -> Material:
 
 ## A building's facade atlas images: [albedo, emission], front on the left, side on the right.
 static func facade_images(def: BuildingDef, palette: PaletteDef) -> Array[Image]:
-	var front: Array[Image] = FacadePainter.paint(def.facade_spec(false), palette.colors)
-	var side: Array[Image] = FacadePainter.paint(def.facade_spec(true), palette.colors)
-	return [_atlas(front[0], side[0]), _atlas(front[1], side[1])]
+	var key: String = String(def.id) + ":" + String(palette.id)
+	if not _facade_cache.has(key):
+		var front: Array[Image] = FacadePainter.paint(def.facade_spec(false), palette.colors)
+		var side: Array[Image] = FacadePainter.paint(def.facade_spec(true), palette.colors)
+		_facade_cache[key] = [_atlas(front[0], side[0]), _atlas(front[1], side[1])]
+	var cached: Array = _facade_cache[key]
+	var res: Array[Image] = [cached[0] as Image, cached[1] as Image]
+	return res
 
 
 ## Vertex-coloured gypsum, roofs and roof extras; lit by the scene.
