@@ -402,7 +402,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/map/defs/map_marker_def.gd`: purpose: Defines a map marker pointing to a place (kind npc, vendor, quest) and optional quest flag
 - `features/map/logic/map_plan.gd`: purpose: Pure logic for planning area walkable cells, aspect fitting, and marker positioning
 - `features/map/tests/test_holo_map.gd`: purpose: Tests for holographic map planning, marker filtering, city districts, and screen view
-- `features/map/tests/test_holo_map_city.gd`: purpose: Tests city-map projection bounds, real label sets, district polygons, pins and localization rows
+- `features/map/tests/test_holo_map_city.gd`: purpose: Tests city-map schematic blocks, look parameters, label de-overlap and localization rows
 - `features/map/view/holo_city_districts.gd`: purpose: Draws Tahrir fan, Haddah blocks, Bayt Baws towers, al-Hasaba, ring road, Zubairi and Jabal Nuqum
 - `features/map/view/holo_city_hud.gd`: purpose: Draws dark navy background, faint grid, corner brackets, compass and top captions
 - `features/map/view/holo_city_look.gd`: purpose: Reads, validates and applies holographic city map styling from content JSON
