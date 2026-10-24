@@ -7,6 +7,8 @@ disable-model-invocation: false
 
 # Building a gameplay feature
 
+Opus is the state controller, planner and terminal executor only: it writes briefs, tests and specs-of-record, runs commands and reviews; the models below write the long text, the math and the log reading.
+
 Claude does not write bulk code in its own context: it writes the brief and tests, a builder writes the code
 (CLAUDE.md, docs/EFFICIENCY.md 3b). Grep docs/MAP.md and docs/ARCHITECTURE.md for the area first.
 
@@ -20,6 +22,10 @@ Run with run_in_background, cwd = the main checkout, `< /dev/null`; `bash tools/
 | Feature code, multi-file | GLM-5.3 | `bash tools/cf_build.sh <task> <brief> main cloudflare-workers-ai/@cf/zai-org/glm-5.3` |
 | Boilerplate: Def classes, JSON content, test stubs | Gemma 4 26B | `bash tools/cf_build.sh <task> <brief> main cloudflare-workers-ai/@cf/google/gemma-4-26b-a4b-it` |
 | Free first choice when its quota is open | Inkling :free / Gemini | `bash tools/build_pipeline.sh oc <task> <brief> main` / `... agy ...` |
+
+Personas ("<name> skill" in the brief, at most 2): GLM-5.3 = godot-gameplay-scripter + minimal-change-engineer
+(shaders: godot-shader-developer; menus: ui-designer); Gemma = godot-gameplay-scripter. The Haiku review subagent
+runs as the Code Reviewer agent type (Claude sees ~/.claude/agents directly).
 
 ## Steps
 1. Tests first: name the tests/test_<feature>.gd cases from the spec (docs/specs/ or docs/design/) in the brief, with

@@ -13,24 +13,65 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `project.godot`
 
 ## .agents
+- `.agents/skills/AGENCY-LICENSE`
 - `.agents/skills/blender-addon-engineer/SKILL.md`
+- `.agents/skills/code-reviewer/SKILL.md`
+- `.agents/skills/codebase-archaeologist/SKILL.md`
+- `.agents/skills/codebase-onboarding-engineer/SKILL.md`
+- `.agents/skills/cultural-intelligence-strategist/SKILL.md`
+- `.agents/skills/devops-automator/SKILL.md`
+- `.agents/skills/feedback-synthesizer/SKILL.md`
 - `.agents/skills/game-audio-engineer/SKILL.md`
 - `.agents/skills/game-designer/SKILL.md`
+- `.agents/skills/git-workflow-master/SKILL.md`
 - `.agents/skills/godot-gameplay-scripter/SKILL.md`
 - `.agents/skills/godot-shader-developer/SKILL.md`
+- `.agents/skills/image-prompt-engineer/SKILL.md`
 - `.agents/skills/level-designer/SKILL.md`
+- `.agents/skills/mcp-builder/SKILL.md`
+- `.agents/skills/minimal-change-engineer/SKILL.md`
 - `.agents/skills/narrative-designer/SKILL.md`
+- `.agents/skills/performance-benchmarker/SKILL.md`
+- `.agents/skills/prompt-engineer/SKILL.md`
+- `.agents/skills/rapid-prototyper/SKILL.md`
+- `.agents/skills/software-architect/SKILL.md`
 - `.agents/skills/technical-artist/SKILL.md`
+- `.agents/skills/technical-writer/SKILL.md`
+- `.agents/skills/test-results-analyzer/SKILL.md`
+- `.agents/skills/ui-designer/SKILL.md`
+- `.agents/skills/ui-finish-gate-reviewer/SKILL.md`
+- `.agents/skills/ux-architect/SKILL.md`
+- `.agents/skills/workflow-architect/SKILL.md`
 
 ## .opencode
 - `.opencode/agent/blender-addon-engineer.md`
+- `.opencode/agent/code-reviewer.md`
+- `.opencode/agent/codebase-archaeologist.md`
+- `.opencode/agent/codebase-onboarding-engineer.md`
+- `.opencode/agent/cultural-intelligence-strategist.md`
+- `.opencode/agent/devops-automator.md`
+- `.opencode/agent/feedback-synthesizer.md`
 - `.opencode/agent/game-audio-engineer.md`
 - `.opencode/agent/game-designer.md`
+- `.opencode/agent/git-workflow-master.md`
 - `.opencode/agent/godot-gameplay-scripter.md`
 - `.opencode/agent/godot-shader-developer.md`
+- `.opencode/agent/image-prompt-engineer.md`
 - `.opencode/agent/level-designer.md`
+- `.opencode/agent/mcp-builder.md`
+- `.opencode/agent/minimal-change-engineer.md`
 - `.opencode/agent/narrative-designer.md`
+- `.opencode/agent/performance-benchmarker.md`
+- `.opencode/agent/prompt-engineer.md`
+- `.opencode/agent/rapid-prototyper.md`
+- `.opencode/agent/software-architect.md`
 - `.opencode/agent/technical-artist.md`
+- `.opencode/agent/technical-writer.md`
+- `.opencode/agent/test-results-analyzer.md`
+- `.opencode/agent/ui-designer.md`
+- `.opencode/agent/ui-finish-gate-reviewer.md`
+- `.opencode/agent/ux-architect.md`
+- `.opencode/agent/workflow-architect.md`
 
 ## content
 - `content/art/clips.json`: content: clip x15
@@ -751,7 +792,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/build_gate.py`: Build gate: judges a builder run before Claude reads it (NOWORK, BREACH, FAIL or PASS plus a WARN checklist).
 - `tools/build_pipeline.sh`: Free builder pipeline (DECISIONS 2026-10-23): builder run -> check.sh -> one free fix pass fed the FAIL lines ->
 - `tools/cf_build.sh`: Rates (USD per million tokens)
-- `tools/cf_mcp/server.py`: Stdio MCP server: triage_trace (GLM-5.3 Flash) and generate_patch (DeepSeek V4.1 Flash) on Cloudflare Workers AI.
+- `tools/cf_mcp/server.py`: Stdio MCP server: triage_trace (GLM-5.3 Flash), generate_patch (DeepSeek V4.1 Flash), optional .agents persona.
 - `tools/cf_mcp/test_server.py`: Tests for tools/cf_mcp/server.py over its real stdio protocol, in dry mode (no Cloudflare call, no credentials).
 - `tools/check.sh`: One command for every check (docs, lint, Godot import, tests). One ok/FAIL line per step; logs in .check/.
 - `tools/check_slot.sh`: Test-run slots shared by every worktree on this machine: at most CHECK_SLOTS Godot test suites at once. Four at once
@@ -760,6 +801,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/fps_probe.gd`: FPS probe: plays a scene with vsync off and prints the average and worst frames per second after a warm-up
 - `tools/gate_checklist.py`: Checklist parsing and verification for build_gate.
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.
+- `tools/import_agents.py`: Copies the chosen agency agents (~/.claude/agents, MIT) into .agents/skills/<name>/SKILL.md for every builder.
 - `tools/lint_gd.py`: GDScript rules Godot itself doesn't enforce (docs/ARCHITECTURE.md, "Code rules"); exit 1 on any break.
 - `tools/map.py`: Writes docs/MAP.md from each file's purpose line, so the map never drifts. --check: exit 1 if stale.
 - `tools/merge_run.sh`: Merges one gated builder run into the current branch (DECISIONS 2026-10-23): only a PASS .result; a fast-forward onto

@@ -26,11 +26,13 @@ def main() -> int:
         {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "triage_trace", "arguments": {
             "trace": "player frozen after crossing", "files": ["features/world/interact/crossing_spot.gd"]}}},
         {"jsonrpc": "2.0", "id": 4, "method": "tools/call", "params": {"name": "generate_patch", "arguments": {
-            "diagnosis": "x", "files": ["../outside.txt"]}}},
+            "diagnosis": "x", "files": ["../outside.txt"], "agent": "minimal-change-engineer"}}},
         {"jsonrpc": "2.0", "id": 5, "method": "tools/call", "params": {"name": "nope", "arguments": {}}},
+        {"jsonrpc": "2.0", "id": 6, "method": "tools/call", "params": {"name": "triage_trace", "arguments": {
+            "trace": "x", "agent": "../../CLAUDE"}}},
     ])
     fails = []
-    if [r["id"] for r in replies] != [1, 2, 3, 4, 5]:
+    if [r["id"] for r in replies] != [1, 2, 3, 4, 5, 6]:
         fails.append("a notification got a reply or a request got none")
     names = [t["name"] for t in replies[1]["result"]["tools"]]
     if names != ["triage_trace", "generate_patch"]:
@@ -41,6 +43,12 @@ def main() -> int:
     patch = json.loads(replies[3]["result"]["content"][0]["text"])
     if patch["model"] != "@cf/deepseek-ai/deepseek-v4.1-flash-1017" or "not a file inside the repo" not in patch["messages"][1]["content"]:
         fails.append("generate_patch: wrong model or a path outside the repo was read")
+    system = patch["messages"][0]["content"]
+    if "# Minimal Change Engineer" not in system[:600] or not system.rstrip().endswith("Nothing else."):
+        fails.append("generate_patch: the agent persona did not lead, or the tool rules did not come last")
+    if json.loads(replies[5]["result"]["content"][0]["text"])["messages"][0]["content"] != json.loads(
+            replies[2]["result"]["content"][0]["text"])["messages"][0]["content"]:
+        fails.append("triage_trace: a path-like agent name changed the system prompt")
     if "error" not in replies[4]:
         fails.append("unknown tool did not return an error")
     for f in fails:
