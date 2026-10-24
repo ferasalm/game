@@ -14,8 +14,10 @@ docs/MAP.md greps: facade_painter, facade_spec, masonry, building_def, sign_spec
 content/world/buildings or areas.json (souq_rooftops_v4 blocks), content/world/skyline.json, storm.json, palette.
 
 ## What to build (all numbers in content)
-1. Facade palette: brick becomes dark umber-brown (#5A3B2E base, #3E2A22 mortar), less saturated; gypsum friezes and
-   window frames stay white (#E8E2D6); basalt floors #2B2B30. Red no longer dominates any play-camera frame.
+1. Facade palette (sampled from Feras's references inbox/concept_bricks_tower.png and concept_bricks_rooftops.png,
+   2026-10-24: "the bricks should not look red"): brick a desaturated grey-brown #574A48 with light bricks #6A6266
+   and dark #4A383A, mortar #271E23; gypsum friezes and window frames a rain-cooled off-white #A6B3B9; basalt
+   #383237. Night ambient cool teal; warm only in lit windows. No frame from the play camera may read as red.
 2. Neon crowns: every tower-house roof edge in the area and the near skyline gets an emissive strip 0.08 m tall at the
    parapet top: magenta #FF2BD6 (60%) or cyan #23E6F0 (40%), energy 3.0, picked by a seeded hash; a soft OmniLight
    (range 4 m, energy 0.6, same colour) on 1 in 3 roofs only (budget).
