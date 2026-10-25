@@ -65,3 +65,5 @@ it. Loaded at every session start: keep lines short (tools/doc_check.py caps thi
 - 2026-10-24 | Redesign to 2D: isometric ink-comic look per Feras's concepts (rooftop, street); painted scene pictures + 2D light, rain, neon; qamariya colour at the heart; turn-based first, action later; characters and music redesigned; one-person low-budget scope | 3D kept breaking (bugs, flicker) | Feras
 - 2026-10-24 | 2D characters: 3D models rendered offline (Blender, automated) to ink-outlined sprite sheets, 4 diagonals mirrored; no 3D at runtime | consistent frames; re-render on redesign | Feras (recommended)
 - 2026-10-24 | Battles on the map where you meet the enemy (Chrono Trigger style), timeline system kept; concept HUD = Strike, items 1-4, tech moves from cyber-energy | no arena art; action later in the same space | Feras (recommended)
+- 2026-10-25 | Game title "Neon Glitch"; start: title -> qamariya window -> room -> hover hero (low dutch zoom) -> choose -> final scene | Flow prompts | Feras
+- 2026-10-25 | No script but Musnad (or Musnad-like gibberish) in Neon Glitch, no English either (title logo kept); main scenes loop | Flow prompts | Feras

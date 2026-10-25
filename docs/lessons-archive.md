@@ -1,0 +1,11 @@
+# Lessons archive (3D-only; moved 2026-10-25 when 3D was archived, tag 3d-archive)
+
+- Lathe garments: torso pieces end at the waist over pelvis pieces raised 0.15 m; coats split at the pelvis (2026-10-22).
+- Rodin glb: centred feet, other bone axes, stale buffers, props baked into the body -> tools/rodin (LOD indices, glb
+  rewrite: lift, strip, --press) and PoseFollow (runtime retarget) (2026-10-22).
+- Foot heights after seek in a SceneTree script: set bones from the tracks, compose get_bone_pose up the parents.
+- SurfaceBuffer boxes have no bottom face -> lids need a tilted lining part (2026-10-23).
+- Play-camera traps: a keeper behind his stall hid under the awning (StallKeeper: counter end); the follow camera
+  sat 8-10 m back leading along the facing (lead along the view direction) (2026-10-23).
+- A new area reusing the old mist ids drowned its lower roofs in fog -> mist per area, >= 2 m below its lowest floor
+  (2026-10-23).

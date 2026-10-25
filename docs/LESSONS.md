@@ -25,16 +25,7 @@
 - `find_children(pattern, "MyClass")` never matches a script class_name -> walk children, test `is MyClass` (2026-10-23).
 - A UiScreen closed while another covered it stayed frozen on screen (its fade tween is paused with the node) ->
   close() re-enables processing (2026-10-23).
-- Lathe garments: torso pieces end at the waist over pelvis pieces raised 0.15 m; coats split at the pelvis (2026-10-22).
-- Rodin glb: centred feet, other bone axes, stale buffers, props baked into the body -> tools/rodin (LOD indices, glb
-  rewrite: lift, strip, --press) and PoseFollow (runtime retarget) (2026-10-22).
-- Foot heights after seek in a SceneTree script: set bones from the tracks, compose get_bone_pose up the parents.
-- SurfaceBuffer boxes have no bottom face -> lids need a tilted lining part (2026-10-23).
-- Play-camera traps: a keeper behind his stall hid under the awning (StallKeeper: counter end); the follow camera
-  sat 8-10 m back leading along the facing (lead along the view direction) (2026-10-23).
 - set_exploring(false) hides the player and patrols -> talks use rooftop.freeze_actors (2026-10-22).
-- A new area reusing the old mist ids drowned its lower roofs in fog -> mist per area, >= 2 m below its lowest floor
-  (2026-10-23).
 - Harness said 99.8% party HP: its AI chain-interrupted the boss -> print one seed's events (2026-10-23).
 
 ## 3. From reem-bot and feras-career (verified there)
@@ -81,6 +72,7 @@
   2.4 cm streaks and a screen wash (storm.json) (2026-10-23).
 
 ## 6. Cheaper routes
+- ffmpeg 9 dropped `-filter_complex_script` ("Unrecognized option") -> `-/filter_complex file.txt` (2026-10-25).
 - agy reads GEMINI.md; -p mode denies shell commands -> tools/agy_task.sh (skip-permissions, own worktree).
 - Where is X: grep docs/MAP.md (generated), not `ls -R`.
 - opencode CLI 1.19.4: `npm install -g --allow-scripts=opencode-ai opencode-ai`; the desktop app owns

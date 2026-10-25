@@ -1,5 +1,5 @@
 # HANDOFF (current state only; one section per track, each edited only by its owner; max 60 lines)
-Last updated: 2026-10-24, 2D redesign chat (Opus 5.5, `claude-opus-5-5`): 3D tracks paused.
+Last updated: 2026-10-25, Neon Glitch video edit chat (Opus 5.5, `claude-opus-5-5`); 3D tracks paused.
 
 ## Shared
 - Builders: CLAUDE.md + EFFICIENCY 3b (5 runs: 2 agy, 2 DeepSeek, 1 Inkling); check `bash tools/slots.sh`.
@@ -14,6 +14,11 @@ Last updated: 2026-10-24, 2D redesign chat (Opus 5.5, `claude-opus-5-5`): 3D tra
   turn-based battles (Chrono Trigger style), qamariya at the heart. Last 3D state: tag `3d-archive`.
 - Waiting on the owner: more concept pictures (plus an empty plate per scene: no characters, HUD or rain).
 1. Then: design doc + plan the one-scene prototype (rooftop, Zayd, one fight, HUD). Model: Opus. Effort: high.
+
+## Track: Neon Glitch start concept (owner: the chat "Neon Glitch video edit", 2026-10-25)
+- Done: inbox/Neon Glitch Videos/edit/ (2 cuts; EDIT_LIST.md lists open points). Waiting on Feras: watch them.
+1. Brainstorm + plan Neon Glitch with Feras (questions first). Model: Opus. Effort: high.
+`Continue ferasalm/game on main. Read HANDOFF.md (Neon Glitch). Brainstorm the game plan with me; /handoff.`
 
 ## Track: Level 1 + playtest fixes: PAUSED 2026-10-24 (3D; 2D redesign). Unmerged fix branches kept in ../game-wt.
 - Playtest 2026-10-24: inbox/playtest_*.png, concept_*.png; crossing freeze fixed. docs/briefs/: render-clean,
