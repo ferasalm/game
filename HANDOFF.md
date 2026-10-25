@@ -1,5 +1,5 @@
 # HANDOFF (current state only; one section per track, each edited only by its owner; max 60 lines)
-Last updated: 2026-10-25 (Neon Glitch game plan), Neon Glitch brainstorm chat (Opus 5.5, `claude-opus-5-5`); 3D tracks paused.
+Last updated: 2026-10-25 (Twine story map, Rydan only), story chat (Opus 5.5, `claude-opus-5-5`); 3D tracks paused.
 
 ## Shared
 - Builders: CLAUDE.md + EFFICIENCY 3b (5 runs: 2 agy, 2 DeepSeek, 1 Inkling); check `bash tools/slots.sh`.
@@ -16,13 +16,14 @@ Last updated: 2026-10-25 (Neon Glitch game plan), Neon Glitch brainstorm chat (O
 1. Then: design doc + plan the one-scene prototype (rooftop, Zayd, one fight, HUD). Model: Opus. Effort: high.
 
 ## Track: Neon Glitch (owner: the chat "Neon Glitch brainstorm", 2026-10-25)
-- Plan: docs/design/neon-glitch-plan.md (whole game; two campaigns, one story; solo hero + call-in allies; Rydan
-  first; demo = both openings; clips play as video). Start cuts v3: inbox/Neon Glitch Videos/edit/.
-- First build = the 2D redesign's one-scene prototype plus the start flow; it waits on Feras's concept pictures.
-- Waiting on Feras: watch both cuts, edit texts.py; the shared story, call-in allies (plan's "Open" list).
-1. Story outline for both campaigns + openings with Feras (questions first). Model: Opus. Effort: high.
+- Plan: docs/design/neon-glitch-plan.md. Story chat 2026-10-25: old story cut (the story is Feras's own); Bilqis
+  set aside, Rydan only; Rydan's opening is fresh (no level-1 content). Start cuts v3: inbox/Neon Glitch Videos/edit/.
+- Story map: docs/story/README.md (rydan.twee <-> Twine via tools/twine_sync.py; ChatGPT prompt). Starter map pushed.
+- Waiting on Feras: his story from ChatGPT (inbox/story_chatgpt.twee) or Twine edits; keep/cut for the red
+  "check" passages (setting, Rydan's locked kit).
+1. Pull/merge his story, ask questions, outline Rydan's story with him. Model: Opus. Effort: high.
 2. Then brief the first build (start flow as video + rooftop fight) with the 2D track. Model: Opus. Effort: high.
-`Continue ferasalm/game on main. Read HANDOFF.md (Neon Glitch). Outline the story with me; /handoff.`
+`Continue ferasalm/game on main. Read HANDOFF.md (Neon Glitch), docs/story/README.md. Merge my story; outline it; /handoff.`
 ## Track: Level 1 + playtest fixes: PAUSED 2026-10-24 (3D; 2D redesign). Unmerged fix branches kept in ../game-wt.
 - Playtest 2026-10-24: inbox/playtest_*.png, concept_*.png; crossing freeze fixed. docs/briefs/: render-clean,
   menus-equip-fix, holo-map-real (+ their fix passes), then cyber-look, items-menu, gear-slots (save: line review).

@@ -1,5 +1,6 @@
 # Neon Glitch: game plan (brainstorm 2026-10-25, Feras + Claude)
 Decisions are in docs/DECISIONS.md; this doc is the plan built on them. Start concept: inbox/Neon Glitch Videos/edit/.
+Update 2026-10-25: Bilqis is set aside (Rydan only); the old story is cut; the story is Feras's own (docs/story/).
 
 ## What it is
 - Neon Glitch is the whole game: the 2D isometric ink-comic RPG set in cyberpunk old Sana'a. The 2D redesign

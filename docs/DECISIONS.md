@@ -15,6 +15,7 @@ it; log every new decision verbatim in docs/decisions-log.md too.
 - 2026-10-19 | Blueprint = design input only; WSL2 rule and 120-line cap rejected | Claude
 ### Tools and builders
 - 2026-10-24 | Builders: 5 runs = 2 agy, 2 DeepSeek V4.1 Flash, 1 GLM-5.3 (no Inkling, Kimi); agy out: all DeepSeek, max 3; triage GLM-5.3 Flash; skills: design V4 Pro/Nemotron/Gemini, code GLM-5.3 | Feras
+- 2026-10-25 | Story map: docs/story/rydan.twee <-> Twine via tools/twine_sync.py; Twine library in docs/story/twine (git-ignored) | Feras/Claude
 - 2026-10-23 | Builds: build_pipeline.sh + build_gate.py; Claude reads PASS runs only; merge chats on Sonnet | Feras
 - 2026-10-23 | Briefs: gate-tested Checklist; Haiku diff pass before Opus (design, renders); tools/slots.sh counts slots | Feras
 - 2026-10-23 | Own tasks go to subagents: Haiku first, Sonnet if Haiku can't; Claude reviews sensitive results | Feras
@@ -27,11 +28,11 @@ it; log every new decision verbatim in docs/decisions-log.md too.
 - 2026-10-19 | Combat timeline: integers, fixed 60 ticks/s, deterministic, returns events | Claude
 - 2026-10-21 | Player text: localization/<feature>.csv via the TextDB autoload, not Godot CSV import | Claude
 ### World and story
-- 2026-10-19 | World: cyberpunk futuristic Sana'a, Yemen (no Malik/Thurya/Dharib cast); Claude invents the cast, Feras reviews | Feras
+- 2026-10-25 | Story and cast: Feras's own story (old story cut: Concession, water, Idris Qadi, Hamoud); organised with ChatGPT in Twine (docs/story/); setting cyberpunk Sana'a until he says keep/cut | Feras
 - 2026-10-21 | Real places: Souq al-Milh, al-Saila, Bab al-Yaman, Zubairi, Haddah, Bayt Baws | Feras
 - 2026-10-21 | Save spot: sabil fountain (full refill; patrols return); HP/SP carry over; losing offers retry | Feras
-- 2026-10-25 | Two campaigns (Rydan, Bilqis), one story from two sides; Rydan's built first; demo = both openings; first build = start flow + one rooftop fight | Feras/Claude
-- 2026-10-23 | Old 3D demo (level 1: 5 roofs, tayramana, valve puzzles) parked; may feed Rydan's opening | Feras
+- 2026-10-25 | Rydan only for now, Bilqis set aside (two campaigns, one story: later); first build = start flow + one rooftop fight | Feras
+- 2026-10-25 | Rydan's opening is fresh; the old 3D level 1 (5 roofs, tayramana, valve puzzles) stays parked | Feras
 - 2026-10-21 | Currency: riyal | Claude
 ### Heroes and combat
 - 2026-10-25 | Zayd renamed Rydan; Neon Glitch only for now (older lines here say Rydan) | Feras

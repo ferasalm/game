@@ -1,0 +1,101 @@
+:: StoryTitle
+Rydan
+
+
+:: StoryData
+{
+  "ifid": "7C2E9A41-5B3D-4F8E-9A16-2D4C8B0E7F35",
+  "format": "Harlowe",
+  "format-version": "3.3.9",
+  "start": "Read me",
+  "tag-colors": {
+    "idea": "yellow",
+    "draft": "blue",
+    "locked": "green",
+    "check": "red",
+    "guide": "purple"
+  },
+  "zoom": 1
+}
+
+
+:: Read me [guide] {"position":"100,100","size":"100,100"}
+This is Rydan's story map. Bilqis is set aside for now.
+
+One passage = one scene, beat, character, place or question.
+Arrows = what leads to what: write [[Passage name]] inside a passage to link it.
+
+Colours (status tags):
+- yellow "idea": a thought, nothing decided
+- blue "draft": written, still changing
+- green "locked": decided; Claude builds from it
+- red "check": something from before that you still have to keep or cut
+
+Other tags, no colour: scene, character, place, question, and ch0, ch1, ch2... for the chapter.
+
+Rearrange, rename, add and delete freely. When you are done, close Twine and tell Claude "pull the story".
+
+[[Rydan]]
+[[The world]]
+[[Open questions]]
+[[Start screen]]
+
+
+:: Rydan [character check] {"position":"250,100","size":"100,100"}
+Locked from earlier decisions (keep or cut each):
+- Name Rydan (after the palace Raydan).
+- Carries his grandfather's jambiyah; the hilt is an heirloom with 3 stone slots that open as the story goes on.
+- One prosthetic arm; tech moves cost SP.
+- Fights alone; story allies come in as call-in assists.
+
+Still open: who is he, what does he want, what stands in his way?
+
+
+:: The world [place check] {"position":"400,100","size":"100,100"}
+Locked from earlier decisions (keep or cut each):
+- A cyberpunk Sana'a, Yemen; old city at night, a megacity on the horizon.
+- Real places: Souq al-Milh, al-Saila, Bab al-Yaman, Zubairi, Haddah, Bayt Baws.
+- Signs in the world are written in Musnad only.
+- The save spot is a sabil fountain.
+- Money: the riyal.
+
+The old story (the Concession, the water, Idris Qadi, Hamoud, Abu Nabil) is cut.
+
+
+:: Open questions [question idea] {"position":"550,100","size":"100,100"}
+- What is the story about, in one line?
+- What does the title "Neon Glitch" mean in the story?
+- Who is the enemy?
+- How does the story end?
+- Who are Rydan's call-in allies?
+
+
+:: Start screen [scene ch0 locked] {"position":"100,300","size":"100,100"}
+Menu -> qamariya -> pick hero (Rydan only for now) -> brief + Normal/Hard -> reaction -> the game.
+The clips play as video with the UI on top.
+
+[[Rooftop fight]]
+
+
+:: Rooftop fight [scene ch1 idea] {"position":"250,300","size":"100,100"}
+The first thing we build: one rooftop, one fight, the HUD.
+
+Whose rooftop is it, who does Rydan fight, and why?
+
+[[Chapter 1]]
+
+
+:: Chapter 1 [ch1 idea] {"position":"400,300","size":"100,100"}
+(empty)
+
+[[Chapter 2]]
+
+
+:: Chapter 2 [ch2 idea] {"position":"550,300","size":"100,100"}
+(empty)
+
+[[Ending]]
+
+
+:: Ending [idea] {"position":"700,300","size":"100,100"}
+(empty)

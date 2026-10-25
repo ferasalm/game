@@ -892,4 +892,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_check_slot.py`: check_slot.sh: a full set of slots makes the next run wait; a released or stale slot lets it in.
 - `tools/test_gate_checklist.py`: Tests for brief checklist verification in build_gate.
 - `tools/test_slots.py`: Self-test for tools/slots.sh: python tools/test_slots.py (temp dirs, plain asserts, exit 1 on failure).
+- `tools/test_twine_sync.py`: Self-test for tools/twine_sync.py: python tools/test_twine_sync.py (temp dirs, plain asserts, exit 1 on failure).
+- `tools/twine_format.py`: Twee 3 <-> Twine 2 library HTML conversion for tools/twine_sync.py (parse, write, layout, to/from HTML).
+- `tools/twine_sync.py`: Syncs a Twee 3 story in the repo with the Twine 2 desktop library, both ways (docs/story/README.md).
 - `tools/vfx_gallery.gd`: Effect gallery: plays every battle effect kind one after another (one per second) on a night stage, for the movie writer

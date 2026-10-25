@@ -15,3 +15,7 @@ __pycache__/
 /.bake/
 # Hyper3D's RodinBridge editor plugin: Feras's local copy, no licence file (DECISIONS 2026-10-22)
 /RodinBridge/
+
+# Twine sync state (per machine)
+docs/story/.*.sync.json
+docs/story/twine/

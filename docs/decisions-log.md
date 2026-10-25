@@ -73,3 +73,7 @@ it. docs/DECISIONS.md is the loaded summary of the rules in force; docs/decision
 - 2026-10-25 | First build: start flow + one rooftop fight + HUD; start clips play as video in Godot with UI on top | Feras (recommended) | Feras
 - 2026-10-25 | Build order: Rydan's opening first, then Bilqis's kit and opening (not in parallel) | Feras asked which is more efficient and reliable; Claude chose | Claude
 - 2026-10-25 | Demo = both openings (~30 min each), replaces the 3D level-1 demo; Hard = stronger enemies, tighter resources ("learn your habits" is draft text) | Feras | Feras
+- 2026-10-25 | Old story cut; the new story is entirely different and Feras's own (Concession, water, Idris Qadi, Hamoud, Abu Nabil plot out) | Feras: "let's forget the old Story. This is entirely different." | Feras
+- 2026-10-25 | Rydan's opening is fresh: the parked level-1 content is not used | Feras chose "None: a fresh opening" | Feras
+- 2026-10-25 | Only Rydan's story for now; Bilqis set aside | Feras: "we're gonna need to only work with Rydan's story, without Bilqis. We're gonna leave Bilqis aside for a while." | Feras
+- 2026-10-25 | Feras organises his story with ChatGPT and Twine; entries from Claude Code go to Twine and back (docs/story/rydan.twee, tools/twine_sync.py; Twine library moved to docs/story/twine because Windows Controlled Folder Access blocks Documents) | Feras: "I need there to be a connection between Twine and Claude Code" | Feras/Claude
