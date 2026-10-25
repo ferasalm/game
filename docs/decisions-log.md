@@ -67,3 +67,9 @@ it. docs/DECISIONS.md is the loaded summary of the rules in force; docs/decision
 - 2026-10-25 | Title "Neon Glitch"; start: menu -> qamariya -> pick hero -> blur zoom: brief + Normal/Hard -> reaction -> blur pull-back -> game | Feras
 - 2026-10-25 | Zayd renamed Rydan; Neon Glitch only for now | Feras
 - 2026-10-25 | UI English + Musnad accents, world Musnad only; motion blur hides AI-video flaws; looped sound | Feras
+- 2026-10-25 | Neon Glitch is the whole game (2D redesign and RPG systems carry over); plan: docs/design/neon-glitch-plan.md | Feras (recommended) | Feras
+- 2026-10-25 | Hero pick = two separate campaigns, one story told from two sides (shared city, enemies, bosses; separate routes, fights, scenes; paths cross) | Feras | Feras
+- 2026-10-25 | Turn-based now: the hero fights alone, story allies as call-in assists (Hades-style call); action later likely a Hades-like roguelike; run structure decided at the switch | Feras: "high chance it will become an action based rogue-like, similar to Hades" | Feras
+- 2026-10-25 | First build: start flow + one rooftop fight + HUD; start clips play as video in Godot with UI on top | Feras (recommended) | Feras
+- 2026-10-25 | Build order: Rydan's opening first, then Bilqis's kit and opening (not in parallel) | Feras asked which is more efficient and reliable; Claude chose | Claude
+- 2026-10-25 | Demo = both openings (~30 min each), replaces the 3D level-1 demo; Hard = stronger enemies, tighter resources ("learn your habits" is draft text) | Feras | Feras

@@ -4,7 +4,7 @@ it; log every new decision verbatim in docs/decisions-log.md too.
 
 ## In force
 ### Process
-- 2026-10-24 | 2D redesign: one person, low budget; turn-based first, action later | Feras
+- 2026-10-25 | Neon Glitch = the whole game (plan: design/neon-glitch-plan.md); one person, low budget; turn-based first, action later likely Hades-like roguelike (runs decided at the switch) | Feras
 - 2026-10-22 | Log: never reword; struck (~~...~~) lines go to docs/decisions-archive.md | Claude
 - 2026-10-21 | Ask Feras 2-4 multiple-choice questions, recommended first; big asks: plan mode (Opus xhigh), agent audit, then orchestrate | Feras
 - 2026-10-21 | Runs stop only for owner questions, logins, CAPTCHAs, downloads, spending | Feras/Claude
@@ -30,8 +30,9 @@ it; log every new decision verbatim in docs/decisions-log.md too.
 - 2026-10-19 | World: cyberpunk futuristic Sana'a, Yemen (no Malik/Thurya/Dharib cast); Claude invents the cast, Feras reviews | Feras
 - 2026-10-21 | Real places: Souq al-Milh, al-Saila, Bab al-Yaman, Zubairi, Haddah, Bayt Baws | Feras
 - 2026-10-21 | Save spot: sabil fountain (full refill; patrols return); HP/SP carry over; losing offers retry | Feras
-- 2026-10-23 | Demo = level 1 (3D, paused); slice.md parked: 5 roofs, tayramana sole room, valve puzzles (walk up, interact) | Feras
-- 2026-10-21 | Currency: riyal; battle: party right, enemies left (3D camera, paused) | Claude
+- 2026-10-25 | Two campaigns (Rydan, Bilqis), one story from two sides; Rydan's built first; demo = both openings; first build = start flow + one rooftop fight | Feras/Claude
+- 2026-10-23 | Old 3D demo (level 1: 5 roofs, tayramana, valve puzzles) parked; may feed Rydan's opening | Feras
+- 2026-10-21 | Currency: riyal | Claude
 ### Heroes and combat
 - 2026-10-25 | Zayd renamed Rydan; Neon Glitch only for now (older lines here say Rydan) | Feras
 - 2026-10-22 | Jambiyah (not djanbeyyah; old save key migrates): two parts, hilt and blade, each upgraded or swapped separately | Feras
@@ -43,6 +44,7 @@ it; log every new decision verbatim in docs/decisions-log.md too.
 - 2026-10-24 | Bilqis: rivet pistol; frame and barrel upgraded like Rydan's hilt and blade | Feras
 - 2026-10-21 | Rarity: Common to Legendary (white, green, blue, purple, gold); Heirloom tier story-only | Feras
 - 2026-10-24 | Combat: RPG layer (XP, levels, fixed class per hero, Luck, dodge/crit/resist; no flee vs bosses); battles on the map; timeline kept | Feras
+- 2026-10-25 | Hero fights alone; story allies are call-in assists; combat rules in logic/ apart from turn order; Hard = stronger enemies, tighter resources | Feras
 - 2026-10-23 | Abu Nabil, a 40-year-old herb seller (R2, no patrols): optional haggle; spice-cloud fight, qishr cures; fair prices; risk-free rematches | Feras
 ### Art and audio
 - 2026-10-24 | 2D: isometric ink-comic per concepts; old Sana'a at night (tower-houses, moon, stars, clouds, fog), neon accents, 2150 megacity on the horizon, rain, qamariya glow at the heart; characters: offline 3D renders as sprites, none at runtime | Feras
@@ -51,7 +53,7 @@ it; log every new decision verbatim in docs/decisions-log.md too.
 - 2026-10-24 | Music: Yemeni fusion (Flow); battle, battle_2, battle_3; no menu or merchant tracks (area music plays); music to be redesigned for 2D | Feras
 - 2026-10-21 | Art budget $0: free tools, CC0/OFL packs, Gemini and Flow outputs; no paid artist or packs; free assets: manifest entry, owner OK to download | Feras
 ### UI and text
-- 2026-10-25 | Title "Neon Glitch"; start: menu -> qamariya -> pick hero -> blur zoom: brief + Normal/Hard -> reaction -> blur pull-back -> game | Feras
+- 2026-10-25 | Title "Neon Glitch"; start: menu -> qamariya -> pick hero -> blur zoom: brief + Normal/Hard -> reaction -> blur pull-back -> game; clips play as video, UI on top | Feras
 - 2026-10-25 | UI English + Musnad accents, world Musnad only; motion blur hides AI-video flaws; looped sound | Feras
 - 2026-10-22 | Writing: world signs in Musnad only (Noto Sans Old South Arabian, OFL); no Arabic script | Feras
 - 2026-10-21 | Dialogue: chest-up painted portrait by text box; 4 expressions (neutral, happy, angry, surprised) | Feras
