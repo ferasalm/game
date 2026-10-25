@@ -9,9 +9,9 @@ HANDOFF, DECISIONS and LESSONS load at every session start, so every line costs 
 
 1. **Check.** `tools/check.sh` must end with "all checks passed"; read and fix any FAIL lines first.
    New or moved files: `python3 tools/map.py` (the docs check fails on a stale map).
-2. **Decisions.** Each decision the owner made this session: one dated line in docs/DECISIONS.md
-   (`- YYYY-MM-DD | decision | why | by`), with his words where short. A replaced line is struck through
-   (`~~...~~`) and says what superseded it. Never delete or reword one.
+2. **Decisions.** Each decision the owner made this session: one dated line appended to docs/decisions-log.md
+   (`- YYYY-MM-DD | decision | why | by`), with his words where short; never delete or reword a log line. Then
+   update docs/DECISIONS.md (the loaded rules in force): edit or add the one line the decision changes.
 3. **Lessons.** Anything that cost real time (an error, a wrong guess, nearly asking the owner for something you
    could do): symptom -> cause -> fix, dated, verified only. Merge with similar entries; fix or delete wrong ones.
    Max 100 lines: condense back to ~70 when it gets there (owner, 2026-10-22).

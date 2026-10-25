@@ -13,7 +13,7 @@ counts), so the costs are: what is loaded at start, how long a chat runs, what g
 ## 1. Taken from reem-bot and feras-career
 | Practice | Here | Why |
 |---|---|---|
-| Notes split by change rate: CLAUDE.md rare, HANDOFF rewritten, DECISIONS append-only, LESSONS curated | Adopted | Old state never reads as current |
+| Notes split by change rate: CLAUDE.md rare, HANDOFF rewritten, DECISIONS = rules in force (curated; full log append-only in decisions-log.md, not loaded, 2026-10-25), LESSONS curated | Adopted | Old state never reads as current |
 | `@` imports of HANDOFF, DECISIONS, LESSONS | Adopted, **with a 27 KB cap on all four** (tools/doc_check.py) | reem-bot's loaded log grew past 100 KB: paid at every start |
 | /handoff at the end of every session | Adopted (.claude/skills/handoff) | Next chat starts with no resume step |
 | Model and effort on every next step; one model and effort per chat | Adopted | Effort can't change mid-chat; switching models drops the cache |

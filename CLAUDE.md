@@ -37,7 +37,7 @@ plays and makes art; Claude writes the code and runs every check itself. He is o
 
 ## The owner's limits
 - He decides scope, story, art direction, spending, models and releases; Claude advises with a recommended
-  default, then logs his decision in docs/DECISIONS.md (dated, one line, never re-argued).
+  default, then logs his decision in docs/decisions-log.md and updates docs/DECISIONS.md (never re-argued).
 - $0 art budget: free tools, CC0 packs, his Gemini and Flow outputs. Every asset gets a manifest entry with its
   source and licence. Never buy, sign up for or publish anything on his behalf.
 - docs/research/ is unverified Gemini output: ideas and design input, never facts.

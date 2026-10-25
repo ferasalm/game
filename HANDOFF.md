@@ -1,5 +1,5 @@
 # HANDOFF (current state only; one section per track, each edited only by its owner; max 60 lines)
-Last updated: 2026-10-25, Neon Glitch video edit chat (Opus 5.5, `claude-opus-5-5`); 3D tracks paused.
+Last updated: 2026-10-25 (v3 cut, notes split), Neon Glitch video edit chat (Opus 5.5, `claude-opus-5-5`); 3D tracks paused.
 
 ## Shared
 - Builders: CLAUDE.md + EFFICIENCY 3b (5 runs: 2 agy, 2 DeepSeek, 1 Inkling); check `bash tools/slots.sh`.
@@ -16,7 +16,8 @@ Last updated: 2026-10-25, Neon Glitch video edit chat (Opus 5.5, `claude-opus-5-
 1. Then: design doc + plan the one-scene prototype (rooftop, Zayd, one fight, HUD). Model: Opus. Effort: high.
 
 ## Track: Neon Glitch start concept (owner: the chat "Neon Glitch video edit", 2026-10-25)
-- Done: inbox/Neon Glitch Videos/edit/ (2 cuts; EDIT_LIST.md lists open points). Waiting on Feras: watch them.
+- Done: inbox/Neon Glitch Videos/edit/ (Rydan + Bilqis cuts v3, EDIT_LIST.md, render3.py). Hero and difficulty
+  texts are drafts (texts.py). Waiting on Feras: watch both cuts; edit the texts.
 1. Brainstorm + plan Neon Glitch with Feras (questions first). Model: Opus. Effort: high.
 `Continue ferasalm/game on main. Read HANDOFF.md (Neon Glitch). Brainstorm the game plan with me; /handoff.`
 

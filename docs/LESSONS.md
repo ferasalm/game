@@ -4,27 +4,27 @@
 - tools/run_godot.sh fails on any SCRIPT ERROR or ERROR line even when Godot exits 0 (2026-10-19). check.sh "tests
   FAIL" with `exit code 124` and no FAIL line = the 600 s timeout, not a test (2026-10-23).
 - See a scene without the owner: non-headless `"$(tools/godot.sh)" --path . --write-movie DIR/f.png --fixed-fps 60
-  --quit-after N [scene]`, view 1-2 frames at 640x360 with Pillow (2026-10-21). A Node script under `-s` fails ("doesn't
-  inherit SceneTree", no autoloads, an ALERT box on the owner's screen) -> render tools run as a .tscn wrapper
-  (tools/shot_dialogue.tscn) (2026-10-23).
+  --quit-after N [scene]`, view 1-2 frames at 640x360 with Pillow (2026-10-21). A Node script under `-s` fails
+  ("doesn't inherit SceneTree", no autoloads, an ALERT box on the owner's screen) -> render tools run as a .tscn
+  wrapper (tools/shot_dialogue.tscn) (2026-10-23).
 
 ## 2. Traps (Godot)
 - `"abc".contains("")` is false in 4.7 (runner found 0 tests); a `const` Dictionary can't hold class_name refs (use
   preload); `match` is a keyword (`var match` fails) (2026-10-19/22).
 - A scene added in a SceneTree script's `_initialize()` has no `_ready()` yet -> tests start from the first
   `_process()` (tests/runner.gd) (2026-10-19).
-- A test with a runtime error still counts as passed; only the SCRIPT ERROR line fails the run -> read FAIL lines.
-- Commit every `.uid`, never read them; helper files in tests/ must not start with `test_` (2026-10-19).
-- No agent may write *.import -> new text goes into an existing CSV; CSVs use the "keep" importer and TextDB loads
-  them (Godot's CSV import breaks a fresh clone; a test enforces "keep") (2026-10-21/22).
+- A test with a runtime error still counts as passed; only the SCRIPT ERROR line fails the run -> read the FAIL lines.
+- Commit every `.uid` and never read it; helper files in tests/ must not start with `test_` (2026-10-19).
+- No agent may write *.import -> new text goes into an existing CSV (CSVs use the "keep" importer and TextDB loads
+  them; Godot's CSV import breaks a fresh clone, and a test enforces "keep") (2026-10-21/22).
 - `move_and_slide` does nothing when `_physics_process` is called by hand -> move_and_collide + slide (2026-10-21).
 - Sorting StringNames compares addresses (rows flipped between runs) -> sort by String (2026-10-21).
-- Headless MultiMesh returns identity transforms -> keep them in node meta for tests (2026-10-21).
-- load() of a painted .webp returns null: assets/textures/painted/ is .gdignore -> Image.load_webp_from_buffer
-  (PaintedMaterials, ModelMaterials.load_texture) (2026-10-23).
-- `find_children(pattern, "MyClass")` never matches a script class_name -> walk children, test `is MyClass` (2026-10-23).
-- A UiScreen closed while another covered it stayed frozen on screen (its fade tween is paused with the node) ->
-  close() re-enables processing (2026-10-23).
+- load() of a painted .webp returns null when its folder is .gdignore (assets/textures/painted/) ->
+  Image.load_webp_from_buffer (2026-10-23).
+- `find_children(pattern, "MyClass")` never matches a script class_name -> walk the children and test `is MyClass`
+  (2026-10-23).
+- A UiScreen closed while another covered it stayed frozen (its fade tween pauses with the node) -> close() re-enables
+  processing (2026-10-23).
 - set_exploring(false) hides the player and patrols -> talks use rooftop.freeze_actors (2026-10-22).
 - Harness said 99.8% party HP: its AI chain-interrupted the boss -> print one seed's events (2026-10-23).
 
@@ -35,8 +35,8 @@
 - Gemini research contains invented numbers -> ideas and norms only, never facts.
 
 ## 4. Parallel builders (Claude agents 2026-10-21; agy 2026-10-22)
-- One worktree per builder; registries (ContentDB KINDS, MAP.md) conflict -> keep both sides, regenerate MAP.md;
-  after a merge adds class_names run `tools/run_godot.sh --import` first; check CI (`gh run list`) after main.
+- One worktree per builder; registries (ContentDB KINDS, MAP.md) conflict -> keep both sides, regenerate MAP.md; after
+  a merge adds class_names run `tools/run_godot.sh --import` first; check CI (`gh run list`) after main.
 - A pull into C:/dev/game without an import: the game did not run (stale class cache) -> `bash tools/sync_main.sh`
   after every pull (2026-10-24).
 - A builder rewired a signal and its old listener went dead; gate, tests and review passed -> audits trace rewired
@@ -53,24 +53,24 @@
 - Builders said "done" with failing tests or died mid-edit -> tools/build_pipeline.sh (leftovers as WIP, check, one
   free fix pass); PASS with no commits = nothing built; read fix-pass test diffs (one hardcoded a value) (2026-10-23).
 - Editing a running .sh broke the running copy (bash reads as it goes) -> never edit tools/*.sh mid-run (2026-10-23).
-- Silent stdin hangs: agy, opencode (25 min), an ffmpeg render (22 min) -> `< /dev/null`, ffmpeg
-  `-nostdin`, child timeouts, progress; check background jobs at their expected end (2026-10-25).
+- Silent stdin hangs: agy, opencode (25 min), an ffmpeg render (22 min) -> `< /dev/null`, ffmpeg `-nostdin`, child
+  timeouts, progress; check background jobs at their expected end (2026-10-25).
+- `python - <<EOF < /dev/null` gave Python no script: it spun in an empty REPL -> script files for background runs;
+  `cmd | grep` hid a crash (exit 0) -> `set -o pipefail`. lru_cache of 1280x720 float layers hit MemoryError at
+  ~4 GB -> cache uint8 or a few entries (2026-10-25).
 - opencode quit on reads outside its worktree -> opencode.json external_directory allows inbox/ (2026-10-24).
 - OpenRouter :free = 50 requests/day under $10 bought credit, shared by Inkling and all :free models (2026-10-23).
-- 4 opencode + 2 agy + Godot hit the 16 GB commit limit (fork failed) -> <= 3 runs; check free memory (2026-10-23).
-
-- Inkling on balance-gear hit permission rejections, committed nothing -> empty `git diff base...branch`: rerun on agy (2026-10-23).
-- check.sh exit 124/139 ("Parameter mem is null") with other Godot runs open = memory, not a test -> rerun first;
-  never push before reading the final check line (2026-10-23).
+- 16 GB commit limit: 4 opencode + 2 agy + Godot fork failed -> <= 3 runs; check free memory (2026-10-23). check.sh
+  exit 124/139 ("Parameter mem is null") with other Godot runs open = memory, not a test -> rerun first; never push
+  before reading the final check line (2026-10-23).
+- Inkling on balance-gear hit permission rejections, committed nothing -> empty `git diff base...branch`: rerun on agy
+  (2026-10-23).
 
 ## 5. Art, browser, night look (2026-10-21)
 - "3 FPS" was a --write-movie render -> real FPS only via fps_probe.gd.
 - The browser pane's downloads are invisible to Claude; Flow links need the owner's cookies -> he saves files to
   inbox/ (git-ignored); pictures pasted in chat are not on disk -> ask him to save them (2026-10-23).
 - Painted Flow art pixelized muddy -> pixelize.py --contrast 1.3 --saturation 1.5 --outline; check facing first.
-- Night billboards with the moon behind go black -> min_light floor; Label3D in fog -> label_energy > 1, no alpha cut.
-- Storm rain at 1.5 cm streaks was sub-pixel, and a lightning light barely shows through the painted shaders ->
-  2.4 cm streaks and a screen wash (storm.json) (2026-10-23).
 
 ## 6. Cheaper routes
 - ffmpeg 9 dropped `-filter_complex_script` -> `-/filter_complex file` (2026-10-25).

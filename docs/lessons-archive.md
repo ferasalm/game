@@ -9,3 +9,9 @@
   sat 8-10 m back leading along the facing (lead along the view direction) (2026-10-23).
 - A new area reusing the old mist ids drowned its lower roofs in fog -> mist per area, >= 2 m below its lowest floor
   (2026-10-23).
+- Headless MultiMesh returns identity transforms -> keep them in node meta for tests (2026-10-21).
+- load() of a painted .webp returns null: assets/textures/painted/ is .gdignore -> Image.load_webp_from_buffer
+  (PaintedMaterials, ModelMaterials.load_texture) (2026-10-23).
+- Night billboards with the moon behind go black -> min_light floor; Label3D in fog -> label_energy > 1, no alpha cut.
+- Storm rain at 1.5 cm streaks was sub-pixel, and a lightning light barely shows through the painted shaders ->
+  2.4 cm streaks and a screen wash (storm.json) (2026-10-23).
