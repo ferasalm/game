@@ -53,6 +53,12 @@ def test_round_trip():
     assert story["passages"][0]["text"].splitlines()[1].startswith(":: a line"), "colon escape not undone"
     back = ts.write_twee(ts.from_html(ts.to_html(story)))
     assert back == SAMPLE, "round trip changed the story:\n" + back
+    engine = '<html><style>.x{}</style><script>var s = "<tw-storydata>";</script>'
+    wrapped = ts.from_html(engine + ts.to_html(story) + "<script>engine()</script></html>")
+    assert ts.write_twee(wrapped) == SAMPLE, "a Twine-saved file (engine around the story) did not read cleanly"
+    head = SAMPLE.split("\n\n\n:: Start")[0]
+    pasted = ts.parse_twee("﻿```\n" + head + "\n\n\n:: Start\nHi.\n```\n")
+    assert [p["text"] for p in pasted["passages"]] == ["Hi."], "BOM or code fence broke parsing"
 
 
 def test_push_guards(tmp):
@@ -61,7 +67,8 @@ def test_push_guards(tmp):
     r = run(tmp, "push")
     assert r.returncode == 0, r.stderr
     lib = tmp / "lib" / "Test Story.html"
-    lib.write_text(lib.read_text(encoding="utf-8").replace("Second passage.", "Edited in Twine."), encoding="utf-8")
+    lib.write_text(lib.read_text(encoding="utf-8").replace("Second passage.", "Edited in Twine."), encoding="utf-8",
+                   newline="\n")
     assert run(tmp, "push").returncode == 1, "push overwrote unpulled Twine edits"
     r = run(tmp, "pull")
     assert r.returncode == 0 and "Edited in Twine." in (tmp / "s.twee").read_text(encoding="utf-8"), r.stderr
@@ -70,9 +77,11 @@ def test_push_guards(tmp):
 
 def test_pull_conflict(tmp):
     lib = tmp / "lib" / "Test Story.html"
-    lib.write_text(lib.read_text(encoding="utf-8").replace("Second passage.", "Twine side."), encoding="utf-8")
+    text = lib.read_text(encoding="utf-8")
+    assert "Edited in Twine." in text, "setup: the push test's Twine edit is missing"
+    lib.write_text(text.replace("Edited in Twine.", "Twine side."), encoding="utf-8", newline="\n")
     twee = tmp / "s.twee"
-    twee.write_text(twee.read_text(encoding="utf-8") + "\n:: Repo only\nRepo side.\n", encoding="utf-8")
+    twee.write_text(twee.read_text(encoding="utf-8") + "\n:: Repo only\nRepo side.\n", encoding="utf-8", newline="\n")
     assert run(tmp, "pull").returncode == 1, "pull overwrote repo edits while Twine also changed"
     assert run(tmp, "pull", "--force").returncode == 0, "pull --force refused"
 

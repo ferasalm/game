@@ -17,7 +17,9 @@ def a(s): return html.escape(str(s), quote=True)
 def parse_twee(text):
     """Twee 3 text -> {"title", "data", "passages": [{"name", "tags", "meta", "text"}]}."""
     raw, cur = [], None
-    for line in text.replace("\r\n", "\n").split("\n"):
+    for line in text.lstrip("﻿").replace("\r\n", "\n").split("\n"):
+        if line.startswith("```"):
+            continue  # a pasted chat reply's code fence
         m = HEADER.match(line) if line.startswith("::") else None
         if m:
             cur = {"name": unesc(m[1]), "tags": unesc(m[2] or "").split(),
@@ -93,7 +95,9 @@ def attrs(s): return {k: html.unescape(v or "") for k, v in ATTR.findall(s)}
 
 
 def from_html(text):
-    sd = attrs(re.search(r"<tw-storydata([^>]*)>", text)[1])
+    """Twine library file -> story; reads only <tw-storydata> (Twine's own saves wrap it in the story engine)."""
+    m = re.search(r"<tw-storydata([^>]*\bifid=[^>]*)>(.*?)</tw-storydata>", text, re.S)
+    sd, text = attrs(m[1]), m[2]
     colors = {t["name"]: t["color"] for t in (attrs(x) for x in re.findall(r"<tw-tag([^>]*)>", text))}
     ps, start = [], ""
     for at, body in re.findall(r"<tw-passagedata([^>]*)>(.*?)</tw-passagedata>", text, re.S):
@@ -102,7 +106,7 @@ def from_html(text):
         ps.append({"name": p["name"], "tags": p.get("tags", "").split(), "text": html.unescape(body),
                    "meta": {"position": p.get("position", "100,100"), "size": p.get("size", "100,100")}})
     for tag, el in SPECIAL.items():
-        m = re.search(rf"<{el}[^>]*>(.*?)</{el}>", text, re.S)
+        m = re.search(rf'<{el}[^>]*id="twine-user-{tag}"[^>]*>(.*?)</{el}>', text, re.S)
         if m and m[1].strip():
             ps.append({"name": "Story " + tag.title(), "tags": [tag], "meta": {}, "text": html.unescape(m[1])})
     data = {"ifid": sd.get("ifid", ""), "format": sd.get("format", "Harlowe"),
