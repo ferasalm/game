@@ -65,6 +65,10 @@ menu={
 "deadzone": 0.2,
 "events": [Object(InputEventKey,"physical_keycode":4194305), Object(InputEventKey,"physical_keycode":4194306), Object(InputEventJoypadButton,"button_index":6)]
 }
+playtest_capture={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":4194343), Object(InputEventJoypadButton,"button_index":4)]
+}
 
 [rendering]
 

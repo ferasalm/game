@@ -7,3 +7,5 @@ NAME_RYDAN,Rydan
 EPITHET_RYDAN,Escaped Operative
 EPITHET_BILQIS_NG,Voice on the Wire
 NEON_END_TBC,TO BE CONTINUED
+PLAYTEST_HINT,Drag: draw | Right-drag: circle | Ctrl+Z: undo | Enter: save | Esc: cancel
+PLAYTEST_NOTE,Note

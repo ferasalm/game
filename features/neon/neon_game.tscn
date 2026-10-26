@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://features/neon/neon_game.gd" id="1"]
 [ext_resource type="PackedScene" path="res://features/neon/start/start_flow.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://features/neon/cold_open/cold_open.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://features/neon/roof/roof_scene.tscn" id="4"]
 [ext_resource type="FontFile" path="res://assets/fonts/reem_kufi.ttf" id="5"]
+[ext_resource type="PackedScene" path="res://features/debug/playtest/playtest_capture.tscn" id="6"]
 
 [node name="NeonGame" type="Node"]
 script = ExtResource("1")
@@ -15,3 +16,6 @@ end_font = ExtResource("5")
 end_font_size = 64
 end_card_seconds = 6.0
 end_fade_seconds = 1.0
+
+[node name="PlaytestCapture" parent="." node_paths=PackedStringArray("source") instance=ExtResource("6")]
+source = NodePath("..")

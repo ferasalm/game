@@ -8,6 +8,7 @@ signal ended(won: bool)
 
 var seed_override: int = -1
 var sim: BattleSim
+var recent_events: Array[String] = []
 var room: NeonRoomDef
 var actors: Dictionary[StringName, IsoActor] = {}
 var shown_hp: Dictionary[StringName, int] = {}
@@ -122,6 +123,10 @@ func _tick_batch() -> Array[TimelineEvent]:
 		events.append_array(sim.step())
 		if sim.result != &"" or sim.waiting_hero() != null:
 			break
+	for event: TimelineEvent in events:
+		recent_events.append(str(event))
+	while recent_events.size() > 10:
+		recent_events.remove_at(0)
 	return events
 
 

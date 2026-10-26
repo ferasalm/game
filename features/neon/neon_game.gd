@@ -124,6 +124,11 @@ func _swap_node(node: Node) -> void:
 	add_child(node)
 
 
+## The playtest capture's view of the game: stage, roof room and hero, and the fight if one is running.
+func playtest_state() -> Dictionary:
+	return NeonPlaytestState.collect(stage, _roof, _battle)
+
+
 func _set_stage(new_stage: StringName) -> void:
 	stage = new_stage
 	stage_changed.emit(new_stage)
