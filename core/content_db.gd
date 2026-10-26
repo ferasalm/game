@@ -39,6 +39,7 @@ const KINDS: Dictionary = {
 	"prosthetic": preload("res://features/prosthetics/defs/prosthetic_def.gd"),
 	"vfx": preload("res://features/combat/defs/vfx_def.gd"),
 	"ui_style": preload("res://features/ui/defs/ui_style_def.gd"),
+	"hologram_2d": preload("res://features/equipment/defs/hologram_2d_def.gd"),
 	"consumable": preload("res://features/items/defs/consumable_def.gd"),
 	"economy_rules": preload("res://features/items/defs/economy_rules_def.gd"),
 	"shop": preload("res://features/items/defs/shop_def.gd"),

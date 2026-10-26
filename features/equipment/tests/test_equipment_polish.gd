@@ -14,15 +14,12 @@ func _open_menu() -> EquipmentMenu:
 	return menu
 
 
-func test_hologram_stage_mesh_instances_have_override() -> void:
+func test_hologram_stage_shows_a_hero_picture() -> void:
 	var menu: EquipmentMenu = _open_menu()
 	var stage: HologramStage = menu.stage
-	var meshes: Array[MeshInstance3D] = stage.model_meshes()
-	check(not meshes.is_empty(), "model has mesh instances")
-	var holo_mat: ShaderMaterial = stage.hologram_material()
-	check(holo_mat != null, "hologram material exists")
-	for mi: MeshInstance3D in meshes:
-		check_eq(mi.material_override, holo_mat, "%s has hologram material_override" % mi.name)
+	check(stage.sprite_texture() != null, "the stage shows a hero picture")
+	check(NodeScan.of_type(stage, &"SubViewport").is_empty(), "the stage has no SubViewport")
+	check(NodeScan.of_type(stage, &"Node3D").is_empty(), "the stage has no 3D node")
 	Screens.clear()
 	GameState.reset()
 

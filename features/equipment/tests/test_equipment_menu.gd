@@ -1,5 +1,5 @@
 extends TestCase
-## purpose: Tests EquipmentMenu layout, 3D hologram stage, slot boxes, equipping, preview and focus.
+## purpose: Tests EquipmentMenu layout, 2D hologram stage, slot boxes, equipping, preview and focus.
 
 const OWNED: Array[StringName] = [
 	&"grandfather_hilt", &"swift_hilt", &"rustwire_blade", &"keen_blade", &"salvage_arm", &"arc_arm",
@@ -73,18 +73,23 @@ func test_b_twice_closes_and_restores_focus() -> void:
 	GameState.reset()
 
 
-func test_subviewport_and_character_visual_turns_while_paused() -> void:
+func test_hologram_is_a_neon_sprite() -> void:
 	var menu: EquipmentMenu = _open_menu()
 	var stage: HologramStage = menu.stage
-	check(stage.sub_viewport() != null, "SubViewport exists")
-	var visual: CharacterVisual = stage.visual()
-	check(visual != null and stage.sub_viewport().get_children().has(visual), "visual is SubViewport child")
-	tree.paused = true
-	var r0: float = visual.rotation.y
-	stage._process(0.5)
-	var r1: float = visual.rotation.y
-	check(r1 > r0, "visual keeps turning 20 deg/s while paused")
-	tree.paused = false
+	stage.set_hero(&"rydan")
+	var neon: Texture2D = stage.sprite_texture()
+	check(neon is AtlasTexture, "rydan shows a Neon sprite frame")
+	if neon is AtlasTexture:
+		var atlas := neon as AtlasTexture
+		check_eq(atlas.atlas, load("res://assets/sprites/neon/rydan_idle.png"), "the atlas is rydan's idle sheet")
+		check_eq(atlas.region.position, Vector2(0.0, 6.0 * 194.0), "row 6 (toward camera), frame 0")
+		check_eq(atlas.region.size, Vector2(108.0, 194.0), "one idle frame")
+	stage.set_hero(&"zayd")
+	var portrait: Texture2D = stage.sprite_texture()
+	check(portrait != null, "a hero without a Neon set shows a portrait")
+	check(not (portrait is AtlasTexture), "the portrait is not a sprite sheet frame")
+	check(NodeScan.of_type(stage, &"SubViewport").is_empty(), "the stage has no SubViewport")
+	check(NodeScan.of_type(stage, &"Node3D").is_empty(), "the stage has no 3D node")
 	Screens.clear()
 	GameState.reset()
 

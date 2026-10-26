@@ -123,6 +123,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/puzzles/light_lock.json`: content: light_lock x1
 - `content/puzzles/water_net.json`: content: water_net x1
 - `content/ui/backdrops.json`: content: backdrop x7
+- `content/ui/hologram_2d.json`: content: hologram_2d x1
 - `content/ui/style.json`: content: ui_style x1
 - `content/workshop/recipes.json`: content: recipe x4
 - `content/workshop/upgrades.json`: content: upgrade_costs x1
@@ -184,7 +185,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/art/logic/pose_match.gd`: Pure maths of pose retargeting between two humanoid rigs with the same bone names but other bone axes and rest poses (a Rodin body driven by the Quaternius library): a constant per-bone offset so the target bone always points where the source bone points, and the hips' travel scaled from one leg length to the other
 - `features/art/logic/yaw_turn.gd`: Pure turning for a model: the yaw (radians, about +y; 0 faces +z) of a ground direction and a capped step toward it that always takes the short way round
 - `features/art/tests/test_character_motion.gd`: CharacterVisual motion: the shader material carries the data (minimum light, rim), knocked out / revived snap to the right look, the battle motions and the little effects (dust, afterimages, shadow) run without errors, and the sprite stays crisp (nearest filtering)
-- `features/art/tests/test_model_defs.gd`: The data behind live 3D characters (content/art/models.json, clips.json) against the imported assets: every model maps all nine states to clips that exist, every clip names a real animation of the shared library with its length and an impact inside it, the bodies keep the rig's bone names, every anchor and part bone resolves, and the budgets hold (bones, triangles, surfaces, textures)
+- `features/art/tests/test_model_defs.gd`: The data behind the offline sprite sources (content/art/models.json, clips.json) against the imported assets: every model maps all nine states to clips that exist, every clip names a real animation of the shared library with its length and an impact inside it, the bodies keep the rig's bone names, and every anchor and part bone resolves
 - `features/art/tests/test_model_logic.gd`: The pure maths behind live 3D characters: ClipTiming (wind-up, hold, strike, recovery and the events on that curve), Locomotion (gait, stride to playback rate, lean, foot contacts passed) and YawTurn (the capped short-way turn)
 - `features/art/tests/test_model_source.gd`: The live 3D source behind the CharacterVisual facade: the model is built and painted, clips announce impact and end on the retimed curve (and wait for the hit pause), the body turns by yaw and never by a negative scale, the feet pace the ground and sound a footstep on each foot contact, a knocked-out body stays down, the grandfather's hilt is drawn for a strike and sheathed after, and a CharacterVisual without a model def falls back to the pixel sprite
 - `features/art/tests/test_pose_match.gd`: Retargeting (PoseMatch, PoseFollow): the swing turns one direction into another, the per-bone offset makes the target bone point where the source bone points (at rest and after a turn), the hips travel scales with hip height, and a pose_source model's body follows its hidden source (Zayd's Rodin model stands up with the hand below the head); mirrored, the other arm does the move (Zayd's cast raises his prosthetic right arm)
@@ -322,10 +323,11 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/dialogue/view/dialogue_demo.tscn`: scene
 - `features/dialogue/view/dialogue_layout.gd`: Builds the dialogue box's controls in code (Hades II style; sizes from the UI style, laid out for 1920x1080): a big portrait at the left that slides in, an ornate glass text box at the bottom right with a frieze, a nameplate tab on the box's top edge (name in brass, epithet under it) and the button hints
 - `features/dialogue/view/portraits.gd`: Finds the portrait texture for (speaker, expression): res://assets/portraits/<speaker>_<expression>.png when it exists (loaded straight from the file, the "keep" importer needs no import step), else the speaker's painted neutral (a painted face beats a stand-in), else a stand-in disc with the expression's brows and mouth (StandinPortrait)
+- `features/equipment/defs/hologram_2d_def.gd`: purpose: Anchor points of a 2D menu hologram as fractions of its rect (0..1 from the left and the top)
 - `features/equipment/logic/equipment_options.gd`: Pure rules of the equipment screen: which slots a hero has, which OWNED items fit a slot (best rarity first), which items a hero wears now, the fighter built from a staged set of items, and writing a staged set into the saved equipment through Inventory.equip
 - `features/equipment/tests/test_equipment.gd`: purpose: Tests the pure EquipmentOptions rules (owned items only, rarer first, per hero and slot)
 - `features/equipment/tests/test_equipment_layout.gd`: purpose: Tests EquipmentMenu layout rects, header label widths, and connector lines
-- `features/equipment/tests/test_equipment_menu.gd`: purpose: Tests EquipmentMenu layout, 3D hologram stage, slot boxes, equipping, preview and focus
+- `features/equipment/tests/test_equipment_menu.gd`: purpose: Tests EquipmentMenu layout, 2D hologram stage, slot boxes, equipping, preview and focus
 - `features/equipment/tests/test_equipment_new_slots.gd`: purpose: The gear-slots menu tests: Bilqis's frame and barrel boxes, the accessory box and its sockets, and equipping through the new slots
 - `features/equipment/tests/test_equipment_polish.gd`: purpose: Tests equipment polish features: hologram override, slot box name/dim ring, stats header, hero header Lv 1
 - `features/equipment/view/equipment_boxes.gd`: purpose: Manages the 8 equipment slot boxes, their positions, visibility per hero and focus navigation
@@ -334,13 +336,14 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/equipment/view/equipment_detail.gd`: The right-hand side of the equipment screen: the focused item (name in its rarity colour, tag, text, perk and the tech moves it teaches) above the stat comparison (base, with the staged kit, an up / down arrow)
 - `features/equipment/view/equipment_hero_header.gd`: purpose: Hero info box (500x140 at 80,124) with portrait bust, name, class, Lv N, and HP/SP/XP bars
 - `features/equipment/view/equipment_item_button.gd`: Builds one owned item as a menu button: its name in the rarity colour, the rarity tag and an "Equipped" mark on the right
-- `features/equipment/view/equipment_menu.gd`: purpose: Equipment menu with 3D hologram hero, slot boxes, owned list, stats comparison and tabs
+- `features/equipment/view/equipment_menu.gd`: purpose: Equipment menu with Neon sprite hologram hero, slot boxes, owned list, stats comparison and tabs
 - `features/equipment/view/equipment_owned_list.gd`: purpose: Owned items panel (420x620 at 80,260) populated with ListRows and worn "E" chips
 - `features/equipment/view/equipment_stats_panel.gd`: purpose: Stats preview panel (440x560) showing now vs after comparison and derived battle rolls
 - `features/equipment/view/equipment_tabs_bar.gd`: purpose: Shared top bar (1760x64 at 80,40) with the screen title and the Equipment / Items / Map tabs
 - `features/equipment/view/grid_disc.gdshader`
 - `features/equipment/view/hologram.gdshader`
-- `features/equipment/view/hologram_stage.gd`: purpose: 800x760 SubViewportContainer with 3D hologram hero, camera, disc and leader lines
+- `features/equipment/view/hologram_sprite.gd`: purpose: The still a 2D menu hologram shows: a hero's Neon idle sprite facing the camera, or their portrait
+- `features/equipment/view/hologram_stage.gd`: purpose: 800x760 menu hologram: the hero's Neon idle sprite (or portrait) with leader lines to the slot boxes
 - `features/equipment/view/slot_box.gd`: purpose: 150x150 equipment slot box showing slot label, item icon or gemstone sockets
 - `features/equipment/view/slot_socket_draw.gd`: purpose: Draws socket border and stone icon for gemstone slots in equipment boxes
 - `features/items/defs/accessory_def.gd`: A ring any hero can wear (content/items/accessories.json)
@@ -564,10 +567,10 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/workshop/tests/test_workshop_logic.gd`: purpose: Tests pure workshop upgrade costs, refusals, crafting rules, caps, and stone operations
 - `features/workshop/tests/test_workshop_loot.gd`: purpose: Tests material payouts on battle victory and repeat victories
 - `features/workshop/tests/test_workshop_menu.gd`: purpose: Tests opening WorkshopMenu via Screens stack, tab counts, and disabled reasons when short
-- `features/workshop/view/workshop_hologram.gd`: purpose: 760x620 SubViewport displaying a turning 3D hologram jambiyah or 256px item icon
+- `features/workshop/view/workshop_hologram.gd`: purpose: 760x620 menu hologram: the hero's Neon idle sprite (or portrait), or a 256px item icon
 - `features/workshop/view/workshop_items_list.gd`: purpose: Left list panel (460x760 at 80,140) displaying upgradeable gear, gemstones, or craft recipes
 - `features/workshop/view/workshop_materials_bar.gd`: purpose: Panel (760x120 at 580,780) showing required materials, have/need counts, and riyal cost
-- `features/workshop/view/workshop_menu.gd`: purpose: Workshop screen (upgrades, hilt gemstones, crafting) with 3D hologram and live stat comparison
+- `features/workshop/view/workshop_menu.gd`: purpose: Workshop screen (upgrades, hilt gemstones, crafting) with Neon sprite hologram and live stat comparison
 - `features/workshop/view/workshop_presenter.gd`: purpose: Prepares stat comparison defs and status reasons for workshop views
 - `features/workshop/view/workshop_preview_panel.gd`: purpose: Stats preview panel (460x620 at 1380,140) comparing now vs after or recipe description
 - `features/workshop/view/workshop_sockets_row.gd`: purpose: Displays the worn hilt's 3 gemstone sockets (96px circles) under the hologram
@@ -673,6 +676,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/audio/arc_synth.py`: Synthesizes the Arc Discharge sound (vfx_arc_all): 3 seeded variations as 44.1 kHz mono 16-bit WAV.
 - `tools/audio/levels.py`: Loudness table for the sound effects: reads the audio of a Godot movie capture (.avi, PCM) made by
 - `tools/audio/measure_levels.gd`: Plays every sfx file of content/audio/sounds.json one after another at 0 dB for the movie writer's audio capture; prints "SLOT <path> <start seconds> <seconds>" lines for tools/audio/levels.py
+- `tools/bake_light.gd`: purpose: The sprite baker's own world environment and key light, copied from the painted_b look so a bake needs no 3D world, LookDef or ContentDB look
 - `tools/bake_sprites.gd`: Sprite baker (Neon Glitch iso sprites): renders one model's states from the iso camera in 8 screen directions into transparent PNG frames, for tools/art/sprite_sheet.py
 - `tools/bake_sprites.tscn`: scene
 - `tools/build_gate.py`: Build gate: judges a builder run before Claude reads it (NOWORK, BREACH, FAIL or PASS plus a WARN checklist).
@@ -700,7 +704,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/run_godot.sh`: Runs the pinned Godot headless on this project with the given arguments; fails on a non-zero exit or on
 - `tools/shot_menu.gd`: purpose: Renders pause, save, shop, or equipment menu at 1920x1080 to an inbox PNG
 - `tools/shot_menu.tscn`: scene
-- `tools/shot_models.gd`: Model gallery for renders (docs/design/characters-3d.md): the cast in a row on a floor under the painted look, each doing a state, close enough to judge the stand-ins
 - `tools/shot_neon_battle.gd`: purpose: Renders the on-map Neon battle mid-fight (auto-play) to C:/dev/game/inbox/neon_battle.png with the HUD
 - `tools/shot_neon_battle.tscn`: scene
 - `tools/shot_neon_game.gd`: purpose: Renders the Neon Glitch first playable stage by stage (start, cold open shots 2 and 3 and the lock, the roof after the hatch burst, the fight on the roof) to C:/dev/game/inbox/neon_game_<n>.png; run non-headless
@@ -709,8 +712,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_neon_roof.tscn`: scene
 - `tools/shot_neon_start.gd`: Renders one Neon Glitch start flow state (TITLE, PICK, PANEL) to an inbox PNG
 - `tools/shot_neon_start.tscn`: scene
-- `tools/shot_prop.gd`: Renders a prop close-up from play camera height to an inbox PNG (960x540)
-- `tools/shot_prop.tscn`: scene
 - `tools/slots.sh`: Slots reporter and DeepSeek spend tracker (DECISIONS 2026-10-23)
 - `tools/smoke_keeper.gd`: Survives scene changes during a smoke run: starts a new game, waits, reports the scene, quits
 - `tools/smoke_keeper.tscn`: scene

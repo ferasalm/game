@@ -1,6 +1,6 @@
 class_name WorkshopMenu
 extends UiScreen
-## purpose: Workshop screen (upgrades, hilt gemstones, crafting) with 3D hologram and live stat comparison.
+## purpose: Workshop screen (upgrades, hilt gemstones, crafting) with Neon sprite hologram and live stat comparison.
 
 const ID: StringName = &"workshop"
 
