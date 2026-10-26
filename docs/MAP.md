@@ -75,7 +75,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 
 ## content
 - `content/art/clips.json`: content: clip x15
-- `content/art/models.json`: content: model x5
+- `content/art/models.json`: content: model x6
 - `content/art/palette.json`: content: palette x1
 - `content/art/sprites.json`: content: sprite x5
 - `content/art/visual.json`: content: visual_rules x1
@@ -88,7 +88,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/combat/arenas.json`: content: arena x1
 - `content/combat/camera.json`: content: battle_camera x1
 - `content/combat/combatants.json`: content: combatant x5
-- `content/combat/encounters.json`: content: encounter x6
+- `content/combat/encounters.json`: content: encounter x7
 - `content/combat/juice.json`: content: battle_juice x1
 - `content/combat/rules.json`: content: battle_rules x1
 - `content/combat/statuses.json`: content: status x6
@@ -113,6 +113,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/jambiyah/hilts.json`: content: hilt x3
 - `content/jambiyah/loadouts.json`: content: loadout x2
 - `content/jambiyah/stones.json`: content: stone x12
+- `content/neon/rooms.json`: content: neon_room x1
+- `content/neon/sprites.json`: content: neon_sprite_set x2
 - `content/progression/classes.json`: content: class x2
 - `content/progression/levels.json`: content: levels x1
 - `content/prosthetics/prosthetics.json`: content: prosthetic x6
@@ -474,6 +476,13 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/map/view/holo_map_markers.gd`: purpose: Draw map marker icons (player, npc, vendor, quest) used by the area view
 - `features/map/view/holo_map_style.gd`: purpose: Shared holographic map drawing helpers: glow lines, dashed ring, hatched fills
 - `features/map/view/holo_scan.gdshader`
+- `features/neon/defs/neon_room_def.gd`: One iso room (content/neon/rooms.json, docs/design/first-playable.md section 2): Feras's painted plate, the walkable outline and its holes, occluders cut from the plate (drawn over actors whose feet are above the baseline), the spawn, interactables, guard patrols, the room's encounter and the floodlight cone the fuse box kills
+- `features/neon/defs/neon_sprite_set_def.gd`: One character's baked iso sprites (content/neon/sprites.json, docs/design/first-playable.md section 2): per state a sheet whose rows are the 8 screen directions and whose columns are the frames, its feet pivot, speed and impact
+- `features/neon/defs/neon_sprite_state.gd`: One state of a NeonSpriteSetDef: the sheet (8 direction rows x frames), frame size, the feet pivot inside a frame, playback speed, whether it loops, and the frame on which an attack or cast lands (-1 = none)
+- `features/neon/logic/iso_dir.gd`: Pure 8-way facing of the baked iso sprites: row 0 faces screen right, then counter-clockwise in 45 degree steps (2 = away from the camera, up the screen; 4 = left; 6 = toward the camera, down the screen)
+- `features/neon/logic/iso_walk.gd`: Pure walking rules of an iso room (docs/design/first-playable.md section 2): whether a feet point may stand (inside the walkable outline, outside every hole), a step that slides along the edge it hits instead of stopping, and the screen-space velocity of an input (y foreshortened, so "up" crosses the floor as fast as it looks)
+- `features/neon/tests/test_neon_foundation.gd`: purpose: Neon Glitch foundation: the sprite sets and the prison roof load with real sheets, IsoDir maps screen directions to the baked rows and back, IsoWalk keeps feet on the floor and slides along walls, IsoActor plays, signals the impact frame and holds a one-shot's last frame
+- `features/neon/view/iso_actor.gd`: A character on an iso plate (docs/design/first-playable.md section 2): plays one baked NeonSpriteSetDef state in one of 8 facings, the node's position being the feet (y-sort by it)
 - `features/progression/defs/class_def.gd`: A hero's RPG class: growth stats added per level above 1 and a passive perk (content/progression/classes.json)
 - `features/progression/defs/levels_def.gd`: Thresholds of total XP required to reach each level (content/progression/levels.json)
 - `features/progression/logic/level_up.gd`: Holds the details of a hero's level advancement: from/to levels and stat gains
@@ -795,6 +804,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `localization/combat.csv`
 - `localization/dialogue.csv`
 - `localization/items.csv`
+- `localization/neon.csv`
 - `localization/pause.csv`
 - `localization/sabil.csv`
 - `localization/screens.csv`
@@ -819,6 +829,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/art/pixelize.py`: Turn a Gemini/Flow PNG into a palette-locked pixel sprite entry for content/art/sprites.json.
 - `tools/art/portrait.py`: Turn a Gemini portrait (flat background colour) into a game portrait.
 - `tools/art/sprite_png.py`: Edit a sprite in a pixel editor (Pixelorama): export it to PNG, paint, import it back, losslessly.
+- `tools/art/sprite_sheet.py`: Packs tools/bake_sprites.tscn frames into one sheet per state (Neon Glitch iso sprites, docs/design/first-playable.md).
 - `tools/art/test_painterly_bake.py`: Self-test for painterly_bake.py and figure_cut.py on synthetic pictures in a temp dir; exit 1 on any failure.
 - `tools/art/test_pixelize.py`: Self-test for pixelize.py: python tools/art/test_pixelize.py (plain asserts, exits non-zero on failure).
 - `tools/art/test_portrait.py`: Self-test for portrait.py on a synthetic picture in a temp dir; exit 1 on any failure.
@@ -826,6 +837,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/audio/arc_synth.py`: Synthesizes the Arc Discharge sound (vfx_arc_all): 3 seeded variations as 44.1 kHz mono 16-bit WAV.
 - `tools/audio/levels.py`: Loudness table for the sound effects: reads the audio of a Godot movie capture (.avi, PCM) made by
 - `tools/audio/measure_levels.gd`: Plays every sfx file of content/audio/sounds.json one after another at 0 dB for the movie writer's audio capture; prints "SLOT <path> <start seconds> <seconds>" lines for tools/audio/levels.py
+- `tools/bake_sprites.gd`: Sprite baker (Neon Glitch iso sprites): renders one model's states from the iso camera in 8 screen directions into transparent PNG frames, for tools/art/sprite_sheet.py
+- `tools/bake_sprites.tscn`: scene
 - `tools/build_gate.py`: Build gate: judges a builder run before Claude reads it (NOWORK, BREACH, FAIL or PASS plus a WARN checklist).
 - `tools/build_pipeline.sh`: Free builder pipeline (DECISIONS 2026-10-23): builder run -> check.sh -> one free fix pass fed the FAIL lines ->
 - `tools/cf_build.sh`: Rates (USD per million tokens)

@@ -1,0 +1,215 @@
+{
+ "kind": "neon_sprite_set",
+ "items": [
+  {
+   "id": "rydan",
+   "model": "rydan",
+   "scale": 0.9,
+   "states": [
+    {
+     "state": "attack",
+     "sheet": "res://assets/sprites/neon/rydan_attack.png",
+     "frame_w": 256,
+     "frame_h": 244,
+     "frames": 12,
+     "fps": 9.75,
+     "loop": false,
+     "pivot": [
+      128.0,
+      199.7
+     ],
+     "impact": 5
+    },
+    {
+     "state": "cast",
+     "sheet": "res://assets/sprites/neon/rydan_cast.png",
+     "frame_w": 154,
+     "frame_h": 192,
+     "frames": 8,
+     "fps": 12.0,
+     "loop": false,
+     "pivot": [
+      77.0,
+      159.7
+     ],
+     "impact": 7
+    },
+    {
+     "state": "hurt",
+     "sheet": "res://assets/sprites/neon/rydan_hurt.png",
+     "frame_w": 124,
+     "frame_h": 192,
+     "frames": 4,
+     "fps": 12.0,
+     "loop": false,
+     "pivot": [
+      59.0,
+      156.7
+     ],
+     "impact": -1
+    },
+    {
+     "state": "idle",
+     "sheet": "res://assets/sprites/neon/rydan_idle.png",
+     "frame_w": 108,
+     "frame_h": 194,
+     "frames": 16,
+     "fps": 6.4,
+     "loop": true,
+     "pivot": [
+      54.0,
+      160.7
+     ],
+     "impact": -1
+    },
+    {
+     "state": "ko",
+     "sheet": "res://assets/sprites/neon/rydan_ko.png",
+     "frame_w": 256,
+     "frame_h": 209,
+     "frames": 10,
+     "fps": 5.4,
+     "loop": false,
+     "pivot": [
+      128.0,
+      157.7
+     ],
+     "impact": -1
+    },
+    {
+     "state": "run",
+     "sheet": "res://assets/sprites/neon/rydan_run.png",
+     "frame_w": 174,
+     "frame_h": 205,
+     "frames": 10,
+     "fps": 10.7,
+     "loop": true,
+     "pivot": [
+      87.0,
+      171.7
+     ],
+     "impact": -1
+    },
+    {
+     "state": "walk",
+     "sheet": "res://assets/sprites/neon/rydan_walk.png",
+     "frame_w": 127,
+     "frame_h": 200,
+     "frames": 12,
+     "fps": 9.0,
+     "loop": true,
+     "pivot": [
+      63.0,
+      166.7
+     ],
+     "impact": -1
+    }
+   ]
+  },
+  {
+   "id": "guard",
+   "model": "concession_enforcer",
+   "scale": 0.9,
+   "states": [
+    {
+     "state": "attack",
+     "sheet": "res://assets/sprites/neon/concession_enforcer_attack.png",
+     "frame_w": 256,
+     "frame_h": 256,
+     "frames": 12,
+     "fps": 9.75,
+     "loop": false,
+     "pivot": [
+      128.0,
+      204.7
+     ],
+     "impact": 5
+    },
+    {
+     "state": "cast",
+     "sheet": "res://assets/sprites/neon/concession_enforcer_cast.png",
+     "frame_w": 182,
+     "frame_h": 216,
+     "frames": 8,
+     "fps": 12.0,
+     "loop": false,
+     "pivot": [
+      91.0,
+      172.7
+     ],
+     "impact": 7
+    },
+    {
+     "state": "hurt",
+     "sheet": "res://assets/sprites/neon/concession_enforcer_hurt.png",
+     "frame_w": 188,
+     "frame_h": 218,
+     "frames": 4,
+     "fps": 12.0,
+     "loop": false,
+     "pivot": [
+      96.0,
+      175.7
+     ],
+     "impact": -1
+    },
+    {
+     "state": "idle",
+     "sheet": "res://assets/sprites/neon/concession_enforcer_idle.png",
+     "frame_w": 184,
+     "frame_h": 211,
+     "frames": 16,
+     "fps": 6.4,
+     "loop": true,
+     "pivot": [
+      92.0,
+      172.7
+     ],
+     "impact": -1
+    },
+    {
+     "state": "ko",
+     "sheet": "res://assets/sprites/neon/concession_enforcer_ko.png",
+     "frame_w": 256,
+     "frame_h": 225,
+     "frames": 10,
+     "fps": 5.4,
+     "loop": false,
+     "pivot": [
+      128.0,
+      173.7
+     ],
+     "impact": -1
+    },
+    {
+     "state": "run",
+     "sheet": "res://assets/sprites/neon/concession_enforcer_run.png",
+     "frame_w": 238,
+     "frame_h": 232,
+     "frames": 10,
+     "fps": 10.7,
+     "loop": true,
+     "pivot": [
+      119.0,
+      182.7
+     ],
+     "impact": -1
+    },
+    {
+     "state": "walk",
+     "sheet": "res://assets/sprites/neon/concession_enforcer_walk.png",
+     "frame_w": 176,
+     "frame_h": 213,
+     "frames": 12,
+     "fps": 9.0,
+     "loop": true,
+     "pivot": [
+      88.0,
+      172.7
+     ],
+     "impact": -1
+    }
+   ]
+  }
+ ]
+}

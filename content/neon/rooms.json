@@ -1,0 +1,118 @@
+{
+ "kind": "neon_room",
+ "items": [
+  {
+   "id": "prison_roof",
+   "plate": "res://assets/textures/neon/prison_roof.webp",
+   "size": [
+    2752,
+    1536
+   ],
+   "walk": [
+    600,
+    940,
+    1356,
+    562,
+    1900,
+    860,
+    2300,
+    660,
+    2580,
+    800,
+    2580,
+    1050,
+    1700,
+    1490
+   ],
+   "holes": [
+    {
+     "polygon": [
+      1950,
+      1196,
+      2124,
+      1290,
+      2296,
+      1200,
+      2124,
+      1104
+     ]
+    }
+   ],
+   "occluders": [
+    {
+     "id": "booth",
+     "polygon": [
+      1924,
+      910,
+      2300,
+      910,
+      2300,
+      1220,
+      2130,
+      1310,
+      1930,
+      1220
+     ],
+     "baseline": 1280
+    }
+   ],
+   "spawn": [
+    940,
+    1090
+   ],
+   "interactables": [
+    {
+     "id": "fuse_box",
+     "pos": [
+      700,
+      930
+     ],
+     "radius": 90,
+     "prompt": "NEON_PROMPT_FUSE"
+    },
+    {
+     "id": "cable_line",
+     "pos": [
+      2530,
+      900
+     ],
+     "radius": 90,
+     "prompt": "NEON_PROMPT_CABLE"
+    }
+   ],
+   "guards": [
+    {
+     "id": "guard_a",
+     "path": [
+      1300,
+      1040,
+      2000,
+      1040
+     ]
+    },
+    {
+     "id": "guard_b",
+     "path": [
+      1600,
+      840,
+      1600,
+      1300
+     ]
+    }
+   ],
+   "encounter": "neon_prison_guards",
+   "floodlight": [
+    240,
+    220,
+    400,
+    220,
+    1000,
+    640,
+    760,
+    820,
+    240,
+    440
+   ]
+  }
+ ]
+}

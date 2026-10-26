@@ -1,6 +1,7 @@
 {
   "kind": "encounter",
   "items": [
+    {"id": "neon_prison_guards", "music": "battle", "name_key": "ENCOUNTER_NEON_PRISON_GUARDS", "enemies": ["concession_enforcer", "concession_enforcer"], "enemy_slots": [0, 1], "party_slots": [0], "loot": [], "money": 40, "materials": {}},
     {"id": "patrol_pair", "music": "battle", "name_key": "ENCOUNTER_PATROL_PAIR",
      "enemies": ["concession_enforcer", "concession_enforcer"],
      "enemy_slots": [0, 1], "party_slots": [0, 2], "loot": [], "money": 50,

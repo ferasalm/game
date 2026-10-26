@@ -5,7 +5,7 @@ extends RefCounted
 ## assets folder), source, licence, prompt. Returns the problems found (empty means valid).
 
 const MANIFEST_FILE: String = "manifest.json"
-const SKIPPED_SUFFIXES: PackedStringArray = [".import", ".md"]
+const SKIPPED_SUFFIXES: PackedStringArray = [".import", ".md", ".uid"]  # .uid: Godot's id sidecar (videos get one)
 
 
 static func check(root: String = "res://assets") -> PackedStringArray:

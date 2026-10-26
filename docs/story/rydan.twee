@@ -52,6 +52,8 @@ Starts with the 1-slot prison hilt: see [[Jambiya hilts]].
 Still to check:
 - Earlier: one prosthetic arm, tech moves cost SP. The bible does not mention it. Keep?
 - Fights alone; allies are call-in assists. Zayd as the first call-in?
+Claude default 2026-10-26, Feras to confirm: keep the prosthetic arm (the code has it; the bible is silent).
+Zayd as the first call-in: yes as a direction, not in the first build (no look, no call-in system yet).
 
 [[Characters]]
 
@@ -212,6 +214,7 @@ Blades vary separately. Slots do not make energy: what goes in draws charge, hea
 :: Roya cold open [scene ch0 draft] {"position":"400,850","size":"100,100"}
 Plays after the start flow, before the escape, in normal game graphics (not a Flow video). Acid rain drums on a roof. Through a band of qamariya glass, Roya watches a ration checkpoint: guards, a queue, a delivery cart that should have gone to a clinic. Her face is half hidden; a glimpse of a prosthetic hand or rebel signal. A system alert starts to identify her. She protects someone in the queue and gives away her position. Cut to black.
 Open: does the player control Roya here, or only watch?
+Claude default 2026-10-26, Feras to confirm: watch only (a playable Roya comes later, not in the demo). Built that way in the first playable (docs/design/first-playable.md).
 
 [[Prison escape]]
 
@@ -306,3 +309,4 @@ Much later: Rydan finds his grandfather's grave and restores the family house; t
 Open (Feras, 2026-10-26): gemstones with a tech reason, or tech modules, or anything that makes sense.
 Idea from Claude: Yemeni agate (aqiq) cut as crystal cores. Real crystals like quartz turn pressure into current and hold a steady vibration (that is how watches keep time), so a cut core can tune the blade's edge vibration, store a charge or focus a sensor. Old jewellery craft meets tech; a stone's colour shows its job.
 Other option: plain engineered modules (capacitors, sensors, edge treatments).
+First playable (2026-10-26): the prison hilt's one slot stays empty; this stays open for Feras.

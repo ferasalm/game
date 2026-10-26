@@ -3583,6 +3583,167 @@
       "source": "own",
       "licence": "own",
       "prompt": "painterly_bake"
+    },
+    {
+      "id": "video_title_loop",
+      "path": "video/title_loop.ogv",
+      "source": "Google Flow (owner's account), Feras's own output: inbox/Neon Glitch Videos/Cyberpunk_skyline_title_screen (Flow clip 07)",
+      "licence": "owner-generated (Google Flow); owner's own art",
+      "prompt": "ffmpeg 1280x720 Theora q6 + Vorbis q4 (2026-10-26)"
+    },
+    {
+      "id": "video_window_push",
+      "path": "video/window_push.ogv",
+      "source": "Google Flow (owner's account), Feras's own output: inbox/Neon Glitch Videos/Camera_moving_through_arch_window (Flow clip 02)",
+      "licence": "owner-generated (Google Flow); owner's own art",
+      "prompt": "ffmpeg 1280x720 Theora q6 + Vorbis q4 (2026-10-26)"
+    },
+    {
+      "id": "video_hero_pick",
+      "path": "video/hero_pick.ogv",
+      "source": "Google Flow (owner's account), Feras's own output: inbox/Neon Glitch Videos/Two_people_sitting_idly_indoors (Flow clip 11)",
+      "licence": "owner-generated (Google Flow); owner's own art",
+      "prompt": "ffmpeg 1280x720 Theora q6 + Vorbis q4 (2026-10-26)"
+    },
+    {
+      "id": "video_rydan_panel",
+      "path": "video/rydan_panel.ogv",
+      "source": "Google Flow (owner's account), Feras's own output: inbox/Neon Glitch Videos/Man_sitting_holding_items (Flow clip 09)",
+      "licence": "owner-generated (Google Flow); owner's own art",
+      "prompt": "ffmpeg 1280x720 Theora q6 + Vorbis q4 (2026-10-26)"
+    },
+    {
+      "id": "video_rydan_reaction",
+      "path": "video/rydan_reaction.ogv",
+      "source": "Google Flow (owner's account), Feras's own output: inbox/Neon Glitch Videos/Man_smoking_cigarette_and_nodding (Flow clip 10)",
+      "licence": "owner-generated (Google Flow); owner's own art",
+      "prompt": "ffmpeg 1280x720 Theora q6 + Vorbis q4 (2026-10-26)"
+    },
+    {
+      "id": "video_launch",
+      "path": "video/launch.ogv",
+      "source": "Google Flow (owner's account), Feras's own output: inbox/Neon Glitch Videos/Game_launch_sequence_transition (Flow clip 08)",
+      "licence": "owner-generated (Google Flow); owner's own art",
+      "prompt": "ffmpeg 1280x720 Theora q6 + Vorbis q4 (2026-10-26)"
+    },
+    {
+      "id": "tex_neon_prison_roof",
+      "path": "textures/neon/prison_roof.webp",
+      "source": "Google Flow (owner's account), Feras's own output: Nano Banana 2.1 edit of his concept Cyberpunk_tower_house_rooftop (2026-10-25) into a prison roof, 2K export",
+      "licence": "owner-generated (Google Flow); owner's own art",
+      "prompt": "Keep the isometric angle, rooftop, tower, qamariya light pools, ink-comic style; add razor wire, hatch with red alarm lamp, two floodlights, fuse box, guard booth; open floor (first-playable.md)"
+    },
+    {
+      "id": "char_rydan_rodin",
+      "path": "characters/rydan_rodin.glb",
+      "source": "Hyper3D Rodin Gen-2.5-Medium Raw 40k + UE auto-rig (owner's Creator plan) from inbox/flow/rydan_apose_2k.jpg (Flow Nano Banana A-pose edit of the owner's Rydan sheet Zayd.jpg); generations 743adbc3, 23f78d5b",
+      "licence": "owner's own output; Creator plan: \"Unlimited export and any use\" (hyper3d.ai/pricing, 2026-10-22)",
+      "prompt": "rewrite_glb.py: materials stripped, feet lifted to y=0"
+    },
+    {
+      "id": "char_t_rydan",
+      "path": "characters/t_rydan.png",
+      "source": "Hyper3D Rodin shaded texture of rydan_rodin (generation 23f78d5b)",
+      "licence": "owner's own output (Rodin Creator plan)",
+      "prompt": "extracted from the glb, 2048 px"
+    },
+    {
+      "id": "sprite_neon_concession_enforcer_attack",
+      "path": "sprites/neon/concession_enforcer_attack.png",
+      "source": "Baked by tools/bake_sprites.tscn from concession_enforcer_rodin.glb with Quaternius UAL clips (CC0)",
+      "licence": "owner's model (Rodin Creator plan) + CC0 motion",
+      "prompt": "tools/art/sprite_sheet.py, 8 directions, 256 colours"
+    },
+    {
+      "id": "sprite_neon_concession_enforcer_cast",
+      "path": "sprites/neon/concession_enforcer_cast.png",
+      "source": "Baked by tools/bake_sprites.tscn from concession_enforcer_rodin.glb with Quaternius UAL clips (CC0)",
+      "licence": "owner's model (Rodin Creator plan) + CC0 motion",
+      "prompt": "tools/art/sprite_sheet.py, 8 directions, 256 colours"
+    },
+    {
+      "id": "sprite_neon_concession_enforcer_hurt",
+      "path": "sprites/neon/concession_enforcer_hurt.png",
+      "source": "Baked by tools/bake_sprites.tscn from concession_enforcer_rodin.glb with Quaternius UAL clips (CC0)",
+      "licence": "owner's model (Rodin Creator plan) + CC0 motion",
+      "prompt": "tools/art/sprite_sheet.py, 8 directions, 256 colours"
+    },
+    {
+      "id": "sprite_neon_concession_enforcer_idle",
+      "path": "sprites/neon/concession_enforcer_idle.png",
+      "source": "Baked by tools/bake_sprites.tscn from concession_enforcer_rodin.glb with Quaternius UAL clips (CC0)",
+      "licence": "owner's model (Rodin Creator plan) + CC0 motion",
+      "prompt": "tools/art/sprite_sheet.py, 8 directions, 256 colours"
+    },
+    {
+      "id": "sprite_neon_concession_enforcer_ko",
+      "path": "sprites/neon/concession_enforcer_ko.png",
+      "source": "Baked by tools/bake_sprites.tscn from concession_enforcer_rodin.glb with Quaternius UAL clips (CC0)",
+      "licence": "owner's model (Rodin Creator plan) + CC0 motion",
+      "prompt": "tools/art/sprite_sheet.py, 8 directions, 256 colours"
+    },
+    {
+      "id": "sprite_neon_concession_enforcer_run",
+      "path": "sprites/neon/concession_enforcer_run.png",
+      "source": "Baked by tools/bake_sprites.tscn from concession_enforcer_rodin.glb with Quaternius UAL clips (CC0)",
+      "licence": "owner's model (Rodin Creator plan) + CC0 motion",
+      "prompt": "tools/art/sprite_sheet.py, 8 directions, 256 colours"
+    },
+    {
+      "id": "sprite_neon_concession_enforcer_walk",
+      "path": "sprites/neon/concession_enforcer_walk.png",
+      "source": "Baked by tools/bake_sprites.tscn from concession_enforcer_rodin.glb with Quaternius UAL clips (CC0)",
+      "licence": "owner's model (Rodin Creator plan) + CC0 motion",
+      "prompt": "tools/art/sprite_sheet.py, 8 directions, 256 colours"
+    },
+    {
+      "id": "sprite_neon_rydan_attack",
+      "path": "sprites/neon/rydan_attack.png",
+      "source": "Baked by tools/bake_sprites.tscn from rydan_rodin.glb with Quaternius UAL clips (CC0)",
+      "licence": "owner's model (Rodin Creator plan) + CC0 motion",
+      "prompt": "tools/art/sprite_sheet.py, 8 directions, 256 colours"
+    },
+    {
+      "id": "sprite_neon_rydan_cast",
+      "path": "sprites/neon/rydan_cast.png",
+      "source": "Baked by tools/bake_sprites.tscn from rydan_rodin.glb with Quaternius UAL clips (CC0)",
+      "licence": "owner's model (Rodin Creator plan) + CC0 motion",
+      "prompt": "tools/art/sprite_sheet.py, 8 directions, 256 colours"
+    },
+    {
+      "id": "sprite_neon_rydan_hurt",
+      "path": "sprites/neon/rydan_hurt.png",
+      "source": "Baked by tools/bake_sprites.tscn from rydan_rodin.glb with Quaternius UAL clips (CC0)",
+      "licence": "owner's model (Rodin Creator plan) + CC0 motion",
+      "prompt": "tools/art/sprite_sheet.py, 8 directions, 256 colours"
+    },
+    {
+      "id": "sprite_neon_rydan_idle",
+      "path": "sprites/neon/rydan_idle.png",
+      "source": "Baked by tools/bake_sprites.tscn from rydan_rodin.glb with Quaternius UAL clips (CC0)",
+      "licence": "owner's model (Rodin Creator plan) + CC0 motion",
+      "prompt": "tools/art/sprite_sheet.py, 8 directions, 256 colours"
+    },
+    {
+      "id": "sprite_neon_rydan_ko",
+      "path": "sprites/neon/rydan_ko.png",
+      "source": "Baked by tools/bake_sprites.tscn from rydan_rodin.glb with Quaternius UAL clips (CC0)",
+      "licence": "owner's model (Rodin Creator plan) + CC0 motion",
+      "prompt": "tools/art/sprite_sheet.py, 8 directions, 256 colours"
+    },
+    {
+      "id": "sprite_neon_rydan_run",
+      "path": "sprites/neon/rydan_run.png",
+      "source": "Baked by tools/bake_sprites.tscn from rydan_rodin.glb with Quaternius UAL clips (CC0)",
+      "licence": "owner's model (Rodin Creator plan) + CC0 motion",
+      "prompt": "tools/art/sprite_sheet.py, 8 directions, 256 colours"
+    },
+    {
+      "id": "sprite_neon_rydan_walk",
+      "path": "sprites/neon/rydan_walk.png",
+      "source": "Baked by tools/bake_sprites.tscn from rydan_rodin.glb with Quaternius UAL clips (CC0)",
+      "licence": "owner's model (Rodin Creator plan) + CC0 motion",
+      "prompt": "tools/art/sprite_sheet.py, 8 directions, 256 colours"
     }
   ]
 }
