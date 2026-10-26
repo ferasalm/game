@@ -483,7 +483,14 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/neon/logic/iso_dir.gd`: Pure 8-way facing of the baked iso sprites: row 0 faces screen right, then counter-clockwise in 45 degree steps (2 = away from the camera, up the screen; 4 = left; 6 = toward the camera, down the screen)
 - `features/neon/logic/iso_walk.gd`: Pure walking rules of an iso room (docs/design/first-playable.md section 2): whether a feet point may stand (inside the walkable outline, outside every hole), a step that slides along the edge it hits instead of stopping, and the screen-space velocity of an input (y foreshortened, so "up" crosses the floor as fast as it looks)
 - `features/neon/start/logic/start_steps.gd`: Pure state transitions for the Neon Glitch start flow (no nodes or tree)
+- `features/neon/start/shaders/glitch.gdshader`
+- `features/neon/start/shaders/radial_blur.gdshader`
+- `features/neon/start/start_flow.gd`: Full-screen controller for the Neon Glitch start flow over video clips
+- `features/neon/start/start_flow.tscn`: scene
 - `features/neon/start/start_flow_def.gd`: Authored timings, colours, and sizes for the Neon Glitch start flow
+- `features/neon/start/start_flow_fx.gd`: Transitions and effects for the start flow (crossfades, blurs, and cover sizing)
+- `features/neon/start/start_ui.gd`: View layer for Neon Glitch start flow overlays (title, menu, pick, panel, HUD boot)
+- `features/neon/start/tests/test_start_flow.gd`: Headless tests for StartFlow clip loading and done signal emission
 - `features/neon/start/tests/test_start_steps.gd`: Tests for StartSteps state transitions and choices
 - `features/neon/tests/test_neon_foundation.gd`: purpose: Neon Glitch foundation: the sprite sets and the prison roof load with real sheets, IsoDir maps screen directions to the baked rows and back, IsoWalk keeps feet on the floor and slides along walls, IsoActor plays, signals the impact frame and holds a one-shot's last frame
 - `features/neon/view/iso_actor.gd`: A character on an iso plate (docs/design/first-playable.md section 2): plays one baked NeonSpriteSetDef state in one of 8 facings, the node's position being the feet (y-sort by it)
@@ -888,6 +895,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_menu.gd`: purpose: Renders pause, save, shop, or equipment menu at 1920x1080 to an inbox PNG
 - `tools/shot_menu.tscn`: scene
 - `tools/shot_models.gd`: Model gallery for renders (docs/design/characters-3d.md): the cast in a row on a floor under the painted look, each doing a state, close enough to judge the stand-ins
+- `tools/shot_neon_start.gd`: Renders one Neon Glitch start flow state (TITLE, PICK, PANEL) to an inbox PNG
+- `tools/shot_neon_start.tscn`: scene
 - `tools/shot_prop.gd`: Renders a prop close-up from play camera height to an inbox PNG (960x540)
 - `tools/shot_prop.tscn`: scene
 - `tools/shot_puzzles.gd`: Renders the grey-box valve-puzzle scene at 1920x1080 to C:/dev/game/inbox/puzzle_<arg>.png

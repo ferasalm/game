@@ -1,0 +1,778 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://features/neon/start/start_flow.gd" id="1_flow"]
+[ext_resource type="Script" path="res://features/neon/start/start_ui.gd" id="2_ui"]
+[ext_resource type="Shader" path="res://features/neon/start/shaders/radial_blur.gdshader" id="3_blur"]
+[ext_resource type="Shader" path="res://features/neon/start/shaders/glitch.gdshader" id="4_glitch"]
+[ext_resource type="FontFile" path="res://assets/fonts/reem_kufi.ttf" id="5_font_latin"]
+[ext_resource type="FontFile" path="res://assets/fonts/noto_sans_old_south_arabian.ttf" id="6_font_musnad"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_blur"]
+shader = ExtResource("3_blur")
+shader_parameter/blur_amount = 0.0
+shader_parameter/blur_center = Vector2(0.5, 0.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_glitch"]
+shader = ExtResource("4_glitch")
+shader_parameter/glitch_strength = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.035, 0.031, 0.086, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.43, 0.93, 1, 0.75)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel_dim"]
+bg_color = Color(0.035, 0.031, 0.086, 0.75)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.46, 0.49, 0.55, 0.4)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_item_active"]
+bg_color = Color(0.12, 0.08, 0.24, 0.88)
+border_width_left = 2
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.43, 0.93, 1, 0.8)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="StartFlow" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_flow")
+
+[node name="VideoPlayer" type="VideoStreamPlayer" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+expand = true
+
+[node name="FadeOverlay" type="TextureRect" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="BlurOverlay" type="ColorRect" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_blur")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 1)
+
+[node name="UI" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_ui")
+
+[node name="TitleView" type="Control" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="UI/TitleView"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_glitch")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -140.0
+offset_right = 400.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.43, 0.93, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.43, 0.93, 1, 0.6)
+theme_override_constants/shadow_outline_size = 12
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 72
+text = "NEON GLITCH"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PressPrompt" type="Label" parent="UI/TitleView"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -140.0
+offset_right = 300.0
+offset_bottom = -90.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.43, 0.93, 1, 1)
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 28
+text = "PRESS ANY BUTTON"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MenuView" type="Control" parent="UI"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuPanel" type="Panel" parent="UI/MenuView"]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 360.0
+offset_right = 540.0
+offset_bottom = 680.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="VBox" type="VBoxContainer" parent="UI/MenuView/MenuPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 24.0
+offset_right = -20.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 14
+
+[node name="MenuNewGame" type="Control" parent="UI/MenuView/MenuPanel/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+
+[node name="MenuNewGameBg" type="Panel" parent="UI/MenuView/MenuPanel/VBox/MenuNewGame"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_item_active")
+
+[node name="MenuNewGameBar" type="ColorRect" parent="UI/MenuView/MenuPanel/VBox/MenuNewGame"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 6.0
+grow_vertical = 2
+color = Color(1, 0.27, 0.59, 1)
+
+[node name="MenuNewGameLabel" type="Label" parent="UI/MenuView/MenuPanel/VBox/MenuNewGame"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 28
+text = "NEW GAME"
+vertical_alignment = 1
+
+[node name="MenuContinue" type="Control" parent="UI/MenuView/MenuPanel/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+
+[node name="MenuContinueLabel" type="Label" parent="UI/MenuView/MenuPanel/VBox/MenuContinue"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.46, 0.49, 0.55, 0.7)
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 28
+text = "CONTINUE"
+vertical_alignment = 1
+
+[node name="MenuOptions" type="Control" parent="UI/MenuView/MenuPanel/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+
+[node name="MenuOptionsLabel" type="Label" parent="UI/MenuView/MenuPanel/VBox/MenuOptions"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.46, 0.49, 0.55, 0.7)
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 28
+text = "OPTIONS"
+vertical_alignment = 1
+
+[node name="MenuQuit" type="Control" parent="UI/MenuView/MenuPanel/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+
+[node name="MenuQuitBg" type="Panel" parent="UI/MenuView/MenuPanel/VBox/MenuQuit"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_item_active")
+
+[node name="MenuQuitBar" type="ColorRect" parent="UI/MenuView/MenuPanel/VBox/MenuQuit"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 6.0
+grow_vertical = 2
+color = Color(1, 0.27, 0.59, 1)
+
+[node name="MenuQuitLabel" type="Label" parent="UI/MenuView/MenuPanel/VBox/MenuQuit"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 28
+text = "QUIT GAME"
+vertical_alignment = 1
+
+[node name="PickView" type="Control" parent="UI"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HeaderBox" type="VBoxContainer" parent="UI/PickView"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -300.0
+offset_top = 40.0
+offset_right = 300.0
+offset_bottom = 120.0
+grow_horizontal = 2
+theme_override_constants/separation = 2
+
+[node name="PickHeader" type="Label" parent="UI/PickView/HeaderBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.43, 0.93, 1, 1)
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 36
+text = "CHOOSE YOUR HERO"
+horizontal_alignment = 1
+
+[node name="PickMusnad" type="Label" parent="UI/PickView/HeaderBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.27, 0.59, 1)
+theme_override_fonts/font = ExtResource("6_font_musnad")
+theme_override_font_sizes/font_size = 20
+text = "𐩱𐩧𐩫𐩴𐩠𐩯"
+horizontal_alignment = 1
+
+[node name="CardRydan" type="Control" parent="UI/PickView"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 220.0
+offset_top = 480.0
+offset_right = 580.0
+offset_bottom = 760.0
+
+[node name="CardRydanBorder" type="Panel" parent="UI/PickView/CardRydan"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="AccentLine" type="ColorRect" parent="UI/PickView/CardRydan"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 16.0
+offset_top = 12.0
+offset_right = -16.0
+offset_bottom = 15.0
+grow_horizontal = 2
+color = Color(0.43, 0.93, 1, 0.8)
+
+[node name="VBox" type="VBoxContainer" parent="UI/PickView/CardRydan"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 28.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 6
+
+[node name="Name" type="Label" parent="UI/PickView/CardRydan/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.43, 0.93, 1, 1)
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 38
+text = "RYDAN"
+horizontal_alignment = 1
+
+[node name="Musnad" type="Label" parent="UI/PickView/CardRydan/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.27, 0.59, 1)
+theme_override_fonts/font = ExtResource("6_font_musnad")
+theme_override_font_sizes/font_size = 24
+text = "𐩧𐩺𐩵𐩬"
+horizontal_alignment = 1
+
+[node name="Role" type="Label" parent="UI/PickView/CardRydan/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.91, 0.93, 0.96, 0.85)
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 16
+text = "JAMBIYAH FIGHTER  /  CLOSE RANGE"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="CardBilqis" type="Control" parent="UI/PickView"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 0
+offset_left = 1340.0
+offset_top = 480.0
+offset_right = 1700.0
+offset_bottom = 760.0
+
+[node name="CardBilqisBorder" type="Panel" parent="UI/PickView/CardBilqis"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel_dim")
+
+[node name="VBox" type="VBoxContainer" parent="UI/PickView/CardBilqis"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 28.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 6
+
+[node name="Name" type="Label" parent="UI/PickView/CardBilqis/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.46, 0.49, 0.55, 1)
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 38
+text = "BILQIS"
+horizontal_alignment = 1
+
+[node name="Musnad" type="Label" parent="UI/PickView/CardBilqis/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.46, 0.49, 0.55, 0.8)
+theme_override_fonts/font = ExtResource("6_font_musnad")
+theme_override_font_sizes/font_size = 24
+text = "𐩨𐩡𐩤𐩺𐩦"
+horizontal_alignment = 1
+
+[node name="LaterTag" type="Label" parent="UI/PickView/CardBilqis/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.27, 0.59, 1)
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 20
+text = "LATER"
+horizontal_alignment = 1
+
+[node name="PanelView" type="Control" parent="UI"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SidePanel" type="Panel" parent="UI/PanelView"]
+layout_mode = 0
+offset_left = 60.0
+offset_top = 44.0
+offset_right = 620.0
+offset_bottom = 990.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Margin" type="MarginContainer" parent="UI/PanelView/SidePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="UI/PanelView/SidePanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HeaderHBox" type="HBoxContainer" parent="UI/PanelView/SidePanel/Margin/VBox"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/HeaderHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.43, 0.93, 1, 1)
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 52
+text = "RYDAN"
+
+[node name="Musnad" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/HeaderHBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.27, 0.59, 1)
+theme_override_fonts/font = ExtResource("6_font_musnad")
+theme_override_font_sizes/font_size = 30
+text = "𐩧𐩺𐩵𐩬"
+horizontal_alignment = 2
+
+[node name="Role" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.27, 0.59, 1)
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 16
+text = "JAMBIYAH FIGHTER  /  CLOSE RANGE"
+
+[node name="Div1" type="ColorRect" parent="UI/PanelView/SidePanel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+color = Color(0.43, 0.93, 1, 0.35)
+
+[node name="Story" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.91, 0.93, 0.96, 0.9)
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 17
+text = "A former covert operative, framed for his partner's death and buried in a prison above Old Sana'a. Tonight the power fails, and someone outside is timing the guards."
+autowrap_mode = 2
+
+[node name="StylesBox" type="VBoxContainer" parent="UI/PanelView/SidePanel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="S1" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/StylesBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.91, 0.93, 0.96, 0.85)
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 16
+text = ">  Gets in close and stays there"
+
+[node name="S2" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/StylesBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.91, 0.93, 0.96, 0.85)
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 16
+text = ">  Reads the timeline: strike before they do"
+
+[node name="S3" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/StylesBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.91, 0.93, 0.96, 0.85)
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 16
+text = ">  Breaker cuts enemy attacks short"
+
+[node name="S4" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/StylesBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.91, 0.93, 0.96, 0.85)
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 16
+text = ">  A reverse stab punishes anyone behind him"
+
+[node name="Div2" type="ColorRect" parent="UI/PanelView/SidePanel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+color = Color(0.43, 0.93, 1, 0.35)
+
+[node name="DiffHeaderHBox" type="HBoxContainer" parent="UI/PanelView/SidePanel/Margin/VBox"]
+layout_mode = 2
+
+[node name="DiffTitle" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/DiffHeaderHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.43, 0.93, 1, 1)
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 22
+text = "DIFFICULTY"
+
+[node name="DiffMusnad" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/DiffHeaderHBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.27, 0.59, 1)
+theme_override_fonts/font = ExtResource("6_font_musnad")
+theme_override_font_sizes/font_size = 18
+text = "𐩮𐩲𐩪𐩩"
+horizontal_alignment = 2
+
+[node name="DiffButtonsHBox" type="HBoxContainer" parent="UI/PanelView/SidePanel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="BtnNormal" type="Control" parent="UI/PanelView/SidePanel/Margin/VBox/DiffButtonsHBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(230, 48)
+layout_mode = 2
+
+[node name="BtnNormalBg" type="Panel" parent="UI/PanelView/SidePanel/Margin/VBox/DiffButtonsHBox/BtnNormal"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_item_active")
+
+[node name="BtnNormalBar" type="ColorRect" parent="UI/PanelView/SidePanel/Margin/VBox/DiffButtonsHBox/BtnNormal"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 6.0
+grow_vertical = 2
+color = Color(1, 0.27, 0.59, 1)
+
+[node name="BtnNormalLabel" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/DiffButtonsHBox/BtnNormal"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 22
+text = "NORMAL"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BtnHard" type="Control" parent="UI/PanelView/SidePanel/Margin/VBox/DiffButtonsHBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(230, 48)
+layout_mode = 2
+
+[node name="BtnHardBg" type="Panel" parent="UI/PanelView/SidePanel/Margin/VBox/DiffButtonsHBox/BtnHard"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_item_active")
+
+[node name="BtnHardBar" type="ColorRect" parent="UI/PanelView/SidePanel/Margin/VBox/DiffButtonsHBox/BtnHard"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 6.0
+grow_vertical = 2
+color = Color(1, 0.27, 0.59, 1)
+
+[node name="BtnHardLabel" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/DiffButtonsHBox/BtnHard"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.46, 0.49, 0.55, 1)
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 22
+text = "HARD"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DiffDesc" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.91, 0.93, 0.96, 0.8)
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 16
+text = "The story as it should be told. Enemies show their tells, and a lost fight costs you nothing but time."
+autowrap_mode = 2
+
+[node name="HudBootView" type="Control" parent="UI"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LineTop" type="ColorRect" parent="UI/HudBootView"]
+layout_mode = 0
+offset_left = 60.0
+offset_top = 80.0
+offset_right = 360.0
+offset_bottom = 82.0
+color = Color(0.43, 0.93, 1, 0.8)
+
+[node name="LineBottom" type="ColorRect" parent="UI/HudBootView"]
+layout_mode = 0
+offset_left = 1560.0
+offset_top = 980.0
+offset_right = 1860.0
+offset_bottom = 982.0
+color = Color(0.43, 0.93, 1, 0.8)
+
+[node name="HudMusnad1" type="Label" parent="UI/HudBootView"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 70.0
+offset_top = 94.0
+offset_right = 300.0
+offset_bottom = 130.0
+theme_override_colors/font_color = Color(0.43, 0.93, 1, 1)
+theme_override_fonts/font = ExtResource("6_font_musnad")
+theme_override_font_sizes/font_size = 24
+text = "𐩮𐩲𐩪𐩩"
+
+[node name="HudMusnad2" type="Label" parent="UI/HudBootView"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 70.0
+offset_top = 134.0
+offset_right = 300.0
+offset_bottom = 170.0
+theme_override_colors/font_color = Color(0.43, 0.93, 1, 1)
+theme_override_fonts/font = ExtResource("6_font_musnad")
+theme_override_font_sizes/font_size = 24
+text = "𐩱𐩧𐩫𐩴𐩠𐩯"
+
+[node name="HudMusnad3" type="Label" parent="UI/HudBootView"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 70.0
+offset_top = 174.0
+offset_right = 300.0
+offset_bottom = 210.0
+theme_override_colors/font_color = Color(1, 0.27, 0.59, 1)
+theme_override_fonts/font = ExtResource("6_font_musnad")
+theme_override_font_sizes/font_size = 24
+text = "𐩧𐩺𐩵𐩬"
+
+[node name="HintBar" type="Control" parent="UI"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -60.0
+offset_right = 400.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="HintLabel" type="Label" parent="UI/HintBar"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.91, 0.93, 0.96, 0.85)
+theme_override_fonts/font = ExtResource("5_font_latin")
+theme_override_font_sizes/font_size = 17
+text = "[^v] SELECT     [OK] CONFIRM"
+horizontal_alignment = 1
+vertical_alignment = 1
