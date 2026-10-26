@@ -1,0 +1,30 @@
+keys,en
+NEON_START_PRESS_ANY,PRESS ANY BUTTON
+NEON_START_CONTINUE,CONTINUE
+NEON_START_NEW_GAME,NEW GAME
+NEON_START_OPTIONS,OPTIONS
+NEON_START_QUIT,QUIT GAME
+NEON_START_CHOOSE,CHOOSE YOUR HERO
+NEON_START_LATER,LATER
+NEON_START_DIFFICULTY,DIFFICULTY
+NEON_HERO_RYDAN_NAME,RYDAN
+NEON_HERO_RYDAN_ROLE,JAMBIYAH FIGHTER  /  CLOSE RANGE
+NEON_HERO_RYDAN_STORY,"A former covert operative, framed for his partner's death and buried in a prison above Old Sana'a. Tonight the power fails, and someone outside is timing the guards."
+NEON_HERO_RYDAN_STYLE_1,Gets in close and stays there
+NEON_HERO_RYDAN_STYLE_2,Reads the timeline: strike before they do
+NEON_HERO_RYDAN_STYLE_3,Breaker cuts enemy attacks short
+NEON_HERO_RYDAN_STYLE_4,A reverse stab punishes anyone behind him
+NEON_HERO_BILQIS_NAME,BILQIS
+NEON_HERO_BILQIS_ROLE,HER STORY COMES LATER
+NEON_DIFF_NORMAL,NORMAL
+NEON_DIFF_NORMAL_DESC,"The story as it should be told. Enemies show their tells, and a lost fight costs you nothing but time."
+NEON_DIFF_HARD,HARD
+NEON_DIFF_HARD_DESC,The rooftops bite back. Enemies hit harder and supplies run thin. Every riyal counts.
+NEON_HINT_HERO,HERO
+NEON_HINT_DIFFICULTY,DIFFICULTY
+NEON_HINT_BEGIN,BEGIN
+NEON_HINT_BACK,BACK
+NEON_MUSNAD_RYDAN,𐩧𐩺𐩵𐩬
+NEON_MUSNAD_BILQIS,𐩨𐩡𐩤𐩺𐩦
+NEON_MUSNAD_CHOOSE,𐩱𐩧𐩫𐩴𐩠𐩯
+NEON_MUSNAD_DIFFICULTY,𐩮𐩲𐩪𐩩
