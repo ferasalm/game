@@ -1,0 +1,42 @@
+{
+  "kind": "start_flow",
+  "items": [
+    {
+      "id": "start_flow",
+      "title_clip": "res://assets/video/title_loop.ogv",
+      "window_push_clip": "res://assets/video/window_push.ogv",
+      "hero_pick_clip": "res://assets/video/hero_pick.ogv",
+      "rydan_panel_clip": "res://assets/video/rydan_panel.ogv",
+      "rydan_reaction_clip": "res://assets/video/rydan_reaction.ogv",
+      "launch_clip": "res://assets/video/launch.ogv",
+      "glitch_interval": 3.0,
+      "glitch_duration": 0.15,
+      "blink_period": 1.2,
+      "crossfade_duration": 0.25,
+      "push_blur_duration": 1.2,
+      "blur_zoom_duration": 0.4,
+      "reaction_fade_duration": 0.5,
+      "hud_boot_duration": 2.0,
+      "font_title_size": 72,
+      "font_press_size": 28,
+      "font_menu_size": 32,
+      "font_hero_name_size": 42,
+      "font_panel_name_size": 56,
+      "font_panel_role_size": 18,
+      "font_panel_body_size": 18,
+      "font_diff_title_size": 22,
+      "font_diff_button_size": 22,
+      "font_hint_size": 17,
+      "font_musnad_title_size": 24,
+      "font_musnad_accent_size": 20,
+      "font_musnad_name_size": 28,
+      "cyan": [0.43, 0.93, 1.0, 1.0],
+      "magenta": [1.0, 0.27, 0.59, 1.0],
+      "white": [0.91, 0.93, 0.96, 1.0],
+      "gray": [0.46, 0.49, 0.55, 1.0],
+      "dim_gray": [0.25, 0.27, 0.32, 1.0],
+      "panel_bg": [0.035, 0.031, 0.086, 0.88],
+      "selection_bg": [0.12, 0.08, 0.24, 0.9]
+    }
+  ]
+}

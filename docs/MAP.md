@@ -96,7 +96,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/combat/view.json`: content: battle_view x1
 - `content/dialogue/box.json`: content: dialogue_style x1
 - `content/dialogue/dialogues.json`: content: dialogue x18
-- `content/dialogue/speakers.json`: content: speaker x3
+- `content/dialogue/speakers.json`: content: speaker x5
 - `content/dialogue/talks.json`: content: talk x2
 - `content/economy/rules.json`: content: economy_rules x1
 - `content/economy/shops.json`: content: shop x1
@@ -115,6 +115,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/jambiyah/stones.json`: content: stone x12
 - `content/neon/rooms.json`: content: neon_room x1
 - `content/neon/sprites.json`: content: neon_sprite_set x2
+- `content/neon/start_flow.json`: content: start_flow x1
 - `content/progression/classes.json`: content: class x2
 - `content/progression/levels.json`: content: levels x1
 - `content/prosthetics/prosthetics.json`: content: prosthetic x6
@@ -481,6 +482,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/neon/defs/neon_sprite_state.gd`: One state of a NeonSpriteSetDef: the sheet (8 direction rows x frames), frame size, the feet pivot inside a frame, playback speed, whether it loops, and the frame on which an attack or cast lands (-1 = none)
 - `features/neon/logic/iso_dir.gd`: Pure 8-way facing of the baked iso sprites: row 0 faces screen right, then counter-clockwise in 45 degree steps (2 = away from the camera, up the screen; 4 = left; 6 = toward the camera, down the screen)
 - `features/neon/logic/iso_walk.gd`: Pure walking rules of an iso room (docs/design/first-playable.md section 2): whether a feet point may stand (inside the walkable outline, outside every hole), a step that slides along the edge it hits instead of stopping, and the screen-space velocity of an input (y foreshortened, so "up" crosses the floor as fast as it looks)
+- `features/neon/start/logic/start_steps.gd`: Pure state transitions for the Neon Glitch start flow (no nodes or tree)
+- `features/neon/start/start_flow_def.gd`: Authored timings, colours, and sizes for the Neon Glitch start flow
+- `features/neon/start/tests/test_start_steps.gd`: Tests for StartSteps state transitions and choices
 - `features/neon/tests/test_neon_foundation.gd`: purpose: Neon Glitch foundation: the sprite sets and the prison roof load with real sheets, IsoDir maps screen directions to the baked rows and back, IsoWalk keeps feet on the floor and slides along walls, IsoActor plays, signals the impact frame and holds a one-shot's last frame
 - `features/neon/view/iso_actor.gd`: A character on an iso plate (docs/design/first-playable.md section 2): plays one baked NeonSpriteSetDef state in one of 8 facings, the node's position being the feet (y-sort by it)
 - `features/progression/defs/class_def.gd`: A hero's RPG class: growth stats added per level above 1 and a passive perk (content/progression/classes.json)
@@ -805,6 +809,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `localization/dialogue.csv`
 - `localization/items.csv`
 - `localization/neon.csv`
+- `localization/neon_battle.csv`
+- `localization/neon_roof.csv`
+- `localization/neon_start.csv`
 - `localization/pause.csv`
 - `localization/sabil.csv`
 - `localization/screens.csv`

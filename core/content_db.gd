@@ -73,6 +73,7 @@ const KINDS: Dictionary = {
 	"map_info": preload("res://features/map/defs/map_info_def.gd"),
 	"neon_sprite_set": preload("res://features/neon/defs/neon_sprite_set_def.gd"),
 	"neon_room": preload("res://features/neon/defs/neon_room_def.gd"),
+	"start_flow": preload("res://features/neon/start/start_flow_def.gd"),
 	"room": preload("res://features/world/defs/room_def.gd"),
 	"puzzle_yard": preload("res://features/puzzles/defs/puzzle_yard_def.gd"),
 }
