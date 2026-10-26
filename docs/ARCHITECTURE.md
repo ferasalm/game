@@ -19,31 +19,17 @@ are marked (enforced). Decisions behind this file: docs/DECISIONS.md, 2026-10-19
 - Target: Windows first (Steam later if the owner decides). Linux and Steam Deck cost little later.
 - Window 1920x1080, scales down; 60 fps on integrated GPUs (Intel Iris Xe / AMD Radeon 600M class).
 
-## 3. The render model (owner's choice: painted 3D diorama, live 3D characters)
-- **World = painted 3D diorama.** Ground and buildings are modular blocks on a GridMap (a 3D tile map) plus prop
-  scenes. Blocks are low-poly models made in Blockbench with painted textures, exported as glTF.
-- **Characters = live 3D skinned models** (decided 2026-10-21; spec: docs/design/characters-3d.md). Each uses a
-  painted skin shader that shares `painted_light.gdshaderinc` with the world, a screen-space ink outline, and a blob
-  contact shadow. Moon shadows only, never lamp shadows. A `CharacterVisual` facade hides the technique: it plays
-  either a `PixelSource` (the old pixel sprites, kept as fallback) or a `ModelSource` (a skinned model from
-  `content/art/models.json`, kind `model`, ModelDef). `visual_rules.default_source` picks the default. Gameplay
-  never touches either.
-  **Built (B4):** `ModelSource` builds a `ModelRig` (glTF body scaled to `height_m`, painted `character_skin.gdshader`,
-  parts on BoneAttachment3D: hair, lathed garments, sleeves, the grandfather's jambiyah from `HiltMesh`) around a
-  MANUAL AnimationPlayer holding the shared Quaternius library (same 65 bones as the bodies: no retargeting). Pure
-  `logic/`: `ClipTiming` (wind-up, hold, strike, recovery; events on that curve), `Locomotion`, `ModelGait`,
-  `YawTurn`. `ModelClips` advances the player slice by slice; `ModelMove` measures ground speed and eases the yaw;
-  `ModelReact` flashes, squashes `visual.body`, hops; `WeaponTrail` draws the ribbon and the arc smear; the survey
-  drone is a `RigidRig`. Per-character `source_kind` (`pixel` / `model`) overrides the rules' default.
-- **Painted textures, one palette.** One painted albedo per model (AI pictures go through
-  `tools/art/painterly_bake.py`); the world and characters share one light model and one locked palette (art
-  bible). Characters are 2 m tall; budgets are in characters-3d.md section 6.
-- **Camera:** perspective, narrow FOV (25-35°), raised 30-40°, smooth follow; per-area limits come from level data.
-- **The look:** CameraAttributesPractical depth of field (near + far blur = the tilt-shift miniature look), glow,
-  filmic tonemapping, a low warm sun with shadows, a few point lights. Static light baked (LightmapGI) to spare the
-  GPU; volumetric fog only where it pays. Screen shaders only if the built-in effects fall short.
-- **Spike:** `features/world/look_test/` builds this in code with an FPS counter. The owner runs it on his laptop
-  (M1); the chosen numbers then move into content data.
+## 3. The render model (Neon Glitch, DECISIONS 2026-10-24/26)
+- **The old 3D game is retired (2026-10-26).** Its world, prototype scene, 3D battle stage, holo map and their
+  tests live at git tag `3d-archive` (audit: docs/design/retire-3d-audit.md). Restore a file with
+  `git show 3d-archive:<path>`; never re-add 3D runtime code without a decision.
+- **World = painted isometric plates** (2:1 dimetric, camera 30 degrees down) per room, walkable polygons and
+  occluder cut-outs in `content/neon/rooms.json`; y-sort by feet (docs/design/first-playable.md section 2).
+- **Characters = baked sprites, never 3D at runtime.** The Rodin models in `assets/characters/` are offline
+  sources: `tools/bake_sprites.tscn` renders them through `CharacterVisual` / `ModelRig` (features/art/view, kept
+  for the baker) into 8-direction sheets (`tools/art/sprite_sheet.py`, `content/neon/sprites.json`).
+- **Fights on the map:** BattleSim and the timeline (features/combat/logic) drive `features/neon/battle/`; the
+  command menu and timeline bar are the reused 2D pieces of the old battle HUD.
 
 ## 4. Layers (dependencies point one way)
 ```
