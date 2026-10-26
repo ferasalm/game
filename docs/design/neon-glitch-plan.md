@@ -1,6 +1,9 @@
 # Neon Glitch: game plan (brainstorm 2026-10-25, Feras + Claude)
 Decisions are in docs/DECISIONS.md; this doc is the plan built on them. Start concept: inbox/Neon Glitch Videos/edit/.
 Update 2026-10-25: Bilqis is set aside (Rydan only); the old story is cut; the story is Feras's own (docs/story/).
+Update 2026-10-26: his story bible is in (docs/story/bible.md, map in rydan.twee). Bilqis is now a story character;
+opening = start flow -> Roya cold open (in-engine) -> prison escape tutorial (first fight on the prison roof) ->
+"Earlier": Zayd's first shift -> back to the escape. No calendar year.
 
 ## What it is
 - Neon Glitch is the whole game: the 2D isometric ink-comic RPG set in cyberpunk old Sana'a. The 2D redesign
@@ -23,7 +26,7 @@ Update 2026-10-25: Bilqis is set aside (Rydan only); the old story is cut; the s
   texts.py draft is not a committed feature; the text changes unless adaptive AI proves cheap.
 
 ## Build order (Rydan first: his kit, Jambiyah and gear exist on main)
-1. First playable: start flow + one rooftop + one Rydan fight + HUD. Same scope as the 2D redesign's
+1. First playable: start flow + one rooftop (the prison roof of the escape) + one Rydan fight + HUD. Same scope as the 2D redesign's
    one-scene prototype; waits on Feras's concept pictures and empty plates.
 2. Rydan's opening (~30 min): solo combat, first call-in ally, first chapter scenes.
 3. Bilqis's kit (rivet pistol frame + barrel, marks, static nets, hacks), then her opening (~30 min).

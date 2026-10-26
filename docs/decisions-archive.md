@@ -63,3 +63,5 @@
 - ~~2026-10-25 | Game title "Neon Glitch"; start: title -> qamariya window -> room -> hover hero (low dutch zoom) -> choose -> final scene | Flow prompts | Feras~~ superseded 2026-10-25: menu start flow with blur camera moves
 - ~~2026-10-25 | No script but Musnad (or Musnad-like gibberish) in Neon Glitch, no English either (title logo kept); main scenes loop | Flow prompts | Feras~~ superseded 2026-10-25: UI English with Musnad accents, world Musnad only
 - ~~2026-10-19 | Title stays "Qarnaw" for now, may change later | Feras BRIEFING q6 | Feras~~ superseded 2026-10-25: Neon Glitch as the working title
+- ~~2026-10-21 | Rydan's default skin wears the grandfather's Jambiyah hilt (grandfather_hilt), drawn to strike | Feras~~ superseded 2026-10-26: Rydan starts with the 1-slot prison hilt (story bible)
+- ~~2026-10-24 | Hilt stones: grandfather hilt 3 slots (open by story 1 -> 2 -> 3); other hilts fewer by rarity (Common 0); stones bought at the bench or found, free removal; hero ring, 1-2 gem sockets | Feras~~ superseded 2026-10-26: three hilts, 1/2/3 slots (story bible)

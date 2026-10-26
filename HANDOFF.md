@@ -1,5 +1,5 @@
 # HANDOFF (current state only; one section per track, each edited only by its owner; max 60 lines)
-Last updated: 2026-10-25 (Twine story map, Rydan only), story chat (Opus 5.5, `claude-opus-5-5`); 3D tracks paused.
+Last updated: 2026-10-26 (story bible merged, Twine map outlined), story chat (Opus 5.5, `claude-opus-5-5`); 3D tracks paused.
 
 ## Shared
 - Builders: CLAUDE.md + EFFICIENCY 3b (5 runs: 2 agy, 2 DeepSeek, 1 Inkling); check `bash tools/slots.sh`.
@@ -16,14 +16,15 @@ Last updated: 2026-10-25 (Twine story map, Rydan only), story chat (Opus 5.5, `c
 1. Then: design doc + plan the one-scene prototype (rooftop, Zayd, one fight, HUD). Model: Opus. Effort: high.
 
 ## Track: Neon Glitch (owner: the chat "Neon Glitch brainstorm", 2026-10-25)
-- Plan: docs/design/neon-glitch-plan.md. Story chat 2026-10-25: old story cut (the story is Feras's own); Bilqis
-  set aside, Rydan only; Rydan's opening is fresh (no level-1 content). Start cuts v3: inbox/Neon Glitch Videos/edit/.
-- Story map: docs/story/README.md (rydan.twee <-> Twine via tools/twine_sync.py; ChatGPT prompt). Starter map pushed.
-- Waiting on Feras: his story from ChatGPT (inbox/story_chatgpt.twee) or Twine edits; keep/cut for the red
-  "check" passages (setting, Rydan's locked kit).
-1. Pull/merge his story, ask questions, outline Rydan's story with him. Model: Opus. Effort: high.
-2. Then brief the first build (start flow as video + rooftop fight) with the 2D track. Model: Opus. Effort: high.
-`Continue ferasalm/game on main. Read HANDOFF.md (Neon Glitch), docs/story/README.md. Merge my story; outline it; /handoff.`
+- Plan: docs/design/neon-glitch-plan.md. Story: Feras's bible docs/story/bible.md (2026-10-26) -> Twine map
+  rydan.twee (38 passages: ch0 Roya cold open, ch1 prison escape -> "Earlier" Zayd -> demo end, ch2-3 Numan, Bilal,
+  Kanan; later arcs). Decided 10-26: first fight on the prison roof, three hilts (1/2/3), no year (DECISIONS).
+- Code still has the old hilt model (grandfather_hilt start, stones) and "zayd" = Rydan: brief a change later.
+- Waiting on Feras: red "check" passages (Rydan's prosthetic arm, Zayd as first call-in), slot contents
+  (gems with a tech reason vs modules), Roya cold open playable or not, the bible's 5 open questions (Twine).
+1. Pull his Twine edits; settle checks; then brief the first build (start flow + Roya cold open + prison-roof
+   fight) with the 2D track. Model: Opus. Effort: high.
+`Continue ferasalm/game on main. Read HANDOFF.md (Neon Glitch), docs/story/README.md. Pull the story; settle the checks; brief the first build; /handoff.`
 ## Track: Level 1 + playtest fixes: PAUSED 2026-10-24 (3D; 2D redesign). Unmerged fix branches kept in ../game-wt.
 - Playtest 2026-10-24: inbox/playtest_*.png, concept_*.png; crossing freeze fixed. docs/briefs/: render-clean,
   menus-equip-fix, holo-map-real (+ their fix passes), then cyber-look, items-menu, gear-slots (save: line review).

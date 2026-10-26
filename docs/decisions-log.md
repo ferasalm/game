@@ -77,3 +77,8 @@ it. docs/DECISIONS.md is the loaded summary of the rules in force; docs/decision
 - 2026-10-25 | Rydan's opening is fresh: the parked level-1 content is not used | Feras chose "None: a fresh opening" | Feras
 - 2026-10-25 | Only Rydan's story for now; Bilqis set aside | Feras: "we're gonna need to only work with Rydan's story, without Bilqis. We're gonna leave Bilqis aside for a while." | Feras
 - 2026-10-25 | Feras organises his story with ChatGPT and Twine; entries from Claude Code go to Twine and back (docs/story/rydan.twee, tools/twine_sync.py; Twine library moved to docs/story/twine because Windows Controlled Folder Access blocks Documents) | Feras: "I need there to be a connection between Twine and Claude Code" | Feras/Claude
+- 2026-10-26 | Story bible merged (docs/story/bible.md, from inbox/Cyberpunk_Sanaa_Story_Bible_Final.docx); its CONFIRMED points are locked in the Twine map | Feras: "I pasted something inbox/Cyberpunk_Sanaa_Story_Bible_Final.docx ... Merge my story" | Feras
+- 2026-10-26 | First build: the prison escape breaks out onto the prison roof; that roof is the first fight | Feras chose "Prison roof (Recommended)" | Feras
+- 2026-10-26 | Hilts: the bible's three hilts (1/2/3 slots: prison, after Numan, grandfather's grave); slot contents open | Feras: "Bible, but we are trying to either find a tech explanation for the gemstones power or replace them with "tech modules" or anything really that makes sense" | Feras
+- 2026-10-26 | Roya cold open plays after the start flow, in-engine | Feras: "After start, but use normal gameplay, not flow." | Feras
+- 2026-10-26 | No calendar year (2150 cut); title stays Neon Glitch | Feras chose "No year, Neon Glitch (Recommended)" | Feras

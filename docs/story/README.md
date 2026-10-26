@@ -1,6 +1,8 @@
 # Story map: the repo and Twine, both ways
 Rydan's story lives in `rydan.twee` (Twee 3 text, in git). `tools/twine_sync.py` copies it into the Twine
-desktop library (`Documents\Twine\Stories\Rydan.html`) and back. Bilqis is set aside for now.
+desktop library (`Documents\Twine\Stories\Rydan.html`) and back. Only Rydan is playable for now.
+The source is Feras's story bible, `bible.md` (from his docx, text unchanged); the map tags its CONFIRMED points
+`locked`, its proposals `draft`, its open points `question`, and collisions with docs/DECISIONS.md `check`.
 
 - Claude edits `rydan.twee`, then `python tools/twine_sync.py push` (refused while Twine is open, or when
   Twine has edits not pulled yet).
