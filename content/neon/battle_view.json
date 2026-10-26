@@ -1,0 +1,36 @@
+{
+ "kind": "neon_battle_view",
+ "items": [
+  {
+   "id": "default",
+   "glitch_seconds": 0.3,
+   "letterbox_height": 120,
+   "letterbox_seconds": 0.35,
+   "run_seconds": 0.55,
+   "approach": 70.0,
+   "hit_stop": 0.07,
+   "shake": 6.0,
+   "shake_seconds": 0.18,
+   "hero_bar_w": 380,
+   "hero_bar_h": 24,
+   "hero_bar_margin": 48,
+   "hero_bar_bottom": 48,
+   "bar_slant": 12,
+   "bar_gap": 6,
+   "foe_bar_w": 86,
+   "foe_bar_h": 8,
+   "foe_bar_offset": 20,
+   "number_font": 34,
+   "number_rise": 42.0,
+   "number_seconds": 0.55,
+   "victory_font": 96,
+   "retry_font": 28,
+   "hp_color": "#d94a4a",
+   "sp_color": "#37c8b0",
+   "ink_color": "#0b0a12",
+   "bar_back": "#221c2e",
+   "foe_color": "#ff5a4a",
+   "flash_color": "#7ff0ff"
+  }
+ ]
+}

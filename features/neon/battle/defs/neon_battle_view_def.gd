@@ -1,0 +1,65 @@
+class_name NeonBattleViewDef
+extends Def
+## purpose: Sizes and colours of the on-map Neon battle view (content/neon/battle_view.json): the glitch and
+## letterbox pacing, the dash and hit stop, the slanted hero vitals bar, foe bars, damage numbers and stamps.
+
+var glitch_seconds: float = 0.3
+var letterbox_height: int = 120
+var letterbox_seconds: float = 0.35
+var run_seconds: float = 0.55
+var approach: float = 70.0
+var hit_stop: float = 0.07
+var shake: float = 6.0
+var shake_seconds: float = 0.18
+var hero_bar_w: int = 380
+var hero_bar_h: int = 24
+var hero_bar_margin: int = 48
+var hero_bar_bottom: int = 48
+var bar_slant: int = 12
+var bar_gap: int = 6
+var foe_bar_w: int = 86
+var foe_bar_h: int = 8
+var foe_bar_offset: int = 20
+var number_font: int = 34
+var number_rise: float = 42.0
+var number_seconds: float = 0.55
+var victory_font: int = 96
+var retry_font: int = 28
+var hp_color: Color = Color("#d94a4a")
+var sp_color: Color = Color("#37c8b0")
+var ink_color: Color = Color("#0b0a12")
+var bar_back: Color = Color("#221c2e")
+var foe_color: Color = Color("#ff5a4a")
+var flash_color: Color = Color("#7ff0ff")
+
+
+func read(r: DefReader) -> void:
+	id = r.id()
+	glitch_seconds = r.number("glitch_seconds", 0.0, 2.0, 0.3, false)
+	letterbox_height = r.integer("letterbox_height", 0, 400, 120, false)
+	letterbox_seconds = r.number("letterbox_seconds", 0.0, 2.0, 0.35, false)
+	run_seconds = r.number("run_seconds", 0.0, 3.0, 0.55, false)
+	approach = r.number("approach", 0.0, 300.0, 70.0, false)
+	hit_stop = r.number("hit_stop", 0.0, 1.0, 0.07, false)
+	shake = r.number("shake", 0.0, 40.0, 6.0, false)
+	shake_seconds = r.number("shake_seconds", 0.0, 1.0, 0.18, false)
+	hero_bar_w = r.integer("hero_bar_w", 40, 900, 380, false)
+	hero_bar_h = r.integer("hero_bar_h", 4, 80, 24, false)
+	hero_bar_margin = r.integer("hero_bar_margin", 0, 300, 48, false)
+	hero_bar_bottom = r.integer("hero_bar_bottom", 0, 300, 48, false)
+	bar_slant = r.integer("bar_slant", 0, 60, 12, false)
+	bar_gap = r.integer("bar_gap", 0, 40, 6, false)
+	foe_bar_w = r.integer("foe_bar_w", 10, 300, 86, false)
+	foe_bar_h = r.integer("foe_bar_h", 2, 40, 8, false)
+	foe_bar_offset = r.integer("foe_bar_offset", 0, 200, 20, false)
+	number_font = r.integer("number_font", 8, 200, 34, false)
+	number_rise = r.number("number_rise", 0.0, 300.0, 42.0, false)
+	number_seconds = r.number("number_seconds", 0.05, 3.0, 0.55, false)
+	victory_font = r.integer("victory_font", 16, 300, 96, false)
+	retry_font = r.integer("retry_font", 8, 120, 28, false)
+	hp_color = r.color("hp_color", Color("#d94a4a"), false)
+	sp_color = r.color("sp_color", Color("#37c8b0"), false)
+	ink_color = r.color("ink_color", Color("#0b0a12"), false)
+	bar_back = r.color("bar_back", Color("#221c2e"), false)
+	foe_color = r.color("foe_color", Color("#ff5a4a"), false)
+	flash_color = r.color("flash_color", Color("#7ff0ff"), false)
