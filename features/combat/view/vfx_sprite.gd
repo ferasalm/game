@@ -1,6 +1,6 @@
 class_name VfxSprite
 extends MeshInstance3D
-## One pooled effect quad. VfxPlayer starts it with `launch` and calls `tick` every frame (no tweens, no
+## One pooled effect quad. The effect player starts it with `launch` and calls `tick` every frame (no tweens, no
 ## allocations): it waits out its delay, then grows, moves, spins and fades along its life.
 
 const SHADER: Shader = preload("res://features/combat/view/vfx_sprite.gdshader")

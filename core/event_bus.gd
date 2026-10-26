@@ -5,6 +5,8 @@ extends Node
 signal area_entered(area_id: StringName, spawn_id: StringName)
 signal battle_started(encounter_id: StringName)
 signal battle_ended(encounter_id: StringName, victory: bool)
+## Dialogue or content asked for a fight; the battle host (the Neon game) starts it.
+signal battle_requested(request: BattleRequest)
 ## A stackable consumable joined the bag (loot, a chest, the shop); count is how many were added.
 signal item_gained(item_id: StringName, count: int)
 ## A unique equippable (hilt, blade, prosthetic) joined the inventory: loot, a chest or the workshop bench.

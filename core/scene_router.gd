@@ -1,13 +1,9 @@
 extends Node
-## Game flow owner (autoload Router): title -> area -> battle arena -> area, new game, save and load, unstuck, and the
-## play-time clock. Screens and menus call only these methods and signals (docs/ARCHITECTURE.md section 9).
-## The area registers an AreaPort; a battle hides and stops the area (it stays in the tree), builds the arena as its
-## sibling, and on the way back pays the rewards, restores the snapshot on Retry or defeat, and shows the area again.
+## Game flow owner (autoload Router): title, new game, save and load, busy state, unstuck, and the play-time clock.
+## Screens and menus call only these methods and signals (docs/ARCHITECTURE.md section 9). A battle host reads
+## EventBus.battle_requested and owns its own view; the Router no longer builds or returns from a battle.
 
-signal battle_finished(outcome: BattleOutcome)
 signal flow_changed(state: StringName)
-## A battle stage was just made, before start(); tests use it to switch on auto_play / instant.
-signal stage_created(new_stage: BattleStage)
 
 const STATE_TITLE: StringName = &"title"
 const STATE_EXPLORING: StringName = &"exploring"
@@ -22,18 +18,6 @@ var save_dir: String = ""
 var last_slot: int = 1
 ## Replaces reloading the current scene on new game / load / title (tests set a recording Callable).
 var scene_reloader: Callable = Callable()
-## The frame on screen when the last battle began, for the shatter transition (null when headless).
-var last_frame: Image
-## The running battle's stage, null while exploring.
-var stage: BattleStage:
-	get:
-		return _session.stage() if _session != null else null
-var last_battle_request: BattleRequest:
-	get:
-		return _session.request if _session != null else null
-
-var _port: AreaPort
-var _session: BattleSession  ## the last battle's; it holds no stage once the fight is over
 var _skip_title: bool = false
 
 
@@ -47,13 +31,6 @@ func tick(delta: float) -> void:
 		return
 	GameState.play_seconds += delta / maxf(Engine.time_scale, MIN_TIME_SCALE)
 
-
-func register_area(port: AreaPort) -> void:
-	_port = port
-
-func unregister_area(port: AreaPort) -> void:
-	if _port == port:
-		_port = null
 
 func is_exploring() -> bool:
 	return state == STATE_EXPLORING
@@ -123,11 +100,10 @@ func go_to_title() -> void:
 	_restart(false, STATE_TITLE)
 
 
-## The party goes back to the last spot where the player stood still.
+## Without an area to return to, unstuck only leaves the busy state.
 func unstuck() -> void:
-	if _port != null:
-		_port.teleport_party(_port.last_safe_position())
-		_port.unfreeze()
+	if state == STATE_BUSY:
+		_set_state(STATE_EXPLORING)
 
 
 func quit_game() -> void:
@@ -141,47 +117,8 @@ func take_skip_title() -> bool:
 	return skip
 
 
-func start_battle(request: BattleRequest) -> void:
-	if _port == null or state == STATE_BATTLE:
-		push_warning("Router: no area registered or a battle is already running")
-		return
-	var flow := ContentDB.get_def("flow_rules", &"default") as FlowRulesDef
-	if request.arena_id == &"":
-		request.arena_id = flow.arena_id
-	request.take_snapshot(GameState.vitals, GameState.bag, GameState.money)
-	_capture_frame()
-	_set_state(STATE_BATTLE)
-	_port.suspend()
-	EventBus.battle_started.emit(request.encounter_id)
-	var encounter := ContentDB.get_def("encounter", request.encounter_id) as EncounterDef
-	AudioDirector.play_music(encounter.music if encounter != null and encounter.music != &"" else flow.battle_music)
-	_session = BattleSession.new(_port.host(), request)
-	_session.stage_created.connect(stage_created.emit)
-	_session.finished.connect(_return_to_area)
-	_session.launch()
-
-
-func _return_to_area(outcome: BattleOutcome) -> void:
-	var flow := ContentDB.get_def("flow_rules", &"default") as FlowRulesDef
-	AudioDirector.play_music(flow.explore_music)
-	_port.resume()
-	_port.reset_patrol()
-	_port.restore_camera()
-	_set_state(STATE_EXPLORING)
-	EventBus.battle_ended.emit(outcome.encounter_id, outcome.result == BattleOutcome.VICTORY)
-	battle_finished.emit(outcome)
-
-
-func _capture_frame() -> void:
-	last_frame = null
-	if DisplayServer.get_name() != "headless":
-		last_frame = get_viewport().get_texture().get_image()
-
-
-## Ends any fight and closes every screen, then rebuilds the area from GameState (the new scene reads it).
+## Closes every screen, then rebuilds the game from GameState (the new scene reads it).
 func _restart(skip_title: bool, next_state: StringName) -> void:
-	if _session != null:
-		_session.free_runner()
 	Screens.clear()
 	get_tree().paused = false
 	_skip_title = skip_title
