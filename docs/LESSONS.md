@@ -6,7 +6,7 @@
 - See a scene without the owner: non-headless `"$(tools/godot.sh)" --path . --write-movie DIR/f.png --fixed-fps 60
   --quit-after N [scene]`, view 1-2 frames at 640x360 with Pillow (2026-10-21). A Node script under `-s` fails
   ("doesn't inherit SceneTree", no autoloads, an ALERT box on the owner's screen) -> render tools run as a .tscn
-  wrapper (tools/shot_dialogue.tscn) (2026-10-23).
+  wrapper (tools/shot_neon_game.tscn) (2026-10-23).
 - Writes into Documents fail as "No such file" even outside the sandbox: Windows Controlled Folder Access is on ->
   keep files elsewhere; Twine's library moved via %APPDATA%/Twine/app-prefs.json storyLibraryFolderPath (2026-10-25).
 - Read an Electron app's screen (Twine): PowerShell Start-Process with --remote-debugging-port=N (a bash `&` launch

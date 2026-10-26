@@ -84,7 +84,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/audio/screen_music.json`: content: screen_music x3
 - `content/audio/sounds.json`: content: sound x34
 - `content/combat/actions.json`: content: action x22
-- `content/combat/arena_skyline.json`: content: skyline x1
 - `content/combat/combatants.json`: content: combatant x6
 - `content/combat/encounters.json`: content: encounter x7
 - `content/combat/rules.json`: content: battle_rules x1
@@ -127,16 +126,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/ui/style.json`: content: ui_style x1
 - `content/workshop/recipes.json`: content: recipe x4
 - `content/workshop/upgrades.json`: content: upgrade_costs x1
-- `content/world/areas.json`: content: area x2
-- `content/world/buildings.json`: content: building x15
-- `content/world/look.json`: content: look x5
-- `content/world/mist.json`: content: mist x6
-- `content/world/props.json`: content: prop x26
-- `content/world/props/tayramana.json`: content: prop x8
-- `content/world/props/workbench.json`: content: prop x1
-- `content/world/sky.json`: content: sky x1
-- `content/world/skyline.json`: content: skyline x1
-- `content/world/tiles.json`: content: tile x18
 
 ## core
 - `core/asset_manifest.gd`: Checks assets/manifest.json: every file under the assets folder (except *.import, .gdignore, *.md and the manifest itself) has an entry with a non-empty source and licence
@@ -205,7 +194,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/art/view/hilt_parts.gd`: The grandfather's jambiyah as nodes (the part's Rodin grip and sheath scenes, else HiltMesh's stand-in; the blade is always HiltMesh's): a sheath and the hilt with its blade sit at the belt (`root`); draw() carries the hilt to the hand bone for a strike (the blade shows, the sheath stays), sheathe() puts it back
 - `features/art/view/model_anchors.gd`: purpose: A live model's body anchors from its own height and width, with every share read from visual.json
 - `features/art/view/model_clips.gd`: Drives a MANUAL AnimationPlayer
-- `features/art/view/model_materials.gd`: The materials of live 3D characters: every surface (body, eyes, brows, hair, garments, the hilt) is a ShaderMaterial of character_skin.gdshader, so the painted light of the look reaches all of them through `materials()` (PaintedLook feeds the shared light uniforms), and one `set_all` call drives the flash, desat and glow of the whole character
+- `features/art/view/model_materials.gd`: The materials of live 3D characters: every surface (body, eyes, brows, hair, garments, the hilt) is a ShaderMaterial of character_skin.gdshader, so the painted light of the look reaches all of them through `materials()` (the baker's light sets their uniforms), and one `set_all` call drives the flash, desat and glow of the whole character
 - `features/art/view/model_move.gd`: What a model's body does on the ground: the ground speed it is really moving at (measured from its own position, so animation and feet agree whoever moves it), the yaw it eases toward at the model's turn speed, and the lean into an acceleration
 - `features/art/view/model_parts.gd`: Puts one ModelPartDef on a rig: hair or a rigid mesh from its glTF, a lathed garment, a sleeve capsule or the jambiyah, each on a BoneAttachment3D so it follows the bone through every animation
 - `features/art/view/model_react.gd`: What a live 3D character does in answer to the battle's cues, on its materials and on `visual.body`: the hit flash, the revive glow, the knocked-out tint, the small squash of a hit (squash lives on the facade's body node, never on bones) and the victory hop
@@ -213,6 +202,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/art/view/model_source.gd`: The live 3D source of a CharacterVisual (docs/design/characters-3d.md): a skinned model (ModelRig) or a rigid one (RigidRig) from the ModelDef with the sprite's id
 - `features/art/view/model_weapon.gd`: The grandfather's jambiyah in use: drawn from the belt into the hand when a strike begins (the weapon trail starts tracking its hilt and its point), an arc smear on the impact frame, sheathed and the trail released when the clip ends
 - `features/art/view/node_scan.gd`: Finds nodes inside an imported scene by walking its children: every node of a class (the skeleton, the meshes) and the chain of nodes from the root down to one of them (to multiply their transforms)
+- `features/art/view/painted_light.gdshaderinc`
 - `features/art/view/pixel_motion.gd`: The body-shape motions of a pixel character (PixelSource): whole-body squash and stretch (`pulse`), the cast crouch, the victory hop, the hit flash, knocked out and revive
 - `features/art/view/pixel_source.gd`: The pixel-art source of a CharacterVisual (today's look, unchanged): a lit, billboarded quad with the sprite's texture (nearest filtering), idle breathing, the walk bob with squash and stretch, the lean into the move and dust at the feet
 - `features/art/view/pose_follow.gd`: Retargets at run time: a hidden source body with the library's rig plays the clips, and every frame each target bone of the same name takes the source bone's model-space rotation times a constant offset (PoseMatch), so a body with other bone axes and rest pose (Feras's Rodin models) moves like the library
@@ -484,7 +474,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/puzzles/tests/test_light_lock.gd`: purpose: Tests qamariya light lock puzzle logic, state, beam tracing, routes, loops, and def validation
 - `features/puzzles/tests/test_water_net.gd`: purpose: Tests water routing network logic, unjamming, spout routing, conservation, def errors, and hints
 - `features/ui/defs/backdrop_def.gd`: Backdrop definition for full-screen menu backgrounds
-- `features/ui/defs/focus_shot_def.gd`: purpose: Defines camera framing parameters for spot interaction focus zooms
 - `features/ui/defs/ui_style_def.gd`: The look of every menu and HUD (content/ui/style.json): three font files, named colours (c_*), sizes in pixels at 1920x1080 (s_*) and times in seconds (t_*)
 - `features/ui/logic/pause_logic.gd`: Pure rules of the pause menu: which entries show and in what order, which ask "are you sure", the vitals of a hero with a missing record (= full), and the play-time clock text
 - `features/ui/logic/prompt_glyph.gd`: Pure: the localization key of the button glyph for an action on keyboard or gamepad ("accept" -> Enter / A), and the fade of a world-space interaction prompt with distance
@@ -540,7 +529,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/ui/view/screens/shop_party_mini.gd`: Party mini cards panel at (1440,600) 400x300: compact HP and SP bars for each hero with painted portraits
 - `features/ui/view/screens/shop_screen.gd`: Shop screen: title (80,40), grid (80,140), keeper (80,720), detail (840,140), summary (1440,140), party (1440,600)
 - `features/ui/view/screens/shop_summary.gd`: Shop summary panel at (1440,140) 400x420: quantity, owned, price, money after (c_bad when < 0)
-- `features/ui/view/screens/slot_detail.gd`: Details panel for the focused save slot: header, thumbnail 440x248, area, party, riyal, play time
+- `features/ui/view/screens/slot_detail.gd`: Details panel for the focused save slot: header, thumbnail 440x248, party, riyal, play time
 - `features/ui/view/screens/slot_picker_screen.gd`: Slot picker screen: title (560,60), 3 slot rows (440,180), details (1380,180), buttons (500,880)
 - `features/ui/view/screens/slot_row.gd`: One save slot row: thumbnail 300x170, slot label, play time, date, or empty slot
 - `features/ui/view/title_overlay.gd`: The game's title over the opening sky: "Qarnaw" in Musnad (big) and Latin with a pulsing "Press any key"
@@ -576,62 +565,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/workshop/view/workshop_sockets_row.gd`: purpose: Displays the worn hilt's 3 gemstone sockets (96px circles) under the hologram
 - `features/workshop/view/workshop_tabs_bar.gd`: purpose: Header bar (1760x64 at 80,40) with title pair, mode tabs, and money counter
 - `features/workshop/workshop_service.gd`: purpose: Executes workshop operations against GameState and emits toasts and bus events
-- `features/world/defs/area_def.gd`: A level as data: equal-width rows of tile characters, a legend (character -> tile id), two markers (S spawn, W workshop bench) that each appear once and stand on floor, and typed places (PlaceDef: stall, sabil, patrols...)
-- `features/world/defs/area_problems.gd`: Checks an AreaDef for layout problems: row widths, unmapped tiles, missing markers, out-of-bounds places
-- `features/world/defs/building_def.gd`: One Sana'a tower-house as data: footprint (metres), floors (the lowest stone_floors are basalt), window columns per facade, frieze style, qamariya glass letters, lit-window ratio, parapet style and roof extras
-- `features/world/defs/canyon_spec.gd`: The sunken street (al-Saila) under the area: two walls from bottom_y up to top_y between x0 and x1 (the street's width) over the area's z range z0..z1, continued extend metres beyond both ends up to ext_top_y only, with a stone base of base_height under a brick upper wall and a thin water channel down the middle
-- `features/world/defs/light_spec.gd`: One practical light: where it is, its colour, a real OmniLight (energy, range; only the nearest few are alive at once) and a fake light pool (an additive quad on the floor or a wall, radius in metres, cheap and always on)
-- `features/world/defs/look_def.gd`: The HD-2D look as data: camera offset and field of view, tilt-shift depth of field, key light, ambient light, background and bloom
-- `features/world/defs/mist_def.gd`: One drifting mist layer (content/world/mist.json): a flat transparent plane at a height, scrolling noise between two thresholds, faded where it meets geometry, near the camera and at the plane's edges
-- `features/world/defs/paint_def.gd`: The painted-diorama recipe of a look (the "paint" object of a look entry): the shared painted light (bands, tints, rim, min_light floor), which offline painterly bake the world textures use, the ink outline pass, the grade (a colour LUT made from split tones, vignette, canvas grain), anti-aliasing and the painted figure
-- `features/world/defs/place_def.gd`: A named spot in an area (areas.json "places"): where the player stands to use it, or the patrol lane, so code finds it by id instead of by node path
-- `features/world/defs/placement.gd`: Where one building or prop stands in an area: the content id (ref), an optional name for it (chests), the position (x, z on the floor; y absolute, or the floor height when absent) and a yaw in degrees
-- `features/world/defs/prop_def.gd`: A rooftop prop as data (content/world/props.json): a list of simple parts (PropPart), an optional practical light it carries, an optional box that blocks walking (collide = width, height, depth, centred on the prop's base) and, for a chest, the lid's hinge (lid_hinge x, y, z) so the "lid" part group can swing open
-- `features/world/defs/prop_part.gd`: One solid piece of a prop: a box (size = width, height, depth; at = centre) or a frustum (size = bottom radius, top radius, height; at = base centre), a palette letter, an optional yaw/tilt (degrees), and how it is drawn: glow (unshaded, boosted, blooms), blink (a glow that pulses), water (rippling or falling painted water), pattern (a painted tile texture instead of the letter), group (a named sub-mesh that can move, such as a chest lid)
-- `features/world/defs/prop_splash.gd`: Water drops a prop throws up where its stream lands (the sabil): a small burst of additive quads, drawn from a CPUParticles3D at `at` (prop space)
-- `features/world/defs/sign_spec.gd`: One neon sign: a localization key (a place name in Musnad letters only), a dark board with a glowing frame, the glow colour, a position and yaw, the text height in metres (size) and how much it flickers
-- `features/world/defs/sky_def.gd`: The night sky as data (content/world/sky.json): gradient, stars, milky way, moon, two cloud layers and the megacity glow
-- `features/world/defs/skyline_band.gd`: One depth band of the skyline: city blocks on a jittered grid between min_dist and max_dist metres from the play area's edge
-- `features/world/defs/skyline_def.gd`: The city around the play area as data: the ground level (y of the street, far below the rooftops), the al-Saila street (a sunken street along z at saila_x), depth bands of buildings and the landmarks
-- `features/world/defs/skyline_landmark.gd`: One landmark placed by data: kind, position on the ground (x east, z south; the play area is x 0..26, z 0..18 and -Z is north), facing in degrees, main size (height or length in metres), a part count, a seed and a radius kept free of ordinary city blocks
-- `features/world/defs/tile_def.gd`: One kind of block: height in metres, colour (an art-bible palette letter or #hex), whether it blocks walking, an optional glow, an optional cap tile drawn on top of it (gypsum trim on a tower) and an optional surface pattern (a SurfacePainter texture painted over the colour, 4 m repeat, 32 px = 1 m), or hidden (blocks only)
-- `features/world/logic/facade_details.gd`: Sana'a facade parts painted with palette letters at 32 px/m: gypsum friezes (zigzag, triangles, rosettes), windows with thick white gypsum frames, the qamariya (a semicircle of coloured glass over the window) and arched wooden doors
-- `features/world/logic/facade_painter.gd`: Paints one Sana'a tower-house facade at 32 px/m from a FacadeSpec: basalt stone floors at the bottom (door on the ground floor), fired-brick floors above, a gypsum frieze at the top of each brick floor, and on every brick floor windows with gypsum frames under qamariya arches
-- `features/world/logic/facade_spec.gd`: What one painted facade needs: width in metres, floors (the lowest stone_floors are basalt, the rest brick), window columns, frieze style, qamariya glass letters, lit and shutter ratios, a door, floor height in pixels and the seed
-- `features/world/logic/light_pick.gd`: Which practical lights get a real OmniLight: the nearest few to a focus point (the rest keep only their fake light pool), plus the fade and flicker maths
-- `features/world/logic/masonry.gd`: Brick courses and stone slabs painted with palette letters
-- `features/world/logic/pixel_canvas.gd`: A pixel canvas painted with palette letters, with an optional emission layer (black = no glow)
-- `features/world/logic/skyline_layout.gd`: Where the city blocks stand: for each band a jittered grid of cells between the band's distances from the play area, minus the al-Saila corridor and the landmark clearings, thinned by the band's fill
-- `features/world/logic/surface_painter.gd`: Seamless 128x128 surface textures (4 m at 32 px/m) for the playable tiles, painted with palette letters: lime-plaster roof floor, worn plaster, white gypsum, wooden planks, stone paving (al-Saila), basalt, brick, and the dotted window texture of far silhouettes
-- `features/world/painted/logic/segment_box.gd`: Pure helpers of the camera cut-away: does the line from the camera to the party cross a box (slab test), which world boxes could ever block it (instance transforms of a mesh, tall enough), how a point weighs in the tube around the line (the same maths as occlusion_dither.gdshaderinc), and the ease of the fade amount
-- `features/world/view/area_lights.gd`: The area's practical lights
-- `features/world/view/diorama.gd`: Static helpers that build the HD-2D look from a LookDef: WorldEnvironment, low sun, tilt-shift camera, and the nearest-filtered block material
-- `features/world/view/far_landmarks.gd`: The far landmarks, built into an unshaded buffer (faces are shaded by a fake light so low-poly facets read): the ridge of Jabal Nuqum, the Haddah megacity of 2150 (slim towers with cyan and magenta neon edges) and the village of Bayt Baws on its rocky crag
-- `features/world/view/landmark_builder.gd`: Builds all landmarks of a SkylineDef into one ArrayMesh with two surfaces: 0 lit (minarets, Bab al-Yaman: vertex colours shaded by the scene lights) and 1 glow (ridge, megacity, village: unshaded, boosted above 1 so neon and lit windows bloom)
-- `features/world/view/occlusion_fade.gd`: The camera cut-away (painted looks): when a building or prop stands between the camera and the party, a tube from the camera to the party dithers away in the painted world shaders (occlusion_dither.gdshaderinc)
-- `features/world/view/painted_figure.gd`: Look spike: a static painted billboard of Zayd (assets/textures/painted/figures/zayd.webp, cut from the owner's Flow picture by tools/art/figure_cut.py) with the shared painted light and an alpha-edge ink line
-- `features/world/view/painted_look.gd`: Turns a scene painted when its look has a "paint" recipe (PaintDef): begin() before the world is built (world materials go through PaintedMaterials), finish() once it stands: the ink outline quad on the camera, the grade (split-tone LUT, contrast and saturation on the Environment; vignette and canvas grain on screen), the anti-aliasing mode, the shared light on every character, the camera cut-away (OcclusionFade, on the party node) and the painted figure in place of the player's sprite
-- `features/world/view/painted_materials.gd`: World materials of a painted look (painted_world.gdshader + the shared painted light): tiles, facades, trim and flat colours
-- `features/world/view/prop_builder.gd`: Places an area's props and tower-houses from its placement lists
-- `features/world/view/prop_fx.gd`: Live effects a prop carries on top of its mesh: the splash of a stream (PropSplash) as a CPUParticles3D of additive billboard quads, placed with the prop's transform
-- `features/world/view/prop_mesh.gd`: Builds one prop's ArrayMesh from its PropDef parts (palette-letter vertex colours, flat shaded)
-- `features/world/view/roof_extras.gd`: The 2150 clutter on a tower-house roof: water tank, satellite dish, antenna with a red beacon, small solar panel
-- `features/world/view/shaders/blink.gdshader`
-- `features/world/view/shaders/ink_outline.gdshader`
-- `features/world/view/shaders/light_pool.gdshader`
-- `features/world/view/shaders/night_sky.gdshader`
-- `features/world/view/shaders/occlusion_dither.gdshaderinc`
-- `features/world/view/shaders/painted_figure.gdshader`
-- `features/world/view/shaders/painted_glow.gdshader`
-- `features/world/view/shaders/painted_light.gdshaderinc`
-- `features/world/view/shaders/painted_screen.gdshader`
-- `features/world/view/shaders/painted_world.gdshader`
-- `features/world/view/shaders/prop_water.gdshader`
-- `features/world/view/sky_builder.gd`: Builds the night Sky resource from a SkyDef: the sky shader with every uniform filled from the def, and the three direction vectors (moon, city glow, milky way normal) computed from its angles
-- `features/world/view/skyline_builder.gd`: Builds the old city of Sana'a around a play area from the "skyline" content: tower-houses in depth bands (one MultiMeshInstance3D per building type, shared meshes and materials), far unshaded silhouettes (one MultiMesh), the landmarks (one mesh), the street-level ground and the al-Saila street
-- `features/world/view/surface_buffer.gd`: Collects flat-shaded, vertex-coloured faces (boxes, prisms, polygons) for one surface of an ArrayMesh
-- `features/world/view/surface_materials.gd`: Cached textures and materials for the painted world, so 100+ buildings share a handful of draw materials: tile patterns (world-space triplanar, so texels stay square across tiles), tower-house facades (front and side painted side by side in one atlas, lit windows in an emission map), vertex-coloured trim, unshaded HDR glow, and the dotted far silhouettes
-- `features/world/view/tower_house.gd`: Builds one Sana'a tower-house mesh from a BuildingDef: four textured facades (one atlas), a roof, a white gypsum parapet with merlons and stepped or horned corners, and roof extras
 
 ## localization
 - `localization/arena.csv`
@@ -687,7 +620,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/check.sh`: One command for every check (docs, lint, Godot import, tests). One ok/FAIL line per step; logs in .check/.
 - `tools/check_slot.sh`: Test-run slots shared by every worktree on this machine: at most CHECK_SLOTS Godot test suites at once. Four at once
 - `tools/doc_check.py`: Keeps the always-loaded notes small and well-formed (docs/EFFICIENCY.md); exit 1 on any failure.
-- `tools/flicker_helper.py`: Helper for flicker_probe: computes heat map, masks rain, and saves flicker_walk.gif.
 - `tools/fps_probe.gd`: FPS probe: plays a scene with vsync off and prints the average and worst frames per second after a warm-up
 - `tools/gate_checklist.py`: Checklist parsing and verification for build_gate.
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.

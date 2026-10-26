@@ -4,7 +4,7 @@ shader_type spatial;
 // Extras over a plain sprite: hit flash, desaturation (knocked out), glow (revive), tint, mirroring.
 render_mode cull_disabled, diffuse_lambert, specular_disabled;
 // The shared painted light (paint_mix 0 = plain Lambert, the unpainted look).
-#include "res://features/world/view/shaders/painted_light.gdshaderinc"
+#include "res://features/art/view/painted_light.gdshaderinc"
 
 uniform sampler2D albedo_tex : source_color, filter_nearest, repeat_disable;
 uniform vec4 tint : source_color = vec4(1.0);

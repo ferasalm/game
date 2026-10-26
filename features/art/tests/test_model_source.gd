@@ -27,13 +27,6 @@ func test_a_model_builds_paints_and_sizes() -> void:
 	check_eq(visual.height(), 1.8, "height from the def")
 	check(visual.width() > 0.4, "width from the def's radius")
 	check(not source.materials().is_empty(), "painted materials exist")
-	var paint := PaintDef.new()
-	var look := ContentDB.get_def("look", &"painted_b") as LookDef
-	if look != null and look.paint != null:
-		paint = look.paint
-	for mat: ShaderMaterial in source.materials():
-		paint.apply_light(mat, true)
-		check_eq(mat.get_shader_parameter(&"paint_mix"), 1.0, "the shared painted light reaches every surface")
 	visual.free()
 
 

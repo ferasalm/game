@@ -6,7 +6,7 @@ shader_type spatial;
 // inverted-hull pass (character_hull.gdshader). Extras kept from the pixel facade: hit flash, desaturation (knocked
 // out), glow (revive) and the tint.
 render_mode diffuse_lambert, specular_disabled;
-#include "res://features/world/view/shaders/painted_light.gdshaderinc"
+#include "res://features/art/view/painted_light.gdshaderinc"
 
 /** The painted albedo (soft light and cavity darkening baked in). White when a part has no texture. */
 uniform sampler2D albedo_tex : source_color, filter_linear_mipmap, hint_default_white;
