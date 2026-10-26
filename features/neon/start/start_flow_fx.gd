@@ -12,25 +12,45 @@ static func crossfade(overlay: TextureRect, tex: Texture2D, duration: float, tre
 	tw.tween_property(overlay, "modulate:a", 0.0, duration)
 
 
-static func push_blur(mat: ShaderMaterial, duration: float, tree_node: Node) -> void:
-	if mat == null or tree_node == null:
-		return
-	var tw: Tween = tree_node.create_tween()
-	tw.tween_method(func(v: float) -> void: mat.set_shader_parameter("blur_amount", v), 0.0, 0.75, duration * 0.4)
-	tw.tween_method(func(v: float) -> void: mat.set_shader_parameter("blur_amount", v), 0.75, 0.0, duration * 0.6)
-
-
-static func blur_zoom(mat: ShaderMaterial, duration: float, tree_node: Node, on_mid: Callable) -> void:
-	if tree_node == null:
-		on_mid.call()
-		return
+static func push_blur(overlay: ColorRect, duration: float, peak: float, tree_node: Node) -> void:
+	var mat: ShaderMaterial = _start_blur(overlay, tree_node)
 	if mat == null:
+		_end_blur(overlay, mat)
+		return
+	var tw: Tween = tree_node.create_tween()
+	tw.tween_method(func(v: float) -> void: mat.set_shader_parameter("blur_amount", v), 0.0, peak, duration * 0.4)
+	tw.tween_method(func(v: float) -> void: mat.set_shader_parameter("blur_amount", v), peak, 0.0, duration * 0.6)
+	tw.tween_callback(func() -> void: _end_blur(overlay, mat))
+
+
+static func blur_zoom(overlay: ColorRect, duration: float, peak: float, tree_node: Node, on_mid: Callable) -> void:
+	var mat: ShaderMaterial = _start_blur(overlay, tree_node)
+	if mat == null:
+		_end_blur(overlay, mat)
 		on_mid.call()
 		return
 	var tw: Tween = tree_node.create_tween()
-	tw.tween_method(func(v: float) -> void: mat.set_shader_parameter("blur_amount", v), 0.0, 0.8, duration * 0.5)
+	tw.tween_method(func(v: float) -> void: mat.set_shader_parameter("blur_amount", v), 0.0, peak, duration * 0.5)
 	tw.tween_callback(on_mid)
-	tw.tween_method(func(v: float) -> void: mat.set_shader_parameter("blur_amount", v), 0.8, 0.0, duration * 0.5)
+	tw.tween_method(func(v: float) -> void: mat.set_shader_parameter("blur_amount", v), peak, 0.0, duration * 0.5)
+	tw.tween_callback(func() -> void: _end_blur(overlay, mat))
+
+
+static func _start_blur(overlay: ColorRect, tree_node: Node) -> ShaderMaterial:
+	if overlay == null or tree_node == null:
+		return null
+	overlay.visible = true
+	var mat: ShaderMaterial = overlay.material as ShaderMaterial
+	if mat != null:
+		mat.set_shader_parameter("blur_amount", 0.0)
+	return mat
+
+
+static func _end_blur(overlay: ColorRect, mat: ShaderMaterial) -> void:
+	if mat != null:
+		mat.set_shader_parameter("blur_amount", 0.0)
+	if overlay != null:
+		overlay.visible = false
 
 
 static func fit_cover(target: Control, vp: Vector2, aspect_ratio: float) -> void:

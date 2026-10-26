@@ -94,5 +94,5 @@ func test_guards_stop_patrolling_after_the_fight() -> void:
 	for i: int in 10:
 		roof._process(0.1)
 	check_eq(guard.position, held, "a fought guard no longer walks its path")
-	check(roof.world() != null and guard.get_parent() == roof.world(), "world() holds the actors")
+	check(roof.world() != null and roof.world().is_ancestor_of(guard), "world() holds the actors")
 	roof.queue_free()

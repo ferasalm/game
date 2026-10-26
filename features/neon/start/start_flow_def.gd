@@ -17,8 +17,24 @@ var push_blur_duration: float = 1.2
 var blur_zoom_duration: float = 0.4
 var reaction_fade_duration: float = 0.5
 var hud_boot_duration: float = 2.0
+var launch_glitch_duration: float = 0.2
+var aspect_ratio: float = 16.0 / 9.0
+var push_blur_peak: float = 0.75
+var zoom_blur_peak: float = 0.8
+var glitch_offset: float = 0.04
+var blink_min_alpha: float = 0.3
+var blink_max_alpha: float = 0.7
+var menu_unselected_alpha: float = 0.8
+var border_dim_alpha: float = 0.5
+var border_off_alpha: float = 0.3
+var card_selected_alpha: float = 1.0
+var card_idle_alpha: float = 0.75
+var card_dim_alpha: float = 0.6
+var card_alt_alpha: float = 0.85
+var disabled_alpha: float = 0.4
 
 var font_title_size: int = 72
+var font_pick_header_size: int = 36
 var font_press_size: int = 28
 var font_menu_size: int = 32
 var font_hero_name_size: int = 42
@@ -31,6 +47,7 @@ var font_hint_size: int = 17
 var font_musnad_title_size: int = 24
 var font_musnad_accent_size: int = 20
 var font_musnad_name_size: int = 28
+var font_hud_musnad_size: int = 24
 
 var cyan: Color = Color(0.43, 0.93, 1.0, 1.0)
 var magenta: Color = Color(1.0, 0.27, 0.59, 1.0)
@@ -43,6 +60,13 @@ var selection_bg: Color = Color(0.12, 0.08, 0.24, 0.9)
 
 func read(r: DefReader) -> void:
 	id = r.id()
+	_read_clips(r)
+	_read_timings(r)
+	_read_sizes(r)
+	_read_colors(r)
+
+
+func _read_clips(r: DefReader) -> void:
 	title_clip = r.text("title_clip", title_clip, false)
 	window_push_clip = r.text("window_push_clip", window_push_clip, false)
 	hero_pick_clip = r.text("hero_pick_clip", hero_pick_clip, false)
@@ -50,6 +74,8 @@ func read(r: DefReader) -> void:
 	rydan_reaction_clip = r.text("rydan_reaction_clip", rydan_reaction_clip, false)
 	launch_clip = r.text("launch_clip", launch_clip, false)
 
+
+func _read_timings(r: DefReader) -> void:
 	glitch_interval = r.number("glitch_interval", 0.1, 30.0, glitch_interval, false)
 	glitch_duration = r.number("glitch_duration", 0.01, 5.0, glitch_duration, false)
 	blink_period = r.number("blink_period", 0.1, 10.0, blink_period, false)
@@ -58,8 +84,26 @@ func read(r: DefReader) -> void:
 	blur_zoom_duration = r.number("blur_zoom_duration", 0.1, 5.0, blur_zoom_duration, false)
 	reaction_fade_duration = r.number("reaction_fade_duration", 0.1, 5.0, reaction_fade_duration, false)
 	hud_boot_duration = r.number("hud_boot_duration", 0.1, 10.0, hud_boot_duration, false)
+	launch_glitch_duration = r.number("launch_glitch_duration", 0.05, 2.0, launch_glitch_duration, false)
+	aspect_ratio = r.number("aspect_ratio", 1.0, 3.0, aspect_ratio, false)
+	push_blur_peak = r.number("push_blur_peak", 0.0, 2.0, push_blur_peak, false)
+	zoom_blur_peak = r.number("zoom_blur_peak", 0.0, 2.0, zoom_blur_peak, false)
+	glitch_offset = r.number("glitch_offset", 0.0, 0.2, glitch_offset, false)
+	blink_min_alpha = r.number("blink_min_alpha", 0.0, 1.0, blink_min_alpha, false)
+	blink_max_alpha = r.number("blink_max_alpha", 0.0, 1.0, blink_max_alpha, false)
+	menu_unselected_alpha = r.number("menu_unselected_alpha", 0.0, 1.0, menu_unselected_alpha, false)
+	border_dim_alpha = r.number("border_dim_alpha", 0.0, 1.0, border_dim_alpha, false)
+	border_off_alpha = r.number("border_off_alpha", 0.0, 1.0, border_off_alpha, false)
+	card_selected_alpha = r.number("card_selected_alpha", 0.0, 1.0, card_selected_alpha, false)
+	card_idle_alpha = r.number("card_idle_alpha", 0.0, 1.0, card_idle_alpha, false)
+	card_dim_alpha = r.number("card_dim_alpha", 0.0, 1.0, card_dim_alpha, false)
+	card_alt_alpha = r.number("card_alt_alpha", 0.0, 1.0, card_alt_alpha, false)
+	disabled_alpha = r.number("disabled_alpha", 0.0, 1.0, disabled_alpha, false)
 
+
+func _read_sizes(r: DefReader) -> void:
 	font_title_size = r.integer("font_title_size", 10, 140, font_title_size, false)
+	font_pick_header_size = r.integer("font_pick_header_size", 10, 80, font_pick_header_size, false)
 	font_press_size = r.integer("font_press_size", 10, 80, font_press_size, false)
 	font_menu_size = r.integer("font_menu_size", 10, 80, font_menu_size, false)
 	font_hero_name_size = r.integer("font_hero_name_size", 10, 90, font_hero_name_size, false)
@@ -72,7 +116,10 @@ func read(r: DefReader) -> void:
 	font_musnad_title_size = r.integer("font_musnad_title_size", 8, 60, font_musnad_title_size, false)
 	font_musnad_accent_size = r.integer("font_musnad_accent_size", 8, 50, font_musnad_accent_size, false)
 	font_musnad_name_size = r.integer("font_musnad_name_size", 8, 60, font_musnad_name_size, false)
+	font_hud_musnad_size = r.integer("font_hud_musnad_size", 8, 60, font_hud_musnad_size, false)
 
+
+func _read_colors(r: DefReader) -> void:
 	cyan = _color(r, "cyan", cyan)
 	magenta = _color(r, "magenta", magenta)
 	white = _color(r, "white", white)

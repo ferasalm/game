@@ -98,3 +98,37 @@ func test_menu_navigation_and_quit() -> void:
 	steps.select_menu_index(StartSteps.MENU_QUIT)
 	check(steps.confirm(), "confirming quit succeeds")
 	check(steps.quit_requested, "quit_requested is true")
+
+
+func test_next_state_drives_full_path() -> void:
+	var steps := StartSteps.new()
+	check_eq(steps.next_state(&"press_any"), StartSteps.STATE_MENU, "TITLE -> MENU")
+	check_eq(steps.next_state(&"confirm"), StartSteps.STATE_WINDOW_PUSH, "MENU -> WINDOW_PUSH")
+	check_eq(steps.next_state(&"clip_done"), StartSteps.STATE_PICK, "WINDOW_PUSH -> PICK")
+	check_eq(steps.next_state(&"confirm"), StartSteps.STATE_PANEL, "PICK -> PANEL")
+	check_eq(steps.next_state(&"confirm"), StartSteps.STATE_REACTION, "PANEL -> REACTION")
+	check_eq(steps.next_state(&"clip_done"), StartSteps.STATE_LAUNCH, "REACTION -> LAUNCH")
+	check_eq(steps.next_state(&"clip_done"), StartSteps.STATE_DONE, "LAUNCH -> DONE")
+
+
+func test_next_state_back_from_menu_pick_panel() -> void:
+	var steps := StartSteps.new()
+	steps.state = StartSteps.STATE_MENU
+	check_eq(steps.next_state(&"back"), StartSteps.STATE_TITLE, "MENU back -> TITLE")
+	steps.state = StartSteps.STATE_PICK
+	check_eq(steps.next_state(&"back"), StartSteps.STATE_MENU, "PICK back -> MENU")
+	steps.state = StartSteps.STATE_PANEL
+	check_eq(steps.next_state(&"back"), StartSteps.STATE_PICK, "PANEL back -> PICK")
+
+
+func test_next_state_moves_and_toggles() -> void:
+	var steps := StartSteps.new()
+	steps.state = StartSteps.STATE_MENU
+	steps.next_state(&"move_down")
+	check_eq(steps.menu_cursor, StartSteps.MENU_QUIT, "menu moves to Quit")
+	steps.state = StartSteps.STATE_PICK
+	steps.next_state(&"move_right")
+	check_eq(steps.hero, StartSteps.HERO_BILQIS, "pick toggles hero")
+	steps.state = StartSteps.STATE_PANEL
+	steps.next_state(&"move_left")
+	check_eq(steps.difficulty, StartSteps.DIFF_HARD, "panel toggles difficulty")
