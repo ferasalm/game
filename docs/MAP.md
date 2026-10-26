@@ -28,6 +28,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `.agents/skills/godot-shader-developer/SKILL.md`
 - `.agents/skills/image-prompt-engineer/SKILL.md`
 - `.agents/skills/level-designer/SKILL.md`
+- `.agents/skills/marketing-content-creator/SKILL.md`
+- `.agents/skills/marketing-short-video-editing-coach/SKILL.md`
+- `.agents/skills/marketing-video-optimization-specialist/SKILL.md`
 - `.agents/skills/mcp-builder/SKILL.md`
 - `.agents/skills/minimal-change-engineer/SKILL.md`
 - `.agents/skills/narrative-designer/SKILL.md`
@@ -58,6 +61,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `.opencode/agent/godot-shader-developer.md`
 - `.opencode/agent/image-prompt-engineer.md`
 - `.opencode/agent/level-designer.md`
+- `.opencode/agent/marketing-content-creator.md`
+- `.opencode/agent/marketing-short-video-editing-coach.md`
+- `.opencode/agent/marketing-video-optimization-specialist.md`
 - `.opencode/agent/mcp-builder.md`
 - `.opencode/agent/minimal-change-engineer.md`
 - `.opencode/agent/narrative-designer.md`
@@ -113,6 +119,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/jambiyah/hilts.json`: content: hilt x3
 - `content/jambiyah/loadouts.json`: content: loadout x2
 - `content/jambiyah/stones.json`: content: stone x12
+- `content/neon/battle_view.json`: content: neon_battle_view x1
 - `content/neon/roof_rules.json`: content: neon_roof_rules x1
 - `content/neon/rooms.json`: content: neon_room x1
 - `content/neon/sprites.json`: content: neon_sprite_set x2
@@ -477,6 +484,21 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/map/view/holo_map_markers.gd`: purpose: Draw map marker icons (player, npc, vendor, quest) used by the area view
 - `features/map/view/holo_map_style.gd`: purpose: Shared holographic map drawing helpers: glow lines, dashed ring, hatched fills
 - `features/map/view/holo_scan.gdshader`
+- `features/neon/battle/battle_demo.gd`: purpose: The battle demo scene (docs/design/first-playable.md section 3): the prison-roof plate, a y-sorted world with Rydan and two guards, and a MapBattle that begins on ready at the contact between them
+- `features/neon/battle/battle_demo.tscn`: scene
+- `features/neon/battle/defs/neon_battle_view_def.gd`: purpose: Sizes and colours of the on-map Neon battle view (content/neon/battle_view.json): the glitch and letterbox pacing, the dash and hit stop, the slanted hero vitals bar, foe bars, damage numbers and stamps
+- `features/neon/battle/glitch.gdshader`
+- `features/neon/battle/logic/map_formation.gd`: purpose: Pure spots for a fight on an iso plate (docs/design/first-playable.md section 3): the hero stands 120 px right-front of the contact point, the foes 140 px left-back, 110 px apart along the iso diagonal; every spot is pulled onto the room's floor with IsoWalk.nearest_free
+- `features/neon/battle/map_battle.gd`: purpose: One turn-based fight on the iso map (docs/design/first-playable.md section 3, no arena swap): builds the BattleSim from the room's encounter, glitches and letterboxes in, runs the fighters to MapFormation spots, plays the sim in wait mode with the existing command menu, then pays the victory or offers Retry / Quit
+- `features/neon/battle/map_battle_build.gd`: purpose: Builds the map fight (docs/design/first-playable.md section 3): the sim from the room's encounter and the party from GameState, the MapFormation spots, the IsoActor to unit mapping and the HUD
+- `features/neon/battle/map_battle_end.gd`: purpose: How a map fight pays out or starts again (docs/design/first-playable.md section 3): victory carries vitals and bag, awards XP and the encounter's riyal as BattleSession does; Retry restores the pre-battle snapshot
+- `features/neon/battle/map_battle_foe_bars.gd`: purpose: Small HP bars over the foes' heads on the iso map (docs/design/first-playable.md section 3), kept on their feet point through the canvas transform and hidden once a foe is down
+- `features/neon/battle/map_battle_hud.gd`: purpose: The on-map battle HUD (docs/design/first-playable.md section 3): the reused timeline bar, the slanted HP/SP bar, foe bars over their heads, damage numbers, the letterbox and glitch intro, the victory stamp and the defeat panel (Retry / Quit)
+- `features/neon/battle/map_battle_intro.gd`: purpose: The map fight's start (docs/design/first-playable.md section 3): glitch flash and letterbox in, the fighters run from where they stood to their MapFormation spots, then face each other and idle
+- `features/neon/battle/map_battle_play.gd`: purpose: Plays a battle batch on the iso map (docs/design/first-playable.md section 3): melee acts dash in, swing and apply their hits only at the IsoActor impact frame, then dash back; tech moves cast with a coloured flash; ko stays down; damage numbers and a small shake sell the hit
+- `features/neon/battle/map_battle_vitals.gd`: purpose: Rydan's slanted Hades-like HP/SP bar bottom-left (docs/design/first-playable.md section 3): an ink border, a dark back, red HP above and teal SP below, both cut on the iso diagonal
+- `features/neon/battle/tests/test_map_battle.gd`: purpose: MapBattle runs the real BattleSim on the map: an auto-choosing hero finishes the fight, `ended` fires once, the winner's living side stands and downed foes hold the ko; a melee hit applies only at the impact signal
+- `features/neon/battle/tests/test_map_formation.gd`: purpose: MapFormation puts the hero right-front of the contact and the foes left-back along the iso diagonal, 110 px apart, and keeps every spot on the prison roof's walkable floor
 - `features/neon/defs/neon_room_def.gd`: One iso room (content/neon/rooms.json, docs/design/first-playable.md section 2): Feras's painted plate, the walkable outline and its holes, occluders cut from the plate (drawn over actors whose feet are above the baseline), the spawn, interactables, guard patrols, the room's encounter and the floodlight cone the fuse box kills
 - `features/neon/defs/neon_sprite_set_def.gd`: One character's baked iso sprites (content/neon/sprites.json, docs/design/first-playable.md section 2): per state a sheet whose rows are the 8 screen directions and whose columns are the frames, its feet pivot, speed and impact
 - `features/neon/defs/neon_sprite_state.gd`: One state of a NeonSpriteSetDef: the sheet (8 direction rows x frames), frame size, the feet pivot inside a frame, playback speed, whether it loops, and the frame on which an attack or cast lands (-1 = none)
@@ -820,6 +842,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `localization/items.csv`
 - `localization/neon.csv`
 - `localization/neon_battle.csv`
+- `localization/neon_cold_open.csv`
 - `localization/neon_roof.csv`
 - `localization/neon_start.csv`
 - `localization/pause.csv`
@@ -898,6 +921,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_menu.gd`: purpose: Renders pause, save, shop, or equipment menu at 1920x1080 to an inbox PNG
 - `tools/shot_menu.tscn`: scene
 - `tools/shot_models.gd`: Model gallery for renders (docs/design/characters-3d.md): the cast in a row on a floor under the painted look, each doing a state, close enough to judge the stand-ins
+- `tools/shot_neon_battle.gd`: purpose: Renders the on-map Neon battle mid-fight (auto-play) to C:/dev/game/inbox/neon_battle.png with the HUD
+- `tools/shot_neon_battle.tscn`: scene
 - `tools/shot_neon_roof.gd`: purpose: renders hero walking with a guard visible on the prison roof to inbox PNG for proof
 - `tools/shot_neon_roof.tscn`: scene
 - `tools/shot_prop.gd`: Renders a prop close-up from play camera height to an inbox PNG (960x540)

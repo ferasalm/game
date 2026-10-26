@@ -74,6 +74,7 @@ const KINDS: Dictionary = {
 	"neon_sprite_set": preload("res://features/neon/defs/neon_sprite_set_def.gd"),
 	"neon_room": preload("res://features/neon/defs/neon_room_def.gd"),
 	"neon_roof_rules": preload("res://features/neon/roof/defs/neon_roof_rules_def.gd"),
+	"neon_battle_view": preload("res://features/neon/battle/defs/neon_battle_view_def.gd"),
 	"room": preload("res://features/world/defs/room_def.gd"),
 	"puzzle_yard": preload("res://features/puzzles/defs/puzzle_yard_def.gd"),
 }
