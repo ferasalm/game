@@ -42,7 +42,7 @@ it; log every new decision verbatim in docs/decisions-log.md too.
 - 2026-10-21 | Currency: riyal | Claude
 ### Heroes and combat
 - 2026-10-25 | Zayd renamed Rydan; Neon Glitch only for now (older lines here say Rydan); Zayd is now a new NPC, a rookie officer (2026-10-26; code "zayd" = Rydan) | Feras
-- 2026-10-22 | Jambiyah (not djanbeyyah; old save key migrates): two parts, hilt and blade, each upgraded or swapped separately | Feras
+- 2026-10-27 | Jambiya on screen (no h; code ids keep jambiyah for now; old save key migrates): two parts, hilt and blade, each upgraded or swapped separately | Feras
 - 2026-10-22 | Prosthetic: one per hero; tech moves paid from SP; Jambiyah stays the weapon; Rydan's cast clips mirrored | Feras
 - 2026-10-21 | Ambush: Jambiyah reverse stab before battle; Rydan from behind on a patrol = party head start | Feras
 - 2026-10-26 | Jambiya: three hilts only, 1/2/3 slots: prison hilt (start), after Numan, grandfather's grave (heirloom); each a full jambiya, blades vary; chained much later; slot contents open (gems with a tech reason or tech modules); hero ring 1-2 sockets | Feras
