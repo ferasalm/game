@@ -95,8 +95,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/combat/vfx.json`: content: vfx x16
 - `content/combat/view.json`: content: battle_view x1
 - `content/dialogue/box.json`: content: dialogue_style x1
-- `content/dialogue/dialogues.json`: content: dialogue x18
-- `content/dialogue/speakers.json`: content: speaker x3
+- `content/dialogue/dialogues.json`: content: dialogue x19
+- `content/dialogue/speakers.json`: content: speaker x5
 - `content/dialogue/talks.json`: content: talk x2
 - `content/economy/rules.json`: content: economy_rules x1
 - `content/economy/shops.json`: content: shop x1
@@ -113,6 +113,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/jambiyah/hilts.json`: content: hilt x3
 - `content/jambiyah/loadouts.json`: content: loadout x2
 - `content/jambiyah/stones.json`: content: stone x12
+- `content/neon/roof_rules.json`: content: neon_roof_rules x1
 - `content/neon/rooms.json`: content: neon_room x1
 - `content/neon/sprites.json`: content: neon_sprite_set x2
 - `content/progression/classes.json`: content: class x2
@@ -481,6 +482,19 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/neon/defs/neon_sprite_state.gd`: One state of a NeonSpriteSetDef: the sheet (8 direction rows x frames), frame size, the feet pivot inside a frame, playback speed, whether it loops, and the frame on which an attack or cast lands (-1 = none)
 - `features/neon/logic/iso_dir.gd`: Pure 8-way facing of the baked iso sprites: row 0 faces screen right, then counter-clockwise in 45 degree steps (2 = away from the camera, up the screen; 4 = left; 6 = toward the camera, down the screen)
 - `features/neon/logic/iso_walk.gd`: Pure walking rules of an iso room (docs/design/first-playable.md section 2): whether a feet point may stand (inside the walkable outline, outside every hole), a step that slides along the edge it hits instead of stopping, and the screen-space velocity of an input (y foreshortened, so "up" crosses the floor as fast as it looks)
+- `features/neon/roof/defs/neon_roof_rules_def.gd`: purpose: numbers for prison roof exploration (hero/guard speeds, radii, timings)
+- `features/neon/roof/logic/contact_rules.gd`: purpose: pure distance and ambush detection rules for iso exploration contact
+- `features/neon/roof/roof_scene.gd`: purpose: prison roof exploration scene (iso plate, hero, patrol guards, occluders, fuse box, exit)
+- `features/neon/roof/roof_scene.tscn`: scene
+- `features/neon/roof/tests/test_contact_rules.gd`: purpose: verify ContactRules touching radius and ambush calculations
+- `features/neon/roof/tests/test_roof_scene.gd`: purpose: headless tests for RoofScene (spawning, sliding, guard patrols, battle request, exit cable)
+- `features/neon/roof/view/roof_burst.gd`: purpose: opening hatch burst visual flash animation on the spawn point
+- `features/neon/roof/view/roof_floodlight.gd`: purpose: animated floodlight cone fading from additive light-blue glow to dark multiply with flickers
+- `features/neon/roof/view/roof_hud.gd`: purpose: HUD prompts for roof exploration (movement hint strip and interact prompt)
+- `features/neon/roof/view/roof_occluders.gd`: purpose: builds textured occluder polygons inside %World sorted by baseline y
+- `features/neon/roof/view/roof_patrol.gd`: purpose: manages one guard's back-and-forth patrol movement, pauses, and facings
+- `features/neon/roof/view/roof_rain.gd`: purpose: scrolling rain overlay placed over the exploration plate
+- `features/neon/roof/view/roof_rain.gdshader`
 - `features/neon/tests/test_neon_foundation.gd`: purpose: Neon Glitch foundation: the sprite sets and the prison roof load with real sheets, IsoDir maps screen directions to the baked rows and back, IsoWalk keeps feet on the floor and slides along walls, IsoActor plays, signals the impact frame and holds a one-shot's last frame
 - `features/neon/view/iso_actor.gd`: A character on an iso plate (docs/design/first-playable.md section 2): plays one baked NeonSpriteSetDef state in one of 8 facings, the node's position being the feet (y-sort by it)
 - `features/progression/defs/class_def.gd`: A hero's RPG class: growth stats added per level above 1 and a passive perk (content/progression/classes.json)
@@ -805,6 +819,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `localization/dialogue.csv`
 - `localization/items.csv`
 - `localization/neon.csv`
+- `localization/neon_battle.csv`
+- `localization/neon_roof.csv`
+- `localization/neon_start.csv`
 - `localization/pause.csv`
 - `localization/sabil.csv`
 - `localization/screens.csv`
@@ -881,6 +898,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_menu.gd`: purpose: Renders pause, save, shop, or equipment menu at 1920x1080 to an inbox PNG
 - `tools/shot_menu.tscn`: scene
 - `tools/shot_models.gd`: Model gallery for renders (docs/design/characters-3d.md): the cast in a row on a floor under the painted look, each doing a state, close enough to judge the stand-ins
+- `tools/shot_neon_roof.gd`: purpose: renders hero walking with a guard visible on the prison roof to inbox PNG for proof
+- `tools/shot_neon_roof.tscn`: scene
 - `tools/shot_prop.gd`: Renders a prop close-up from play camera height to an inbox PNG (960x540)
 - `tools/shot_prop.tscn`: scene
 - `tools/shot_puzzles.gd`: Renders the grey-box valve-puzzle scene at 1920x1080 to C:/dev/game/inbox/puzzle_<arg>.png

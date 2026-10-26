@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://features/neon/roof/roof_scene.gd" id="1_scene"]
+[ext_resource type="Script" path="res://features/neon/roof/view/roof_floodlight.gd" id="2_floodlight"]
+[ext_resource type="Script" path="res://features/neon/roof/view/roof_rain.gd" id="3_rain"]
+[ext_resource type="Script" path="res://features/neon/roof/view/roof_hud.gd" id="4_hud"]
+
+[node name="RoofScene" type="Node2D"]
+script = ExtResource("1_scene")
+
+[node name="Plate" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Floodlight" type="Polygon2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_floodlight")
+
+[node name="World" type="Node2D" parent="."]
+unique_name_in_owner = true
+y_sort_enabled = true
+
+[node name="RoofRain" type="ColorRect" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_rain")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+unique_name_in_owner = true
+position_smoothing_enabled = true
+
+[node name="RoofHud" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_hud")
