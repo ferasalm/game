@@ -28,9 +28,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `.agents/skills/godot-shader-developer/SKILL.md`
 - `.agents/skills/image-prompt-engineer/SKILL.md`
 - `.agents/skills/level-designer/SKILL.md`
-- `.agents/skills/marketing-content-creator/SKILL.md`
-- `.agents/skills/marketing-short-video-editing-coach/SKILL.md`
-- `.agents/skills/marketing-video-optimization-specialist/SKILL.md`
 - `.agents/skills/mcp-builder/SKILL.md`
 - `.agents/skills/minimal-change-engineer/SKILL.md`
 - `.agents/skills/narrative-designer/SKILL.md`
@@ -61,9 +58,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `.opencode/agent/godot-shader-developer.md`
 - `.opencode/agent/image-prompt-engineer.md`
 - `.opencode/agent/level-designer.md`
-- `.opencode/agent/marketing-content-creator.md`
-- `.opencode/agent/marketing-short-video-editing-coach.md`
-- `.opencode/agent/marketing-video-optimization-specialist.md`
 - `.opencode/agent/mcp-builder.md`
 - `.opencode/agent/minimal-change-engineer.md`
 - `.opencode/agent/narrative-designer.md`

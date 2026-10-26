@@ -90,7 +90,8 @@
 ## 6. Cheaper routes
 - ffmpeg 9 dropped `-filter_complex_script` -> `-/filter_complex file` (2026-10-25).
 - agy reads GEMINI.md; -p mode denies shell commands -> tools/agy_task.sh (skip-permissions, own worktree).
-- Where is X: grep docs/MAP.md (generated), not `ls -R`.
+- Where is X: grep docs/MAP.md (generated), not `ls -R`. map.py lists untracked files too: with the marketing-* files
+  in the checkout CI failed "MAP.md current" -> regenerate in a clean worktree before main (2026-10-26).
 - opencode CLI 1.19.4: `npm install -g --allow-scripts=opencode-ai opencode-ai`; the desktop app owns
   ~/.local/share/opencode -> the CLI uses XDG_DATA_HOME=~/.local/share/oc-cli (tools/oc_task.sh) (2026-10-23).
 - opencode "Free usage limit reached" (GLM, DeepSeek share it) then `opencode run` hangs -> read
