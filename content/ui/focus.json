@@ -1,8 +1,0 @@
-{
-  "kind": "focus_shot",
-  "items": [
-    {"id": "herb_stall", "offset": [0, 1.7, 2.6], "look_at": [0, 1.2, 0], "fov": 40},
-    {"id": "sabil", "offset": [0, 1.5, 2.2], "look_at": [0, 0.9, 0], "fov": 42},
-    {"id": "workbench", "offset": [0, 1.6, 2.0], "look_at": [0, 1.0, 0], "fov": 40}
-  ]
-}

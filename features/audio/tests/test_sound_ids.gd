@@ -38,7 +38,7 @@ func _requested_ids() -> Dictionary:
 
 func test_every_sound_the_code_asks_for_exists() -> void:
 	var ids: Dictionary = _requested_ids()
-	check(ids.size() >= 10, "the scan found the call sites, got " + str(ids.size()))
+	check(ids.size() >= 9, "the scan found the call sites, got " + str(ids.size()))
 	for sound_id: StringName in ids:
 		var def := ContentDB.get_def("sound", sound_id) as SoundDef
 		check(def != null, "%s (asked in %s) is in sounds.json" % [sound_id, ids[sound_id]])

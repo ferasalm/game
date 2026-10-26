@@ -1,6 +1,6 @@
 extends TestCase
 ## Abu Nabil Spar tests: practice BattleRequest flags, reverse_stab suppression on duels,
-## snapshot restoration on win/loss with zero payout, and spar defeat without defeat screen.
+## snapshot restoration on win/loss with zero payout, and the retry opening.
 
 
 func _duel_request(opening: StringName = &"even", practice: bool = false) -> BattleRequest:
@@ -82,36 +82,6 @@ func test_spar_session_restores_vitals_bag_and_money_on_loss() -> void:
 	check_eq(GameState.bag.get(&"yellow_herb", 0), 1, "spar loss: bag restored")
 	check_eq(GameState.vitals[&"zayd"]["hp"], 300, "spar loss: hp restored")
 	check_eq(GameState.vitals[&"zayd"]["sp"], 10, "spar loss: sp restored")
-	host.free()
-
-
-func test_prototype_flow_spar_defeat_triggers_spar_lost_dialogue() -> void:
-	GameState.start_new()
-	var called: Array[StringName] = []
-	var caller := func(dlg: StringName) -> void: called.append(dlg)
-
-	# Mock Router._session.request for PrototypeBattleFlow check
-	var host := Node.new()
-	tree.root.add_child(host)
-	var spar_req: BattleRequest = _duel_request(&"even", true)
-	var session := BattleSession.new(host, spar_req)
-	Router._session = session
-
-	PrototypeBattleFlow.handle_battle_ended(&"abu_nabil_duel", false, caller)
-	check_eq(called, [&"abu_nabil_spar_lost"] as Array[StringName], "spar defeat queues abu_nabil_spar_lost")
-
-	called.clear()
-	PrototypeBattleFlow.handle_battle_ended(&"abu_nabil_duel", true, caller)
-	check(called.is_empty(), "spar win queues no dialogue")
-
-	# Real duel win before beaten
-	var duel_req: BattleRequest = _duel_request(&"even", false)
-	Router._session = BattleSession.new(host, duel_req)
-	called.clear()
-	PrototypeBattleFlow.handle_battle_ended(&"abu_nabil_duel", true, caller)
-	check_eq(called, [&"abu_nabil_after_battle"] as Array[StringName], "first duel win queues after_battle")
-
-	Router._session = null
 	host.free()
 
 

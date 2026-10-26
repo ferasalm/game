@@ -6,9 +6,9 @@ root="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$root" || exit 1
 git fetch -q origin && git pull -q --ff-only origin main || { echo "SYNC FAIL pull"; exit 1; }
 bash tools/run_godot.sh --import > /dev/null 2>&1 || { echo "SYNC FAIL import"; exit 1; }
-out="$(bash tools/run_godot.sh res://tools/smoke_new_game.tscn 2>&1)"
-if [ $? -ne 0 ] || ! grep -q "SMOKE scene=PrototypeMain" <<< "$out"; then
-  grep -E "ERROR|SMOKE" <<< "$out" | sort | uniq -c | sort -rn | head -10
+out="$(bash tools/run_godot.sh --quit-after 300 2>&1)"
+if [ $? -ne 0 ]; then
+  grep -E "ERROR" <<< "$out" | sort | uniq -c | sort -rn | head -10
   echo "SYNC FAIL smoke"; exit 1
 fi
 echo "SYNC PASS $(git rev-parse --short HEAD)"

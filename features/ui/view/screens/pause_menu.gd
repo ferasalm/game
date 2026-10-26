@@ -155,9 +155,6 @@ func _build_info_box(box: PanelContainer) -> void:
 	var col := VBoxContainer.new()
 	col.add_theme_constant_override("separation", 2)
 	box.add_child(col)
-	var area := ContentDB.get_def("area", GameState.area_id) as AreaDef
-	var place: String = Ui.text(area.name_key) if area != null else "Souq al-Milh Rooftops"
-	col.add_child(Ui.label("%s: %s" % [Ui.text("PAUSE_AREA"), place], &"SmallLabel"))
 	var row := HBoxContainer.new()
 	var money: MoneyCounter = Ui.money_counter(true)
 	money.set_amount(PauseLogic.money_of(GameState.get(&"money")), false)

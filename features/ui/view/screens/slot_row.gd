@@ -1,12 +1,11 @@
 class_name SlotRow
 extends Button
-## One save slot row: thumbnail 300x170, slot label, area, play time, date, or empty slot.
+## One save slot row: thumbnail 300x170, slot label, play time, date, or empty slot.
 
 var slot_number: int = 1
 var is_saved: bool = false
 var _thumb: TextureRect
 var _slot_label: Label
-var _area_label: Label
 var _time_label: Label
 var _date_label: Label
 var _empty_label: Label
@@ -76,12 +75,6 @@ func _build_info(style: UiStyleDef, slot: int, summary: Dictionary, service: Sav
 
 	_slot_label = Ui.label("SLOT %02d" % slot, &"TitleLabel", style.colour(&"c_brass"))
 	col.add_child(_slot_label)
-
-	var area_id: StringName = StringName(str(summary.get("area", "")))
-	var area_def := ContentDB.get_def("area", area_id) as AreaDef
-	var place: String = Ui.text(area_def.name_key) if area_def != null else String(area_id)
-	_area_label = Ui.label(place, &"NameLabel", style.colour(&"c_cyan"))
-	col.add_child(_area_label)
 
 	var secs: float = float(summary.get("play_seconds", 0.0))
 	var hours: int = int(secs) / 3600

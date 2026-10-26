@@ -1,7 +1,8 @@
 extends TestCase
-## The shared Equipment / Items / Map tabs bar: every screen reaches every other tab by confirm and LB/RB or Q/E.
+## The shared Equipment / Items tabs bar: every screen reaches every other tab by confirm and LB/RB or Q/E,
+## and the bar and pause menu skip the Map tab when no map screen is registered.
 
-const IDS: Array[StringName] = [&"equipment", &"items", &"map"]
+const IDS: Array[StringName] = [&"equipment", &"items"]
 
 
 func test_every_screen_reaches_every_other_tab_by_confirm() -> void:
@@ -15,27 +16,25 @@ func test_every_screen_reaches_every_other_tab_by_confirm() -> void:
 	_clean()
 
 
-func test_items_and_map_cycle_tabs_with_lb_and_rb() -> void:
-	for start: StringName in [&"items", &"map"]:
-		var screen: UiScreen = _open(start)
-		screen._unhandled_input(_pad(JOY_BUTTON_RIGHT_SHOULDER))
-		check_eq(_top_id(), _neighbour(start, 1), "%s -> next by RB" % start)
-		_clean()
-		screen = _open(start)
-		screen._unhandled_input(_pad(JOY_BUTTON_LEFT_SHOULDER))
-		check_eq(_top_id(), _neighbour(start, -1), "%s -> previous by LB" % start)
+func test_items_cycles_tabs_with_lb_and_rb() -> void:
+	var screen: UiScreen = _open(&"items")
+	screen._unhandled_input(_pad(JOY_BUTTON_RIGHT_SHOULDER))
+	check_eq(_top_id(), _neighbour(&"items", 1), "items -> next by RB")
+	_clean()
+	screen = _open(&"items")
+	screen._unhandled_input(_pad(JOY_BUTTON_LEFT_SHOULDER))
+	check_eq(_top_id(), _neighbour(&"items", -1), "items -> previous by LB")
 	_clean()
 
 
-func test_items_and_map_cycle_tabs_with_q_and_e() -> void:
-	for start: StringName in [&"items", &"map"]:
-		var screen: UiScreen = _open(start)
-		screen._unhandled_input(_key(KEY_E))
-		check_eq(_top_id(), _neighbour(start, 1), "%s -> next by E" % start)
-		_clean()
-		screen = _open(start)
-		screen._unhandled_input(_key(KEY_Q))
-		check_eq(_top_id(), _neighbour(start, -1), "%s -> previous by Q" % start)
+func test_items_cycles_tabs_with_q_and_e() -> void:
+	var screen: UiScreen = _open(&"items")
+	screen._unhandled_input(_key(KEY_E))
+	check_eq(_top_id(), _neighbour(&"items", 1), "items -> next by E")
+	_clean()
+	screen = _open(&"items")
+	screen._unhandled_input(_key(KEY_Q))
+	check_eq(_top_id(), _neighbour(&"items", -1), "items -> previous by Q")
 	_clean()
 
 
@@ -78,8 +77,8 @@ func test_clicking_a_tab_button_switches_the_screen() -> void:
 	check_eq(_top_id(), &"items", "a click on the Items tab opens Items")
 	_clean()
 	screen = _open(&"items")
-	_bar_of(screen).tab_button(EquipmentTabsBar.Tab.MAP).pressed.emit()
-	check_eq(_top_id(), &"map", "a click on the Map tab opens Map")
+	_bar_of(screen).tab_button(EquipmentTabsBar.Tab.EQUIPMENT).pressed.emit()
+	check_eq(_top_id(), &"equipment", "a click on the Equipment tab opens Equipment")
 	_clean()
 
 
@@ -112,6 +111,20 @@ func test_equipment_prompt_strip_shows_the_hero_switch_too() -> void:
 	_clean()
 
 
+func test_tabs_skip_missing_map() -> void:
+	Screens.clear()
+	check(not Screens.has_screen(&"map"), "no map screen is registered")
+	var items: UiScreen = _open(&"items")
+	var bar: EquipmentTabsBar = _bar_of(items)
+	check(bar.tab_button(EquipmentTabsBar.Tab.MAP) == null, "the bar has no Map tab button")
+	bar.cycle(1)
+	check_eq(_top_id(), &"equipment", "RB from Items skips Map and wraps to Equipment")
+	_clean()
+	var pause: PauseMenu = Screens.open(Screens.PAUSE_ID) as PauseMenu
+	check(not pause.entry_ids().has(PauseLogic.MAP), "the pause menu lists no Map entry")
+	_clean()
+
+
 func _open(id: StringName) -> UiScreen:
 	Screens.clear()
 	GameState.start_new()
@@ -122,9 +135,7 @@ func _open(id: StringName) -> UiScreen:
 func _bar_of(screen: UiScreen) -> EquipmentTabsBar:
 	if screen is EquipmentMenu:
 		return (screen as EquipmentMenu).tabs
-	if screen is ItemsScreen:
-		return (screen as ItemsScreen).tabs
-	return (screen as HoloMap).tabs
+	return (screen as ItemsScreen).tabs
 
 
 func _top_id() -> StringName:
@@ -133,19 +144,11 @@ func _top_id() -> StringName:
 		return &"equipment"
 	if top is ItemsScreen:
 		return &"items"
-	if top is HoloMap:
-		return &"map"
 	return &""
 
 
 func _tab_of(id: StringName) -> EquipmentTabsBar.Tab:
-	match id:
-		&"equipment":
-			return EquipmentTabsBar.Tab.EQUIPMENT
-		&"items":
-			return EquipmentTabsBar.Tab.ITEMS
-		_:
-			return EquipmentTabsBar.Tab.MAP
+	return EquipmentTabsBar.Tab.EQUIPMENT if id == &"equipment" else EquipmentTabsBar.Tab.ITEMS
 
 
 func _neighbour(start: StringName, step: int) -> StringName:

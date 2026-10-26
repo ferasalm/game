@@ -1,5 +1,5 @@
 extends Node
-## Survives scene changes during tools/smoke_new_game: starts a new game, waits, reports the scene, quits.
+## Survives scene changes during a smoke run: starts a new game, waits, reports the scene, quits.
 
 const NEW_GAME_FRAME: int = 30
 const END_FRAME: int = 400
