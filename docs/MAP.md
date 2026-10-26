@@ -363,6 +363,19 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/view/vfx_sprite.gd`: One pooled effect quad
 - `features/combat/view/vfx_sprite.gdshader`
 - `features/combat/view/vfx_textures.gd`: Procedurally painted effect textures (no files): crisp hard-edged pixel shapes (a bright core and a darker rim, one-bit alpha) plus one soft glow
+- `features/debug/playtest/logic/playtest_dump.gd`: purpose: The JSON record of one playtest capture: time, scene, game state, the recent log and the note
+- `features/debug/playtest/logic/playtest_log_ring.gd`: purpose: The newest engine log lines of a playtest capture, capped so a long session stays small
+- `features/debug/playtest/logic/playtest_marks.gd`: purpose: Stamps a capture's strokes onto the screenshot as square marks one pixel apart along every segment
+- `features/debug/playtest/logic/playtest_strokes.gd`: purpose: The strokes of one playtest capture: freehand and ellipse paths in overlay space, with undo
+- `features/debug/playtest/playtest_canvas.gd`: purpose: Draws a capture's strokes in red and records left-drag freehand and right-drag ellipse strokes
+- `features/debug/playtest/playtest_capture.gd`: purpose: F12 playtest capture: grabs the screen, lets Feras circle bugs and write a note, then saves shot.png, marked.png and state.json under inbox/playtest for Claude to read
+- `features/debug/playtest/playtest_capture.tscn`: scene
+- `features/debug/playtest/playtest_logger.gd`: purpose: Catches engine errors and warnings into the capture's log ring without printing anything
+- `features/debug/playtest/tests/test_playtest_capture.gd`: purpose: PlaytestCapture pauses while it is open, cancels back to the previous pause state after the input is released, and saves shot.png, marked.png and state.json from an injected grab
+- `features/debug/playtest/tests/test_playtest_dump.gd`: purpose: PlaytestDump builds the capture record with every key, plain JSON values, the note/log/event caps and a Windows-safe folder name
+- `features/debug/playtest/tests/test_playtest_logger.gd`: purpose: PlaytestLogger records engine errors and error messages into its ring, ignores plain messages, and the ring keeps only the newest lines
+- `features/debug/playtest/tests/test_playtest_marks.gd`: purpose: PlaytestMarks paints a stroke onto the screenshot through the capture transform, leaves pixels away from it untouched, dots a lone point and clips points outside the image
+- `features/debug/playtest/tests/test_playtest_strokes.gd`: purpose: PlaytestStrokes keeps freehand and ellipse strokes, undo drops only the last, and an ellipse is closed and inside the box it was dragged over
 - `features/dialogue/defs/dialogue_choice.gd`: A player choice at the end of a dialogue line: text key, next dialogue (or "end"), and effects
 - `features/dialogue/defs/dialogue_def.gd`: A conversation: an ordered list of lines (speaker, expression, text key)
 - `features/dialogue/defs/dialogue_line.gd`: One spoken line: who says it, with which expression, localization key, and optional choices
@@ -510,6 +523,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/neon/logic/iso_walk.gd`: Pure walking rules of an iso room (docs/design/first-playable.md section 2): whether a feet point may stand (inside the walkable outline, outside every hole), a step that slides along the edge it hits instead of stopping, and the screen-space velocity of an input (y foreshortened, so "up" crosses the floor as fast as it looks)
 - `features/neon/neon_game.gd`: purpose: The Neon Glitch first playable from launch to the exit card (docs/design/first-playable.md section 1): the start flow, the Roya cold open, the prison roof, its turn-based fight on the map, "To be continued", then the start
 - `features/neon/neon_game.tscn`: scene
+- `features/neon/neon_playtest_state.gd`: purpose: The Neon Glitch state a playtest capture saves: the stage, the roof room and hero, and the fight if one is on
 - `features/neon/roof/defs/neon_roof_rules_def.gd`: purpose: numbers for prison roof exploration (hero/guard speeds, radii, timings)
 - `features/neon/roof/logic/contact_rules.gd`: purpose: pure distance and ambush detection rules for iso exploration contact
 - `features/neon/roof/roof_scene.gd`: purpose: prison roof exploration scene (iso plate, hero, patrol guards, occluders, fuse box, exit)
@@ -540,6 +554,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/neon/start/tests/test_start_steps.gd`: Tests for StartSteps state transitions and choices
 - `features/neon/tests/test_neon_foundation.gd`: purpose: Neon Glitch foundation: the sprite sets and the prison roof load with real sheets, IsoDir maps screen directions to the baked rows and back, IsoWalk keeps feet on the floor and slides along walls, IsoActor plays, signals the impact frame and holds a one-shot's last frame
 - `features/neon/tests/test_neon_game.gd`: purpose: The first playable's flow wires up headless: start -> cold open -> roof -> fight on the map -> back on the roof after a win -> exit card -> start again; a lost fight (Quit) returns to the start
+- `features/neon/tests/test_neon_playtest.gd`: purpose: NeonGame.playtest_state reports the roof room and hero position, and a running fight's ticks and three fighters, and the capture's source points at the game
 - `features/neon/view/iso_actor.gd`: A character on an iso plate (docs/design/first-playable.md section 2): plays one baked NeonSpriteSetDef state in one of 8 facings, the node's position being the feet (y-sort by it)
 - `features/progression/defs/class_def.gd`: A hero's RPG class: growth stats added per level above 1 and a passive perk (content/progression/classes.json)
 - `features/progression/defs/levels_def.gd`: Thresholds of total XP required to reach each level (content/progression/levels.json)
@@ -924,6 +939,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/oc_agents.py`: Makes one opencode subagent per game skill (.agents/skills/<name> -> .opencode/agent/<name>.md); --check fails when stale.
 - `tools/oc_review.sh`: Reviews an opencode task (branch oc/<task>) the same cheap way as an agy one: report, check result, commits, stats,
 - `tools/oc_task.sh`: Runs opencode on one task brief inside its own git worktree, never in the main checkout (DECISIONS 2026-10-23).
+- `tools/playtest.sh`: Runs the game with playtest capture and mirrors its output into inbox/playtest/game.log.
 - `tools/rodin/rewrite_glb.py`: Rebuild a Rodin glb with new triangle indices (from Godot, winding flipped back; IDX_BIN '-' keeps its own), no
 - `tools/rodin/slim_indices.gd`: Rodin step 1: simplifies a Rodin glb mesh with Godot's LOD generator and writes the index buffer (env SRC, IDX, MAX_TRIS, DST); rewrite_glb.py then builds the slim glb (usage: docs/design/characters-3d.md 8)
 - `tools/run_godot.sh`: Runs the pinned Godot headless on this project with the given arguments; fails on a non-zero exit or on
@@ -951,6 +967,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_neon_roof.tscn`: scene
 - `tools/shot_neon_start.gd`: Renders one Neon Glitch start flow state (TITLE, PICK, PANEL) to an inbox PNG
 - `tools/shot_neon_start.tscn`: scene
+- `tools/shot_playtest.gd`: purpose: Opens the playtest capture on the roof with the real screen grab, draws a circle and a stroke, and saves it
+- `tools/shot_playtest.tscn`: scene
 - `tools/shot_prop.gd`: Renders a prop close-up from play camera height to an inbox PNG (960x540)
 - `tools/shot_prop.tscn`: scene
 - `tools/shot_puzzles.gd`: Renders the grey-box valve-puzzle scene at 1920x1080 to C:/dev/game/inbox/puzzle_<arg>.png
