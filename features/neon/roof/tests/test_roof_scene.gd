@@ -9,6 +9,16 @@ func _make_roof() -> RoofScene:
 	return roof
 
 
+func _hud(node: Node) -> RoofHud:
+	if node is RoofHud:
+		return node as RoofHud
+	for child: Node in node.get_children():
+		var found: RoofHud = _hud(child)
+		if found != null:
+			return found
+	return null
+
+
 func test_hero_spawns_at_room_spawn() -> void:
 	var roof := _make_roof()
 	check(roof.hero() != null, "hero exists")
@@ -124,7 +134,8 @@ func test_pause_idles_actors() -> void:
 	roof.set_exploring(false)
 	check_eq(guard.state, &"idle", "a paused guard stands")
 	check_eq(roof.hero().state, &"idle", "a paused hero stands")
-	check(not roof.find_child("RoofHud", true, false).call("interact_shown"), "the prompt hides")
+	var hud: RoofHud = _hud(roof)
+	check(hud != null and not hud.interact_shown(), "the prompt hides")
 	roof.queue_free()
 
 

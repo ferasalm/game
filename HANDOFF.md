@@ -1,5 +1,5 @@
 # HANDOFF (current state only; one section per track, each edited only by its owner; max 60 lines)
-Last updated: 2026-10-26 (overnight: Neon Glitch first playable foundation + 3 builders), Opus 5.5 (`claude-opus-5-5`); 3D tracks paused.
+Last updated: 2026-10-26 (Neon Glitch first playable on main), Opus 5.5 (`claude-opus-5-5`); 3D tracks retired next.
 
 ## Shared
 - Builders: CLAUDE.md + EFFICIENCY 3b (5 runs: 2 agy, 2 DeepSeek, 1 Inkling); check `bash tools/slots.sh`.
@@ -15,17 +15,19 @@ Last updated: 2026-10-26 (overnight: Neon Glitch first playable foundation + 3 b
 - Waiting on the owner: more concept pictures (plus an empty plate per scene: no characters, HUD or rain).
 1. Then: design doc + plan the one-scene prototype (rooftop, Zayd, one fight, HUD). Model: Opus. Effort: high.
 
-## Track: Neon Glitch (owner: the overnight chat "Neon Glitch first playable", 2026-10-26)
-- Spec docs/design/first-playable.md; branch neon/first-playable (pushed). Done: prison-roof plate (Flow edit of his
-  rooftop), Rydan Rodin model from his sheet (A-pose via Flow), tools/bake_sprites.tscn + tools/art/sprite_sheet.py
-  (8-dir ink sprites: rydan, guard), start clips as .ogv, portraits (rydan_*, bilqis_ng_*), features/neon foundation.
-- Builders running from the old chat (check ../game-wt/<task>.result): neon-roof (agy), neon-start (agy),
-  neon-battle (cf). agy works again (ping 10-26); slots.sh still caps agy at 0: use CAP_AGY=2, fix after the runs.
-- Waiting on Feras: "similar to Hades" = real-time combat now? (built turn-based on the map); Claude defaults in
-  rydan.twee (prosthetic kept, Zayd call-in later, Roya watch-only); the bible's 5 open questions.
-1. Review/merge the 3 builds; Flow frames + brief for the Roya cold open; glue features/neon/neon_game.tscn
-   (start -> cold open -> roof -> map battle -> exit card) as main scene; render-check; /handoff. Opus, high.
-`Continue ferasalm/game on neon/first-playable. Read HANDOFF.md (Neon Glitch), docs/design/first-playable.md. Do its next step; /handoff.`
+## Track: Neon Glitch (owner: the chat "Neon Glitch first playable", 2026-10-26)
+- On main (merged 10-26): launching the project = features/neon/neon_game.tscn: start flow (his clips) -> Roya cold
+  open (3 Flow frames, ~37 s, any key skips after first view) -> prison roof (hatch burst, 8-way walk, fuse box +
+  Bilqis comms, 2 patrols) -> turn-based fight on the map (prison_guard x2, 84 % wins at XP 0) -> cable line ->
+  "TO BE CONTINUED" -> start. Renders: tools/shot_neon_game.tscn -> inbox/neon_game_*.png.
+- Feras: play it (Esc/back, Enter/Space confirm, WASD move, E interact). Read the cold-open captions
+  (localization/neon_cold_open.csv, Claude's draft) and the Claude defaults in rydan.twee.
+- Known gaps: Normal/Hard chosen but not applied; the two guards stand close in the fight formation; title may show
+  twice (clip logo + overlay); floodlight fade numbers in code; no call-in ally yet; code id "zayd" = Rydan.
+1. Feras playtests; fix his notes. Model: Opus. Effort: medium.
+2. Retire the old 3D game (DECISIONS 10-26): audit 3D-only vs shared with Neon, then remove 3D-only code, assets
+   and tests (tag 3d-archive keeps them). Model: Opus. Effort: high (plan mode, Haiku audit).
+`Continue ferasalm/game on main. Read HANDOFF.md (Neon Glitch). Do its next step; /handoff.`
 ## Track: Level 1 + playtest fixes: PAUSED 2026-10-24 (3D; 2D redesign). Unmerged fix branches kept in ../game-wt.
 - Playtest 2026-10-24: inbox/playtest_*.png, concept_*.png; crossing freeze fixed. docs/briefs/: render-clean,
   menus-equip-fix, holo-map-real (+ their fix passes), then cyber-look, items-menu, gear-slots (save: line review).

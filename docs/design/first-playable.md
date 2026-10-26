@@ -2,7 +2,7 @@
 Built from DECISIONS (Neon Glitch, opening order, prison-roof first fight, turn-based on the map) and Feras's line
 of 2026-10-26: "it will be an isometric game similar to Hades, with our unique art style". Read here as the look,
 camera and movement (isometric plate, free 8-direction movement, a following camera); the fight stays turn-based on
-the map until Feras says otherwise (open question in HANDOFF). Everything lives in `features/neon/` (new), so the
+the map (Feras confirmed 2026-10-26). Everything lives in `features/neon/` (new), so the
 parked 3D code and its tests stay untouched.
 
 ## 1. Flow (one run, about 6 minutes)

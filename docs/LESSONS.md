@@ -18,6 +18,7 @@
 - A scene added in a SceneTree script's `_initialize()` has no `_ready()` yet -> tests start from the first
   `_process()` (tests/runner.gd) (2026-10-19).
 - A test with a runtime error still counts as passed; only the SCRIPT ERROR line fails the run -> read the FAIL lines.
+- A lambda assigning an outer local changes nothing (captured by value) -> hold it in an Array (2026-10-26).
 - Commit every `.uid` and never read it; helper files in tests/ must not start with `test_` (2026-10-19).
 - No agent may write *.import -> new text goes into an existing CSV (CSVs use the "keep" importer and TextDB loads
   them; Godot's CSV import breaks a fresh clone, and a test enforces "keep") (2026-10-21/22).

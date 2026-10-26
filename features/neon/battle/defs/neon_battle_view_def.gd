@@ -71,12 +71,7 @@ func read(r: DefReader) -> void:
 	number_seconds = r.number("number_seconds", 0.05, 3.0, 0.55, false)
 	victory_font = r.integer("victory_font", 16, 300, 96, false)
 	retry_font = r.integer("retry_font", 8, 120, 28, false)
-	hp_color = r.color("hp_color", Color("#d94a4a"), false)
-	sp_color = r.color("sp_color", Color("#37c8b0"), false)
-	ink_color = r.color("ink_color", Color("#0b0a12"), false)
-	bar_back = r.color("bar_back", Color("#221c2e"), false)
-	foe_color = r.color("foe_color", Color("#ff5a4a"), false)
-	flash_color = r.color("flash_color", Color("#7ff0ff"), false)
+	_read_colors(r)
 	menu_offset_x = r.number("menu_offset_x", 0.0, 2000.0, 440.0, false)
 	menu_offset_y = r.number("menu_offset_y", 0.0, 2000.0, 420.0, false)
 	end_wait_seconds = r.number("end_wait_seconds", 0.0, 10.0, 1.2, false)
@@ -91,3 +86,12 @@ func read(r: DefReader) -> void:
 	bar_grow = r.number("bar_grow", 0.0, 20.0, 3.0, false)
 	flash_size = r.number("flash_size", 0.0, 500.0, 120.0, false)
 	flash_fade_seconds = r.number("flash_fade_seconds", 0.0, 5.0, 0.25, false)
+
+
+func _read_colors(r: DefReader) -> void:
+	hp_color = r.color("hp_color", Color("#d94a4a"), false)
+	sp_color = r.color("sp_color", Color("#37c8b0"), false)
+	ink_color = r.color("ink_color", Color("#0b0a12"), false)
+	bar_back = r.color("bar_back", Color("#221c2e"), false)
+	foe_color = r.color("foe_color", Color("#ff5a4a"), false)
+	flash_color = r.color("flash_color", Color("#7ff0ff"), false)
