@@ -96,3 +96,33 @@ func test_guards_stop_patrolling_after_the_fight() -> void:
 	check_eq(guard.position, held, "a fought guard no longer walks its path")
 	check(roof.world() != null and guard.get_parent() == roof.world(), "world() holds the actors")
 	roof.queue_free()
+
+
+func test_opening_hides_hero_until_landing() -> void:
+	var roof := _make_roof()
+	var rules := ContentDB.get_def("neon_roof_rules", &"prison_roof") as NeonRoofRulesDef
+	check(not roof.hero().visible, "the hero waits hidden in the hatch")
+	roof._process(rules.burst_delay + 0.01)
+	check(roof.hero().visible, "the hatch bursts after burst_delay")
+	check(roof.hero().position.y < roof.room().spawn.y, "he is mid-hop above the spawn")
+	Input.action_press("move_right")
+	roof._process(0.016)
+	Input.action_release("move_right")
+	check_eq(roof.hero().position.x, roof.room().spawn.x, "input before landing does not move him")
+	for i: int in 60:
+		roof._process(0.05)
+	check_eq(roof.hero().position, roof.room().spawn, "he lands on the spawn")
+	roof.queue_free()
+
+
+func test_pause_idles_actors() -> void:
+	var roof := _make_roof()
+	for i: int in 10:
+		roof._process(0.1)
+	var guard: IsoActor = roof.guards()[0]
+	check_eq(guard.state, &"walk", "a patrolling guard walks")
+	roof.set_exploring(false)
+	check_eq(guard.state, &"idle", "a paused guard stands")
+	check_eq(roof.hero().state, &"idle", "a paused hero stands")
+	check(not roof.find_child("RoofHud", true, false).call("interact_shown"), "the prompt hides")
+	roof.queue_free()

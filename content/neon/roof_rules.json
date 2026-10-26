@@ -12,7 +12,10 @@
       "flash_time": 0.2,
       "move_hint_seconds": 4.0,
       "floodlight_fade_seconds": 0.6,
-      "interact_radius": 90.0
+      "interact_radius": 90.0,
+      "burst_delay": 0.6,
+      "hop_seconds": 0.35,
+      "hop_height": 40.0
     }
   ]
 }

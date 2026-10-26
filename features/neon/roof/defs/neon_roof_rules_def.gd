@@ -12,6 +12,10 @@ var flash_time: float = 0.2
 var move_hint_seconds: float = 4.0
 var floodlight_fade_seconds: float = 0.6
 var interact_radius: float = 90.0
+## Opening: seconds before the hatch bursts, then the hop out of it (seconds, height in plate px).
+var burst_delay: float = 0.6
+var hop_seconds: float = 0.35
+var hop_height: float = 40.0
 
 
 func read(r: DefReader) -> void:
@@ -26,6 +30,9 @@ func read(r: DefReader) -> void:
 	move_hint_seconds = r.number("move_hint_seconds", 0.0, 20.0, 4.0)
 	floodlight_fade_seconds = r.number("floodlight_fade_seconds", 0.0, 10.0, 0.6)
 	interact_radius = r.number("interact_radius", 1.0, 500.0, 90.0)
+	burst_delay = r.number("burst_delay", 0.0, 10.0, 0.6)
+	hop_seconds = r.number("hop_seconds", 0.0, 5.0, 0.35)
+	hop_height = r.number("hop_height", 0.0, 400.0, 40.0)
 
 
 func references() -> Array[Array]:

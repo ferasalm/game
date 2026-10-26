@@ -1,0 +1,17 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://features/neon/neon_game.gd" id="1"]
+[ext_resource type="PackedScene" path="res://features/neon/start/start_flow.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://features/neon/cold_open/cold_open.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://features/neon/roof/roof_scene.tscn" id="4"]
+[ext_resource type="FontFile" path="res://assets/fonts/reem_kufi.ttf" id="5"]
+
+[node name="NeonGame" type="Node"]
+script = ExtResource("1")
+start_scene = ExtResource("2")
+cold_open_scene = ExtResource("3")
+roof_scene = ExtResource("4")
+end_font = ExtResource("5")
+end_font_size = 64
+end_card_seconds = 6.0
+end_fade_seconds = 1.0

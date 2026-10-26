@@ -23,7 +23,7 @@ var _exploring: bool = true
 var _battle_triggered: bool = false
 var _won: bool = false
 var _fuse_done: bool = false
-var _shake_timer: float = 0.0
+var _opening: RoofOpening
 
 
 func _ready() -> void:
@@ -32,6 +32,8 @@ func _ready() -> void:
 	if _rules == null:
 		_rules = NeonRoofRulesDef.new()
 	if _room == null:
+		push_error("RoofScene: no neon_room %s" % room_id)
+		set_process(false)
 		return
 	_setup_plate_and_camera()
 	_setup_actors()
@@ -60,6 +62,12 @@ func world() -> Node2D:
 
 func set_exploring(on: bool) -> void:
 	_exploring = on
+	if on:
+		return
+	_hud.hide_interact()
+	_hero.play(&"idle")
+	for guard: IsoActor in _guards:
+		guard.play(&"idle")
 
 
 func mark_won() -> void:
@@ -96,30 +104,22 @@ func _setup_actors() -> void:
 
 
 func _burst_opening() -> void:
-	_hero.visible = false
-	_shake_timer = _rules.burst_shake_time
-	RoofBurst.flash(_world, _room.spawn, _rules.flash_time)
-	_hero.visible = true
-	_hud.show_move_hint(_rules.move_hint_seconds)
+	_camera.position = _room.spawn
+	_camera.reset_smoothing()
+	_opening = RoofOpening.new(_hero, _world, _camera, _room.spawn, _rules)
 
 
 func _process(delta: float) -> void:
 	if _hero != null and _camera != null:
 		_camera.position = _hero.position
-	_update_shake(delta)
+	if _opening.tick(delta) == &"landed":
+		_hud.show_move_hint(_rules.move_hint_seconds)
 	if not _exploring:
 		return
-	_process_hero_input(delta)
+	if _opening.landed:
+		_process_hero_input(delta)
 	_process_guards(delta)
 	_process_interactables()
-
-
-func _update_shake(delta: float) -> void:
-	if _shake_timer > 0.0:
-		_shake_timer -= delta
-		_camera.offset = Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)) * _rules.burst_shake_intensity
-	else:
-		_camera.offset = Vector2.ZERO
 
 
 func _process_hero_input(delta: float) -> void:
@@ -149,36 +149,33 @@ func _process_guards(delta: float) -> void:
 
 
 func _process_interactables() -> void:
-	var nearest_prompt: String = ""
-	for item: Dictionary in _room.interactables:
-		var pos: Vector2 = item["pos"]
-		var rad: float = item["radius"]
-		if _hero.position.distance_to(pos) <= rad:
-			var id_name: StringName = item["id"]
-			if id_name == &"fuse_box" and not _fuse_done:
-				nearest_prompt = item["prompt"]
-			elif id_name == &"cable_line" and _won:
-				nearest_prompt = item["prompt"]
-	if nearest_prompt.is_empty():
+	var item: Dictionary = _usable_here()
+	if item.is_empty():
 		_hud.hide_interact()
 	else:
-		_hud.show_interact(nearest_prompt)
+		_hud.show_interact(item["prompt"])
 	if Input.is_action_just_pressed("interact"):
 		interact()
 
 
-func interact() -> void:
+## The interactable the hero stands at that can be used now (fuse box until used, cable line after the win).
+func _usable_here() -> Dictionary:
 	for item: Dictionary in _room.interactables:
-		var pos: Vector2 = item["pos"]
-		var rad: float = item["radius"]
-		if _hero.position.distance_to(pos) <= rad:
-			var id_name: StringName = item["id"]
-			if id_name == &"fuse_box" and not _fuse_done:
-				_on_fuse_interact()
-				return
-			elif id_name == &"cable_line" and _won:
-				exited.emit()
-				return
+		var rad: float = item.get("radius", _rules.interact_radius)
+		if _hero.position.distance_to(item["pos"] as Vector2) > rad:
+			continue
+		var id_name: StringName = item["id"]
+		if (id_name == &"fuse_box" and not _fuse_done) or (id_name == &"cable_line" and _won):
+			return item
+	return {}
+
+
+func interact() -> void:
+	var id_name: StringName = _usable_here().get("id", &"")
+	if id_name == &"fuse_box":
+		_on_fuse_interact()
+	elif id_name == &"cable_line":
+		exited.emit()
 
 
 func _on_fuse_interact() -> void:

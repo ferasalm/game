@@ -67,6 +67,10 @@ func hide_interact() -> void:
 	_interact_bg.visible = false
 
 
+func interact_shown() -> bool:
+	return _interact_bg.visible
+
+
 func _process(delta: float) -> void:
 	if _move_timer > 0.0:
 		_move_timer -= delta
