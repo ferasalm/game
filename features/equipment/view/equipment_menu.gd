@@ -1,6 +1,6 @@
 class_name EquipmentMenu
 extends UiScreen
-## purpose: Equipment menu with 3D hologram hero, slot boxes, owned list, stats comparison and tabs.
+## purpose: Equipment menu with Neon sprite hologram hero, slot boxes, owned list, stats comparison and tabs.
 
 const ID: StringName = &"equipment"
 

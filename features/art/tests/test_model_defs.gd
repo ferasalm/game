@@ -1,15 +1,9 @@
 extends TestCase
-## The data behind live 3D characters (content/art/models.json, clips.json) against the imported assets: every model
-## maps all nine states to clips that exist, every clip names a real animation of the shared library with its length and
-## an impact inside it, the bodies keep the rig's bone names, every anchor and part bone resolves, and the budgets hold
-## (bones, triangles, surfaces, textures). Feras's Rodin bodies: Zayd 12.6k, Bilqis 7.9k, Abu Nabil 8.2k and the
-## enforcer 7.5k triangles, within the hero cap here and the scene cap of docs/design/characters-3d.md 6.
+## The data behind the offline sprite sources (content/art/models.json, clips.json) against the imported assets: every
+## model maps all nine states to clips that exist, every clip names a real animation of the shared library with its
+## length and an impact inside it, the bodies keep the rig's bone names, and every anchor and part bone resolves.
 
 const MAX_BONES: int = 70
-const MAX_TRIS: int = 15100
-const MAX_SCREEN_TRIS: int = 90000
-const MAX_BODY_MATERIALS: int = 3
-const MAX_TEXTURE: int = 1024
 
 
 func _models(kind: StringName) -> Array[ModelDef]:
@@ -54,27 +48,14 @@ func test_impacts_come_after_the_windup_and_before_the_end() -> void:
 
 
 func test_the_bodies_keep_the_rig_and_the_budgets() -> void:
-	var triangles_by_scene: Dictionary[String, int] = {}
 	for def: ModelDef in _models(&"skinned"):
 		if def.id == &"rydan":
-			continue  # offline bake model for neon iso sprites; raw Rodin mesh exceeds 3D budget
+			continue  # offline bake model for neon iso sprites; no runtime 3D
 		var holder := Node3D.new()
 		tree.root.add_child(holder)
 		var rig := ModelRig.new()
 		check(rig.build(def, holder), "%s builds" % def.id)
 		check(rig.skeleton.get_bone_count() <= MAX_BONES, "%s: at most %d bones" % [def.id, MAX_BONES])
-		var tris: int = 0
-		var surfaces: int = 0
-		for mesh: Node in rig.skeleton.get_children():
-			var instance := mesh as MeshInstance3D
-			if instance == null:
-				continue
-			surfaces += instance.mesh.get_surface_count()
-			for s: int in instance.mesh.get_surface_count():
-				tris += (instance.mesh.surface_get_arrays(s)[Mesh.ARRAY_INDEX] as PackedInt32Array).size() / 3
-		check(tris <= MAX_TRIS, "%s: %d triangles within %d" % [def.id, tris, MAX_TRIS])
-		check(surfaces <= MAX_BODY_MATERIALS, "%s: %d body surfaces within %d" % [def.id, surfaces, MAX_BODY_MATERIALS])
-		triangles_by_scene[def.id] = tris
 		for bone: String in def.anchors.values():
 			check(rig.skeleton.find_bone(bone) >= 0, "%s: anchor bone %s exists" % [def.id, bone])
 		for part: ModelPartDef in def.parts:
@@ -82,14 +63,7 @@ func test_the_bodies_keep_the_rig_and_the_budgets() -> void:
 			check(part.to_bone.is_empty() or rig.skeleton.find_bone(part.to_bone) >= 0, "%s/%s: to_bone exists" % [def.id, part.id])
 			check(part.draw_bone.is_empty() or rig.skeleton.find_bone(part.draw_bone) >= 0, "%s/%s: draw_bone exists" % [def.id, part.id])
 			check(rig.parts.has(part.id), "%s: part %s was built" % [def.id, part.id])
-		for path: String in [def.skin, def.eye_texture, def.hair_texture]:
-			var texture: Texture2D = ModelMaterials.load_texture(path)
-			check(texture != null and maxi(texture.get_width(), texture.get_height()) <= MAX_TEXTURE, "%s: texture %s within %d" % [def.id, path.get_file(), MAX_TEXTURE])
 		holder.free()
-	var party: int = 0
-	for id: StringName in [&"zayd", &"bilqis", &"abu_nabil", &"concession_enforcer", &"concession_enforcer"]:
-		party += triangles_by_scene.get(id, 0)
-	check(party <= MAX_SCREEN_TRIS, "five characters on screen stay within %d triangles (%d)" % [MAX_SCREEN_TRIS, party])
 
 
 func test_the_bodies_share_the_animation_rig() -> void:
