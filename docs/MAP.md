@@ -28,6 +28,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `.agents/skills/godot-shader-developer/SKILL.md`
 - `.agents/skills/image-prompt-engineer/SKILL.md`
 - `.agents/skills/level-designer/SKILL.md`
+- `.agents/skills/marketing-content-creator/SKILL.md`
+- `.agents/skills/marketing-short-video-editing-coach/SKILL.md`
+- `.agents/skills/marketing-video-optimization-specialist/SKILL.md`
 - `.agents/skills/mcp-builder/SKILL.md`
 - `.agents/skills/minimal-change-engineer/SKILL.md`
 - `.agents/skills/narrative-designer/SKILL.md`
@@ -58,6 +61,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `.opencode/agent/godot-shader-developer.md`
 - `.opencode/agent/image-prompt-engineer.md`
 - `.opencode/agent/level-designer.md`
+- `.opencode/agent/marketing-content-creator.md`
+- `.opencode/agent/marketing-short-video-editing-coach.md`
+- `.opencode/agent/marketing-video-optimization-specialist.md`
 - `.opencode/agent/mcp-builder.md`
 - `.opencode/agent/minimal-change-engineer.md`
 - `.opencode/agent/narrative-designer.md`
@@ -944,6 +950,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_models.gd`: Model gallery for renders (docs/design/characters-3d.md): the cast in a row on a floor under the painted look, each doing a state, close enough to judge the stand-ins
 - `tools/shot_neon_battle.gd`: purpose: Renders the on-map Neon battle mid-fight (auto-play) to C:/dev/game/inbox/neon_battle.png with the HUD
 - `tools/shot_neon_battle.tscn`: scene
+- `tools/shot_neon_game.gd`: purpose: Renders the Neon Glitch first playable stage by stage (start, cold open shots 2 and 3 and the lock, the roof after the hatch burst, the fight on the roof) to C:/dev/game/inbox/neon_game_<n>.png; run non-headless
+- `tools/shot_neon_game.tscn`: scene
 - `tools/shot_neon_roof.gd`: purpose: renders hero walking with a guard visible on the prison roof to inbox PNG for proof
 - `tools/shot_neon_roof.tscn`: scene
 - `tools/shot_neon_start.gd`: Renders one Neon Glitch start flow state (TITLE, PICK, PANEL) to an inbox PNG
