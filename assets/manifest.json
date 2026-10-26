@@ -3744,6 +3744,62 @@
       "source": "Baked by tools/bake_sprites.tscn from rydan_rodin.glb with Quaternius UAL clips (CC0)",
       "licence": "owner's model (Rodin Creator plan) + CC0 motion",
       "prompt": "tools/art/sprite_sheet.py, 8 directions, 256 colours"
+    },
+    {
+      "id": "portrait_rydan_neutral",
+      "path": "portraits/rydan_neutral.png",
+      "source": "Google Flow (owner's account), Feras's own output: inbox/Neon Glitch concept art/Zayd_expressions.jpg (his Rydan expression sheet)",
+      "licence": "owner-generated (Google Flow); owner's own art",
+      "prompt": "cut into 4 columns, 720 px tall, edges faded to alpha (2026-10-26)"
+    },
+    {
+      "id": "portrait_rydan_happy",
+      "path": "portraits/rydan_happy.png",
+      "source": "Google Flow (owner's account), Feras's own output: inbox/Neon Glitch concept art/Zayd_expressions.jpg (his Rydan expression sheet)",
+      "licence": "owner-generated (Google Flow); owner's own art",
+      "prompt": "cut into 4 columns, 720 px tall, edges faded to alpha (2026-10-26)"
+    },
+    {
+      "id": "portrait_rydan_angry",
+      "path": "portraits/rydan_angry.png",
+      "source": "Google Flow (owner's account), Feras's own output: inbox/Neon Glitch concept art/Zayd_expressions.jpg (his Rydan expression sheet)",
+      "licence": "owner-generated (Google Flow); owner's own art",
+      "prompt": "cut into 4 columns, 720 px tall, edges faded to alpha (2026-10-26)"
+    },
+    {
+      "id": "portrait_rydan_surprised",
+      "path": "portraits/rydan_surprised.png",
+      "source": "Google Flow (owner's account), Feras's own output: inbox/Neon Glitch concept art/Zayd_expressions.jpg (his Rydan expression sheet)",
+      "licence": "owner-generated (Google Flow); owner's own art",
+      "prompt": "cut into 4 columns, 720 px tall, edges faded to alpha (2026-10-26)"
+    },
+    {
+      "id": "portrait_bilqis_ng_neutral",
+      "path": "portraits/bilqis_ng_neutral.png",
+      "source": "Google Flow (owner's account), Feras's own output: inbox/Neon Glitch concept art/Game_dialogue_portrait_sprite_sheet_2K_20261025111845.jpg (his Bilqis sheet)",
+      "licence": "owner-generated (Google Flow); owner's own art",
+      "prompt": "cut into 4 columns, 720 px tall, edges faded to alpha (2026-10-26)"
+    },
+    {
+      "id": "portrait_bilqis_ng_happy",
+      "path": "portraits/bilqis_ng_happy.png",
+      "source": "Google Flow (owner's account), Feras's own output: inbox/Neon Glitch concept art/Game_dialogue_portrait_sprite_sheet_2K_20261025111845.jpg (his Bilqis sheet)",
+      "licence": "owner-generated (Google Flow); owner's own art",
+      "prompt": "cut into 4 columns, 720 px tall, edges faded to alpha (2026-10-26)"
+    },
+    {
+      "id": "portrait_bilqis_ng_angry",
+      "path": "portraits/bilqis_ng_angry.png",
+      "source": "Google Flow (owner's account), Feras's own output: inbox/Neon Glitch concept art/Game_dialogue_portrait_sprite_sheet_2K_20261025111845.jpg (his Bilqis sheet)",
+      "licence": "owner-generated (Google Flow); owner's own art",
+      "prompt": "cut into 4 columns, 720 px tall, edges faded to alpha (2026-10-26)"
+    },
+    {
+      "id": "portrait_bilqis_ng_surprised",
+      "path": "portraits/bilqis_ng_surprised.png",
+      "source": "Google Flow (owner's account), Feras's own output: inbox/Neon Glitch concept art/Game_dialogue_portrait_sprite_sheet_2K_20261025111845.jpg (his Bilqis sheet)",
+      "licence": "owner-generated (Google Flow); owner's own art",
+      "prompt": "cut into 4 columns, 720 px tall, edges faded to alpha (2026-10-26)"
     }
   ]
 }
