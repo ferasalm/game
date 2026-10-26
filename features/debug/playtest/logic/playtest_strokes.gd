@@ -44,6 +44,11 @@ func strokes() -> Array[PackedVector2Array]:
 	return _strokes.duplicate()
 
 
+## The stroke still being drawn (empty when none is open), so the overlay can show it live.
+func current() -> PackedVector2Array:
+	return _current if _active else PackedVector2Array()
+
+
 ## A closed ellipse that fits the box from `a` to `b`.
 static func ellipse(a: Vector2, b: Vector2, segments: int = ELLIPSE_SEGMENTS) -> PackedVector2Array:
 	var points := PackedVector2Array()

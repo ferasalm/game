@@ -23,6 +23,7 @@ func _gui_input(event: InputEvent) -> void:
 func _draw() -> void:
 	for stroke: PackedVector2Array in strokes.strokes():
 		_draw_stroke(stroke)
+	_draw_stroke(strokes.current())
 	if _ellipse_mode:
 		_draw_stroke(_ellipse_points)
 
@@ -89,10 +90,7 @@ func _mouse_motion(event: InputEventMouseMotion) -> void:
 
 func _commit_ellipse() -> void:
 	if _ellipse_mode:
-		strokes.begin(_ellipse_start)
-		for point: Vector2 in _ellipse_points:
-			strokes.add(point)
-		strokes.end()
+		add_stroke(_ellipse_points)
 	_ellipse_mode = false
 	_drawing = false
 	_ellipse_points = PackedVector2Array()

@@ -32,6 +32,20 @@ func test_open_pauses_and_cancel_restores_after_release() -> void:
 	_cleanup(capture)
 
 
+func test_held_confirm_key_keeps_the_pause_until_released() -> void:
+	tree.paused = false
+	var capture: PlaytestCapture = _capture()
+	capture.open_capture()
+	Input.action_press("interact")
+	capture.save_capture()
+	capture._process(0.0)
+	check(tree.paused, "a held Enter/interact keeps the game paused, so it cannot reach the fuse box")
+	Input.action_release("interact")
+	capture._process(0.0)
+	check(not tree.paused, "the game resumes once the key is up")
+	_cleanup(capture)
+
+
 func test_save_writes_three_files_and_restores_pause() -> void:
 	tree.paused = false
 	var capture: PlaytestCapture = _capture()

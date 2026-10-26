@@ -298,6 +298,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/debug/playtest/playtest_capture.gd`: purpose: F12 playtest capture: grabs the screen, lets Feras circle bugs and write a note, then saves shot.png, marked.png and state.json under inbox/playtest for Claude to read
 - `features/debug/playtest/playtest_capture.tscn`: scene
 - `features/debug/playtest/playtest_logger.gd`: purpose: Catches engine errors and warnings into the capture's log ring without printing anything
+- `features/debug/playtest/tests/test_playtest_canvas.gd`: purpose: PlaytestCanvas turns real mouse drags into marks: a left drag shows while drawn and is kept on release, a right drag keeps a clean ellipse inside its box (no line back to the corner where the drag began)
 - `features/debug/playtest/tests/test_playtest_capture.gd`: purpose: PlaytestCapture pauses while it is open, cancels back to the previous pause state after the input is released, and saves shot.png, marked.png and state.json from an injected grab
 - `features/debug/playtest/tests/test_playtest_dump.gd`: purpose: PlaytestDump builds the capture record with every key, plain JSON values, the note/log/event caps and a Windows-safe folder name
 - `features/debug/playtest/tests/test_playtest_logger.gd`: purpose: PlaytestLogger records engine errors and error messages into its ring, ignores plain messages, and the ring keeps only the newest lines
