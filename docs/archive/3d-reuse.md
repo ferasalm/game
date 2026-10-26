@@ -5,6 +5,7 @@ Restore one file with `git checkout 3d-archive -- <path>`, then fix it to Neon's
 
 Fit: **as is** = no 3D types and usable without a rewrite; **port** = keep the rules/data, redraw the view in 2D;
 **idea only** = read it for the concept.
+Still in the tree (not archived; nothing to restore): `content/dialogue/dialogues.json`, `content/dialogue/talks.json`, `content/economy/shops.json`, `content/neon/rooms.json`, `content/world/areas.json`, `content/world/buildings.json`, `content/world/look.json`, `content/world/mist.json`, `content/world/props.json`, `content/world/sky.json`, `content/world/skyline.json`, `content/world/tiles.json`, `features/combat/logic/hud_layout.gd`, `features/combat/tests/test_hud_layout.gd`, `features/dialogue/logic/dialogue_run.gd`, `features/dialogue/logic/talk_picker.gd`, `features/dialogue/tests/test_abu_nabil_haggle.gd`, `features/dialogue/tests/test_talk_picker.gd`, `features/ui/tests/test_popups.gd`, `features/ui/view/area_title_card.gd`, `features/ui/view/loot_popup.gd`, `features/world/defs/tile_def.gd`, `features/world/logic/light_pick.gd`, `features/world/view/diorama.gd`, `features/world/view/painted_look.gd`, `features/world/view/painted_materials.gd`, `features/world/view/prop_mesh.gd`, `features/world/view/skyline_builder.gd`, `features/world/view/tower_house.gd`.
 
 | Archived path(s) | What it is | Reuse for Neon (how, in one line) | Fit |
 |---|---|---|---|
