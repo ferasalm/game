@@ -123,6 +123,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/neon/roof_rules.json`: content: neon_roof_rules x1
 - `content/neon/rooms.json`: content: neon_room x1
 - `content/neon/sprites.json`: content: neon_sprite_set x2
+- `content/neon/start_flow.json`: content: start_flow x1
 - `content/progression/classes.json`: content: class x2
 - `content/progression/levels.json`: content: levels x1
 - `content/prosthetics/prosthetics.json`: content: prosthetic x6
@@ -517,6 +518,16 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/neon/roof/view/roof_patrol.gd`: purpose: manages one guard's back-and-forth patrol movement, pauses, and facings
 - `features/neon/roof/view/roof_rain.gd`: purpose: scrolling rain overlay placed over the exploration plate
 - `features/neon/roof/view/roof_rain.gdshader`
+- `features/neon/start/logic/start_steps.gd`: Pure state transitions for the Neon Glitch start flow (no nodes or tree)
+- `features/neon/start/shaders/glitch.gdshader`
+- `features/neon/start/shaders/radial_blur.gdshader`
+- `features/neon/start/start_flow.gd`: Full-screen controller for the Neon Glitch start flow over video clips
+- `features/neon/start/start_flow.tscn`: scene
+- `features/neon/start/start_flow_def.gd`: Authored timings, colours, and sizes for the Neon Glitch start flow
+- `features/neon/start/start_flow_fx.gd`: Transitions and effects for the start flow (crossfades, blurs, and cover sizing)
+- `features/neon/start/start_ui.gd`: View layer for Neon Glitch start flow overlays (title, menu, pick, panel, HUD boot)
+- `features/neon/start/tests/test_start_flow.gd`: Headless tests for StartFlow clip loading and done signal emission
+- `features/neon/start/tests/test_start_steps.gd`: Tests for StartSteps state transitions and choices
 - `features/neon/tests/test_neon_foundation.gd`: purpose: Neon Glitch foundation: the sprite sets and the prison roof load with real sheets, IsoDir maps screen directions to the baked rows and back, IsoWalk keeps feet on the floor and slides along walls, IsoActor plays, signals the impact frame and holds a one-shot's last frame
 - `features/neon/view/iso_actor.gd`: A character on an iso plate (docs/design/first-playable.md section 2): plays one baked NeonSpriteSetDef state in one of 8 facings, the node's position being the feet (y-sort by it)
 - `features/progression/defs/class_def.gd`: A hero's RPG class: growth stats added per level above 1 and a passive perk (content/progression/classes.json)
@@ -925,6 +936,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_neon_battle.tscn`: scene
 - `tools/shot_neon_roof.gd`: purpose: renders hero walking with a guard visible on the prison roof to inbox PNG for proof
 - `tools/shot_neon_roof.tscn`: scene
+- `tools/shot_neon_start.gd`: Renders one Neon Glitch start flow state (TITLE, PICK, PANEL) to an inbox PNG
+- `tools/shot_neon_start.tscn`: scene
 - `tools/shot_prop.gd`: Renders a prop close-up from play camera height to an inbox PNG (960x540)
 - `tools/shot_prop.tscn`: scene
 - `tools/shot_puzzles.gd`: Renders the grey-box valve-puzzle scene at 1920x1080 to C:/dev/game/inbox/puzzle_<arg>.png
