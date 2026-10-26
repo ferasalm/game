@@ -45,11 +45,6 @@ func refresh() -> void:
 			float(_shown_hp.get(unit_id, 0)) / float(unit.def.max_hp), 0.0, 1.0)
 
 
-func bar(unit_id: StringName) -> Control:
-	var entry: Dictionary = _bars.get(unit_id, {})
-	return entry.get("fill") as Control
-
-
 func _process(_delta: float) -> void:
 	var transform: Transform2D = get_viewport().get_canvas_transform()
 	for unit_id: StringName in _bars:

@@ -30,7 +30,21 @@
    "ink_color": "#0b0a12",
    "bar_back": "#221c2e",
    "foe_color": "#ff5a4a",
-   "flash_color": "#7ff0ff"
+   "flash_color": "#7ff0ff",
+   "menu_offset_x": 440.0,
+   "menu_offset_y": 420.0,
+   "end_wait_seconds": 1.2,
+   "post_attack_seconds": 0.12,
+   "cast_seconds": 0.35,
+   "dash_speed": 700.0,
+   "dash_min_seconds": 0.12,
+   "number_offset_x": -12.0,
+   "number_offset_y": -40.0,
+   "number_shadow_offset": 3,
+   "stamp_shadow_offset": 6,
+   "bar_grow": 3.0,
+   "flash_size": 120.0,
+   "flash_fade_seconds": 0.25
   }
  ]
 }

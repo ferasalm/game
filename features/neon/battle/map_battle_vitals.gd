@@ -15,9 +15,9 @@ func setup(sim: BattleSim, view: NeonBattleViewDef, shown_hp: Dictionary[StringN
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
 	offset_left = float(view.hero_bar_margin)
-	offset_top = -float(view.hero_bar_margin + view.hero_bar_h * 2 + view.bar_gap)
+	offset_top = -float(view.hero_bar_bottom + view.hero_bar_h * 2 + view.bar_gap)
 	offset_right = float(view.hero_bar_margin + view.hero_bar_w)
-	offset_bottom = -float(view.hero_bar_margin)
+	offset_bottom = -float(view.hero_bar_bottom)
 
 
 func refresh() -> void:
@@ -40,7 +40,7 @@ func _draw() -> void:
 
 
 func _draw_bar(rect: Rect2, ratio: float, colour: Color) -> void:
-	draw_colored_polygon(_slanted(rect.grow(3.0), float(_view.bar_slant)), _view.ink_color)
+	draw_colored_polygon(_slanted(rect.grow(_view.bar_grow), float(_view.bar_slant)), _view.ink_color)
 	draw_colored_polygon(_slanted(rect, float(_view.bar_slant)), _view.bar_back)
 	if ratio > 0.0:
 		var fill := Rect2(rect.position, Vector2(rect.size.x * ratio, rect.size.y))

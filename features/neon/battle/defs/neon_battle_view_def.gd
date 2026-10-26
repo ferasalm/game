@@ -31,6 +31,20 @@ var ink_color: Color = Color("#0b0a12")
 var bar_back: Color = Color("#221c2e")
 var foe_color: Color = Color("#ff5a4a")
 var flash_color: Color = Color("#7ff0ff")
+var menu_offset_x: float = 440.0
+var menu_offset_y: float = 420.0
+var end_wait_seconds: float = 1.2
+var post_attack_seconds: float = 0.12
+var cast_seconds: float = 0.35
+var dash_speed: float = 700.0
+var dash_min_seconds: float = 0.12
+var number_offset_x: float = -12.0
+var number_offset_y: float = -40.0
+var number_shadow_offset: int = 3
+var stamp_shadow_offset: int = 6
+var bar_grow: float = 3.0
+var flash_size: float = 120.0
+var flash_fade_seconds: float = 0.25
 
 
 func read(r: DefReader) -> void:
@@ -63,3 +77,17 @@ func read(r: DefReader) -> void:
 	bar_back = r.color("bar_back", Color("#221c2e"), false)
 	foe_color = r.color("foe_color", Color("#ff5a4a"), false)
 	flash_color = r.color("flash_color", Color("#7ff0ff"), false)
+	menu_offset_x = r.number("menu_offset_x", 0.0, 2000.0, 440.0, false)
+	menu_offset_y = r.number("menu_offset_y", 0.0, 2000.0, 420.0, false)
+	end_wait_seconds = r.number("end_wait_seconds", 0.0, 10.0, 1.2, false)
+	post_attack_seconds = r.number("post_attack_seconds", 0.0, 5.0, 0.12, false)
+	cast_seconds = r.number("cast_seconds", 0.0, 5.0, 0.35, false)
+	dash_speed = r.number("dash_speed", 10.0, 5000.0, 700.0, false)
+	dash_min_seconds = r.number("dash_min_seconds", 0.0, 5.0, 0.12, false)
+	number_offset_x = r.number("number_offset_x", -200.0, 200.0, -12.0, false)
+	number_offset_y = r.number("number_offset_y", -200.0, 200.0, -40.0, false)
+	number_shadow_offset = r.integer("number_shadow_offset", 0, 50, 3, false)
+	stamp_shadow_offset = r.integer("stamp_shadow_offset", 0, 50, 6, false)
+	bar_grow = r.number("bar_grow", 0.0, 20.0, 3.0, false)
+	flash_size = r.number("flash_size", 0.0, 500.0, 120.0, false)
+	flash_fade_seconds = r.number("flash_fade_seconds", 0.0, 5.0, 0.25, false)

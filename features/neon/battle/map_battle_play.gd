@@ -4,14 +4,18 @@ extends RefCounted
 ## and apply their hits only at the IsoActor impact frame, then dash back; tech moves cast with a coloured flash;
 ## ko stays down; damage numbers and a small shake sell the hit. Instant mode plays the same beats synchronously.
 
-const MOVE_KINDS: Array[StringName] = [&"act", &"reverse_stab", &"command"]
+const MOVE_KINDS: Array[StringName] = [&"act", &"reverse_stab"]
 
 var battle: MapBattle
-var _pending: Array[TimelineEvent] = []
+var handler: MapBattleEvents
+var _attacker: IsoActor
+var _pending_hits: Array[TimelineEvent] = []
+var _pending_rest: Array[TimelineEvent] = []
 
 
 func _init(owner: MapBattle) -> void:
 	battle = owner
+	handler = MapBattleEvents.new(owner)
 
 
 func play(events: Array[TimelineEvent]) -> void:
@@ -19,137 +23,142 @@ func play(events: Array[TimelineEvent]) -> void:
 	while i < events.size():
 		var event: TimelineEvent = events[i]
 		if MOVE_KINDS.has(event.kind):
-			var action: ActionDef = battle.sim.actions.get(event.detail) as ActionDef
-			var hits: Array[TimelineEvent] = _hits_after(events, i)
-			await _act(event.unit_id, action, hits)
-			i = _next_move(events, i)
+			var unit: UnitState = battle.sim.timeline.find(event.unit_id)
+			var action: ActionDef = unit.acted if unit != null else null
+			if action == null and event.detail != &"":
+				action = battle.sim.actions.get(event.detail) as ActionDef
+			var move_events: Array[TimelineEvent] = MapBattleEvents.events_after(events, i)
+			if battle.instant:
+				_act_instant(event.unit_id, action, move_events, unit)
+			else:
+				await _act_async(event.unit_id, action, move_events, unit)
+			i = MapBattleEvents.next_move(events, i)
 			continue
-		_one(event)
+		handler.one(event)
 		i += 1
+	handler.reconcile()
 
 
 ## The impact frame of a melee swing: applies the pending hits (a test can call it directly).
-func begin_melee(actor: IsoActor, hits: Array[TimelineEvent]) -> void:
-	_pending = hits
+func begin_melee(actor: IsoActor, hits: Array[TimelineEvent], rest: Array[TimelineEvent] = []) -> void:
+	_attacker = actor
+	_pending_hits = hits
+	_pending_rest = rest
 	actor.impact.connect(_on_impact, CONNECT_ONE_SHOT)
 	actor.play(&"attack", true)
 
 
 func _on_impact(_state: StringName) -> void:
-	var hits: Array[TimelineEvent] = _pending
-	_pending = []
+	var hits: Array[TimelineEvent] = _pending_hits
+	var rest: Array[TimelineEvent] = _pending_rest
+	_pending_hits = []
+	_pending_rest = []
+	if _attacker != null:
+		_attacker.freeze(battle.view.hit_stop)
 	for hit: TimelineEvent in hits:
-		_apply(hit)
+		handler.apply(hit)
+	for event: TimelineEvent in rest:
+		handler.one(event)
 	if not hits.is_empty():
 		battle.shake()
 
 
-func _act(actor_id: StringName, action: ActionDef, hits: Array[TimelineEvent]) -> void:
+func _act_instant(actor_id: StringName, action: ActionDef, events: Array[TimelineEvent], unit: UnitState) -> void:
 	var actor: IsoActor = battle.actors.get(actor_id)
+	print("ACT_INSTANT: actor_id=", actor_id, " actor=", actor, " action=", action)
+	var h: Array[TimelineEvent] = []
+	var r: Array[TimelineEvent] = []
+	_split_events(events, h, r)
 	if actor == null or action == null:
-		for hit: TimelineEvent in hits:
-			_apply(hit)
+		_apply_all(h, r)
 		return
 	if action.is_melee:
-		await _melee(actor, hits)
+		_melee_instant(actor, h, r, unit)
 	else:
-		await _tech(actor, hits)
+		_tech_instant(actor, h, r, unit)
 
 
-func _melee(actor: IsoActor, hits: Array[TimelineEvent]) -> void:
-	var target: IsoActor = _first_target(hits)
+func _act_async(actor_id: StringName, action: ActionDef, events: Array[TimelineEvent], unit: UnitState) -> void:
+	var actor: IsoActor = battle.actors.get(actor_id)
+	var h: Array[TimelineEvent] = []
+	var r: Array[TimelineEvent] = []
+	_split_events(events, h, r)
+	if actor == null or action == null:
+		_apply_all(h, r)
+		return
+	if action.is_melee:
+		await _melee_async(actor, h, r, unit)
+	else:
+		await _tech_async(actor, h, r, unit)
+
+
+func _split_events(events: Array[TimelineEvent], hits: Array[TimelineEvent], rest: Array[TimelineEvent]) -> void:
+	for e: TimelineEvent in events:
+		if e.kind == &"damage":
+			hits.append(e)
+		else:
+			rest.append(e)
+
+
+func _apply_all(hits: Array[TimelineEvent], rest: Array[TimelineEvent]) -> void:
+	for hit: TimelineEvent in hits:
+		handler.apply(hit)
+	for e: TimelineEvent in rest:
+		handler.one(e)
+
+
+func _melee_instant(actor: IsoActor, hits: Array[TimelineEvent], rest: Array[TimelineEvent], unit: UnitState) -> void:
+	var target: IsoActor = handler.find_target(hits, unit)
 	var home: Vector2 = actor.position
 	if target != null:
 		var toward: Vector2 = (target.position - home).normalized()
-		var spot: Vector2 = target.position - toward * battle.view.approach
-		if battle.instant:
-			actor.position = spot
-		else:
-			await _dash(actor, spot)
+		actor.position = target.position - toward * battle.view.approach
 		actor.face(target.position - actor.position)
-	begin_melee(actor, hits)
-	if battle.instant:
-		_drive_to_impact(actor)
-	elif _has_impact(actor):
-		await actor.impact
-	else:
-		_on_impact(&"attack")
-	if not battle.instant:
-		await battle.get_tree().create_timer(0.12).timeout
-		await _dash(actor, home)
+	begin_melee(actor, hits, rest)
+	_drive_to_impact(actor)
 	actor.position = home
 	actor.play(&"idle")
 
 
-func _tech(actor: IsoActor, hits: Array[TimelineEvent]) -> void:
-	actor.play(&"cast", true)
-	for hit: TimelineEvent in hits:
-		var target: IsoActor = battle.actors.get(hit.unit_id)
-		if target != null:
-			battle.hud.flash_at(target.position, battle.view.flash_color)
-		_apply(hit)
-	if not battle.instant:
-		await battle.get_tree().create_timer(0.35).timeout
+func _melee_async(actor: IsoActor, hits: Array[TimelineEvent], rest: Array[TimelineEvent], unit: UnitState) -> void:
+	var target: IsoActor = handler.find_target(hits, unit)
+	var home: Vector2 = actor.position
+	if target != null:
+		var toward: Vector2 = (target.position - home).normalized()
+		var spot: Vector2 = target.position - toward * battle.view.approach
+		await _dash(actor, spot)
+		actor.face(target.position - actor.position)
+	begin_melee(actor, hits, rest)
+	if _has_impact(actor):
+		await actor.impact
+	else:
+		_on_impact(&"attack")
+	await battle.get_tree().create_timer(battle.view.post_attack_seconds).timeout
+	await _dash(actor, home)
+	actor.position = home
 	actor.play(&"idle")
 
 
-func _one(event: TimelineEvent) -> void:
-	match event.kind:
-		&"damage":
-			_apply(event)
-		&"down":
-			_down(event)
-		&"healed":
-			_heal(event)
-		&"revived":
-			_revive(event)
+func _tech_instant(actor: IsoActor, hits: Array[TimelineEvent], rest: Array[TimelineEvent], unit: UnitState) -> void:
+	actor.play(&"cast", true)
+	_flash_targets(hits, rest, unit)
+	_apply_all(hits, rest)
+	actor.play(&"idle")
 
 
-func _apply(event: TimelineEvent) -> void:
-	if event.value <= 0:
-		return
-	var unit_id: StringName = event.unit_id
-	battle.shown_hp[unit_id] = maxi(0, battle.shown_hp.get(unit_id, 0) - event.value)
-	var target: IsoActor = battle.actors.get(unit_id)
-	if target != null:
-		target.freeze(battle.view.hit_stop)
-		if target.state != &"ko":
-			target.play(&"hurt", true)
-		battle.hud.pop_number(target.position + Vector2(0.0, -target.height()), event.value, battle.view.hp_color)
-	battle.hud.refresh()
+func _tech_async(actor: IsoActor, hits: Array[TimelineEvent], rest: Array[TimelineEvent], unit: UnitState) -> void:
+	actor.play(&"cast", true)
+	_flash_targets(hits, rest, unit)
+	_apply_all(hits, rest)
+	await battle.get_tree().create_timer(battle.view.cast_seconds).timeout
+	actor.play(&"idle")
 
 
-func _down(event: TimelineEvent) -> void:
-	battle.shown_hp[event.unit_id] = 0
-	var target: IsoActor = battle.actors.get(event.unit_id)
-	if target != null:
-		target.play(&"ko", true)
-	battle.hud.refresh()
-
-
-func _heal(event: TimelineEvent) -> void:
-	var unit: UnitState = battle.sim.timeline.find(event.unit_id)
-	if unit == null:
-		return
-	battle.shown_hp[event.unit_id] = mini(unit.def.max_hp, battle.shown_hp.get(event.unit_id, 0) + event.value)
-	var target: IsoActor = battle.actors.get(event.unit_id)
-	if target != null:
-		battle.hud.pop_number(target.position + Vector2(0.0, -target.height()), event.value, battle.view.sp_color)
-	battle.hud.refresh()
-
-
-func _revive(event: TimelineEvent) -> void:
-	var target: IsoActor = battle.actors.get(event.unit_id)
-	if target != null:
-		target.play(&"idle", true)
-
-
-func _first_target(hits: Array[TimelineEvent]) -> IsoActor:
-	for hit: TimelineEvent in hits:
-		var actor: IsoActor = battle.actors.get(hit.unit_id)
-		if actor != null:
-			return actor
-	return null
+func _flash_targets(hits: Array[TimelineEvent], rest: Array[TimelineEvent], unit: UnitState) -> void:
+	for target_id: StringName in handler.tech_targets(hits, rest, unit):
+		var target: IsoActor = battle.actors.get(target_id)
+		if target != null:
+			battle.hud.flash_at(target.position, battle.view.flash_color)
 
 
 func _has_impact(actor: IsoActor) -> bool:
@@ -161,33 +170,17 @@ func _drive_to_impact(actor: IsoActor) -> void:
 		_on_impact(&"attack")
 		return
 	for i: int in 600:
-		if _pending.is_empty():
+		if _pending_hits.is_empty() and _pending_rest.is_empty():
 			return
 		actor._process(1.0 / 60.0)
-	if not _pending.is_empty():
+	if not _pending_hits.is_empty() or not _pending_rest.is_empty():
 		_on_impact(&"attack")
 
 
 func _dash(actor: IsoActor, spot: Vector2) -> void:
 	actor.play(&"run", true)
-	var time: float = maxf(0.12, actor.position.distance_to(spot) / 700.0)
+	var dist: float = actor.position.distance_to(spot)
+	var time: float = maxf(battle.view.dash_min_seconds, dist / battle.view.dash_speed)
 	var tween: Tween = battle.create_tween()
 	tween.tween_property(actor, "position", spot, time)
 	await tween.finished
-
-
-func _hits_after(events: Array[TimelineEvent], i: int) -> Array[TimelineEvent]:
-	var out: Array[TimelineEvent] = []
-	for j: int in range(i + 1, events.size()):
-		if MOVE_KINDS.has(events[j].kind):
-			break
-		if events[j].kind == &"damage":
-			out.append(events[j])
-	return out
-
-
-func _next_move(events: Array[TimelineEvent], i: int) -> int:
-	for j: int in range(i + 1, events.size()):
-		if MOVE_KINDS.has(events[j].kind):
-			return j
-	return events.size()

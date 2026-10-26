@@ -6,8 +6,7 @@ extends Node
 
 signal ended(won: bool)
 
-const HERO_ID: StringName = &"zayd"
-
+var seed_override: int = -1
 var sim: BattleSim
 var room: NeonRoomDef
 var actors: Dictionary[StringName, IsoActor] = {}
@@ -30,6 +29,7 @@ var _contact: Vector2
 var _hero_spot: Vector2
 var _foe_spots: Array[Vector2] = []
 var _seed: int = 1
+var _ambush: bool = false
 var _busy: bool = false
 var _ending: bool = false
 var _done: bool = false
@@ -45,10 +45,11 @@ func begin(world: Node2D, new_room: NeonRoomDef, hero: IsoActor, foes: Array[Iso
 	_hero = hero
 	_foes = foes
 	_contact = contact
+	_ambush = ambush
 	view = ContentDB.get_def("neon_battle_view", &"default") as NeonBattleViewDef
 	if view == null:
 		view = NeonBattleViewDef.new()
-	_seed = randi()
+	_seed = seed_override if seed_override >= 0 else randi()
 	_pre_vitals = GameState.vitals.duplicate(true)
 	_pre_bag = GameState.bag.duplicate()
 	_pre_money = GameState.money
@@ -91,16 +92,19 @@ func step_frame() -> void:
 	_check_end()
 
 
-## A small camera shake on the map node (the plate and actors move together).
+## A small camera shake offset on the active Camera2D.
 func shake() -> void:
-	if instant or _world == null:
+	if instant:
 		return
-	var home: Vector2 = _world.position
+	var cam: Camera2D = get_viewport().get_camera_2d() if get_viewport() != null else null
+	if cam == null:
+		return
+	var home: Vector2 = cam.offset
 	var tween: Tween = create_tween()
 	for i: int in 3:
-		tween.tween_property(_world, "position", home + Vector2(view.shake, -view.shake), view.shake_seconds * 0.25)
-		tween.tween_property(_world, "position", home - Vector2(view.shake, view.shake), view.shake_seconds * 0.25)
-	tween.tween_property(_world, "position", home, view.shake_seconds * 0.25)
+		tween.tween_property(cam, "offset", home + Vector2(view.shake, -view.shake), view.shake_seconds * 0.25)
+		tween.tween_property(cam, "offset", home - Vector2(view.shake, view.shake), view.shake_seconds * 0.25)
+	tween.tween_property(cam, "offset", home, view.shake_seconds * 0.25)
 
 
 func _process(_delta: float) -> void:
@@ -128,7 +132,7 @@ func _open_menu(hero: UnitState) -> void:
 		_menu.setup(sim, _battle_view)
 		_menu.chosen.connect(_on_chosen)
 		var screen: Vector2 = get_viewport().get_visible_rect().size
-		_menu.position = Vector2(screen.x - 440.0, screen.y - 420.0)
+		_menu.position = Vector2(screen.x - view.menu_offset_x, screen.y - view.menu_offset_y)
 	if not _menu.is_open():
 		_menu.open(hero)
 
@@ -158,7 +162,7 @@ func _check_end() -> void:
 		hud.show_victory(paid[0], paid[1])
 		if not instant:
 			await hud.play_outro()
-			await get_tree().create_timer(1.2).timeout
+			await get_tree().create_timer(view.end_wait_seconds).timeout
 		_finish(true)
 		return
 	if not instant:
