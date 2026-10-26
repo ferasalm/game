@@ -1,0 +1,40 @@
+{
+  "kind": "neon_cold_open",
+  "items": [
+    {
+      "id": "default",
+      "shots": [
+        {"texture": "res://assets/textures/neon/cold_open_1.webp", "seconds": 12.0, "caption": "NEON_COLD_CAPTION_1",
+         "scale_from": 1.0, "scale_to": 1.08, "pan": [0, 0, -30, -12], "parallax": false},
+        {"texture": "res://assets/textures/neon/cold_open_2.webp", "seconds": 12.0, "caption": "NEON_COLD_CAPTION_2",
+         "scale_from": 1.02, "scale_to": 1.1, "pan": [20, -10, -20, 10], "parallax": true},
+        {"texture": "res://assets/textures/neon/cold_open_3.webp", "seconds": 14.0, "caption": "NEON_COLD_CAPTION_3",
+         "scale_from": 1.0, "scale_to": 1.08, "pan": [-24, 0, 16, -8], "parallax": true}
+      ],
+      "crossfade": 1.0,
+      "caption_delay": 0.6,
+      "caption_fade": 0.6,
+      "caption_font_size": 34,
+      "parallax_alpha": 0.3,
+      "parallax_speed": 1.5,
+      "alert_start": 4.0,
+      "alert_fill": 6.0,
+      "alert_flashes": 3,
+      "alert_flash_seconds": 0.12,
+      "alert_size": [520, 44],
+      "alert_top": 40,
+      "alert_font_size": 20,
+      "alert_color": "#ff2a3a",
+      "cut_after_lock": 1.5,
+      "black_hold": 1.0,
+      "vignette_alpha": 0.45,
+      "music": "res://assets/audio/music/night_rooftops.ogg",
+      "music_db": -12.0,
+      "skip_hint_delay": 1.0,
+      "rain_tint": "#bff2cc59",
+      "rain_speed": 1.6,
+      "rain_density": 110.0,
+      "rain_slant": 0.18
+    }
+  ]
+}

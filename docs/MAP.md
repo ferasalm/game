@@ -120,6 +120,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/jambiyah/loadouts.json`: content: loadout x2
 - `content/jambiyah/stones.json`: content: stone x12
 - `content/neon/battle_view.json`: content: neon_battle_view x1
+- `content/neon/cold_open.json`: content: neon_cold_open x1
 - `content/neon/roof_rules.json`: content: neon_roof_rules x1
 - `content/neon/rooms.json`: content: neon_room x1
 - `content/neon/sprites.json`: content: neon_sprite_set x2
@@ -500,11 +501,20 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/neon/battle/map_battle_vitals.gd`: purpose: Rydan's slanted Hades-like HP/SP bar bottom-left (docs/design/first-playable.md section 3): an ink border, a dark back, red HP above and teal SP below, both cut on the iso diagonal
 - `features/neon/battle/tests/test_map_battle.gd`: purpose: MapBattle runs the real BattleSim on the map: an auto-choosing hero finishes the fight, `ended` fires once, the winner's living side stands and downed foes hold the ko; a melee hit applies only at the impact signal
 - `features/neon/battle/tests/test_map_formation.gd`: purpose: MapFormation puts the hero right-front of the contact and the foes left-back along the iso diagonal, 110 px apart, and keeps every spot on the prison roof's walkable floor
+- `features/neon/cold_open/cold_open.gd`: purpose: The Roya cold open, watch only (docs/briefs/neon-cold-open.md): three painted shots with a slow push, rain, captions, an IDENTIFYING alert that fills and locks on her, a cut to black, then `done`
+- `features/neon/cold_open/cold_open.tscn`: scene
+- `features/neon/cold_open/cold_open_build.gd`: purpose: Builds the cold open's nodes from its NeonColdOpenDef: the painted shots (cover-fit, a faint parallax copy on flagged shots), the rain overlay, a red vignette, the caption, the IDENTIFYING alert bar, the skip hint, the black cut and the music player
+- `features/neon/cold_open/cold_open_rain.gdshader`
+- `features/neon/cold_open/logic/cold_open_timeline.gd`: purpose: Pure timing of the Roya cold open (docs/briefs/neon-cold-open.md): when each shot starts and how far its push has run, its fade and its caption's fade, the alert's fill on the last shot, the lock, the cut to black, the end
+- `features/neon/cold_open/neon_cold_open_def.gd`: purpose: The Roya cold open (content/neon/cold_open.json, docs/briefs/neon-cold-open.md): its painted shots (texture, seconds, caption key, slow push and pan, parallax layer), crossfade, caption, alert, cut, music and rain numbers
+- `features/neon/cold_open/tests/test_cold_open.gd`: purpose: The Roya cold open: its content loads (three shots, real textures, caption keys in TextDB), the timeline orders fade, alert, lock, cut and end, `done` fires exactly once, input is ignored until it was seen once, then a key skips to the cut, and a full play remembers it was seen
 - `features/neon/defs/neon_room_def.gd`: One iso room (content/neon/rooms.json, docs/design/first-playable.md section 2): Feras's painted plate, the walkable outline and its holes, occluders cut from the plate (drawn over actors whose feet are above the baseline), the spawn, interactables, guard patrols, the room's encounter and the floodlight cone the fuse box kills
 - `features/neon/defs/neon_sprite_set_def.gd`: One character's baked iso sprites (content/neon/sprites.json, docs/design/first-playable.md section 2): per state a sheet whose rows are the 8 screen directions and whose columns are the frames, its feet pivot, speed and impact
 - `features/neon/defs/neon_sprite_state.gd`: One state of a NeonSpriteSetDef: the sheet (8 direction rows x frames), frame size, the feet pivot inside a frame, playback speed, whether it loops, and the frame on which an attack or cast lands (-1 = none)
 - `features/neon/logic/iso_dir.gd`: Pure 8-way facing of the baked iso sprites: row 0 faces screen right, then counter-clockwise in 45 degree steps (2 = away from the camera, up the screen; 4 = left; 6 = toward the camera, down the screen)
 - `features/neon/logic/iso_walk.gd`: Pure walking rules of an iso room (docs/design/first-playable.md section 2): whether a feet point may stand (inside the walkable outline, outside every hole), a step that slides along the edge it hits instead of stopping, and the screen-space velocity of an input (y foreshortened, so "up" crosses the floor as fast as it looks)
+- `features/neon/neon_game.gd`: purpose: The Neon Glitch first playable from launch to the exit card (docs/design/first-playable.md section 1): the start flow, the Roya cold open, the prison roof, its turn-based fight on the map, "To be continued", then the start
+- `features/neon/neon_game.tscn`: scene
 - `features/neon/roof/defs/neon_roof_rules_def.gd`: purpose: numbers for prison roof exploration (hero/guard speeds, radii, timings)
 - `features/neon/roof/logic/contact_rules.gd`: purpose: pure distance and ambush detection rules for iso exploration contact
 - `features/neon/roof/roof_scene.gd`: purpose: prison roof exploration scene (iso plate, hero, patrol guards, occluders, fuse box, exit)
@@ -515,7 +525,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/neon/roof/view/roof_floodlight.gd`: purpose: animated floodlight cone fading from additive light-blue glow to dark multiply with flickers
 - `features/neon/roof/view/roof_hud.gd`: purpose: HUD prompts for roof exploration (movement hint strip and interact prompt)
 - `features/neon/roof/view/roof_occluders.gd`: purpose: builds textured occluder polygons inside %World sorted by baseline y
-- `features/neon/roof/view/roof_patrol.gd`: purpose: manages one guard's back-and-forth patrol movement, pauses, and facings
+- `features/neon/roof/view/roof_opening.gd`: purpose: The prison-roof opening beat (docs/briefs/neon-roof.md item 2): the hero waits hidden, the hatch bursts (the camera shakes, a white flash), he hops out onto the spawn and lands; ticked by RoofScene so tests can step it
+- `features/neon/roof/view/roof_patrol.gd`: purpose: manages one guard's patrol: walks every point of its path and back (ping-pong), pauses at both ends, faces its motion
 - `features/neon/roof/view/roof_rain.gd`: purpose: scrolling rain overlay placed over the exploration plate
 - `features/neon/roof/view/roof_rain.gdshader`
 - `features/neon/start/logic/start_steps.gd`: Pure state transitions for the Neon Glitch start flow (no nodes or tree)
@@ -529,6 +540,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/neon/start/tests/test_start_flow.gd`: Headless tests for StartFlow clip loading and done signal emission
 - `features/neon/start/tests/test_start_steps.gd`: Tests for StartSteps state transitions and choices
 - `features/neon/tests/test_neon_foundation.gd`: purpose: Neon Glitch foundation: the sprite sets and the prison roof load with real sheets, IsoDir maps screen directions to the baked rows and back, IsoWalk keeps feet on the floor and slides along walls, IsoActor plays, signals the impact frame and holds a one-shot's last frame
+- `features/neon/tests/test_neon_game.gd`: purpose: The first playable's flow wires up headless: start -> cold open -> roof -> fight on the map -> back on the roof after a win -> exit card -> start again; a lost fight (Quit) returns to the start
 - `features/neon/view/iso_actor.gd`: A character on an iso plate (docs/design/first-playable.md section 2): plays one baked NeonSpriteSetDef state in one of 8 facings, the node's position being the feet (y-sort by it)
 - `features/progression/defs/class_def.gd`: A hero's RPG class: growth stats added per level above 1 and a passive perk (content/progression/classes.json)
 - `features/progression/defs/levels_def.gd`: Thresholds of total XP required to reach each level (content/progression/levels.json)
