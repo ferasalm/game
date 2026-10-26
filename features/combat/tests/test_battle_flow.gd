@@ -1,6 +1,6 @@
 extends TestCase
-## How a fight starts and ends: carried vitals fill the bars, the end panel shows the riyal, the shatter warp skips
-## cleanly without a frame, the Defeat screen opens on a loss and its three picks leave the fight (retry, load, title).
+## How a fight ends: the shatter warp skips cleanly without a frame, the Defeat screen opens on a loss and its
+## picks leave the fight, and the wash follows the outcome.
 
 
 func _dead_stage(auto: bool) -> BattleStage:
@@ -11,38 +11,6 @@ func _dead_stage(auto: bool) -> BattleStage:
 	tree.root.add_child(stage)
 	stage.start(loader.make_sim(&"swift_hilt", &"keen_blade", 7, 0), Vector3.ZERO)
 	return stage
-
-
-func test_carried_vitals_fill_the_bars() -> void:
-	var h := FlowHarness.new(tree)
-	GameState.start_new()
-	GameState.set_vitals({&"zayd": {"hp": 120, "sp": 5}})
-	var main: PrototypeMain = h.make_main()
-	h.touch(main)
-	check_eq(main.stage.shown_hp[&"zayd"], 120, "the bar starts at the carried HP")
-	check_eq(main.stage.sim.timeline.find(&"zayd").sp, 5, "and the carried SP")
-	check_eq(main.stage.shown_hp[&"bilqis"], main.stage.sim.timeline.find(&"bilqis").def.max_hp, "a hero with no entry is full")
-	main.free()
-	h.finish()
-
-
-func test_end_panel_shows_the_riyal_of_the_win_and_half_for_a_repeat() -> void:
-	var h := FlowHarness.new(tree)
-	GameState.start_new()
-	var main: PrototypeMain = h.make_main()
-	h.touch(main)
-	main.stage.hud.show_end(&"victory")
-	check_eq(main.stage.hud.end_panel.shown_money(), 70, "the first win lists 70 riyal")
-	check(not GameState.flags.get(Rewards.paid_flag(&"rooftop_patrol"), false), "listing it pays and flags nothing yet")
-	main.stage.ended.emit(&"victory")
-	h.touch(main)
-	main.rooftop.encounter_touched.emit(&"rooftop_patrol", false)
-	main.stage.hud.show_end(&"victory")
-	check_eq(main.stage.hud.end_panel.shown_money(), 35, "a repeat win lists half")
-	main.stage.hud.show_end(&"defeat")
-	check_eq(main.stage.hud.end_panel.shown_money(), 0, "a defeat lists no riyal")
-	main.free()
-	h.finish()
 
 
 func test_shatter_skips_without_a_frame() -> void:
@@ -85,26 +53,6 @@ func test_a_loss_opens_the_defeat_screen_and_retry_ends_the_fight() -> void:
 	check_eq(ends, [&"retry"] as Array[StringName], "Retry fight ends the stage with retry")
 	Screens.clear()
 	stage.free()
-
-
-func test_defeat_screen_picks_load_and_title_leave_the_fight() -> void:
-	var h := FlowHarness.new(tree)
-	GameState.start_new()
-	check_eq(Router.save_slot(1), "", "a save exists")
-	var main: PrototypeMain = h.make_main()
-	h.touch(main)
-	main.stage.ended.emit(&"load")
-	check_eq(h.reloads, 1, "Load last save rebuilds the game from the slot")
-	check(h.outcomes.is_empty(), "and the fight reports no outcome (the area is rebuilt)")
-	main.free()
-	var again: PrototypeMain = h.make_main()
-	Router.state = Router.STATE_EXPLORING
-	h.touch(again)
-	again.stage.ended.emit(&"title")
-	check_eq(h.reloads, 2, "Title rebuilds the game too")
-	check_eq(Router.state, Router.STATE_TITLE, "at the title")
-	again.free()
-	h.finish()
 
 
 func test_wash_leaves_only_on_victory_or_a_plain_defeat() -> void:

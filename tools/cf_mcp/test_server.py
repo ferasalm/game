@@ -24,7 +24,7 @@ def main() -> int:
         {"jsonrpc": "2.0", "method": "notifications/initialized"},
         {"jsonrpc": "2.0", "id": 2, "method": "tools/list"},
         {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "triage_trace", "arguments": {
-            "trace": "player frozen after crossing", "files": ["features/world/interact/crossing_spot.gd"]}}},
+            "trace": "player frozen after crossing", "files": ["features/ui/view/ui_stack.gd"]}}},
         {"jsonrpc": "2.0", "id": 4, "method": "tools/call", "params": {"name": "generate_patch", "arguments": {
             "diagnosis": "x", "files": ["../outside.txt"], "agent": "minimal-change-engineer"}}},
         {"jsonrpc": "2.0", "id": 5, "method": "tools/call", "params": {"name": "nope", "arguments": {}}},
@@ -38,7 +38,7 @@ def main() -> int:
     if names != ["triage_trace", "generate_patch"]:
         fails.append(f"tools/list names {names}")
     triage = json.loads(replies[2]["result"]["content"][0]["text"])
-    if triage["model"] != "@cf/zai-org/glm-5.3-flash" or "func cross_to" not in triage["messages"][1]["content"]:
+    if triage["model"] != "@cf/zai-org/glm-5.3-flash" or "func has_screen" not in triage["messages"][1]["content"]:
         fails.append("triage_trace: wrong model or the file was not read into the prompt")
     patch = json.loads(replies[3]["result"]["content"][0]["text"])
     if patch["model"] != "@cf/deepseek-ai/deepseek-v4.1-flash-1017" or "not a file inside the repo" not in patch["messages"][1]["content"]:

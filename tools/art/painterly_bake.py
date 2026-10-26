@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Offline painterly bake: repaint the code-painted world atlases as brush strokes (numpy + Pillow, deterministic).
 
-  tools/run_godot.sh -s res://tools/export_atlases.gd        # writes .bake/atlases/<atlas>.png
-  python tools/art/painterly_bake.py [--recipe wash|oil|all] [--src .bake/atlases]
+  python tools/art/painterly_bake.py [--recipe wash|oil|all] [--src <atlas png dir>]
 
 Per atlas: upscale (tiles x tile_scale, facades x facade_scale, bicubic), generalized Kuwahara (Papari et al.:
 smooth sector kernels; each pixel takes the variance-weighted mean of its sectors, so flat areas become strokes
@@ -161,7 +160,7 @@ def update_manifest(assets: pathlib.Path, paths: list[str]) -> None:
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--recipe", default="all", help="recipe name in painterly_recipes.json, or all")
-    p.add_argument("--src", default=str(ROOT / ".bake" / "atlases"), help="exported atlases (tools/export_atlases.gd)")
+    p.add_argument("--src", default=str(ROOT / ".bake" / "atlases"), help="exported atlas PNGs")
     p.add_argument("--models", default=str(ROOT / "content" / "art" / "models.json"), help="character models JSON")
     p.add_argument("--out", default=str(OUT_DIR))
     p.add_argument("--assets", default=str(ROOT / "assets"))
@@ -173,7 +172,7 @@ def main(argv=None) -> int:
         print("painterly_bake.py: unknown recipe", file=sys.stderr)
         return 1
     if any(recipes[n].get("kind") != "skin" for n in names) and not any(src_dir.glob("*.png")):
-        print("painterly_bake.py: no atlases in --src (run tools/export_atlases.gd)", file=sys.stderr)
+        print("painterly_bake.py: no atlases in --src (export the atlas PNGs first)", file=sys.stderr)
         return 1
     written = []
     for name in names:
