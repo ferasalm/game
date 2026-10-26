@@ -15,3 +15,5 @@
 - Night billboards with the moon behind go black -> min_light floor; Label3D in fog -> label_energy > 1, no alpha cut.
 - Storm rain at 1.5 cm streaks was sub-pixel, and a lightning light barely shows through the painted shaders ->
   2.4 cm streaks and a screen wash (storm.json) (2026-10-23).
+- set_exploring(false) hides the player and patrols -> talks use rooftop.freeze_actors (2026-10-22).
+- Painted Flow art pixelized muddy -> pixelize.py --contrast 1.3 --saturation 1.5 --outline; check facing first.
