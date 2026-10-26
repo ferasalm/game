@@ -1,49 +1,38 @@
 class_name HologramStage
-extends SubViewportContainer
-## purpose: 800x760 SubViewportContainer with 3D hologram hero, camera, disc and leader lines.
+extends Control
+## purpose: 800x760 menu hologram: the hero's Neon idle sprite (or portrait) with leader lines to the slot boxes.
 
-const ROTATE_SPEED_DEG: float = 20.0
+const SIZE: Vector2 = Vector2(800.0, 760.0)
+const ANCHORS_ID: StringName = &"default"
 
-var _sub_viewport: SubViewport
-var _camera: Camera3D
-var _light: DirectionalLight3D
-var _disc: MeshInstance3D
-var _visual: CharacterVisual
-var _holo_mat: ShaderMaterial
+var _sprite: TextureRect
+var _anchors: Hologram2dDef
 var _lines: Dictionary[StringName, Line2D] = {}
 var _box_anchors: Dictionary[StringName, Dictionary] = {}
 var _active_slot: StringName = &"blade"
 
 
 func _init() -> void:
-	custom_minimum_size = Vector2(800.0, 760.0)
-	size = Vector2(800.0, 760.0)
+	custom_minimum_size = SIZE
+	size = SIZE
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_anchors = ContentDB.get_def("hologram_2d", ANCHORS_ID) as Hologram2dDef
+	_sprite = TextureRect.new()
+	_sprite.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_sprite.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_sprite.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_sprite)
 
 
-func _ready() -> void:
-	_build_stage()
-
-
-func _process(delta: float) -> void:
-	if _visual != null:
-		_visual.rotation.y += deg_to_rad(ROTATE_SPEED_DEG) * delta
+func _process(_delta: float) -> void:
 	_update_leader_lines()
 
 
 func set_hero(hero: StringName) -> void:
-	if _sub_viewport == null:
-		return
-	if _visual != null:
-		_sub_viewport.remove_child(_visual)
-		_visual.queue_free()
-	_visual = CharacterVisual.new()
-	_visual.process_mode = Node.PROCESS_MODE_ALWAYS
-	_visual.set_sprite(hero)
-	_visual.play(&"idle")
-	_sub_viewport.add_child(_visual)
-	_apply_hologram()
+	if _sprite != null:
+		_sprite.texture = HologramSprite.texture_for(hero)
 
 
 func set_active_slot(slot_name: StringName) -> void:
@@ -62,89 +51,37 @@ func register_box(part_name: StringName, box: Control, anchor_name: StringName) 
 	_box_anchors[part_name] = {"box": box, "anchor": anchor_name}
 
 
+## The picture now shown (an AtlasTexture for a Neon sprite, the portrait texture otherwise).
+func sprite_texture() -> Texture2D:
+	return _sprite.texture if _sprite != null else null
+
+
 func visual() -> CharacterVisual:
-	return _visual
+	return null
 
 
 func hologram_material() -> ShaderMaterial:
-	return _holo_mat
+	return null
 
 
 func disc() -> MeshInstance3D:
-	return _disc
+	return null
 
 
 func model_meshes() -> Array[MeshInstance3D]:
-	var out: Array[MeshInstance3D] = []
-	if _visual != null:
-		for mesh: Node in NodeScan.of_type(_visual, &"MeshInstance3D"):
-			out.append(mesh as MeshInstance3D)
-	return out
+	return []
 
 
 func sub_viewport() -> SubViewport:
-	return _sub_viewport
+	return null
 
 
 func lines() -> Dictionary[StringName, Line2D]:
 	return _lines
 
 
-func _build_stage() -> void:
-	_sub_viewport = SubViewport.new()
-	_sub_viewport.size = Vector2i(800, 760)
-	_sub_viewport.own_world_3d = true
-	_sub_viewport.transparent_bg = true
-	_sub_viewport.process_mode = Node.PROCESS_MODE_ALWAYS
-	_sub_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
-	add_child(_sub_viewport)
-
-	_camera = Camera3D.new()
-	_camera.transform = Transform3D(Basis(), Vector3(0.0, 0.95, 2.7))
-	_camera.fov = 40.0
-	_camera.current = true
-	_sub_viewport.add_child(_camera)
-	_light = DirectionalLight3D.new()
-	_light.rotation_degrees = Vector3(-15.0, 0.0, 0.0)
-	_light.light_energy = 1.0
-	_sub_viewport.add_child(_light)
-
-	_build_grid_disc()
-
-
-func _build_grid_disc() -> void:
-	var disc_mesh := PlaneMesh.new()
-	disc_mesh.size = Vector2(2.2, 2.2)
-	var grid_shader: Shader = load("res://features/equipment/view/grid_disc.gdshader") as Shader
-	var disc_mat := ShaderMaterial.new()
-	disc_mat.shader = grid_shader
-	var cyan: Color = Ui.style().colour(&"c_cyan")
-	disc_mat.set_shader_parameter(&"grid_color", Color(cyan.r, cyan.g, cyan.b, 0.85))
-	disc_mat.set_shader_parameter(&"grid_spacing", 0.15)
-	disc_mat.set_shader_parameter(&"disc_radius", 1.05)
-	_disc = MeshInstance3D.new()
-	_disc.mesh = disc_mesh
-	_disc.material_override = disc_mat
-	_disc.position = Vector3(0.0, 0.005, 0.0)
-	_sub_viewport.add_child(_disc)
-
-
-func _apply_hologram() -> void:
-	if _visual == null:
-		return
-	var holo_shader: Shader = load("res://features/equipment/view/hologram.gdshader") as Shader
-	if holo_shader == null:
-		return
-	_holo_mat = ShaderMaterial.new()
-	_holo_mat.shader = holo_shader
-	var cyan: Color = Ui.style().colour(&"c_cyan")
-	_holo_mat.set_shader_parameter(&"rim_color", Color(cyan.r, cyan.g, cyan.b, 0.85))
-	for mesh: Node in NodeScan.of_type(_visual, &"MeshInstance3D"):
-		(mesh as MeshInstance3D).material_override = _holo_mat
-
-
 func _update_leader_lines() -> void:
-	if _camera == null or _visual == null:
+	if _box_anchors.is_empty():
 		return
 	for part_name: StringName in _box_anchors:
 		var entry: Dictionary = _box_anchors[part_name]
@@ -159,17 +96,14 @@ func _update_leader_lines() -> void:
 		var is_left: bool = box.global_position.x < 800.0
 		var box_x: float = box.global_position.x + (box.size.x if is_left else 0.0)
 		var box_edge := Vector2(box_x, box.global_position.y + box.size.y * 0.5)
-		var body_3d: Vector3 = _get_anchor_pos(entry["anchor"] as StringName)
-		var proj: Vector2 = _camera.unproject_position(body_3d)
-		var body_screen: Vector2 = global_position + proj
+		var body_screen: Vector2 = _anchor_pos(entry["anchor"] as StringName)
 		line.points = PackedVector2Array([box_edge, body_screen])
 	_update_line_styles()
 
 
-func _get_anchor_pos(anchor_name: StringName) -> Vector3:
-	if _visual == null:
-		return Vector3.ZERO
-	return _visual.anchor_position(anchor_name)
+func _anchor_pos(anchor_name: StringName) -> Vector2:
+	var fraction: Vector2 = _anchors.anchor(anchor_name) if _anchors != null else Vector2(0.5, 0.5)
+	return global_position + size * fraction
 
 
 func _update_line_styles() -> void:

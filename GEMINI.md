@@ -52,7 +52,7 @@ Lead reviews found these in earlier builds; check each before you report DONE.
 - New lines and props match the current world (read the layout and the brief; no places that no longer exist).
 - A file near 200 lines: split it before adding; never squeeze lines out of formatting.
 - Tests that touch saves, timers or frames: run them 3 times; a flaky pass is a fail.
-- Shared files (prototype_main.gd, ui_stack.gd, content_db.gd, MAP.md): the smallest edit that works.
+- Shared files (neon_game.gd, ui_stack.gd, content_db.gd, MAP.md): the smallest edit that works.
 </review_misses>
 
 <report>

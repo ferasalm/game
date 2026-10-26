@@ -45,11 +45,18 @@ func press_tab(tab: Tab) -> void:
 	_open_tab(int(tab))
 
 
-## Moves to the tab `step` places away, wrapping round (LB/RB and Q/E).
+## Moves to the next registered tab `step` places away, wrapping round and skipping missing screens (LB/RB and Q/E).
 func cycle(step: int) -> void:
 	if step == 0:
 		return
-	_open_tab((int(current) + step + IDS.size()) % IDS.size())
+	var next: int = int(current)
+	for _i: int in IDS.size():
+		next = (next + step + IDS.size()) % IDS.size()
+		if next == int(current):
+			return
+		if _available(next):
+			_open_tab(next)
+			return
 
 
 ## Handles the tab keys and quick-switch keys: returns true when it switched.
@@ -123,7 +130,13 @@ func _build_ui() -> void:
 	tabs_row.add_theme_constant_override("separation", 16)
 	add_child(tabs_row)
 	for index: int in IDS.size():
-		_add_tab(tabs_row, index)
+		if _available(index):
+			_add_tab(tabs_row, index)
+
+
+## True when a screen is registered for that tab (the Map tab is skipped when no map screen exists).
+func _available(tab: int) -> bool:
+	return Screens.has_screen(IDS[tab])
 
 
 func _add_tab(parent: Control, tab: int) -> void:
@@ -168,7 +181,7 @@ func _title_key(slot: int) -> String:
 
 
 func _open_tab(tab: int) -> void:
-	if tab == int(current):
+	if tab == int(current) or not _available(tab):
 		return
 	var screen: UiScreen = Screens.top()
 	if screen != null:

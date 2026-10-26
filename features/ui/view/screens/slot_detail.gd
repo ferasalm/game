@@ -1,10 +1,9 @@
 class_name SlotDetail
 extends PanelContainer
-## Details panel for the focused save slot: header, thumbnail 440x248, area, party, riyal, play time.
+## Details panel for the focused save slot: header, thumbnail 440x248, party, riyal, play time.
 
 var _header: Label
 var _thumb: TextureRect
-var _area: Label
 var _time: Label
 var _money: MoneyCounter
 var _empty_note: Label
@@ -46,8 +45,6 @@ func _build_content(style: UiStyleDef) -> void:
 	thumb_box.add_child(_thumb)
 	_content.add_child(thumb_box)
 
-	_area = Ui.label("", &"TitleLabel", style.colour(&"c_cyan"))
-	_content.add_child(_area)
 
 	_time = Ui.label("", &"SmallLabel")
 	_content.add_child(_time)
@@ -73,9 +70,6 @@ func show_slot(slot: int, has_data: bool, summary: Dictionary, service: SaveServ
 	_content.visible = true
 	_thumb.texture = service.read_thumbnail(slot)
 
-	var area_id: StringName = StringName(str(summary.get("area", "")))
-	var area_def := ContentDB.get_def("area", area_id) as AreaDef
-	_area.text = Ui.text(area_def.name_key) if area_def != null else String(area_id)
 
 	var secs: float = float(summary.get("play_seconds", 0.0))
 	var hours: int = int(secs) / 3600

@@ -1,6 +1,0 @@
-[gd_scene format=3]
-
-[ext_resource type="Script" path="res://features/world/interior/camera_room.gd" id="1"]
-
-[node name="CameraRoom" type="Node3D"]
-script = ExtResource("1")

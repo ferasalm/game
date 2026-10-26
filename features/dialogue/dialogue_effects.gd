@@ -56,4 +56,4 @@ static func build_battle_request(parts: PackedStringArray) -> BattleRequest:
 static func _start_battle(parts: PackedStringArray) -> void:
 	var request: BattleRequest = build_battle_request(parts)
 	if request != null:
-		Router.start_battle(request)
+		EventBus.battle_requested.emit(request)

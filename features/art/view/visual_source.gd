@@ -17,7 +17,7 @@ func attach(owner_visual: CharacterVisual, owner_rules: VisualRulesDef) -> void:
 	rules = owner_rules
 
 
-## The painted materials of this source: the look feeds the shared light uniforms into each (PaintedLook).
+## The painted materials of this source: the baker's light sets their uniforms.
 func materials() -> Array[ShaderMaterial]:
 	return []
 

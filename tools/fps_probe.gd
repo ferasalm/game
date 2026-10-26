@@ -10,7 +10,7 @@ var _last_usec: int = 0
 
 func _initialize() -> void:
 	var args := OS.get_cmdline_user_args()
-	var scene_path: String = "res://features/prototype/prototype_main.tscn"
+	var scene_path: String = "res://features/neon/neon_game.tscn"
 	var look_arg: StringName = &"painted_b"
 	for arg: String in args:
 		if arg.begins_with("look="):

@@ -28,3 +28,16 @@ func test_workshop_menu_opens_by_id_with_tabs_and_disabled_button() -> void:
 
 	Screens.clear()
 	GameState.reset()
+
+
+func test_workshop_hologram_has_no_3d_nodes() -> void:
+	GameState.start_new()
+	var screen: UiScreen = Screens.open(&"workshop")
+	var menu := screen as WorkshopMenu
+	var holo: WorkshopHologram = menu._hologram
+	check(holo != null, "workshop hologram exists")
+	check(NodeScan.of_type(holo, &"SubViewport").is_empty(), "no SubViewport")
+	check(NodeScan.of_type(holo, &"Node3D").is_empty(), "no Node3D")
+	check(holo.sprite_texture() != null, "the hologram shows a hero picture")
+	Screens.clear()
+	GameState.reset()

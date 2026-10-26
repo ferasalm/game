@@ -1,6 +1,6 @@
 extends TestCase
-## The loot popup (queues item_obtained in order, skippable), the area title card, the title overlay (any key
-## dismisses it once) and the opening shot held on the moon until then.
+## The loot popup (queues item_obtained in order, skippable), the area title card and the title overlay (any key
+## dismisses it once).
 
 
 func _key(pressed: bool = true, echo: bool = false) -> InputEventKey:
@@ -69,23 +69,3 @@ func test_title_overlay_dismisses_once_on_a_key() -> void:
 	check_eq(count[0], 1, "a key press dismisses it, once")
 	check(not overlay.is_showing(), "no longer showing")
 	overlay.free()
-
-
-func test_the_opening_shot_waits_for_the_title() -> void:
-	GameState.reset()
-	var main := (load("res://features/prototype/prototype_main.tscn") as PackedScene).instantiate() as PrototypeMain
-	tree.root.add_child(main)
-	var camera: ExploreCamera = main.rooftop.camera_rig
-	check(main.title.is_showing() and camera.is_intro_held() and camera.is_intro_playing(), "title up, shot held")
-	for i: int in 600:
-		camera.update(0.1, main.rooftop.player.position)
-	check(camera.is_intro_playing(), "a minute later it still waits on the moon")
-	camera._unhandled_input(_key())
-	check(camera.is_intro_playing(), "a key does not skip a held shot")
-	main.title._unhandled_input(_key())
-	check(not camera.is_intro_held(), "the title's key releases the shot")
-	for i: int in 600:
-		camera.update(0.1, main.rooftop.player.position)
-	check(not camera.is_intro_playing(), "the shot then plays to its end")
-	check(main.area_card.is_showing(), "and the area card appears")
-	main.free()

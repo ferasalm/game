@@ -10,7 +10,7 @@ signal chosen(action: ActionDef, target_id: StringName)
 signal target_focused(unit_id: StringName)
 ## The line under the menu changed: the focused move's description, or (warning) why a choice was refused.
 signal help_changed(text: String, warning: bool)
-## The Items entry was pressed: the HUD opens the item list (BattleItemMenu).
+## The Items entry was pressed: the HUD opens the item list.
 signal items_requested
 
 const ITEMS_ID: StringName = &"items"  ## the action_id meta of the Items entry (it is not a move)

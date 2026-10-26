@@ -4,7 +4,7 @@ extends Node
 ## "$(tools/godot.sh)" --path . --fixed-fps 60 res://tools/bake_sprites.tscn -- <model id> <out dir> [states]
 ## [size px] [ortho m]. A state is name:frames:seconds (default idle:8:1.0,run:8:0.6,attack:10:0.9,hurt:5:0.4,ko:10:1.2).
 
-const LOOK_ID: StringName = &"painted_b"
+const BAKE_LIGHT: GDScript = preload("res://tools/bake_light.gd")
 const ELEVATION_DEG: float = 30.0  ## 2:1 dimetric floor, as in Feras's iso plates
 const DIRS: int = 8
 const SETTLE_FRAMES: int = 20  ## lets the yaw turn finish before a state is captured
@@ -34,13 +34,8 @@ func _build(model_id: StringName, size_px: int, ortho: float) -> void:
 	_view.own_world_3d = true
 	_view.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	add_child(_view)
-	var look := ContentDB.get_def("look", LOOK_ID) as LookDef
-	PaintedLook.begin(look)
-	var env: WorldEnvironment = Diorama.make_environment(look)
-	env.environment.background_mode = Environment.BG_CLEAR_COLOR
-	env.environment.glow_enabled = false
-	_view.add_child(env)
-	_view.add_child(Diorama.make_sun(look))
+	_view.add_child(BAKE_LIGHT.make_environment())
+	_view.add_child(BAKE_LIGHT.make_sun())
 	var camera := Camera3D.new()
 	camera.projection = Camera3D.PROJECTION_ORTHOGONAL
 	camera.size = ortho

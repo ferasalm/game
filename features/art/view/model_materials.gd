@@ -2,7 +2,7 @@ class_name ModelMaterials
 extends RefCounted
 ## The materials of live 3D characters: every surface (body, eyes, brows, hair, garments, the hilt) is a
 ## ShaderMaterial of character_skin.gdshader, so the painted light of the look reaches all of them through
-## `materials()` (PaintedLook feeds the shared light uniforms), and one `set_all` call drives the flash, desat and
+## `materials()` (the baker's light sets their uniforms), and one `set_all` call drives the flash, desat and
 ## glow of the whole character. The ink hull is an optional second pass.
 
 const SKIN: Shader = preload("res://features/art/view/character_skin.gdshader")

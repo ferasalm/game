@@ -1,13 +1,12 @@
 # Lessons (curated; symptom -> cause -> fix; dated; max 100 lines; condense back to ~70)
 
 ## 1. You can do this yourself
-- tools/run_godot.sh fails on any SCRIPT ERROR or ERROR line even when Godot exits 0 (2026-10-19). check.sh "tests
-  FAIL" with `exit code 124` and no FAIL line = the 600 s timeout, not a test (2026-10-23). Headless
-  `get_texture().get_image()` prints an ERROR (dummy renderer) -> tests inject the grab (2026-10-26).
+- run_godot.sh fails on any SCRIPT ERROR/ERROR line though Godot exits 0 (headless get_image() prints one -> tests
+  inject the grab, 10-26); check.sh `exit code 124` and no FAIL line = the 600 s timeout, not a test (10-19/23).
 - See a scene without the owner: non-headless `"$(tools/godot.sh)" --path . --write-movie DIR/f.png --fixed-fps 60
   --quit-after N [scene]`, view 1-2 frames at 640x360 with Pillow (2026-10-21). A Node script under `-s` fails
   ("doesn't inherit SceneTree", no autoloads, an ALERT box on the owner's screen) -> render tools run as a .tscn
-  wrapper (tools/shot_dialogue.tscn) (2026-10-23).
+  wrapper (tools/shot_neon_game.tscn) (2026-10-23).
 - Writes into Documents fail as "No such file" even outside the sandbox: Windows Controlled Folder Access is on ->
   keep files elsewhere; Twine's library moved via %APPDATA%/Twine/app-prefs.json storyLibraryFolderPath (2026-10-25).
 - Read an Electron app's screen (Twine): PowerShell Start-Process with --remote-debugging-port=N (a bash `&` launch
@@ -31,7 +30,6 @@
   (2026-10-23).
 - A UiScreen closed while another covered it stayed frozen (its fade tween pauses with the node) -> close() re-enables
   processing (2026-10-23).
-- set_exploring(false) hides the player and patrols -> talks use rooftop.freeze_actors (2026-10-22).
 - Harness said 99.8% party HP: its AI chain-interrupted the boss -> print one seed's events (2026-10-23).
 
 ## 3. From reem-bot and feras-career (verified there)
@@ -72,12 +70,14 @@
   before reading the final check line (2026-10-23).
 - Inkling on balance-gear hit permission rejections, committed nothing -> empty `git diff base...branch`: rerun on agy
   (2026-10-23).
+- Two opencode runs started in the same second: one died "database is locked" (shared oc-cli data dir) -> launch
+  runs 30 s apart. Retiring code: an import-graph script (res://, uid://, class_name, ContentDB kinds) gave each run an
+  exact delete list; a brief that allows cross-run deletions must not list those paths as Do NOT edit (2026-10-26).
 
 ## 5. Art, browser, night look (2026-10-21)
 - "3 FPS" was a --write-movie render -> real FPS only via fps_probe.gd.
 - The browser pane's downloads are invisible to Claude; Flow links need the owner's cookies -> he saves files to
   inbox/ (git-ignored); pictures pasted in chat are not on disk -> ask him to save them (2026-10-23).
-- Painted Flow art pixelized muddy -> pixelize.py --contrast 1.3 --saturation 1.5 --outline; check facing first.
 - Flow from Claude: the browser pane can't download or reach localhost -> Claude in Chrome (his login): upload =
   own <input type=file> + file_upload + a synthetic drop on the grid; download = "Download media" -> 2K -> ~/Downloads;
   the Flow agent picks Nano Banana; 2:3 is refused (1:1, 16:9, 9:16, 4:3, 3:4) (2026-10-26).

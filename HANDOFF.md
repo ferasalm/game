@@ -1,5 +1,5 @@
 # HANDOFF (current state only; one section per track, each edited only by its owner; max 60 lines)
-Last updated: 2026-10-26 (Neon Glitch first playable on main), Opus 5.5 (`claude-opus-5-5`); 3D tracks retired next.
+Last updated: 2026-10-26 (Retire 3D: archive/3d, reuse list, 4 next steps), Opus 5.5 (`claude-opus-5-5`).
 
 ## Shared
 - Builders: CLAUDE.md + EFFICIENCY 3b (5 runs: 2 agy, 2 DeepSeek, 1 Inkling); check `bash tools/slots.sh`.
@@ -15,18 +15,20 @@ Last updated: 2026-10-26 (Neon Glitch first playable on main), Opus 5.5 (`claude
 - Waiting on the owner: more concept pictures (plus an empty plate per scene: no characters, HUD or rain).
 1. Then: design doc + plan the one-scene prototype (rooftop, Zayd, one fight, HUD). Model: Opus. Effort: high.
 
-## Track: Neon Glitch (owner: the chat "Neon Glitch first playable", 2026-10-26)
-- On main (merged 10-26): launching the project = features/neon/neon_game.tscn: start flow (his clips) -> Roya cold
-  open (3 Flow frames, ~37 s, any key skips after first view) -> prison roof (hatch burst, 8-way walk, fuse box +
-  Bilqis comms, 2 patrols) -> turn-based fight on the map (prison_guard x2, 84 % wins at XP 0) -> cable line ->
-  "TO BE CONTINUED" -> start. Renders: tools/shot_neon_game.tscn -> inbox/neon_game_*.png.
-- Feras: play it (Esc/back, Enter/Space confirm, WASD move, E interact). Read the cold-open captions
-  (localization/neon_cold_open.csv, Claude's draft) and the Claude defaults in rydan.twee.
-- Known gaps: Normal/Hard chosen but not applied; the two guards stand close in the fight formation; title may show
-  twice (clip logo + overlay); floodlight fade numbers in code; no call-in ally yet; code id "zayd" = Rydan.
-1. Feras playtests; fix his notes. Model: Opus. Effort: medium.
-2. Retire the old 3D game (DECISIONS 10-26): audit 3D-only vs shared with Neon, then remove 3D-only code, assets
-   and tests (tag 3d-archive keeps them). Model: Opus. Effort: high (plan mode, Haiku audit).
+## Track: Neon Glitch (owner: the chat "Retire 3D", 2026-10-26)
+- On main: launching = features/neon/neon_game.tscn: start flow -> Roya cold open -> prison roof -> turn-based map
+  fight (prison_guard x2, 84 % wins at XP 0) -> cable line -> "TO BE CONTINUED". Renders: tools/shot_neon_game.tscn.
+- 3D game retired 10-26 (docs/design/retire-3d-audit.md): branch archive/3d + tag 3d-archive; what to reuse:
+  docs/archive/3d-reuse.md. Dialogue fights emit EventBus.battle_requested (no host yet); menu holograms show
+  portraits or Neon sprites; the Map tab is greyed (no 2D map yet).
+- Feras: play it (Esc/back, Enter/Space, WASD, E). Gaps: Normal/Hard not applied; guards close in formation;
+  title twice; floodlight numbers in code; no call-in ally; code id "zayd" = Rydan.
+Next, after the 5-hour reset, in this order (Feras 10-26):
+1. Vision, mission, objectives + roadmap (docs/VISION.md from bible + DECISIONS; Feras edits). Model: Opus. Effort: high.
+2. Builder quality system: gate rejects removed checks and asset edits, tests/assets Do NOT edit by default, layer
+   lint (shared code never names a mode), builder playbook in TEMPLATE. Model: Sonnet. Effort: medium.
+3. Names to the bible (code id zayd -> rydan, save migration, assets, keys); DeepSeek builds. Model: Opus. Effort: medium.
+4. Asset preparation pipeline (jpg -> png, sizes, import settings, manifest check); DeepSeek builds. Model: Sonnet. Effort: medium.
 `Continue ferasalm/game on main. Read HANDOFF.md (Neon Glitch). Do its next step; /handoff.`
 ## Track: Level 1 + playtest fixes: PAUSED 2026-10-24 (3D; 2D redesign). Unmerged fix branches kept in ../game-wt.
 - Playtest 2026-10-24: inbox/playtest_*.png, concept_*.png; crossing freeze fixed. docs/briefs/: render-clean,
