@@ -2,6 +2,8 @@ extends Node
 ## purpose: Opens the playtest capture on the roof with the real screen grab, draws a circle and a stroke, and saves it.
 
 const SETTLE_FRAMES: int = 90
+## The overlay as Feras sees it (the capture's own files go to inbox/playtest/).
+const OVERLAY_PNG: String = "C:/dev/game/inbox/playtest_overlay.png"
 
 var _game: NeonGame
 var _capture: PlaytestCapture
@@ -32,6 +34,8 @@ func _process(_delta: float) -> void:
 			_open()
 		SETTLE_FRAMES + 5:
 			_draw()
+		SETTLE_FRAMES + 8:
+			get_viewport().get_texture().get_image().save_png(OVERLAY_PNG)
 		SETTLE_FRAMES + 10:
 			_capture.save_capture()
 		SETTLE_FRAMES + 20:

@@ -38,10 +38,11 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 24.0
-offset_top = -64.0
-offset_right = 624.0
+offset_top = -80.0
+offset_right = 924.0
 offset_bottom = -24.0
 grow_vertical = 0
+theme_override_font_sizes/font_size = 28
 
 [node name="Hint" type="Label" parent="Overlay/Root"]
 unique_name_in_owner = true
@@ -51,5 +52,9 @@ anchor_right = 1.0
 offset_left = 24.0
 offset_top = 16.0
 offset_right = -24.0
-offset_bottom = 48.0
+offset_bottom = 64.0
 grow_horizontal = 2
+mouse_filter = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 30

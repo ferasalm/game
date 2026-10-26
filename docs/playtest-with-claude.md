@@ -3,7 +3,7 @@
 ## Feras: play and mark
 1. Start the game from a terminal tab in C:\dev\game: `bash tools/playtest.sh` (or ask Claude to start it in one).
    Everything the game prints also goes to `inbox/playtest/game.log`.
-2. See a bug: press **F12** (gamepad: Back/View). The game freezes and the screen dims for drawing.
+2. See a bug: press **F12** (gamepad: Back/View). The game freezes; a hint line and a note box show.
    - Left-drag: draw freely. Right-drag: a clean circle. Ctrl+Z: undo the last mark.
    - Type a one-line note. **Enter** (or F12 again) saves, **Esc** cancels. The game goes on where it stopped.
 3. Tell Claude "read my playtest marks" (no need to paste pictures: they are already on disk).

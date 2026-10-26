@@ -3,7 +3,7 @@ extends RefCounted
 ## purpose: The Neon Glitch state a playtest capture saves: the stage, the roof room and hero, and the fight if one is on.
 
 static func collect(stage: StringName, roof: RoofScene, battle: MapBattle) -> Dictionary:
-	var state: Dictionary = {"stage": stage, "room": &"", "hero": Vector2.ZERO, "fight": {}}
+	var state: Dictionary = {"stage": stage, "room": &"", "hero": [], "fight": {}}
 	if roof != null:
 		state["room"] = roof.room_id
 		var room: NeonRoomDef = roof.room()

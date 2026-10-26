@@ -146,7 +146,7 @@ func _write_images(folder: String) -> void:
 
 func _write_state(folder: String, stamp: String) -> void:
 	var log_lines: Array = _logger.ring.lines() if _logger != null else []
-	var data: Dictionary = PlaytestDump.build(_note.text, stamp, _scene_name(), _source_state(), log_lines)
+	var data: Dictionary = PlaytestDump.build(_note.text, stamp, _scene_path(), _source_state(), log_lines)
 	var file := FileAccess.open(folder.path_join("state.json"), FileAccess.WRITE)
 	if file == null:
 		return
@@ -163,9 +163,9 @@ func _source_state() -> Dictionary:
 	return {}
 
 
-func _scene_name() -> String:
+func _scene_path() -> String:
 	var scene: Node = get_tree().current_scene
-	return String(scene.name) if scene != null else ""
+	return scene.scene_file_path if scene != null else ""
 
 
 func _ensure_gdignore() -> void:

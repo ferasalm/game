@@ -2,7 +2,8 @@
 
 ## 1. You can do this yourself
 - tools/run_godot.sh fails on any SCRIPT ERROR or ERROR line even when Godot exits 0 (2026-10-19). check.sh "tests
-  FAIL" with `exit code 124` and no FAIL line = the 600 s timeout, not a test (2026-10-23).
+  FAIL" with `exit code 124` and no FAIL line = the 600 s timeout, not a test (2026-10-23). Headless
+  `get_texture().get_image()` prints an ERROR (dummy renderer) -> tests inject the grab (2026-10-26).
 - See a scene without the owner: non-headless `"$(tools/godot.sh)" --path . --write-movie DIR/f.png --fixed-fps 60
   --quit-after N [scene]`, view 1-2 frames at 640x360 with Pillow (2026-10-21). A Node script under `-s` fails
   ("doesn't inherit SceneTree", no autoloads, an ALERT box on the owner's screen) -> render tools run as a .tscn
@@ -77,7 +78,6 @@
 - The browser pane's downloads are invisible to Claude; Flow links need the owner's cookies -> he saves files to
   inbox/ (git-ignored); pictures pasted in chat are not on disk -> ask him to save them (2026-10-23).
 - Painted Flow art pixelized muddy -> pixelize.py --contrast 1.3 --saturation 1.5 --outline; check facing first.
-
 - Flow from Claude: the browser pane can't download or reach localhost -> Claude in Chrome (his login): upload =
   own <input type=file> + file_upload + a synthetic drop on the grid; download = "Download media" -> 2K -> ~/Downloads;
   the Flow agent picks Nano Banana; 2:3 is refused (1:1, 16:9, 9:16, 4:3, 3:4) (2026-10-26).
