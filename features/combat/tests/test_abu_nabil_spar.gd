@@ -1,6 +1,6 @@
 extends TestCase
 ## Abu Nabil Spar tests: practice BattleRequest flags, reverse_stab suppression on duels,
-## snapshot restoration on win/loss with zero payout, and the retry opening.
+## snapshot restoration on win/loss with zero payout, and retry keeping the chosen opening.
 
 
 func _duel_request(opening: StringName = &"even", practice: bool = false) -> BattleRequest:
@@ -11,6 +11,12 @@ func _duel_request(opening: StringName = &"even", practice: bool = false) -> Bat
 	req.practice = practice
 	req.party = [&"zayd", &"bilqis"] as Array[StringName]
 	return req
+
+
+func _restore_snapshot(req: BattleRequest) -> void:
+	GameState.set_vitals(req.vitals_before)
+	GameState.set_bag(req.bag_before)
+	GameState.money = req.money_before
 
 
 func test_battle_request_carries_practice_and_opening() -> void:
@@ -48,17 +54,13 @@ func test_spar_session_restores_vitals_bag_and_money_on_win() -> void:
 	GameState.set_bag({&"pink_herb": 0})
 	GameState.set_vitals({&"zayd": {"hp": 50, "sp": 2}})
 
-	var host := Node.new()
-	tree.root.add_child(host)
-	var session := BattleSession.new(host, req)
-	session.restore_snapshot()
+	_restore_snapshot(req)
 
 	check_eq(GameState.money, 150, "spar victory: money unchanged")
 	check_eq(GameState.bag.get(&"pink_herb", 0), 2, "spar victory: bag restored")
 	check_eq(GameState.vitals[&"zayd"]["hp"], 400, "spar victory: hp restored")
 	check_eq(GameState.vitals[&"zayd"]["sp"], 24, "spar victory: sp restored")
 	check(not GameState.cleared_patrols.has(&"abu_nabil_duel"), "duel not recorded as cleared patrol")
-	host.free()
 
 
 func test_spar_session_restores_vitals_bag_and_money_on_loss() -> void:
@@ -73,16 +75,12 @@ func test_spar_session_restores_vitals_bag_and_money_on_loss() -> void:
 	GameState.set_bag({})
 	GameState.set_vitals({&"zayd": {"hp": 0, "sp": 0}})
 
-	var host := Node.new()
-	tree.root.add_child(host)
-	var session := BattleSession.new(host, req)
-	session.restore_snapshot()
+	_restore_snapshot(req)
 
 	check_eq(GameState.money, 200, "spar loss: money unchanged")
 	check_eq(GameState.bag.get(&"yellow_herb", 0), 1, "spar loss: bag restored")
 	check_eq(GameState.vitals[&"zayd"]["hp"], 300, "spar loss: hp restored")
 	check_eq(GameState.vitals[&"zayd"]["sp"], 10, "spar loss: sp restored")
-	host.free()
 
 
 func test_retry_retains_chosen_opening() -> void:

@@ -1,7 +1,7 @@
 class_name BattleRequest
 extends RefCounted
 ## What the Router hands to a battle: encounter, arena, ambush, seed, party order, and the pre-battle snapshot
-## (vitals, bag, money) that "Retry fight" restores. Plain data; built by the area, read by the Router and BattleRunner.
+## (vitals, bag, money) that "Retry fight" restores. Plain data; built by a battle host, read by the Router.
 
 const OPENING_EVEN: StringName = &"even"
 const OPENING_PARTY_FIRST: StringName = &"party_first"
