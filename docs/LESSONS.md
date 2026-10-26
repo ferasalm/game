@@ -76,6 +76,12 @@
   inbox/ (git-ignored); pictures pasted in chat are not on disk -> ask him to save them (2026-10-23).
 - Painted Flow art pixelized muddy -> pixelize.py --contrast 1.3 --saturation 1.5 --outline; check facing first.
 
+- Flow from Claude: the browser pane can't download or reach localhost -> Claude in Chrome (his login): upload =
+  own <input type=file> + file_upload + a synthetic drop on the grid; download = "Download media" -> 2K -> ~/Downloads;
+  the Flow agent picks Nano Banana; 2:3 is refused (1:1, 16:9, 9:16, 4:3, 3:4) (2026-10-26).
+- Iso sprites: Rodin rig `ue` = the old 68-bone rig, so ModelRig retargets UAL clips; bake_sprites.tscn renders them
+  (ortho, 30 deg, own unshaded ink shader + hull); 256-colour sheets are 1/6 the size (2026-10-26).
+
 ## 6. Cheaper routes
 - ffmpeg 9 dropped `-filter_complex_script` -> `-/filter_complex file` (2026-10-25).
 - agy reads GEMINI.md; -p mode denies shell commands -> tools/agy_task.sh (skip-permissions, own worktree).

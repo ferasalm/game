@@ -4,6 +4,7 @@ it; log every new decision verbatim in docs/decisions-log.md too.
 
 ## In force
 ### Process
+- 2026-10-26 | Neon Glitch looks and moves like Hades (isometric, our ink style); fights stay turn-based on the map until Feras says otherwise | Feras
 - 2026-10-25 | Neon Glitch = the whole game (plan: design/neon-glitch-plan.md); one person, low budget; turn-based first, action later likely Hades-like roguelike (runs decided at the switch) | Feras
 - 2026-10-22 | Log: never reword; struck (~~...~~) lines go to docs/decisions-archive.md | Claude
 - 2026-10-21 | Ask Feras 2-4 multiple-choice questions, recommended first; big asks: plan mode (Opus xhigh), agent audit, then orchestrate | Feras
@@ -14,6 +15,7 @@ it; log every new decision verbatim in docs/decisions-log.md too.
 - 2026-10-19 | Merge checked work into main at each session's end (standing OK) | Feras
 - 2026-10-19 | Blueprint = design input only; WSL2 rule and 120-line cap rejected | Claude
 ### Tools and builders
+- 2026-10-26 | Builders: agy (back), Cloudflare DeepSeek, OpenRouter, Haiku subagents; Sonnet only when no cheaper one can; Nano Banana images via Google Flow (Chrome, his account); paid image APIs <= $1 | Feras
 - 2026-10-24 | Builders: 5 runs = 2 agy, 2 DeepSeek V4.1 Flash, 1 GLM-5.3 (no Inkling, Kimi); agy out: all DeepSeek, max 3; triage GLM-5.3 Flash; skills: design V4 Pro/Nemotron/Gemini, code GLM-5.3 | Feras
 - 2026-10-25 | Story map: docs/story/rydan.twee <-> Twine via tools/twine_sync.py; Twine library in docs/story/twine (git-ignored) | Feras/Claude
 - 2026-10-23 | Builds: build_pipeline.sh + build_gate.py; Claude reads PASS runs only; merge chats on Sonnet | Feras

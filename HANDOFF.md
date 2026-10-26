@@ -1,5 +1,5 @@
 # HANDOFF (current state only; one section per track, each edited only by its owner; max 60 lines)
-Last updated: 2026-10-26 (story bible merged, Twine map outlined), story chat (Opus 5.5, `claude-opus-5-5`); 3D tracks paused.
+Last updated: 2026-10-26 (overnight: Neon Glitch first playable foundation + 3 builders), Opus 5.5 (`claude-opus-5-5`); 3D tracks paused.
 
 ## Shared
 - Builders: CLAUDE.md + EFFICIENCY 3b (5 runs: 2 agy, 2 DeepSeek, 1 Inkling); check `bash tools/slots.sh`.
@@ -15,16 +15,17 @@ Last updated: 2026-10-26 (story bible merged, Twine map outlined), story chat (O
 - Waiting on the owner: more concept pictures (plus an empty plate per scene: no characters, HUD or rain).
 1. Then: design doc + plan the one-scene prototype (rooftop, Zayd, one fight, HUD). Model: Opus. Effort: high.
 
-## Track: Neon Glitch (owner: the chat "Neon Glitch brainstorm", 2026-10-25)
-- Plan: docs/design/neon-glitch-plan.md. Story: Feras's bible docs/story/bible.md (2026-10-26) -> Twine map
-  rydan.twee (38 passages: ch0 Roya cold open, ch1 prison escape -> "Earlier" Zayd -> demo end, ch2-3 Numan, Bilal,
-  Kanan; later arcs). Decided 10-26: first fight on the prison roof, three hilts (1/2/3), no year (DECISIONS).
-- Code still has the old hilt model (grandfather_hilt start, stones) and "zayd" = Rydan: brief a change later.
-- Waiting on Feras: red "check" passages (Rydan's prosthetic arm, Zayd as first call-in), slot contents
-  (gems with a tech reason vs modules), Roya cold open playable or not, the bible's 5 open questions (Twine).
-1. Pull his Twine edits; settle checks; then brief the first build (start flow + Roya cold open + prison-roof
-   fight) with the 2D track. Model: Opus. Effort: high.
-`Continue ferasalm/game on main. Read HANDOFF.md (Neon Glitch), docs/story/README.md. Pull the story; settle the checks; brief the first build; /handoff.`
+## Track: Neon Glitch (owner: the overnight chat "Neon Glitch first playable", 2026-10-26)
+- Spec docs/design/first-playable.md; branch neon/first-playable (pushed). Done: prison-roof plate (Flow edit of his
+  rooftop), Rydan Rodin model from his sheet (A-pose via Flow), tools/bake_sprites.tscn + tools/art/sprite_sheet.py
+  (8-dir ink sprites: rydan, guard), start clips as .ogv, portraits (rydan_*, bilqis_ng_*), features/neon foundation.
+- Builders running from the old chat (check ../game-wt/<task>.result): neon-roof (agy), neon-start (agy),
+  neon-battle (cf). agy works again (ping 10-26); slots.sh still caps agy at 0: use CAP_AGY=2, fix after the runs.
+- Waiting on Feras: "similar to Hades" = real-time combat now? (built turn-based on the map); Claude defaults in
+  rydan.twee (prosthetic kept, Zayd call-in later, Roya watch-only); the bible's 5 open questions.
+1. Review/merge the 3 builds; Flow frames + brief for the Roya cold open; glue features/neon/neon_game.tscn
+   (start -> cold open -> roof -> map battle -> exit card) as main scene; render-check; /handoff. Opus, high.
+`Continue ferasalm/game on neon/first-playable. Read HANDOFF.md (Neon Glitch), docs/design/first-playable.md. Do its next step; /handoff.`
 ## Track: Level 1 + playtest fixes: PAUSED 2026-10-24 (3D; 2D redesign). Unmerged fix branches kept in ../game-wt.
 - Playtest 2026-10-24: inbox/playtest_*.png, concept_*.png; crossing freeze fixed. docs/briefs/: render-clean,
   menus-equip-fix, holo-map-real (+ their fix passes), then cyber-look, items-menu, gear-slots (save: line review).
