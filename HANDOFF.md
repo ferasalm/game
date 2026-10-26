@@ -24,7 +24,7 @@ Last updated: 2026-10-26 (overnight: Neon Glitch first playable foundation + 3 b
 - Waiting on Feras: "similar to Hades" = real-time combat now? (built turn-based on the map); Claude defaults in
   rydan.twee (prosthetic kept, Zayd call-in later, Roya watch-only); the bible's 5 open questions.
 1. Review/merge the 3 builds; Flow frames + brief for the Roya cold open; glue features/neon/neon_game.tscn
-   (start -> cold open -> roof -> map battle -> exit card) as main scene; render-check; /handoff. Opus, high.
+   (start -> cold open -> roof -> map battle -> exit card) as main scene; render-check; /handoff. Model: Opus. Effort: high.
 `Continue ferasalm/game on neon/first-playable. Read HANDOFF.md (Neon Glitch), docs/design/first-playable.md. Do its next step; /handoff.`
 ## Track: Level 1 + playtest fixes: PAUSED 2026-10-24 (3D; 2D redesign). Unmerged fix branches kept in ../game-wt.
 - Playtest 2026-10-24: inbox/playtest_*.png, concept_*.png; crossing freeze fixed. docs/briefs/: render-clean,

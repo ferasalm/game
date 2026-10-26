@@ -94,7 +94,9 @@ func clip_done() -> StringName:
 
 
 func next_state(input_action: StringName) -> StringName:
-	if input_action in [&"confirm", &"press_any", &"interact"]:
+	if input_action == &"press_any":
+		press_any()
+	elif input_action in [&"confirm", &"interact"]:
 		confirm()
 	elif input_action in [&"back", &"cancel"]:
 		back()

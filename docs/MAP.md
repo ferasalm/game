@@ -28,9 +28,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `.agents/skills/godot-shader-developer/SKILL.md`
 - `.agents/skills/image-prompt-engineer/SKILL.md`
 - `.agents/skills/level-designer/SKILL.md`
-- `.agents/skills/marketing-content-creator/SKILL.md`
-- `.agents/skills/marketing-short-video-editing-coach/SKILL.md`
-- `.agents/skills/marketing-video-optimization-specialist/SKILL.md`
 - `.agents/skills/mcp-builder/SKILL.md`
 - `.agents/skills/minimal-change-engineer/SKILL.md`
 - `.agents/skills/narrative-designer/SKILL.md`
@@ -61,9 +58,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `.opencode/agent/godot-shader-developer.md`
 - `.opencode/agent/image-prompt-engineer.md`
 - `.opencode/agent/level-designer.md`
-- `.opencode/agent/marketing-content-creator.md`
-- `.opencode/agent/marketing-short-video-editing-coach.md`
-- `.opencode/agent/marketing-video-optimization-specialist.md`
 - `.opencode/agent/mcp-builder.md`
 - `.opencode/agent/minimal-change-engineer.md`
 - `.opencode/agent/narrative-designer.md`
@@ -536,8 +530,12 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/neon/start/start_flow.tscn`: scene
 - `features/neon/start/start_flow_def.gd`: Authored timings, colours, and sizes for the Neon Glitch start flow
 - `features/neon/start/start_flow_fx.gd`: Transitions and effects for the start flow (crossfades, blurs, and cover sizing)
+- `features/neon/start/start_flow_input.gd`: Maps a raw input event to the start-flow action it should trigger
+- `features/neon/start/start_flow_selection.gd`: Connects start-flow mouse targets to selection and confirm callbacks
 - `features/neon/start/start_ui.gd`: View layer for Neon Glitch start flow overlays (title, menu, pick, panel, HUD boot)
-- `features/neon/start/tests/test_start_flow.gd`: Headless tests for StartFlow clip loading and done signal emission
+- `features/neon/start/start_ui_style.gd`: Applies localization, authored fonts/sizes/colours and mouse handling to a StartUIView
+- `features/neon/start/start_ui_view.gd`: Typed node references and view signals shared by the start-flow UI and its styling helper
+- `features/neon/start/tests/test_start_flow.gd`: Headless tests for StartFlow clip loading, done emission, mashing and localized labels
 - `features/neon/start/tests/test_start_steps.gd`: Tests for StartSteps state transitions and choices
 - `features/neon/tests/test_neon_foundation.gd`: purpose: Neon Glitch foundation: the sprite sets and the prison roof load with real sheets, IsoDir maps screen directions to the baked rows and back, IsoWalk keeps feet on the floor and slides along walls, IsoActor plays, signals the impact frame and holds a one-shot's last frame
 - `features/neon/tests/test_neon_game.gd`: purpose: The first playable's flow wires up headless: start -> cold open -> roof -> fight on the map -> back on the roof after a win -> exit card -> start again; a lost fight (Quit) returns to the start

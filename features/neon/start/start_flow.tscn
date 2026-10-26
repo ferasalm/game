@@ -53,6 +53,7 @@ corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
 [node name="StartFlow" type="Control"]
+mouse_filter = 2
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -63,6 +64,7 @@ script = ExtResource("1_flow")
 
 [node name="VideoPlayer" type="VideoStreamPlayer" parent="."]
 unique_name_in_owner = true
+mouse_filter = 2
 layout_mode = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
@@ -70,17 +72,17 @@ expand = true
 
 [node name="FadeOverlay" type="TextureRect" parent="."]
 unique_name_in_owner = true
+mouse_filter = 2
 modulate = Color(1, 1, 1, 0)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
 expand_mode = 1
 
 [node name="BlurOverlay" type="ColorRect" parent="."]
+visible = false
 unique_name_in_owner = true
+mouse_filter = 2
 material = SubResource("ShaderMaterial_blur")
 layout_mode = 1
 anchors_preset = 15
@@ -91,6 +93,7 @@ grow_vertical = 2
 color = Color(1, 1, 1, 1)
 
 [node name="UI" type="Control" parent="."]
+mouse_filter = 2
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -128,8 +131,6 @@ theme_override_colors/font_color = Color(0.43, 0.93, 1, 1)
 theme_override_colors/font_shadow_color = Color(0.43, 0.93, 1, 0.6)
 theme_override_constants/shadow_outline_size = 12
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 72
-text = "NEON GLITCH"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -149,8 +150,6 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/font_color = Color(0.43, 0.93, 1, 1)
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 28
-text = "PRESS ANY BUTTON"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -170,7 +169,6 @@ offset_left = 120.0
 offset_top = 360.0
 offset_right = 540.0
 offset_bottom = 680.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
 [node name="VBox" type="VBoxContainer" parent="UI/MenuView/MenuPanel"]
 layout_mode = 1
@@ -198,7 +196,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_item_active")
 
 [node name="MenuNewGameBar" type="ColorRect" parent="UI/MenuView/MenuPanel/VBox/MenuNewGame"]
 unique_name_in_owner = true
@@ -219,8 +216,6 @@ offset_left = 24.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 28
-text = "NEW GAME"
 vertical_alignment = 1
 
 [node name="MenuContinue" type="Control" parent="UI/MenuView/MenuPanel/VBox"]
@@ -239,8 +234,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.46, 0.49, 0.55, 0.7)
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 28
-text = "CONTINUE"
 vertical_alignment = 1
 
 [node name="MenuOptions" type="Control" parent="UI/MenuView/MenuPanel/VBox"]
@@ -259,8 +252,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.46, 0.49, 0.55, 0.7)
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 28
-text = "OPTIONS"
 vertical_alignment = 1
 
 [node name="MenuQuit" type="Control" parent="UI/MenuView/MenuPanel/VBox"]
@@ -277,7 +268,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_item_active")
 
 [node name="MenuQuitBar" type="ColorRect" parent="UI/MenuView/MenuPanel/VBox/MenuQuit"]
 unique_name_in_owner = true
@@ -299,8 +289,6 @@ offset_left = 24.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 28
-text = "QUIT GAME"
 vertical_alignment = 1
 
 [node name="PickView" type="Control" parent="UI"]
@@ -326,19 +314,17 @@ grow_horizontal = 2
 theme_override_constants/separation = 2
 
 [node name="PickHeader" type="Label" parent="UI/PickView/HeaderBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.43, 0.93, 1, 1)
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 36
-text = "CHOOSE YOUR HERO"
 horizontal_alignment = 1
 
 [node name="PickMusnad" type="Label" parent="UI/PickView/HeaderBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.27, 0.59, 1)
 theme_override_fonts/font = ExtResource("6_font_musnad")
-theme_override_font_sizes/font_size = 20
-text = "𐩱𐩧𐩫𐩴𐩠𐩯"
 horizontal_alignment = 1
 
 [node name="CardRydan" type="Control" parent="UI/PickView"]
@@ -357,7 +343,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
 [node name="AccentLine" type="ColorRect" parent="UI/PickView/CardRydan"]
 layout_mode = 1
@@ -383,28 +368,25 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 6
 
-[node name="Name" type="Label" parent="UI/PickView/CardRydan/VBox"]
+[node name="CardRydanName" type="Label" parent="UI/PickView/CardRydan/VBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.43, 0.93, 1, 1)
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 38
-text = "RYDAN"
 horizontal_alignment = 1
 
-[node name="Musnad" type="Label" parent="UI/PickView/CardRydan/VBox"]
+[node name="CardRydanMusnad" type="Label" parent="UI/PickView/CardRydan/VBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.27, 0.59, 1)
 theme_override_fonts/font = ExtResource("6_font_musnad")
-theme_override_font_sizes/font_size = 24
-text = "𐩧𐩺𐩵𐩬"
 horizontal_alignment = 1
 
-[node name="Role" type="Label" parent="UI/PickView/CardRydan/VBox"]
+[node name="CardRydanRole" type="Label" parent="UI/PickView/CardRydan/VBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.91, 0.93, 0.96, 0.85)
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 16
-text = "JAMBIYAH FIGHTER  /  CLOSE RANGE"
 horizontal_alignment = 1
 autowrap_mode = 2
 
@@ -425,7 +407,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_panel_dim")
 
 [node name="VBox" type="VBoxContainer" parent="UI/PickView/CardBilqis"]
 layout_mode = 1
@@ -440,28 +421,25 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 6
 
-[node name="Name" type="Label" parent="UI/PickView/CardBilqis/VBox"]
+[node name="CardBilqisName" type="Label" parent="UI/PickView/CardBilqis/VBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.46, 0.49, 0.55, 1)
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 38
-text = "BILQIS"
 horizontal_alignment = 1
 
-[node name="Musnad" type="Label" parent="UI/PickView/CardBilqis/VBox"]
+[node name="CardBilqisMusnad" type="Label" parent="UI/PickView/CardBilqis/VBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.46, 0.49, 0.55, 0.8)
 theme_override_fonts/font = ExtResource("6_font_musnad")
-theme_override_font_sizes/font_size = 24
-text = "𐩨𐩡𐩤𐩺𐩦"
 horizontal_alignment = 1
 
-[node name="LaterTag" type="Label" parent="UI/PickView/CardBilqis/VBox"]
+[node name="CardBilqisLater" type="Label" parent="UI/PickView/CardBilqis/VBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.27, 0.59, 1)
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 20
-text = "LATER"
 horizontal_alignment = 1
 
 [node name="PanelView" type="Control" parent="UI"]
@@ -480,7 +458,6 @@ offset_left = 60.0
 offset_top = 44.0
 offset_right = 620.0
 offset_bottom = 990.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
 [node name="Margin" type="MarginContainer" parent="UI/PanelView/SidePanel"]
 layout_mode = 1
@@ -501,73 +478,65 @@ theme_override_constants/separation = 12
 [node name="HeaderHBox" type="HBoxContainer" parent="UI/PanelView/SidePanel/Margin/VBox"]
 layout_mode = 2
 
-[node name="Name" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/HeaderHBox"]
+[node name="PanelName" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/HeaderHBox"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.43, 0.93, 1, 1)
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 52
-text = "RYDAN"
 
-[node name="Musnad" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/HeaderHBox"]
+[node name="PanelMusnad" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/HeaderHBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.27, 0.59, 1)
 theme_override_fonts/font = ExtResource("6_font_musnad")
-theme_override_font_sizes/font_size = 30
-text = "𐩧𐩺𐩵𐩬"
 horizontal_alignment = 2
 
-[node name="Role" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox"]
+[node name="PanelRole" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.27, 0.59, 1)
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 16
-text = "JAMBIYAH FIGHTER  /  CLOSE RANGE"
 
 [node name="Div1" type="ColorRect" parent="UI/PanelView/SidePanel/Margin/VBox"]
 custom_minimum_size = Vector2(0, 1)
 layout_mode = 2
 color = Color(0.43, 0.93, 1, 0.35)
 
-[node name="Story" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox"]
+[node name="PanelStory" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.91, 0.93, 0.96, 0.9)
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 17
-text = "A former covert operative, framed for his partner's death and buried in a prison above Old Sana'a. Tonight the power fails, and someone outside is timing the guards."
 autowrap_mode = 2
 
 [node name="StylesBox" type="VBoxContainer" parent="UI/PanelView/SidePanel/Margin/VBox"]
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="S1" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/StylesBox"]
+[node name="PanelStyle1" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/StylesBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.91, 0.93, 0.96, 0.85)
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 16
-text = ">  Gets in close and stays there"
 
-[node name="S2" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/StylesBox"]
+[node name="PanelStyle2" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/StylesBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.91, 0.93, 0.96, 0.85)
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 16
-text = ">  Reads the timeline: strike before they do"
 
-[node name="S3" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/StylesBox"]
+[node name="PanelStyle3" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/StylesBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.91, 0.93, 0.96, 0.85)
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 16
-text = ">  Breaker cuts enemy attacks short"
 
-[node name="S4" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/StylesBox"]
+[node name="PanelStyle4" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/StylesBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.91, 0.93, 0.96, 0.85)
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 16
-text = ">  A reverse stab punishes anyone behind him"
 
 [node name="Div2" type="ColorRect" parent="UI/PanelView/SidePanel/Margin/VBox"]
 custom_minimum_size = Vector2(0, 1)
@@ -578,19 +547,17 @@ color = Color(0.43, 0.93, 1, 0.35)
 layout_mode = 2
 
 [node name="DiffTitle" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/DiffHeaderHBox"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.43, 0.93, 1, 1)
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 22
-text = "DIFFICULTY"
 
 [node name="DiffMusnad" type="Label" parent="UI/PanelView/SidePanel/Margin/VBox/DiffHeaderHBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.27, 0.59, 1)
 theme_override_fonts/font = ExtResource("6_font_musnad")
-theme_override_font_sizes/font_size = 18
-text = "𐩮𐩲𐩪𐩩"
 horizontal_alignment = 2
 
 [node name="DiffButtonsHBox" type="HBoxContainer" parent="UI/PanelView/SidePanel/Margin/VBox"]
@@ -610,7 +577,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_item_active")
 
 [node name="BtnNormalBar" type="ColorRect" parent="UI/PanelView/SidePanel/Margin/VBox/DiffButtonsHBox/BtnNormal"]
 unique_name_in_owner = true
@@ -630,8 +596,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 22
-text = "NORMAL"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -648,7 +612,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_item_active")
 
 [node name="BtnHardBar" type="ColorRect" parent="UI/PanelView/SidePanel/Margin/VBox/DiffButtonsHBox/BtnHard"]
 unique_name_in_owner = true
@@ -670,8 +633,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.46, 0.49, 0.55, 1)
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 22
-text = "HARD"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -680,8 +641,6 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.91, 0.93, 0.96, 0.8)
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 16
-text = "The story as it should be told. Enemies show their tells, and a lost fight costs you nothing but time."
 autowrap_mode = 2
 
 [node name="HudBootView" type="Control" parent="UI"]
@@ -719,8 +678,6 @@ offset_right = 300.0
 offset_bottom = 130.0
 theme_override_colors/font_color = Color(0.43, 0.93, 1, 1)
 theme_override_fonts/font = ExtResource("6_font_musnad")
-theme_override_font_sizes/font_size = 24
-text = "𐩮𐩲𐩪𐩩"
 
 [node name="HudMusnad2" type="Label" parent="UI/HudBootView"]
 unique_name_in_owner = true
@@ -731,8 +688,6 @@ offset_right = 300.0
 offset_bottom = 170.0
 theme_override_colors/font_color = Color(0.43, 0.93, 1, 1)
 theme_override_fonts/font = ExtResource("6_font_musnad")
-theme_override_font_sizes/font_size = 24
-text = "𐩱𐩧𐩫𐩴𐩠𐩯"
 
 [node name="HudMusnad3" type="Label" parent="UI/HudBootView"]
 unique_name_in_owner = true
@@ -743,8 +698,6 @@ offset_right = 300.0
 offset_bottom = 210.0
 theme_override_colors/font_color = Color(1, 0.27, 0.59, 1)
 theme_override_fonts/font = ExtResource("6_font_musnad")
-theme_override_font_sizes/font_size = 24
-text = "𐩧𐩺𐩵𐩬"
 
 [node name="HintBar" type="Control" parent="UI"]
 unique_name_in_owner = true
@@ -772,7 +725,5 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.91, 0.93, 0.96, 0.85)
 theme_override_fonts/font = ExtResource("5_font_latin")
-theme_override_font_sizes/font_size = 17
-text = "[^v] SELECT     [OK] CONFIRM"
 horizontal_alignment = 1
 vertical_alignment = 1
