@@ -46,14 +46,6 @@ func setup(sim: BattleSim, neon: NeonBattleViewDef, battle_view: BattleViewDef,
 	refresh()
 
 
-func timeline() -> BattleTimelineBar:
-	return _timeline
-
-
-func foe_bar(unit_id: StringName) -> Control:
-	return _foe_bars.bar(unit_id)
-
-
 func refresh() -> void:
 	_vitals.refresh()
 	_foe_bars.refresh()
@@ -69,11 +61,6 @@ func show_defeat() -> void:
 	_stamp.text = BattleStyle.text("NEON_BATTLE_DEFEAT")
 	_stamp.visible = true
 	_panel.visible = true
-
-
-func hide_defeat() -> void:
-	_panel.visible = false
-	_stamp.visible = false
 
 
 func play_intro() -> void:
@@ -99,9 +86,9 @@ func pop_number(world_pos: Vector2, value: int, colour: Color) -> void:
 	label.add_theme_font_size_override("font_size", view.number_font)
 	label.add_theme_color_override("font_color", colour)
 	label.add_theme_color_override("font_shadow_color", view.ink_color)
-	label.add_theme_constant_override("shadow_offset_x", 3)
-	label.add_theme_constant_override("shadow_offset_y", 3)
-	label.position = screen_pos(world_pos) + Vector2(-12.0, -40.0)
+	label.add_theme_constant_override("shadow_offset_x", view.number_shadow_offset)
+	label.add_theme_constant_override("shadow_offset_y", view.number_shadow_offset)
+	label.position = screen_pos(world_pos) + Vector2(view.number_offset_x, view.number_offset_y)
 	_root.add_child(label)
 	var tween: Tween = create_tween()
 	tween.tween_property(label, "position:y", label.position.y - view.number_rise, view.number_seconds)
@@ -112,12 +99,12 @@ func pop_number(world_pos: Vector2, value: int, colour: Color) -> void:
 func flash_at(world_pos: Vector2, colour: Color) -> void:
 	var flash := ColorRect.new()
 	flash.color = colour
-	flash.size = Vector2(120.0, 120.0)
+	flash.size = Vector2(view.flash_size, view.flash_size)
 	flash.position = screen_pos(world_pos) - flash.size * 0.5
 	flash.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_root.add_child(flash)
 	var tween: Tween = create_tween()
-	tween.tween_property(flash, "modulate:a", 0.0, 0.25)
+	tween.tween_property(flash, "modulate:a", 0.0, view.flash_fade_seconds)
 	tween.tween_callback(flash.queue_free)
 
 
@@ -155,8 +142,8 @@ func _build_overlays() -> void:
 	_stamp.add_theme_font_size_override("font_size", view.victory_font)
 	_stamp.add_theme_color_override("font_color", view.flash_color)
 	_stamp.add_theme_color_override("font_shadow_color", view.ink_color)
-	_stamp.add_theme_constant_override("shadow_offset_x", 6)
-	_stamp.add_theme_constant_override("shadow_offset_y", 6)
+	_stamp.add_theme_constant_override("shadow_offset_x", view.stamp_shadow_offset)
+	_stamp.add_theme_constant_override("shadow_offset_y", view.stamp_shadow_offset)
 	_stamp.visible = false
 	center.add_child(_stamp)
 	_build_panel(center)

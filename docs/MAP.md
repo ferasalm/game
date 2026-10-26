@@ -28,9 +28,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `.agents/skills/godot-shader-developer/SKILL.md`
 - `.agents/skills/image-prompt-engineer/SKILL.md`
 - `.agents/skills/level-designer/SKILL.md`
-- `.agents/skills/marketing-content-creator/SKILL.md`
-- `.agents/skills/marketing-short-video-editing-coach/SKILL.md`
-- `.agents/skills/marketing-video-optimization-specialist/SKILL.md`
 - `.agents/skills/mcp-builder/SKILL.md`
 - `.agents/skills/minimal-change-engineer/SKILL.md`
 - `.agents/skills/narrative-designer/SKILL.md`
@@ -61,9 +58,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `.opencode/agent/godot-shader-developer.md`
 - `.opencode/agent/image-prompt-engineer.md`
 - `.opencode/agent/level-designer.md`
-- `.opencode/agent/marketing-content-creator.md`
-- `.opencode/agent/marketing-short-video-editing-coach.md`
-- `.opencode/agent/marketing-video-optimization-specialist.md`
 - `.opencode/agent/mcp-builder.md`
 - `.opencode/agent/minimal-change-engineer.md`
 - `.opencode/agent/narrative-designer.md`
@@ -93,7 +87,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/combat/arena_skyline.json`: content: skyline x1
 - `content/combat/arenas.json`: content: arena x1
 - `content/combat/camera.json`: content: battle_camera x1
-- `content/combat/combatants.json`: content: combatant x5
+- `content/combat/combatants.json`: content: combatant x6
 - `content/combat/encounters.json`: content: encounter x7
 - `content/combat/juice.json`: content: battle_juice x1
 - `content/combat/rules.json`: content: battle_rules x1
@@ -494,6 +488,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/neon/battle/map_battle.gd`: purpose: One turn-based fight on the iso map (docs/design/first-playable.md section 3, no arena swap): builds the BattleSim from the room's encounter, glitches and letterboxes in, runs the fighters to MapFormation spots, plays the sim in wait mode with the existing command menu, then pays the victory or offers Retry / Quit
 - `features/neon/battle/map_battle_build.gd`: purpose: Builds the map fight (docs/design/first-playable.md section 3): the sim from the room's encounter and the party from GameState, the MapFormation spots, the IsoActor to unit mapping and the HUD
 - `features/neon/battle/map_battle_end.gd`: purpose: How a map fight pays out or starts again (docs/design/first-playable.md section 3): victory carries vitals and bag, awards XP and the encounter's riyal as BattleSession does; Retry restores the pre-battle snapshot
+- `features/neon/battle/map_battle_events.gd`: purpose: Applies timeline events to actors and shown_hp (docs/design/first-playable.md section 3): damage numbers, hit freeze, KO pose on defeat, heals and revives, and reconciles shown_hp with the sim at the end of each batch
 - `features/neon/battle/map_battle_foe_bars.gd`: purpose: Small HP bars over the foes' heads on the iso map (docs/design/first-playable.md section 3), kept on their feet point through the canvas transform and hidden once a foe is down
 - `features/neon/battle/map_battle_hud.gd`: purpose: The on-map battle HUD (docs/design/first-playable.md section 3): the reused timeline bar, the slanted HP/SP bar, foe bars over their heads, damage numbers, the letterbox and glitch intro, the victory stamp and the defeat panel (Retry / Quit)
 - `features/neon/battle/map_battle_intro.gd`: purpose: The map fight's start (docs/design/first-playable.md section 3): glitch flash and letterbox in, the fighters run from where they stood to their MapFormation spots, then face each other and idle
