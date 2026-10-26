@@ -1,0 +1,18 @@
+{
+  "kind": "neon_roof_rules",
+  "items": [
+    {
+      "id": "prison_roof",
+      "hero_speed": 330.0,
+      "guard_speed": 90.0,
+      "guard_pause": 1.2,
+      "touch_radius": 70.0,
+      "burst_shake_time": 0.25,
+      "burst_shake_intensity": 8.0,
+      "flash_time": 0.2,
+      "move_hint_seconds": 4.0,
+      "floodlight_fade_seconds": 0.6,
+      "interact_radius": 90.0
+    }
+  ]
+}

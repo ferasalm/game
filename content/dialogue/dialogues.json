@@ -103,6 +103,12 @@
     ]},
     {"id": "tayramana_qishr_later", "lines": [
       {"speaker": "bilqis", "expression": "neutral", "text": "DLG_TAYRAMANA_QISHR_7"}
+    ]},
+    {"id": "neon_roof_fuse", "lines": [
+      {"speaker": "bilqis_ng", "expression": "neutral", "text": "DLG_NEON_ROOF_FUSE_1"},
+      {"speaker": "rydan", "expression": "neutral", "text": "DLG_NEON_ROOF_FUSE_2"},
+      {"speaker": "bilqis_ng", "expression": "neutral", "text": "DLG_NEON_ROOF_FUSE_3"},
+      {"speaker": "rydan", "expression": "neutral", "text": "DLG_NEON_ROOF_FUSE_4"}
     ]}
   ]
 }

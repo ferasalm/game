@@ -1,2 +1,8 @@
 keys,en
 NEON_ROOF_TITLE,Prison Roof
+NEON_ROOF_MOVE_HINT,Move: WASD / Stick
+NEON_ROOF_INTERACT_KEY,"[E] "
+DLG_NEON_ROOF_FUSE_1,"Pop the relay. Floodlight sweeps the walkway in six seconds."
+DLG_NEON_ROOF_FUSE_2,"Cutting it now. Two patrols on the deck."
+DLG_NEON_ROOF_FUSE_3,"I see them. Kill the feed and stay in the dark."
+DLG_NEON_ROOF_FUSE_4,Done. Light is dead.
