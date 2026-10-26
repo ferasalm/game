@@ -60,8 +60,21 @@ func test_auto_battle_ends_once() -> void:
 	world.free()
 
 
+## The tutorial fight is won most of the time by a fresh Rydan (XP 0, starting gear) choosing like the auto player.
 func test_balance_200_fights() -> void:
-	pass
+	_fresh()
+	var room := ContentDB.get_def("neon_room", &"prison_roof") as NeonRoomDef
+	var loader: BattleLoader = BattleLoader.from_db(ContentDB, room.encounter)
+	var party: Array[CombatantDef] = loader.party_from_state(GameState, [&"zayd"])
+	var wins: int = 0
+	for fight_seed: int in 200:
+		var sim: BattleSim = loader.make_sim_for(party, fight_seed + 1, 0)
+		BattleLoader.autoplay(sim)
+		if sim.result == &"victory":
+			wins += 1
+	var rate: float = wins / 200.0
+	print("neon_prison_guards win rate at XP 0: %.3f" % rate)
+	check(rate >= 0.8 and rate <= 0.9, "fresh Rydan wins 80-90 %% of the tutorial fight (%.3f)" % rate)
 
 
 func test_melee_hit_lands_only_at_the_impact_signal() -> void:
@@ -97,6 +110,7 @@ func test_played_melee_waits_for_impact() -> void:
 	hero.setup(&"rydan")
 	var foes: Array[IsoActor] = _foes()
 	var battle: MapBattle = _battle(world)
+	battle.auto_play = false  # the hero waits for a command, so he is standing when the swing is played
 	battle.seed_override = 999
 	battle.begin(world, ContentDB.get_def("neon_room", &"prison_roof") as NeonRoomDef, hero, foes, CONTACT, false)
 	var foe_id: StringName = &""
@@ -108,15 +122,14 @@ func test_played_melee_waits_for_impact() -> void:
 	var unit: UnitState = battle.sim.timeline.find(&"zayd")
 	unit.acted = battle.sim.actions[&"jambiyah_strike"]
 	var hit := TimelineEvent.new(&"damage", foe_id, 15, &"jambiyah_strike")
-	var hp_at_impact: int = -1
+	battle.sim.timeline.find(foe_id).hp -= 15  # the sim has already dealt it; the view must wait for the impact
+	var hp_at_impact: Array[int] = [-1]  # lambdas capture locals by value: hold it in an array
 	hero.impact.connect(func(_st: StringName) -> void:
-		hp_at_impact = battle.shown_hp[foe_id]
+		hp_at_impact[0] = battle.shown_hp[foe_id]
 	, CONNECT_ONE_SHOT)
 	var play := MapBattlePlay.new(battle)
-	print("TEST: hero=", hero, " impacts connected=", hero.impact.get_connections().size())
 	play.play([TimelineEvent.new(&"act", &"zayd"), hit])
-	print("TEST: after play, hp_at_impact=", hp_at_impact, " shown_hp=", battle.shown_hp[foe_id])
-	check_eq(hp_at_impact, before, "no damage applied before the impact signal")
+	check_eq(hp_at_impact[0], before, "no damage applied before the impact signal")
 	check_eq(battle.shown_hp[foe_id], before - 15, "damage applied after the impact signal")
 	world.free()
 

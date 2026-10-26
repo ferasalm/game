@@ -65,7 +65,6 @@ func _on_impact(_state: StringName) -> void:
 
 func _act_instant(actor_id: StringName, action: ActionDef, events: Array[TimelineEvent], unit: UnitState) -> void:
 	var actor: IsoActor = battle.actors.get(actor_id)
-	print("ACT_INSTANT: actor_id=", actor_id, " actor=", actor, " action=", action)
 	var h: Array[TimelineEvent] = []
 	var r: Array[TimelineEvent] = []
 	_split_events(events, h, r)
