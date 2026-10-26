@@ -1,12 +1,13 @@
 class_name RoofPatrol
 extends RefCounted
-## purpose: manages one guard's back-and-forth patrol movement, pauses, and facings.
+## purpose: manages one guard's patrol: walks every point of its path and back (ping-pong), pauses at both ends, faces its motion.
 
 var actor: IsoActor
 var path: PackedVector2Array
 var speed: float
 var pause_duration: float
 var _target_idx: int = 1
+var _dir: int = 1
 var _pause_timer: float = 0.0
 
 
@@ -39,9 +40,11 @@ func step(delta: float) -> void:
 	var step_dist: float = speed * delta
 	if dist <= step_dist or dist < 1.0:
 		actor.position = target
-		_target_idx = 0 if _target_idx == 1 else 1
-		_pause_timer = pause_duration
-		actor.play(&"idle")
+		if _target_idx + _dir < 0 or _target_idx + _dir >= path.size():
+			_dir = -_dir
+			_pause_timer = pause_duration
+			actor.play(&"idle")
+		_target_idx += _dir
 	else:
 		var dir: Vector2 = to_target / dist
 		actor.position += dir * step_dist

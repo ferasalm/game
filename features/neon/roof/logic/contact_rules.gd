@@ -4,7 +4,7 @@ extends RefCounted
 
 
 ## True when pos_a and pos_b are within radius pixels of each other.
-static func touching(pos_a: Vector2, pos_b: Vector2, radius: float = 70.0) -> bool:
+static func touching(pos_a: Vector2, pos_b: Vector2, radius: float) -> bool:
 	return pos_a.distance_to(pos_b) <= radius
 
 

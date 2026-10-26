@@ -126,3 +126,17 @@ func test_pause_idles_actors() -> void:
 	check_eq(roof.hero().state, &"idle", "a paused hero stands")
 	check(not roof.find_child("RoofHud", true, false).call("interact_shown"), "the prompt hides")
 	roof.queue_free()
+
+
+func test_a_three_point_path_visits_every_point() -> void:
+	var actor := IsoActor.new()
+	actor.setup(&"guard")
+	var path := PackedVector2Array([Vector2(0, 0), Vector2(100, 0), Vector2(100, 100)])
+	var patrol := RoofPatrol.new(actor, path, 100.0, 0.0)
+	var visited: Dictionary[Vector2, bool] = {}
+	for i: int in 80:
+		patrol.step(0.1)
+		visited[actor.position] = true
+	for p: Vector2 in path:
+		check(visited.has(p), "the guard reaches %s" % p)
+	actor.free()
