@@ -64,7 +64,8 @@
   ~4 GB -> cache uint8 or a few entries (2026-10-25).
 - opencode quit on reads outside its worktree -> opencode.json external_directory allows inbox/ (2026-10-24).
 - OpenRouter :free = 50 requests/day under $10 bought credit, shared by Inkling and all :free models (2026-10-23).
-- 16 GB commit limit: 4 opencode + 2 agy + Godot fork failed -> <= 3 runs; check free memory (2026-10-23). check.sh
+- Commit memory: 4 runs + Godot left 10 MB free (fork errors, Godot exit 132, the desktop app froze) -> <= 2-3 runs,
+  no own Godot while builders test; check FreeVirtualMemory (2026-10-23, 10-26). check.sh
   exit 124/139 ("Parameter mem is null") with other Godot runs open = memory, not a test -> rerun first; never push
   before reading the final check line (2026-10-23).
 - Inkling on balance-gear hit permission rejections, committed nothing -> empty `git diff base...branch`: rerun on agy
@@ -79,6 +80,9 @@
 - Flow from Claude: the browser pane can't download or reach localhost -> Claude in Chrome (his login): upload =
   own <input type=file> + file_upload + a synthetic drop on the grid; download = "Download media" -> 2K -> ~/Downloads;
   the Flow agent picks Nano Banana; 2:3 is refused (1:1, 16:9, 9:16, 4:3, 3:4) (2026-10-26).
+- build_pipeline/cf_build fork from origin/<base>: push the base before a launch (a fix run started on old code);
+  agy sat 55 min on baseline checks with no code -> on the critical path write it yourself (2026-10-26).
+- First import of three 2752x1536 webp: "WebP packing failed", textures load empty -> run --import again (2026-10-26).
 - Iso sprites: Rodin rig `ue` = the old 68-bone rig, so ModelRig retargets UAL clips; bake_sprites.tscn renders them
   (ortho, 30 deg, own unshaded ink shader + hull); 256-colour sheets are 1/6 the size (2026-10-26).
 

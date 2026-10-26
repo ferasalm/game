@@ -4,7 +4,8 @@ it; log every new decision verbatim in docs/decisions-log.md too.
 
 ## In force
 ### Process
-- 2026-10-26 | Neon Glitch looks and moves like Hades (isometric, our ink style); fights stay turn-based on the map until Feras says otherwise | Feras
+- 2026-10-26 | Neon Glitch looks and moves like Hades (isometric, our ink style); fights stay turn-based on the map (confirmed 10-26) | Feras
+- 2026-10-26 | Old 3D game retired: audit 3D-only vs shared, then remove 3D-only code/assets/tests (tag 3d-archive keeps them); Feras plays the first playable before more building | Feras
 - 2026-10-25 | Neon Glitch = the whole game (plan: design/neon-glitch-plan.md); one person, low budget; turn-based first, action later likely Hades-like roguelike (runs decided at the switch) | Feras
 - 2026-10-22 | Log: never reword; struck (~~...~~) lines go to docs/decisions-archive.md | Claude
 - 2026-10-21 | Ask Feras 2-4 multiple-choice questions, recommended first; big asks: plan mode (Opus xhigh), agent audit, then orchestrate | Feras
