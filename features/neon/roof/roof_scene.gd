@@ -53,6 +53,11 @@ func guards() -> Array[IsoActor]:
 	return _guards
 
 
+## The y-sorted node holding every actor (MapBattle places the fighters in it).
+func world() -> Node2D:
+	return _world
+
+
 func set_exploring(on: bool) -> void:
 	_exploring = on
 
@@ -129,10 +134,10 @@ func _process_hero_input(delta: float) -> void:
 
 
 func _process_guards(delta: float) -> void:
+	if _battle_triggered:
+		return  # the guards fought (and lie down after a win): no more patrols
 	for patrol: RoofPatrol in _patrols:
 		patrol.step(delta)
-	if _battle_triggered:
-		return
 	for guard: IsoActor in _guards:
 		if ContactRules.touching(_hero.position, guard.position, _rules.touch_radius):
 			_battle_triggered = true

@@ -81,3 +81,18 @@ func test_cable_line_before_and_after_mark_won() -> void:
 	roof.interact()
 	check_eq(exited_events.size(), 1, "cable line emits exited after mark_won")
 	roof.queue_free()
+
+
+func test_guards_stop_patrolling_after_the_fight() -> void:
+	var roof := _make_roof()
+	var guard: IsoActor = roof.guards()[0]
+	roof.hero().position = guard.position - IsoDir.vector(guard.facing) * 40.0
+	roof._process(0.016)
+	roof.mark_won()
+	roof.set_exploring(true)
+	var held: Vector2 = guard.position
+	for i: int in 10:
+		roof._process(0.1)
+	check_eq(guard.position, held, "a fought guard no longer walks its path")
+	check(roof.world() != null and guard.get_parent() == roof.world(), "world() holds the actors")
+	roof.queue_free()
