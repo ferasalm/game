@@ -27,6 +27,18 @@ Every spend gets a line in docs/SPEND.md (date, asset, credits, reason). The P2b
 7. ModelDef with `pose_source`, then the bake: docs/design/characters-3d.md steps 3-6 and the sprite-bake skill.
 The Rodin tools are deferred: ToolSearch "hyper3d rodin" loads them (the MCP may still be connecting at session start).
 
+## Free recolour of an existing model (0 credits; Rydan 2026-10-27)
+When the model's shapes already match an approved front A-pose picture but its texture is grey or off-palette:
+1. `blender -b --factory-startup -P tools/art/recolour_bake.py -- bake <glb> 1024 <scratch>` (per-texel world position,
+   normal, and a front-sun bake = what the front sees; ~2 GB commit memory at 1024, crashed below that: close Chrome).
+2. `python tools/art/recolour.py <scratch> <old t_<id>.png> <picture> <new.png> [overlay.png]`: fits the picture to the
+   model (head top, feet, torso centre; check the overlay), keeps the old texture's lightness detail, takes colour and a
+   blurred lightness shift from the picture on texels the front sees, and fills the back from the seen side-facing
+   texels per height band (front-facing chest and straps would paint the coat's back). Test: tools/art/test_recolour.py.
+3. `... recolour_bake.py -- render <glb> <new.png> <prefix>`: flat front, back and 3/4 renders; then the sprite bake.
+Limits: needs the same outfit and pose as the picture (a misfit overlay = Rodin re-model); the back is invented (a
+plain version of the side colours); fingers thinner than ~3 picture px take the fill colour.
+
 ## Batch priorities (plan section 12)
 1. One approved hero asset. Then the cast (Roya, the prison guard, Abu Nabil, enemies; Zayd is a rookie officer), recurring
    props, icons, the title video. Rigs and animation presets fetched for each.
@@ -39,5 +51,5 @@ The Rodin tools are deferred: ToolSearch "hyper3d rodin" loads them (the MCP may
 
 ## Style (CANON 2026-10-27)
 Every character reference: Flow picture in the unified Basilisk anime + sumi-e ink style, full colour, A-pose, plain grey
-background; Feras OKs the picture before any credit is spent. Roya = inbox/flow/roya_style_v3_2k.jpg; Rydan and Bilqis v2
-pictures (inbox/flow/*_style_v2_2k.jpg) wait for their re-model batch.
+background; Feras OKs the picture before any credit is spent. Roya = inbox/flow/roya_style_v3_2k.jpg; Rydan = free recolour
+from inbox/flow/rydan_style_v2_2k.jpg (above); Bilqis v2 waits for her re-model batch.

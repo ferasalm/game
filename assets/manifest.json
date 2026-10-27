@@ -3041,9 +3041,9 @@
     {
       "id": "char_t_rydan",
       "path": "characters/t_rydan.png",
-      "source": "Hyper3D Rodin shaded texture of rydan_rodin (generation 23f78d5b)",
-      "licence": "owner's own output (Rodin Creator plan)",
-      "prompt": "extracted from the glb, 2048 px"
+      "source": "free Blender recolour (tools/art/recolour_bake.py + recolour.py, 2026-10-27): lightness of the Hyper3D Rodin shaded texture of rydan_rodin (generation 23f78d5b) + colour projected from Feras's approved Google Flow picture inbox/flow/rydan_style_v2_2k.jpg",
+      "licence": "owner's own output (Rodin Creator plan; Google Flow, owner-generated)",
+      "prompt": "1024 px; old 2048 px grey texture kept outside git as inbox/retired/t_rydan_old.png"
     },
     {
       "id": "sprite_neon_concession_enforcer_attack",
