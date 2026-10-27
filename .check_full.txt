@@ -1,0 +1,20 @@
+ok   docs
+ok   lint
+FAIL import (.check/import.log)
+     [0m
+     [0m
+     [0m
+     [0m
+     [0m
+     [0m
+     [0m
+     [0m
+     [0m
+     [0m
+     [0m
+     run_godot: exit code 139
+ok   tool_tests
+ok   tests
+ok   boot
+     tests: 582 passed, 0 failed
+1 check(s) FAILED
