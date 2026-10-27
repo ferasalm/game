@@ -9,7 +9,7 @@ G="$(bash tools/godot.sh)"
 FF="$(command -v ffmpeg || true)"; [ -n "$FF" ] || { echo "eye_gate: ffmpeg not found" >&2; exit 1; }
 mkdir -p "$OUT"; rm -f "$OUT"/f*.png "$OUT/contact.png" "$OUT/clip.mp4"
 FRAMES=$((SECS * 30))
-timeout $((SECS * 20 + 120)) "$G" --path . --write-movie "$OUT/f.png" --fixed-fps 30 --quit-after "$FRAMES" "$SCENE" \
+timeout $((SECS * 60 + 120)) "$G" --path . --write-movie "$OUT/f.png" --fixed-fps 30 --quit-after "$FRAMES" "$SCENE" \
   < /dev/null > "$OUT/godot.log" 2>&1
 echo "godot exit $?, frames: $(ls "$OUT"/f*.png 2>/dev/null | wc -l)"
 N="$(ls "$OUT"/f*.png 2>/dev/null | wc -l)"; [ "$N" -gt 0 ] || { echo "eye_gate: no frames, see $OUT/godot.log" >&2; exit 1; }
