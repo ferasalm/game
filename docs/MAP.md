@@ -48,18 +48,22 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `.agents/skills/ui-finish-gate-reviewer/SKILL.md`
 
 ## .opencode
+- `.opencode/agent/art-card.md`
 - `.opencode/agent/blender-addon-engineer.md`
 - `.opencode/agent/code-reviewer.md`
 - `.opencode/agent/cultural-intelligence-strategist.md`
 - `.opencode/agent/game-audio-engineer.md`
 - `.opencode/agent/game-designer.md`
+- `.opencode/agent/gameplay-card.md`
 - `.opencode/agent/godot-gameplay-scripter.md`
 - `.opencode/agent/godot-shader-developer.md`
 - `.opencode/agent/image-prompt-engineer.md`
 - `.opencode/agent/level-designer.md`
+- `.opencode/agent/market-card.md`
 - `.opencode/agent/minimal-change-engineer.md`
 - `.opencode/agent/narrative-designer.md`
 - `.opencode/agent/technical-artist.md`
+- `.opencode/agent/ui-card.md`
 - `.opencode/agent/ui-designer.md`
 - `.opencode/agent/ui-finish-gate-reviewer.md`
 
