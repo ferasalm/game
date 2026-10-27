@@ -624,6 +624,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/fps_probe.gd`: FPS probe: plays a scene with vsync off and prints the average and worst frames per second after a warm-up
 - `tools/gate_checklist.py`: Checklist parsing and verification for build_gate.
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.
+- `tools/hooks/review_gate.py`: PreToolUse hook (D5, D21): blocks a game render sent to Feras unless review-player and review-feras stamped it.
+- `tools/hooks/review_stamp.py`: Record a player and a Feras review for a game render (D5, D21), keyed by the file's sha256.
+- `tools/hooks/token_handoff.py`: PostToolUse hook (D4): warns at 80k work tokens, then at 100k and every +10k after, so a chat hands off in time.
 - `tools/import_agents.py`: Copies the chosen agency agents (~/.claude/agents, MIT) into .agents/skills/<name>/SKILL.md for every builder.
 - `tools/kill_tree.py`: Kills a process and every descendant, also children forked while the kill runs (tools/lib.sh kill_tree calls it).
 - `tools/lib.sh`: Shared shell helpers for the builder tools (slots, pipeline, task runners, merge, check): paths, python, limits.
@@ -655,6 +658,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/slots.sh`: Slots reporter, start gate (can-start <builder>) and DeepSeek spend tracker (DECISIONS 2026-10-23, D1 2026-10-27)
 - `tools/smoke_keeper.gd`: Survives scene changes during a smoke run: starts a new game, waits, reports the scene, quits
 - `tools/smoke_keeper.tscn`: scene
+- `tools/status.sh`: One look at the state of the work (Feras 2026-10-27): builders, branches not yet on main, worktrees with nothing left,
 - `tools/sync_main.sh`: Brings the main checkout up to origin/main and proves the game starts (2026-10-24: merges pulled without a re-import
 - `tools/test_build_gate.py`: Self-test for build_gate.py: python tools/test_build_gate.py (temp git repos, plain asserts, exit 1 on failure).
 - `tools/test_build_pipeline.py`: Self-test for build_pipeline.sh, oc_task.sh, agy_task.sh and lib.sh on a toy repo: stub builder, stub memory, real git.
@@ -668,9 +672,12 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_no_legacy_hero.py`: Guard: the hero's old code id stays gone (renamed to rydan, save v7, Feras 2026-10-27). Fails on the old id in the
 - `tools/test_pre_spend.py`: Self-test for pre_spend.py: a paid tool is blocked without Feras's OK in a user message; Hyper3D gets a reminder.
 - `tools/test_res_graph.py`: Self-test for res_graph.py --check: python tools/test_res_graph.py (a fake project in a temp folder, exit 1 on failure).
+- `tools/test_review_gate.py`: Self-test for tools/hooks/review_gate.py + review_stamp.py (D5, D21): no game render reaches Feras unreviewed.
 - `tools/test_session_start.py`: Self-test for .claude/hooks/session-start.sh (reports the session's own worktree) and the .gitignore .env rule.
 - `tools/test_slots.py`: Self-test for tools/slots.sh: python tools/test_slots.py (temp dirs, plain asserts, exit 1 on failure).
+- `tools/test_status.py`: Self-test for tools/status.sh: python tools/test_status.py (a temp repo with planted branches, exit 1 on failure).
 - `tools/test_template.py`: TEMPLATE.md stays readable by the gate (P3.8, 2026-10-27): its headings, an empty forbidden list, parseable checklist.
+- `tools/test_token_handoff.py`: Self-test for tools/hooks/token_handoff.py (D4): a PostToolUse hook that warns at 80k and 100k work tokens.
 - `tools/test_twine_sync.py`: Self-test for tools/twine_sync.py: python tools/test_twine_sync.py (temp dirs, plain asserts, exit 1 on failure).
 - `tools/test_wt_clean.py`: Self-test for tools/wt_clean.sh: merged and dead builder worktrees go, live and unmerged ones stay.
 - `tools/twine_format.py`: Twee 3 <-> Twine 2 library HTML conversion for tools/twine_sync.py (parse, write, layout, to/from HTML).
