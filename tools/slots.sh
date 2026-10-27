@@ -1,22 +1,8 @@
 #!/usr/bin/env bash
-CAP_AGY=${CAP_AGY:-2}; CAP_CF=${CAP_CF:-3}; CAP_OC=${CAP_OC:-0}  # env overrides for tests
-# Slots reporter and DeepSeek spend tracker (DECISIONS 2026-10-23)
+# Slots reporter, start gate (can-start <builder>) and DeepSeek spend tracker (DECISIONS 2026-10-23, D1 2026-10-27)
 set -uo pipefail
-
-here="$(cd "$(dirname "$0")" && pwd)"
-root="$(git rev-parse --show-toplevel 2>/dev/null || dirname "$here")"
-
-if [ -n "${GAME_WT_DIR:-}" ]; then
-  dir="$GAME_WT_DIR"
-elif [ -d "$(dirname "$root")/game-wt" ]; then
-  dir="$(dirname "$root")/game-wt"
-elif [ -d "$root/.." ] && [ "$(basename "$(dirname "$root")")" = "game-wt" ]; then
-  dir="$(dirname "$root")"
-else
-  dir="$(dirname "$root")/game-wt"
-fi
-
-py=python; $py -c "" >/dev/null 2>&1 || py=python3
+. "$(dirname "$0")/lib.sh"
+dir="$(wt_dir)"
 
 if [ "${1:-}" = "append-spend" ]; then
   log="$2"; task="$3"; in_rate="$4"; out_rate="$5"; csv="${6:-$dir/cf_spend.csv}"
@@ -27,18 +13,19 @@ in_r = float(in_rate)
 out_r = float(out_rate)
 date_str = datetime.date.today().isoformat()
 text = ""
-if os.path.isfile(log_path):
-    text = open(log_path, encoding="utf-8", errors="replace").read()
+for path in (log_path[:-4] + ".build.log" if log_path.endswith(".log") else "", log_path):  # fix pass overwrote .log
+    if path and os.path.isfile(path):
+        text += open(path, encoding="utf-8", errors="replace").read() + "\n"
 
 def parse_tokens(txt):
     ins = re.findall(r"\"(?:input|input_tokens|prompt_tokens)\":\s*(\d+)", txt)  # one per request: sum them
     outs = re.findall(r"\"(?:output|output_tokens|completion_tokens)\":\s*(\d+)", txt)
     if ins and outs:
         return sum(map(int, ins)), sum(map(int, outs))
-    m_in = re.search(r"(?:input[_\s]+tokens?|prompt[_\s]+tokens?)\s*[:=]\s*(\d[\d,]*)", txt, re.I)
-    m_out = re.search(r"(?:output[_\s]+tokens?|completion[_\s]+tokens?)\s*[:=]\s*(\d[\d,]*)", txt, re.I)
-    if m_in and m_out:
-        return int(m_in.group(1).replace(",", "")), int(m_out.group(1).replace(",", ""))
+    t_in = re.findall(r"(?:input[_\s]+tokens?|prompt[_\s]+tokens?)\s*[:=]\s*(\d[\d,]*)", txt, re.I)  # a build and a fix pass
+    t_out = re.findall(r"(?:output[_\s]+tokens?|completion[_\s]+tokens?)\s*[:=]\s*(\d[\d,]*)", txt, re.I)
+    if t_in and t_out:
+        return sum(int(v.replace(",", "")) for v in t_in), sum(int(v.replace(",", "")) for v in t_out)
     m_in = re.search(r"(\d[\d,]*)\s*(?:input|prompt)\s*tokens?", txt, re.I)
     m_out = re.search(r"(\d[\d,]*)\s*(?:output|completion)\s*tokens?", txt, re.I)
     if m_in and m_out:
@@ -69,6 +56,7 @@ now=$(date +%s)
 count_agy=0
 count_cf=0
 count_oc=0
+free="$(free_mb)"
 
 for res in "$dir"/*.result; do
   [ -e "$res" ] || continue
@@ -89,6 +77,10 @@ for res in "$dir"/*.result; do
     case "$(git -C "$dir/$task" rev-parse --abbrev-ref HEAD 2>/dev/null)" in gemini/*) builder=agy ;; *) builder=oc ;; esac
   fi
 
+  pid="$(sed -n 's/^pid //p' "$res" | head -n 1)"
+  if [ -n "$pid" ] && ! kill -0 "$pid" 2> /dev/null; then  # the pipeline died without finishing its .result
+    echo "$builder $task $step_val since $time_val DEAD"; continue
+  fi
   log="$dir/$task.log"
   stale=0
   if [ -f "$log" ]; then
@@ -113,7 +105,19 @@ for res in "$dir"/*.result; do
   fi
 done
 
+count_godot=$((count_agy + count_cf))
 echo "agy $count_agy/$CAP_AGY  cf $count_cf/$CAP_CF  oc $count_oc/$CAP_OC"
+echo "godot $count_godot/$CAP_GODOT  free ${free} MB (floor $MIN_FREE_MB)"
+
+if [ "${1:-}" = "can-start" ]; then  # slots.sh can-start <agy|cf|oc>: exit 0 only when a run of that kind may start
+  case "${2:-}" in
+    oc) [ $count_oc -lt $CAP_OC ] || { echo "REFUSED: text run slot busy"; exit 1; } ;;
+    agy|cf) [ $count_godot -lt $CAP_GODOT ] || { echo "REFUSED: godot $count_godot/$CAP_GODOT"; exit 1; } ;;
+    *) echo "can-start: builder agy|cf|oc"; exit 2 ;;
+  esac
+  [ "$2" = oc ] || [ "$free" -ge "$MIN_FREE_MB" ] || { echo "REFUSED: memory ${free} MB free < $MIN_FREE_MB"; exit 1; }
+  exit 0
+fi
 
 spend_csv="$dir/cf_spend.csv"
 month="$(date +%Y-%m)"
@@ -138,7 +142,7 @@ print(f"{total:.2f}")
 
 echo "cf spend this month: \$$spend"
 
-if [ $count_agy -gt $CAP_AGY ] || [ $count_cf -gt $CAP_CF ] || [ $count_oc -gt $CAP_OC ]; then
+if [ $count_agy -gt $CAP_AGY ] || [ $count_cf -gt $CAP_CF ] || [ $count_oc -gt $CAP_OC ] || [ $count_godot -gt $CAP_GODOT ]; then
   exit 1
 fi
 exit 0

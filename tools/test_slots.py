@@ -10,9 +10,13 @@ import time
 SCRIPT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "slots.sh")
 
 
-def run_slots(wt_dir, *args):
-    env = dict(os.environ, GAME_WT_DIR=wt_dir, CAP_AGY="2", CAP_CF="2", CAP_OC="1")
-    return subprocess.run(["bash", SCRIPT, *args], env=env, capture_output=True, text=True)
+def run_slots(wt_dir, *args, cwd=None, **env_extra):
+    env = {**os.environ, "CAP_AGY": "2", "CAP_CF": "2", "CAP_OC": "1", "FREE_MB": "99999", **env_extra}
+    if wt_dir:
+        env["GAME_WT_DIR"] = wt_dir
+    else:
+        env.pop("GAME_WT_DIR", None)
+    return subprocess.run(["bash", SCRIPT, *args], env=env, capture_output=True, text=True, cwd=cwd)
 
 
 def write(d, name, text, mtime=None):
@@ -103,6 +107,71 @@ def test_slots_prints_monthly_spend():
     r = run_slots(d)
     assert r.returncode == 0, r.stderr
     assert "cf spend this month: $0.27" in r.stdout, r.stdout
+
+
+def running(d, name, builder, extra=""):
+    write(d, name + ".result", f"RUNNING 10:00 build\nbuilder {builder}\n{extra}")
+    write(d, name + ".log", "log")
+
+
+def test_slots_find_game_wt_from_a_worktree():  # slots counted 0 runs from any worktree (audit 2026-10-27)
+    top = tempfile.mkdtemp()
+    repo = os.path.join(top, "game")
+    os.makedirs(repo)
+    git = ["git", "-C", repo, "-c", "user.name=t", "-c", "user.email=t@t"]
+    subprocess.run([*git, "init", "-q", "-b", "main"], check=True)
+    subprocess.run([*git, "commit", "-q", "--allow-empty", "-m", "x"], check=True)
+    wt = os.path.join(repo, ".claude", "worktrees", "w")
+    subprocess.run([*git, "worktree", "add", "-q", "-b", "w", wt], check=True)
+    running(os.path.join(top, "game-wt"), "job", "cf")
+    r = run_slots(None, cwd=wt)
+    assert "cf job build since 10:00" in r.stdout and "cf 1/2" in r.stdout, r.stdout + r.stderr
+
+
+def test_total_godot_cap_refuses_a_third_run():  # D1: agy + cf together <= 2; the oc run does not count
+    d = tempfile.mkdtemp()
+    running(d, "a", "agy")
+    assert run_slots(d, "can-start", "cf").returncode == 0, "agy 1 + cf 0 leaves room"
+    running(d, "b", "cf")
+    r = run_slots(d, "can-start", "agy")
+    assert r.returncode == 1 and "godot 2/2" in r.stdout, r.stdout
+    assert run_slots(d, "can-start", "oc").returncode == 0, "the free text run has its own slot"
+    running(d, "c", "oc")
+    assert run_slots(d, "can-start", "oc").returncode == 1, "one text run only"
+
+
+def test_memory_floor_refuses_a_start():  # FREE_MB stubs the Win32_OperatingSystem read
+    d = tempfile.mkdtemp()
+    r = run_slots(d, "can-start", "cf", FREE_MB="500", MIN_FREE_MB="3000")
+    assert r.returncode == 1 and "memory" in r.stdout.lower(), r.stdout
+    assert run_slots(d, "can-start", "cf", FREE_MB="5000", MIN_FREE_MB="3000").returncode == 0
+
+
+def test_real_memory_read_is_a_number():  # the PowerShell CIM read itself, on this PC (stub off)
+    out = subprocess.run(["bash", "-c", f". '{os.path.dirname(SCRIPT)}/lib.sh'; free_mb"], capture_output=True,
+                         text=True, env={k: v for k, v in os.environ.items() if k != "FREE_MB"}).stdout.strip()
+    assert out.isdigit() and int(out) > 0, out
+
+
+def test_dead_pid_run_is_not_counted():  # a killed pipeline left RUNNING behind
+    d = tempfile.mkdtemp()
+    running(d, "dead", "cf", "pid 999999\n")
+    r = run_slots(d)
+    assert "DEAD" in r.stdout and "cf 0/2" in r.stdout, r.stdout
+
+
+def test_spend_reads_the_saved_build_log_too():  # the fix pass overwrote <task>.log; the build's tokens were lost
+    d = tempfile.mkdtemp()
+    csv_path = os.path.join(d, "cf_spend.csv")
+    write(d, "t.build.log", "Input tokens: 1,000\nOutput tokens: 2,000\n")
+    write(d, "t.log", "Input tokens: 500\nOutput tokens: 500\n")
+    run_slots(d, "append-spend", os.path.join(d, "t.log"), "t", "1.0", "1.0", csv_path)
+    assert open(csv_path).read().splitlines()[1].split(",")[2:4] == ["1500", "2500"], open(csv_path).read()
+
+
+def test_cf_mcp_triage_uses_deepseek():
+    src = open(os.path.join(os.path.dirname(SCRIPT), "cf_mcp", "server.py"), encoding="utf-8").read()
+    assert '"triage_trace": "@cf/deepseek' in src, "triage_trace must use DeepSeek (D1)"
 
 
 if __name__ == "__main__":
