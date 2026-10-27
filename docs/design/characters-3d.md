@@ -89,7 +89,7 @@ Hero 15k triangles, enemy 10k, NPC 7k; at most 90k character triangles on screen
    `"pose_source": "res://assets/characters/ubc_male.gltf"` (ubc_female for women): that body plays the clips hidden
    and PoseFollow turns each same-named bone to point where the source bone points (twist and ik bones keep rest;
    the hips' travel scales with hip height). Stand-in garment parts go; the hilt part stays.
-5. Check: test_model_defs, test_pose_match, test_rodin_parts, a render beside the cast (tools/shot_models.gd).
+5. Check: test_model_defs, test_pose_match, test_rodin_parts, a render beside the cast (tools/bake_sprites.tscn; the old tools/shot_models.gd is deleted).
 6. Rigid pieces and fixes (rewrite_glb.py, IDX `-` keeps the glb's own triangles; boxes in source mesh space, find
    them with a front/side projection of the mesh): `--place OX,OY,OZ,YAW,SCALE` puts a rigid piece's node at the
    origin (no lift without a skin); `--keep BOX` / `--cut BOX` split one piece into two files (the grandfather hilt:
