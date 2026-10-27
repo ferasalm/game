@@ -36,6 +36,8 @@
 - A superseded rule lives on in a doc or prompt string -> grep for it when a decision changes.
 - Gemini research contains invented numbers -> ideas and norms only, never facts.
 - Where is X: grep docs/MAP.md (generated), not `ls -R`; map.py lists untracked files too: with the marketing-* files in the checkout CI failed "MAP.md current" -> regenerate in a clean worktree before main (2026-10-26).
+- A blind id rename (zayd -> rydan) also rewrote decisions-log lines, manifest sources naming Feras's real files and a
+  one-letter test ("Z") -> exclude logs/archive/manifest, protect external names, then let check.sh find the rest (2026-10-27).
 - Scratchpad scripts vanish when the session ends (bake_all.sh was nearly lost) -> any script worth rerunning goes into tools/ with a test (2026-10-27).
 - An approved design with no brief was never built (rydan-moves.md) -> brief it the same day (2026-10-23).
 - `python - <<EOF < /dev/null` gave Python no script: it spun in an empty REPL -> script files for background runs; `cmd | grep` hid a crash (exit 0) -> `set -o pipefail` (2026-10-25).
