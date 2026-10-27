@@ -1,27 +1,29 @@
 # HANDOFF (current state only; ONE queue for every chat; max 60 lines)
-Last updated: 2026-10-27 (sync-board chat: one queue, tools/status.sh, cleanup), Opus 5.5.
+Last updated: 2026-10-28 (Ops child chat: Dept column, departments as Opus child chats), Opus 5.5.
 Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Feras's list).
 
-## How this file works (Feras 2026-10-27)
+## How this file works (Feras 2026-10-27; departments 10-28)
 - One queue, top row first. A chat edits its own rows (Status, Blocked by) and adds rows for new work it finds.
+- Dept: the department that owns the row (docs/WORKFLOW.md Departments); the father chat opens that department's
+  Opus child chat for it (WORKFLOW, Start here), as many at once as the work needs (builder caps still hold).
 - Lane: builder (agy, cf, oc) by default; a chat only for taste, MCP (Blender, Flow, Rodin), review or plan, said in
-  brackets; Feras = his move. One Opus chat at a time. tools/doc_check.py checks every row.
+  brackets, always Opus; Feras = his move. tools/doc_check.py checks every row.
 - Process work is frozen after row 1 until Feras has played M1 (row 5).
 - Builders (D1): <= 2 Godot runs + 1 free text run (slots.sh). Briefs: docs/briefs/TEMPLATE.md. Balance band: start
   gear 82.7-89% wins; arc_arm needs an upside.
 
 ## Queue
-| # | Task (brief or doc) | Lane | Who | Status | Blocked by |
-|---|---|---|---|---|---|
-| 1 | Efficiency fixes 1-6 as hooks and checks: docs/briefs/efficiency-hooks.md | builder + chat (review) | cf; Opus high | next, when Feras says go: chat "Process: turn the broken rules into hooks and checks" | Feras's go |
-| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md) | chat (plan) | Opus high | queued | 1 |
-| 4 | M1 build from that brief + the Android export (D17), players-eye-gate before Feras | builder | agy | queued | 3 |
-| 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | Feras | - | queued | 4 |
-| 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | chat (MCP) | Opus high | queued: runs while agy builds row 4 | 3; free memory >= 3 GB |
-| 7 | Art batch: Bilqis re-model (v2), guard, props (booth, floodlight, qamariya window, umbrella), icons; title = Flow Omni | chat (MCP) | Opus high | queued; Rodin credits end ~11-17 | 6 |
-| 8 | Free image-to-3D proof (rydan_style_v2 to a TRELLIS HF Space; never Blender generate_3d) -> 3d-model skill | chat (MCP) | Opus medium | queued | 7 |
-| 9 | Asset preparation pipeline (jpg -> png, sizes, import settings, manifest check) | builder | cf | parked | 5 |
-| 10 | Obscura proof: builders fetch web pages with the Obscura headless browser instead of Chrome (never --stealth); a tools/ wrapper + test | builder | cf | parked | 5 |
+| # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
+|---|---|---|---|---|---|---|
+| 1 | Efficiency fixes 1-6 as hooks and checks: docs/briefs/efficiency-hooks.md | Ops | builder + chat (review) | cf; Opus high | next, when Feras says go: chat "Process: turn the broken rules into hooks and checks" | Feras's go |
+| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md) | Gameplay | chat (plan) | Opus high | queued | 1 |
+| 4 | M1 build from that brief + the Android export (D17), players-eye-gate before Feras | Gameplay | builder | agy | queued | 3 |
+| 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | QA | Feras | - | queued | 4 |
+| 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | queued: runs while agy builds row 4 | 3; free memory >= 3 GB |
+| 7 | Art batch: Bilqis re-model (v2), guard, props (booth, floodlight, qamariya window, umbrella), icons; title = Flow Omni | Art | chat (MCP) | Opus high | queued; Rodin credits end ~11-17 | 6 |
+| 8 | Free image-to-3D proof (rydan_style_v2 to a TRELLIS HF Space; never Blender generate_3d) -> 3d-model skill | Art | chat (MCP) | Opus medium | queued | 7 |
+| 9 | Asset preparation pipeline (jpg -> png, sizes, import settings, manifest check) | Art | builder | cf | parked | 5 |
+| 10 | Obscura proof: builders fetch web pages with the Obscura headless browser instead of Chrome (never --stealth); a tools/ wrapper + test | Ops | builder | cf | parked | 5 |
 Key: builders are free code bots (agy = Gemini Flash, cf = Cloudflare DeepSeek, oc = free text models); chat (MCP) = a
 Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-time fight, on the prison roof.
 

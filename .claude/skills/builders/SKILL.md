@@ -7,6 +7,8 @@ description: Run code builders (agy, Cloudflare DeepSeek, free text runs) from s
 ## When to use
 Any code or text work handed to someone else: a builder run (agy, DeepSeek via cf_build, opencode :free), a Haiku/Sonnet
 subagent, a review lens, or a bug you diagnose. Claude plans, orchestrates and reviews; builders write (CLAUDE.md).
+Who runs it (Feras 10-28): the department's Opus child chat, opened by the father with a child brief (docs/WORKFLOW.md,
+Start here); the father uses it only to write that brief. Many children may run at once; tools/slots.sh still caps runs.
 
 ## Roster and caps
 Numbers live in `tools/builders.conf` (caps, memory floor, idle minutes, models); never copy them here. `bash tools/slots.sh`
@@ -23,7 +25,7 @@ docs/research/calibration-2026-10.md.
 5. Read the first word of `../game-wt/<task>.result` (PASS / FAIL / NOWORK / BREACH). Read a PASS only.
 6. Review panel on the diff: `.claude/agents/review-code` (and review-player for renders), flags only; Claude confirms
    each flag against the code before acting. Max 3 fix rounds, then stop and report.
-7. `bash tools/merge_run.sh <task>`; Claude merges, builders never merge or push to main.
+7. `bash tools/merge_run.sh <task>`; the child that started the run merges it; builders never merge or push to main.
 
 ## Debug recipe
 1. Reproduce headless (`tools/run_godot.sh -s res://tests/runner.gd -- <name>`; read the FAIL lines).

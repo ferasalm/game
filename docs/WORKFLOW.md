@@ -4,12 +4,29 @@ Why the rules in CLAUDE.md exist. Not loaded at session start. Built 2026-10-19 
 orchestrator skill and doc check) and feras-career (its efficiency playbook), read critically, plus this repo's own
 methods. Drop a rule when its why stops being true.
 
-## Start here: one unit of work (walkthrough, Feras 2026-10-28)
-Feras -> ONE Opus chat (the mastermind: plans, briefs, reviews, merges) -> lanes -> gates -> Feras plays -> his notes
-become queue rows. Opus writes; cheap models do (Feras's standing rule, D1; the queue lane check enforces it).
+## Start here: one unit of work (Feras 2026-10-28)
+Feras -> the **father** chat (Opus, the producer) -> one Opus **child** chat per department task -> lanes (builders,
+readers, reviewers) -> gates -> Feras plays -> his notes become queue rows. Opus thinks; cheap models do the work
+(Feras's standing rule, D1). tools/doc_check.py makes every queue row name a department (below) and a lane.
 1. **Look** (free): `bash tools/status.sh`: builders, branches not on main, worktrees, the queue, Feras's list.
-2. **Pick**: the top HANDOFF queue row; open one chat with the paste line; never two Opus chats at once.
-3. **Route** each piece by lane:
+2. **Pick**: the top HANDOFF queue rows. Each row names its department (Dept) and its lane.
+3. **Father or child**: open a child for multi-step department work, i.e. it needs a department's skill plus
+   several steps or builder runs (about 30k+ tokens). A quick read, one edit or a yes/no stays in the father. Open
+   as many children as the work needs (Feras: speed is not traded for tokens); the machine caps in
+   tools/builders.conf (Godot runs, memory floor) still hold, and tools/slots.sh decides when a builder starts.
+4. **Open the child**: Opus, fresh context, its own worktree, the child brief below (in the app: start_session,
+   context "fresh", use_worktree true). The father writes the brief from the Departments table.
+5. **The child orchestrates**: it loads its skills, routes each piece by lane (table), briefs builders from
+   docs/briefs/TEMPLATE.md and launches build_pipeline.sh in the background (builders skill), sends reads over ~20k
+   tokens to a Haiku high reader, runs review-code on every diff and its department's reviewer; anything visual
+   passes players-eye-gate, review-player and review-feras. It runs check.sh, merges its checked work into main
+   (standing OK), updates its own queue row at /handoff, and ends with a report of 15 lines or fewer.
+6. **The father** reads the report, checks it with `bash tools/status.sh` (branch on main, row updated), picks next.
+7. **Evolve**: each chat upgrades one tool, check, skill or doc; every 5 chats ops-review reads /session-report
+   (plugin) and review-cost; a lesson becomes a check or is archived after 30 days (D9). The claude-md-management
+   plugin runs only inside /handoff and within the doc_check caps.
+Emergency mode (emergency-efficiency skill, the 5-hour window past 50%) suspends steps 3-4: one director chat, no
+children, until the window resets.
 
 | Work | Lane | Who |
 |---|---|---|
@@ -18,14 +35,17 @@ become queue rows. Opus writes; cheap models do (Feras's standing rule, D1; the 
 | Big or many-file reads | reader | a Haiku high agent with an exact output template |
 | Taste, MCP (Blender, Flow, Rodin), the final review | chat | Opus; Sonnet only with an Opus-scoped prompt |
 
-4. **Brief** from docs/briefs/TEMPLATE.md (May edit, Ripple, pre-mortem, a player-visible test); launch
-   build_pipeline.sh in the background; the chat waits idle (no tokens) or hands off.
-5. **Review**: PASS runs only; review-code on the diff; anything visual: players-eye-gate, review-player, review-feras.
-6. **Close**: /handoff at ~100k work tokens (queue rows, decisions-log, LESSONS, USAGE, merge, archive merged side chats).
-7. **Evolve**: each chat upgrades one tool, check, skill or doc; every 5 chats ops-review reads /session-report
-   (plugin) and review-cost; a lesson becomes a check or is archived after 30 days (D9). The claude-md-management
-   plugin runs only inside /handoff and within the doc_check caps.
-Departments are skills, not chats: name one ("art department: bake Roya") and the chat loads its skill and reviewer.
+**Child brief** (the father pastes it as the child's first message; fill every line):
+```
+Department: <id from the Departments table>. Queue row: <#>. Model: Opus (every child).
+Skills: <names; a path-gated skill that is not listed: Read .claude/skills/<name>/SKILL.md>
+Goal: <one line; player-visible where it can be>
+Context: <the decisions, files and CANON lines it needs; no chat history>
+Lane plan: <pieces for agy / cf / oc, Haiku readers, reviewers; what the child does itself>
+May edit: <paths>. Do NOT edit: <paths other chats own right now>
+Done when: <check.sh passes; the gate or render; merged to main; queue row updated>
+Report: 15 lines or fewer: commits on main, what failed, questions for Feras.
+```
 
 ## The budget
 Feras is on Claude Pro ($20/month): a 5-hour usage window plus a weekly cap, shared with his other projects. Money is
@@ -45,19 +65,21 @@ are: what loads at start, how long a chat runs, what gets read, and output.
   unused. A rule the agent keeps breaking becomes a check.
 
 ## Departments
-Each department is one skill plus one reviewer agent, not an always-on chat (that would pay ~89k start tokens every
-turn). Its lessons live in its skill folder (lessons.md), read only when it works.
+A department is a skill set plus a reviewer agent. The father opens an Opus child chat for a department's multi-step
+work (Start here, step 3); no department chat stays open between tasks (an idle chat would pay ~89k start tokens a
+turn). Its lessons and research queue live in its skill folder, read only when it works. The Id column is what the
+HANDOFF queue's Dept column names (tools/doc_check.py). review-feras is the last review for anything that reaches Feras.
 
-| Department | Skill(s) | Reviewer |
-|---|---|---|
-| Producer (the orchestrator chat; Feras directs) | builders | n/a |
-| Ops and efficiency | ops-review | review-cost |
-| Art and assets | flow-media, 3d-model, sprite-bake; art bible | review-player |
-| Gameplay (design and code) | builders + spec; game-designer, level-designer, godot-gameplay-scripter personas | review-code |
-| Narrative | narrative-designer persona + bible | review-canon |
-| UI and menus | ui role card; docs/design/ui.md; rpg-menus.md | review-player (UI half) |
-| QA, the player's eye | players-eye-gate + F12 capture | review-player |
-| Market and player | market-player skill; role cards (Business Strategist, Product Manager, UX Researcher, Behavioral Nudge Engine, Persona Walkthrough Specialist, Feedback Synthesizer) | review-market |
+| Id | Does | Skill(s) a child loads | Reviewer |
+|---|---|---|---|
+| Producer | the father chat: the queue, picks, child briefs, reads reports (Feras directs) | builders (to brief); tools/status.sh | review-feras |
+| Ops | efficiency, process, tools, hooks, checks | ops-review, builders; emergency-efficiency when the window is tight | review-cost |
+| Art | images, 3D models, sprites, renders | flow-media, 3d-model, sprite-bake; docs/design/art-bible.md | review-player |
+| Gameplay | combat and systems design and code | builders + a spec; game-designer, level-designer, godot-gameplay-scripter | review-code |
+| Narrative | story, dialogue, names | narrative-designer; docs/CANON.md + the story bible | review-canon |
+| UI | menus, HUD, UI text | .agents/skills/ui-card; docs/design/ui.md, rpg-menus.md | review-player (UI half) |
+| QA | the player's eye before Feras plays; his play sessions | players-eye-gate + the F12 capture (features/debug/playtest) | review-player |
+| Market | audience, price, store page, playtests | market-player; role cards (Business Strategist, Product Manager, UX Researcher, Behavioral Nudge Engine, Persona Walkthrough Specialist, Feedback Synthesizer) | review-market |
 
 ## Limits (one table)
 | Limit | Value | Enforced by |
@@ -108,10 +130,10 @@ Everyone except Claude researches. Claude writes the questions and reads only th
 |---|---|---|
 | Design, specs, briefs, hard engineering, judging art and renders | Opus | high |
 | Anything briefed exactly: code, content, tests, docs, audits | agy (Gemini 3.8 Flash), Cloudflare DeepSeek, or opencode :free for text | the tool's default |
-| Reviewing and merging branches, small fixes | Sonnet (or Opus when the chat is Opus anyway) | medium |
+| Reviewing and merging its own builders' branches, small fixes | the department's Opus child (Feras 10-28: Opus for every child) | high |
 
 Claude's own tasks go to Haiku first, Sonnet only when Haiku can't do it well (Readers). Claude subagents only where a
-builder can't (art judgment loops, Opus code review), at most 2 at once.
+builder can't (art judgment loops, Opus code review), at most 2 at once per chat.
 
 ## Builder loop (agy, Cloudflare DeepSeek, opencode)
 Low on Claude limit: .claude/skills/emergency-efficiency/SKILL.md overrides this section. Models and caps: tools/builders.conf.
@@ -127,7 +149,7 @@ brief names one game-dev skill (.agents/skills/). Free models may train on promp
    what a WARN names, and the renders. Then a Haiku subagent (effort high) compares the diff with the brief and its
    Checklist and lists the misses; Opus reads only that list, the WARN lines and the renders.
 4. **Merge:** `bash tools/merge_run.sh <task> <gemini|oc>`. A fast-forward onto the checked commit reuses the check; any
-   other merge runs check.sh. It removes the worktree and branch. Review-and-merge chats run on Sonnet. A repeated miss
+   other merge runs check.sh. It removes the worktree and branch. The child that started the run merges it. A repeated miss
    goes into GEMINI.md <review_misses>.
 5. **Runs belong to the chat that started them.** A chat that ends early leaves its runs going only while its session
    stays open. The next chat checks `git -C ../game-wt/<task> log` and the log; a dead run is restarted with the same
@@ -141,7 +163,7 @@ brief names one game-dev skill (.agents/skills/). Free models may train on promp
 | Notes split by change rate: CLAUDE.md rare, HANDOFF rewritten, DECISIONS = rules in force, LESSONS curated; full log in decisions-log.md | Adopted | Old state never reads as current |
 | @ imports of HANDOFF, DECISIONS, LESSONS under the 27 KB cap | Adopted, enforced by doc_check | reem-bot's loaded log grew past 100 KB: paid at every start |
 | /handoff at the end of every session | Adopted (handoff skill) | The next chat starts with no resume step |
-| Model and effort on every next step; one model and effort per chat; one task per chat, hand off past ~100k work tokens | Adopted | Effort can't change mid-chat; switching models drops the cache; Pro windows are small |
+| A lane and a department on every queue row (doc_check); one model and effort per chat; one task per chat, hand off past ~100k work tokens | Adopted | Effort can't change mid-chat; switching models drops the cache; Pro windows are small |
 | SessionStart hook with a sync report | Adopted | Catches a stale branch before work starts |
 | Grep first, read only the needed lines; never read generated files | Adopted, enforced by deny rules in .claude/settings.json | A rule nobody enforces drifts |
 | A check counts only when its output was read; every bug gets a regression test | Adopted (tools/check.sh, run_godot.sh) | A summary line hid broken results before; fixes stay fixed |
@@ -156,7 +178,7 @@ brief names one game-dev skill (.agents/skills/). Free models may train on promp
 3. **Levels as text.** A 20-line ASCII map plus JSON builds the scene; nobody edits a big .tscn by hand.
 4. **Content as JSON with validation.** Balance changes are one-line diffs Feras can tune himself.
 5. **Generated code map.** One purpose line per file feeds docs/MAP.md; the check fails when it is stale.
-6. **Spec first.** An Opus chat writes docs/design/<feature>.md (<= 60 lines, with acceptance tests); a Sonnet chat builds from it.
+6. **Spec first.** An Opus chat writes docs/design/<feature>.md (<= 60 lines, with acceptance tests); a builder builds from it.
 7. **Small pictures, only when judging visuals:** 640x360 screenshots (~300 tokens); regressions by pixel diff.
 8. **Placeholders first.** Art never blocks code; Claude never opens art files to write code.
 9. **Pinned engine, strict parser.** Godot 4.7.2; Godot 3 habits and typos fail at import, before a debug loop starts.

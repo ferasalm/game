@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Self-test for .claude/hooks/session-start.sh (reports the session's own worktree) and the .gitignore .env rule."""
+import json
 import os
 import subprocess
 import tempfile
@@ -8,7 +9,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HOOK = ROOT + "/.claude/hooks/session-start.sh"
 
 
-def test_hook_reports_the_worktree_not_the_project_dir():
+def repo_with_side_worktree():
     top = tempfile.mkdtemp()
     subprocess.run(["git", "init", "-q", "--bare", "-b", "main", top + "/o.git"], check=True)
     subprocess.run(["git", "clone", "-q", top + "/o.git", top + "/main"], check=True, capture_output=True)
@@ -16,9 +17,29 @@ def test_hook_reports_the_worktree_not_the_project_dir():
     subprocess.run([*g, "commit", "-q", "--allow-empty", "-m", "x"], check=True)
     subprocess.run([*g, "push", "-q", "origin", "HEAD:main"], check=True, capture_output=True)
     subprocess.run([*g, "worktree", "add", "-q", "-b", "side", top + "/side"], check=True)
-    env = dict(os.environ, CLAUDE_PROJECT_DIR=top + "/main")
-    out = subprocess.run(["bash", HOOK], cwd=top + "/side", env=env, capture_output=True, text=True).stdout
+    return top, dict(os.environ, CLAUDE_PROJECT_DIR=top + "/main")
+
+
+def run_hook(cwd, env, stdin=""):
+    return subprocess.run(["bash", HOOK], cwd=cwd, env=env, input=stdin, capture_output=True, text=True).stdout
+
+
+def test_hook_reports_the_worktree_not_the_project_dir():
+    top, env = repo_with_side_worktree()
+    out = run_hook(top + "/side", env)
     assert "SYNC: side is 0 behind" in out, out
+
+
+def test_hook_started_in_the_main_checkout_follows_the_session_cwd():
+    # 10-28: the app ran the hook in C:\dev\game, so a worktree chat was told "main is 12 behind" by main's stale copy
+    top, env = repo_with_side_worktree()
+    out = run_hook(top + "/main", env, json.dumps({"session_id": "s", "cwd": os.path.normpath(top + "/side")}))
+    assert "SYNC: side is 0 behind" in out, out
+    os.makedirs(top + "/side/.claude/hooks")
+    with open(top + "/side/.claude/hooks/session-start.sh", "w", encoding="utf-8", newline="\n") as f:
+        f.write("echo OWN COPY $SESSION_START_REEXEC\n")
+    out = run_hook(top + "/main", env, json.dumps({"cwd": top + "/side"}))
+    assert out.strip() == "OWN COPY 1", out  # the worktree's own script runs, not the project dir's
 
 
 def test_fetch_is_capped_by_timeout():
