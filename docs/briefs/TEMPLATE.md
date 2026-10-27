@@ -1,7 +1,7 @@
 # Brief: <task> (copy to docs/briefs/<task>.md; <= 60 lines; tools/test_template.py keeps the gate's headings here)
 You are in your own worktree on branch <gemini|oc>/<task> (made from origin/main; push the base first). Follow GEMINI.md, including
 <review_misses>. Load the <skill> skill (name one; build_pipeline.sh pastes .agents/skills/<skill> into the prompt).
-Timebox: <N> min (<= 45). First commit within 15 min, then small WIP commits: no commit for 25 min (IDLE_MIN) = NOWORK.
+Timebox: <N> min (<= 45; the pipeline only kills at AGY_TIMEOUT/OC_TIMEOUT, 90 min). First commit within 15 min, then small WIP commits: no commit for 25 min (IDLE_MIN) = NOWORK.
 
 ## Why
 <the owner's words, one or two lines>. Pillar served (docs/VISION.md): <one pillar; combat feel wins ties>.
