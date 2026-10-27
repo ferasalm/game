@@ -1,5 +1,5 @@
 # HANDOFF (current state only; one section per track, each edited only by its owner; max 60 lines)
-Last updated: 2026-10-27 (Efficiency: P1, P2a done; P2b next), Sonnet 5.5 (`claude-sonnet-5-5`).
+Last updated: 2026-10-27 (Efficiency: P1, P2a, P2b done; P0 next), Sonnet 5.5 (`claude-sonnet-5-5`).
 
 ## Shared
 - Builders: DECISIONS 10-27 (D1): <= 2 Godot runs (agy, DeepSeek) + 1 free text run; slots.sh enforces it (P1 done): total cap, memory floor, pipeline refuses when full.
@@ -52,6 +52,8 @@ Next, after the 5-hour reset, in this order (Feras 10-26):
 ## Track: Efficiency (owner: the process-audit chats P1-P4, 2026-10-27)
 - Plan: docs/audits/2026-10-27-process-audit-plan.md (D1-D22 logged), checklist 2026-10-27-plan-checklist.md;
   sequential before game work (D12). Neon Glitch steps 1-2 are folded into P0 and P1-P2. Each P-chat ticks its lines.
-1. P1 done + Opus-reviewed; P2a done (calibration: reader Haiku high, lens nemotron-3-ultra :free; builders skill; six review-* agents).
-   P2b: docs/briefs/p2b-art-eye-gate.md. Model: Sonnet + /advisor opus. Effort: medium.
-`Continue ferasalm/game on main. First type /advisor opus. Do docs/briefs/p2b-art-eye-gate.md exactly; then /handoff.`
+1. P1, P2a, P2b done (P2b: art skills, player's-eye gate eye_gate.sh + eye_metrics.py + acceptance.md, role cards, 14 personas
+   retired). Today's build WARNs fps 5-12 (bar 24) and 78-103 colours (bar 256); bake is full colour but near-grey (chroma ~12).
+   Next: P0 VISION: an interview with Feras, then docs/VISION.md, the 25 notes re-triaged, docs/research/hades-digest.md from
+   the plan appendix. Model: Opus. Effort: high.
+`Continue ferasalm/game on main. Do P0 VISION (HANDOFF Efficiency): interview Feras, docs/VISION.md, re-triage the 25 notes, hades-digest.md; then /handoff.`
