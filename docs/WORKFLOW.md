@@ -14,14 +14,17 @@ readers, reviewers) -> gates -> Feras plays -> his notes become queue rows. Opus
    several steps or builder runs (about 30k+ tokens). A quick read, one edit or a yes/no stays in the father. Open
    as many children as the work needs (Feras: speed is not traded for tokens); the machine caps in
    tools/builders.conf (Godot runs, memory floor) still hold, and tools/slots.sh decides when a builder starts.
-4. **Open the child**: Opus, fresh context, its own worktree, the child brief below (in the app: start_session,
-   context "fresh", use_worktree true). The father writes the brief from the Departments table.
+4. **Open the child**: a new Opus chat in its own worktree with a fresh context, given the child brief below; the
+   father writes the brief from the Departments table and sets the row's Status to "child open: <branch>".
 5. **The child orchestrates**: it loads its skills, routes each piece by lane (table), briefs builders from
    docs/briefs/TEMPLATE.md and launches build_pipeline.sh in the background (builders skill), sends reads over ~20k
    tokens to a Haiku high reader, runs review-code on every diff and its department's reviewer; anything visual
    passes players-eye-gate, review-player and review-feras. It runs check.sh, merges its checked work into main
    (standing OK), updates its own queue row at /handoff, and ends with a report of 15 lines or fewer.
+   (Terms: a builder run goes through tools/slots.sh and build_pipeline.sh; a Haiku reader is a cheap Claude
+   subagent that reads and summarises; review-* are reviewer agents (Departments table); the eye gate = players-eye-gate.)
 6. **The father** reads the report, checks it with `bash tools/status.sh` (branch on main, row updated), picks next.
+   Open children are the queue rows whose Status says "child open"; status.sh lists their branches and worktrees.
 7. **Evolve**: each chat upgrades one tool, check, skill or doc; every 5 chats ops-review reads /session-report
    (plugin) and review-cost; a lesson becomes a check or is archived after 30 days (D9). The claude-md-management
    plugin runs only inside /handoff and within the doc_check caps.
@@ -38,7 +41,7 @@ children, until the window resets.
 **Child brief** (the father pastes it as the child's first message; fill every line):
 ```
 Department: <id from the Departments table>. Queue row: <#>. Model: Opus (every child).
-Skills: <names; a path-gated skill that is not listed: Read .claude/skills/<name>/SKILL.md>
+Skills: <names; a skill the chat does not list yet: Read .claude/skills/<name>/SKILL.md>
 Goal: <one line; player-visible where it can be>
 Context: <the decisions, files and CANON lines it needs; no chat history>
 Lane plan: <pieces for agy / cf / oc, Haiku readers, reviewers; what the child does itself>

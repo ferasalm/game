@@ -4,10 +4,10 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 
 ## How this file works (Feras 2026-10-27; departments 10-28)
 - One queue, top row first. A chat edits its own rows (Status, Blocked by) and adds rows for new work it finds.
-- Dept: the department that owns the row (docs/WORKFLOW.md Departments); the father chat opens that department's
-  Opus child chat for it (WORKFLOW, Start here), as many at once as the work needs (builder caps still hold).
-- Lane: builder (agy, cf, oc) by default; a chat only for taste, MCP (Blender, Flow, Rodin), review or plan, said in
-  brackets, always Opus; Feras = his move. tools/doc_check.py checks every row.
+- Dept: the department that owns the row (docs/WORKFLOW.md Departments). Multi-step rows get that department's Opus
+  child chat (WORKFLOW, Start here, step 3), as many at once as needed; Status then says "child open: <branch>".
+- Lane: who does the work inside it: builder (agy, cf, oc) by default; chat = the Opus chat itself, only for taste, MCP
+  (Blender, Flow, Rodin), review or plan, said in brackets; Feras = his move. tools/doc_check.py checks every row.
 - Process work is frozen after row 1 until Feras has played M1 (row 5).
 - Builders (D1): <= 2 Godot runs + 1 free text run (slots.sh). Briefs: docs/briefs/TEMPLATE.md. Balance band: start
   gear 82.7-89% wins; arc_arm needs an upside.
