@@ -24,6 +24,7 @@
 | rpg-menus.md | PAUSED | RPG menu layouts at 1920x1080; may be reskinned for the 2D look |
 | rpg-systems.md | PAUSED | XP, classes, LCK, dodge and crit; flee and turn parts tied to the timeline |
 | slice.md | PAUSED | Old chapter-1 story slice (parked); the old story is cut, candidate to archive (owner call) |
+| systems-map.md | LIVE | What a change touches: shared assets (portraits, sprites, light, sound, VFX), change types, EventBus (D21 Ripple) |
 | ui.md | LIVE | UI look: night-glass panels, gypsum frame, Musnad titles |
 | v03-text.md | PAUSED | Draft text for herb seller, sabil, items, pause and defeat (v0.3 names) |
 | valve-puzzles.md | PAUSED | Light lock and water valve puzzles for R5 (puzzle logic on main) |
