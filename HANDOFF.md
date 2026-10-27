@@ -2,7 +2,7 @@
 Last updated: 2026-10-27 (process audit plan approved: D1-D22; Efficiency track), Opus 5.5 (`claude-opus-5-5`).
 
 ## Shared
-- Builders: DECISIONS 10-27 (D1): <= 2 Godot runs (agy, DeepSeek) + 1 free text run; slots.sh enforces it after P1.
+- Builders: DECISIONS 10-27 (D1): <= 2 Godot runs (agy, DeepSeek) + 1 free text run; slots.sh enforces it (P1 done): total cap, memory floor, pipeline refuses when full.
   Balance: start gear 82.7-89% wins; arc_arm needs an upside.
 - Waiting on the owner: icon art (5 heads, 4 items; letter discs stand in); play the Abu Nabil fight.
 ### Next steps (one per chat; reviews Sonnet, design and art judgment Opus)
@@ -52,5 +52,5 @@ Next, after the 5-hour reset, in this order (Feras 10-26):
 ## Track: Efficiency (owner: the process-audit chats P1-P4, 2026-10-27)
 - Plan: docs/audits/2026-10-27-process-audit-plan.md (D1-D22 logged), checklist 2026-10-27-plan-checklist.md;
   sequential before game work (D12). Neon Glitch steps 1-2 are folded into P0 and P1-P2. Each P-chat ticks its lines.
-1. P1 tool fixes: baseline, builders.conf, slots, pipeline, gate, hook (DeepSeek builds, tests first). Model: Sonnet. Effort: medium.
-`Continue ferasalm/game on main. Read HANDOFF.md (Efficiency) and the plan's P1. Do P1, tick the checklist, put P2's prompt here; /handoff.`
+1. P1 done 2026-10-27 (tools hardened; tests in tools/test_*.py, check.sh runs them all). P2 skills + reviewers: calibration first. Model: Sonnet. Effort: medium.
+`Continue ferasalm/game on main. Read HANDOFF.md (Efficiency) and the plan's P2 (docs/audits/2026-10-27-process-audit-plan.md, section P2; checklist P2). Builders: tools/build_pipeline.sh now needs the base pushed and a Do NOT edit section in every brief; tests/assets are protected unless a May edit section lists them. Do P2, tick the checklist, put P3's prompt here; /handoff.`

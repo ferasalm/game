@@ -4,17 +4,17 @@ commit), and leaves a line open only with a reason after it. P4 runs a conforman
 Format: [ ] id | item | how to check
 
 ## P1 Tools (Sonnet, medium; DeepSeek builds)
-- [ ] P1.0 | Baseline in USAGE: /context start cost, window % of the last 3 sessions, .result verdict counts, 25 notes per build | grep "Baseline" docs/USAGE.md
-- [ ] P1.1 | tools/builders.conf + tools/lib.sh sourced by slots, check_slot, build_pipeline, cf_build, merge_run, agy_review, check | grep -l "lib.sh" tools/*.sh
-- [ ] P1.2 | slots.sh: total cap, memory floor (stubbed), finds C:/dev/game-wt from any worktree | tools/test_slots.py
-- [ ] P1.3 | build_pipeline.sh: refuses when slots is full or base is unpushed; pid in .result; idle watchdog; </dev/null; non-zero unless PASS; pastes .claude/rules/code.md; --import | tools/test_build_pipeline.py
-- [ ] P1.4 | agy_task/oc_task: outside timeout; oc default model DeepSeek; refuses a worktree with another base | tests in test_build_pipeline.py
-- [ ] P1.5 | build_gate.py: no "Do NOT edit" heading = FAIL; tests/ + assets/ protected unless "May edit"; removed assert/test = FAIL; new tests must fail on base; *.import under assets counts | tools/test_build_gate.py
-- [ ] P1.6 | cf_build.sh spend from the saved build log; cf_mcp triage uses DeepSeek | test_slots.py spend case; grep server.py
-- [ ] P1.7 | map.py `--cached` only; check.sh runs every tools/**/test_*.py and a boot smoke; check_slot.sh wait limit | tools/test_map.py; check.sh output
-- [ ] P1.8 | session-start.sh: $PWD + `timeout 15 git fetch`; tools/wt_clean.sh; doc_check warns at 75%; .gitignore .env | hook test; grep .gitignore
-- [ ] P1.9 | Paid-tool PreToolUse hook script (exit 2 without Feras's OK; credit reminder for Hyper3D) + its test (D21) | tools/test_pre_spend.py
-- [ ] P1.10 | Dry run on a toy brief: a planted test edit gives BREACH and a non-zero exit; merged only with 0 runs live | .result of the dry run
+- [x] P1.0 | Baseline in USAGE: /context start cost, window % of the last 3 sessions, .result verdict counts, 25 notes per build | grep "Baseline" docs/USAGE.md -- done 6bbd03b
+- [x] P1.1 | tools/builders.conf + tools/lib.sh sourced by slots, check_slot, build_pipeline, cf_build, merge_run, agy_review, check | grep -l "lib.sh" tools/*.sh -- done ab94d41,67ee6a8 (check_slot.sh stays standalone: it is sourced by check.sh, which sources lib.sh)
+- [x] P1.2 | slots.sh: total cap, memory floor (stubbed), finds C:/dev/game-wt from any worktree | tools/test_slots.py -- done ab94d41
+- [x] P1.3 | build_pipeline.sh: refuses when slots is full or base is unpushed; pid in .result; idle watchdog; </dev/null; non-zero unless PASS; pastes .claude/rules/code.md; --import | tools/test_build_pipeline.py -- done a969eb6
+- [x] P1.4 | agy_task/oc_task: outside timeout; oc default model DeepSeek; refuses a worktree with another base | tests in test_build_pipeline.py -- done a969eb6
+- [x] P1.5 | build_gate.py: no "Do NOT edit" heading = FAIL; tests/ + assets/ protected unless "May edit"; removed assert/test = FAIL; new tests must fail on base; *.import under assets counts | tools/test_build_gate.py -- done b7ea45f
+- [x] P1.6 | cf_build.sh spend from the saved build log; cf_mcp triage uses DeepSeek | test_slots.py spend case; grep server.py -- done ab94d41
+- [x] P1.7 | map.py `--cached` only; check.sh runs every tools/**/test_*.py and a boot smoke; check_slot.sh wait limit | tools/test_map.py; check.sh output -- done 67ee6a8,a969eb6
+- [x] P1.8 | session-start.sh: $PWD + `timeout 15 git fetch`; tools/wt_clean.sh; doc_check warns at 75%; .gitignore .env | hook test; grep .gitignore -- done 67ee6a8
+- [x] P1.9 | Paid-tool PreToolUse hook script (exit 2 without Feras's OK; credit reminder for Hyper3D) + its test (D21) | tools/test_pre_spend.py -- done 67ee6a8
+- [x] P1.10 | Dry run on a toy brief: a planted test edit gives BREACH and a non-zero exit; merged only with 0 runs live | .result of the dry run -- done: docs/audits/2026-10-27-p1-dryrun.md (BREACH exit 1; clean PASS exit 0)
 
 ## P2 Skills and reviewers (Sonnet, medium)
 - [ ] P2.0 | Calibration: free readers vs Haiku low/high/max on the gold set; routing table chosen | docs/research/calibration-2026-10.md
