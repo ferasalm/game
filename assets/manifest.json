@@ -3198,6 +3198,20 @@
       "source": "Google Flow (owner's account), Feras's own output: inbox/Neon Glitch concept art/Game_dialogue_portrait_sprite_sheet_2K_20261025111845.jpg (his Bilqis sheet)",
       "licence": "owner-generated (Google Flow); owner's own art",
       "prompt": "cut into 4 columns, 720 px tall, edges faded to alpha (2026-10-26)"
+    },
+    {
+      "id": "char_roya_rodin",
+      "path": "characters/roya_rodin.glb",
+      "source": "Hyper3D Rodin Gen-2.5-Medium Quad 7k + human_UE auto-rig (owner's Creator plan), from inbox/flow/roya_style_v3_2k.jpg (Flow Nano Banana 2.1 edit of the owner's Roya picture in the unified Basilisk + sumi-e style); generation 400ebe9f, rig e744d0d1",
+      "licence": "owner's own output; Creator plan: \"Unlimited export and any use\" (hyper3d.ai/pricing, 2026-10-22)",
+      "prompt": "rewrite_glb.py: materials stripped, feet lifted to y=0"
+    },
+    {
+      "id": "char_t_roya",
+      "path": "characters/t_roya.png",
+      "source": "Hyper3D Rodin diffuse of char_roya_rodin",
+      "licence": "owner's own output; Creator plan: \"Unlimited export and any use\" (hyper3d.ai/pricing, 2026-10-22)",
+      "prompt": "2048 diffuse resized to 1024 (Lanczos)"
     }
   ]
 }

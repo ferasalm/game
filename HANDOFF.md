@@ -1,5 +1,5 @@
 # HANDOFF (current state only; one section per track, each edited only by its owner; max 60 lines)
-Last updated: 2026-10-27 (Efficiency: P3 rest + P4 done; art chat next), Opus 5.5 (`claude-opus-5-5`).
+Last updated: 2026-10-27 (art chat: unified style, Roya model; bake next), Opus 5.5 (`claude-opus-5-5`).
 
 ## Shared
 - Builders (D1): <= 2 Godot runs + 1 free text run (slots.sh). Briefs: docs/briefs/TEMPLATE.md (D6 defaults, May edit,
@@ -7,7 +7,7 @@ Last updated: 2026-10-27 (Efficiency: P3 rest + P4 done; art chat next), Opus 5.
 - Waiting on the owner: OK on docs/VISION.md (P0.1); connectors to switch off and the pre_spend question
   (docs/audits/2026-10-27-process-audit.md); icon art; play the Abu Nabil fight.
 ### Next steps (one per chat; reviews Sonnet, design and art judgment Opus)
-1. Game work from VISION: Efficiency next step 1 (art chat). Model: Opus. Effort: high. Balance pass 2 dropped (D15).
+1. Game work from VISION: Efficiency + art next step 1 (bake Roya, hero OK, batch). Model: Opus. Effort: high. Balance pass 2 dropped (D15).
 
 ## Track: 2D redesign (owner: the chat "2D redesign brainstorm", 2026-10-24)
 - DECISIONS 2026-10-24: 2D isometric ink-comic look per Feras's concepts, offline-rendered sprites, on-map
@@ -46,15 +46,15 @@ Next, after the 5-hour reset, in this order (Feras 10-26):
    The 3D holo-map table is PAUSED 2026-10-24 (2D redesign); the menus may be reskinned for the new look later.
 `Continue ferasalm/game on main. Read HANDOFF.md (RPG + menus). Do its next step; /handoff.`
 
-## Track: Puzzles (owner: none)
-- Done on main: features/puzzles/ logic, grey-box scene, R5 placement (puzzle-place, 2026-10-23).
+## Track: Puzzles (owner: none): done on main: features/puzzles/ logic, grey-box scene, R5 placement (2026-10-23).
 
-## Track: Efficiency (owner: the process-audit chats P1-P4, 2026-10-27)
-- Done 10-27: P1-P4; summary docs/audits/2026-10-27-process-audit.md; ops-review after 5 sessions measures the gains.
-  Open: P0.1 (Feras's VISION OK); skillOverrides name-only does not take effect (ops-review).
-Next (game work from VISION), in this order (the art clock first: credits end ~2026-11-17):
-1. Art chat: spend the ~50 Hyper3D credits (cast, recurring props, icons, title video; name each job's credit cost first)
-   and prove the free 3D route on one character (3d-model skill). Model: Opus. Effort: high.
-2. M1 look-and-feel spike, prison roof (VISION M1): real-time Rydan vs 2 guards, lights with normal maps, touch.
-   Model: Opus (plan + briefs), builders build. Effort: high.
-`Continue ferasalm/game on main. Read HANDOFF.md (Efficiency). Do its next step 1; /handoff.`
+## Track: Efficiency + art (owner: the art chat, 2026-10-27)
+- 10-27: P1-P4 done. ONE character style (CANON: Basilisk + sumi-e, colour); OK'd Flow pictures inbox/flow/*_style_v{2,3}_2k.jpg;
+  old Bilqis picture + model retired. Hero Roya: Rodin 400ebe9f + rig e744d0d1 -> roya_rodin.glb, t_roya.png, ModelDef "roya";
+  NOT baked (free memory 624 MB < 3 GB floor). SPEND: 3 Roya lines, est. costs. Next (credits end ~11-17):
+1. Close Chrome/Blender, bake Roya (sprite-bake), eye_metrics, native-scale render on the prison roof, review-player +
+   review-feras, Feras OKs; ask his hyper3d.ai balance. Then the batch, cost first: Rydan + Bilqis re-models (v2 pictures),
+   guard, props (booth, floodlight, qamariya window, umbrella), icons; title loop = Flow Omni. Model: Opus. Effort: high.
+2. Free 3D route (OK'd: rydan_style_v2 to a TRELLIS/Hunyuan3D HF Space, GLB, rig, bake; never Blender generate_3d), write it
+   into the 3d-model skill. Model: Opus. Effort: medium. 3. M1 spike, prison roof. Model: Opus. Effort: high.
+`Continue ferasalm/game on main. Read HANDOFF.md (Efficiency + art). Do its next step 1; /handoff.`

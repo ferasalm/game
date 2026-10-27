@@ -37,6 +37,17 @@ That is "Download media" then the 2K item; the file lands in ~/Downloads. List r
    and adds an entry shaped like the items in assets/manifest.json: `id`, `path`, `source` ("flow, owner-generated"),
    `licence`, `prompt`. Never publish or buy anything.
 
+## Flow UI as of 2026-10-27 (flow.google.com, re-verified)
+- labs.google/fx/tools/flow redirects to flow.google.com; New project -> grid + agent panel on the right.
+- Do NOT click Add media -> Upload: it opens a native file picker that freezes the tab. Instead create your own
+  `<input type=file aria-label="ng file picker">` with javascript_tool, `find` it, `file_upload` (files must be readable by
+  the session: copy to the scratchpad first), then dispatch the dragenter/dragover/drop on the grid (snippet above).
+- Ingredients: the prompt's "Add ingredients" button opens the asset list; click a row, then "Add to prompt" (order = image 1, 2, ...).
+  The agent can make several images in one request ("Make 3 separate images ...").
+- Download: open a tile (detail view), aria-label Download -> menu "2K Upscaled"; file lands in ~/Downloads named after the
+  agent's title. Edits of one image: the detail view's "What do you want to change?" box + Enter.
+- Screenshots of the tab time out while Flow renders: read document.body.innerText instead.
+
 ## Status
 Route verified on 2026-10-26 (Rydan A-pose, prison-roof plate). Not re-tested in P2b: mark it "verified <date>" here at
 the first real use, or note what broke in lessons.md. Open: Omni video steps are not recorded yet; add them at the first

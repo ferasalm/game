@@ -69,7 +69,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 
 ## content
 - `content/art/clips.json`: content: clip x15
-- `content/art/models.json`: content: model x6
+- `content/art/models.json`: content: model x7
 - `content/art/palette.json`: content: palette x1
 - `content/art/sprites.json`: content: sprite x5
 - `content/art/visual.json`: content: visual_rules x1
