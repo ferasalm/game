@@ -34,7 +34,7 @@ def clips(root: str) -> list:
     except (OSError, ValueError):
         return []
     out = []
-    for item in data.get("items", []):
+    for item in (data.get("items", []) if isinstance(data, dict) else []):
         for state in item.get("states", []):
             out.append((item.get("id", ""), state))
     return out
@@ -48,9 +48,9 @@ def sheet_metrics(base: str, state: dict, root: str) -> None:
         emit("sheet_missing:%s" % base, 0, "WARN", "exists")
         return
     try:
-        image = Image.open(path)
-        has_alpha = image.mode in ("RGBA", "LA") or (image.mode == "P" and "transparency" in image.info)
-        rgba = image.convert("RGBA")
+        with Image.open(path) as image:
+            has_alpha = image.mode in ("RGBA", "LA") or (image.mode == "P" and "transparency" in image.info)
+            rgba = image.convert("RGBA")
     except (OSError, ValueError):
         emit("sheet_missing:%s" % base, 0, "WARN", "exists")
         return
@@ -78,7 +78,7 @@ def clip_metrics(root: str) -> None:
 def font_min(root: str) -> None:
     values = []
     for pattern in ("**/*.tscn", "**/*.tres"):
-        for path in glob.glob(os.path.join(root, "features", pattern), recursive=True):
+        for path in glob.glob(os.path.join(glob.escape(root), "features", pattern), recursive=True):
             try:
                 with open(path, encoding="utf-8", errors="ignore") as handle:
                     values.extend(int(n) for n in FONT_RE.findall(handle.read()))
@@ -94,13 +94,13 @@ def font_min(root: str) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", default=None)
-    args = parser.parse_args()
+    args, _ = parser.parse_known_args()
     root = args.root or git_root()
-    try:
-        clip_metrics(root)
-        font_min(root)
-    except Exception:  # a report never fails the build
-        pass
+    for part in (clip_metrics, font_min):  # a report never fails the build, and one part never hides the other
+        try:
+            part(root)
+        except Exception as err:
+            print("METRIC error:%s 0 WARN %s" % (part.__name__, type(err).__name__))
     return 0
 
 

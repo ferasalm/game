@@ -40,7 +40,7 @@
 
 ## 4. Parallel builders (Claude agents 2026-10-21; agy 2026-10-22)
 - One worktree per builder; registries (ContentDB KINDS, MAP.md) conflict -> keep both sides, regenerate MAP.md; after
-  a merge adds class_names run `tools/run_godot.sh --import` first; check CI (`gh run list`) after main.
+  a merge adds class_names run `tools/run_godot.sh --import` first (exit 139 = memory, rerun); check CI (`gh run list`) after main.
 - A pull into C:/dev/game without an import: the game did not run (stale class cache) -> `bash tools/sync_main.sh`
   after every pull (2026-10-24).
 - A builder rewired a signal and its old listener went dead; gate, tests and review passed -> audits trace rewired
@@ -58,7 +58,7 @@
   free fix pass); PASS with no commits = nothing built; read fix-pass test diffs (one hardcoded a value) (2026-10-23).
 - Editing a running .sh broke the running copy (bash reads as it goes) -> never edit tools/*.sh mid-run (2026-10-23).
 - Silent stdin hangs: agy, opencode (25 min), an ffmpeg render (22 min) -> `< /dev/null`, ffmpeg `-nostdin`, child
-  timeouts, progress; check background jobs at their expected end (2026-10-25).
+  timeouts, progress; check background jobs at their expected end (2026-10-25); a `nohup` builder is not in the app's task list: watch its .result (2026-10-27).
 - `python - <<EOF < /dev/null` gave Python no script: it spun in an empty REPL -> script files for background runs;
   `cmd | grep` hid a crash (exit 0) -> `set -o pipefail`. lru_cache of 1280x720 float layers hit MemoryError at
   ~4 GB -> cache uint8 or a few entries (2026-10-25).

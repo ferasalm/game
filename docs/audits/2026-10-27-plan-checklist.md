@@ -36,7 +36,7 @@ Format: [ ] id | item | how to check
 - [ ] P0.4 | docs/research/hades-digest.md from the plan's appendix | file exists
 
 ## P3 Docs, memory, ~/.claude (Sonnet, high)
-- [ ] P3.1 | CLAUDE.md: north star, advisor duty, Opus standard, D1/D4/D10, one usage rule, python, sync_main.sh, CANON pointer, skill map line | doc_check; grep
+- [ ] P3.1 | CLAUDE.md: north star, advisor duty, Opus standard, D1/D4/D10, one usage rule, python, sync_main.sh, CANON pointer, skill map line | doc_check; grep P3 must KEEP the six market personas in ~/.claude/agents: business-strategist, product-manager, design-ux-researcher, product-behavioral-nudge-engine, design-persona-walkthrough, product-feedback-synthesizer (market-card source).
 - [ ] P3.2 | .claude/rules/code.md with paths:; GEMINI.md/AGENTS.md builder-only, Neon Glitch | grep -c Qarnaw = 0
 - [ ] P3.3 | DECISIONS process-only, superseded struck to decisions-archive, D1-D22 summarized; docs/CANON.md holds content lines | doc_check
 - [ ] P3.4 | LESSONS ~50 lines; route lessons in skills; opencode/Inkling lines archived; today's 4 lessons | wc -l
