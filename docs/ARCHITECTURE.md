@@ -81,6 +81,8 @@ docs/           ARCHITECTURE BRIEFING WORKFLOW DECISIONS LESSONS MAP USAGE desig
   `get_parent`, `find_child` or `/root/` paths (enforced).
 
 ## 8. Combat (Grandia-style timeline; design source: docs/research/gemini-blueprint.md, Module 3)
+Status 2026-10-28: this is the turn-based code still on main. Combat is real-time like Hades (CANON 10-27, VISION
+pillar 1); the M1 brief (HANDOFF queue) replaces this section. Kept from it: integer fixed ticks, pure logic, events.
 - **Timeline** (pure, built): positions are integers 0..10000; COMMAND at 7000, ACT at 10000; 60 fixed ticks a
   second; units move in list order; every change returns a `TimelineEvent`. A unit reaching COMMAND freezes time
   until `choose()` (player menu or AI). Cancel hits during a cast interrupt (back to 2500); other hits knock back,
@@ -92,6 +94,7 @@ docs/           ARCHITECTURE BRIEFING WORKFLOW DECISIONS LESSONS MAP USAGE desig
   length, interrupts), so tuning costs a few lines of output.
 
 ## 9. Exploration, encounters, puzzles (M2, M4, M5)
+Status 2026-10-28: the 3D player and Area3D lines are retired (D20); the 2D roof is features/neon (section 3).
 - Player: CharacterBody3D + CharacterVisual; 8-way movement, sprite faces 4 ways (left = mirrored right).
 - Interaction: Area3D zones emit to a small interaction component; lore stones, wheels, doors are scenes with ids.
 - Encounters are visible enemies; touching one from behind gives the ambush timeline bonus (blueprint Module 7).
@@ -108,7 +111,7 @@ docs/           ARCHITECTURE BRIEFING WORKFLOW DECISIONS LESSONS MAP USAGE desig
 - Hand-placed props go in `dressing.tscn`, which the builder never touches. The owner can paint blocks in the
   editor's GridMap tool too; the builder then keeps his cells (decided when M2 starts).
 - Why: Claude edits a 20-line text map instead of a 5,000-line scene file.
-- Prototype (built): `content/world/areas.json` (kind "area": rows of tile characters, legend char -> tile id, markers S spawn,
+- Retired with the 3D world (D20; tag 3d-archive): `content/world/areas.json` (kind "area": rows of tile characters, legend char -> tile id, markers S spawn,
   W workshop, P/Q patrol ends, encounter id) + `tiles.json` (height, palette letter or hex, solid, glow, cap); `features/world/view/area_builder.gd` builds it at runtime (MultiMesh per tile type + box colliders), no generated scene. Look: `content/world/look.json`.
 
 ## 11. Dialogue, text and languages (M4)

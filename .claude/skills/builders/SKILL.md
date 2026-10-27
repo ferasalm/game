@@ -54,7 +54,7 @@ Per executor:
   - list what NOT to report;
   - split big jobs into parallel runs over disjoint inputs;
   - no design choices; effort from calibration (reader: high; lens: low).
-- **Sonnet** (session or subagent; strong when scoped, loops when the task is vague):
+- **Sonnet** (subagent only: every chat is Opus, Feras 10-28; strong when scoped, loops when the task is vague):
   - Opus makes the decisions first, so no open design questions are left;
   - give the acceptance tests or checks;
   - `/advisor opus`; a loop cap of 3 rounds;

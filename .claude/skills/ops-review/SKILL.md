@@ -23,7 +23,8 @@ Skip yourself (one line "nothing changed") when fewer than 5 sessions passed or 
    docs/research/<department>/<date>-<topic>.md, marked unverified; the calibrated reader (Haiku, effort high) digests each to <= 30 lines.
 6. **Idle sessions.** `mcp__ccd_session_mgmt__list_sessions`: list sessions idle for days with no open PR (archive candidates;
    the parent asks Feras before archiving).
-7. **Department upgrade (one, in rotation).** Order: gameplay, art, ui, market, builders, ops. Pick the next after the one in the
+7. **Department upgrade (one, in rotation).** Order: the docs/WORKFLOW.md Departments Ids (Gameplay, Art, UI, Market, Narrative, QA, Ops;
+   Ops includes the builders skill). Pick the next after the one in the
    last report; list 3 concrete upgrades to its skill/card (lessons promoted, a tool added, a failing check made a gate).
 8. **Calibration recheck** when docs/research/calibration-2026-10.md names a trigger (OpenRouter free list changed, or the first review).
 

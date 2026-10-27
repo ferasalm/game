@@ -33,7 +33,7 @@ children, until the window resets.
 | Godot code + tests | builder | agy (Gemini 3.8 Flash high) or Cloudflare DeepSeek V4.1 Flash; <= 2 Godot runs |
 | Text: docs, research, summaries, review lenses | builder | opencode (DeepSeek V4.1 Flash free) or OpenRouter :free; 1 run, 50 requests a day |
 | Big or many-file reads | reader | a Haiku high agent with an exact output template |
-| Taste, MCP (Blender, Flow, Rodin), the final review | chat | Opus; Sonnet only with an Opus-scoped prompt |
+| Taste, MCP (Blender, Flow, Rodin), the final review | chat | Opus (every chat and child; Feras 10-28) |
 
 **Child brief** (the father pastes it as the child's first message; fill every line):
 ```
