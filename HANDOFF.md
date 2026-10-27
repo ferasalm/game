@@ -52,5 +52,5 @@ Next, after the 5-hour reset, in this order (Feras 10-26):
 ## Track: Efficiency (owner: the process-audit chats P1-P4, 2026-10-27)
 - Plan: docs/audits/2026-10-27-process-audit-plan.md (D1-D22 logged), checklist 2026-10-27-plan-checklist.md;
   sequential before game work (D12). Neon Glitch steps 1-2 are folded into P0 and P1-P2. Each P-chat ticks its lines.
-1. P1 done 2026-10-27 (tools hardened; tests in tools/test_*.py, check.sh runs them all). P2 skills + reviewers: calibration first. Model: Sonnet. Effort: medium.
-`Continue ferasalm/game on main. Read HANDOFF.md (Efficiency) and the plan's P2 (docs/audits/2026-10-27-process-audit-plan.md, section P2; checklist P2). Builders: tools/build_pipeline.sh now needs the base pushed and a Do NOT edit section in every brief; tests, assets and existing tools/ + .github/ files are protected unless a May edit section lists them (P1 review: docs/audits/2026-10-27-p1-review.md). Do P2, tick the checklist, put P3's prompt here; /handoff.`
+1. P1 done + Opus-reviewed (docs/audits/2026-10-27-p1-review.md). P2 is split: P2a then P2b. Model: Sonnet. Effort: medium.
+`Continue ferasalm/game on main. First type /advisor opus. Do docs/briefs/p2a-calibration-reviewers.md exactly; then /handoff.`
