@@ -15,7 +15,7 @@ Next goal: a free 20-30 min demo, PC (Steam) first, Android kept alive. Check ev
 ## Start of every session
 1. Read the SYNC lines (session hook; else `git fetch origin main && git status -sb`). Behind main: merge
    origin/main before changing anything. After a pull in C:\dev\game: `bash tools/sync_main.sh`.
-2. Tell the owner in one or two lines the next step from HANDOFF and its model and effort. Then work.
+2. Tell the owner in one or two lines the top HANDOFF queue row (lane, who). Then work.
 3. Before changing code in an area: grep docs/MAP.md, then docs/ARCHITECTURE.md for that area's section.
 4. Before content work (story, names, art, UI, combat design): read docs/CANON.md.
 

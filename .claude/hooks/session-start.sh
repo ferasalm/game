@@ -12,5 +12,5 @@ echo "SYNC: $branch is $behind behind and $ahead ahead of origin/main."
 [ "$behind" != "0" ] && echo "SYNC: merge origin/main before changing anything."
 [ -n "$(git status --porcelain 2>/dev/null)" ] && echo "SYNC: uncommitted changes are present; look before editing."
 [ -x tools/godot.sh ] && (tools/godot.sh >/dev/null 2>&1 &)
-echo "Next: tell the owner the next step and its model and effort (HANDOFF.md, Next steps)."
+echo "Next: tell the owner the top HANDOFF.md queue row for this chat (lane, who); bash tools/status.sh shows the state."
 exit 0

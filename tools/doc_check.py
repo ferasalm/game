@@ -33,12 +33,18 @@ check(size <= LOADED_BYTES, f"always-loaded notes are {size} bytes (max {LOADED_
 for name in ("HANDOFF.md", "docs/DECISIONS.md", "docs/LESSONS.md"):
     check(f"@{name}" in texts["CLAUDE.md"], f"CLAUDE.md loads @{name}")
 
-steps = texts["HANDOFF.md"]  # every numbered step: the shared ones and each track's
-items = re.findall(r"^\d+\. .*(?:\n(?!\d+\. |#|`|- ).*)*", steps, re.M)
-check(bool(items), "HANDOFF.md has numbered next steps")
-for item in items:
-    check(re.search(r"Model: (Haiku|Sonnet|Opus)", item) and re.search(r"Effort: (low|medium|high)", item),
-          f"next step names 'Model: Haiku|Sonnet|Opus' and 'Effort: low|medium|high': {item[:60]}")
+# One queue (Feras 2026-10-27): every row names a lane; builder is the default, a chat says why (D1 as a check, not prose)
+queue = texts["HANDOFF.md"].split("## Queue", 1)[-1].split("\n## ", 1)[0] if "## Queue" in texts["HANDOFF.md"] else ""
+rows = [[c.strip() for c in r.split("|")[1:-1]] for r in re.findall(r"^\| *\d+ *\|.*\|$", queue, re.M)]
+check(bool(rows), "HANDOFF.md has a '## Queue' table with numbered rows")
+for row in rows:
+    lane, who = (row[2], row[3]) if len(row) > 3 else ("", "")
+    parts = lane.split(" + ")
+    check(all(re.fullmatch(r"builder|Feras|chat \((taste|MCP|review|plan)\)", p) for p in parts),
+          f"queue row lane is builder, Feras or 'chat (taste|MCP|review|plan)': {row[:3]}")
+    check("builder" not in parts or re.search(r"\b(agy|cf|oc)\b", who), f"builder row names agy, cf or oc: {row[:4]}")
+    check(not any(p.startswith("chat") for p in parts) or re.search(r"(Haiku|Sonnet|Opus) (low|medium|high|xhigh)", who),
+          f"chat row names its model and effort (e.g. Opus high): {row[:4]}")
 
 log = texts["docs/DECISIONS.md"].split("## Log", 1)[-1]
 for line in (l for l in log.splitlines() if l.startswith("- ")):

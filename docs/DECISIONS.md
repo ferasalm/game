@@ -14,7 +14,7 @@ UI): docs/CANON.md, read before any content work. D1-D22 = the process audit pla
 - 2026-10-27 | Departments = skills + a 4-lens review panel; ops-review every 5 sessions (D8); a Market and player department with success checks per milestone (D19); lesson lifecycle: add, promote to a check, or archive after 30 days (D9) | Feras
 - 2026-10-21 | Ask Feras 2-4 multiple-choice questions, recommended first; big asks: plan mode (Opus xhigh), narrow audits by calibrated readers, then orchestrate; free models get text work and lenses only after calibration vs Haiku (D11) | Feras
 - 2026-10-21 | Runs stop only for owner questions, logins, CAPTCHAs, downloads, spending | Feras/Claude
-- 2026-10-27 | Hand off at ~100k work tokens (get_usage Messages) (D4); milestone-only reports; one owner per HANDOFF section | Feras
+- 2026-10-27 | Hand off at ~100k work tokens (get_usage Messages) (D4); milestone-only reports; HANDOFF = one queue, each row names its lane (builder by default), one Opus chat at a time (10-27) | Feras
 - 2026-10-23 | Emergency mode (50% of the 5-hour window): one director chat, builders on backups; builders never merge or push to main (D3) | Feras
 - 2026-10-22 | Always-loaded notes <= 27 KB; caps in tools/doc_check.py (warns at 75%); one task, model, effort per chat | Feras
 - 2026-10-27 | No chat edits in C:\dev\game: worktrees only; the main checkout is for Feras's play and builder launches (D10) | Feras

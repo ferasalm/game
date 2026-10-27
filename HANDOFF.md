@@ -1,60 +1,57 @@
-# HANDOFF (current state only; one section per track, each edited only by its owner; max 60 lines)
-Last updated: 2026-10-27 (archive chat: stages 2-3 done, code id rydan, save v7, res_graph + guard checks), Opus 5.5.
+# HANDOFF (current state only; ONE queue for every chat; max 60 lines)
+Last updated: 2026-10-27 (sync-board chat: one queue, tools/status.sh, cleanup), Opus 5.5.
+Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Feras's list).
 
-## Shared
-- Builders (D1): <= 2 Godot runs + 1 free text run (slots.sh). Briefs: docs/briefs/TEMPLATE.md (D6 defaults, May edit,
-  Ripple from docs/design/systems-map.md, a player-visible test). Balance band: start gear 82.7-89% wins; arc_arm needs an upside.
-- Waiting on the owner: OK on docs/VISION.md (P0.1); connectors to switch off and the pre_spend question
-  (docs/audits/2026-10-27-process-audit.md); icon art; play the Abu Nabil fight.
-### Next steps (one per chat; reviews Sonnet, design and art judgment Opus)
-- Archive done (restore from tag pre-cleanup): hero code id is rydan (save v7); Bilqis's portraits are now the Neon ones
-  (bilqis_ng merged into bilqis, old set archived: Feras may overturn). Branches in ../game-wt and the RPG + menus briefs predate it: zayd paths conflict.
-1. Efficiency fixes 1-5 as hooks/checks (Feras's number-one priority): docs/briefs/efficiency-hooks.md. Model: Opus. Effort: high.
-2. Then Efficiency + art step 1 (bake Roya, hero OK, batch). Model: Opus. Effort: high. Balance pass 2 dropped (D15).
+## How this file works (Feras 2026-10-27)
+- One queue, top row first. A chat edits its own rows (Status, Blocked by) and adds rows for new work it finds.
+- Lane: builder (agy, cf, oc) by default; a chat only for taste, MCP (Blender, Flow, Rodin), review or plan, said in
+  brackets; Feras = his move. One Opus chat at a time. tools/doc_check.py checks every row.
+- Process work is frozen after row 1 until Feras has played M1 (row 5).
+- Builders (D1): <= 2 Godot runs + 1 free text run (slots.sh). Briefs: docs/briefs/TEMPLATE.md. Balance band: start
+  gear 82.7-89% wins; arc_arm needs an upside.
 
-## Track: 2D redesign (owner: the chat "2D redesign brainstorm", 2026-10-24)
-- DECISIONS 2026-10-24: 2D isometric ink-comic look per Feras's concepts, offline-rendered sprites, on-map
-  turn-based battles (Chrono Trigger style), qamariya at the heart. Last 3D state: tag `3d-archive`.
-- Waiting on the owner: more concept pictures (plus an empty plate per scene: no characters, HUD or rain).
-1. Then: design doc + plan the one-scene prototype (rooftop, Zayd, one fight, HUD). Model: Opus. Effort: high.
+## Queue
+| # | Task (brief or doc) | Lane | Who | Status | Blocked by |
+|---|---|---|---|---|---|
+| 1 | Efficiency fixes 1-6 as hooks and checks: docs/briefs/efficiency-hooks.md | builder + chat (review) | cf; Opus high | next: chat "Process: turn the broken rules into hooks and checks" | - |
+| 2 | Rydan free recolour + rebake (Blender), then Feras OKs the render | chat (MCP) | Opus high | running: chat "Recolour Rydan model" | - |
+| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md) | chat (plan) | Opus high | queued | 1 |
+| 4 | M1 build from that brief + the Android export (D17), players-eye-gate before Feras | builder | agy | queued | 3 |
+| 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | Feras | - | queued | 4 |
+| 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | chat (MCP) | Opus high | queued: runs while agy builds row 4 | 3; free memory >= 3 GB |
+| 7 | Art batch: Bilqis re-model (v2), guard, props (booth, floodlight, qamariya window, umbrella), icons; title = Flow Omni | chat (MCP) | Opus high | queued; Rodin credits end ~11-17 | 6 |
+| 8 | Free image-to-3D proof (rydan_style_v2 to a TRELLIS HF Space; never Blender generate_3d) -> 3d-model skill | chat (MCP) | Opus medium | queued | 7 |
+| 9 | Asset preparation pipeline (jpg -> png, sizes, import settings, manifest check) | builder | cf | parked | 5 |
+Key: builders are free code bots (agy = Gemini Flash, cf = Cloudflare DeepSeek, oc = free text models); chat (MCP) = a
+Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-time fight, on the prison roof.
 
-## Track: Neon Glitch (owner: the chat "Retire 3D", 2026-10-26)
-- On main: launching = features/neon/neon_game.tscn: start flow -> Roya cold open -> prison roof -> turn-based map
-  fight (prison_guard x2, 84 % wins at XP 0) -> cable line -> "TO BE CONTINUED". Renders: tools/shot_neon_game.tscn.
-- 3D game retired 10-26 (docs/archive/design-3d/retire-3d-audit.md): branch archive/3d + tag 3d-archive; what to reuse:
-  docs/archive/3d-reuse.md. Dialogue fights emit EventBus.battle_requested (no host yet); menu holograms show
-  portraits or Neon sprites; the Map tab is greyed (no 2D map yet).
-- Feras: play it (Esc/back, Enter/Space, WASD, E). Gaps: Normal/Hard not applied; guards close in formation;
-  title twice; floodlight numbers in code; no call-in ally.
-Next, after the 5-hour reset, in this order (Feras 10-26):
-1. Vision, mission, objectives + roadmap (docs/VISION.md from bible + DECISIONS; Feras edits). Model: Opus. Effort: high.
-2. Builder quality system: gate rejects removed checks and asset edits, tests/assets Do NOT edit by default, layer
-   lint (shared code never names a mode), builder playbook in TEMPLATE. Model: Sonnet. Effort: medium.
-3. Asset preparation pipeline (jpg -> png, sizes, import settings, manifest check); DeepSeek builds. Model: Sonnet. Effort: medium.
-`Continue ferasalm/game on main. Read HANDOFF.md (Neon Glitch). Do its next step; /handoff.`
-## Track: Level 1 + playtest fixes: PAUSED 2026-10-24 (3D; 2D redesign). Unmerged fix branches kept in ../game-wt.
-- Playtest 2026-10-24: inbox/playtest_*.png, concept_*.png; crossing freeze fixed. docs/briefs/: render-clean,
-  menus-equip-fix, holo-map-real (+ their fix passes), then cyber-look, items-menu, gear-slots (save: line review).
-1. Review + merge the fix passes, then Feras playtests; items-menu, gear-slots next. Model: Opus. Effort: medium.
-2. Environment overhaul (DECISIONS 10-24) via the builders skill after his test. Model: Opus. Effort: high.
-`Continue ferasalm/game on main. Read HANDOFF.md (Level 1 + playtest fixes). Do its next step; /handoff.`
+## Waiting on Feras
+| What | Since | Where |
+|---|---|---|
+| OK the recoloured Rydan render | 10-27 | row 2 |
+| Play M1 on PC and phone, send notes | Fri 10-30 | row 5 |
+| OK on the vision | 10-27 | docs/VISION.md |
+| Switch off connectors (vidIQ, Runware, OpenRouter connector still on 10-27 evening) | 10-27 | docs/audits/2026-10-27-process-audit.md |
+| The pre_spend question | 10-27 | docs/audits/2026-10-27-process-audit.md |
+| Bilqis's portraits are now the Neon ones (overturn?) | 10-27 | archive-cleanup, decisions-log |
+| More concept pictures + an empty plate per scene (no characters, HUD or rain) | 10-24 | inbox/ |
+| Icon art | 10-27 | row 7 |
 
-## Track: RPG + menus (owner: the next chat from this prompt)
-- On main: rolls + flee, progression (XP, classes, armor, stones, save v5; no static state), Zayd's kit, menu skins +
-  backdrops, equipment and workshop menus, balance-gear, holo map (area plan, markers, city view). 758 tests.
-- Holo map is flat 2D; mock_map.png is an isometric 3D table. Renders predate the five roofs.
-- Waiting on the owner: judge the menu renders (inbox/menu_*.png) against your mockups.
-1. Polish briefs: workshop vs mock_workshop.png; equipment inventory/header overlap. Model: Sonnet. Effort: medium.
-   The 3D holo-map table is PAUSED 2026-10-24 (2D redesign); the menus may be reskinned for the new look later.
-`Continue ferasalm/game on main. Read HANDOFF.md (RPG + menus). Do its next step; /handoff.`
+## This week (Claude Pro weekly limit: 59% used Tue 10-27, resets Sat 10-31 13:00 UTC: spend ~10% a day)
+| Day | Plan |
+|---|---|
+| Tue 10-27 | Row 2 finishes. No new Opus chat. |
+| Wed 10-28 | Row 1 (cf builds, one Opus review chat). Nothing else. |
+| Thu 10-29 | Row 3 brief; row 4 agy builds overnight while row 6 bakes Roya. |
+| Fri 10-30 | Play day 1 (row 5) if row 4 passed the eye gate by noon; else it moves to Sat or Sun. |
+| Sat 10-31 | Limit resets 13:00 UTC; fix passes from his notes; row 7 starts. |
+| Sun-Mon | Row 7-8; play day 2 on the fix pass. |
 
-## Track: Efficiency + art (owner: the art chat, 2026-10-27)
-- 10-27: P1-P4 done. ONE character style (CANON: Basilisk + sumi-e, colour); OK'd Flow pictures inbox/flow/*_style_v{2,3}_2k.jpg;
-  old Bilqis picture + model retired. Hero Roya: Rodin 400ebe9f + rig e744d0d1 -> roya_rodin.glb, t_roya.png, ModelDef "roya";
-  NOT baked (free memory 624 MB < 3 GB floor). SPEND: 3 Roya lines, est. costs. Next (credits end ~11-17):
-1. Close Chrome/Blender, bake Roya (sprite-bake), eye_metrics, native-scale render on the prison roof, review-player +
-   review-feras, Feras OKs (balance 50; 1.5/char). Rydan: FREE recolour first (Blender: project rydan_style_v2 onto t_rydan.png
-   UVs, front + mirrored back, bake), Rodin only if it fails. Batch: Bilqis re-model (v2), guard, props (booth, floodlight, qamariya window, umbrella), icons; title = Flow Omni. Model: Opus. Effort: high.
-2. Free image-to-3D proof (OK'd: rydan_style_v2 to a TRELLIS HF Space; never Blender generate_3d) -> 3d-model skill. Model: Opus. Effort: medium.
-3. M1 spike, prison roof. Model: Opus. Effort: high.
-`Continue ferasalm/game on main. Read HANDOFF.md (Efficiency + art). Do its next step 1; /handoff.`
+## Parked and context (resume only through a queue row)
+- On main: features/neon/neon_game.tscn (start flow -> Roya cold open -> prison roof -> turn-based map fight -> cable
+  line). M1 replaces the turn-based fight (CANON 10-27, real-time). Renders: tools/shot_neon_game.tscn.
+- Archive done 10-27: hero code id rydan (save v7), res_graph + guard checks; restore from tag pre-cleanup.
+- RPG + menus polish (workshop vs mock_workshop.png, equipment overlap; inbox/menu_*.png): after M1, reskin to the new look.
+- Retired 3D (D20): tag 3d-archive, branch archive/3d, lookup only; old builder branches gemini/*, oc/* kept, worktrees gone.
+
+`Continue ferasalm/game on main. Read HANDOFF.md. Take the top queue row for your lane; /handoff.`

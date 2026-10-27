@@ -28,7 +28,14 @@
 - A UiScreen closed while another covered it stayed frozen (its fade tween pauses with the node) -> close() re-enables processing (2026-10-23).
 - A test counting processes by name machine-wide is flaky with parallel checkouts -> mark the test's children (2026-10-27).
 
+- An import that crashed (exit 139) leaves `*.import<digits>.tmp` files in assets/ -> test_asset_manifest fails on them:
+  delete them, rerun the import (2026-10-27).
+
 ## 3. Process (general; reem-bot and feras-career ones verified there)
+- Builders sat idle (0 agy runs 10-27) while D1 said "builders write": doc_check demanded Model + Effort on every HANDOFF
+  step and nothing asked for a lane, so every plan came out as an Opus chat -> the queue check requires a lane (2026-10-27).
+- Finished session worktrees are often detached (no branch): a tool listing worktrees by branch misses them ->
+  tools/status.sh reads `worktree list --porcelain` HEADs (test_status.py) (2026-10-27).
 - A check that only prints never fails -> every check exits non-zero; probe each new rule with one bad case.
 - A harness summary can lie (99.8% party HP: its AI chain-interrupted the boss) -> print one seed's events (2026-10-23).
 - A subagent costs 150-290k tokens -> delegate only when the worker reads far more than its brief.
