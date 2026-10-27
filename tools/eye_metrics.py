@@ -10,6 +10,7 @@ import sys
 from PIL import Image
 
 FONT_RE = re.compile(r"(?:^|[\s/])(?:default_)?font_size\s*=\s*(\d+)", re.MULTILINE)
+JSON_FONT_RE = re.compile(r"\"[a-z_]*font_size\"\s*:\s*(\d+)")  # content/*.json: where UI sizes live (code rules)
 
 
 def emit(name: str, value: object, verdict: str, bar: str) -> None:
@@ -77,11 +78,12 @@ def clip_metrics(root: str) -> None:
 
 def font_min(root: str) -> None:
     values = []
-    for pattern in ("**/*.tscn", "**/*.tres"):
-        for path in glob.glob(os.path.join(glob.escape(root), "features", pattern), recursive=True):
+    for folder, pattern, regex in (("features", "**/*.tscn", FONT_RE), ("features", "**/*.tres", FONT_RE),
+                                   ("content", "**/*.json", JSON_FONT_RE)):
+        for path in glob.glob(os.path.join(glob.escape(root), folder, pattern), recursive=True):
             try:
                 with open(path, encoding="utf-8", errors="ignore") as handle:
-                    values.extend(int(n) for n in FONT_RE.findall(handle.read()))
+                    values.extend(int(n) for n in regex.findall(handle.read()))
             except OSError:
                 continue
     if not values:

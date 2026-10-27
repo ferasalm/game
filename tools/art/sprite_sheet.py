@@ -35,6 +35,8 @@ def main() -> None:
         m = pattern.search(os.path.basename(path))
         if m:
             frames.setdefault(m.group(1), {})[(int(m.group(2)), int(m.group(3)))] = path
+    if not frames:
+        sys.exit("sprite_sheet: no %s_<state>_d<n>_f<n>.png frames in %s" % (model, src))
     px, py = feet_pivot(frame_px, ortho)
     for state, cells in sorted(frames.items()):
         count = max(f for _, f in cells) + 1
@@ -44,6 +46,8 @@ def main() -> None:
             b = im.getbbox()
             if b:
                 box = b if box is None else (min(box[0], b[0]), min(box[1], b[1]), max(box[2], b[2]), max(box[3], b[3]))
+        if box is None:
+            sys.exit("sprite_sheet: state %s has no opaque pixel in any frame (empty bake?)" % state)
         x0, y0 = max(0, box[0] - MARGIN), max(0, box[1] - MARGIN)
         x1, y1 = min(frame_px, box[2] + MARGIN), min(frame_px, box[3] + MARGIN)
         cw, ch = x1 - x0, y1 - y0

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Player's-eye gate step 1: records a render wrapper non-headless and makes what a reader can look at.
 # Usage: tools/eye_gate.sh <wrapper.tscn> <seconds> <out dir>   e.g. tools/eye_gate.sh res://tools/shot_neon_game.tscn 24 /tmp/eye
-# Writes <out>/f*.png (30 fps movie frames), <out>/contact.png (4x4 contact sheet), <out>/clip.mp4. Never writes to inbox/.
+# Writes <out>/f*.png (30 fps movie frames), <out>/contact.png (4x4 contact sheet), <out>/clip.mp4. The script writes only <out>; a wrapper may save its own shots (shot_neon_game: this checkout's inbox/).
 set -uo pipefail
 SCENE="${1:?wrapper scene}"; SECS="${2:?seconds}"; OUT="${3:?out dir}"
 ROOT="$(git rev-parse --show-toplevel)"; cd "$ROOT" || exit 1

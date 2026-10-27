@@ -3,14 +3,17 @@
 import os
 import subprocess
 import sys
+import random
 import tempfile
 import time
+
+from test_kill_tree import marked
 
 TOOLS = os.path.dirname(os.path.abspath(__file__)).replace("\\", "/")
 PIPE = TOOLS + "/build_pipeline.sh"
 CHECK_TOY = '#!/bin/bash\n[ -f fail.flag ] && { echo "FAIL toy"; exit 1; }\necho "all checks passed"\n'
 FAKE_BUILDER = r'''#!/bin/bash
-# stub builder: <name> <prompt> <base> [model]; FAKE_MODE good|test_edit|nothing|hang
+# stub builder: <name> <prompt> <base> [model]; FAKE_MODE good|test_edit|nothing|hang; hang children carry $FAKE_MARK
 . "$LIBSH"
 name="$1"; root="$(git rev-parse --show-toplevel)"; wt="$(wt_dir)/$name"
 ensure_wt "$root" "$wt" "oc/$name" "$3" || exit 1
@@ -21,14 +24,14 @@ case "${FAKE_MODE:-good}" in
   good) mkdir -p features; echo "## a" > features/a.gd; git add -A; git -c user.name=t -c user.email=t@t commit -qm feat ;;
   test_edit) echo "# edited" >> tests/t.gd; git add -A; git -c user.name=t -c user.email=t@t commit -qm cheat ;;
   nothing) : ;;
-  hang) ping -n 60 127.0.0.1 > /dev/null & wait ;;
+  hang) "$PYEXE" -c "import time; time.sleep(60)" "$FAKE_MARK" & echo up > "$(wt_dir)/$name.child"; wait ;;
   commit_then_hang) mkdir -p features; echo "## a" > features/a.gd; git add -A
-    git -c user.name=t -c user.email=t@t commit -qm feat; ping -n 60 127.0.0.1 > /dev/null & wait ;;
+    git -c user.name=t -c user.email=t@t commit -qm feat; "$PYEXE" -c "import time; time.sleep(60)" "$FAKE_MARK" & wait ;;
 esac
 '''
 FAKE_BIN = r'''#!/bin/bash
 echo "ARGS: $@"
-if [ "$OS" = Windows_NT ]; then ping -n 30 127.0.0.1 > /dev/null & else sleep 30 & fi
+"$PYEXE" -c "import time; time.sleep(30)" "$FAKE_MARK" & echo up > "$HOME/child.up"
 wait
 '''
 
@@ -49,12 +52,9 @@ def put(path, text, mode=None):
         os.chmod(path, mode)
 
 
-def ping_count():
-    """Leaked fake-builder children: native PING.EXE on Windows, `sleep 30` elsewhere."""
-    if os.name != "nt":
-        return len(subprocess.run(["pgrep", "-f", "^sleep 30$"], capture_output=True, text=True).stdout.split())
-    out = subprocess.run(["tasklist", "/FI", "IMAGENAME eq PING.EXE"], capture_output=True, text=True).stdout
-    return out.upper().count("PING.EXE")
+def child_env():
+    """A per-test marker for the stub builders' native children (python.exe), so counts see only this test's."""
+    return {"FAKE_MARK": "ngmark%06d" % random.randrange(10 ** 6), "PYEXE": sys.executable.replace("\\", "/")}
 
 
 def toy():
@@ -140,18 +140,19 @@ def test_refuses_an_unpushed_base():
 
 def test_idle_watchdog_kills_the_tree_and_says_nowork():
     top, g = toy()
-    before = ping_count()
+    kids = child_env()
     t0 = time.time()
-    rc, out, err = pipeline(g, top, FAKE_MODE="hang", IDLE_SEC="3", WATCH_POLL="1")
+    rc, out, err = pipeline(g, top, FAKE_MODE="hang", IDLE_SEC="3", WATCH_POLL="1", **kids)
     assert rc != 0 and result(top).startswith("NOWORK") and "idle" in result(top), (rc, result(top))
     assert time.time() - t0 < 60
+    assert os.path.exists(top + "/game-wt/job.child"), "the stub builder never started its native child"
     time.sleep(1)
-    assert ping_count() <= before, "the native child of the builder must die with it (taskkill //T)"
+    assert marked(kids["FAKE_MARK"]) == 0, "the native child of the builder must die with it (kill_tree)"
 
 
 def test_idle_after_commits_is_checked_not_nowork():  # review 2026-10-27: builders often hang after their last commit
     top, g = toy()
-    rc, out, err = pipeline(g, top, FAKE_MODE="commit_then_hang", IDLE_SEC="3", WATCH_POLL="1")
+    rc, out, err = pipeline(g, top, FAKE_MODE="commit_then_hang", IDLE_SEC="3", WATCH_POLL="1", **child_env())
     res = result(top)
     assert rc == 0 and res.startswith("PASS") and "idle" in res, (rc, res)
 
@@ -171,14 +172,15 @@ def task(g, top, script, name, base, **env_extra):
 def test_oc_task_default_model_deepseek_outer_timeout_and_base_check():
     top, g = toy()
     put(top + "/brief.md", BRIEF)
-    before = ping_count()
+    kids = child_env()
     t0 = time.time()
-    r = task(g, top, "oc_task.sh", "job", "origin/main", OC_TIMEOUT="2s")
+    r = task(g, top, "oc_task.sh", "job", "origin/main", OC_TIMEOUT="2s", **kids)
     log = open(top + "/game-wt/job.log", encoding="utf-8").read()
     assert "deepseek" in log and "free" in log, log
     assert "opencode exited 124" in log and time.time() - t0 < 40, (r.stdout, r.stderr, log)
+    assert os.path.exists(top + "/child.up"), "the fake opencode never started its native child"
     time.sleep(1)
-    assert ping_count() <= before, "timeout must kill native children too"
+    assert marked(kids["FAKE_MARK"]) == 0, "timeout must kill native children too"
     put(g + "/z.txt", "z")
     git(g, "add", "-A")
     git(g, "commit", "-qm", "newer")
@@ -192,7 +194,7 @@ def test_agy_task_has_an_outer_timeout():
     top, g = toy()
     put(top + "/brief.md", BRIEF)
     t0 = time.time()
-    task(g, top, "agy_task.sh", "job", "origin/main", AGY_TIMEOUT="2s")
+    task(g, top, "agy_task.sh", "job", "origin/main", AGY_TIMEOUT="2s", **child_env())
     log = open(top + "/game-wt/job.log", encoding="utf-8").read()
     assert "agy exited 124" in log and time.time() - t0 < 40, log
 

@@ -78,6 +78,9 @@ def main() -> None:
         flat = os.path.join(tmp, "flat")
         project(flat, 30.0, 300, False, 20)
         check(metrics(flat)["sheet_alpha:h:idle"][1] == "WARN", "a sheet without alpha warns")
+        with open(os.path.join(flat, "content/neon/view.json"), "w") as f:
+            json.dump({"alert_font_size": 14, "font_sizes": 3}, f)
+        check(metrics(flat)["font_min"][:2] == ["14", "WARN"], "a content JSON font size 14 warns (key ends font_size)")
         empty = os.path.join(tmp, "empty")
         os.makedirs(empty)
         res = subprocess.run([sys.executable, os.path.join(HERE, "eye_metrics.py"), "--root", empty], capture_output=True, text=True)

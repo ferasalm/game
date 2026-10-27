@@ -62,6 +62,20 @@ def main() -> None:
         with Image.open(os.path.join(quant, "t_idle.png")) as q:
             check(q.mode == "P", "colours=4 quantizes to a palette")
         check(unique_colours(os.path.join(quant, "t_idle.png")) <= 4, "colours=4 caps the colours")
+        empty = os.path.join(tmp, "empty")
+        os.makedirs(empty)
+        Image.new("RGBA", (PX, PX), (0, 0, 0, 0)).save(os.path.join(empty, "t_idle_d0_f0.png"))
+        res = subprocess.run([sys.executable, os.path.join(HERE, "sprite_sheet.py"), empty, "t", tmp + "/o"], capture_output=True, text=True)
+        check(res.returncode != 0 and "no opaque pixel" in res.stderr, "an all-transparent state fails with a reason")
+        res = subprocess.run([sys.executable, os.path.join(HERE, "sprite_sheet.py"), tmp + "/none", "t", tmp + "/o"], capture_output=True, text=True)
+        check(res.returncode != 0 and "no t_" in res.stderr, "no frames at all fails with a reason")
+        fake = os.path.join(tmp, "godot.sh")
+        with open(fake, "w", newline="\n") as f:
+            f.write("#!/bin/bash\necho baking\n")  # a Godot that bakes nothing
+        os.chmod(fake, 0o755)
+        res = subprocess.run(["bash", os.path.join(HERE, "bake_all.sh"), tmp.replace("\\", "/") + "/b", "t", "idle:2:1"],
+                             capture_output=True, text=True, env={**os.environ, "GODOT_BIN": fake.replace("\\", "/")}, stdin=subprocess.DEVNULL)
+        check(res.returncode != 0 and "FAIL t bake" in res.stderr, "bake_all exits non-zero when a bake made no frames")
 
 
 if __name__ == "__main__":

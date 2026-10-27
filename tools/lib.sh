@@ -25,10 +25,10 @@ free_mb() {  # free virtual memory in MB (Win32_OperatingSystem, KB); FREE_MB st
 
 win_pid() { cat "/proc/$1/winpid" 2> /dev/null || echo "$1"; }  # msys pid -> Windows pid (taskkill needs it)
 
-kill_tree() {  # kill a process and its children; native Windows children survive a plain kill
+kill_tree() {  # kill a process and all descendants, also ones forked mid-kill (kill_tree.py re-scans the parent chain)
   local pid="$1"
-  if command -v taskkill > /dev/null 2>&1; then taskkill //T //F //PID "$(win_pid "$pid")" > /dev/null 2>&1
-  else pkill -9 -P "$pid" 2> /dev/null; fi  # Linux: the direct children (CI), then the process itself
+  $py "$lib_dir/kill_tree.py" "$(win_pid "$pid")" ||
+    { command -v taskkill > /dev/null 2>&1 && taskkill //T //F //PID "$(win_pid "$pid")" > /dev/null 2>&1; }
   kill -9 "$pid" 2> /dev/null; return 0
 }
 
