@@ -52,7 +52,7 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "^mcp__.*__(generate-image|generate-speech|rodin_generate.*)$|runware",
+        "matcher": "^mcp__.*__(generate-image|generate-speech|rodin_generate.*|creative_(generate|edit)_.*|creative_design_voice|vidiq_(generate_.*|voiceover_generate|edit_media|motion_graphics)|run)$|runware",
         "hooks": [
           {
             "type": "command",

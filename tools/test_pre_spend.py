@@ -52,6 +52,14 @@ def test_hyper3d_reminds_and_other_tools_pass():
     assert r.returncode == 0 and r.stdout == "" and r.stderr == ""
 
 
+def test_connector_paid_tools_blocked():  # 2026-10-27: these paid MCP tools slipped past the first regex
+    for tool in ("mcp__e90b7708-6075-49b9-9f7a-3728423bc323__creative_generate_image",
+                 "mcp__5102e12a-bcea-4184-bf9f-903d6e0ac4ac__vidiq_generate_video",
+                 "mcp__b4f13e4a-fbfa-405c-b7d5-efd7ae151a47__run"):
+        assert run(tool, transcript(user("make it"))).returncode == 2, tool
+    assert run("mcp__b4f13e4a-fbfa-405c-b7d5-efd7ae151a47__list_models").returncode == 0
+
+
 if __name__ == "__main__":
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     for t in tests:

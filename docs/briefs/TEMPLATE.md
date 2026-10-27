@@ -28,13 +28,14 @@ the changed asset appears (docs/design/systems-map.md), each with how the build 
 ## Tests
 <written first by Claude, red on the base, read-only for the builder. One line per rule or bug. At least one
 player-visible test: what the player sees (the portrait inside every frame it appears in, colour count above a floor,
-a light changes the pixels around it, the win rate inside the balance band over 200 fights), not only the simulation>
+a light changes the pixels around it, the win rate inside the balance band, playback >= 24 fps, player text >= 18 px
+at 720p (docs/design/acceptance.md)), not only the simulation>
 
 ## Checklist
-- file: features/combat/logic/battle_sim.gd
-- has: features/combat/logic/battle_sim.gd :: func lands_before
-- test: features/combat/tests/test_battle_rolls.gd :: test_crit_chance_formula
-- key: localization/combat.csv :: MOVE_DESC_BREAKER
+- file: <features/x/logic/x.gd>
+- has: <features/x/logic/x.gd> :: <func name>
+- test: <features/x/tests/test_x.gd> :: test_x_rule
+- key: <localization/x.csv> :: <KEY_NAME>
 
 ## Proof
 `bash tools/check.sh` raw last 15 lines; renders (if any) to C:/dev/game/inbox/<name>.png; final message ends with

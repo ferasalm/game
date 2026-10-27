@@ -1,13 +1,13 @@
 # HANDOFF (current state only; one section per track, each edited only by its owner; max 60 lines)
-Last updated: 2026-10-27 (Efficiency: P3 part 1 merged; P3 rest + P4 next), Opus 5.5 (`claude-opus-5-5`).
+Last updated: 2026-10-27 (Efficiency: P3 rest + P4 done; art chat next), Opus 5.5 (`claude-opus-5-5`).
 
 ## Shared
-- Builders: DECISIONS 10-27 (D1): <= 2 Godot runs (agy, DeepSeek) + 1 free text run; slots.sh enforces it (P1 done): total cap, memory floor, pipeline refuses when full.
-  Balance: start gear 82.7-89% wins; arc_arm needs an upside.
-- Waiting on the owner: icon art (5 heads, 4 items; letter discs stand in); play the Abu Nabil fight.
+- Builders (D1): <= 2 Godot runs + 1 free text run (slots.sh). Briefs: docs/briefs/TEMPLATE.md (D6 defaults, May edit,
+  Ripple from docs/design/systems-map.md, a player-visible test). Balance band: start gear 82.7-89% wins; arc_arm needs an upside.
+- Waiting on the owner: OK on docs/VISION.md (P0.1); connectors to switch off and the pre_spend question
+  (docs/audits/2026-10-27-process-audit.md); icon art; play the Abu Nabil fight.
 ### Next steps (one per chat; reviews Sonnet, design and art judgment Opus)
-1. Process audit P1-P4 first (Efficiency track), then M1 (VISION); balance pass 2 dropped (D15). Model: Sonnet. Effort: medium.
-- Route B look pass and action combat in an arena: PAUSED 2026-10-24 by the 2D redesign.
+1. Game work from VISION: Efficiency next step 1 (art chat). Model: Opus. Effort: high. Balance pass 2 dropped (D15).
 
 ## Track: 2D redesign (owner: the chat "2D redesign brainstorm", 2026-10-24)
 - DECISIONS 2026-10-24: 2D isometric ink-comic look per Feras's concepts, offline-rendered sprites, on-map
@@ -50,10 +50,11 @@ Next, after the 5-hour reset, in this order (Feras 10-26):
 - Done on main: features/puzzles/ logic, grey-box scene, R5 placement (puzzle-place, 2026-10-23).
 
 ## Track: Efficiency (owner: the process-audit chats P1-P4, 2026-10-27)
-- Plan: docs/audits/2026-10-27-process-audit-plan.md (D1-D22 logged), checklist 2026-10-27-plan-checklist.md;
-  sequential before game work (D12). Neon Glitch steps 1-2 are folded into P0 and P1-P2. Each P-chat ticks its lines.
-1. Done: P1, P2a, P2b, P0 (VISION; P0.1 waits on Feras's OK), P3 part 1 (367428a: CLAUDE.md, DECISIONS/CANON, LESSONS 52,
-   WORKFLOW, rules/code.md, design index, settings + hooks, memory, 46 agents archived). Next: P3 rest + P4: P3.7 systems-map,
-   P3.8 TEMPLATE, P3.11 start cost after (get_usage Skills/Memory at chat start vs 7458/9004) + connector list, P3.12
-   audit doc; then P4 conformance pass, check.sh, push, /handoff. Model: Opus. Effort: high.
-`Continue ferasalm/game on main. Do the rest of P3 and P4 (HANDOFF Efficiency; checklist open P3 lines); then /handoff.`
+- Done 10-27: P1-P4; summary docs/audits/2026-10-27-process-audit.md; ops-review after 5 sessions measures the gains.
+  Open: P0.1 (Feras's VISION OK); skillOverrides name-only does not take effect (ops-review).
+Next (game work from VISION), in this order (the art clock first: credits end ~2026-11-17):
+1. Art chat: spend the ~50 Hyper3D credits (cast, recurring props, icons, title video; name each job's credit cost first)
+   and prove the free 3D route on one character (3d-model skill). Model: Opus. Effort: high.
+2. M1 look-and-feel spike, prison roof (VISION M1): real-time Rydan vs 2 guards, lights with normal maps, touch.
+   Model: Opus (plan + briefs), builders build. Effort: high.
+`Continue ferasalm/game on main. Read HANDOFF.md (Efficiency). Do its next step 1; /handoff.`

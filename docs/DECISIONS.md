@@ -30,7 +30,7 @@ UI): docs/CANON.md, read before any content work. D1-D22 = the process audit pla
 - 2026-10-23 | Briefs: TEMPLATE, gate-tested Checklist; Haiku diff pass before Opus (design, renders); tools/slots.sh counts slots | Feras
 - 2026-10-27 | ~/.claude tidy: unused agents and skills moved to ~/.claude/archive (MOVED.txt), never deleted (D7) | Feras
 - 2026-10-25 | Story map: docs/story/rydan.twee <-> Twine via tools/twine_sync.py; Twine library in docs/story/twine (git-ignored) | Feras/Claude
-- 2026-10-21 | Game skills: .agents/skills/ copied to .claude/skills/ (listed by name only, skillOverrides) | Feras
+- 2026-10-21 | Game skills: .agents/skills/ copied to .claude/skills/ (skillOverrides name-only set, NOT taking effect 10-27: unverified) | Feras
 ### Engine and code
 - 2026-10-27 | Godot 4.7.2 pinned; typed GDScript; Windows first, exes git-ignored; Mobile renderer + touch controls + Android CI export from M1 (D17) | Feras/Claude
 - 2026-10-19 | Min target: Dell Latitude 5520 (16 GB) at 60 FPS, and Feras's phone (D17) | Claude

@@ -28,16 +28,17 @@ Added beyond the top 10: systems-map + Ripple in every brief (D21), review-* pan
 | memory files at start | 9.0k tokens | <= 7.1k | after = this side session mid-chat with rules/code.md loaded: an upper bound |
 | skills listing | 7.5k | 6.8k | 4 art skills are path-scoped now |
 | system tools / MCP / prompt | 35.0k / 20.3k / 11.0k | 35.7k / 20.3k / 11.0k | not in the repo's hands |
-| start cost besides Messages | 82.8k | 80.8k (-2k) | USAGE's P3 row says 88.2k; its own categories sum to 82.8k |
+| start cost besides Messages | 82.8k | 80.8k (-2k) | sum of the categories above (USAGE's P3 row misadds them as 88.2k) |
 The plan's estimate (89k -> ~60k) is NOT met: the cut needs the connector list below. Builder PASS rate, issues per
-build and fix loops get their first real numbers at ops-review (every 5 sessions) against 39/56 PASS and 25 notes.
+build and fix loops get their first real numbers at ops-review (every 5 sessions), against the baseline: 39 of 56
+builder runs passed the gate, and Feras's first overnight build drew 25 playtest notes (docs/feras-notes.md).
 
 ## Open findings
 - skillOverrides "name-only" does not take effect: the 8 persona skills, handoff and emergency-efficiency still list
   full descriptions though settings key both name forms. DECISIONS 10-21 "listed by name only" is unverified; ops-review
   checks the setting's real key format before trusting it.
-- Paid MCP tools outside tools/pre_spend.py's regex: ElevenLabs creative_generate_*, vidIQ vidiq_generate_*, Runware
-  run. Recommended: extend the regex with one test each (needs Feras's yes).
+- Closed in P4: paid MCP tools slipped past tools/pre_spend.py (ElevenLabs creative_generate_*, vidIQ vidiq_generate_*,
+  and the Runware connector, whose tool names lack "runware"); the hook now blocks them (test_pre_spend.py).
 
 ## Connectors for Feras to switch off (claude.ai connectors are account-wide; Claude never toggles them)
 Each connector's tool names load into every chat (~40 tokens a tool; 517 tools = 20.3k).

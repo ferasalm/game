@@ -681,6 +681,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_pre_spend.py`: Self-test for pre_spend.py: a paid tool is blocked without Feras's OK in a user message; Hyper3D gets a reminder.
 - `tools/test_session_start.py`: Self-test for .claude/hooks/session-start.sh (reports the session's own worktree) and the .gitignore .env rule.
 - `tools/test_slots.py`: Self-test for tools/slots.sh: python tools/test_slots.py (temp dirs, plain asserts, exit 1 on failure).
+- `tools/test_template.py`: TEMPLATE.md stays readable by the gate (P3.8, 2026-10-27): its headings, an empty forbidden list, parseable checklist.
 - `tools/test_twine_sync.py`: Self-test for tools/twine_sync.py: python tools/test_twine_sync.py (temp dirs, plain asserts, exit 1 on failure).
 - `tools/test_wt_clean.py`: Self-test for tools/wt_clean.sh: merged and dead builder worktrees go, live and unmerged ones stay.
 - `tools/twine_format.py`: Twee 3 <-> Twine 2 library HTML conversion for tools/twine_sync.py (parse, write, layout, to/from HTML).
