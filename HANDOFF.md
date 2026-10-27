@@ -16,7 +16,7 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
 | 1 | Efficiency fixes 1-6 as hooks and checks: docs/briefs/efficiency-hooks.md | Ops | builder + chat (review) | cf; Opus high | next, when Feras says go: chat "Process: turn the broken rules into hooks and checks" | Feras's go |
-| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md) | Gameplay | chat (plan) | Opus high | queued | 1 |
+| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | queued | 1 |
 | 4 | M1 build from that brief + the Android export (D17), players-eye-gate before Feras | Gameplay | builder | agy | queued | 3 |
 | 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | QA | Feras | - | queued | 4 |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | queued: runs while agy builds row 4 | 3; free memory >= 3 GB |

@@ -39,9 +39,9 @@ Next goal: a free 20-30 min demo, PC (Steam) first, Android kept alive. Check ev
 - Builders write (D1: <= 2 Godot runs on agy + DeepSeek, 1 free text run); Claude plans, briefs (TEMPLATE),
   reviews and merges. Claude's own reading goes to Haiku at effort high (calibrated), Sonnet only when Haiku can't.
 - Edit, don't rewrite; no recaps; a few lines to the owner; side sessions report only at milestones.
-- Skills by task: builder runs -> builders; images/video -> flow-media; 3D models -> 3d-model; sprites -> sprite-bake;
-  before Feras plays -> players-eye-gate; market, price, store -> market-player; every 5 sessions -> ops-review;
-  tight window -> emergency-efficiency; end -> handoff; reviews -> the review-* agents.
+- Departments (docs/WORKFLOW.md, Start here + table): multi-step department work -> the father opens an Opus child
+  chat with a child brief; the child loads that department's skills (builders, flow-media, 3d-model, sprite-bake,
+  players-eye-gate, market-player, ops-review), runs builders and review-* agents, merges, /handoff, reports <= 15 lines.
 - Checks: `bash tools/check.sh` (read the FAIL lines); one file: `tools/run_godot.sh -s res://tests/runner.gd -- <name>`.
 - Code rules: .claude/rules/code.md (loads when code is touched). Every rule and fixed bug gets a test; a check
   counts only when its output was read. Python is `python` here (not python3).
