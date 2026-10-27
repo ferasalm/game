@@ -14,7 +14,6 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 | # | Task (brief or doc) | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|
 | 1 | Efficiency fixes 1-6 as hooks and checks: docs/briefs/efficiency-hooks.md | builder + chat (review) | cf; Opus high | next, when Feras says go: chat "Process: turn the broken rules into hooks and checks" | Feras's go |
-| 2 | Rydan free recolour + rebake (Blender), then Feras OKs the render | chat (MCP) | Opus high | running: chat "Recolour Rydan model" | - |
 | 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md) | chat (plan) | Opus high | queued | 1 |
 | 4 | M1 build from that brief + the Android export (D17), players-eye-gate before Feras | builder | agy | queued | 3 |
 | 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | Feras | - | queued | 4 |
@@ -22,16 +21,15 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 | 7 | Art batch: Bilqis re-model (v2), guard, props (booth, floodlight, qamariya window, umbrella), icons; title = Flow Omni | chat (MCP) | Opus high | queued; Rodin credits end ~11-17 | 6 |
 | 8 | Free image-to-3D proof (rydan_style_v2 to a TRELLIS HF Space; never Blender generate_3d) -> 3d-model skill | chat (MCP) | Opus medium | queued | 7 |
 | 9 | Asset preparation pipeline (jpg -> png, sizes, import settings, manifest check) | builder | cf | parked | 5 |
+| 10 | Obscura proof: builders fetch web pages with the Obscura headless browser instead of Chrome (never --stealth); a tools/ wrapper + test | builder | cf | parked | 5 |
 Key: builders are free code bots (agy = Gemini Flash, cf = Cloudflare DeepSeek, oc = free text models); chat (MCP) = a
 Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-time fight, on the prison roof.
 
 ## Waiting on Feras
 | What | Since | Where |
 |---|---|---|
-| OK the recoloured Rydan render | 10-27 | row 2 |
 | Play M1 on PC and phone, send notes | Fri 10-30 | row 5 |
 | OK on the vision | 10-27 | docs/VISION.md |
-| Switch off connectors (vidIQ, Runware, OpenRouter connector still on 10-27 evening) | 10-27 | docs/audits/2026-10-27-process-audit.md |
 | The pre_spend question | 10-27 | docs/audits/2026-10-27-process-audit.md |
 | Bilqis's portraits are now the Neon ones (overturn?) | 10-27 | archive-cleanup, decisions-log |
 | More concept pictures + an empty plate per scene (no characters, HUD or rain) | 10-24 | inbox/ |
@@ -40,7 +38,7 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 ## This week (Claude Pro weekly limit: 59% used Tue 10-27, resets Sat 10-31 13:00 UTC: spend ~10% a day)
 | Day | Plan |
 |---|---|
-| Tue 10-27 | Row 2 finishes. No new Opus chat. |
+| Tue 10-27 | Row 2 done (render OK, merged 10-28). No new Opus chat. |
 | Wed 10-28 | Row 1 once Feras says go (cf builds, one Opus review chat). Nothing else. |
 | Thu 10-29 | Row 3 brief; row 4 agy builds overnight while row 6 bakes Roya. |
 | Fri 10-30 | Play day 1 (row 5) if row 4 passed the eye gate by noon; else it moves to Sat or Sun. |

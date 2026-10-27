@@ -597,11 +597,14 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/art/painterly_recipes.json`: content: ? x0
 - `tools/art/pixelize.py`: Turn a Gemini/Flow PNG into a palette-locked pixel sprite entry for content/art/sprites.json.
 - `tools/art/portrait.py`: Turn a Gemini portrait (flat background colour) into a game portrait.
+- `tools/art/recolour.py`: Free recolour of a Rodin model texture from an approved front picture (route: .claude/skills/3d-model/SKILL.md).
+- `tools/art/recolour_bake.py`: Blender side of the free recolour (tools/art/recolour.py does the colour maths; route: 3d-model skill).
 - `tools/art/sprite_png.py`: Edit a sprite in a pixel editor (Pixelorama): export it to PNG, paint, import it back, losslessly.
 - `tools/art/sprite_sheet.py`: Packs tools/bake_sprites.tscn frames into one sheet per state (Neon Glitch iso sprites, docs/design/first-playable.md).
 - `tools/art/test_painterly_bake.py`: Self-test for painterly_bake.py and figure_cut.py on synthetic pictures in a temp dir; exit 1 on any failure.
 - `tools/art/test_pixelize.py`: Self-test for pixelize.py: python tools/art/test_pixelize.py (plain asserts, exits non-zero on failure).
 - `tools/art/test_portrait.py`: Self-test for portrait.py on a synthetic picture in a temp dir; exit 1 on any failure.
+- `tools/art/test_recolour.py`: Tests tools/art/recolour.py with tiny synthetic texels and a picture. Run: python tools/art/test_recolour.py
 - `tools/art/test_sprite_png.py`: Self-test for sprite_png.py: python tools/art/test_sprite_png.py (plain asserts, exits non-zero on failure).
 - `tools/art/test_sprite_sheet.py`: Tests tools/art/sprite_sheet.py with tiny generated frames. Run: python tools/art/test_sprite_sheet.py
 - `tools/audio/arc_synth.py`: Synthesizes the Arc Discharge sound (vfx_arc_all): 3 seeded variations as 44.1 kHz mono 16-bit WAV.

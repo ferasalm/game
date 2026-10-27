@@ -4,6 +4,29 @@ Why the rules in CLAUDE.md exist. Not loaded at session start. Built 2026-10-19 
 orchestrator skill and doc check) and feras-career (its efficiency playbook), read critically, plus this repo's own
 methods. Drop a rule when its why stops being true.
 
+## Start here: one unit of work (walkthrough, Feras 2026-10-28)
+Feras -> ONE Opus chat (the mastermind: plans, briefs, reviews, merges) -> lanes -> gates -> Feras plays -> his notes
+become queue rows. Opus writes; cheap models do (Feras's standing rule, D1; the queue lane check enforces it).
+1. **Look** (free): `bash tools/status.sh`: builders, branches not on main, worktrees, the queue, Feras's list.
+2. **Pick**: the top HANDOFF queue row; open one chat with the paste line; never two Opus chats at once.
+3. **Route** each piece by lane:
+
+| Work | Lane | Who |
+|---|---|---|
+| Godot code + tests | builder | agy (Gemini 3.8 Flash high) or Cloudflare DeepSeek V4.1 Flash; <= 2 Godot runs |
+| Text: docs, research, summaries, review lenses | builder | opencode (DeepSeek V4.1 Flash free) or OpenRouter :free; 1 run, 50 requests a day |
+| Big or many-file reads | reader | a Haiku high agent with an exact output template |
+| Taste, MCP (Blender, Flow, Rodin), the final review | chat | Opus; Sonnet only with an Opus-scoped prompt |
+
+4. **Brief** from docs/briefs/TEMPLATE.md (May edit, Ripple, pre-mortem, a player-visible test); launch
+   build_pipeline.sh in the background; the chat waits idle (no tokens) or hands off.
+5. **Review**: PASS runs only; review-code on the diff; anything visual: players-eye-gate, review-player, review-feras.
+6. **Close**: /handoff at ~100k work tokens (queue rows, decisions-log, LESSONS, USAGE, merge, archive merged side chats).
+7. **Evolve**: each chat upgrades one tool, check, skill or doc; every 5 chats ops-review reads /session-report
+   (plugin) and review-cost; a lesson becomes a check or is archived after 30 days (D9). The claude-md-management
+   plugin runs only inside /handoff and within the doc_check caps.
+Departments are skills, not chats: name one ("art department: bake Roya") and the chat loads its skill and reviewer.
+
 ## The budget
 Feras is on Claude Pro ($20/month): a 5-hour usage window plus a weekly cap, shared with his other projects. Money is
 fixed; throughput is the limit. Every turn re-sends the whole chat (cheap when cached, still counted), so the costs

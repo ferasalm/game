@@ -143,3 +143,8 @@ it. docs/DECISIONS.md is the loaded summary of the rules in force; docs/decision
 - 2026-10-27 | inbox/ reorganised by Feras: old and unwanted material moved to inbox/retired/ (never a reference or source); the story bible docx renamed inbox/Neon_Glitch_Story_Bible_Final.docx | Feras: "I moved everything old and things that I don't want to be using into the "retired" folder"
 - 2026-10-27 | Queue row 1 (efficiency hooks) starts only when Feras says so | Feras: "When I say so."
 - 2026-10-27 | Cheap builders (agy, DeepSeek) may do simple tasks as the efficiency plan defines them | Feras: "you may use cheap subagents (agy or deepseek to do simple tasks as defined in the efficiency plan)"
+- 2026-10-28 | Rydan's free recolour render is OK'd; row 2 merged | Feras: "I am okaying the Rydan render now"
+- 2026-10-28 | Play day 1 for M1 is Friday 10-30, for now | Feras: "For Friday as play day 1 for M1, I agree for now."
+- 2026-10-28 | Connectors: vidIQ disconnected; the OpenRouter and Runware connectors stay (free OpenRouter models; Runware only when he allows) | Feras: "We might still need these three connectors to use free models from openrouter, and models from runware when I allow it. I have disconnected vidIQ."
+- 2026-10-28 | Plugins installed: claude-md-management, session-report | Feras: "I have installed two new plugins"
+- 2026-10-28 | Obscura (Rust headless browser) installed for Claude's agents and builders; Dia browser for Feras's own use | Feras: "I have already installed more efficient web-browser (Obscura ...) along with rust ... I also installed Dia web-browser for my personal use instead of chrome"
