@@ -4,14 +4,13 @@
 # the run's worktree and branch. Usage (cwd = the session checkout): tools/merge_run.sh <task> [oc|gemini] [--keep]
 set -euo pipefail
 name="$1"; prefix="${2:-gemini}"; keep="${3:-}"
-here="$(cd "$(dirname "$0")" && pwd)"; root="$(git rev-parse --show-toplevel)"
-main="$(git -C "$root" worktree list | head -1 | cut -d' ' -f1)"
-wt="$(dirname "$main")/game-wt/$name"; res="$wt.result"; branch="$prefix/$name"
+. "$(dirname "$0")/lib.sh"; here="$lib_dir"; root="$(git rev-parse --show-toplevel)"
+main="$(main_root)"
+wt="$(wt_dir)/$name"; res="$wt.result"; branch="$prefix/$name"
 [ -f "$res" ] || { echo "no $res" >&2; exit 1; }
 word="$(head -1 "$res" | cut -d' ' -f1)"
 [ "$word" = PASS ] || { echo "refusing: $res says $word" >&2; exit 1; }
 checked="$(sed -n 's/^checked //p' "$res")"
-py=python; command -v python > /dev/null 2>&1 || py=python3
 plan="$($py "$here/build_gate.py" can-skip --repo "$root" --checked "$checked" --tip "$branch")"
 if [ "$plan" = SKIP ]; then
   git -C "$root" merge -q --ff-only "$branch"; echo "fast-forward onto checked $checked: check reused"

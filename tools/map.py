@@ -45,7 +45,7 @@ def purpose(path: pathlib.Path) -> str:
 
 
 def build() -> tuple[str, list[str]]:
-    listed = subprocess.run(["git", "ls-files", "--cached", "--others", "--exclude-standard"],
+    listed = subprocess.run(["git", "ls-files", "--cached"],
                             cwd=ROOT, capture_output=True, text=True, check=True).stdout.split()
     # set(): a file in a merge conflict is listed once per stage
     files = [f for f in set(listed) if not SKIP.search(f) and (ROOT / f).is_file()]

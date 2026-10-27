@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Keeps the always-loaded notes small and well-formed (docs/EFFICIENCY.md); exit 1 on any failure.
 
-Caps: CLAUDE.md 80 lines, HANDOFF.md 60, docs/DECISIONS.md 70, docs/LESSONS.md 100, and 27 KB for all four
+Warns (exit 0) at 75% of a cap. Caps: CLAUDE.md 80 lines, HANDOFF.md 60, docs/DECISIONS.md 70, docs/LESSONS.md 100, and 27 KB for all four
 (about 6k tokens loaded at every session start). Every next step names a model and an effort; every decision
 is dated; a struck decision says what superseded it; docs/MAP.md is current (tools/map.py --check).
 """
@@ -11,6 +11,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 CAPS = {"CLAUDE.md": 80, "HANDOFF.md": 60, "docs/DECISIONS.md": 70, "docs/LESSONS.md": 100}
 LOADED_BYTES = 27_000
 fails = []
+warns = []
 
 
 def check(ok: bool, what: str) -> None:
@@ -25,6 +26,8 @@ for name, cap in CAPS.items():
     texts[name] = path.read_text(encoding="utf-8") if path.exists() else ""
     n = len(texts[name].splitlines())
     check(n <= cap, f"{name} has {n} lines (max {cap}): curate it")
+    if cap * 3 // 4 <= n <= cap:
+        warns.append(f"WARN {name} is at {n}/{cap} lines (75%+): curate before it hits the cap")
 size = sum(len(t.encode()) for t in texts.values())
 check(size <= LOADED_BYTES, f"always-loaded notes are {size} bytes (max {LOADED_BYTES})")
 for name in ("HANDOFF.md", "docs/DECISIONS.md", "docs/LESSONS.md"):
@@ -44,5 +47,6 @@ for line in (l for l in log.splitlines() if l.startswith("- ")):
         check("supersed" in line.lower(), f"struck decision says what superseded it: {line[:60]}")
 
 check(subprocess.run([sys.executable, str(ROOT / "tools/map.py"), "--check"]).returncode == 0, "docs/MAP.md current")
+print("\n".join(warns)) if warns else None
 print("\n".join(f"FAIL {f}" for f in fails) if fails else f"docs: ok ({size} bytes loaded at start)")
 sys.exit(1 if fails else 0)

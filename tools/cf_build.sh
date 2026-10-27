@@ -9,9 +9,10 @@ OUTPUT_RATE=1.20
 # key from `XDG_DATA_HOME=~/.local/share/oc-cli opencode auth login` -> Cloudflare Workers AI. Spend: Cloudflare
 # dashboard -> AI -> Workers AI (10,000 free neurons a day, then $0.011 per 1,000).
 set -euo pipefail
-here="$(cd "$(dirname "$0")" && pwd)"
+. "$(dirname "$0")/lib.sh"
+here="$lib_dir"
 task="$1"; brief="$2"; base="$3"
-model="${4:-cloudflare-workers-ai/@cf/deepseek-ai/deepseek-v4.1-flash-1017}"  # 4th arg: another Workers AI model (e.g. kimi-k2.7-code)
+model="${4:-$CF_MODEL}"  # 4th arg: another Workers AI model (e.g. kimi-k2.7-code)
 if [ -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]; then  # a setx value is not in shells started before it was set
   CLOUDFLARE_ACCOUNT_ID="$(powershell -NoProfile -Command \
     "[Environment]::GetEnvironmentVariable('CLOUDFLARE_ACCOUNT_ID','User')" | tr -d '\r')"
@@ -22,17 +23,7 @@ export CLOUDFLARE_ACCOUNT_ID
 rc=0
 bash "$here/build_pipeline.sh" cf "$task" "$brief" "$base" "$model" || rc=$?
 
-root="$(git rev-parse --show-toplevel 2>/dev/null || dirname "$here")"
-if [ -n "${GAME_WT_DIR:-}" ]; then
-  dir="$GAME_WT_DIR"
-elif [ -d "$(dirname "$root")/game-wt" ]; then
-  dir="$(dirname "$root")/game-wt"
-elif [ -d "$root/.." ] && [ "$(basename "$(dirname "$root")")" = "game-wt" ]; then
-  dir="$(dirname "$root")"
-else
-  dir="$(dirname "$root")/game-wt"
-fi
-
+dir="$(wt_dir)"
 log="$dir/$task.log"
 spend_csv="$dir/cf_spend.csv"
 bash "$here/slots.sh" append-spend "$log" "$task" "$INPUT_RATE" "$OUTPUT_RATE" "$spend_csv"

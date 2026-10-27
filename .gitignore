@@ -19,3 +19,6 @@ __pycache__/
 # Twine sync state (per machine)
 docs/story/.*.sync.json
 docs/story/twine/
+
+# Secrets (API keys, tokens): never committed
+.env

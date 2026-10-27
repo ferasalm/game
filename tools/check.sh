@@ -10,13 +10,24 @@ step() {
   if "$@" > ".check/$name.log" 2>&1; then echo "ok   $name"
   else echo "FAIL $name (.check/$name.log)"; grep -vE '^\s*$|\[ *[0-9]+% \]|DONE' ".check/$name.log" | tail -n 12 | sed 's/^/     /'; fails=$((fails + 1)); fi
 }
-py=python3; command -v python3 > /dev/null 2>&1 && python3 -c "" 2> /dev/null || py=python
+. tools/lib.sh  # $py
+tool_tests() {  # every tools/**/test_*.py (a new test file is picked up by itself), then the agent-card check; lists ALL failures
+  local t bad=() log
+  for t in $(find tools -name 'test_*.py' | sort); do
+    log=".check/tool_$(echo "$t" | tr '/' '_').log"
+    $py "$t" > "$log" 2>&1 || { echo "--- $t"; tail -n 8 "$log"; bad+=("$t"); }
+  done
+  $py tools/oc_agents.py --check || bad+=(oc_agents)
+  for t in "${bad[@]}"; do echo "FAIL tool test: $t"; done
+  [ ${#bad[@]} -eq 0 ]
+}
 step docs $py tools/doc_check.py
 step lint $py tools/lint_gd.py
 step import tools/run_godot.sh --import
-step tool_tests sh -c "$py tools/art/test_pixelize.py && $py tools/art/test_sprite_png.py && $py tools/art/test_portrait.py && $py tools/art/test_painterly_bake.py && $py tools/test_build_gate.py && $py tools/test_slots.py && $py tools/test_check_slot.py && $py tools/test_twine_sync.py && $py tools/oc_agents.py --check && $py tools/cf_mcp/test_server.py"
-. tools/check_slot.sh; acquire_check_slot; trap release_check_slot EXIT
+step tool_tests tool_tests
+. tools/check_slot.sh; acquire_check_slot || { echo "FAIL no test slot (see .check)"; exit 1; }; trap release_check_slot EXIT
 step tests env GODOT_TIMEOUT=600 tools/run_godot.sh -s res://tests/runner.gd
+step boot env GODOT_TIMEOUT=180 tools/run_godot.sh --quit-after 120  # the main scene starts without errors
 release_check_slot
 grep -h '^tests:' .check/tests.log 2>/dev/null | sed 's/^/     /'
 if [ $fails -eq 0 ]; then echo "all checks passed"; else echo "$fails check(s) FAILED"; exit 1; fi

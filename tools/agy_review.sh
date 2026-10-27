@@ -4,8 +4,9 @@
 # Usage: tools/agy_review.sh <task-name> [base-ref]   (base defaults to the merge base with the current branch)
 # BRANCH_PREFIX=oc reviews an opencode run instead (tools/oc_review.sh).
 set -euo pipefail
+. "$(dirname "$0")/lib.sh"
 name="$1"; root="$(git rev-parse --show-toplevel)"
-wt="$(dirname "$root")/game-wt/$name"; log="$(dirname "$root")/game-wt/$name.log"; branch="${BRANCH_PREFIX:-gemini}/$name"
+wt="$(wt_dir)/$name"; log="$(wt_dir)/$name.log"; branch="${BRANCH_PREFIX:-gemini}/$name"
 base="${2:-$(git -C "$root" merge-base HEAD "$branch")}"
 echo "== report"; grep -E "COMPLETION REPORT|Unresolved|Assumptions|tests: |all checks|FAIL" "$log" | tail -8 || true
 echo "== commits"; git -C "$root" log --oneline "$base..$branch"
