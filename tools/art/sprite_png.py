@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Edit a sprite in a pixel editor (Pixelorama): export it to PNG, paint, import it back, losslessly.
 
-Usage: python tools/art/sprite_png.py export --id zayd --png zayd.png [--scale 1]
-       python tools/art/sprite_png.py import --id zayd --png zayd.png [--snap] [--source TEXT]
+Usage: python tools/art/sprite_png.py export --id rydan --png rydan.png [--scale 1]
+       python tools/art/sprite_png.py import --id rydan --png rydan.png [--snap] [--source TEXT]
        python tools/art/sprite_png.py palette --out main.gpl   (load it in Pixelorama: paint only these colours)
 Import never resizes. Transparent pixels become '.'; any colour not in the palette is an error that lists
 where it is, unless --snap moves it to the nearest palette colour. Other fields of the entry are kept.

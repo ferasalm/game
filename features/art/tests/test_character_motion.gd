@@ -8,7 +8,7 @@ func _visual() -> CharacterVisual:
 	var visual := CharacterVisual.new()
 	visual.source_kind = &"pixel"
 	tree.root.add_child(visual)
-	visual.set_sprite(&"zayd")
+	visual.set_sprite(&"rydan")
 	return visual
 
 

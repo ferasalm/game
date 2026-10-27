@@ -4,7 +4,7 @@ extends TestCase
 
 const VFX_IDS: Array[StringName] = [&"slash", &"heavy_slash", &"stab", &"piston", &"beam", &"bolt", &"arc_all",
 	&"burst", &"heal", &"shield", &"overclock", &"net", &"drone_shot", &"baton"]
-const GAME_SOUNDS: Array[StringName] = [&"footstep_zayd", &"footstep_follower", &"menu_move", &"menu_confirm",
+const GAME_SOUNDS: Array[StringName] = [&"footstep_rydan", &"footstep_follower", &"menu_move", &"menu_confirm",
 	&"menu_cancel", &"menu_open", &"dialogue_blip", &"dialogue_advance", &"hit_light", &"hit_heavy", &"interrupt",
 	&"knock_out", &"status_apply", &"victory", &"defeat", &"item_obtained"]
 
@@ -104,7 +104,7 @@ func test_director_builds_buses_and_plays_headless() -> void:
 	director.call("play_hit", action, 99)
 	director.call("play_hit", null, 1)
 	director.call("play_item", 3)
-	director.call("play_sfx", &"footstep_zayd")
+	director.call("play_sfx", &"footstep_rydan")
 	for shown: int in 6:
 		director.call("text_blip", shown)
 	_retire(director)

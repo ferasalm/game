@@ -23,18 +23,18 @@ func test_screens_open_gives_equipment_menu() -> void:
 
 func test_equipping_writes_game_state_equipment() -> void:
 	var menu: EquipmentMenu = _open_menu()
-	menu.show_hero(&"zayd")
+	menu.show_hero(&"rydan")
 	menu._on_slot_activated(&"hilt")
 	var swift: EquipDef = ContentDB.get_def("hilt", &"swift_hilt") as EquipDef
 	menu._on_item_pressed(swift)
-	check_eq(GameState.equipment[&"zayd.hilt"], &"swift_hilt", "A on an item writes GameState.equipment")
+	check_eq(GameState.equipment[&"rydan.hilt"], &"swift_hilt", "A on an item writes GameState.equipment")
 	Screens.clear()
 	GameState.reset()
 
 
 func test_unowned_items_never_list() -> void:
 	var menu: EquipmentMenu = _open_menu()
-	menu.show_hero(&"zayd")
+	menu.show_hero(&"rydan")
 	menu._on_slot_activated(&"hilt")
 	for row: ListRow in menu.owned_list.rows():
 		check(row.name_text() != Ui.text("HILT_ANVIL_HILT"), "unowned anvil_hilt never lists")
@@ -44,11 +44,11 @@ func test_unowned_items_never_list() -> void:
 
 func test_qe_cycles_heroes() -> void:
 	var menu: EquipmentMenu = _open_menu()
-	menu.show_hero(&"zayd")
+	menu.show_hero(&"rydan")
 	menu.cycle_hero(1)
 	check_eq(menu.hero, &"bilqis", "E cycles to Bilqis")
 	menu.cycle_hero(1)
-	check_eq(menu.hero, &"zayd", "E cycles back to Zayd")
+	check_eq(menu.hero, &"rydan", "E cycles back to Rydan")
 	menu.cycle_hero(-1)
 	check_eq(menu.hero, &"bilqis", "Q cycles back to Bilqis")
 	Screens.clear()
@@ -84,7 +84,7 @@ func test_hologram_is_a_neon_sprite() -> void:
 		check_eq(atlas.atlas, load("res://assets/sprites/neon/rydan_idle.png"), "the atlas is rydan's idle sheet")
 		check_eq(atlas.region.position, Vector2(0.0, 6.0 * 194.0), "row 6 (toward camera), frame 0")
 		check_eq(atlas.region.size, Vector2(108.0, 194.0), "one idle frame")
-	stage.set_hero(&"zayd")
+	stage.set_hero(&"rydan")
 	var portrait: Texture2D = stage.sprite_texture()
 	check(portrait != null, "a hero without a Neon set shows a portrait")
 	check(not (portrait is AtlasTexture), "the portrait is not a sprite sheet frame")
@@ -141,7 +141,7 @@ func check_approx(val: float, target: float, tolerance: float, msg: String) -> v
 
 func test_hovering_slot_fills_list_without_confirm() -> void:
 	var menu: EquipmentMenu = _open_menu()
-	menu.show_hero(&"zayd")
+	menu.show_hero(&"rydan")
 	check_eq(menu.active_slot, &"blade", "starts on blade")
 	var hilt_box: SlotBox = menu.boxes_manager.boxes[&"hilt"]
 	hilt_box.grab_focus()
@@ -156,7 +156,7 @@ func test_hovering_slot_fills_list_without_confirm() -> void:
 
 func test_gemstones_slot_can_take_focus_and_lists_gemstones() -> void:
 	var menu: EquipmentMenu = _open_menu()
-	menu.show_hero(&"zayd")
+	menu.show_hero(&"rydan")
 	var gem_box: SlotBox = menu.boxes_manager.boxes[&"gemstones"]
 	check(gem_box.focus_mode != Control.FOCUS_NONE, "gemstones box can take focus")
 	gem_box.grab_focus()
@@ -175,7 +175,7 @@ func test_gemstones_slot_can_take_focus_and_lists_gemstones() -> void:
 
 func test_slot_hover_does_not_steal_focus_in_list_mode() -> void:
 	var menu: EquipmentMenu = _open_menu()
-	menu.show_hero(&"zayd")
+	menu.show_hero(&"rydan")
 	menu._on_slot_activated(&"blade")
 	check_eq(int(menu.mode), int(EquipmentMenu.Mode.LIST), "in list mode")
 	var rows: Array[ListRow] = menu.owned_list.rows()

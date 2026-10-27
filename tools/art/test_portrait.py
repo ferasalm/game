@@ -14,7 +14,7 @@ def synthetic(path: pathlib.Path) -> None:
 
 
 def args_for(src: pathlib.Path, assets: pathlib.Path, **over) -> argparse.Namespace:
-    base = dict(input=str(src), speaker="zayd", expression="happy", licence="test licence", prompt_id="p1",
+    base = dict(input=str(src), speaker="rydan", expression="happy", licence="test licence", prompt_id="p1",
                 source="gemini", tolerance=40, height=120, assets=str(assets))
     base.update(over)
     return argparse.Namespace(**base)
@@ -27,7 +27,7 @@ def main() -> int:
         synthetic(src)
         out = portrait.run(args_for(src, assets))
         img = Image.open(out)
-        assert out.name == "zayd_happy.png", out
+        assert out.name == "rydan_happy.png", out
         assert img.mode == "RGBA" and img.height == 120, (img.mode, img.size)
         assert img.getpixel((0, 0))[3] == 0, "background corner must be transparent"
         assert img.getpixel((img.width // 2, img.height // 2))[3] == 255, "figure centre must be opaque"
@@ -42,7 +42,7 @@ def main() -> int:
         manifest = json.loads((assets / "manifest.json").read_text())["assets"]
         assert len(manifest) == 1, manifest
         assert manifest[0]["licence"] == "second licence" and manifest[0]["source"] == "gemini", manifest
-        assert manifest[0]["path"] == "portraits/zayd_happy.png" and manifest[0]["prompt"] == "p1", manifest
+        assert manifest[0]["path"] == "portraits/rydan_happy.png" and manifest[0]["prompt"] == "p1", manifest
         try:
             portrait.run(args_for(src, assets, expression="sleepy"))
             raise AssertionError("bad expression must fail")

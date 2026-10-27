@@ -1,17 +1,19 @@
 class_name SaveCodec
 extends RefCounted
 ## Pure save format: migrate() lifts any old save dictionary to the current version one step at a time
-## (_v1_to_v2, _v2_to_v3, _v3_to_v4), and sanitize() drops content ids the game no longer knows.
+## (_v1_to_v2 ... _v6_to_v7), and sanitize() drops content ids the game no longer knows.
 ## No file or node access: GameState reads and writes the result, SaveService stores it.
 
-const VERSION: int = 6
+const VERSION: int = 7
 ## Oldest save shape still accepted (version 1 had no equipment, version 2 no inventory).
 const OLDEST: int = 1
-const START_HERO: StringName = &"zayd"
+const START_HERO: StringName = &"rydan"
+## The hero's code id before version 7 (renamed to match the story bible, 2026-10-27); old steps write it as they did.
+const LEGACY_HERO: StringName = &"zayd"
 const START_RING: StringName = &"silver_band"
 
 
-## Returns {"ok": true, "data": <version-6 dictionary>} or {"ok": false, "error": "<reason>"}.
+## Returns {"ok": true, "data": <version-7 dictionary>} or {"ok": false, "error": "<reason>"}.
 static func migrate(raw: Dictionary) -> Dictionary:
 	var version: int = int(raw.get("version", 0))
 	if version < OLDEST or version > VERSION:
@@ -31,6 +33,9 @@ static func migrate(raw: Dictionary) -> Dictionary:
 		version = 5
 	if version == 5:
 		data = _v5_to_v6(data)
+		version = 6
+	if version == 6:
+		data = _v6_to_v7(data)
 	data["version"] = VERSION
 	return {"ok": true, "data": data}
 
@@ -46,7 +51,7 @@ static func _v2_to_v3(data: Dictionary) -> Dictionary:
 	var owned: Array = (data.get("inventory", []) as Array).duplicate()
 	for slot: Variant in (data.get("equipment", {}) as Dictionary):
 		var worn: String = str(data["equipment"][slot])
-		equipment["%s.%s" % [START_HERO, slot]] = worn
+		equipment["%s.%s" % [LEGACY_HERO, slot]] = worn
 		if not owned.has(worn):
 			owned.append(worn)
 	data["equipment"] = equipment
@@ -76,7 +81,7 @@ static func _v4_to_v5(data: Dictionary) -> Dictionary:
 	data["xp"] = xp
 	var owned: Array = (data.get("inventory", []) as Array).duplicate()
 	var equipment: Dictionary = (data.get("equipment", {}) as Dictionary).duplicate()
-	equipment["zayd.armor"] = "courier_jacket"
+	equipment["%s.armor" % LEGACY_HERO] = "courier_jacket"
 	equipment["bilqis.armor"] = "rig_shawl"
 	for arm: String in ["courier_jacket", "rig_shawl", "aqiq_red"]:
 		if not owned.has(arm):
@@ -103,6 +108,27 @@ static func _v5_to_v6(data: Dictionary) -> Dictionary:
 			owned.append(item)
 	data["equipment"] = equipment
 	data["inventory"] = owned
+	return data
+
+
+## Version 7 renames the hero's code id zayd -> rydan wherever a save names a hero: party, xp, vitals and the
+## "<hero>.<slot>" equipment keys.
+static func _v6_to_v7(data: Dictionary) -> Dictionary:
+	var old: String = String(LEGACY_HERO)
+	var new: String = String(START_HERO)
+	data["party"] = (data.get("party", []) as Array).map(func(m: Variant) -> String: return new if str(m) == old else str(m))
+	for key: String in ["xp", "vitals"]:
+		var src: Dictionary = data.get(key, {})
+		var out: Dictionary = {}
+		for hero: Variant in src:
+			out[new if str(hero) == old else str(hero)] = src[hero]
+		data[key] = out
+	var equipment: Dictionary = {}
+	var worn: Dictionary = data.get("equipment", {})
+	for slot: Variant in worn:
+		var k: String = str(slot)
+		equipment[new + k.substr(old.length()) if k.begins_with(old + ".") else k] = worn[slot]
+	data["equipment"] = equipment
 	return data
 
 

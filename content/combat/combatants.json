@@ -1,7 +1,7 @@
 {
   "kind": "combatant",
   "items": [
-     {"id": "zayd", "name_key": "NAME_ZAYD", "max_hp": 400, "max_sp": 24, "attack": 20, "defense": 14,
+     {"id": "rydan", "name_key": "NAME_RYDAN", "max_hp": 400, "max_sp": 24, "attack": 20, "defense": 14,
      "agility": 40, "weight": 3.0, "luck": 10, "xp": 0, "dodge_bonus": 0.0, "crit_bonus": 0.0, "status_pierce": 0.0,
      "actions": ["jambiyah_strike", "breaker"]},
      {"id": "bilqis", "name_key": "NAME_BILQIS", "max_hp": 280, "max_sp": 36, "attack": 16, "defense": 9,

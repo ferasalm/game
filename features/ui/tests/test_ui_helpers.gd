@@ -25,7 +25,7 @@ func test_list_row_shows_name_count_tag_and_greys_when_disabled() -> void:
 
 func test_party_card_numbers_ko_and_active_frame() -> void:
 	GameState.reset()
-	var card: PartyCard = Ui.party_card(&"zayd")
+	var card: PartyCard = Ui.party_card(&"rydan")
 	tree.root.add_child(card)
 	check_eq(card.hp_text(), "400/400", "full HP from missing vitals")
 	card.update(0, 5, false)
@@ -134,8 +134,8 @@ func test_transition_sweep_builds_five_shards_in_qamariya_colours() -> void:
 
 
 func test_icons_fall_back_to_a_disc_with_the_initial() -> void:
-	check(CharacterIcons.texture(&"zayd") == null, "no icon file yet: null")
-	check_eq(CharacterIcons.initial(&"zayd"), "Z", "initial from the name")
+	check(CharacterIcons.texture(&"rydan") == null, "no icon file yet: null")
+	check_eq(CharacterIcons.initial(&"rydan"), "Z", "initial from the name")
 	check_eq(CharacterIcons.initial(&"nobody"), "?", "unknown character")
 	var face: Control = CharacterIcons.face(&"bilqis", Ui.style().colour(&"c_party"))
 	check_eq((face.get_child(0) as Label).text, "B", "the disc carries the initial")

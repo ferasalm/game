@@ -87,12 +87,12 @@ func test_the_bodies_share_the_animation_rig() -> void:
 		holder.free()
 
 
-func test_zayd_wears_his_grandfathers_hilt_and_every_model_has_a_height() -> void:
-	var zayd := ContentDB.get_def("model", &"rydan") as ModelDef
+func test_rydan_wears_his_grandfathers_hilt_and_every_model_has_a_height() -> void:
+	var rydan := ContentDB.get_def("model", &"rydan") as ModelDef
 	var has_hilt: bool = false
-	for part: ModelPartDef in zayd.parts:
+	for part: ModelPartDef in rydan.parts:
 		has_hilt = has_hilt or part.id == &"grandfather_hilt"
-	check(has_hilt, "Zayd's default skin always wears the grandfather_hilt part")
+	check(has_hilt, "Rydan's default skin always wears the grandfather_hilt part")
 	for id: StringName in ContentDB.ids("model"):
 		var def := ContentDB.get_def("model", id) as ModelDef
 		check(def.height_m > 0.5 and def.girth > 0.0, "%s: positive size and girth (never a negative scale)" % id)

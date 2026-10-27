@@ -11,12 +11,12 @@ Story detail: docs/story/bible.md (CONFIRMED = locked). Vision and pillars: docs
 - 2026-10-26 | Opening: start flow -> Roya cold open (in-engine, not Flow video) -> prison escape tutorial -> "Earlier": Zayd's first shift -> back to the escape; old 3D level 1 parked, its content not used | Feras
 - 2026-10-21 | Currency: riyal | Claude
 ## Heroes
-- 2026-10-25 | The hero is Rydan (was Zayd); code id "zayd" = Rydan until the rename step | Feras
-- 2026-10-26 | Zayd is a new NPC, a rookie officer | Feras
+- 2026-10-25 | The hero is Rydan (was Zayd); code id "rydan" since 2026-10-27 (save v7 migrates "zayd"; a guard test keeps it gone) | Feras
+- 2026-10-26 | Zayd is a new NPC, a rookie officer; code id "officer_zayd" when he enters code (never "zayd") | Feras
 - 2026-10-27 | Jambiya on screen (no h; code ids keep jambiyah for now; old save key migrates): two parts, hilt and blade, each upgraded or swapped separately | Feras
 - 2026-10-26 | Jambiya: three hilts only, 1/2/3 slots: prison hilt (start), after Numan, grandfather's grave (heirloom); each a full jambiya, blades vary; chained much later; slot contents open (gems with a tech reason or tech modules); hero ring 1-2 sockets | Feras
 - 2026-10-22 | Prosthetic: one per hero; tech moves paid from SP; the jambiya stays the weapon; Rydan's cast clips mirrored | Feras
-- 2026-10-23 | Rydan's kit (zayd-moves.md): a combat job per move; ATK split across multi-hit moves so SP beats the free strike | Feras/Claude
+- 2026-10-23 | Rydan's kit (rydan-moves.md): a combat job per move; ATK split across multi-hit moves so SP beats the free strike | Feras/Claude
 - 2026-10-24 | Bilqis: rivet pistol; frame and barrel upgraded like Rydan's hilt and blade | Feras
 - 2026-10-21 | Rarity: Common to Legendary (white, green, blue, purple, gold); Heirloom tier story-only | Feras
 ## Combat

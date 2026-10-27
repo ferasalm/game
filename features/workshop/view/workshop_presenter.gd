@@ -32,21 +32,21 @@ static func preview_upgrade(item_id: StringName) -> Dictionary:
 	return {"now": now_def, "after": after_def, "cost": cost, "prob": prob, "max": lvl >= costs.max_level}
 
 
-## The hero whose stats an upgrade changes: pistol parts are Bilqis's, everything else previews on Zayd.
+## The hero whose stats an upgrade changes: pistol parts are Bilqis's, everything else previews on Rydan.
 static func _hero_of(item_id: StringName) -> StringName:
 	if ContentDB.get_def("pistol", item_id) != null:
 		return Pistol.WIELDER
-	return &"zayd"
+	return &"rydan"
 
 
 static func preview_gemstone(stone_id: StringName, slot: int) -> Dictionary:
 	var stone := ContentDB.get_def("stone", stone_id) as StoneDef
-	var hilt_id: StringName = GameState.equipment.get(&"zayd.hilt", &"grandfather_hilt")
+	var hilt_id: StringName = GameState.equipment.get(&"rydan.hilt", &"grandfather_hilt")
 	var hilt := ContentDB.get_def("hilt", hilt_id) as HiltDef
 	var fits: bool = (stone != null and hilt != null and Stones.fits(stone, hilt))
 
 	var loader := BattleLoader.from_db(ContentDB)
-	var now_def: CombatantDef = loader.hero_from_state(&"zayd", GameState)
+	var now_def: CombatantDef = loader.hero_from_state(&"rydan", GameState)
 	var staged := StagedState.new()
 	for up_k: StringName in GameState.upgrades:
 		staged.upgrades[up_k] = GameState.upgrades[up_k]
@@ -56,7 +56,7 @@ static func preview_gemstone(stone_id: StringName, slot: int) -> Dictionary:
 	staged.xp = GameState.xp
 	if fits:
 		Stones.set_stone(staged.sockets, hilt_id, slot, stone.id)
-	var after_def: CombatantDef = loader.hero_from_state(&"zayd", staged)
+	var after_def: CombatantDef = loader.hero_from_state(&"rydan", staged)
 	return {"now": now_def, "after": after_def, "fits": fits}
 
 

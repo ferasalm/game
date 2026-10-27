@@ -37,7 +37,7 @@
      "t_money_count": 0.5, "t_toast_hold": 2.0, "t_toast_fade": 0.3, "t_transition_sweep": 0.6, "t_defeat_fade": 1.2,
      "t_money_flash": 0.4, "t_caret": 0.5, "t_prompt_fade": 0.2,
 
-     "icons": {"zayd": "res://assets/icons/zayd.png", "bilqis": "res://assets/icons/bilqis.png",
+     "icons": {"rydan": "res://assets/icons/rydan.png", "bilqis": "res://assets/icons/bilqis.png",
                "concession_enforcer": "res://assets/icons/concession_enforcer.png",
                "prison_guard": "res://assets/icons/prison_guard.png",
                "survey_drone": "res://assets/icons/survey_drone.png",

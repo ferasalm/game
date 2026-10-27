@@ -23,7 +23,7 @@ abu_nabil speaker has no sprite (stand-in portrait). Kept on purpose until the r
 ## Stage 3: rename (own commit)
 - Collisions: speakers.json has both `zayd` and `rydan` (rydan's sprite is "zayd"): drop the zayd speaker, lines ->
   rydan. NAME_ZAYD/EPITHET_ZAYD rows -> the RYDAN keys. combatant zayd, loadout zayd_start, sound footstep_zayd,
-  pixel sprite zayd, test_zayd_kit.gd, design/zayd-moves.md (cited in LESSONS, CANON) -> rydan.
+  pixel sprite zayd, test_rydan_kit.gd, design/rydan-moves.md (cited in LESSONS, CANON) -> rydan.
 - Old Abu Nabil dialogue text says "Zayd" for the hero -> "Rydan". The story officer Zayd gets his own id (officer_zayd).
 - Save: apply save_v7_migration.patch.txt (VERSION 7, LEGACY_HERO, _v6_to_v7 renames party, xp, vitals, "zayd.*" keys);
   do not edit the old fixtures (save_v3/v5.json): add a test loading save_v5.json -> rydan everywhere.

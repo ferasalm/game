@@ -3,8 +3,8 @@ extends TestCase
 
 
 func test_portrait_faces_texture_and_fallback() -> void:
-	var zayd_tex: Texture2D = PortraitFaces.texture(&"zayd")
-	check(zayd_tex != null, "portrait_faces returns texture for zayd")
+	var rydan_tex: Texture2D = PortraitFaces.texture(&"rydan")
+	check(rydan_tex != null, "portrait_faces returns texture for rydan")
 	var bilqis_tex: Texture2D = PortraitFaces.texture(&"bilqis")
 	check(bilqis_tex != null, "portrait_faces returns texture for bilqis")
 	var fallback_tex: Texture2D = PortraitFaces.texture(&"unknown_hero")
@@ -13,7 +13,7 @@ func test_portrait_faces_texture_and_fallback() -> void:
 
 func test_pause_row_shows_level_and_class_name() -> void:
 	GameState.xp.clear()
-	var row := PauseHeroRow.new().setup(&"zayd")
+	var row := PauseHeroRow.new().setup(&"rydan")
 	check(row.lv_node() != null, "row has lv node")
 	check(row.lv_node() is Label and (row.lv_node() as Label).text.begins_with("Lv 1"), "fresh game shows Lv 1")
 	var cdef := ContentDB.get_def("class", &"courier") as ClassDef
@@ -21,7 +21,7 @@ func test_pause_row_shows_level_and_class_name() -> void:
 	check(row.class_label() != null, "row has class label")
 	check(row.class_label().text.contains(class_name_str), "fresh game shows class name Courier")
 
-	GameState.xp[&"zayd"] = 60
+	GameState.xp[&"rydan"] = 60
 	row.update(100, 50)
 	check((row.lv_node() as Label).text.begins_with("Lv 2"), "after 60 xp shows Lv 2")
 	row.free()

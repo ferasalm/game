@@ -1,8 +1,8 @@
 extends TestCase
 ## Retargeting (PoseMatch, PoseFollow): the swing turns one direction into another, the per-bone offset makes the
 ## target bone point where the source bone points (at rest and after a turn), the hips travel scales with hip height,
-## and a pose_source model's body follows its hidden source (Zayd's Rodin model stands up with the hand below the head);
-## mirrored, the other arm does the move (Zayd's cast raises his prosthetic right arm).
+## and a pose_source model's body follows its hidden source (Rydan's Rodin model stands up with the hand below the head);
+## mirrored, the other arm does the move (Rydan's cast raises his prosthetic right arm).
 
 
 func test_swing_turns_from_into_to() -> void:

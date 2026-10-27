@@ -48,7 +48,7 @@ func test_portrait_slides_in_only_when_the_speaker_changes() -> void:
 	check_eq(portrait.offset_left, box._layout.portrait_rest_x, "same speaker: no new slide")
 	box.advance()
 	box.advance()
-	check_eq(box._layout.name_label.text, "Zayd", "line 3 is Zayd")
+	check_eq(box._layout.name_label.text, "Rydan", "line 3 is Rydan")
 	check_eq(portrait.modulate.a, 0.0, "a new speaker slides in again")
 	box.free()
 
@@ -92,7 +92,7 @@ func test_a_portrait_stands_on_the_bottom_edge() -> void:
 
 func test_standins_are_discs_not_sprite_crops() -> void:
 	var style := ContentDB.get_def("dialogue_style", &"default") as DialogueStyleDef
-	var image: Image = Portraits.standin_image(&"zayd", &"happy")
+	var image: Image = Portraits.standin_image(&"rydan", &"happy")
 	check_eq(image.get_width(), style.standin_rows * style.standin_scale, "stand-in size from the style")
 	var middle: Color = image.get_pixel(image.get_width() / 2, image.get_height() / 2)
 	check(middle.a > 0.9, "a solid disc in the middle")

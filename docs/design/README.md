@@ -27,6 +27,6 @@
 | v03-text.md | PAUSED | Draft text for herb seller, sabil, items, pause and defeat (v0.3 names) |
 | valve-puzzles.md | PAUSED | Light lock and water valve puzzles for R5 (puzzle logic on main) |
 | world.md | PAUSED | World and cast draft; names are old, the story bible (docs/story/bible.md) is canon |
-| zayd-moves.md | LIVE | Rydan's kit: one combat job per move (numbers are placeholders) |
+| rydan-moves.md | LIVE | Rydan's kit: one combat job per move (numbers are placeholders) |
 
 Archived in docs/archive/design-3d/: characters-3d.md, slice.md (Qarnaw story), demo-plan.md, playtest-2026-10-23.md, prototype.md, retire-3d-audit.md, rooftop-v3.md, v03-plan.md, retire-3d/ (file lists); docs/archive/BRIEFING.md. Old 3D briefs: docs/archive/briefs-3d/.

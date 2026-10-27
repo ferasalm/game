@@ -50,8 +50,8 @@ func test_item_ids_are_unique_across_kinds_and_within_the_budget() -> void:
 
 
 func test_the_heirloom_hilt_is_the_start_hilt_and_never_loot() -> void:
-	var start := ContentDB.get_def("loadout", &"zayd_start") as LoadoutDef
-	check_eq((ContentDB.get_def("hilt", start.hilt) as HiltDef).rarity, &"heirloom", "Zayd starts with the Heirloom")
+	var start := ContentDB.get_def("loadout", &"rydan_start") as LoadoutDef
+	check_eq((ContentDB.get_def("hilt", start.hilt) as HiltDef).rarity, &"heirloom", "Rydan starts with the Heirloom")
 	var given: Array[StringName] = []
 	for encounter_id: StringName in ContentDB.ids("encounter"):
 		given.append_array((ContentDB.get_def("encounter", encounter_id) as EncounterDef).loot)

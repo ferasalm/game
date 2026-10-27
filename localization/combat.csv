@@ -6,7 +6,6 @@ UI_INTERRUPTED,Interrupted!
 UI_CANCELS,cancels
 UI_SP,SP
 UI_HP,HP
-NAME_ZAYD,Zayd
 NAME_BILQIS,Bilqis
 NAME_CONCESSION_ENFORCER,Concession Enforcer
 NAME_SURVEY_DRONE,Survey Drone
@@ -29,7 +28,7 @@ MOVE_DESC_BATON_SLAM,A slow overhead swing; the Concession pays by the blow.
 MOVE_DESC_LASER_PING,A thin survey beam that tags its target.
 MOVE_DESC_OVERCHARGE_BEAM,A drone burns its battery in one blast.
 MOVE_DESC_QUICK_SLASH,A rapid dash that readies the next action sooner. Khatfat al-Ghazal.
-MOVE_DESC_CRUSHING_BLOW,A ruinous overhead strike that leaves Zayd exposed while casting. Sayl.
+MOVE_DESC_CRUSHING_BLOW,A ruinous overhead strike that leaves Rydan exposed while casting. Sayl.
 HILT_SWIFT,Swift Hilt
 HILT_SWIFT_DESC,Light grip from the metal souq. Faster hands; teaches Gazelle Step.
 HILT_ANVIL,Anvil Hilt
@@ -112,7 +111,7 @@ STONE_SABATAYN_GLASS_NAME,Sab'atayn Glass
 STONE_SABATAYN_GLASS_DESC,Desert fulgurite; boosts damage against jammed foes.
 STONE_SABATAYN_GLASS_FLAVOUR,Lightning fused this sand in the desert east of Ma'rib.
 STONE_JADD_AQIQ_NAME,The Grandfather's Aqiq
-STONE_JADD_AQIQ_DESC,The master carnelian; countering propels Zayd to immediate command.
+STONE_JADD_AQIQ_DESC,The master carnelian; countering propels Rydan to immediate command.
 STONE_JADD_AQIQ_FLAVOUR,He set it himself. It was always meant to come back.
 PERK_JAZ_KNOCKBACK,Heavy Jaz'
 PERK_JAZ_KNOCKBACK_DESC,Adds 400 knockback to the first hit.

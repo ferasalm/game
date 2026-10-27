@@ -7,7 +7,7 @@ func _run_with_choices() -> DialogueRun:
 	var def := DialogueDef.new()
 	def.id = &"test_choice_dlg"
 	var line1 := DialogueLine.new()
-	line1.speaker = &"zayd"
+	line1.speaker = &"rydan"
 	line1.text_key = "LINE_1"
 	var line2 := DialogueLine.new()
 	line2.speaker = &"abu_nabil"

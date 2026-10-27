@@ -5,7 +5,7 @@
       "id": "courier",
       "name_key": "CLASS_COURIER_NAME",
       "desc_key": "CLASS_COURIER_DESC",
-      "hero": "zayd",
+      "hero": "rydan",
       "growth": {
         "max_hp": 30,
         "max_sp": 2,

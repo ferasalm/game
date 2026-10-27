@@ -3,7 +3,7 @@ extends RefCounted
 ## purpose: Builds the map fight (docs/design/first-playable.md section 3): the sim from the room's encounter and
 ## the party from GameState, the MapFormation spots, the IsoActor to unit mapping and the HUD.
 
-const HERO_ID: StringName = &"zayd"
+const HERO_ID: StringName = &"rydan"
 
 
 static func build(battle: MapBattle, ambush: bool) -> void:

@@ -1,5 +1,5 @@
 extends TestCase
-## T3: every hilt + blade pairing gives a different Zayd stat sets, inside the timeline caps; each hilt adds
+## T3: every hilt + blade pairing gives a different Rydan stat sets, inside the timeline caps; each hilt adds
 ## exactly one move; the shared base definition is never changed.
 
 
@@ -18,40 +18,40 @@ func _signature(def: CombatantDef) -> String:
 
 func test_every_pairing_gives_a_different_stat_set() -> void:
 	var loader: BattleLoader = _loader()
-	var base: CombatantDef = loader.combatants[&"zayd"]
+	var base: CombatantDef = loader.combatants[&"rydan"]
 	var seen: Dictionary[String, bool] = {}
 	for hilt_id: StringName in loader.hilts:
 		for blade_id: StringName in loader.blades:
-			var zayd: CombatantDef = loader.zayd_with(hilt_id, blade_id)
-			seen[_signature(zayd)] = true
-			check(zayd != base, "equip returns a new object")
-			check(zayd.agility >= CombatantDef.AGILITY_MIN and zayd.agility <= CombatantDef.AGILITY_MAX, "agility cap")
-			check(zayd.cast_speed >= CombatantDef.CAST_SPEED_MIN and zayd.cast_speed <= CombatantDef.CAST_SPEED_MAX, "cast cap")
-			check_eq(zayd.actions.size(), base.actions.size() + 1, "%s adds exactly one move" % hilt_id)
-			check(zayd.actions.has(loader.hilts[hilt_id].ability), "and it is the hilt's ability")
+			var rydan: CombatantDef = loader.rydan_with(hilt_id, blade_id)
+			seen[_signature(rydan)] = true
+			check(rydan != base, "equip returns a new object")
+			check(rydan.agility >= CombatantDef.AGILITY_MIN and rydan.agility <= CombatantDef.AGILITY_MAX, "agility cap")
+			check(rydan.cast_speed >= CombatantDef.CAST_SPEED_MIN and rydan.cast_speed <= CombatantDef.CAST_SPEED_MAX, "cast cap")
+			check_eq(rydan.actions.size(), base.actions.size() + 1, "%s adds exactly one move" % hilt_id)
+			check(rydan.actions.has(loader.hilts[hilt_id].ability), "and it is the hilt's ability")
 	check_eq(seen.size(), loader.hilts.size() * loader.blades.size(), "every pairing is distinct")
 	check_eq(loader.hilts.size() * loader.blades.size(), 9, "three hilts x three blades")
 
 
 func test_equip_follows_the_merge_order_and_leaves_the_base_alone() -> void:
 	var loader: BattleLoader = _loader()
-	var base: CombatantDef = loader.combatants[&"zayd"]
+	var base: CombatantDef = loader.combatants[&"rydan"]
 	var hilt: HiltDef = loader.hilts[&"swift_hilt"]
 	var blade: BladeDef = loader.blades[&"broad_blade"]
-	var zayd: CombatantDef = Jambiyah.equip(base, hilt, blade)
-	check_eq(zayd.agility, base.agility + hilt.agility, "agility from the hilt")
-	check_eq(zayd.cast_speed, base.cast_speed * hilt.cast_speed, "cast speed multiplied by the hilt")
-	check_eq(zayd.weight, base.weight + hilt.weight + blade.weight, "weights add up")
-	check_eq(zayd.attack, base.attack + blade.attack, "attack from the blade")
-	check_eq(zayd.knockback_bonus, base.knockback_bonus + blade.knockback, "knockback from the blade")
-	check_eq(zayd.max_hp, base.max_hp, "other stats carry over")
+	var rydan: CombatantDef = Jambiyah.equip(base, hilt, blade)
+	check_eq(rydan.agility, base.agility + hilt.agility, "agility from the hilt")
+	check_eq(rydan.cast_speed, base.cast_speed * hilt.cast_speed, "cast speed multiplied by the hilt")
+	check_eq(rydan.weight, base.weight + hilt.weight + blade.weight, "weights add up")
+	check_eq(rydan.attack, base.attack + blade.attack, "attack from the blade")
+	check_eq(rydan.knockback_bonus, base.knockback_bonus + blade.knockback, "knockback from the blade")
+	check_eq(rydan.max_hp, base.max_hp, "other stats carry over")
 	check_eq(base.actions.size(), 2, "the shared base keeps its two moves")
 	check_eq(base.agility, 40, "and its agility")
 
 
 func test_caps_clamp_extreme_gear() -> void:
 	var loader: BattleLoader = _loader()
-	var base: CombatantDef = loader.combatants[&"zayd"]
+	var base: CombatantDef = loader.combatants[&"rydan"]
 	var hilt := HiltDef.new()
 	hilt.id = &"wild_hilt"
 	hilt.ability = &"quick_slash"

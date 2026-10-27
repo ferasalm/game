@@ -83,28 +83,28 @@ func test_short_money_and_materials_refuse_and_change_nothing() -> void:
 func test_upgrade_raises_gear_stat_by_upgrade_times_level() -> void:
 	var loader := BattleLoader.from_db(ContentDB)
 	var staged := WorkshopPresenter.StagedState.new()
-	var eq: Dictionary[StringName, StringName] = {&"zayd.blade": &"rustwire_blade", &"zayd.armor": &"courier_jacket"}
+	var eq: Dictionary[StringName, StringName] = {&"rydan.blade": &"rustwire_blade", &"rydan.armor": &"courier_jacket"}
 	staged.equipment = eq
 
-	var base_fighter: CombatantDef = loader.hero_from_state(&"zayd", staged)
+	var base_fighter: CombatantDef = loader.hero_from_state(&"rydan", staged)
 	var base_atk: int = base_fighter.attack
 	var base_hp: int = base_fighter.max_hp
 	var base_def: int = base_fighter.defense
 
 	staged.upgrades[&"rustwire_blade"] = 1
-	var f1: CombatantDef = loader.hero_from_state(&"zayd", staged)
+	var f1: CombatantDef = loader.hero_from_state(&"rydan", staged)
 	check_eq(f1.attack, base_atk + 2, "blade +1 adds 2 attack")
 
 	staged.upgrades[&"rustwire_blade"] = 2
-	var f2: CombatantDef = loader.hero_from_state(&"zayd", staged)
+	var f2: CombatantDef = loader.hero_from_state(&"rydan", staged)
 	check_eq(f2.attack, base_atk + 4, "blade +2 adds 4 attack")
 
 	staged.upgrades[&"rustwire_blade"] = 3
-	var f3: CombatantDef = loader.hero_from_state(&"zayd", staged)
+	var f3: CombatantDef = loader.hero_from_state(&"rydan", staged)
 	check_eq(f3.attack, base_atk + 6, "blade +3 adds 6 attack")
 
 	staged.upgrades[&"courier_jacket"] = 2
-	var f_arm: CombatantDef = loader.hero_from_state(&"zayd", staged)
+	var f_arm: CombatantDef = loader.hero_from_state(&"rydan", staged)
 	check_eq(f_arm.max_hp, base_hp + 30, "armor +2 adds 30 max_hp")
 	check_eq(f_arm.defense, base_def + 2, "armor +2 adds 2 defense")
 

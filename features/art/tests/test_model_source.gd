@@ -23,7 +23,7 @@ func _run(visual: CharacterVisual, seconds: float) -> void:
 func test_a_model_builds_paints_and_sizes() -> void:
 	var visual: CharacterVisual = _visual()
 	var source := visual.source as ModelSource
-	check(source != null and source.rig != null, "Zayd is a ModelSource with a rig")
+	check(source != null and source.rig != null, "Rydan is a ModelSource with a rig")
 	check_eq(visual.height(), 1.8, "height from the def")
 	check(visual.width() > 0.4, "width from the def's radius")
 	check(not source.materials().is_empty(), "painted materials exist")
@@ -93,7 +93,7 @@ func test_hit_stop_freezes_the_pose_and_the_events() -> void:
 func test_the_hilt_is_drawn_for_a_strike_and_sheathed_after() -> void:
 	var visual: CharacterVisual = _visual()
 	var hilt: HiltParts = (visual.source as ModelSource).rig.hilt
-	check(hilt != null and not hilt.drawn, "Zayd carries the hilt sheathed at the belt")
+	check(hilt != null and not hilt.drawn, "Rydan carries the hilt sheathed at the belt")
 	check(hilt.root.is_ancestor_of(hilt.hilt), "the hilt sits in the sheath at the belt")
 	visual.play(&"attack", Vector2.RIGHT)
 	check(hilt.drawn and hilt.blade.visible, "drawn: the blade shows")

@@ -22,7 +22,7 @@ func refresh() -> void:
 	for child: Node in _box.get_children():
 		child.queue_free()
 
-	var party: Array = GameState.party if not GameState.party.is_empty() else [&"zayd", &"bilqis"]
+	var party: Array = GameState.party if not GameState.party.is_empty() else [&"rydan", &"bilqis"]
 	var vitals: Dictionary = GameState.get(&"vitals") if GameState.get(&"vitals") is Dictionary else {}
 
 	for hero_v: Variant in party:

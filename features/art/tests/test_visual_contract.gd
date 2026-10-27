@@ -7,7 +7,7 @@ func _visual() -> CharacterVisual:
 	var visual := CharacterVisual.new()
 	visual.source_kind = &"pixel"
 	tree.root.add_child(visual)
-	visual.set_sprite(&"zayd")
+	visual.set_sprite(&"rydan")
 	return visual
 
 
@@ -112,7 +112,7 @@ func test_face_dir_turns_toward_a_ground_direction() -> void:
 	var visual := CharacterVisual.new()
 	visual.source_kind = &"pixel"
 	tree.root.add_child(visual)
-	visual.set_sprite(&"zayd")
+	visual.set_sprite(&"rydan")
 	visual.face_dir(Vector3(-1.0, 0.0, 0.4))
 	check_eq(visual._facing, -1.0, "a sprite mirrors toward -x")
 	visual.face_dir(Vector3(0.0, 0.0, 1.0))

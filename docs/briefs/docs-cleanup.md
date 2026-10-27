@@ -10,7 +10,7 @@ Builders read those docs and build the old rule. Make each doc agree with DECISI
 docs/DECISIONS.md (the binding rules; newest wins). Then only the lines named below (grep, do not read whole files).
 
 ## What to build (edit only these spots; keep the doc's voice, plain English, short lines <= 120 chars)
-1. docs/design/combat.md (top, lines 1-3) and docs/design/zayd-moves.md (lines 3-4): add one line under the title:
+1. docs/design/combat.md (top, lines 1-3) and docs/design/rydan-moves.md (lines 3-4): add one line under the title:
    "Demo combat stays these timeline battles; action combat (DECISIONS 2026-10-23) replaces them after the demo."
 2. docs/archive/design-3d/prototype.md (near line 24, "refill after each"): HP and SP carry over between fights; the sabil
    refills them (DECISIONS 2026-10-21 save spot).

@@ -11,7 +11,7 @@ func _levels() -> LevelsDef:
 func _courier_class() -> ClassDef:
 	var def := ClassDef.new()
 	def.id = &"courier"
-	def.hero = &"zayd"
+	def.hero = &"rydan"
 	def.growth = {
 		&"max_hp": 30, &"max_sp": 2, &"attack": 2, &"defense": 2, &"agility": 1, &"luck": 1
 	}
@@ -19,9 +19,9 @@ func _courier_class() -> ClassDef:
 	return def
 
 
-func _zayd_base() -> CombatantDef:
+func _rydan_base() -> CombatantDef:
 	var def := CombatantDef.new()
-	def.id = &"zayd"
+	def.id = &"rydan"
 	def.max_hp = 100
 	def.max_sp = 24
 	def.attack = 20
@@ -49,7 +49,7 @@ func test_level_at_each_threshold_and_cap() -> void:
 
 
 func test_grow_at_lv1_equals_the_base() -> void:
-	var base: CombatantDef = _zayd_base()
+	var base: CombatantDef = _rydan_base()
 	var courier: ClassDef = _courier_class()
 	var grown: CombatantDef = Progression.grow(base, courier, 1)
 	check_eq(grown.max_hp, base.max_hp, "HP untouched at Lv 1")
@@ -60,8 +60,8 @@ func test_grow_at_lv1_equals_the_base() -> void:
 	check_eq(grown.luck, base.luck, "LCK untouched at Lv 1")
 
 
-func test_lv3_zayd_equals_base_plus_2x_growth() -> void:
-	var base: CombatantDef = _zayd_base()
+func test_lv3_rydan_equals_base_plus_2x_growth() -> void:
+	var base: CombatantDef = _rydan_base()
 	var courier: ClassDef = _courier_class()
 	var grown: CombatantDef = Progression.grow(base, courier, 3)
 	check_eq(grown.max_hp, base.max_hp + 60, "HP + 2x30")
@@ -74,28 +74,28 @@ func test_lv3_zayd_equals_base_plus_2x_growth() -> void:
 
 func test_award_shares_full_xp_to_downed_heroes_and_50_pct_on_repeat() -> void:
 	var levels: LevelsDef = _levels()
-	var classes: Dictionary[StringName, ClassDef] = {&"zayd": _courier_class()}
-	var xp: Dictionary[StringName, int] = {&"zayd": 0, &"bilqis": 0}
-	var party: Array[StringName] = [&"zayd", &"bilqis"]
+	var classes: Dictionary[StringName, ClassDef] = {&"rydan": _courier_class()}
+	var xp: Dictionary[StringName, int] = {&"rydan": 0, &"bilqis": 0}
+	var party: Array[StringName] = [&"rydan", &"bilqis"]
 	var encounter_xp: int = 60
 	var level_ups: Array[LevelUp] = Progression.award(xp, party, encounter_xp, levels, classes)
-	check_eq(xp[&"zayd"], 60, "zayd got 60 XP")
+	check_eq(xp[&"rydan"], 60, "rydan got 60 XP")
 	check_eq(xp[&"bilqis"], 60, "downed hero got full 60 XP")
 	check_eq(level_ups.size(), 2, "both heroes leveled up to 2")
-	check_eq(level_ups[0].hero, &"zayd", "zayd level up")
+	check_eq(level_ups[0].hero, &"rydan", "rydan level up")
 	check_eq(level_ups[0].to_level, 2, "to level 2")
 	check_eq(level_ups[0].gains[&"max_hp"], 30, "gain 30 HP")
 	check_eq(level_ups[1].hero, &"bilqis", "bilqis level up")
 	var repeat_xp: int = floori(encounter_xp * 0.5)
 	check_eq(repeat_xp, 30, "50% repeat XP is 30")
 	var repeat_ups: Array[LevelUp] = Progression.award(xp, party, repeat_xp, levels, classes)
-	check_eq(xp[&"zayd"], 90, "zayd has 90 XP after repeat")
+	check_eq(xp[&"rydan"], 90, "rydan has 90 XP after repeat")
 	check(repeat_ups.is_empty(), "no level up on repeat")
 
 
 func test_merge_order_armor_before_hilt_and_agi_cap_99_with_growth() -> void:
 	var state := GearState.new()
-	state.base = _zayd_base()
+	state.base = _rydan_base()
 	state.base.agility = 98
 	state.class_def = _courier_class()
 	state.level = 3
@@ -110,7 +110,7 @@ func test_merge_order_armor_before_hilt_and_agi_cap_99_with_growth() -> void:
 	hilt.agility = 10
 	hilt.cast_speed = 1.0
 	state.hilt = hilt
-	var out: CombatantDef = Gear.build_hero(&"zayd", state)
+	var out: CombatantDef = Gear.build_hero(&"rydan", state)
 	check_eq(out.max_hp, 100 + 60 + 40, "base 100 + growth 60 + armor 40 = 200")
 	check_eq(out.defense, 10 + 4 + 4, "base 10 + growth 4 + armor 4 = 18")
 	check_eq(out.agility, 99, "98 + 2 growth - 5 armor + 10 hilt = 105, capped at 99")
@@ -121,17 +121,17 @@ func test_two_awards_with_different_levels_use_own_levels() -> void:
 	levels_low.xp_total = [0, 10, 20]
 	var levels_high := LevelsDef.new()
 	levels_high.xp_total = [0, 100, 200, 300]
-	var xp: Dictionary[StringName, int] = {&"zayd": 0}
-	var party: Array[StringName] = [&"zayd"]
+	var xp: Dictionary[StringName, int] = {&"rydan": 0}
+	var party: Array[StringName] = [&"rydan"]
 	var classes: Dictionary[StringName, ClassDef] = {}
 	Progression.award(xp, party, 15, levels_low, classes)
-	check_eq(xp[&"zayd"], 15, "low def award adds 15 XP")
+	check_eq(xp[&"rydan"], 15, "low def award adds 15 XP")
 	Progression.award(xp, party, 95, levels_high, classes)
-	check_eq(xp[&"zayd"], 110, "high def award adds 95 XP to 110 total")
+	check_eq(xp[&"rydan"], 110, "high def award adds 95 XP to 110 total")
 
 
 func test_old_gear_build_gives_same_fighter_as_before() -> void:
-	var base: CombatantDef = _zayd_base()
+	var base: CombatantDef = _rydan_base()
 	var hilt := HiltDef.new()
 	hilt.id = &"swift_hilt"
 	hilt.agility = 1

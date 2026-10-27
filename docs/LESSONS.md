@@ -37,7 +37,7 @@
 - Gemini research contains invented numbers -> ideas and norms only, never facts.
 - Where is X: grep docs/MAP.md (generated), not `ls -R`; map.py lists untracked files too: with the marketing-* files in the checkout CI failed "MAP.md current" -> regenerate in a clean worktree before main (2026-10-26).
 - Scratchpad scripts vanish when the session ends (bake_all.sh was nearly lost) -> any script worth rerunning goes into tools/ with a test (2026-10-27).
-- An approved design with no brief was never built (zayd-moves.md) -> brief it the same day (2026-10-23).
+- An approved design with no brief was never built (rydan-moves.md) -> brief it the same day (2026-10-23).
 - `python - <<EOF < /dev/null` gave Python no script: it spun in an empty REPL -> script files for background runs; `cmd | grep` hid a crash (exit 0) -> `set -o pipefail` (2026-10-25).
 - `check.sh | tail && git commit` committed a failing run -> grep .check/*.log for FAIL first; never push before reading the
   final check line (2026-10-23).

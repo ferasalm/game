@@ -65,7 +65,7 @@ func test_backdrop_is_child_0_of_screens() -> void:
 
 
 func test_pause_party_row_progression_and_ko() -> void:
-	var row := PauseHeroRow.new().setup(&"zayd")
+	var row := PauseHeroRow.new().setup(&"rydan")
 	check(row.lv_node() != null and row.lv_node().visible, "visible Lv node")
 	check(row.xp_bar() != null and row.xp_bar().visible, "visible XP node")
 	check_eq(row.xp_bar().custom_minimum_size, Vector2(360, 10), "xp bar 360x10")

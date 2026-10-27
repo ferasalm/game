@@ -113,42 +113,42 @@ func test_service_writes_game_state_and_announces_the_purse() -> void:
 
 
 func _maxes() -> Dictionary:
-	return {&"zayd": Vector2i(400, 24), &"bilqis": Vector2i(280, 36)}
+	return {&"rydan": Vector2i(400, 24), &"bilqis": Vector2i(280, 36)}
 
 
 func test_field_use_heals_a_hurt_hero_and_takes_one() -> void:
 	var held: Holdings = _held(0, {&"pink_herb": 2})
-	var vitals: Dictionary = {&"zayd": {"hp": 100, "sp": 24}}
+	var vitals: Dictionary = {&"rydan": {"hp": 100, "sp": 24}}
 	var pink: ConsumableDef = _herbs()[&"pink_herb"]
-	var result: Dictionary = FieldUse.use(pink, held, vitals, [&"zayd"] as Array[StringName], _maxes())
+	var result: Dictionary = FieldUse.use(pink, held, vitals, [&"rydan"] as Array[StringName], _maxes())
 	check(result["ok"], "used")
-	check_eq(Vitals.hp_of(vitals, &"zayd", 400), 220, "100 + 120")
+	check_eq(Vitals.hp_of(vitals, &"rydan", 400), 220, "100 + 120")
 	check_eq(held.bag.count(&"pink_herb"), 1, "one herb gone")
 
 
 func test_field_use_refuses_a_full_hero_and_battle_items() -> void:
 	var held: Holdings = _held(0, {&"pink_herb": 1, &"white_herb": 1})
 	var vitals: Dictionary = {}
-	var full: Dictionary = FieldUse.use(_herbs()[&"pink_herb"], held, vitals, [&"zayd"] as Array[StringName], _maxes())
+	var full: Dictionary = FieldUse.use(_herbs()[&"pink_herb"], held, vitals, [&"rydan"] as Array[StringName], _maxes())
 	check(not full["ok"] and full["reason"] == FieldUse.NO_EFFECT, "full HP: refused")
-	var ko: Dictionary = {&"zayd": {"hp": 0, "sp": 24}}
-	var white: Dictionary = FieldUse.use(_herbs()[&"white_herb"], held, ko, [&"zayd"] as Array[StringName], _maxes())
+	var ko: Dictionary = {&"rydan": {"hp": 0, "sp": 24}}
+	var white: Dictionary = FieldUse.use(_herbs()[&"white_herb"], held, ko, [&"rydan"] as Array[StringName], _maxes())
 	check(not white["ok"] and white["reason"] == FieldUse.NOT_FIELD, "the white herb is battle only")
-	var pink: Dictionary = FieldUse.use(_herbs()[&"pink_herb"], held, ko, [&"zayd"] as Array[StringName], _maxes())
+	var pink: Dictionary = FieldUse.use(_herbs()[&"pink_herb"], held, ko, [&"rydan"] as Array[StringName], _maxes())
 	check(not pink["ok"], "a hp herb does nothing for a downed hero")
 	check(held.bag.count(&"pink_herb") == 1 and held.bag.count(&"white_herb") == 1, "nothing was used")
-	var empty: Dictionary = FieldUse.use(_herbs()[&"yellow_herb"], held, {&"zayd": {"hp": 5, "sp": 0}}, [&"zayd"] as Array[StringName], _maxes())
+	var empty: Dictionary = FieldUse.use(_herbs()[&"yellow_herb"], held, {&"rydan": {"hp": 5, "sp": 0}}, [&"rydan"] as Array[StringName], _maxes())
 	check_eq(empty["reason"], FieldUse.NONE_LEFT, "none in the bag")
 
 
 func test_qishr_cup_heals_the_whole_party_with_one_cup() -> void:
 	GameState.start_new()
 	GameState.set_bag({&"qishr_cup": 1})
-	GameState.set_vitals({&"zayd": {"hp": 100, "sp": 24}, &"bilqis": {"hp": 280, "sp": 36}})
-	var result: Dictionary = ItemService.use(&"qishr_cup", &"zayd")
+	GameState.set_vitals({&"rydan": {"hp": 100, "sp": 24}, &"bilqis": {"hp": 280, "sp": 36}})
+	var result: Dictionary = ItemService.use(&"qishr_cup", &"rydan")
 	check(result["ok"], "used")
-	check_eq((result["gains"] as Dictionary).keys(), [&"zayd"], "only the hurt hero gained")
-	check_eq(GameState.vitals[&"zayd"]["hp"], 175, "100 + 75")
+	check_eq((result["gains"] as Dictionary).keys(), [&"rydan"], "only the hurt hero gained")
+	check_eq(GameState.vitals[&"rydan"]["hp"], 175, "100 + 75")
 	check(GameState.bag.is_empty(), "the cup is gone")
 
 

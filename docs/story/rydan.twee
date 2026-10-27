@@ -141,7 +141,7 @@ Not playable for now.
 
 :: Zayd [character draft] {"position":"550,550","size":"100,100"}
 Rookie police officer and Rydan's prison-era ally. Polite, conscientious, inexperienced. Jailed through a police-corruption case separate from Rydan's frame-up. His look is not designed yet.
-Note for Claude: in older code and docs "zayd" means Rydan (zayd-moves.md, the kit); rename later.
+Note for Claude: code id "zayd" was Rydan until 2026-10-27 (now "rydan", rydan-moves.md); this officer's code id is "officer_zayd".
 
 [[Zayd's first shift]]
 

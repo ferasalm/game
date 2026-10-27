@@ -23,7 +23,7 @@ func test_unit_ids_and_slots() -> void:
 	var ids: PackedStringArray = []
 	for unit: UnitState in sim.timeline.units:
 		ids.append("%s/%d/%d" % [unit.unit_id, unit.side, unit.slot])
-	check_eq(",".join(ids), "zayd/0/0,bilqis/0/2,concession_enforcer_1/1/0,concession_enforcer_2/1/1,survey_drone_1/1/2",
+	check_eq(",".join(ids), "rydan/0/0,bilqis/0/2,concession_enforcer_1/1/0,concession_enforcer_2/1/1,survey_drone_1/1/2",
 		"party use def ids, enemies count from 1, slots follow the encounter")
 
 

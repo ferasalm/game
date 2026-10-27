@@ -40,12 +40,12 @@ func test_items_cycles_tabs_with_q_and_e() -> void:
 
 func test_q_and_e_change_the_hero_on_the_equipment_menu() -> void:
 	var menu: EquipmentMenu = _open(&"equipment") as EquipmentMenu
-	check_eq(menu.hero, &"zayd", "starts on the first hero")
+	check_eq(menu.hero, &"rydan", "starts on the first hero")
 	menu._unhandled_input(_key(KEY_E))
 	check_eq(menu.hero, &"bilqis", "E switches to the next hero")
 	check_eq(_top_id(), &"equipment", "E stays on the Equipment screen")
 	menu._unhandled_input(_key(KEY_Q))
-	check_eq(menu.hero, &"zayd", "Q switches back")
+	check_eq(menu.hero, &"rydan", "Q switches back")
 	_clean()
 
 
@@ -55,7 +55,7 @@ func test_lb_and_rb_change_the_hero_on_the_equipment_menu() -> void:
 	check_eq(menu.hero, &"bilqis", "RB switches to the next hero")
 	check_eq(_top_id(), &"equipment", "RB stays on the Equipment screen")
 	menu._unhandled_input(_pad(JOY_BUTTON_LEFT_SHOULDER))
-	check_eq(menu.hero, &"zayd", "LB switches back")
+	check_eq(menu.hero, &"rydan", "LB switches back")
 	_clean()
 
 

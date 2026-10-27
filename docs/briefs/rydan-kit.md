@@ -7,12 +7,12 @@ Feras: "all Zayd's SP moves are weaker than his normal attack, while also all ha
 useless. They should be interesting to use." His approved redesign (2026-10-22) was never built.
 
 ## Read first
-docs/design/zayd-moves.md ALL of it (sections 3, 4, 5 and 7 are the spec; section 7 = the damage fix);
+docs/design/rydan-moves.md ALL of it (sections 3, 4, 5 and 7 are the spec; section 7 = the damage fix);
 features/combat/logic/battle_resolver.gd, timeline.gd, battle_sim.gd, battle_ai.gd, battle_rolls.gd;
 content/combat/actions.json, statuses.json; features/combat/defs/action_def.gd, status_def.gd.
 
 ## What to build
-1. Damage fix (zayd-moves.md 7): per hit = max(1, round((power + (attack - defense x defense_factor) / hit_count)
+1. Damage fix (rydan-moves.md 7): per hit = max(1, round((power + (attack - defense x defense_factor) / hit_count)
    x row x variance)); then crit, then damage_taken as today. Single-hit moves give the same numbers as before.
 2. actions.json numbers: jambiyah_strike power 12 x 2; breaker power 30, SP 7; crushing_blow (Flash Flood) SP 8;
    quick_slash (Gazelle Step) power 10, SP 4, no cancel; piston_jab (Piston Shove) power 6, knockback 2600,
@@ -38,7 +38,7 @@ HANDOFF.md, any *.import, features/progression/**, features/items/**, content/pr
 content/items/**. battle_rolls.gd: read only. rpg-progression runs beside you: in combatants.json, combatant_def.gd,
 perks.json and localization/combat.csv make the smallest edit (change your rows, append new keys at the end).
 
-## Tests (features/combat/tests/test_zayd_kit.gd + the list in zayd-moves.md section 5)
+## Tests (features/combat/tests/test_rydan_kit.gd + the list in rydan-moves.md section 5)
 Every test of section 5; plus: the damage split (2-hit strike at Atk 26 vs Def 14 = 2 x round(12 + 9.5) with variance
 0); a single-hit move gives the same damage as before the change; at base stats breaker and crushing_blow out-damage
 jambiyah_strike on the same enforcer; arc_discharge on 2 enforcers out-damages one strike; Zayd's start loadout holds

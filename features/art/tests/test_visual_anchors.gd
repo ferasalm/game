@@ -42,7 +42,7 @@ func test_pixel_anchors_use_the_rules_shares() -> void:
 	var visual := CharacterVisual.new()
 	visual.source_kind = &"pixel"
 	tree.root.add_child(visual)
-	visual.set_sprite(&"zayd")
+	visual.set_sprite(&"rydan")
 	var hand: Vector3 = visual.source.anchor(&"hand")
 	check_approx(hand.y, visual.height() * rules.pixel_hand_height, "pixel hand height")
 	check_approx(hand.x, visual.width() * rules.hand_side, "pixel hand reach")

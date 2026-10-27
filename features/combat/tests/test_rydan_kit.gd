@@ -1,6 +1,6 @@
-class_name TestZaydKit
+class_name TestRydanKit
 extends TestCase
-## Tests for Zayd's redesigned kit (zayd-moves.md section 5 and brief): damage split, sp_gain,
+## Tests for Rydan's redesigned kit (rydan-moves.md section 5 and brief): damage split, sp_gain,
 ## after_act_pos, cast_status, bonus vs status, poised counter, shove, and content comparisons.
 
 
@@ -174,18 +174,18 @@ func test_content_damage_comparisons_and_cancel_count() -> void:
 	var crush: ActionDef = db.call("get_def", "action", &"crushing_blow") as ActionDef
 	var arc: ActionDef = db.call("get_def", "action", &"arc_discharge") as ActionDef
 	var enforcer: CombatantDef = db.call("get_def", "combatant", &"concession_enforcer") as CombatantDef
-	var zayd: CombatantDef = db.call("get_def", "combatant", &"zayd") as CombatantDef
+	var rydan: CombatantDef = db.call("get_def", "combatant", &"rydan") as CombatantDef
 	db.free()
-	var zayd_unit: UnitState = UnitState.create(zayd, &"zayd", 0, 0, BattleRulesDef.new())
-	zayd_unit.def.attack = 26  # base 20 + rustwire 6
+	var rydan_unit: UnitState = UnitState.create(rydan, &"rydan", 0, 0, BattleRulesDef.new())
+	rydan_unit.def.attack = 26  # base 20 + rustwire 6
 	var enf_unit: UnitState = UnitState.create(enforcer, &"enf", 1, 0, BattleRulesDef.new())
-	var sim: BattleSim = BattleProbe.sim([zayd_unit.def], [0] as Array[int], [enf_unit.def], [0] as Array[int], [strike, breaker, crush, arc])
+	var sim: BattleSim = BattleProbe.sim([rydan_unit.def], [0] as Array[int], [enf_unit.def], [0] as Array[int], [strike, breaker, crush, arc])
 	var strike_dmg: int = 0
 	for i: int in strike.hit_count:
-		strike_dmg += sim._resolver.damage(zayd_unit, strike, enf_unit)
-	var breaker_dmg: int = sim._resolver.damage(zayd_unit, breaker, enf_unit)
-	var crush_dmg: int = sim._resolver.damage(zayd_unit, crush, enf_unit)
-	var arc_2: int = sim._resolver.damage(zayd_unit, arc, enf_unit) * 2
+		strike_dmg += sim._resolver.damage(rydan_unit, strike, enf_unit)
+	var breaker_dmg: int = sim._resolver.damage(rydan_unit, breaker, enf_unit)
+	var crush_dmg: int = sim._resolver.damage(rydan_unit, crush, enf_unit)
+	var arc_2: int = sim._resolver.damage(rydan_unit, arc, enf_unit) * 2
 	check(breaker_dmg > strike_dmg, "breaker (%d) out-damages strike (%d)" % [breaker_dmg, strike_dmg])
 	check(crush_dmg > breaker_dmg, "crushing_blow (%d) out-damages breaker (%d)" % [crush_dmg, breaker_dmg])
 	check(arc_2 > strike_dmg, "arc on 2 foes (%d) out-damages one strike (%d)" % [arc_2, strike_dmg])
@@ -195,4 +195,4 @@ func test_content_damage_comparisons_and_cancel_count() -> void:
 		var a: ActionDef = ContentDB.get_def("action", act_id) as ActionDef
 		if a != null and a.cancels_cast:
 			cancels += 1
-	check_eq(cancels, 1, "Zayd start loadout holds exactly one cancel move")
+	check_eq(cancels, 1, "Rydan start loadout holds exactly one cancel move")

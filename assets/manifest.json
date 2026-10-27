@@ -1,62 +1,6 @@
 {
   "assets": [
     {
-      "id": "bilqis_angry",
-      "path": "portraits/bilqis_angry.png",
-      "source": "gemini",
-      "licence": "Gemini, owner-generated",
-      "prompt": "bilqis_angry_v1"
-    },
-    {
-      "id": "bilqis_happy",
-      "path": "portraits/bilqis_happy.png",
-      "source": "gemini",
-      "licence": "Gemini, owner-generated",
-      "prompt": "bilqis_happy_v1"
-    },
-    {
-      "id": "bilqis_neutral",
-      "path": "portraits/bilqis_neutral.png",
-      "source": "gemini",
-      "licence": "Gemini, owner-generated",
-      "prompt": "bilqis_neutral_v1"
-    },
-    {
-      "id": "bilqis_surprised",
-      "path": "portraits/bilqis_surprised.png",
-      "source": "gemini",
-      "licence": "Gemini, owner-generated",
-      "prompt": "bilqis_surprised_v1"
-    },
-    {
-      "id": "zayd_angry",
-      "path": "portraits/zayd_angry.png",
-      "source": "gemini",
-      "licence": "Gemini, owner-generated",
-      "prompt": "zayd_angry_v1"
-    },
-    {
-      "id": "zayd_happy",
-      "path": "portraits/zayd_happy.png",
-      "source": "gemini",
-      "licence": "Gemini, owner-generated",
-      "prompt": "zayd_happy_v1"
-    },
-    {
-      "id": "zayd_neutral",
-      "path": "portraits/zayd_neutral.png",
-      "source": "gemini",
-      "licence": "Gemini, owner-generated",
-      "prompt": "zayd_neutral_v1"
-    },
-    {
-      "id": "zayd_surprised",
-      "path": "portraits/zayd_surprised.png",
-      "source": "gemini",
-      "licence": "Gemini, owner-generated",
-      "prompt": "zayd_surprised_v1"
-    },
-    {
       "id": "font_amiri_regular",
       "path": "fonts/amiri_regular.ttf",
       "source": "github.com/google/fonts (Amiri)",
@@ -3067,29 +3011,29 @@
       "prompt": "cut into 4 columns, 720 px tall, edges faded to alpha (2026-10-26)"
     },
     {
-      "id": "portrait_bilqis_ng_neutral",
-      "path": "portraits/bilqis_ng_neutral.png",
+      "id": "portrait_bilqis_neutral",
+      "path": "portraits/bilqis_neutral.png",
       "source": "Google Flow (owner's account), Feras's own output: inbox/Neon Glitch concept art/Game_dialogue_portrait_sprite_sheet_2K_20261025111845.jpg (his Bilqis sheet)",
       "licence": "owner-generated (Google Flow); owner's own art",
       "prompt": "cut into 4 columns, 720 px tall, edges faded to alpha (2026-10-26)"
     },
     {
-      "id": "portrait_bilqis_ng_happy",
-      "path": "portraits/bilqis_ng_happy.png",
+      "id": "portrait_bilqis_happy",
+      "path": "portraits/bilqis_happy.png",
       "source": "Google Flow (owner's account), Feras's own output: inbox/Neon Glitch concept art/Game_dialogue_portrait_sprite_sheet_2K_20261025111845.jpg (his Bilqis sheet)",
       "licence": "owner-generated (Google Flow); owner's own art",
       "prompt": "cut into 4 columns, 720 px tall, edges faded to alpha (2026-10-26)"
     },
     {
-      "id": "portrait_bilqis_ng_angry",
-      "path": "portraits/bilqis_ng_angry.png",
+      "id": "portrait_bilqis_angry",
+      "path": "portraits/bilqis_angry.png",
       "source": "Google Flow (owner's account), Feras's own output: inbox/Neon Glitch concept art/Game_dialogue_portrait_sprite_sheet_2K_20261025111845.jpg (his Bilqis sheet)",
       "licence": "owner-generated (Google Flow); owner's own art",
       "prompt": "cut into 4 columns, 720 px tall, edges faded to alpha (2026-10-26)"
     },
     {
-      "id": "portrait_bilqis_ng_surprised",
-      "path": "portraits/bilqis_ng_surprised.png",
+      "id": "portrait_bilqis_surprised",
+      "path": "portraits/bilqis_surprised.png",
       "source": "Google Flow (owner's account), Feras's own output: inbox/Neon Glitch concept art/Game_dialogue_portrait_sprite_sheet_2K_20261025111845.jpg (his Bilqis sheet)",
       "licence": "owner-generated (Google Flow); owner's own art",
       "prompt": "cut into 4 columns, 720 px tall, edges faded to alpha (2026-10-26)"

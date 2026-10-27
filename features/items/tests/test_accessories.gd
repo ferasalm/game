@@ -42,7 +42,7 @@ func test_ring_stones_fit_by_the_hilt_rule() -> void:
 
 func test_any_hero_may_wear_any_ring() -> void:
 	var owned: Array[StringName] = [&"silver_band", &"lattice_ring", &"qamariya_ring", &"sheba_signet"]
-	for hero: StringName in [&"zayd", &"bilqis"]:
+	for hero: StringName in [&"rydan", &"bilqis"]:
 		for ring_id: StringName in owned:
 			var problem: String = Inventory.equip_problem(owned, Inventory.slot_key(hero, &"accessory"), _ring(ring_id))
 			check_eq(problem, "", "%s may wear %s" % [hero, ring_id])
@@ -50,22 +50,22 @@ func test_any_hero_may_wear_any_ring() -> void:
 
 func test_a_socketed_stone_adds_to_the_ring_s_wearer() -> void:
 	var state := GearState.new()
-	state.base = ContentDB.get_def("combatant", &"zayd") as CombatantDef
+	state.base = ContentDB.get_def("combatant", &"rydan") as CombatantDef
 	state.accessory = _ring(&"silver_band")
 	state.accessory_stones = [_stone(&"sulaimani")]
-	var out: CombatantDef = Gear.build_hero(&"zayd", state)
+	var out: CombatantDef = Gear.build_hero(&"rydan", state)
 	check_eq(out.defense, state.base.defense + 2, "the Sulaimani Agate adds Def +2 from the ring")
 	var bare := GearState.new()
 	bare.base = state.base
 	bare.accessory = _ring(&"silver_band")
-	check_eq(Gear.build_hero(&"zayd", bare).defense, state.base.defense, "an empty ring adds nothing")
+	check_eq(Gear.build_hero(&"rydan", bare).defense, state.base.defense, "an empty ring adds nothing")
 
 
 func test_both_heroes_share_the_start_ring_and_its_stones() -> void:
 	var loader := BattleLoader.from_db(ContentDB)
 	GameState.start_new()
 	GameState.sockets[&"silver_band"] = [&"sulaimani"]
-	for hero: StringName in [&"zayd", &"bilqis"]:
+	for hero: StringName in [&"rydan", &"bilqis"]:
 		var with_stone: CombatantDef = loader.hero_from_state(hero, GameState)
 		GameState.sockets[&"silver_band"] = []
 		var without: CombatantDef = loader.hero_from_state(hero, GameState)

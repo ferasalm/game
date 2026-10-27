@@ -5,7 +5,7 @@ extends RefCounted
 ## the saved equipment through Inventory.equip. Items and perks are passed in (looked up by the view).
 
 
-## "zayd" -> blade, hilt, armor, prosthetic, accessory; "bilqis" -> frame, barrel, armor, prosthetic,
+## "rydan" -> blade, hilt, armor, prosthetic, accessory; "bilqis" -> frame, barrel, armor, prosthetic,
 ## accessory; every other hero -> armor, prosthetic, accessory.
 static func parts_for(hero: StringName) -> Array[StringName]:
 	if hero == Jambiyah.WIELDER:

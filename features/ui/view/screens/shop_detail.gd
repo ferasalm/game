@@ -84,7 +84,7 @@ func _clear_comparisons() -> void:
 
 func _build_comparisons(def: ConsumableDef) -> void:
 	_clear_comparisons()
-	var party: Array = GameState.party if not GameState.party.is_empty() else [&"zayd", &"bilqis"]
+	var party: Array = GameState.party if not GameState.party.is_empty() else [&"rydan", &"bilqis"]
 	var vitals: Dictionary = GameState.get(&"vitals") if GameState.get(&"vitals") is Dictionary else {}
 	var maxes: Dictionary = _hero_maxes(party)
 

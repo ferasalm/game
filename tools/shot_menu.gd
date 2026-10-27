@@ -35,8 +35,8 @@ func _build_screen() -> void:
 			_screen = ShopScreen.new()
 			_sub_vp.add_child(_screen)
 			_screen.open({"shop": &"herb_stall"})
-		"equipment", "fix_equip_zayd":
-			_setup_equipment(&"zayd")
+		"equipment", "fix_equip_rydan":
+			_setup_equipment(&"rydan")
 		"fix_equip_bilqis", "gear_bilqis":
 			_setup_equipment(&"bilqis")
 		"items", "items_target":
@@ -63,7 +63,7 @@ func _setup_save() -> void:
 	_screen.open({"mode": SlotPickerScreen.MODE_SAVE})
 
 
-func _setup_equipment(hero_name: StringName = &"zayd") -> void:
+func _setup_equipment(hero_name: StringName = &"rydan") -> void:
 	GameState.start_new()
 	var items: Array[StringName] = [
 		&"swift_hilt", &"keen_blade", &"arc_arm", &"concession_plate", &"mesh_abaya",
@@ -80,7 +80,7 @@ func _setup_equipment(hero_name: StringName = &"zayd") -> void:
 
 func _setup_items(targeting: bool) -> void:
 	GameState.start_new()
-	GameState.set_vitals({&"zayd": {"hp": 250, "sp": 8}, &"bilqis": {"hp": 280, "sp": 20}})
+	GameState.set_vitals({&"rydan": {"hp": 250, "sp": 8}, &"bilqis": {"hp": 280, "sp": 20}})
 	GameState.set_bag({&"pink_herb": 3, &"yellow_herb": 2, &"qishr_cup": 1})
 	_screen = ItemsScreen.new()
 	_sub_vp.add_child(_screen)

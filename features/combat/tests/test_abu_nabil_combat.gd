@@ -73,23 +73,23 @@ func test_cure_qishr_cup_removes_confused_from_afflicted_only() -> void:
 	loader.start_bag = {&"qishr_cup": 1}
 	var sim: BattleSim = loader.make_sim(&"grandfather_hilt", &"rustwire_blade", 1, 0, &"salvage_arm", &"wrist_rig")
 	db.free()
-	var zayd: UnitState = sim.timeline.find(&"zayd")
+	var rydan: UnitState = sim.timeline.find(&"rydan")
 	var bilqis: UnitState = sim.timeline.find(&"bilqis")
 	var confused: StatusDef = sim.statuses[&"confused"]
-	zayd.apply_status(confused)
-	zayd.phase = UnitState.Phase.COMMAND
-	sim.timeline.waiting_for = zayd
-	var reason: String = sim.choose_item(&"zayd", &"qishr_cup", &"")
+	rydan.apply_status(confused)
+	rydan.phase = UnitState.Phase.COMMAND
+	sim.timeline.waiting_for = rydan
+	var reason: String = sim.choose_item(&"rydan", &"qishr_cup", &"")
 	check_eq(reason, "", "chose qishr cup")
-	zayd.pos = Timeline.ACT_POINT - zayd.speed()
+	rydan.pos = Timeline.ACT_POINT - rydan.speed()
 	var events: Array[TimelineEvent] = sim.step()
 	var ended_events: Array[TimelineEvent] = []
 	for e: TimelineEvent in events:
 		if e.kind == &"status_ended" and e.detail == &"confused":
 			ended_events.append(e)
 	check_eq(ended_events.size(), 1, "exactly one status_ended event")
-	check_eq(ended_events[0].unit_id, &"zayd", "zayd cured of confusion")
-	check(not zayd.status_turns.has(&"confused"), "zayd no longer confused")
+	check_eq(ended_events[0].unit_id, &"rydan", "rydan cured of confusion")
+	check(not rydan.status_turns.has(&"confused"), "rydan no longer confused")
 	check(not bilqis.status_turns.has(&"confused"), "bilqis was not confused")
 
 
@@ -130,7 +130,7 @@ func test_battle_ai_self_heal_and_spice_cloud_avoidance() -> void:
 	var cloud := BattleProbe.move(&"spice_cloud", {"target": &"all_foes", "power": 4, "applies_status": &"confused"})
 	var pot := BattleProbe.move(&"pot_swing", {"target": &"foe", "power": 16})
 	var abu := BattleProbe.fighter(&"abu", {"max_hp": 900, "actions": [&"pot_swing", &"spice_cloud", &"feather_snack"] as Array[StringName]})
-	var hero := BattleProbe.fighter(&"zayd", {"max_hp": 400})
+	var hero := BattleProbe.fighter(&"rydan", {"max_hp": 400})
 	var confused := _status(&"confused", 0.5, 2)
 	var sim: BattleSim = BattleProbe.sim([hero], [0], [abu], [0], [snack, cloud, pot], {"ai_heal_below": 0.4}, [confused])
 	var abu_unit: UnitState = sim.timeline.find(&"abu_1")
@@ -145,7 +145,7 @@ func test_battle_ai_self_heal_and_spice_cloud_avoidance() -> void:
 	# When party is fully confused, cloud (power 4) is not useful
 	sim.action_rules._uses.clear()
 	abu_unit.hp = 800
-	var hero_unit: UnitState = sim.timeline.find(&"zayd")
+	var hero_unit: UnitState = sim.timeline.find(&"rydan")
 	hero_unit.apply_status(confused)
 	for seed_val: int in 20:
 		sim.rng.seed = seed_val

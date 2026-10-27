@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Cut one painted full-body figure out of a Flow picture on green (look spike: a static painted billboard).
 
-  python tools/art/figure_cut.py --in inbox/flow_zayd_full_a.png --id zayd [--half left] [--height 640]
+  python tools/art/figure_cut.py --in inbox/flow_zayd_full_a.png --id rydan [--half left] [--height 640]
 
 Keys out the green with portrait.py's soft keyer and despill, trims, resizes (Lanczos) and writes
 assets/textures/painted/figures/<id>.webp (lossless, with alpha) plus its assets/manifest.json entry.

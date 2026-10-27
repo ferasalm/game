@@ -17,13 +17,13 @@ func test_layout_puts_the_bag_left_and_party_cards_right() -> void:
 func test_preview_equals_the_heal_clamped_by_missing_hp() -> void:
 	var screen: ItemsScreen = _open()
 	screen.select_item(&"pink_herb")
-	var card: PartyCard = screen.hero_card(&"zayd")
+	var card: PartyCard = screen.hero_card(&"rydan")
 	var expected: int = 120
 	check_eq(card.preview_hp_gain(), expected, "250/400 heals the full 120")
 	check_eq(card.preview_text(), "+120 HP", "the card shows the gain")
-	GameState.set_vitals({&"zayd": {"hp": 350, "sp": 8}})
+	GameState.set_vitals({&"rydan": {"hp": 350, "sp": 8}})
 	screen.select_item(&"pink_herb")
-	check_eq(screen.hero_card(&"zayd").preview_hp_gain(), 50, "350/400 heals only the missing 50")
+	check_eq(screen.hero_card(&"rydan").preview_hp_gain(), 50, "350/400 heals only the missing 50")
 	_clean()
 
 
@@ -42,11 +42,11 @@ func test_full_and_battle_only_heroes_are_greyed_or_hidden() -> void:
 func test_using_a_herb_updates_the_count_and_the_bag() -> void:
 	var screen: ItemsScreen = _open()
 	screen.row_of(&"pink_herb").pressed.emit()
-	check(screen.hero_button(&"zayd") != null and not screen.hero_button(&"zayd").disabled, "hurt hero can be picked")
+	check(screen.hero_button(&"rydan") != null and not screen.hero_button(&"rydan").disabled, "hurt hero can be picked")
 	check(screen.hero_button(&"bilqis").disabled, "full hero is disabled")
-	screen.hero_button(&"zayd").pressed.emit()
-	check_eq(GameState.vitals[&"zayd"]["hp"], 370, "250 + 120")
-	check_eq(screen.hero_card(&"zayd").hp_text(), "370/400", "the card's HP bar follows the use")
+	screen.hero_button(&"rydan").pressed.emit()
+	check_eq(GameState.vitals[&"rydan"]["hp"], 370, "250 + 120")
+	check_eq(screen.hero_card(&"rydan").hp_text(), "370/400", "the card's HP bar follows the use")
 	check_eq(GameState.bag.get(&"pink_herb", 0), 0, "the herb left the bag")
 	check(not screen.item_ids().has(&"pink_herb"), "the row is gone")
 	_clean()
@@ -55,14 +55,14 @@ func test_using_a_herb_updates_the_count_and_the_bag() -> void:
 func test_qishr_cup_previews_its_cure_on_every_card() -> void:
 	GameState.start_new()
 	GameState.set_bag({&"qishr_cup": 1})
-	GameState.set_vitals({&"zayd": {"hp": 300, "sp": 8}, &"bilqis": {"hp": 200, "sp": 20}})
+	GameState.set_vitals({&"rydan": {"hp": 300, "sp": 8}, &"bilqis": {"hp": 200, "sp": 20}})
 	Screens.clear()
 	Router.state = Router.STATE_EXPLORING
 	var screen := Screens.open(&"items") as ItemsScreen
 	screen.select_item(&"qishr_cup")
-	var text: String = screen.hero_card(&"zayd").preview_text()
+	var text: String = screen.hero_card(&"rydan").preview_text()
 	check(text.contains(Ui.text("STATUS_CONFUSED")), "the card names the status it cures")
-	check_eq(screen.hero_card(&"zayd").preview_hp_gain(), 75, "the party heal is previewed")
+	check_eq(screen.hero_card(&"rydan").preview_hp_gain(), 75, "the party heal is previewed")
 	_clean()
 
 
@@ -71,18 +71,18 @@ func test_party_item_stays_usable_for_a_full_hero_when_another_can_gain() -> voi
 	GameState.start_new()
 	Router.state = Router.STATE_EXPLORING
 	GameState.set_bag({&"qishr_cup": 1})
-	GameState.set_vitals({&"zayd": {"hp": 400, "sp": 8}, &"bilqis": {"hp": 200, "sp": 20}})
+	GameState.set_vitals({&"rydan": {"hp": 400, "sp": 8}, &"bilqis": {"hp": 200, "sp": 20}})
 	var screen := Screens.open(&"items") as ItemsScreen
 	screen.select_item(&"qishr_cup")
-	check(screen.hero_card(&"zayd").preview_usable(), "a full hero is not greyed for a party item")
-	check_eq(screen.hero_card(&"zayd").preview_hp_gain(), 0, "the full hero gains nothing")
+	check(screen.hero_card(&"rydan").preview_usable(), "a full hero is not greyed for a party item")
+	check_eq(screen.hero_card(&"rydan").preview_hp_gain(), 0, "the full hero gains nothing")
 	check_eq(screen.hero_card(&"bilqis").preview_hp_gain(), 75, "the hurt hero previews the party heal")
 	screen.choose(&"qishr_cup")
 	check_eq(screen.party_panel.hint_text(), Ui.text("ITEMS_USE_PARTY"), "a party item says it uses on all")
-	check(not screen.hero_button(&"zayd").disabled, "the full hero card can still be confirmed")
-	screen.hero_button(&"zayd").pressed.emit()
+	check(not screen.hero_button(&"rydan").disabled, "the full hero card can still be confirmed")
+	screen.hero_button(&"rydan").pressed.emit()
 	check_eq(GameState.vitals[&"bilqis"]["hp"], 275, "one confirm heals the hurt hero")
-	check_eq(GameState.vitals[&"zayd"]["hp"], 400, "the full hero stays full")
+	check_eq(GameState.vitals[&"rydan"]["hp"], 400, "the full hero stays full")
 	_clean()
 
 
@@ -100,8 +100,8 @@ func test_hints_hide_with_a_focus_and_only_target_mode_shows_the_target_hint() -
 func test_using_an_item_toasts_the_translated_line() -> void:
 	var screen: ItemsScreen = _open()
 	screen.row_of(&"pink_herb").pressed.emit()
-	screen.hero_button(&"zayd").pressed.emit()
-	check_eq(Screens._toasts.current_text(), "Used Pink-feather herb on Zayd", "the toast is the real line")
+	screen.hero_button(&"rydan").pressed.emit()
+	check_eq(Screens._toasts.current_text(), "Used Pink-feather herb on Rydan", "the toast is the real line")
 	_clean()
 
 
@@ -109,7 +109,7 @@ func _open() -> ItemsScreen:
 	Screens.clear()
 	GameState.start_new()
 	Router.state = Router.STATE_EXPLORING
-	GameState.set_vitals({&"zayd": {"hp": 250, "sp": 8}})
+	GameState.set_vitals({&"rydan": {"hp": 250, "sp": 8}})
 	return Screens.open(&"items") as ItemsScreen
 
 

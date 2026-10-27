@@ -87,7 +87,7 @@ func _refresh_party(slot: int, service: SaveService) -> void:
 		var full: Dictionary = service.read(slot)
 		party = full.get("party", [])
 	if party.is_empty():
-		party = [&"zayd", &"bilqis"]
+		party = [&"rydan", &"bilqis"]
 	for hero_v: Variant in party:
 		var hero: StringName = StringName(hero_v)
 		var face: Control = PortraitFaces.face(hero, Ui.style().colour(&"c_party"))

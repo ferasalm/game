@@ -36,7 +36,7 @@ func test_remove_never_goes_below_zero_or_reserved() -> void:
 
 func test_two_heroes_cannot_claim_the_last_herb() -> void:
 	var bag: Bag = Bag.from_counts({&"pink_herb": 1})
-	check(bag.reserve(&"pink_herb"), "Zayd claims it")
+	check(bag.reserve(&"pink_herb"), "Rydan claims it")
 	check_eq(bag.available(&"pink_herb"), 0, "none available")
 	check(not bag.reserve(&"pink_herb"), "Bilqis cannot claim it")
 	bag.release(&"pink_herb")
@@ -66,17 +66,17 @@ func test_item_effect_hp_and_sp_gains_are_capped() -> void:
 func test_item_effect_revive_needs_a_downed_hero() -> void:
 	var white: ConsumableDef = _herb(&"white_herb")
 	var up: Dictionary = ItemEffect.gains(white, 0, 5, 400, 24)
-	check(bool(up["revive"]) and int(up["hp"]) == 120, "Zayd back at 30%: 120")
+	check(bool(up["revive"]) and int(up["hp"]) == 120, "Rydan back at 30%: 120")
 	check_eq(ItemEffect.gains(white, 0, 5, 280, 36)["hp"], 84, "Bilqis at 84")
 	check(not ItemEffect.changes(ItemEffect.gains(white, 50, 5, 400, 24)), "a living hero is not revived")
 
 
 func test_apply_writes_carried_vitals_and_missing_means_full() -> void:
-	var vitals: Dictionary = {&"zayd": {"hp": 100, "sp": 4}}
-	var gain: Dictionary = ItemEffect.apply(_herb(&"pink_herb"), vitals, &"zayd", 400, 24)
+	var vitals: Dictionary = {&"rydan": {"hp": 100, "sp": 4}}
+	var gain: Dictionary = ItemEffect.apply(_herb(&"pink_herb"), vitals, &"rydan", 400, 24)
 	check_eq(gain["hp"], 120, "gained 120")
-	check_eq(Vitals.hp_of(vitals, &"zayd", 400), 220, "carried HP updated")
-	check_eq(Vitals.sp_of(vitals, &"zayd", 24), 4, "SP untouched")
+	check_eq(Vitals.hp_of(vitals, &"rydan", 400), 220, "carried HP updated")
+	check_eq(Vitals.sp_of(vitals, &"rydan", 24), 4, "SP untouched")
 	var full: Dictionary = {}
-	check(not ItemEffect.changes(ItemEffect.apply(_herb(&"pink_herb"), full, &"zayd", 400, 24)), "a full hero is unchanged")
+	check(not ItemEffect.changes(ItemEffect.apply(_herb(&"pink_herb"), full, &"rydan", 400, 24)), "a full hero is unchanged")
 	check(full.is_empty(), "and nothing was written")

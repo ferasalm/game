@@ -54,7 +54,7 @@ func test_run_on_empty_dialogue_is_finished() -> void:
 func test_reader_objects_and_one_of_report_problems() -> void:
 	var errors := PackedStringArray()
 	var def := DialogueDef.new()
-	var data: Dictionary = {"id": "bad", "lines": [{"speaker": "zayd", "expression": "sleepy", "text": "K"}, 5]}
+	var data: Dictionary = {"id": "bad", "lines": [{"speaker": "rydan", "expression": "sleepy", "text": "K"}, 5]}
 	def.read(DefReader.new(data, "t", errors))
 	var text: String = "\n".join(errors)
 	check(text.contains("t.lines[0].expression"), "bad expression names the line: " + text)
@@ -77,12 +77,12 @@ func test_standins_exist_and_differ_per_expression() -> void:
 
 
 func test_real_portraits_load_and_standins_remain() -> void:
-	for speaker: StringName in [&"zayd", &"bilqis"]:
+	for speaker: StringName in [&"rydan", &"bilqis"]:
 		for expression: StringName in [&"neutral", &"happy", &"angry", &"surprised"]:
 			check(Portraits.has_real(speaker, expression), "owner portrait %s_%s is shipped" % [speaker, expression])
-	var texture: Texture2D = Portraits.texture(&"zayd", &"happy")
+	var texture: Texture2D = Portraits.texture(&"rydan", &"happy")
 	check(texture != null and texture.get_height() > 0, "real portrait texture")
-	check(Portraits.standin_image(&"zayd", &"happy") != null, "the stand-in still builds for speakers without art")
+	check(Portraits.standin_image(&"rydan", &"happy") != null, "the stand-in still builds for speakers without art")
 	check(Portraits.texture(&"nobody", &"happy") == null, "unknown speaker gives null")
 	# Playtest 2026-10-23: Abu Nabil showed the pixel stand-in although Feras made his portrait (neutral only).
 	check(Portraits.has_real(&"abu_nabil", &"neutral"), "Abu Nabil's owner portrait is shipped")

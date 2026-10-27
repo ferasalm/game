@@ -1,7 +1,7 @@
 extends SceneTree
 ## Balance harness: seeded battles per gear pairing with BattleAI playing both sides, one table.
 ## Run: GODOT_TIMEOUT=1800 tools/run_godot.sh -s res://features/combat/harness/balance.gd -- [battles] [all|obtainable] [name filter] [encounter id] [herbs] [level]
-## Rows: Zayd's hilt x blade x prosthetic (Bilqis in her start rig), then Bilqis's prosthetics (Zayd in his
+## Rows: Rydan's hilt x blade x prosthetic (Bilqis in her start rig), then Bilqis's prosthetics (Rydan in his
 ## start gear). Tune content/*.json, not code.
 
 const ENCOUNTER_LEVELS: Dictionary[StringName, int] = {
@@ -44,15 +44,15 @@ func _process(_delta: float) -> bool:
 	_loader.start_bag = _bag
 	db.free()
 	print("encounter: %s | hero level: %d" % [_encounter, _level])
-	print("%-52s win %%   secs   interrupts  heals  herbs" % "zayd gear (bilqis in her start rig)")
+	print("%-52s win %%   secs   interrupts  heals  herbs" % "rydan gear (bilqis in her start rig)")
 	for hilt_id: StringName in _pool(_loader.hilts.keys(), [&"grandfather_hilt", &"swift_hilt", &"anvil_hilt"]):
 		for blade_id: StringName in _pool(_loader.blades.keys(), [&"rustwire_blade", &"keen_blade"]):
-			for arm_id: StringName in _pool(_zayd_arms(), [&"salvage_arm", &"arc_arm"]):
+			for arm_id: StringName in _pool(_rydan_arms(), [&"salvage_arm", &"arc_arm"]):
 				print(_row("%s + %s + %s" % [hilt_id, blade_id, arm_id], hilt_id, blade_id, arm_id, &"wrist_rig"))
-	print("%-52s win %%   secs   interrupts  heals  herbs" % "bilqis rig (zayd in his start gear)")
+	print("%-52s win %%   secs   interrupts  heals  herbs" % "bilqis rig (rydan in his start gear)")
 	for rig_id: StringName in _pool(_bilqis_rigs(), [&"wrist_rig", &"lens_array"]):
 		print(_row("bilqis: %s" % rig_id, &"grandfather_hilt", &"rustwire_blade", &"salvage_arm", rig_id))
-	print("%-52s win %%   secs   interrupts  heals  herbs" % "bilqis pistol (zayd in his start gear)")
+	print("%-52s win %%   secs   interrupts  heals  herbs" % "bilqis pistol (rydan in his start gear)")
 	for frame_id: StringName in _pool(_pistol_parts(&"frame"), [&"rivet_frame", &"machined_frame"]):
 		for barrel_id: StringName in _pool(_pistol_parts(&"barrel"), [&"rivet_barrel", &"choke_barrel"]):
 			print(_pistol_row("%s + %s" % [frame_id, barrel_id], frame_id, barrel_id))
@@ -69,8 +69,8 @@ func _pool(every: Array, obtainable: Array[StringName]) -> Array[StringName]:
 	return out
 
 
-func _zayd_arms() -> Array[StringName]:
-	return _worn_by(&"zayd")
+func _rydan_arms() -> Array[StringName]:
+	return _worn_by(&"rydan")
 
 
 func _bilqis_rigs() -> Array[StringName]:
@@ -93,7 +93,7 @@ func _pistol_parts(part: StringName) -> Array[StringName]:
 	return out
 
 
-## A row with Bilqis's pistol parts set explicitly (Zayd in his start gear, Bilqis in the wrist rig).
+## A row with Bilqis's pistol parts set explicitly (Rydan in his start gear, Bilqis in the wrist rig).
 func _pistol_row(label: String, frame_id: StringName, barrel_id: StringName) -> String:
 	if not _filter.is_empty() and not label.contains(_filter):
 		return "(skipped) " + label

@@ -23,7 +23,7 @@ static func apply(base: CombatantDef, perk_list: Array[PerkDef]) -> CombatantDef
 			&"status_pierce":
 				out.status_pierce += float(perk.amount)
 			&"action_sp_gain", &"counter_ranged", &"interrupt_refund", &"counter_to_command", &"bonus_vs_status":
-				# TODO(zayd-kit): Handled in zayd-kit move redesign
+				# TODO(rydan-kit): Handled in rydan-kit move redesign
 				pass
 	return out
 

@@ -4,12 +4,12 @@
     {"id": "workshop_first", "lines": [
       {"speaker": "bilqis", "expression": "surprised", "text": "DLG_WORKSHOP_FIRST_1"},
       {"speaker": "bilqis", "expression": "happy", "text": "DLG_WORKSHOP_FIRST_2"},
-      {"speaker": "zayd", "expression": "neutral", "text": "DLG_WORKSHOP_FIRST_3"},
+      {"speaker": "rydan", "expression": "neutral", "text": "DLG_WORKSHOP_FIRST_3"},
       {"speaker": "bilqis", "expression": "angry", "text": "DLG_WORKSHOP_FIRST_4"}
     ]},
     {"id": "abu_nabil_first", "lines": [
       {"speaker": "abu_nabil", "expression": "happy", "text": "DLG_ABU_NABIL_HAGGLE_INTRO"},
-      {"speaker": "zayd", "expression": "surprised", "text": "DLG_ABU_NABIL_HAGGLE_ZAYD_SHOCK"},
+      {"speaker": "rydan", "expression": "surprised", "text": "DLG_ABU_NABIL_HAGGLE_RYDAN_SHOCK"},
       {"speaker": "abu_nabil", "expression": "neutral", "text": "DLG_ABU_NABIL_HAGGLE_DEFENSE", "choices": [
         {"text": "DLG_ABU_NABIL_CHOICE_A", "next": "abu_nabil_haggle_a"},
         {"text": "DLG_ABU_NABIL_CHOICE_B", "next": "end", "effects": ["set_flag abu_nabil_insulted", "start_battle abu_nabil_duel enemy_first"]},
@@ -62,42 +62,42 @@
     ]},
     {"id": "abu_nabil_chat_1", "lines": [
       {"speaker": "abu_nabil", "expression": "neutral", "text": "DLG_ABU_NABIL_CHAT_1_1"},
-      {"speaker": "zayd", "expression": "neutral", "text": "DLG_ABU_NABIL_CHAT_1_2"},
+      {"speaker": "rydan", "expression": "neutral", "text": "DLG_ABU_NABIL_CHAT_1_2"},
       {"speaker": "abu_nabil", "expression": "happy", "text": "DLG_ABU_NABIL_CHAT_1_3"}
     ]},
     {"id": "abu_nabil_chat_2", "lines": [
       {"speaker": "abu_nabil", "expression": "neutral", "text": "DLG_ABU_NABIL_CHAT_2_1"},
-      {"speaker": "zayd", "expression": "neutral", "text": "DLG_ABU_NABIL_CHAT_2_2"},
+      {"speaker": "rydan", "expression": "neutral", "text": "DLG_ABU_NABIL_CHAT_2_2"},
       {"speaker": "abu_nabil", "expression": "happy", "text": "DLG_ABU_NABIL_CHAT_2_3"}
     ]},
     {"id": "abu_nabil_chat_3", "lines": [
       {"speaker": "abu_nabil", "expression": "angry", "text": "DLG_ABU_NABIL_CHAT_3_1"},
-      {"speaker": "zayd", "expression": "neutral", "text": "DLG_ABU_NABIL_CHAT_3_2"},
+      {"speaker": "rydan", "expression": "neutral", "text": "DLG_ABU_NABIL_CHAT_3_2"},
       {"speaker": "abu_nabil", "expression": "neutral", "text": "DLG_ABU_NABIL_CHAT_3_3"}
     ]},
     {"id": "abu_nabil_chat_4", "lines": [
       {"speaker": "abu_nabil", "expression": "neutral", "text": "DLG_ABU_NABIL_CHAT_4_1"},
-      {"speaker": "zayd", "expression": "neutral", "text": "DLG_ABU_NABIL_CHAT_4_2"},
+      {"speaker": "rydan", "expression": "neutral", "text": "DLG_ABU_NABIL_CHAT_4_2"},
       {"speaker": "abu_nabil", "expression": "happy", "text": "DLG_ABU_NABIL_CHAT_4_3"}
     ]},
     {"id": "party_after_first_win", "lines": [
-      {"speaker": "zayd", "expression": "neutral", "text": "DLG_PARTY_FIRST_WIN_1"},
+      {"speaker": "rydan", "expression": "neutral", "text": "DLG_PARTY_FIRST_WIN_1"},
       {"speaker": "bilqis", "expression": "happy", "text": "DLG_PARTY_FIRST_WIN_2"},
-      {"speaker": "zayd", "expression": "surprised", "text": "DLG_PARTY_FIRST_WIN_3"},
+      {"speaker": "rydan", "expression": "surprised", "text": "DLG_PARTY_FIRST_WIN_3"},
       {"speaker": "bilqis", "expression": "neutral", "text": "DLG_PARTY_FIRST_WIN_4"},
-      {"speaker": "zayd", "expression": "happy", "text": "DLG_PARTY_FIRST_WIN_5"}
+      {"speaker": "rydan", "expression": "happy", "text": "DLG_PARTY_FIRST_WIN_5"}
     ]},
     {"id": "party_sabil_first", "lines": [
       {"speaker": "bilqis", "expression": "happy", "text": "DLG_PARTY_SABIL_FIRST_1"},
-      {"speaker": "zayd", "expression": "neutral", "text": "DLG_PARTY_SABIL_FIRST_2"},
+      {"speaker": "rydan", "expression": "neutral", "text": "DLG_PARTY_SABIL_FIRST_2"},
       {"speaker": "bilqis", "expression": "neutral", "text": "DLG_PARTY_SABIL_FIRST_3"},
-      {"speaker": "zayd", "expression": "happy", "text": "DLG_PARTY_SABIL_FIRST_4"}
+      {"speaker": "rydan", "expression": "happy", "text": "DLG_PARTY_SABIL_FIRST_4"}
     ]},
     {"id": "tayramana_qishr_first", "lines": [
       {"speaker": "bilqis", "expression": "happy", "text": "DLG_TAYRAMANA_QISHR_1"},
-      {"speaker": "zayd", "expression": "neutral", "text": "DLG_TAYRAMANA_QISHR_2"},
+      {"speaker": "rydan", "expression": "neutral", "text": "DLG_TAYRAMANA_QISHR_2"},
       {"speaker": "bilqis", "expression": "surprised", "text": "DLG_TAYRAMANA_QISHR_3"},
-      {"speaker": "zayd", "expression": "neutral", "text": "DLG_TAYRAMANA_QISHR_4"},
+      {"speaker": "rydan", "expression": "neutral", "text": "DLG_TAYRAMANA_QISHR_4"},
       {"speaker": "bilqis", "expression": "angry", "text": "DLG_TAYRAMANA_QISHR_5"},
       {"speaker": "bilqis", "expression": "neutral", "text": "DLG_TAYRAMANA_QISHR_6"}
     ]},
@@ -105,9 +105,9 @@
       {"speaker": "bilqis", "expression": "neutral", "text": "DLG_TAYRAMANA_QISHR_7"}
     ]},
     {"id": "neon_roof_fuse", "lines": [
-      {"speaker": "bilqis_ng", "expression": "neutral", "text": "DLG_NEON_ROOF_FUSE_1"},
+      {"speaker": "bilqis", "expression": "neutral", "text": "DLG_NEON_ROOF_FUSE_1"},
       {"speaker": "rydan", "expression": "neutral", "text": "DLG_NEON_ROOF_FUSE_2"},
-      {"speaker": "bilqis_ng", "expression": "neutral", "text": "DLG_NEON_ROOF_FUSE_3"},
+      {"speaker": "bilqis", "expression": "neutral", "text": "DLG_NEON_ROOF_FUSE_3"},
       {"speaker": "rydan", "expression": "neutral", "text": "DLG_NEON_ROOF_FUSE_4"}
     ]}
   ]

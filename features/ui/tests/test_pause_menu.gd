@@ -24,10 +24,10 @@ func test_every_text_key_exists() -> void:
 
 
 func test_missing_vitals_mean_full() -> void:
-	check_eq(PauseLogic.vitals_of(null, &"zayd", 120, 30), Vector2i(120, 30), "no record at all")
-	check_eq(PauseLogic.vitals_of({}, &"zayd", 120, 30), Vector2i(120, 30), "no hero record")
-	check_eq(PauseLogic.vitals_of({"zayd": {"hp": 0, "sp": 5}}, &"zayd", 120, 30), Vector2i(0, 5), "hp 0 is kept")
-	check_eq(PauseLogic.vitals_of({&"zayd": {"hp": 999, "sp": -4}}, &"zayd", 120, 30), Vector2i(120, 0), "clamped")
+	check_eq(PauseLogic.vitals_of(null, &"rydan", 120, 30), Vector2i(120, 30), "no record at all")
+	check_eq(PauseLogic.vitals_of({}, &"rydan", 120, 30), Vector2i(120, 30), "no hero record")
+	check_eq(PauseLogic.vitals_of({"rydan": {"hp": 0, "sp": 5}}, &"rydan", 120, 30), Vector2i(0, 5), "hp 0 is kept")
+	check_eq(PauseLogic.vitals_of({&"rydan": {"hp": 999, "sp": -4}}, &"rydan", 120, 30), Vector2i(120, 0), "clamped")
 
 
 func test_clock_and_money() -> void:

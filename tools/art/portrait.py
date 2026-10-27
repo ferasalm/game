@@ -5,7 +5,7 @@ Keys out the background colour sampled from the four corners, trims to the figur
 (Lanczos), saves assets/portraits/<speaker>_<expression>.png with its .import file (importer="keep"), and adds
 or replaces the entry in assets/manifest.json. See docs/design/portrait-prompts.md.
 
-  python tools/art/portrait.py --in gemini.png --speaker zayd --expression happy --licence "Gemini, owner-generated" --prompt-id zayd_happy_v1
+  python tools/art/portrait.py --in gemini.png --speaker rydan --expression happy --licence "Gemini, owner-generated" --prompt-id rydan_happy_v1
 """
 import argparse, json, pathlib, sys
 from PIL import Image, ImageChops, ImageFilter
@@ -87,7 +87,7 @@ def run(args: argparse.Namespace) -> pathlib.Path:
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--in", dest="input", required=True, help="Gemini picture with a flat background")
-    p.add_argument("--speaker", required=True, help="speaker id, e.g. zayd")
+    p.add_argument("--speaker", required=True, help="speaker id, e.g. rydan")
     p.add_argument("--expression", required=True, help="|".join(EXPRESSIONS))
     p.add_argument("--licence", required=True, help='licence text for the manifest, e.g. "Gemini, owner-generated"')
     p.add_argument("--prompt-id", default="", help="id of the prompt in docs/design/portrait-prompts.md")

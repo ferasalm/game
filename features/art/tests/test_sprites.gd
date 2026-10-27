@@ -2,7 +2,7 @@ extends TestCase
 ## Prototype T7: every sprite is well formed and uses only palette letters; PixelArt and CharacterVisual work.
 
 const REQUIRED: Array[StringName] = [
-	&"zayd", &"bilqis", &"concession_enforcer", &"survey_drone", &"workshop_bench",
+	&"rydan", &"bilqis", &"concession_enforcer", &"survey_drone", &"workshop_bench",
 ]
 
 
@@ -50,8 +50,8 @@ func test_pixel_art_colours() -> void:
 func test_character_visual_builds_with_real_and_missing_ids() -> void:
 	var real := CharacterVisual.new()
 	real.source_kind = &"pixel"
-	real.set_sprite(&"zayd")
-	check_eq(real.height(), 2.0, "Zayd's real 64 px sprite at the default 32 px = 1 m")
+	real.set_sprite(&"rydan")
+	check_eq(real.height(), 2.0, "Rydan's real 64 px sprite at the default 32 px = 1 m")
 	var standin := CharacterVisual.new()
 	standin.source_kind = &"pixel"
 	standin.set_sprite(&"workshop_bench")

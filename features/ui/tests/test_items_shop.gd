@@ -20,7 +20,7 @@ func test_both_screens_are_registered_and_the_pause_menu_offers_items() -> void:
 
 func test_items_screen_lists_the_bag_and_uses_a_herb() -> void:
 	_fresh()
-	GameState.set_vitals({&"zayd": {"hp": 100, "sp": 24}})
+	GameState.set_vitals({&"rydan": {"hp": 100, "sp": 24}})
 	Screens.open(&"items")
 	var screen: ItemsScreen = Screens.top() as ItemsScreen
 	check(screen != null, "opens")
@@ -28,10 +28,10 @@ func test_items_screen_lists_the_bag_and_uses_a_herb() -> void:
 		return
 	check_eq(screen.item_ids(), [&"pink_herb"] as Array[StringName], "the starting bag")
 	screen.row_of(&"pink_herb").pressed.emit()
-	check(not screen.hero_button(&"zayd").disabled, "a hurt hero can be picked")
+	check(not screen.hero_button(&"rydan").disabled, "a hurt hero can be picked")
 	check(screen.hero_button(&"bilqis").disabled, "a full hero is disabled")
-	screen.hero_button(&"zayd").pressed.emit()
-	check_eq(GameState.vitals[&"zayd"]["hp"], 220, "healed 120")
+	screen.hero_button(&"rydan").pressed.emit()
+	check_eq(GameState.vitals[&"rydan"]["hp"], 220, "healed 120")
 	check(GameState.bag.is_empty(), "herb used up")
 	check(screen.item_ids().is_empty(), "the list is empty now")
 	screen.on_back()

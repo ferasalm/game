@@ -17,25 +17,25 @@ func test_options_are_owned_fitting_and_rarer_first() -> void:
 	for rarity_id: StringName in ContentDB.ids("rarity"):
 		order[rarity_id] = UiRarity.order(rarity_id)
 	var owned: Array[StringName] = OWNED.duplicate()
-	var hilts: Array[EquipDef] = EquipmentOptions.options(owned, items, &"zayd", &"hilt", order)
+	var hilts: Array[EquipDef] = EquipmentOptions.options(owned, items, &"rydan", &"hilt", order)
 	check_eq(hilts.map(func(item: EquipDef) -> StringName: return item.id), [&"grandfather_hilt", &"swift_hilt"], "owned hilts, heirloom first")
-	var arms: Array[EquipDef] = EquipmentOptions.options(owned, items, &"zayd", &"prosthetic", order)
-	check_eq(arms.map(func(item: EquipDef) -> StringName: return item.id), [&"arc_arm", &"salvage_arm"], "Zayd's prosthetics only, epic first")
+	var arms: Array[EquipDef] = EquipmentOptions.options(owned, items, &"rydan", &"prosthetic", order)
+	check_eq(arms.map(func(item: EquipDef) -> StringName: return item.id), [&"arc_arm", &"salvage_arm"], "Rydan's prosthetics only, epic first")
 	var hers: Array[EquipDef] = EquipmentOptions.options(owned, items, &"bilqis", &"prosthetic", order)
 	check_eq(hers.map(func(item: EquipDef) -> StringName: return item.id), [&"lens_array", &"wrist_rig"], "Bilqis's own prosthetics")
 	check_eq(EquipmentOptions.options(owned, items, &"bilqis", &"hilt", order).size(), 0, "Bilqis has no hilt slot items")
 	var frames: Array[EquipDef] = EquipmentOptions.options(owned, items, &"bilqis", &"frame", order)
 	check_eq(frames.map(func(item: EquipDef) -> StringName: return item.id), [&"machined_frame", &"rivet_frame"], "Bilqis's pistol frames, rarer first")
-	check_eq(EquipmentOptions.options(owned, items, &"zayd", &"frame", order).size(), 0, "Zayd has no frame slot")
-	var rings: Array[EquipDef] = EquipmentOptions.options(owned, items, &"zayd", &"accessory", order)
-	check_eq(rings.map(func(item: EquipDef) -> StringName: return item.id), [&"lattice_ring", &"silver_band"], "Zayd's rings, rarer first")
+	check_eq(EquipmentOptions.options(owned, items, &"rydan", &"frame", order).size(), 0, "Rydan has no frame slot")
+	var rings: Array[EquipDef] = EquipmentOptions.options(owned, items, &"rydan", &"accessory", order)
+	check_eq(rings.map(func(item: EquipDef) -> StringName: return item.id), [&"lattice_ring", &"silver_band"], "Rydan's rings, rarer first")
 	check_eq(EquipmentOptions.options(owned, items, &"bilqis", &"accessory", order).size(), 2, "Bilqis may wear the same rings")
 	check_eq(EquipmentOptions.parts_for(&"bilqis"),
 		[&"frame", &"barrel", &"armor", &"prosthetic", &"accessory"] as Array[StringName],
 		"Bilqis's slots: frame, barrel, armor, prosthetic, accessory")
-	check_eq(EquipmentOptions.parts_for(&"zayd"),
+	check_eq(EquipmentOptions.parts_for(&"rydan"),
 		[&"blade", &"hilt", &"armor", &"prosthetic", &"accessory"] as Array[StringName],
-		"Zayd's slots: blade, hilt, armor, prosthetic, accessory")
+		"Rydan's slots: blade, hilt, armor, prosthetic, accessory")
 
 
 func test_options_sort_by_string_not_stringname_address() -> void:
@@ -55,11 +55,11 @@ func _sorted_ids(prefix: String, words: Array[String]) -> Array[String]:
 		var armor := ArmorDef.new()
 		armor.id = StringName("zz_%s_%s" % [prefix, word])
 		armor.rarity = &"common"
-		armor.heroes = [&"zayd"]
+		armor.heroes = [&"rydan"]
 		items.append(armor)
 		owned.append(armor.id)
 	var order: Dictionary[StringName, int] = {&"common": 0}
-	var sorted: Array[EquipDef] = EquipmentOptions.options(owned, items, &"zayd", &"armor", order)
+	var sorted: Array[EquipDef] = EquipmentOptions.options(owned, items, &"rydan", &"armor", order)
 	var out: Array[String] = []
 	for item: EquipDef in sorted:
 		out.append(String(item.id).trim_prefix("zz_%s_" % prefix))

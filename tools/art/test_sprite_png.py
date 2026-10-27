@@ -21,19 +21,19 @@ def main():
         sprites = os.path.join(tmp, "sprites.json")
         shutil.copy(os.path.join(ART, "sprites.json"), sprites)
         common = ["--sprites", sprites, "--palette", os.path.join(ART, "palette.json")]
-        before = sprite_png.find(sprite_png.read_sprites(sprites), "zayd")
-        png = os.path.join(tmp, "zayd.png")
-        assert sprite_png.main(["export", "--id", "zayd", "--png", png] + common) == 0
-        assert sprite_png.main(["import", "--id", "zayd", "--png", png] + common) == 0
-        after = sprite_png.find(sprite_png.read_sprites(sprites), "zayd")
+        before = sprite_png.find(sprite_png.read_sprites(sprites), "rydan")
+        png = os.path.join(tmp, "rydan.png")
+        assert sprite_png.main(["export", "--id", "rydan", "--png", png] + common) == 0
+        assert sprite_png.main(["import", "--id", "rydan", "--png", png] + common) == 0
+        after = sprite_png.find(sprite_png.read_sprites(sprites), "rydan")
         assert after["rows"] == before["rows"], "round trip changed the pixels"
         assert after["licence"] == before["licence"] and "hand-edited" in after["source"]
 
         img = Image.open(png).convert("RGBA")
         img.putpixel((8, 10), (1, 2, 3, 255))  # a colour outside the palette
         img.save(png)
-        assert sprite_png.main(["import", "--id", "zayd", "--png", png] + common) == 1, "stray colour accepted"
-        assert sprite_png.main(["import", "--id", "zayd", "--png", png, "--snap"] + common) == 0
+        assert sprite_png.main(["import", "--id", "rydan", "--png", png] + common) == 1, "stray colour accepted"
+        assert sprite_png.main(["import", "--id", "rydan", "--png", png, "--snap"] + common) == 0
 
         gpl = os.path.join(tmp, "main.gpl")
         assert sprite_png.main(["palette", "--out", gpl] + common) == 0

@@ -3,7 +3,7 @@ extends Node
 ## to_dict()/from_dict() are the save format (SaveCodec migrates old versions).
 
 var flags: Dictionary[StringName, bool] = {}
-## Worn gear per hero and part: &"zayd.hilt", &"zayd.armor", etc. -> content ids.
+## Worn gear per hero and part: &"rydan.hilt", &"rydan.armor", etc. -> content ids.
 var equipment: Dictionary[StringName, StringName] = {}
 ## Unique items the party owns (hilts, blades, prosthetics, armors, stones), each id at most once.
 var inventory: Array[StringName] = []
@@ -50,7 +50,7 @@ func start_new() -> void:
 		money = rules.start_money
 		bag = rules.start_bag.duplicate()
 		party = rules.start_party.duplicate()
-	equipment[&"zayd.armor"] = &"courier_jacket"
+	equipment[&"rydan.armor"] = &"courier_jacket"
 	equipment[&"bilqis.armor"] = &"rig_shawl"
 	for item_id: StringName in [&"courier_jacket", &"rig_shawl", &"aqiq_red"]:
 		if not inventory.has(item_id):

@@ -159,7 +159,7 @@ func _on_action_pressed() -> void:
 			if WorkshopService.upgrade(_selected_id):
 				_after_mutation()
 		WorkshopTabsBar.Tab.GEMSTONES:
-			var hilt_id: StringName = GameState.equipment.get(&"zayd.hilt", &"grandfather_hilt")
+			var hilt_id: StringName = GameState.equipment.get(&"rydan.hilt", &"grandfather_hilt")
 			WorkshopService.set_stone(hilt_id, _selected_slot, _selected_id)
 			_after_mutation()
 		WorkshopTabsBar.Tab.CRAFTING:
@@ -168,7 +168,7 @@ func _on_action_pressed() -> void:
 
 
 func _remove_stone() -> void:
-	var hilt_id: StringName = GameState.equipment.get(&"zayd.hilt", &"grandfather_hilt")
+	var hilt_id: StringName = GameState.equipment.get(&"rydan.hilt", &"grandfather_hilt")
 	WorkshopService.remove_stone(hilt_id, _selected_slot)
 	_after_mutation()
 
@@ -181,7 +181,7 @@ func _after_mutation() -> void:
 
 
 func _refresh_sockets() -> void:
-	var hilt_id: StringName = GameState.equipment.get(&"zayd.hilt", &"grandfather_hilt")
+	var hilt_id: StringName = GameState.equipment.get(&"rydan.hilt", &"grandfather_hilt")
 	var hilt := ContentDB.get_def("hilt", hilt_id) as HiltDef
 	var open_count: int = Stones.open_slots(hilt, GameState.flags)
 	var sock_list: Array = GameState.sockets.get(hilt_id, [])

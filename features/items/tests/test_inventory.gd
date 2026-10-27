@@ -19,27 +19,27 @@ func test_add_is_unique_and_ignores_empty_ids() -> void:
 
 
 func test_slot_keys_are_hero_dot_part() -> void:
-	check_eq(Inventory.slot_key(&"zayd", &"hilt"), &"zayd.hilt", "zayd.hilt")
+	check_eq(Inventory.slot_key(&"rydan", &"hilt"), &"rydan.hilt", "rydan.hilt")
 	check_eq(Inventory.slot_key(&"bilqis", &"prosthetic"), &"bilqis.prosthetic", "bilqis.prosthetic")
 
 
 func test_equip_checks_ownership_slot_and_wearer() -> void:
 	var owned: Array[StringName] = [&"anvil_hilt", &"keen_blade", &"arc_arm", &"wrist_rig"]
 	var worn: Dictionary[StringName, StringName] = {}
-	check(Inventory.equip(worn, owned, &"zayd.hilt", _hilt(&"swift_hilt")) != "", "not owned: refused")
+	check(Inventory.equip(worn, owned, &"rydan.hilt", _hilt(&"swift_hilt")) != "", "not owned: refused")
 	check(worn.is_empty(), "and nothing changed")
-	check_eq(Inventory.equip(worn, owned, &"zayd.hilt", _hilt(&"anvil_hilt")), "", "an owned hilt in the hilt slot")
-	check_eq(worn[&"zayd.hilt"], &"anvil_hilt", "worn")
-	check(Inventory.equip(worn, owned, &"zayd.blade", _hilt(&"anvil_hilt")) != "", "a hilt in the blade slot: refused")
+	check_eq(Inventory.equip(worn, owned, &"rydan.hilt", _hilt(&"anvil_hilt")), "", "an owned hilt in the hilt slot")
+	check_eq(worn[&"rydan.hilt"], &"anvil_hilt", "worn")
+	check(Inventory.equip(worn, owned, &"rydan.blade", _hilt(&"anvil_hilt")) != "", "a hilt in the blade slot: refused")
 	check(Inventory.equip(worn, owned, &"bilqis.hilt", _hilt(&"anvil_hilt")) != "", "Bilqis has no jambiyah slot")
 	var arc := ContentDB.get_def("prosthetic", &"arc_arm") as ProstheticDef
 	var rig := ContentDB.get_def("prosthetic", &"wrist_rig") as ProstheticDef
-	check_eq(Inventory.equip(worn, owned, &"zayd.prosthetic", arc), "", "Zayd's own prosthetic")
-	check(Inventory.equip(worn, owned, &"bilqis.prosthetic", arc) != "", "Zayd's arm does not fit Bilqis")
-	check(Inventory.equip(worn, owned, &"zayd.prosthetic", rig) != "", "Bilqis's rig does not fit Zayd")
+	check_eq(Inventory.equip(worn, owned, &"rydan.prosthetic", arc), "", "Rydan's own prosthetic")
+	check(Inventory.equip(worn, owned, &"bilqis.prosthetic", arc) != "", "Rydan's arm does not fit Bilqis")
+	check(Inventory.equip(worn, owned, &"rydan.prosthetic", rig) != "", "Bilqis's rig does not fit Rydan")
 	check_eq(Inventory.equip(worn, owned, &"bilqis.prosthetic", rig), "", "Bilqis's own rig")
-	check(Inventory.equip(worn, owned, &"zayd.hat", arc) != "", "an unknown part is refused")
-	check(Inventory.equip(worn, owned, &"zayd.hilt", null) != "", "no item is refused")
+	check(Inventory.equip(worn, owned, &"rydan.hat", arc) != "", "an unknown part is refused")
+	check(Inventory.equip(worn, owned, &"rydan.hilt", null) != "", "no item is refused")
 
 
 func test_chest_opens_once_and_the_flag_is_saved() -> void:

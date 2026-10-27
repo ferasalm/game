@@ -38,7 +38,7 @@ func test_rects_match_spec_within_2px() -> void:
 
 func test_no_two_connector_lines_intersect() -> void:
 	var menu: EquipmentMenu = _open_menu()
-	for hero_id: StringName in [&"zayd", &"bilqis"]:
+	for hero_id: StringName in [&"rydan", &"bilqis"]:
 		menu.show_hero(hero_id)
 		menu.stage._process(0.01)
 		var lines_dict: Dictionary[StringName, Line2D] = menu.stage.lines()
@@ -67,7 +67,7 @@ func test_no_two_connector_lines_intersect() -> void:
 func test_header_labels_lie_inside_the_header_rect() -> void:
 	var menu: EquipmentMenu = _open_menu()
 	var header_rect: Rect2 = menu.header.get_global_rect()
-	for hero_id: StringName in [&"zayd", &"bilqis"]:
+	for hero_id: StringName in [&"rydan", &"bilqis"]:
 		menu.show_hero(hero_id)
 		for node: Node in NodeScan.of_type(menu.header, &"Label"):
 			var l := node as Label

@@ -5,7 +5,7 @@ extends TestCase
 
 func _sim(battle_seed: int) -> BattleSim:
 	var loader: BattleLoader = BattleLoader.from_db(ContentDB)
-	var gear: Dictionary[StringName, StringName] = {&"zayd.prosthetic": &"cradle_spine", &"bilqis.prosthetic": &"lens_array"}
+	var gear: Dictionary[StringName, StringName] = {&"rydan.prosthetic": &"cradle_spine", &"bilqis.prosthetic": &"lens_array"}
 	return loader.make_sim_for(loader.party_from_equipment(gear), battle_seed)
 
 
@@ -53,19 +53,19 @@ func test_ally_move_lists_allies_and_self_and_all_moves_skip_the_list() -> void:
 		if hero == null:
 			continue
 		var menu: BattleCommandMenu = _menu_for(sim, hero)
-		if hero.def.id == &"zayd" and not seen.has(&"self"):
+		if hero.def.id == &"rydan" and not seen.has(&"self"):
 			seen[&"self"] = true
 			_press(menu, &"reactive_guard")
 			check_eq(hero.action.id, &"reactive_guard", "a self move commits without a target list")
-			check_eq(hero.targets, [&"zayd"] as Array[StringName], "aimed at the caster")
+			check_eq(hero.targets, [&"rydan"] as Array[StringName], "aimed at the caster")
 			check(not menu.is_open(), "the menu closed")
 		elif hero.def.id == &"bilqis":
 			if not seen.has(&"ally"):
 				seen[&"ally"] = true
 				_press(menu, &"nanite_mend")
-				check_eq(_unit_ids(menu.target_buttons()), [&"zayd", &"bilqis"] as Array[StringName], "allies, in timeline order")
+				check_eq(_unit_ids(menu.target_buttons()), [&"rydan", &"bilqis"] as Array[StringName], "allies, in timeline order")
 				menu.target_buttons()[0].pressed.emit()
-				check_eq(hero.targets, [&"zayd"] as Array[StringName], "healing Zayd")
+				check_eq(hero.targets, [&"rydan"] as Array[StringName], "healing Rydan")
 			elif not seen.has(&"all"):
 				seen[&"all"] = true
 				_press(menu, &"overclock_link")

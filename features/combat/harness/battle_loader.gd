@@ -65,8 +65,8 @@ func fighter(hero_id: StringName, hilt_id: StringName, blade_id: StringName, pro
 	return Gear.build(combatants.get(hero_id), hilts.get(hilt_id), blades.get(blade_id), prosthetics.get(prosthetic_id), perks)
 
 
-func zayd_with(hilt_id: StringName, blade_id: StringName, prosthetic_id: StringName = &"") -> CombatantDef:
-	return fighter(&"zayd", hilt_id, blade_id, prosthetic_id)
+func rydan_with(hilt_id: StringName, blade_id: StringName, prosthetic_id: StringName = &"") -> CombatantDef:
+	return fighter(&"rydan", hilt_id, blade_id, prosthetic_id)
 
 
 ## The hero's fighter from a GameState (equipment, sockets, upgrades, xp); the assembly lives in PartyBuilder.
@@ -83,24 +83,24 @@ func party_from_state(game_state: Object, hero_ids: Array[StringName] = []) -> A
 	return PartyBuilder.party_from_state(self, game_state, hero_ids)
 
 
-## A sim for the two start heroes: explicit Zayd gear, Bilqis's rig plus pistol parts
+## A sim for the two start heroes: explicit Rydan gear, Bilqis's rig plus pistol parts
 ## (empty ids fall back to her start pistol) at one hero level.
 func make_sim(
 		hilt_id: StringName, blade_id: StringName, battle_seed: int, ambush: int = 0,
-		zayd_prosthetic: StringName = &"", bilqis_prosthetic: StringName = &"",
+		rydan_prosthetic: StringName = &"", bilqis_prosthetic: StringName = &"",
 		hero_level: int = 1, frame_id: StringName = &"", barrel_id: StringName = &"") -> BattleSim:
-	var zayd_state := GearState.new()
-	zayd_state.base = combatants.get(&"zayd")
-	zayd_state.hilt = hilts.get(hilt_id)
-	zayd_state.blade = blades.get(blade_id)
-	zayd_state.prosthetic = prosthetics.get(zayd_prosthetic)
-	zayd_state.level = hero_level
-	zayd_state.perks = perks
+	var rydan_state := GearState.new()
+	rydan_state.base = combatants.get(&"rydan")
+	rydan_state.hilt = hilts.get(hilt_id)
+	rydan_state.blade = blades.get(blade_id)
+	rydan_state.prosthetic = prosthetics.get(rydan_prosthetic)
+	rydan_state.level = hero_level
+	rydan_state.perks = perks
 	for c: ClassDef in classes.values():
-		if c.hero == &"zayd":
-			zayd_state.class_def = c
+		if c.hero == &"rydan":
+			rydan_state.class_def = c
 			break
-	var zayd_fighter := Gear.build_hero(&"zayd", zayd_state)
+	var rydan_fighter := Gear.build_hero(&"rydan", rydan_state)
 	var bilqis_state := GearState.new()
 	bilqis_state.base = combatants.get(&"bilqis")
 	bilqis_state.prosthetic = prosthetics.get(bilqis_prosthetic)
@@ -115,7 +115,7 @@ func make_sim(
 			bilqis_state.class_def = c
 			break
 	var bilqis_fighter := Gear.build_hero(&"bilqis", bilqis_state)
-	return make_sim_for([zayd_fighter, bilqis_fighter], battle_seed, ambush)
+	return make_sim_for([rydan_fighter, bilqis_fighter], battle_seed, ambush)
 
 
 func make_sim_for(party: Array[CombatantDef], battle_seed: int, ambush: int = 0) -> BattleSim:

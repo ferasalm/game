@@ -1,10 +1,10 @@
 class_name LoadoutDef
 extends Def
 ## A hero's starting gear: which weapon parts, prosthetic and accessory they own and wear at the start
-## (each optional). Zayd's loadout is the jambiyah pair plus his prosthetic and ring; Bilqis has the rivet
+## (each optional). Rydan's loadout is the jambiyah pair plus his prosthetic and ring; Bilqis has the rivet
 ## pistol pair, her prosthetic and a ring.
 
-var hero: StringName = &"zayd"
+var hero: StringName = &"rydan"
 var hilt: StringName = &""
 var blade: StringName = &""
 var prosthetic: StringName = &""
@@ -15,7 +15,7 @@ var accessory: StringName = &""
 
 func read(r: DefReader) -> void:
 	id = r.id()
-	hero = StringName(r.text("hero", "zayd", false))
+	hero = StringName(r.text("hero", "rydan", false))
 	hilt = StringName(r.text("hilt", "", false))
 	blade = StringName(r.text("blade", "", false))
 	prosthetic = StringName(r.text("prosthetic", "", false))

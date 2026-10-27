@@ -1,7 +1,7 @@
 # Hilt stones (design v1, 2026-10-22; every number is [PLACEHOLDER] until the harness and a play-through)
 Owner ask (2026-10-22): the grandfather's jambiyah hilt (Heirloom) has 3 stone slots so it lasts and grows very
 strong late; other hilts have fewer (Common none). Stones set in the hilt add stats or passive abilities to Zayd.
-Moves the stones change: docs/design/zayd-moves.md. Rarity rules: docs/design/prosthetics.md.
+Moves the stones change: docs/design/rydan-moves.md. Rarity rules: docs/design/prosthetics.md.
 
 ## 1. Player experience
 - Fantasy: Zayd restores his grandfather's hilt, one stone at a time; the hilt "remembers" more as the story goes.

@@ -95,9 +95,9 @@ func lands_before(actor: UnitState, action: ActionDef, target: UnitState) -> boo
 	return mine < theirs
 
 
-## The reverse stab: when the party was ambushed (ambush 1), Zayd strikes the lowest-slot living enemy with
+## The reverse stab: when the party was ambushed (ambush 1), Rydan strikes the lowest-slot living enemy with
 ## the action "reverse_stab" before the battle starts. Returns its events once, [] on any later call or
-## when there is no ambush, no Zayd or no such action. step() calls it first if the view did not.
+## when there is no ambush, no Rydan or no such action. step() calls it first if the view did not.
 func opening() -> Array[TimelineEvent]:
 	var out: Array[TimelineEvent] = []
 	var wielder: UnitState = timeline.find(Jambiyah.WIELDER)

@@ -37,7 +37,7 @@ func test_worn_blade_box_shows_name() -> void:
 
 func test_empty_slot_shows_dim_ring() -> void:
 	var menu: EquipmentMenu = _open_menu()
-	GameState.equipment[&"zayd.armor"] = &""
+	GameState.equipment[&"rydan.armor"] = &""
 	menu.boxes_manager.refresh(menu.hero)
 	var armor_box: SlotBox = menu.boxes_manager.boxes[&"armor"]
 	check(armor_box != null, "armor box exists")
@@ -71,7 +71,7 @@ func test_hero_header_shows_lv_1_on_fresh_game() -> void:
 
 func test_stats_preview_shows_arrow_indicators() -> void:
 	var menu: EquipmentMenu = _open_menu()
-	menu.show_hero(&"zayd")
+	menu.show_hero(&"rydan")
 	menu._on_slot_activated(&"blade")
 	var keen: EquipDef = ContentDB.get_def("blade", &"keen_blade") as EquipDef
 	menu._on_item_focused(keen)
@@ -84,7 +84,7 @@ func test_stats_preview_shows_arrow_indicators() -> void:
 
 func test_preview_after_value_equals_gear_build_hero() -> void:
 	var menu: EquipmentMenu = _open_menu()
-	menu.show_hero(&"zayd")
+	menu.show_hero(&"rydan")
 	menu._on_slot_activated(&"blade")
 	var keen: EquipDef = ContentDB.get_def("blade", &"keen_blade") as EquipDef
 	menu._on_item_focused(keen)
@@ -92,10 +92,10 @@ func test_preview_after_value_equals_gear_build_hero() -> void:
 	var staged := EquipmentStatsPanel.StagedState.new()
 	staged.xp = GameState.xp
 	staged.equipment = GameState.equipment.duplicate()
-	staged.equipment[&"zayd.blade"] = &"keen_blade"
+	staged.equipment[&"rydan.blade"] = &"keen_blade"
 	staged.sockets = GameState.sockets
 	staged.upgrades = GameState.upgrades
-	var expected: CombatantDef = loader.hero_from_state(&"zayd", staged)
+	var expected: CombatantDef = loader.hero_from_state(&"rydan", staged)
 	var after_val: CombatantDef = menu.stats.last_after()
 	check_eq(after_val.attack, expected.attack, "after-value equals Gear.build_hero with swap")
 	Screens.clear()
@@ -104,7 +104,7 @@ func test_preview_after_value_equals_gear_build_hero() -> void:
 
 func test_sockets_show_stones_and_hide_locked() -> void:
 	var menu: EquipmentMenu = _open_menu()
-	menu.show_hero(&"zayd")
+	menu.show_hero(&"rydan")
 	var g_box: SlotBox = menu.boxes_manager.boxes[&"gemstones"]
 	check(g_box != null, "gemstones box exists")
 	check(g_box._socket_panels[0].visible, "socket 0 visible")
@@ -120,7 +120,7 @@ func test_sockets_show_stones_and_hide_locked() -> void:
 func test_gemstones_on_fresh_game_shows_e_chip_and_description() -> void:
 	GameState.start_new()
 	var menu: EquipmentMenu = Screens.open(&"equipment") as EquipmentMenu
-	menu.show_hero(&"zayd")
+	menu.show_hero(&"rydan")
 	menu._on_slot_activated(&"gemstones")
 	var aqiq_row: ListRow = null
 	for r: ListRow in menu.owned_list.rows():
@@ -138,7 +138,7 @@ func test_gemstones_on_fresh_game_shows_e_chip_and_description() -> void:
 func test_armor_on_fresh_game_description_and_e_chip_agree_no_prosthetic_fallback() -> void:
 	GameState.start_new()
 	var menu: EquipmentMenu = Screens.open(&"equipment") as EquipmentMenu
-	menu.show_hero(&"zayd")
+	menu.show_hero(&"rydan")
 	menu._on_slot_activated(&"armor")
 	var courier_def: EquipDef = ContentDB.get_def("armor", &"courier_jacket") as EquipDef
 	var courier_name: String = Ui.text(courier_def.name_key)

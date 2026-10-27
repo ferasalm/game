@@ -1,6 +1,6 @@
 class_name HiltMesh
 extends RefCounted
-## The stand-in for Zayd's grandfather's jambiyah (Heirloom `grandfather_hilt`), built in code from the part's colours
+## The stand-in for Rydan's grandfather's jambiyah (Heirloom `grandfather_hilt`), built in code from the part's colours
 ## until Feras's picture becomes a model: a curved horn grip with two silver bands, a T pommel with a carnelian stone,
 ## a curved blade, and a curved leather sheath with silver throat and tip. The grip's base is the origin: +y toward
 ## the pommel, the blade runs down -y and curves toward +z (forward), so the piece sheathed at the belt front and

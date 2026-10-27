@@ -49,8 +49,8 @@ func test_pistol_parts_fit_only_bilqis_in_their_own_slot() -> void:
 	check_eq(Inventory.equip_problem(owned, &"bilqis.barrel", _pistol(&"rivet_barrel")), "", "the barrel in her barrel slot")
 	check(Inventory.equip_problem(owned, &"bilqis.frame", _pistol(&"rivet_barrel")) != "",
 		"a barrel never goes in the frame slot")
-	check(Inventory.equip_problem(owned, &"zayd.frame", _pistol(&"rivet_frame")) != "",
-		"Zayd has no frame slot")
+	check(Inventory.equip_problem(owned, &"rydan.frame", _pistol(&"rivet_frame")) != "",
+		"Rydan has no frame slot")
 	var swift: EquipDef = ContentDB.get_def("hilt", &"swift_hilt") as EquipDef
 	check(Inventory.equip_problem(owned, &"bilqis.frame", swift) != "", "a hilt never goes in the frame slot")
 	check_eq(Inventory.equip_problem(owned, &"nonsense", _pistol(&"rivet_frame")), "'nonsense' is not a slot",
@@ -59,20 +59,20 @@ func test_pistol_parts_fit_only_bilqis_in_their_own_slot() -> void:
 
 func test_start_loadout_wears_the_common_pair_and_the_ring() -> void:
 	var start: LoadoutDef = null
-	var zayd_start: LoadoutDef = null
+	var rydan_start: LoadoutDef = null
 	for l_id: StringName in ContentDB.ids("loadout"):
 		var l := ContentDB.get_def("loadout", l_id) as LoadoutDef
 		if l.hero == &"bilqis":
 			start = l
-		elif l.hero == &"zayd":
-			zayd_start = l
-	check(start != null and zayd_start != null, "both start loadouts exist")
+		elif l.hero == &"rydan":
+			rydan_start = l
+	check(start != null and rydan_start != null, "both start loadouts exist")
 	check_eq(Loadout.worn({}, start, &"frame"), &"rivet_frame", "the saved choice, else the start frame")
 	check_eq(Loadout.worn({}, start, &"barrel"), &"rivet_barrel", "and barrel")
 	check_eq(Loadout.worn({}, start, &"accessory"), &"silver_band", "and the Common ring")
 	check_eq(Loadout.worn({}, start, &"armor"), &"", "armor never comes from the loadout")
-	check_eq(Loadout.worn({}, zayd_start, &"accessory"), &"silver_band", "Zayd starts with the ring too")
-	check_eq(Loadout.worn({}, zayd_start, &"frame"), &"", "but no pistol")
+	check_eq(Loadout.worn({}, rydan_start, &"accessory"), &"silver_band", "Rydan starts with the ring too")
+	check_eq(Loadout.worn({}, rydan_start, &"frame"), &"", "but no pistol")
 
 
 func test_start_party_fights_with_the_pistol_worn() -> void:
@@ -85,11 +85,11 @@ func test_start_party_fights_with_the_pistol_worn() -> void:
 	check_eq(bilqis.attack, bare.attack + _pistol(&"rivet_barrel").attack, "the start barrel is worn")
 	check_eq(bilqis.weight, bare.weight + rig.weight + _pistol(&"rivet_frame").weight + _pistol(&"rivet_barrel").weight,
 		"both start parts are worn")
-	var zayd: CombatantDef = party[0]
-	var zayd_base: CombatantDef = ContentDB.get_def("combatant", &"zayd") as CombatantDef
-	var zayd_blade: BladeDef = ContentDB.get_def("blade", &"rustwire_blade") as BladeDef
-	var zayd_arm: ProstheticDef = ContentDB.get_def("prosthetic", &"salvage_arm") as ProstheticDef
-	check_eq(zayd.attack, zayd_base.attack + zayd_blade.attack + zayd_arm.attack, "Zayd keeps his start blade and arm")
+	var rydan: CombatantDef = party[0]
+	var rydan_base: CombatantDef = ContentDB.get_def("combatant", &"rydan") as CombatantDef
+	var rydan_blade: BladeDef = ContentDB.get_def("blade", &"rustwire_blade") as BladeDef
+	var rydan_arm: ProstheticDef = ContentDB.get_def("prosthetic", &"salvage_arm") as ProstheticDef
+	check_eq(rydan.attack, rydan_base.attack + rydan_blade.attack + rydan_arm.attack, "Rydan keeps his start blade and arm")
 
 
 func test_pistol_upgrades_add_per_level() -> void:

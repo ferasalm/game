@@ -6,8 +6,8 @@ func test_shipped_content_is_valid() -> void:
 	var db: Node = load("res://core/content_db.gd").new()
 	var problems: PackedStringArray = db.call("load_all")
 	check_eq(problems, PackedStringArray(), "no content problems")
-	var zayd := db.call("get_def", "combatant", &"zayd") as CombatantDef
-	check(zayd != null and zayd.actions.has(&"breaker"), "zayd knows breaker")
+	var rydan := db.call("get_def", "combatant", &"rydan") as CombatantDef
+	check(rydan != null and rydan.actions.has(&"breaker"), "rydan knows breaker")
 	db.free()
 
 

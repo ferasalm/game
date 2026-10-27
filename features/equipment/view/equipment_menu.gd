@@ -6,7 +6,7 @@ const ID: StringName = &"equipment"
 
 enum Mode { SLOTS, LIST }
 
-var hero: StringName = &"zayd"
+var hero: StringName = &"rydan"
 var heroes: Array[StringName] = []
 var active_slot: StringName = &"blade"
 var mode: Mode = Mode.SLOTS
@@ -60,7 +60,7 @@ func build(_args: Dictionary) -> void:
 	for h: Variant in GameState.party:
 		heroes.append(StringName(str(h)))
 	if heroes.is_empty():
-		heroes = [&"zayd", &"bilqis"]
+		heroes = [&"rydan", &"bilqis"]
 	hero = heroes[0]
 	_build_components()
 	show_hero(hero)

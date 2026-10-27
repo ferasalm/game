@@ -9,7 +9,7 @@ func _duel_request(opening: StringName = &"even", practice: bool = false) -> Bat
 	req.opening = opening
 	req.ambush = 1 if opening == &"enemy_first" else (2 if opening == &"party_first" else 0)
 	req.practice = practice
-	req.party = [&"zayd", &"bilqis"] as Array[StringName]
+	req.party = [&"rydan", &"bilqis"] as Array[StringName]
 	return req
 
 
@@ -46,20 +46,20 @@ func test_spar_session_restores_vitals_bag_and_money_on_win() -> void:
 	GameState.start_new()
 	GameState.money = 150
 	GameState.set_bag({&"pink_herb": 2})
-	GameState.set_vitals({&"zayd": {"hp": 400, "sp": 24}})
+	GameState.set_vitals({&"rydan": {"hp": 400, "sp": 24}})
 	var req: BattleRequest = _duel_request(&"even", true)
 	req.take_snapshot(GameState.vitals, GameState.bag, GameState.money)
 	# Simulate changes during battle
 	GameState.money = 999
 	GameState.set_bag({&"pink_herb": 0})
-	GameState.set_vitals({&"zayd": {"hp": 50, "sp": 2}})
+	GameState.set_vitals({&"rydan": {"hp": 50, "sp": 2}})
 
 	_restore_snapshot(req)
 
 	check_eq(GameState.money, 150, "spar victory: money unchanged")
 	check_eq(GameState.bag.get(&"pink_herb", 0), 2, "spar victory: bag restored")
-	check_eq(GameState.vitals[&"zayd"]["hp"], 400, "spar victory: hp restored")
-	check_eq(GameState.vitals[&"zayd"]["sp"], 24, "spar victory: sp restored")
+	check_eq(GameState.vitals[&"rydan"]["hp"], 400, "spar victory: hp restored")
+	check_eq(GameState.vitals[&"rydan"]["sp"], 24, "spar victory: sp restored")
 	check(not GameState.cleared_patrols.has(&"abu_nabil_duel"), "duel not recorded as cleared patrol")
 
 
@@ -67,20 +67,20 @@ func test_spar_session_restores_vitals_bag_and_money_on_loss() -> void:
 	GameState.start_new()
 	GameState.money = 200
 	GameState.set_bag({&"yellow_herb": 1})
-	GameState.set_vitals({&"zayd": {"hp": 300, "sp": 10}})
+	GameState.set_vitals({&"rydan": {"hp": 300, "sp": 10}})
 	var req: BattleRequest = _duel_request(&"even", true)
 	req.take_snapshot(GameState.vitals, GameState.bag, GameState.money)
 	# Simulate party KO
 	GameState.money = 0
 	GameState.set_bag({})
-	GameState.set_vitals({&"zayd": {"hp": 0, "sp": 0}})
+	GameState.set_vitals({&"rydan": {"hp": 0, "sp": 0}})
 
 	_restore_snapshot(req)
 
 	check_eq(GameState.money, 200, "spar loss: money unchanged")
 	check_eq(GameState.bag.get(&"yellow_herb", 0), 1, "spar loss: bag restored")
-	check_eq(GameState.vitals[&"zayd"]["hp"], 300, "spar loss: hp restored")
-	check_eq(GameState.vitals[&"zayd"]["sp"], 10, "spar loss: sp restored")
+	check_eq(GameState.vitals[&"rydan"]["hp"], 300, "spar loss: hp restored")
+	check_eq(GameState.vitals[&"rydan"]["sp"], 10, "spar loss: sp restored")
 
 
 func test_retry_retains_chosen_opening() -> void:

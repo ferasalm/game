@@ -1,10 +1,10 @@
 class_name Jambiyah
 extends RefCounted
-## Builds Zayd's fighter from a base CombatantDef plus one hilt and one blade (docs/design/combat.md).
+## Builds Rydan's fighter from a base CombatantDef plus one hilt and one blade (docs/design/combat.md).
 ## Merge order: base -> hilt -> blade -> caps. Returns a new CombatantDef; the shared base is never touched.
 
 ## The hero who wields the jambiyah (hilt and blade slots exist for this combatant only).
-const WIELDER: StringName = &"zayd"
+const WIELDER: StringName = &"rydan"
 
 
 static func equip(base: CombatantDef, hilt: HiltDef, blade: BladeDef) -> CombatantDef:

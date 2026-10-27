@@ -9,7 +9,7 @@ const CONTACT: Vector2 = Vector2(1450.0, 1000.0)
 func _fresh() -> void:
 	GameState.start_new()
 	GameState.party.clear()
-	GameState.party.append(&"zayd")
+	GameState.party.append(&"rydan")
 	GameState.vitals.clear()
 
 
@@ -65,7 +65,7 @@ func test_balance_200_fights() -> void:
 	_fresh()
 	var room := ContentDB.get_def("neon_room", &"prison_roof") as NeonRoomDef
 	var loader: BattleLoader = BattleLoader.from_db(ContentDB, room.encounter)
-	var party: Array[CombatantDef] = loader.party_from_state(GameState, [&"zayd"])
+	var party: Array[CombatantDef] = loader.party_from_state(GameState, [&"rydan"])
 	var wins: int = 0
 	for fight_seed: int in 200:
 		var sim: BattleSim = loader.make_sim_for(party, fight_seed + 1, 0)
@@ -119,7 +119,7 @@ func test_played_melee_waits_for_impact() -> void:
 			foe_id = unit.unit_id
 			break
 	var before: int = battle.shown_hp[foe_id]
-	var unit: UnitState = battle.sim.timeline.find(&"zayd")
+	var unit: UnitState = battle.sim.timeline.find(&"rydan")
 	unit.acted = battle.sim.actions[&"jambiyah_strike"]
 	var hit := TimelineEvent.new(&"damage", foe_id, 15, &"jambiyah_strike")
 	battle.sim.timeline.find(foe_id).hp -= 15  # the sim has already dealt it; the view must wait for the impact
@@ -128,7 +128,7 @@ func test_played_melee_waits_for_impact() -> void:
 		hp_at_impact[0] = battle.shown_hp[foe_id]
 	, CONNECT_ONE_SHOT)
 	var play := MapBattlePlay.new(battle)
-	play.play([TimelineEvent.new(&"act", &"zayd"), hit])
+	play.play([TimelineEvent.new(&"act", &"rydan"), hit])
 	check_eq(hp_at_impact[0], before, "no damage applied before the impact signal")
 	check_eq(battle.shown_hp[foe_id], before - 15, "damage applied after the impact signal")
 	world.free()

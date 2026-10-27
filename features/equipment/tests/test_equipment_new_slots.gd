@@ -16,10 +16,10 @@ func _open_menu() -> EquipmentMenu:
 	return menu
 
 
-func test_bilqis_shows_five_boxes_zayd_six() -> void:
+func test_bilqis_shows_five_boxes_rydan_six() -> void:
 	var menu: EquipmentMenu = _open_menu()
-	menu.show_hero(&"zayd")
-	check_eq(menu.boxes_manager.visible_boxes().size(), 6, "Zayd shows 6 boxes")
+	menu.show_hero(&"rydan")
+	check_eq(menu.boxes_manager.visible_boxes().size(), 6, "Rydan shows 6 boxes")
 	menu.show_hero(&"bilqis")
 	var bilqis_slots: Array[StringName] = []
 	for b: SlotBox in menu.boxes_manager.visible_boxes():
@@ -36,13 +36,13 @@ func test_bilqis_shows_five_boxes_zayd_six() -> void:
 
 func test_accessory_box_shows_the_ring_sockets() -> void:
 	var menu: EquipmentMenu = _open_menu()
-	menu.show_hero(&"zayd")
+	menu.show_hero(&"rydan")
 	var ring_box: SlotBox = menu.boxes_manager.boxes[&"accessory"]
 	check(ring_box._socket_panels[0].visible, "socket 0 visible for the Common ring")
 	check(not ring_box._socket_panels[1].visible, "socket 1 hidden (one socket)")
 	Inventory.add(GameState.inventory, &"qamariya_ring")
-	GameState.equipment[&"zayd.accessory"] = &"qamariya_ring"
-	menu.boxes_manager.refresh(&"zayd")
+	GameState.equipment[&"rydan.accessory"] = &"qamariya_ring"
+	menu.boxes_manager.refresh(&"rydan")
 	check(ring_box._socket_panels[0].visible and ring_box._socket_panels[1].visible,
 		"the Rare ring opens both sockets")
 	Screens.clear()
@@ -60,7 +60,7 @@ func test_equipping_through_the_new_slots_writes_game_state() -> void:
 	var ring: EquipDef = ContentDB.get_def("accessory", &"lattice_ring") as EquipDef
 	menu._on_item_pressed(ring)
 	check_eq(GameState.equipment[&"bilqis.accessory"], &"lattice_ring", "A on a ring writes bilqis.accessory")
-	check(not GameState.equipment.has(&"zayd.accessory"), "the swap never touches the other hero")
+	check(not GameState.equipment.has(&"rydan.accessory"), "the swap never touches the other hero")
 	var loader := BattleLoader.from_db(ContentDB)
 	var after: CombatantDef = loader.hero_from_state(&"bilqis", GameState)
 	var bare: CombatantDef = ContentDB.get_def("combatant", &"bilqis") as CombatantDef

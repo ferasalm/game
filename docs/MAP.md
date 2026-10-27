@@ -86,7 +86,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/combat/view.json`: content: battle_view x1
 - `content/dialogue/box.json`: content: dialogue_style x1
 - `content/dialogue/dialogues.json`: content: dialogue x19
-- `content/dialogue/speakers.json`: content: speaker x5
+- `content/dialogue/speakers.json`: content: speaker x3
 - `content/dialogue/talks.json`: content: talk x2
 - `content/economy/rules.json`: content: economy_rules x1
 - `content/economy/shops.json`: content: shop x1
@@ -130,7 +130,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `core/event_bus.gd`: Global signals between features (autoload EventBus)
 - `core/game_state.gd`: Everything a save file holds (autoload GameState)
 - `core/save/router_saves.gd`: Helper for Router save operations: slot checks and file I/O delegates
-- `core/save/save_codec.gd`: Pure save format: migrate() lifts any old save dictionary to the current version one step at a time (_v1_to_v2, _v2_to_v3, _v3_to_v4), and sanitize() drops content ids the game no longer knows
+- `core/save/save_codec.gd`: Pure save format: migrate() lifts any old save dictionary to the current version one step at a time (_v1_to_v2 
 - `core/save/save_service.gd`: Save slots on disk: <dir>/slot_N.json, written atomically (tmp file, then rename over the old one, with the previous save kept as slot_N.json.bak)
 - `core/scene_router.gd`: Game flow owner (autoload Router): title, new game, save and load, busy state, unstuck, and the play-time clock
 - `core/tests/fixtures/assets_bad/a.txt`
@@ -170,7 +170,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/art/tests/test_model_defs.gd`: The data behind the offline sprite sources (content/art/models.json, clips.json) against the imported assets: every model maps all nine states to clips that exist, every clip names a real animation of the shared library with its length and an impact inside it, the bodies keep the rig's bone names, and every anchor and part bone resolves
 - `features/art/tests/test_model_logic.gd`: The pure maths behind live 3D characters: ClipTiming (wind-up, hold, strike, recovery and the events on that curve), Locomotion (gait, stride to playback rate, lean, foot contacts passed) and YawTurn (the capped short-way turn)
 - `features/art/tests/test_model_source.gd`: The live 3D source behind the CharacterVisual facade: the model is built and painted, clips announce impact and end on the retimed curve (and wait for the hit pause), the body turns by yaw and never by a negative scale, the feet pace the ground and sound a footstep on each foot contact, a knocked-out body stays down, the grandfather's hilt is drawn for a strike and sheathed after, and a CharacterVisual without a model def falls back to the pixel sprite
-- `features/art/tests/test_pose_match.gd`: Retargeting (PoseMatch, PoseFollow): the swing turns one direction into another, the per-bone offset makes the target bone point where the source bone points (at rest and after a turn), the hips travel scales with hip height, and a pose_source model's body follows its hidden source (Zayd's Rodin model stands up with the hand below the head); mirrored, the other arm does the move (Zayd's cast raises his prosthetic right arm)
+- `features/art/tests/test_pose_match.gd`: Retargeting (PoseMatch, PoseFollow): the swing turns one direction into another, the per-bone offset makes the target bone point where the source bone points (at rest and after a turn), the hips travel scales with hip height, and a pose_source model's body follows its hidden source (Rydan's Rodin model stands up with the hand below the head); mirrored, the other arm does the move (Rydan's cast raises his prosthetic right arm)
 - `features/art/tests/test_rodin_parts.gd`: Feras's Rodin pieces after tools/rodin: the grandfather's hilt is the Rodin grip above the belt origin and the Rodin sheath below it curving forward (the blade stays the code one)
 - `features/art/tests/test_sprites.gd`: Prototype T7: every sprite is well formed and uses only palette letters; PixelArt and CharacterVisual work
 - `features/art/tests/test_visual_anchors.gd`: purpose: Every body-anchor share is read from content/art/visual.json, and a missing key is a content error
@@ -183,7 +183,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/art/view/character_skin.gdshader`
 - `features/art/view/character_visual.gd`: A character standing in the 3D world (feet on the node's origin): the facade the game talks to
 - `features/art/view/garment_mesh.gd`: Stand-in clothing built in code from a ModelPartDef (until Feras's own models): a lathe (a skirt, a coat, a head wrap) turned from a radius profile, and `prim`, which adds a coloured primitive to a SurfaceTool so a whole prop (the jambiyah) is one mesh with vertex colours (the skin shader multiplies COLOR into the albedo)
-- `features/art/view/hilt_mesh.gd`: The stand-in for Zayd's grandfather's jambiyah (Heirloom `grandfather_hilt`), built in code from the part's colours until Feras's picture becomes a model: a curved horn grip with two silver bands, a T pommel with a carnelian stone, a curved blade, and a curved leather sheath with silver throat and tip
+- `features/art/view/hilt_mesh.gd`: The stand-in for Rydan's grandfather's jambiyah (Heirloom `grandfather_hilt`), built in code from the part's colours until Feras's picture becomes a model: a curved horn grip with two silver bands, a T pommel with a carnelian stone, a curved blade, and a curved leather sheath with silver throat and tip
 - `features/art/view/hilt_parts.gd`: The grandfather's jambiyah as nodes (the part's Rodin grip and sheath scenes, else HiltMesh's stand-in; the blade is always HiltMesh's): a sheath and the hilt with its blade sit at the belt (`root`); draw() carries the hilt to the hand bone for a strike (the blade shows, the sheath stays), sheathe() puts it back
 - `features/art/view/model_anchors.gd`: purpose: A live model's body anchors from its own height and width, with every share read from visual.json
 - `features/art/view/model_clips.gd`: Drives a MANUAL AnimationPlayer
@@ -270,9 +270,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/combat/tests/test_formation.gd`: Formation rows: cover and melee multipliers
 - `features/combat/tests/test_hud_layout.gd`: HudLayout (pure rect maths) and UnitLetters: boxes around points, panels that dodge fighters, which fighter the mouse points at, the info card's fade, and the A / B letters of same-kind units
 - `features/combat/tests/test_item_policy.gd`: ItemPolicy (balance harness): herbs only when the bag has them, deterministic, battles still end
-- `features/combat/tests/test_reverse_stab.gd`: The reverse stab: only when the party was ambushed, Zayd strikes the lowest-slot living enemy first
+- `features/combat/tests/test_reverse_stab.gd`: The reverse stab: only when the party was ambushed, Rydan strikes the lowest-slot living enemy first
+- `features/combat/tests/test_rydan_kit.gd`: Tests for Rydan's redesigned kit (rydan-moves.md section 5 and brief): damage split, sp_gain, after_act_pos, cast_status, bonus vs status, poised counter, shove, and content comparisons
 - `features/combat/tests/test_timeline.gd`: Timeline rules: command pause, cast and act, interrupts, knockback limits, determinism
-- `features/combat/tests/test_zayd_kit.gd`: Tests for Zayd's redesigned kit (zayd-moves.md section 5 and brief): damage split, sp_gain, after_act_pos, cast_status, bonus vs status, poised counter, shove, and content comparisons
 - `features/combat/view/battle_command_menu.gd`: The compact command menu (in the turn panel, beside the hero) for the hero waiting at COMMAND: first one Button per move (unaffordable ones disabled; name, SP cost, a "cancels" / target tag; the focused move's description below), then one Button per valid target (foes or allies; self and all-moves skip this list)
 - `features/combat/view/battle_flee_button.gd`: Helper to build the FLEE command-menu button (extracted to keep battle_command_menu.gd under 200 lines)
 - `features/combat/view/battle_menu_chips.gd`: The small tags on the right edge of a command-menu button: SP cost (cyan), "cancels" (magenta), the target scope of a self / all move, and for a target the HP and a "will interrupt" warning
@@ -381,10 +381,10 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/jambiyah/defs/hilt_def.gd`: A jambiyah hilt: adds to agility, multiplies cast speed, adds weight, and grants exactly one move
 - `features/jambiyah/defs/loadout_def.gd`: A hero's starting gear: which weapon parts, prosthetic and accessory they own and wear at the start (each optional)
 - `features/jambiyah/defs/stone_def.gd`: A gemstone socketed into a jambiyah hilt (content/jambiyah/stones.json)
-- `features/jambiyah/logic/jambiyah.gd`: Builds Zayd's fighter from a base CombatantDef plus one hilt and one blade (docs/design/combat.md)
+- `features/jambiyah/logic/jambiyah.gd`: Builds Rydan's fighter from a base CombatantDef plus one hilt and one blade (docs/design/combat.md)
 - `features/jambiyah/logic/loadout.gd`: Which gear a hero wears: the saved choice per slot ("<hero>.<part>" in GameState.equipment), else the starting gear
 - `features/jambiyah/logic/stones.gd`: Pure rules for jambiyah hilt gemstones: open socket counts, rarity fitting rules, and socket mutations
-- `features/jambiyah/tests/test_jambiyah.gd`: T3: every hilt + blade pairing gives a different Zayd stat sets, inside the timeline caps; each hilt adds exactly one move; the shared base definition is never changed
+- `features/jambiyah/tests/test_jambiyah.gd`: T3: every hilt + blade pairing gives a different Rydan stat sets, inside the timeline caps; each hilt adds exactly one move; the shared base definition is never changed
 - `features/jambiyah/tests/test_loadout.gd`: The loadout fallback: a hero wears the saved item per slot, else the start loadout
 - `features/neon/battle/battle_demo.gd`: purpose: The battle demo scene (docs/design/first-playable.md section 3): the prison-roof plate, a y-sorted world with Rydan and two guards, and a MapBattle that begins on ready at the contact between them
 - `features/neon/battle/battle_demo.tscn`: scene
@@ -665,6 +665,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_gate_d6.py`: Self-test for the D6 gate rules (2026-10-27): protected tests and assets, removed checks, new tests fail on base.
 - `tools/test_kill_tree.py`: Tests kill_tree (tools/lib.sh): a tree with a native grandchild and a parent still forking during the kill dies whole.
 - `tools/test_map.py`: Self-test for map.py: only tracked files are mapped (an untracked file made CI fail "MAP.md current").
+- `tools/test_no_legacy_hero.py`: Guard: the hero's old code id stays gone (renamed to rydan, save v7, Feras 2026-10-27). Fails on the old id in the
 - `tools/test_pre_spend.py`: Self-test for pre_spend.py: a paid tool is blocked without Feras's OK in a user message; Hyper3D gets a reminder.
 - `tools/test_res_graph.py`: Self-test for res_graph.py --check: python tools/test_res_graph.py (a fake project in a temp folder, exit 1 on failure).
 - `tools/test_session_start.py`: Self-test for .claude/hooks/session-start.sh (reports the session's own worktree) and the .gitignore .env rule.

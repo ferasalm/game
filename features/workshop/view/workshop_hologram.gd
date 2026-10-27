@@ -3,7 +3,7 @@ extends Control
 ## purpose: 760x620 menu hologram: the hero's Neon idle sprite (or portrait), or a 256px item icon.
 
 const SIZE: Vector2 = Vector2(760.0, 620.0)
-const HERO: StringName = &"zayd"
+const HERO: StringName = &"rydan"
 
 var _sprite: TextureRect
 var _icon_rect: TextureRect
