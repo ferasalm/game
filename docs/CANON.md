@@ -26,6 +26,7 @@ Story detail: docs/story/bible.md (CONFIRMED = locked). Vision and pillars: docs
 - 2026-10-21 | Ambush: jambiya reverse stab before a fight; Rydan from behind on a patrol = a head start | Feras
 - 2026-10-23 | Abu Nabil, a 40-year-old herb seller (R2, no patrols): optional haggle; spice-cloud fight, qishr cures; fair prices; risk-free rematches | Feras
 ## Art and audio
+- 2026-10-27 | Character style, one for all: Basilisk anime design + sumi-e brush ink, full colour (no grey); references made in Google Flow, then Rodin; Rydan and Bilqis re-coloured to match; Roya = the owner's "after the tragedy" picture (rebel, her dead husband's jambiya); Bilqis ref = concept art Bilqis.jpg (old Flow picture and its model retired) | Feras
 - 2026-10-27 | Looks and moves like Hades (isometric, our ink style); the Hades look gets a spike first, then the art-budget decision (D13) | Feras
 - 2026-10-24 | 2D: isometric ink-comic per concepts; old Sana'a at night (tower-houses, moon, stars, clouds, fog), neon accents, megacity on the horizon (no year), rain, qamariya glow at the heart; characters: offline 3D renders as sprites, none at runtime | Feras
 - 2026-10-21 | 3D inputs (for sprite renders): A-pose pictures (arms 30-45 deg down), flat light, grey background; CC0 motion, no Mixamo | Feras/Claude
