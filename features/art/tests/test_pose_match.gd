@@ -36,13 +36,13 @@ func test_hips_travel_scales_with_hip_height() -> void:
 
 
 func test_a_pose_source_body_follows() -> void:
-	var def := ContentDB.get_def("model", &"zayd") as ModelDef
+	var def := ContentDB.get_def("model", &"rydan") as ModelDef
 	if def.pose_source.is_empty():
 		return
 	var holder := Node3D.new()
 	tree.root.add_child(holder)
 	var rig := ModelRig.new()
-	check(rig.build(def, holder), "zayd builds with its pose source")
+	check(rig.build(def, holder), "rydan builds with its pose source")
 	check(rig.pose != null and rig.anim_skeleton != rig.skeleton, "the clips play on the hidden source")
 	rig.player.play(&"Idle_Loop" if rig.player.has_animation(&"Idle_Loop") else rig.player.get_animation_list()[0])
 	rig.player.advance(0.4)
@@ -66,10 +66,10 @@ func test_mirror_names_and_reflection() -> void:
 
 
 func test_a_mirrored_cast_raises_the_other_arm() -> void:
-	var def := ContentDB.get_def("model", &"zayd") as ModelDef
+	var def := ContentDB.get_def("model", &"rydan") as ModelDef
 	if def.pose_source.is_empty():
 		return
-	check(def.mirrors(StringName(def.states["cast"])), "zayd's cast clip plays mirrored")
+	check(def.mirrors(StringName(def.states["cast"])), "rydan's cast clip plays mirrored")
 	check(not def.mirrors(StringName(def.states["attack"])), "his attack does not")
 	var holder := Node3D.new()
 	tree.root.add_child(holder)
