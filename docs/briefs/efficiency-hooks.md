@@ -1,7 +1,8 @@
 # Chat brief: efficiency fixes 1-5 as hooks and checks (Feras's number-one priority, 2026-10-27)
 HANDOFF queue row 1. Archive cleanup merged 10-27 (d9c1735): start now. Lanes (Feras 10-27, one Opus chat at a time):
-items 1-2 are Python hooks + tests -> Cloudflare DeepSeek builds (builders skill, TEMPLATE brief, May edit tools/hooks/,
-.claude/settings.json, the new tools/test_*.py); the Opus chat briefs, reviews and does 3-5 (small doc edits).
+items 1-2 are Python hooks + tests -> Cloudflare DeepSeek builds (builders skill, TEMPLATE brief, May edit tools/hooks/
+and the new tools/test_*.py only); the Opus chat wires them in .claude/settings.json (it also wires the pre_spend money
+guard, so no builder edits it), briefs, reviews and does 3-5 (small doc edits).
 Done already by the sync-board chat (10-27): the queue lane check (doc_check), tools/status.sh, /handoff archives
 merged side sessions; the stale-slot cause (no pid line) was fixed in P1. Principle: every rule that
 held was a tool (pre_spend, doc_check, CI); every rule that broke was prose -> each fix is a hook or check + a test
