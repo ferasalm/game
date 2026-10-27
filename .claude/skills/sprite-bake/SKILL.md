@@ -25,8 +25,10 @@ Hades bar: **full colour by default**; no 256-colour cap unless asked (D: Hades 
 - Rows = 8 screen directions (0 = right, counter-clockwise, 6 = toward the camera); columns = frames; each state cropped to the
   union of opaque pixels plus a 4 px margin; the feet pivot moves with the crop.
 - Verify by reading ONE frame at 640x360 or smaller, then `tools/eye_metrics.py` (colours, fps, alpha, chroma).
-- Finding 2026-10-27: a rydan idle bake keeps 70k unique colours, but mean chroma is only ~12/255: it reads near-grey. Full colour
-  is preserved by the packer; the muted look is the shader/texture. An art-chat task (test a saturated texture or shader mix).
+- 2026-10-27: Rydan's grey came from the texture, not the shader (it keeps albedo hue). After the free recolour
+  (3d-model skill) the sheets' eye_metrics chroma went 9.5-11 -> 15-22.5; the approved picture itself scores 16.4, so a
+  dark-coat design tops out near there. After copying sheets into assets/, run `tools/run_godot.sh --import` before any
+  render: a render without it showed the OLD grey sheets from the import cache.
 
 ## Open question for M1 (not decided here)
 Frame rate x frame px x sheet memory on phones. Full-colour 1728x1552 RGBA for one 16-frame idle is ~10 MB uncompressed in VRAM;
