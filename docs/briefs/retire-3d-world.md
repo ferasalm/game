@@ -8,7 +8,7 @@ uses the 3D world, the prototype scene, the level-1 holo map or the grey-box puz
 menus (Screens, pause, items, shop, slot picker) keep working.
 
 ## Read first
-docs/design/retire-3d-audit.md (cuts 4 and 5). docs/design/retire-3d/u1_delete.txt (your 170 files) and
+docs/archive/design-3d/retire-3d-audit.md (cuts 4 and 5). docs/archive/design-3d/retire-3d/u1_delete.txt (your 170 files) and
 kept_until_sweep.txt (69 files you must NOT delete: a later sweep does). features/ui/view/ui_stack.gd,
 features/ui/view/screens/pause_menu.gd, features/ui/view/screens/slot_row.gd.
 

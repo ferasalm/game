@@ -8,7 +8,7 @@ Owner 2026-10-23: "multiple roofs of multiple buildings like before, but don't p
 7 (the layout), 5 (look notes only; the dressing pass comes later). This is a GREY-BOX: shapes, heights, places.
 
 ## Read first
-docs/design/level-1.md (all); docs/design/rooftop-v3.md sections 4-5 (unstuck and walk-graph rules: they apply per
+docs/design/level-1.md (all); docs/archive/design-3d/rooftop-v3.md sections 4-5 (unstuck and walk-graph rules: they apply per
 roof); docs/MAP.md lines for area_def, tile_def, place_def, area_builder, area_dressing, canyon_builder, walk_graph,
 follow_cam, follow_camera_rig, camera_rig_def; content/world/areas.json, tiles.json, buildings.json, camera.json.
 

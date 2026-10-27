@@ -77,9 +77,9 @@ def toy():
 BRIEF = "# Brief: toy\n## What to build\n1. a\n## Do NOT edit\n`content/none.json`\n## Checklist\n- file: features/a.gd\n"
 
 
-def pipeline(g, top, name="job", base="main", **env_extra):
+def pipeline(g, top, name="job", base="main", brief=BRIEF, **env_extra):
     put(top + "/fake_builder.sh", FAKE_BUILDER)
-    put(top + "/brief.md", BRIEF)
+    put(top + "/brief.md", brief)
     env = {**os.environ, "BUILDER_CMD": top + "/fake_builder.sh", "FREE_MB": "99999", "NEWTEST_KINDS": "py", "LIBSH": TOOLS + "/lib.sh", **env_extra}
     env.pop("GAME_WT_DIR", None)
     p = subprocess.Popen(["bash", PIPE, "cf", name, top + "/brief.md", base], cwd=g, env=env, stdin=subprocess.PIPE,
@@ -105,6 +105,13 @@ def test_good_run_passes_with_pid_rules_import_and_detached_stdin():
     assert open(top + "/game-wt/job.stdin.rc").read().strip() == "1", "builder stdin must be /dev/null, not the caller's pipe"
     assert "BREACH" not in res, "import churn on assets/*.import must not breach: " + res
 
+
+
+def test_missing_skill_warns():  # P2b review: a skill the brief loads but .agents/skills lacks was skipped silently
+    top, g = toy()
+    rc, out, err = pipeline(g, top, brief=BRIEF + "Load the ghost-skill skill.\n")
+    assert rc == 0 and result(top).startswith("PASS"), (rc, err, result(top))
+    assert "WARN" in err and "ghost-skill" in err, err
 
 def test_nonzero_exit_unless_pass():
     top, g = toy()

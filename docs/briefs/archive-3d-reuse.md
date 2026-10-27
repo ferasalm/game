@@ -8,7 +8,7 @@ new game." The 3D game is archived at git tag `3d-archive` (branch `archive/3d`)
 
 ## Read first
 docs/DECISIONS.md (the rules Neon Glitch must keep), docs/design/neon-glitch-plan.md, docs/design/first-playable.md,
-docs/design/retire-3d-audit.md. The archive: `git ls-tree -r --name-only 3d-archive -- features/world features/prototype
+docs/archive/design-3d/retire-3d-audit.md. The archive: `git ls-tree -r --name-only 3d-archive -- features/world features/prototype
 features/map features/puzzles/view features/combat/view content/world`, and `git show 3d-archive:docs/MAP.md` (one
 purpose line per file). Read a file with `git show 3d-archive:<path>` only when its purpose line is not enough.
 

@@ -3,7 +3,7 @@ Owner: "multiple roofs of multiple buildings like before, but don't pack them wi
 Tayramana)"; Abu Nabil on one roof; crossings by "a wooden board, a simple bridge, jumping to a close roof, ziplines
 or cables"; cyberpunk old Sana'a as in his concept art (chat, 2026-10-23: rain, neon trims on crenellations, cables
 between towers, searchlight drones, the megacity behind the mountains). Answers: 5 roofs; the workbench inside the
-tayramana; contextual leaps; rain. rooftop-v3.md is superseded as the layout (its walk-graph, unstuck and patrol
+tayramana; contextual leaps; rain. docs/archive/design-3d/rooftop-v3.md is superseded as the layout (its walk-graph, unstuck and patrol
 clearance rules still apply to every roof). Puzzles: valve-puzzles.md.
 
 ## 1. Intent

@@ -1,8 +1,10 @@
-# GEMINI.md: Qarnaw repo rules for Gemini (agy). Standing rules only; each task's brief comes in the chat.
+# GEMINI.md: Neon Glitch builder rules for Gemini (agy). Standing rules only; each task's brief comes in the chat.
 
 <project>
-An HD-2D timeline RPG in Godot 4.7.2, typed GDScript, Windows. Claude (the lead) designs, writes your brief,
-reviews your diff and merges. You build exactly what the brief says, in the branch or worktree it names.
+Neon Glitch, a 2D isometric action RPG with real-time combat and a linear story (Godot 4.7.2, Windows). Claude (the lead)
+designs, writes your brief, reviews your diff and merges. You build exactly what the brief says, in the branch or
+worktree it names.
+Code rules: .claude/rules/code.md (pasted into your prompt).
 </project>
 
 <operating_rules>
@@ -16,21 +18,9 @@ missing prerequisites.
 - Before finishing, run `bash tools/check.sh` and paste its raw last 15 lines. A check counts only if you ran it.
 - Skills: .agents/skills/<name>/SKILL.md: game (godot-gameplay-scripter, godot-shader-developer, technical-artist,
   level-designer, game-designer, narrative-designer, game-audio-engineer, blender-addon-engineer) and agency personas
-  (code-reviewer, minimal-change-engineer, ...) and role cards (gameplay-card, art-card, ui-card, market-card); retired personas: .agents/archive/; `ls`.
-  Act as the ones your brief names; where they differ from these rules (typed GDScript, no C#), these rules win.
+  (code-reviewer, minimal-change-engineer, ...) and role cards (gameplay-card, art-card, ui-card, market-card); retired
+  personas: .agents/archive/; `ls`. Act as the ones your brief names; where they differ from the code rules, the code rules win.
 </operating_rules>
-
-<code_rules>
-- Godot 4 syntax only, statically typed everywhere (an untyped declaration is an error).
-- <= 200 lines a file, <= 40 lines a function, a `## purpose` line within the first 6 lines of every .gd file.
-- `logic/` folders are pure: no nodes, scene tree, autoloads, input or await. View code never computes rules.
-- Content is JSON read into read-only Def classes; changing numbers live in state objects; saves in GameState and
-  migrate through SaveCodec one version at a time.
-- No node lookups by path: `@export` or `%UniqueName`. No gameplay numbers in code. Player text = localization keys.
-- Every rule and every fixed bug gets a test (tests/test_*.gd style; helpers in tests/ must not start with test_).
-- Where is X: grep docs/MAP.md. After adding files: `python tools/map.py`. After new class_names, and FIRST in a
-  fresh worktree (else "Could not find type"): `bash tools/run_godot.sh --import`. One test file: `bash tools/run_godot.sh -s res://tests/runner.gd -- <name>`.
-</code_rules>
 
 <scope>
 - Never read: .godot/, *.import, *.uid, assets/ binaries, docs/research/gemini-blueprint-citations.md.
@@ -40,7 +30,6 @@ missing prerequisites.
 - Git: commit in the branch the brief names, small WIP commits, message ending with the line
   `Built-by: Gemini 3.8 Flash (agy)`. Never push, never merge, never touch main, never rewrite history.
 - Never download, install, sign up or spend anything. Never add a dependency.
-- Never write "...", "rest unchanged", TODO, stubs or placeholder values; write the real content or report BLOCKED.
 </scope>
 
 <review_misses>

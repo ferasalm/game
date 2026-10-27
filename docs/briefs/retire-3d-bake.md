@@ -7,7 +7,7 @@ Feras retired the old 3D game (DECISIONS 2026-10-26). Neon draws characters as b
 (DECISIONS 2026-10-24). Two shared pieces still pull the 3D world in: the sprite baker and the menu holograms.
 
 ## Read first
-docs/design/retire-3d-audit.md (cuts 1 and 4). tools/bake_sprites.gd (its header has the run command),
+docs/archive/design-3d/retire-3d-audit.md (cuts 1 and 4). tools/bake_sprites.gd (its header has the run command),
 features/world/view/diorama.gd (make_environment, make_sun), features/world/view/painted_look.gd (begin),
 features/equipment/view/hologram_stage.gd, features/workshop/view/workshop_hologram.gd, content/neon/sprites.json.
 

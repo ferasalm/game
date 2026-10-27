@@ -8,7 +8,7 @@ builder slots are busy (2 agy, 2 Cloudflare DeepSeek, 1 Inkling) and what DeepSe
 
 ## Read first
 tools/build_gate.py (all of it), tools/test_build_gate.py, tools/build_pipeline.sh, tools/cf_build.sh,
-tools/oc_task.sh, docs/briefs/TEMPLATE.md, docs/EFFICIENCY.md section 3b.
+tools/oc_task.sh, docs/briefs/TEMPLATE.md, docs/WORKFLOW.md (Builder loop).
 
 ## What to build
 1. Checklist in briefs. A brief may end with a section `## Checklist` with one item per line, exactly these forms:
@@ -34,7 +34,7 @@ tools/oc_task.sh, docs/briefs/TEMPLATE.md, docs/EFFICIENCY.md section 3b.
 
 ## Do NOT edit
 `features/`, `core/`, `content/`, `localization/`, `docs/DECISIONS.md`, `HANDOFF.md`, `CLAUDE.md`, `GEMINI.md`,
-`AGENTS.md`, `docs/EFFICIENCY.md`, `.claude/`
+`AGENTS.md`, `docs/WORKFLOW.md`, `.claude/`
 
 ## Tests (tools/test_build_gate.py, tools/test_slots.py; check.sh's tool_tests runs them)
 Each checklist form passes and misses on a tmp git repo; a miss makes the verdict FAIL; NOWORK still wins; no

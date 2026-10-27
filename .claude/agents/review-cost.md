@@ -11,7 +11,7 @@ Free route: the same brief goes to nvidia/nemotron-3-ultra-550b-a55b:free (publi
 
 ## Inputs (read exactly these, nothing else)
 - The brief the session followed.
-- The session transcript summary or tool-call list you are given, and docs/EFFICIENCY.md (grep 'rule' only).
+- The session transcript summary or tool-call list you are given, and docs/WORKFLOW.md (grep 'rule' only).
 
 ## Flag (correctness and stated requirements only)
 - Reads of forbidden or huge files (.godot/, *.import, assets binaries, gemini-blueprint.md whole).

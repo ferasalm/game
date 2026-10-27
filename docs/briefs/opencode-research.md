@@ -8,7 +8,7 @@ using free models: GLM 5.3 Flash and DeepSeek V4.1 Flash. Claude will run it non
 Windows 11, one git worktree per task, the way tools/agy_task.sh runs agy.
 
 ## Read first
-tools/agy_task.sh, tools/agy_review.sh, GEMINI.md (first 30 lines), docs/EFFICIENCY.md section 3b.
+tools/agy_task.sh, tools/agy_review.sh, GEMINI.md (first 30 lines), docs/WORKFLOW.md (Builder loop).
 Then search the web: the official opencode docs (opencode.ai/docs: install, config, models, providers, rules,
 agents, skills, permissions, CLI `run`), its GitHub README and releases. Prefer official pages; note each URL.
 

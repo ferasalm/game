@@ -8,3 +8,14 @@
 - Editing a running .sh broke the running copy: never edit tools/*.sh mid-run (2026-10-23).
 - Fork from origin/<base>: push the base before a launch (a fix run started on old code) (2026-10-26).
 - Free calibrated lens: nemotron-3-ultra :free found 6/6 planted defects; free models failed the reader gold set (2026-10-27).
+- After a merge adds class_names run `tools/run_godot.sh --import` first (exit 139 = memory, rerun); check CI (`gh run list`) after main (2026-10-21).
+- Parallel worktrees shared user:// -> per-checkout test save dir (2026-10-22).
+- Commit memory: 4 runs + Godot left 10 MB free (fork errors, Godot exit 132, the desktop app froze) -> <= 2-3 runs, no own Godot while builders test; check FreeVirtualMemory (2026-10-23, 10-26).
+- agy sat 55 min on baseline checks with no code -> on the critical path write it yourself (2026-10-26).
+- agy reads GEMINI.md; -p mode denies shell commands -> tools/agy_task.sh (skip-permissions, own worktree).
+- opencode CLI 1.19.4: `npm install -g --allow-scripts=opencode-ai opencode-ai`; the desktop app owns ~/.local/share/opencode -> the CLI uses XDG_DATA_HOME=~/.local/share/oc-cli (tools/oc_task.sh) (2026-10-23).
+- opencode quit on reads outside its worktree -> opencode.json external_directory allows inbox/ (2026-10-24).
+- Two opencode runs started in the same second: one died "database is locked" (shared oc-cli data dir) -> launch runs 30 s apart (2026-10-26).
+- Retiring code: an import-graph script (res://, uid://, class_name, ContentDB kinds) gave each run an exact delete list; a brief that allows cross-run deletions must not list those paths as Do NOT edit (2026-10-26).
+- A nohup builder is not in the app's task list: watch its .result (2026-10-27).
+- msys exec of an msys program = a new Windows process whose parent (the fork) exits: Windows-tree kills miss it -> freeze the tree before killing and join msys `ps` (PID, PPID, WINPID) to the Windows snapshot (tools/kill_tree.py) (2026-10-27).

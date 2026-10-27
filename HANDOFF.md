@@ -18,7 +18,7 @@ Last updated: 2026-10-27 (Efficiency: P0 VISION done; P3 next), Opus 5.5 (`claud
 ## Track: Neon Glitch (owner: the chat "Retire 3D", 2026-10-26)
 - On main: launching = features/neon/neon_game.tscn: start flow -> Roya cold open -> prison roof -> turn-based map
   fight (prison_guard x2, 84 % wins at XP 0) -> cable line -> "TO BE CONTINUED". Renders: tools/shot_neon_game.tscn.
-- 3D game retired 10-26 (docs/design/retire-3d-audit.md): branch archive/3d + tag 3d-archive; what to reuse:
+- 3D game retired 10-26 (docs/archive/design-3d/retire-3d-audit.md): branch archive/3d + tag 3d-archive; what to reuse:
   docs/archive/3d-reuse.md. Dialogue fights emit EventBus.battle_requested (no host yet); menu holograms show
   portraits or Neon sprites; the Map tab is greyed (no 2D map yet).
 - Feras: play it (Esc/back, Enter/Space, WASD, E). Gaps: Normal/Hard not applied; guards close in formation;

@@ -7,7 +7,7 @@ Feras retired the old 3D game (DECISIONS 2026-10-26); tag `3d-archive` keeps it.
 (features/neon/battle/) and never uses the 3D BattleStage. Remove the 3D stage; keep every combat rule and test.
 
 ## Read first
-docs/design/retire-3d-audit.md (cuts 2 and 3). docs/design/retire-3d/u2_delete.txt (your 45 files).
+docs/archive/design-3d/retire-3d-audit.md (cuts 2 and 3). docs/archive/design-3d/retire-3d/u2_delete.txt (your 45 files).
 core/scene_router.gd, core/battle_session.gd, features/dialogue/dialogue_effects.gd, core/defs/flow_rules_def.gd.
 
 ## What to do
@@ -48,7 +48,7 @@ core/scene_router.gd, core/battle_session.gd, features/dialogue/dialogue_effects
 `assets/`
 `content/world/`
 `docs/design/`
-A parallel run deletes every path in docs/design/retire-3d/u1_delete.txt (world, prototype, map). If one of those
+A parallel run deletes every path in docs/archive/design-3d/retire-3d/u1_delete.txt (world, prototype, map). If one of those
 files breaks because of your removal (it names AreaPort, BattleStage, Router.start_battle...), `git rm` it too, and
 repeat until everything parses: identical deletions merge cleanly. Never edit a u1_delete.txt file, and never delete
 a file outside both lists except the tests and tools named above.

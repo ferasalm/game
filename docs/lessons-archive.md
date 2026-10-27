@@ -17,3 +17,9 @@
   2.4 cm streaks and a screen wash (storm.json) (2026-10-23).
 - set_exploring(false) hides the player and patrols -> talks use rooftop.freeze_actors (2026-10-22).
 - Painted Flow art pixelized muddy -> pixelize.py --contrast 1.3 --saturation 1.5 --outline; check facing first.
+
+## Archived 2026-10-27 (P3)
+- OpenRouter :free = 50 requests/day under $10 bought credit, shared by Inkling and all :free models (2026-10-23).
+- Inkling on balance-gear hit permission rejections, committed nothing -> empty `git diff base...branch`: rerun on agy (2026-10-23).
+- opencode "Free usage limit reached" (GLM, DeepSeek share it) then `opencode run` hangs -> read ~/.local/share/oc-cli/opencode/log, kill the CLI's PID only (OpenCode.exe is the app) (2026-10-23).
+- With an OpenRouter key opencode chose a PAID title model -> small_model pinned :free; laguna is missing from opencode's catalogue; Inkling :free works only inside agents (403 on the MCP) (2026-10-23).

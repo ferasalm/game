@@ -21,7 +21,7 @@ are marked (enforced). Decisions behind this file: docs/DECISIONS.md, 2026-10-19
 
 ## 3. The render model (Neon Glitch, DECISIONS 2026-10-24/26)
 - **The old 3D game is retired (2026-10-26).** Its world, prototype scene, 3D battle stage, holo map and their
-  tests live at git tag `3d-archive` (audit: docs/design/retire-3d-audit.md). Restore a file with
+  tests live at git tag `3d-archive` (audit: docs/archive/design-3d/retire-3d-audit.md). Restore a file with
   `git show 3d-archive:<path>`; never re-add 3D runtime code without a decision.
 - **World = painted isometric plates** (2:1 dimetric, camera 30 degrees down) per room, walkable polygons and
   occluder cut-outs in `content/neon/rooms.json`; y-sort by feet (docs/design/first-playable.md section 2).
@@ -57,7 +57,7 @@ assets/         sprites/ textures/ models/ audio/ fonts/ + manifest.json   (bina
 localization/   strings.csv (key, en[, ar])   (M4)
 tests/          runner.gd base_test.gd
 tools/          check.sh run_godot.sh godot.sh lint_gd.py map.py doc_check.py (later: art/, build_level)
-docs/           ARCHITECTURE BRIEFING EFFICIENCY DECISIONS LESSONS MAP USAGE design/ research/
+docs/           ARCHITECTURE BRIEFING WORKFLOW DECISIONS LESSONS MAP USAGE design/ research/
 ```
 
 ## 6. Data: definitions, state, saves

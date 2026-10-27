@@ -27,7 +27,7 @@ on top of a guesthouse tower (funduq) in Souq al-Milh.
    features/world/tests, core/tests). Keep every assertion's intent; change only the numbers.
 7. Do NOT edit content/dialogue/, localization/dialogue.csv, content/audio/, features/audio/, features/ui/ (other
    briefs own them). Keep the npc place id `herb_seller` and shop place `shop_herbs` (a dialogue brief hooks them).
-8. Update the rooftop section of docs/design/prototype.md (grep "rooftop") to the new layout, briefly.
+8. Update the rooftop section of docs/archive/design-3d/prototype.md (grep "rooftop") to the new layout, briefly.
 
 ## Proof
 - `bash tools/check.sh`: paste the raw last 15 lines.

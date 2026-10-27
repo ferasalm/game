@@ -70,3 +70,7 @@
 - ~~2026-10-26 | Builders: agy (back), Cloudflare DeepSeek, OpenRouter, Haiku subagents; Sonnet only when no cheaper one can; Nano Banana images via Google Flow (Chrome, his account); paid image APIs <= $1 | Feras~~ superseded 2026-10-27: builder roster D1 of the process audit plan
 - ~~2026-10-24 | Builders: runs: 2 agy, 3 DeepSeek V4.1 Flash (2026-10-26), 1 GLM-5.3 (no Inkling, Kimi); agy out: all DeepSeek, max 3; triage GLM-5.3 Flash; skills: design V4 Pro/Nemotron/Gemini, code GLM-5.3 | Feras~~ superseded 2026-10-27: builder roster D1 of the process audit plan
 - ~~2026-10-25 | Neon Glitch = the whole game (plan: design/neon-glitch-plan.md); one person, low budget | Feras~~ (replaced 2026-10-27 by the VISION line)
+- ~~2026-10-23 | Hand off at ~150k tokens; milestone-only reports; one owner per HANDOFF section | Feras~~ superseded 2026-10-27: D4, hand off at ~100k work tokens
+- ~~2026-10-23 | Own tasks go to subagents: Haiku first, Sonnet if Haiku can't; Claude reviews sensitive results | Feras~~ superseded 2026-10-27: D1/D11, the cheapest calibrated reader (Haiku high)
+- ~~2026-10-21 | Godot 4.7.2 pinned; typed GDScript; Windows first, exes git-ignored; Forward+ (3D, paused) | Feras/Claude~~ superseded 2026-10-27: D17, Mobile renderer from M1
+- ~~2026-10-22 | Hyper3D Rodin (paid plan) makes 3D models for sprites; Claude drives its MCP; name cost first | Feras~~ superseded 2026-10-27: D14, ~50 credits, prove a free route

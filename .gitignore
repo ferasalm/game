@@ -23,3 +23,4 @@ docs/story/twine/
 # Secrets (API keys, tokens): never committed
 .env
 .check_full.txt
+/.claude/logs/

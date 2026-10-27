@@ -1,5 +1,5 @@
 # Brief: <task> (copy to docs/briefs/<task>.md; <= 60 lines)
-You are in your own worktree on branch <gemini|oc>/<task> (made from claude/night-sanaa). Follow GEMINI.md, including
+You are in your own worktree on branch <gemini|oc>/<task> (made from origin/main; push the base first). Follow GEMINI.md, including
 <review_misses>. Load the <skill> skill (name one; build_pipeline.sh pastes .agents/skills/<skill> into the prompt).
 
 ## Why

@@ -76,6 +76,10 @@ status_line RUNNING build
 prompt="$dir/$name.prompt.md"; cp "$brief" "$prompt"
 skills="$(grep -o -E '[a-z][a-z-]+ skill' "$brief" | sed 's/ skill$//' | awk '!seen[$0]++' |
   while read -r s; do [ -f "$here/../.agents/skills/$s/SKILL.md" ] && echo "$s"; done | head -2)"
+# A skill the brief loads ("Load the X skill") that does not exist is not pasted: say so (P2b review).
+for s in $(grep -o -E 'Load the [a-z][a-z-]+ skill' "$brief" | awk '{print $3}' | awk '!seen[$0]++'); do
+  [ -f "$here/../.agents/skills/$s/SKILL.md" ] || echo "WARN: the brief loads the $s skill, but .agents/skills/$s/SKILL.md is missing: not pasted" >&2
+done
 for skill in $skills; do
   { echo; echo "## Skill: $skill (reference; GEMINI.md and this brief win where they differ: typed GDScript, no C#)"
     sed '1,/^---$/{/^---$/!d}; /^---$/d' "$here/../.agents/skills/$skill/SKILL.md"; } >> "$prompt"

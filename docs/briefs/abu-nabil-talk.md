@@ -10,7 +10,7 @@ Abu Nabil: a 40-year-old man who runs the herb stall on the roof of a guesthouse
 Warm, wry, unhurried; Sana'ani hospitality (qishr, dry mint, "sit first"); knows every roof and rumour; distrusts the
 Concession (the corporate occupiers whose patrols and drones work the rooftops) but keeps his head down. Read his
 existing lines in localization/shop.csv (SHOP_GREET_*) and match that voice. Also read docs/design/world.md (cast,
-Concession), docs/design/prototype.md and localization/dialogue.csv (Zayd, Bilqis voices). Zayd carries his
+Concession), docs/archive/design-3d/prototype.md and localization/dialogue.csv (Zayd, Bilqis voices). Zayd carries his
 grandfather's jambiyah (Jiddi); Bilqis is an engineer who fixes it at her bench. English only; at most one Yemeni word
 per line, explained by context; no Arabic script. Every line <= 140 characters. Speaker ids: zayd, bilqis, abu_nabil.
 

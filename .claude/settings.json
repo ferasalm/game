@@ -4,8 +4,40 @@
       "Read(**/.godot/**)",
       "Read(**/*.import)",
       "Read(**/*.uid)",
-      "Read(**/gemini-blueprint-citations.md)"
+      "Read(**/gemini-blueprint-citations.md)",
+      "Read(**/*.glb)",
+      "Read(**/*.gltf)",
+      "Read(**/*.blend)",
+      "Read(**/*.fbx)",
+      "Read(**/*.wav)",
+      "Read(**/*.ogg)",
+      "Read(**/*.mp3)",
+      "Read(**/*.mp4)",
+      "Read(**/*.webm)",
+      "Read(**/*.ttf)",
+      "Read(**/*.otf)"
     ]
+  },
+  "skillOverrides": {
+    "handoff": "name-only",
+    "emergency-efficiency": "name-only",
+    "ops-review": "name-only",
+    "blender-addon-engineer": "name-only",
+    "agency-blender-add-on-engineer": "name-only",
+    "game-audio-engineer": "name-only",
+    "agency-game-audio-engineer": "name-only",
+    "game-designer": "name-only",
+    "agency-game-designer": "name-only",
+    "godot-gameplay-scripter": "name-only",
+    "agency-godot-gameplay-scripter": "name-only",
+    "godot-shader-developer": "name-only",
+    "agency-godot-shader-developer": "name-only",
+    "level-designer": "name-only",
+    "agency-level-designer": "name-only",
+    "narrative-designer": "name-only",
+    "agency-narrative-designer": "name-only",
+    "technical-artist": "name-only",
+    "agency-technical-artist": "name-only"
   },
   "hooks": {
     "SessionStart": [
@@ -14,6 +46,27 @@
           {
             "type": "command",
             "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "^mcp__.*__(generate-image|generate-speech|rodin_generate.*)$|runware",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/tools/pre_spend.py\""
+          }
+        ]
+      }
+    ],
+    "InstructionsLoaded": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/instructions-loaded.sh"
           }
         ]
       }
