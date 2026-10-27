@@ -69,7 +69,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 
 ## content
 - `content/art/clips.json`: content: clip x15
-- `content/art/models.json`: content: model x7
+- `content/art/models.json`: content: model x2
 - `content/art/palette.json`: content: palette x1
 - `content/art/sprites.json`: content: sprite x5
 - `content/art/visual.json`: content: visual_rules x1
@@ -172,7 +172,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/art/tests/test_model_logic.gd`: The pure maths behind live 3D characters: ClipTiming (wind-up, hold, strike, recovery and the events on that curve), Locomotion (gait, stride to playback rate, lean, foot contacts passed) and YawTurn (the capped short-way turn)
 - `features/art/tests/test_model_source.gd`: The live 3D source behind the CharacterVisual facade: the model is built and painted, clips announce impact and end on the retimed curve (and wait for the hit pause), the body turns by yaw and never by a negative scale, the feet pace the ground and sound a footstep on each foot contact, a knocked-out body stays down, the grandfather's hilt is drawn for a strike and sheathed after, and a CharacterVisual without a model def falls back to the pixel sprite
 - `features/art/tests/test_pose_match.gd`: Retargeting (PoseMatch, PoseFollow): the swing turns one direction into another, the per-bone offset makes the target bone point where the source bone points (at rest and after a turn), the hips travel scales with hip height, and a pose_source model's body follows its hidden source (Zayd's Rodin model stands up with the hand below the head); mirrored, the other arm does the move (Zayd's cast raises his prosthetic right arm)
-- `features/art/tests/test_rodin_parts.gd`: Feras's Rodin pieces after tools/rodin: Zayd's baked dagger is pressed flat onto his chest (the code hilt is his only jambiyah), the grandfather's hilt is the Rodin grip above the belt origin and the Rodin sheath below it curving forward (the blade stays the code one), and the survey drone's hull is the Rodin mesh at hover height
+- `features/art/tests/test_rodin_parts.gd`: Feras's Rodin pieces after tools/rodin: the grandfather's hilt is the Rodin grip above the belt origin and the Rodin sheath below it curving forward (the blade stays the code one)
 - `features/art/tests/test_sprites.gd`: Prototype T7: every sprite is well formed and uses only palette letters; PixelArt and CharacterVisual work
 - `features/art/tests/test_visual_anchors.gd`: purpose: Every body-anchor share is read from content/art/visual.json, and a missing key is a content error
 - `features/art/tests/test_visual_contract.gd`: The CharacterVisual contract: play(state, facing), the anchors, clip events, the pixel and puppet sources behind the facade, and the pulse flag that switches the whole-body squash off for puppets

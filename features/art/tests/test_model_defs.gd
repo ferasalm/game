@@ -16,7 +16,7 @@ func _models(kind: StringName) -> Array[ModelDef]:
 
 
 func test_every_model_maps_all_nine_states_to_existing_clips() -> void:
-	check(ContentDB.ids("model").size() >= 5, "zayd, bilqis, abu_nabil, enforcer and drone are models")
+	check(ContentDB.ids("model").size() >= 2, "rydan and roya are models (old ones archived 2026-10-27)")
 	for id: StringName in ContentDB.ids("model"):
 		var def := ContentDB.get_def("model", id) as ModelDef
 		for state: StringName in CharacterVisual.STATES:
@@ -88,7 +88,7 @@ func test_the_bodies_share_the_animation_rig() -> void:
 
 
 func test_zayd_wears_his_grandfathers_hilt_and_every_model_has_a_height() -> void:
-	var zayd := ContentDB.get_def("model", &"zayd") as ModelDef
+	var zayd := ContentDB.get_def("model", &"rydan") as ModelDef
 	var has_hilt: bool = false
 	for part: ModelPartDef in zayd.parts:
 		has_hilt = has_hilt or part.id == &"grandfather_hilt"

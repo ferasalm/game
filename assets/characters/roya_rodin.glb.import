@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://ylxdkicdu16c"
-path="res://.godot/imported/survey_drone_rodin.glb-160733b735fc04b3b188992f42c21f1a.scn"
+uid="uid://cao2b7b7w7ika"
+path="res://.godot/imported/roya_rodin.glb-b3e28826de0cfa3f9cfc22375c0d657a.scn"
 
 [deps]
 
-source_file="res://assets/characters/survey_drone_rodin.glb"
-dest_files=["res://.godot/imported/survey_drone_rodin.glb-160733b735fc04b3b188992f42c21f1a.scn"]
+source_file="res://assets/characters/roya_rodin.glb"
+dest_files=["res://.godot/imported/roya_rodin.glb-b3e28826de0cfa3f9cfc22375c0d657a.scn"]
 
 [params]
 

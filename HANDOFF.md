@@ -1,5 +1,5 @@
 # HANDOFF (current state only; one section per track, each edited only by its owner; max 60 lines)
-Last updated: 2026-10-27 (art chat: unified style, Roya model; bake next), Opus 5.5 (`claude-opus-5-5`).
+Last updated: 2026-10-27 (archive chat: old 3D models archived, tag pre-cleanup; rename + efficiency next), Opus 5.5.
 
 ## Shared
 - Builders (D1): <= 2 Godot runs + 1 free text run (slots.sh). Briefs: docs/briefs/TEMPLATE.md (D6 defaults, May edit,
@@ -7,7 +7,9 @@ Last updated: 2026-10-27 (art chat: unified style, Roya model; bake next), Opus 
 - Waiting on the owner: OK on docs/VISION.md (P0.1); connectors to switch off and the pre_spend question
   (docs/audits/2026-10-27-process-audit.md); icon art; play the Abu Nabil fight.
 ### Next steps (one per chat; reviews Sonnet, design and art judgment Opus)
-1. Game work from VISION: Efficiency + art next step 1 (bake Roya, hero OK, batch). Model: Opus. Effort: high. Balance pass 2 dropped (D15).
+1. Finish the 3D archive + zayd -> rydan rename: docs/briefs/archive-cleanup.md (Feras 10-27). Model: Opus. Effort: high.
+2. Efficiency fixes 1-5 as hooks/checks (Feras's number-one priority): docs/briefs/efficiency-hooks.md. Model: Opus. Effort: high.
+3. Then Efficiency + art step 1 (bake Roya, hero OK, batch). Model: Opus. Effort: high. Balance pass 2 dropped (D15).
 
 ## Track: 2D redesign (owner: the chat "2D redesign brainstorm", 2026-10-24)
 - DECISIONS 2026-10-24: 2D isometric ink-comic look per Feras's concepts, offline-rendered sprites, on-map
@@ -27,8 +29,7 @@ Next, after the 5-hour reset, in this order (Feras 10-26):
 1. Vision, mission, objectives + roadmap (docs/VISION.md from bible + DECISIONS; Feras edits). Model: Opus. Effort: high.
 2. Builder quality system: gate rejects removed checks and asset edits, tests/assets Do NOT edit by default, layer
    lint (shared code never names a mode), builder playbook in TEMPLATE. Model: Sonnet. Effort: medium.
-3. Names to the bible (code id zayd -> rydan, save migration, assets, keys); DeepSeek builds. Model: Opus. Effort: medium.
-4. Asset preparation pipeline (jpg -> png, sizes, import settings, manifest check); DeepSeek builds. Model: Sonnet. Effort: medium.
+3. Asset preparation pipeline (jpg -> png, sizes, import settings, manifest check); DeepSeek builds. Model: Sonnet. Effort: medium.
 `Continue ferasalm/game on main. Read HANDOFF.md (Neon Glitch). Do its next step; /handoff.`
 ## Track: Level 1 + playtest fixes: PAUSED 2026-10-24 (3D; 2D redesign). Unmerged fix branches kept in ../game-wt.
 - Playtest 2026-10-24: inbox/playtest_*.png, concept_*.png; crossing freeze fixed. docs/briefs/: render-clean,
@@ -45,8 +46,6 @@ Next, after the 5-hour reset, in this order (Feras 10-26):
 1. Polish briefs: workshop vs mock_workshop.png; equipment inventory/header overlap. Model: Sonnet. Effort: medium.
    The 3D holo-map table is PAUSED 2026-10-24 (2D redesign); the menus may be reskinned for the new look later.
 `Continue ferasalm/game on main. Read HANDOFF.md (RPG + menus). Do its next step; /handoff.`
-
-## Track: Puzzles (owner: none): done on main: features/puzzles/ logic, grey-box scene, R5 placement (2026-10-23).
 
 ## Track: Efficiency + art (owner: the art chat, 2026-10-27)
 - 10-27: P1-P4 done. ONE character style (CANON: Basilisk + sumi-e, colour); OK'd Flow pictures inbox/flow/*_style_v{2,3}_2k.jpg;

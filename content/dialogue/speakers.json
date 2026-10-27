@@ -7,7 +7,7 @@
      "face_x": 8, "brow_y": 4, "mouth_y": 6, "portrait_flip": false, "epithet_key": "EPITHET_ZAYD"},
     {"id": "bilqis", "name_key": "NAME_BILQIS", "color": "#5ad0ff", "sprite": "bilqis",
      "face_x": 8, "brow_y": 5, "mouth_y": 7, "portrait_flip": true, "epithet_key": "EPITHET_BILQIS"},
-    {"id": "abu_nabil", "name_key": "NPC_HERB_SELLER", "color": "#8fbf6a", "sprite": "abu_nabil",
+    {"id": "abu_nabil", "name_key": "NPC_HERB_SELLER", "color": "#8fbf6a", "sprite": "",
      "face_x": 8, "brow_y": 5, "mouth_y": 7, "portrait_flip": false, "epithet_key": "EPITHET_ABU_NABIL"}
   ]
 }

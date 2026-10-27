@@ -7,7 +7,7 @@ extends TestCase
 const DT: float = 1.0 / 60.0
 
 
-func _visual(id: StringName = &"zayd") -> CharacterVisual:
+func _visual(id: StringName = &"rydan") -> CharacterVisual:
 	var visual := CharacterVisual.new()
 	visual.source_kind = &"model"
 	tree.root.add_child(visual)
@@ -100,10 +100,10 @@ func test_the_hilt_is_drawn_for_a_strike_and_sheathed_after() -> void:
 	check(not hilt.root.is_ancestor_of(hilt.hilt), "in the hand")
 	_run(visual, 3.0)
 	check(not hilt.drawn and hilt.root.is_ancestor_of(hilt.hilt) and not hilt.blade.visible, "sheathed again at the end of the clip")
-	var bilqis: CharacterVisual = _visual(&"bilqis")
-	check((bilqis.source as ModelSource).rig.hilt == null, "only Zayd wears it")
+	var roya: CharacterVisual = _visual(&"roya")
+	check((roya.source as ModelSource).rig.hilt == null, "only Rydan wears it")
 	visual.free()
-	bilqis.free()
+	roya.free()
 
 
 func test_feet_pace_the_ground_and_gait_follows_speed() -> void:
@@ -160,7 +160,7 @@ func test_ko_stays_down_and_revive_stands_up() -> void:
 	visual.free()
 
 
-func test_anchors_and_the_drone() -> void:
+func test_anchors() -> void:
 	var visual: CharacterVisual = _visual()
 	visual.face_dir(Vector3(1.0, 0.0, 0.0))
 	_run(visual, 0.3)
@@ -169,14 +169,6 @@ func test_anchors_and_the_drone() -> void:
 	check(hand.y > 0.3 and hand.y < head.y, "the hand is between the feet and the head")
 	check_eq(visual.source.anchor(&"feet"), Vector3.ZERO, "feet are the origin")
 	visual.free()
-	var drone: CharacterVisual = _visual(&"survey_drone")
-	check(drone.source is ModelSource and (drone.source as ModelSource).rigid != null, "the drone is a rigid model")
-	var seen: Array[StringName] = []
-	drone.clip_event.connect(seen.append)
-	drone.play(&"attack", Vector2.LEFT)
-	_run(drone, 1.0)
-	check_eq(seen, [&"impact", &"end"] as Array[StringName], "the drone's clip timing announces its events too")
-	drone.free()
 
 
 func test_a_character_without_a_model_falls_back_to_the_pixel_sprite() -> void:

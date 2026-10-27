@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://da2oa87g0g28h"
-path="res://.godot/imported/t_survey_drone.png-38fd79bd7a3f2185d85b35651cf322ab.ctex"
+uid="uid://b5h4bmocrikok"
+path="res://.godot/imported/t_roya.png-bc56ca1cbb42efc2ba5296ee3c61fea3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/characters/t_survey_drone.png"
-dest_files=["res://.godot/imported/t_survey_drone.png-38fd79bd7a3f2185d85b35651cf322ab.ctex"]
+source_file="res://assets/characters/t_roya.png"
+dest_files=["res://.godot/imported/t_roya.png-bc56ca1cbb42efc2ba5296ee3c61fea3.ctex"]
 
 [params]
 
