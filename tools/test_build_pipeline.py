@@ -22,6 +22,8 @@ case "${FAKE_MODE:-good}" in
   test_edit) echo "# edited" >> tests/t.gd; git add -A; git -c user.name=t -c user.email=t@t commit -qm cheat ;;
   nothing) : ;;
   hang) ping -n 60 127.0.0.1 > /dev/null & wait ;;
+  commit_then_hang) mkdir -p features; echo "## a" > features/a.gd; git add -A
+    git -c user.name=t -c user.email=t@t commit -qm feat; ping -n 60 127.0.0.1 > /dev/null & wait ;;
 esac
 '''
 FAKE_BIN = r'''#!/bin/bash
@@ -140,6 +142,13 @@ def test_idle_watchdog_kills_the_tree_and_says_nowork():
     assert time.time() - t0 < 60
     time.sleep(1)
     assert ping_count() <= before, "the native child of the builder must die with it (taskkill //T)"
+
+
+def test_idle_after_commits_is_checked_not_nowork():  # review 2026-10-27: builders often hang after their last commit
+    top, g = toy()
+    rc, out, err = pipeline(g, top, FAKE_MODE="commit_then_hang", IDLE_SEC="3", WATCH_POLL="1")
+    res = result(top)
+    assert rc == 0 and res.startswith("PASS") and "idle" in res, (rc, res)
 
 
 def fake_bin(top):

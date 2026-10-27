@@ -2,8 +2,8 @@
 """Build gate: judges a builder run before Claude reads it (NOWORK, BREACH, FAIL or PASS plus a WARN checklist).
 
 Also says when a merge may reuse the pipeline's check (a fast-forward onto the checked commit). DECISIONS 2026-10-23.
-D6 (2026-10-27): the brief needs a "## Do NOT edit" section; existing tests (M/D) and anything under assets/ (incl.
-*.import) are protected unless "## May edit" lists them; removed asserts or test funcs FAIL; --run-new-tests py,gd runs
+D6 (2026-10-27): the brief needs a "## Do NOT edit" section; existing tests and the check machinery (tools/, .github/;
+M/D) and anything under assets/ (incl. *.import) are protected unless "## May edit" lists them; removed asserts or test funcs FAIL; --run-new-tests py,gd runs
 each NEW test file against the base (a test that passes there proves nothing; .gd costs a Godot run in a check slot).
 Usage: build_gate.py gate --wt <worktree> --base <ref> --brief <file> --check <check.txt> [--fix-from <sha>]
        [--inbox <dir>] [--run-new-tests py,gd]  -> prints the checklist, last line "VERDICT <word>"; exit 0 only for PASS.
@@ -42,7 +42,7 @@ def fail_lines(check_text):
     return [ln for ln in check_text.splitlines() if ln.startswith("FAIL")]
 
 
-CHECK_LINE = re.compile(r"^\s*(assert\b|assert_\w+\(|check_\w+\()")
+CHECK_LINE = re.compile(r"^\s*(assert\b|assert_\w+\(|check(_\w+)?\()")
 TEST_FUNC = re.compile(r"^\s*(?:func|def) (test_\w+)")
 
 
@@ -55,13 +55,16 @@ def section_paths(brief_text, heading):
     return re.findall(r"`([^`\s]+)`", m.group(1)) if m else []
 
 
+MACHINERY = ("tools/", ".github/")  # the pipeline runs the worktree's own check.sh: editing it could fake a PASS
+
+
 def protected_hits(status, may):
-    """D6 defaults: existing tests (modified/deleted) and every change under assets/, minus the brief's May edit list."""
+    """D6 defaults: existing tests and check machinery (modified/deleted), every change under assets/, minus May edit."""
     hits = []
     for f, st in status.items():
         if breaches([f], may):
             continue
-        if f.startswith("assets/") or (is_test(f) and st != "A"):
+        if f.startswith("assets/") or ((is_test(f) or f.startswith(MACHINERY)) and st != "A"):
             hits.append(f)
     return hits
 
@@ -84,15 +87,19 @@ def newtest_command(path, base_wt):
     """Argv that runs one new test file inside a checkout of the base."""
     if path.endswith(".py"):
         return [sys.executable, os.path.join(base_wt, path)]
-    name = os.path.splitext(os.path.basename(path))[0]
     tools = os.path.dirname(os.path.abspath(__file__)).replace("\\", "/")
     return ["bash", "-c", f". '{tools}/check_slot.sh'; acquire_check_slot; trap release_check_slot EXIT; "
-            f"bash tools/run_godot.sh --import > /dev/null 2>&1; bash tools/run_godot.sh -s res://tests/runner.gd -- {name}"]
+            f"bash tools/run_godot.sh --import > /dev/null 2>&1; bash tools/run_godot.sh -s res://tests/runner.gd -- {path}"]
 
 
-def new_tests_on_base(wt, base, new_tests, kinds):
-    """Files among new_tests that PASS on a checkout of the base (they would prove nothing). Only the given kinds run."""
-    todo = [f for f in new_tests if f.rsplit(".", 1)[-1] in kinds]
+def runnable_new_tests(status, kinds):
+    """Added test_* files of the given kinds (a helper in tests/ runs no test: the runner would find none and pass)."""
+    return [f for f, st in status.items() if st == "A" and os.path.basename(f).startswith("test_")
+            and f.rsplit(".", 1)[-1] in kinds]
+
+
+def new_tests_on_base(wt, base, todo):
+    """Files among todo (new test files) that PASS on a checkout of the base: they would prove nothing."""
     if not todo:
         return []
     tmp = os.path.join(tempfile.mkdtemp(), "base")
@@ -223,12 +230,11 @@ def run_gate(a):
     if not re.search(r"^## Do NOT edit\s*$", brief, re.M):
         extra.append("brief has no '## Do NOT edit' section (D6: add one, even if it only lists the protected defaults)")
     extra += lost_checks(added, removed)
-    new_tests = [f for f, st in status.items() if st == "A" and is_test(f)]
-    kinds = [k for k in a.run_new_tests.split(",") if k]
-    for f in new_tests_on_base(a.wt, a.base, new_tests, kinds):
+    new_tests = runnable_new_tests(status, [k for k in a.run_new_tests.split(",") if k])
+    for f in new_tests_on_base(a.wt, a.base, new_tests):
         extra.append(f"new test passes on base (proves nothing): {f}")
     for f in new_tests:
-        if f.rsplit(".", 1)[-1] in kinds and not any(f in e for e in extra):
+        if not any(f in e for e in extra):
             print(f"ok   new test fails on base: {f}")
     fix_tests = [f for f in changed(a.wt, f"{a.fix_from}...HEAD") if is_test(f)] if a.fix_from else []
     misses, warns = brief_checklist(a.wt, brief)

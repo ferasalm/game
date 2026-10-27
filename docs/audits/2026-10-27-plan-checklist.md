@@ -43,7 +43,7 @@ Format: [ ] id | item | how to check
 - [ ] P3.5 | docs/WORKFLOW.md (from EFFICIENCY.md): protocols, departments, limits table, routes table (free first), research protocol | file exists; old refs updated
 - [ ] P3.6 | docs/design index with statuses; 3D-era designs to docs/archive/design-3d/; BRIEFING to docs/archive | ls
 - [ ] P3.7 | docs/SPEND.md; docs/feras-notes.md; docs/design/systems-map.md | files exist
-- [ ] P3.8 | TEMPLATE: base origin/main, D6 defaults, May edit, Ripple, player-visible tests, timebox, first commit, pillar | grep
+- [ ] P3.8 | TEMPLATE: base origin/main, D6 defaults (tests, assets, tools/, .github/), May edit, Ripple, player-visible tests, timebox, first commit, pillar | grep
 - [ ] P3.9 | settings.json: binary read-denies, skillOverrides name-only (syntax verified), InstructionsLoaded log, paid-tool hook wired | settings.json
 - [ ] P3.10 | Memory: claude-as-manager deleted, big-asks fixed, openrouter-free-only updated, MEMORY.md index | ls memory dir
 - [ ] P3.11 | ~/.claude: unused agents/skills moved to ~/.claude/archive with MOVED.txt; start cost measured before and after into USAGE; connector list for Feras | MOVED.txt; USAGE row

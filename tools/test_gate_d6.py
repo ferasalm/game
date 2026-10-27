@@ -115,7 +115,41 @@ def test_new_python_test_must_fail_on_base():
 
 def test_gd_new_test_command_uses_the_runner_and_a_slot():
     cmd = bg.newtest_command("features/x/tests/test_y.gd", "/t")
-    assert "tests/runner.gd" in cmd[-1] and "test_y" in cmd[-1] and "acquire_check_slot" in cmd[-1], cmd
+    assert "tests/runner.gd" in cmd[-1] and "acquire_check_slot" in cmd[-1], cmd
+    assert "-- features/x/tests/test_y.gd" in cmd[-1], "the full path, or test_y also runs test_yard.gd: " + cmd[-1]
+
+
+def test_check_machinery_is_protected():  # review 2026-10-27: the pipeline runs the worktree's own tools/check.sh
+    repo, base = repo_with_test()
+    write(repo, "tools/check.sh", "echo base\n")
+    write(repo, ".github/workflows/ci.yml", "on: push\n")
+    base = commit(repo, "tools")
+    write(repo, "tools/check.sh", "echo 'all checks passed'\n")
+    write(repo, ".github/workflows/ci.yml", "on: never\n")
+    write(repo, "tools/new_helper.py", "x = 1\n")
+    commit(repo, "fake the check")
+    code, out = gate(repo, base)
+    assert code == 1 and "BREACH tools/check.sh" in out and "BREACH .github/workflows/ci.yml" in out, out
+    assert "BREACH tools/new_helper.py" not in out, out
+    code, out = gate(repo, base, brief=BRIEF + "## May edit\n`tools/check.sh`\n`.github/`\n")
+    assert code == 0 and out.strip().endswith("VERDICT PASS"), out
+
+
+def test_removed_plain_check_call_fails():  # GDScript tests mostly call check(ok, what), not check_eq
+    repo, _ = new_repo()
+    write(repo, "features/x/tests/test_x.gd", OLD + "\tcheck(f() > 0, \"d\")\n")
+    base = commit(repo, "tests first")
+    write(repo, "features/x/tests/test_x.gd", OLD)
+    commit(repo, "drop a plain check")
+    code, out = gate(repo, base, brief=MAY)
+    assert code == 1 and "removed 1 check" in out, out
+
+
+def test_only_test_files_run_on_base():  # a new helper in tests/ is no test: the runner would find 0 and "pass"
+    status = {"features/x/tests/test_y.gd": "A", "features/x/tests/helper.gd": "A", "tools/test_n.py": "A",
+              "features/x/tests/test_old.gd": "M", "features/x/tests/data.json": "A"}
+    got = bg.runnable_new_tests(status, ["py", "gd"])
+    assert sorted(got) == ["features/x/tests/test_y.gd", "tools/test_n.py"], got
 
 
 if __name__ == "__main__":

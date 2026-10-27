@@ -47,7 +47,12 @@ run() {  # <brief file>; watched: no commit in the worktree for idle_sec -> kill
   done
   wait "$pid"; return 0
 }
-idle_exit() {
+idle_note=""
+idle_exit() {  # <step>: killed idle. Committed work still goes to check and gate (builders hang after a last commit)
+  leftovers "$1"
+  if [ -n "$(git -C "$wt" log --oneline "$base..HEAD" 2> /dev/null)" ]; then
+    idle_note="idle: $1 killed after ${idle_sec}s without a commit; its commits were checked"; return 0
+  fi
   { echo "NOWORK $(date +%H:%M) $prefix/$name"; echo "builder $builder"; echo "pid $$"
     echo "idle: no commit for ${idle_sec}s, builder killed (the brief needs a first-commit deadline)"; } > "$res"
   cat "$res"; exit 1
@@ -78,7 +83,7 @@ done
 if [ -f "$root/.claude/rules/code.md" ]; then
   { echo; echo "## Code rules (.claude/rules/code.md)"; cat "$root/.claude/rules/code.md"; } >> "$prompt"
 fi
-if [ -z "${SKIP_BUILD:-}" ]; then run "$prompt" || idle_exit; fi
+if [ -z "${SKIP_BUILD:-}" ]; then run "$prompt" || idle_exit build; fi
 leftovers "build"; cp "$wt.log" "$wt.build.log" 2> /dev/null; fix_from=""
 if check; then :; else
   fix_from="$(git -C "$wt" rev-parse HEAD)"
@@ -89,7 +94,7 @@ if check; then :; else
     echo "until it prints \"all checks passed\", commit. The FAIL lines:"
     echo '```'; grep -A13 '^FAIL' "$wt.check.txt"; echo '```'
     echo; echo "## The brief"; cat "$brief"; } > "$wt.fix.md"
-  OC_TIMEOUT=45m AGY_TIMEOUT=45m run "$wt.fix.md" || idle_exit; leftovers "fix pass"; check
+  OC_TIMEOUT=45m AGY_TIMEOUT=45m run "$wt.fix.md" || idle_exit "fix pass"; leftovers "fix pass"; check
 fi
 leftovers "check"  # the .uid files Godot wrote during the last check belong to the checked tree
 gate="$($py "$here/build_gate.py" gate --wt "$wt" --base "$base" --brief "$brief" --check "$wt.check.txt" \
@@ -98,6 +103,7 @@ status="$(echo "$gate" | sed -n 's/^VERDICT //p')"; status="${status:-FAIL}"
 { echo "$status $(date +%H:%M) $prefix/$name"
   echo "builder $builder"
   echo "pid $$"
+  [ -n "$idle_note" ] && echo "$idle_note"
   echo "checked $(git -C "$wt" rev-parse HEAD)"
   echo "$gate"; grep -E '^ {5}tests:' "$wt.check.txt" | head -3
   echo "--- commits"; git -C "$wt" log --oneline "$base..HEAD" | head -30
