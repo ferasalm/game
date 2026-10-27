@@ -14,15 +14,15 @@ plays and makes art; Claude writes the code and runs every check itself. He is o
 3. Before changing code in an area: grep docs/MAP.md, then grep docs/ARCHITECTURE.md for that area's section.
 
 ## Spend little (why: docs/EFFICIENCY.md)
-- One task per chat, one model and effort per chat. Past ~150k tokens (managers too): finish the unit, /handoff, new chat.
+- One task per chat, one model and effort per chat. Past ~100k work tokens (get_usage Messages; managers too): finish the unit, /handoff, new chat.
 - Side sessions end a turn only at a milestone (merged, blocked, renders ready); waiting runs in background watchers.
 - Grep, then read only the lines needed. Never read .godot/, *.import, *.uid, assets/ binaries (pictures only
   when judging art, small), or docs/research/gemini-blueprint-citations.md.
 - docs/research/gemini-blueprint.md is ~20k tokens: grep its headings, read one section at a time.
 - Edit, don't rewrite; no recaps; replies to the owner in a few lines.
 - Builders write, Claude plans, orchestrates and reviews (docs/EFFICIENCY.md 3b: TEMPLATE brief naming a skill, own
-  worktree, build_pipeline, gate, review, merge_run). Up to 5 runs at once across all sessions: 2 agy, 2 Cloudflare
-  DeepSeek, 1 Inkling :free. Claude's own tasks go to subagents: Haiku (max effort) first, Sonnet only
+  worktree, build_pipeline, gate, review, merge_run). Runs: DECISIONS 2026-10-27 (D1): <= 2 Godot runs
+  (agy, Cloudflare DeepSeek) + 1 free text run (opencode/OpenRouter :free). Claude's own tasks go to subagents: Haiku (max effort) first, Sonnet only
   when Haiku can't do it well; review sensitive results. Exact briefs.
 - Check the 5-hour window and context (get_usage) at the start and before a big step.
 - Checks: `tools/check.sh` (read the FAIL lines). One test file: `tools/run_godot.sh -s res://tests/runner.gd -- <name>`.

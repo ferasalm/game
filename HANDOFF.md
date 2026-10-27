@@ -1,12 +1,12 @@
 # HANDOFF (current state only; one section per track, each edited only by its owner; max 60 lines)
-Last updated: 2026-10-26 (Retire 3D: archive/3d, reuse list, 4 next steps), Opus 5.5 (`claude-opus-5-5`).
+Last updated: 2026-10-27 (process audit plan approved: D1-D22; Efficiency track), Opus 5.5 (`claude-opus-5-5`).
 
 ## Shared
-- Builders: CLAUDE.md + EFFICIENCY 3b (5 runs: 2 agy, 2 DeepSeek, 1 Inkling); check `bash tools/slots.sh`.
+- Builders: DECISIONS 10-27 (D1): <= 2 Godot runs (agy, DeepSeek) + 1 free text run; slots.sh enforces it after P1.
   Balance: start gear 82.7-89% wins; arc_arm needs an upside.
 - Waiting on the owner: icon art (5 heads, 4 items; letter discs stand in); play the Abu Nabil fight.
 ### Next steps (one per chat; reviews Sonnet, design and art judgment Opus)
-1. Balance pass 2: arc_arm identity, every encounter, workshop upgrades inside 65-90%. Model: Sonnet. Effort: medium.
+1. Process audit P1-P4 first (Efficiency track), then M1 (VISION); balance pass 2 dropped (D15). Model: Sonnet. Effort: medium.
 - Route B look pass and action combat in an arena: PAUSED 2026-10-24 by the 2D redesign.
 
 ## Track: 2D redesign (owner: the chat "2D redesign brainstorm", 2026-10-24)
@@ -49,8 +49,8 @@ Next, after the 5-hour reset, in this order (Feras 10-26):
 ## Track: Puzzles (owner: none)
 - Done on main: features/puzzles/ logic, grey-box scene, R5 placement (puzzle-place, 2026-10-23).
 
-## Track: Efficiency (owner: the next manager chat)
-- On main: per-track HANDOFF, milestone-only reports, gate checklists, tools/slots.sh, DeepSeek spend log
-  (../game-wt/cf_spend.csv), check.sh capped at 2 test suites machine-wide (tools/check_slot.sh).
-1. Keep the tracks in sync, retire finished sessions, hunt further savings. Model: Opus. Effort: medium.
-`Continue ferasalm/game on main as manager. Read HANDOFF.md (all tracks). Sync sessions; /handoff.`
+## Track: Efficiency (owner: the process-audit chats P1-P4, 2026-10-27)
+- Plan: docs/audits/2026-10-27-process-audit-plan.md (D1-D22 logged), checklist 2026-10-27-plan-checklist.md;
+  sequential before game work (D12). Neon Glitch steps 1-2 are folded into P0 and P1-P2. Each P-chat ticks its lines.
+1. P1 tool fixes: baseline, builders.conf, slots, pipeline, gate, hook (DeepSeek builds, tests first). Model: Sonnet. Effort: medium.
+`Continue ferasalm/game on main. Read HANDOFF.md (Efficiency) and the plan's P1. Do P1, tick the checklist, put P2's prompt here; /handoff.`
