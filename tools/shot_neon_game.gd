@@ -1,14 +1,15 @@
 extends Node
 ## purpose: Renders the Neon Glitch first playable stage by stage (start, cold open shots 2 and 3 and the lock, the
-## roof after the hatch burst, the fight on the roof) to C:/dev/game/inbox/neon_game_<n>.png; run non-headless.
+## roof after the hatch burst, the fight on the roof) to this checkout's inbox/neon_game_<n>.png; run non-headless.
 
-const OUT_DIR: String = "C:/dev/game/inbox"
+const OUT_DIR: String = "res://inbox"  ## the checkout's own inbox (git-ignored), never another checkout's
 
 var _game: NeonGame
 var _frame: int = 0
 
 
 func _ready() -> void:
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT_DIR))
 	_game = (load("res://features/neon/neon_game.tscn") as PackedScene).instantiate() as NeonGame
 	add_child(_game)
 
@@ -48,5 +49,5 @@ func _touch_guard() -> void:
 
 func _save(name: String) -> void:
 	var img: Image = get_viewport().get_texture().get_image()
-	img.save_png(OUT_DIR.path_join("neon_game_%s.png" % name))
+	img.save_png(ProjectSettings.globalize_path(OUT_DIR).path_join("neon_game_%s.png" % name))
 	print("shot ", name, " stage ", _game.stage)

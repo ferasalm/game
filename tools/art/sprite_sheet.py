@@ -1,7 +1,8 @@
 """Packs tools/bake_sprites.tscn frames into one sheet per state (Neon Glitch iso sprites, docs/design/first-playable.md).
 Rows are the 8 screen directions (0 = right, counter-clockwise, 6 = toward the camera), columns the frames. Every state
 is cropped to the union of its frames' opaque pixels (plus a margin), and the feet pivot moves with the crop.
-Usage: python tools/art/sprite_sheet.py <frames dir> <model id> <out dir> [frame px] [ortho m]
+Usage: python tools/art/sprite_sheet.py <frames dir> <model id> <out dir> [frame px] [ortho m] [colours]
+colours: 0 = full colour RGBA (default, the Hades bar), N = quantize to N colours (<= 256).
 Writes <out dir>/<id>_<state>.png and prints one JSON object per state for content/neon/sprites.json."""
 import glob
 import json
@@ -26,6 +27,7 @@ def main() -> None:
     src, model, out = sys.argv[1], sys.argv[2], sys.argv[3]
     frame_px = int(sys.argv[4]) if len(sys.argv) > 4 else 256
     ortho = float(sys.argv[5]) if len(sys.argv) > 5 else 2.6
+    colours = int(sys.argv[6]) if len(sys.argv) > 6 else 0
     os.makedirs(out, exist_ok=True)
     pattern = re.compile(r"%s_(\w+?)_d(\d)_f(\d+)\.png$" % re.escape(model))
     frames: dict = {}
@@ -49,8 +51,8 @@ def main() -> None:
         for (d, f), im in images.items():
             sheet.alpha_composite(im.crop((x0, y0, x1, y1)), (f * cw, d * ch))
         name = "%s_%s.png" % (model, state)
-        # 256 colours per sheet: about a sixth of the RGBA size, no visible loss on the ink renders
-        sheet = sheet.quantize(colors=256, method=Image.Quantize.FASTOCTREE, dither=Image.Dither.NONE)
+        if colours > 0:  # e.g. 256: about a sixth of the RGBA size, only when asked
+            sheet = sheet.quantize(colors=colours, method=Image.Quantize.FASTOCTREE, dither=Image.Dither.NONE)
         sheet.save(os.path.join(out, name), optimize=True)
         print(json.dumps({"state": state, "sheet": name, "frame_w": cw, "frame_h": ch, "frames": count,
                           "pivot": [round(px - x0, 1), round(py - y0, 1)]}))
