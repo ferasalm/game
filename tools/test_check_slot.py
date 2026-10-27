@@ -29,7 +29,10 @@ def main():
     old = time.time() - 30 * 60
     os.utime(os.path.join(d, "slot1"), (old, old))
     assert run(env, "acquire_check_slot", 10) == 0, "a stale slot is reclaimed"
-    print("test_check_slot: 4 tests passed")
+    os.makedirs(os.path.join(d, "slot1"), exist_ok=True)
+    env2 = dict(env, CHECK_SLOT_WAIT_SEC="2", CHECK_SLOT_POLL="1")
+    assert run(env2, "acquire_check_slot", 20) == 1, "a full set of slots gives up after CHECK_SLOT_WAIT_SEC"
+    print("test_check_slot: 5 tests passed")
 
 
 main()

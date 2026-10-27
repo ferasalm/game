@@ -41,3 +41,17 @@ ensure_wt() {  # <root> <wt> <branch> <base>: create the worktree, or refuse to 
     git -C "$root" worktree add -q -b "$branch" "$wt" "$base" || return 1
   fi
 }
+
+dur_secs() {  # 90m / 45m / 30s / 2h / plain seconds -> seconds
+  case "$1" in *h) echo $((${1%h} * 3600)) ;; *m) echo $((${1%m} * 60)) ;; *s) echo "${1%s}" ;; *) echo "$1" ;; esac
+}
+
+run_limited() {  # <duration> cmd...: run it, kill its whole process tree when the time is up; returns 124 then
+  local secs; secs="$(dur_secs "$1")"; shift
+  "$@" & local pid=$! t=0
+  while kill -0 "$pid" 2> /dev/null; do
+    sleep 1; t=$((t + 1))
+    if [ "$t" -ge "$secs" ]; then kill_tree "$pid"; wait "$pid" 2> /dev/null; return 124; fi
+  done
+  wait "$pid"
+}
