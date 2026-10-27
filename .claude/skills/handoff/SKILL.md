@@ -20,5 +20,7 @@ HANDOFF, DECISIONS and LESSONS load at every session start, so every line costs 
 5. **HANDOFF.md**, max 60 lines. It has a header (Last updated: session, model), then one `## Track: <name>` section per track, each with its owner session, status, waiting on the owner, next steps (each with `Model:` and `Effort:`) and a one-line paste-ready prompt. A /handoff edits only its own track's section plus the Last updated line, never another track's section.
 6. **Commit and push.** `tools/check.sh` again, commit (one message saying what changed), `git push -u origin
    <branch>`. Merge into `main` only if the owner gave his standing OK (DECISIONS); then `git push origin HEAD:main`.
+   After a push to main, `gh run list --branch main --limit 1`: a red CI run is fixed before the chat ends
+   (2026-10-27: main stayed red for 5 pushes because a Windows-only tool test ran on the Linux runner).
 7. **Tell the owner** in a few lines: what was done, where it is (branch, main or not), the next step with its
    model and effort, and whether to start a new chat.
