@@ -28,7 +28,7 @@ esac
 '''
 FAKE_BIN = r'''#!/bin/bash
 echo "ARGS: $@"
-ping -n 30 127.0.0.1 > /dev/null &
+if [ "$OS" = Windows_NT ]; then ping -n 30 127.0.0.1 > /dev/null & else sleep 30 & fi
 wait
 '''
 
@@ -50,6 +50,9 @@ def put(path, text, mode=None):
 
 
 def ping_count():
+    """Leaked fake-builder children: native PING.EXE on Windows, `sleep 30` elsewhere."""
+    if os.name != "nt":
+        return len(subprocess.run(["pgrep", "-f", "^sleep 30$"], capture_output=True, text=True).stdout.split())
     out = subprocess.run(["tasklist", "/FI", "IMAGENAME eq PING.EXE"], capture_output=True, text=True).stdout
     return out.upper().count("PING.EXE")
 
