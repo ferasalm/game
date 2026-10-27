@@ -140,3 +140,6 @@ it. docs/DECISIONS.md is the loaded summary of the rules in force; docs/decision
 - 2026-10-27 | HANDOFF becomes one queue table (task, lane, who, status, blocked by) with a Waiting on Feras table and a week schedule; the per-chat tracks and the dead 3D tracks go | Feras: "One queue table (Recommended)"
 - 2026-10-27 | Full cleanup: merged worktrees, the 3D-era builder worktrees, the stale builder slot, finished sessions archived; branches kept | Feras: "Full cleanup (Recommended)"
 - 2026-10-27 | The untracked marketing-* agents and skills leave the repo for user-level folders (~/.claude/agents, ~/.config/opencode/agent, ~/.agents/skills) | Feras: "Move to user level (Recommended)"
+- 2026-10-27 | inbox/ reorganised by Feras: old and unwanted material moved to inbox/retired/ (never a reference or source); the story bible docx renamed inbox/Neon_Glitch_Story_Bible_Final.docx | Feras: "I moved everything old and things that I don't want to be using into the "retired" folder"
+- 2026-10-27 | Queue row 1 (efficiency hooks) starts only when Feras says so | Feras: "When I say so."
+- 2026-10-27 | Cheap builders (agy, DeepSeek) may do simple tasks as the efficiency plan defines them | Feras: "you may use cheap subagents (agy or deepseek to do simple tasks as defined in the efficiency plan)"

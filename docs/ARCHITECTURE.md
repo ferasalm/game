@@ -136,7 +136,7 @@ runs with `process_mode = PROCESS_MODE_ALWAYS` across pauses, and resolves missi
 - `tools/art/` (Python): downscale to the target size, lock to the palette, key out the background, trim, pack
   sprite sheets, split a Flow video into frames for animation reference. Output goes to `assets/`.
 - 3D characters (spec: docs/archive/design-3d/characters-3d.md): stand-in bodies and moves are CC0 (Quaternius Universal Base
-  Characters and Universal Animation Library; KayKit as fallback). Feras downloads the zips into `inbox/stand_in/`
+  Characters and Universal Animation Library; KayKit as fallback). Feras unpacked them at the top of `inbox/`
   (git-ignored). Godot retargets them at import (BoneMap, humanoid profile): no Blender for the stand-ins, and no
   Mixamo (the repo is public). Later: Feras's Flow A-pose picture -> Hyper3D Rodin (image to 3D and UE-template rig,
   archive/design-3d/characters-3d.md 8) -> Blender cleanup only if needed (Claude, after the owner's OK to install). The ModelDef points at the new scene.

@@ -13,7 +13,7 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 ## Queue
 | # | Task (brief or doc) | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|
-| 1 | Efficiency fixes 1-6 as hooks and checks: docs/briefs/efficiency-hooks.md | builder + chat (review) | cf; Opus high | next: chat "Process: turn the broken rules into hooks and checks" | - |
+| 1 | Efficiency fixes 1-6 as hooks and checks: docs/briefs/efficiency-hooks.md | builder + chat (review) | cf; Opus high | next, when Feras says go: chat "Process: turn the broken rules into hooks and checks" | Feras's go |
 | 2 | Rydan free recolour + rebake (Blender), then Feras OKs the render | chat (MCP) | Opus high | running: chat "Recolour Rydan model" | - |
 | 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md) | chat (plan) | Opus high | queued | 1 |
 | 4 | M1 build from that brief + the Android export (D17), players-eye-gate before Feras | builder | agy | queued | 3 |
@@ -41,7 +41,7 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 | Day | Plan |
 |---|---|
 | Tue 10-27 | Row 2 finishes. No new Opus chat. |
-| Wed 10-28 | Row 1 (cf builds, one Opus review chat). Nothing else. |
+| Wed 10-28 | Row 1 once Feras says go (cf builds, one Opus review chat). Nothing else. |
 | Thu 10-29 | Row 3 brief; row 4 agy builds overnight while row 6 bakes Roya. |
 | Fri 10-30 | Play day 1 (row 5) if row 4 passed the eye gate by noon; else it moves to Sat or Sun. |
 | Sat 10-31 | Limit resets 13:00 UTC; fix passes from his notes; row 7 starts. |
@@ -51,7 +51,8 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 - On main: features/neon/neon_game.tscn (start flow -> Roya cold open -> prison roof -> turn-based map fight -> cable
   line). M1 replaces the turn-based fight (CANON 10-27, real-time). Renders: tools/shot_neon_game.tscn.
 - Archive done 10-27: hero code id rydan (save v7), res_graph + guard checks; restore from tag pre-cleanup.
-- RPG + menus polish (workshop vs mock_workshop.png, equipment overlap; inbox/menu_*.png): after M1, reskin to the new look.
+- inbox/retired/ (Feras 10-27) = material he retired: never a reference or source. Story bible: inbox/Neon_Glitch_Story_Bible_Final.docx.
+- RPG + menus: after M1, reskin to the new look (the old menu mockups and renders are retired).
 - Retired 3D (D20): tag 3d-archive, branch archive/3d, lookup only; old builder branches gemini/*, oc/* kept, worktrees gone.
 
 `Continue ferasalm/game on main. Read HANDOFF.md. Take the top queue row for your lane; /handoff.`
