@@ -27,7 +27,8 @@ win_pid() { cat "/proc/$1/winpid" 2> /dev/null || echo "$1"; }  # msys pid -> Wi
 
 kill_tree() {  # kill a process and its children; native Windows children survive a plain kill
   local pid="$1"
-  if command -v taskkill > /dev/null 2>&1; then taskkill //T //F //PID "$(win_pid "$pid")" > /dev/null 2>&1; fi
+  if command -v taskkill > /dev/null 2>&1; then taskkill //T //F //PID "$(win_pid "$pid")" > /dev/null 2>&1
+  else pkill -9 -P "$pid" 2> /dev/null; fi  # Linux: the direct children (CI), then the process itself
   kill -9 "$pid" 2> /dev/null; return 0
 }
 
