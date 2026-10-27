@@ -47,7 +47,7 @@
   signals to their old listeners (2026-10-24).
 - One session owns git in C:\dev\game; others message it for the window. `cd` into a worktree moves the session's
   directory -> `git -C <path>`.
-- Python on Windows writes CRLF -> `newline="\n"` (python is `python` here, not python3).
+- Python on Windows writes CRLF -> `newline="\n"` (python is `python` here, not python3). A `\\n` in a Bash-tool heredoc/sed arrives as a real newline: write such code with Write/Edit (2026-10-27).
 - Parallel worktrees shared user:// -> per-checkout test save dir (2026-10-22). `check.sh | tail && git commit`
   committed a failing run -> grep .check/*.log for FAIL first.
 - agy passes check.sh yet misses what a player sees -> GEMINI.md review_misses + tools/agy_review.sh (2026-10-22).

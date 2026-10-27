@@ -1,5 +1,5 @@
 # HANDOFF (current state only; one section per track, each edited only by its owner; max 60 lines)
-Last updated: 2026-10-27 (process audit plan approved: D1-D22; Efficiency track), Opus 5.5 (`claude-opus-5-5`).
+Last updated: 2026-10-27 (Efficiency: P1 tools done; P2 next), Sonnet 5.5 (`claude-sonnet-5-5`).
 
 ## Shared
 - Builders: DECISIONS 10-27 (D1): <= 2 Godot runs (agy, DeepSeek) + 1 free text run; slots.sh enforces it (P1 done): total cap, memory floor, pipeline refuses when full.
