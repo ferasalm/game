@@ -12,9 +12,10 @@ department have its agent file.
 1. **Look** (free): `bash tools/status.sh`: builders, branches not on main, worktrees, the queue, Feras's list.
 2. **Pick**: the top HANDOFF queue rows. Each row names its department (Dept) and its lane.
 3. **Father, subagent or child**: a quick read, one edit or a yes/no stays in the father. Multi-step department work
-   (a department's skill plus several steps or builder runs, about 30k+ tokens) goes to the department:
-   - **Department subagent** (Agent tool, `dept-<id>` from the table; Opus high, medium for mechanical work): short,
-     well-scoped work with no questions to Feras and no long builder waits: audits, docs, code review, builder briefs,
+   (a department's skill plus several steps or builder runs, about 30k+ tokens) goes to the department. Both modes
+   take that size; what decides the mode is whether the work finishes in one sitting:
+   - **Department subagent** (Agent tool, `dept-<id>` from the table; Opus high, medium for mechanical work): "short"
+     means one sitting: well scoped, no questions to Feras, and it never waits on a builder: audits, docs, code review, builder briefs,
      merging builder PASS runs, research write-ups. It may launch builders (build_pipeline.sh runs outside it) and
      returns without waiting on them. Its report (15 lines or fewer) comes back to the father, who writes its HANDOFF row.
    - **Department child chat** (a new Opus chat in its own worktree, fresh context, the department brief below): long work,
@@ -80,7 +81,7 @@ are: what loads at start, how long a chat runs, what gets read, and output.
 
 ## Departments
 A department is a skill set plus a reviewer agent, run in one of two modes (Start here, step 3): a **subagent**
-(`.claude/agents/dept-<id>.md`: Opus, few tools, its skill rules inline) for short scoped work, or a **chat** (an Opus
+(`.claude/agents/dept-<id>.md`: Opus, few tools, its skill rules inline) for one-sitting scoped work, or a **chat** (an Opus
 child chat in its own worktree) for long, taste, MCP or builder-waiting work. No department chat stays open between
 tasks (an idle chat would pay ~89k start tokens a turn). Its lessons and research queue live in its skill folder. The
 Id column is what the HANDOFF queue's Dept column names; tools/doc_check.py fails when a queue row names an unknown

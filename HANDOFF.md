@@ -5,7 +5,7 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 ## How this file works (Feras 2026-10-27; departments 10-28)
 - One queue, top row first. A chat edits its own rows (Status, Blocked by) and adds rows for new work it finds.
 - Dept: the department that owns the row (docs/WORKFLOW.md Departments). Multi-step rows go to that department as a
-  dept-<id> subagent (short, scoped; the father writes its row) or an Opus child chat (long, taste, MCP, builder waits;
+  dept-<id> subagent (one sitting: no waits, no questions; the father writes its row) or an Opus child chat (long, taste, MCP, builder waits;
   it writes its own row; Status "child open: <branch>"): WORKFLOW, Start here, step 3. As many as needed.
 - Lane: who does the work inside it: builder (agy, cf, oc) by default; chat = the Opus chat itself, only for taste, MCP
   (Blender, Flow, Rodin), review or plan, said in brackets; Feras = his move. tools/doc_check.py checks every row.

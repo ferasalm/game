@@ -1,6 +1,6 @@
 ---
 name: dept-ops
-description: Ops department subagent, opened by the father for short, scoped process work (audits, docs, tools, checks, merging builder PASS runs). Not for work that waits on builders or needs Feras's answers (that is an Ops child chat).
+description: Ops department subagent, opened by the father for multi-step (~30k+ tokens), one-sitting process work (audits, docs, tools, checks, merging builder PASS runs). Not for work that waits on builders or needs Feras's answers (that is an Ops child chat).
 model: opus
 effort: high
 tools: Read, Grep, Glob, Edit, Write, Bash, Agent

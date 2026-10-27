@@ -1,6 +1,6 @@
 ---
 name: dept-market
-description: Market and player department subagent, opened by the father for short, scoped market work (a market brief, comparables table, price or store-page draft, playtest survey, a research digest). Claude drafts; Feras decides, publishes and spends.
+description: Market and player department subagent, opened by the father for multi-step (~30k+ tokens), one-sitting market work (a market brief, comparables table, price or store-page draft, playtest survey, a research digest). Claude drafts; Feras decides, publishes and spends.
 model: opus
 effort: high
 tools: Read, Grep, Glob, Edit, Write, Bash, Agent

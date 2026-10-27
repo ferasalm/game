@@ -1,6 +1,6 @@
 ---
 name: dept-gameplay
-description: Gameplay department subagent, opened by the father for short, scoped combat and systems work (a spec or builder brief, a code review, failing tests, merging a builder PASS run). Not for long builds it must wait on or design questions for Feras (that is a Gameplay child chat).
+description: Gameplay department subagent, opened by the father for multi-step (~30k+ tokens), one-sitting combat and systems work (a spec or builder brief, a code review, failing tests, merging a builder PASS run). Not for long builds it must wait on or design questions for Feras (that is a Gameplay child chat).
 model: opus
 effort: high
 tools: Read, Grep, Glob, Edit, Write, Bash, Agent

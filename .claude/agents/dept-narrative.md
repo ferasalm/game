@@ -1,6 +1,6 @@
 ---
 name: dept-narrative
-description: Narrative department subagent, opened by the father for short, scoped story work (a dialogue draft, names, a lore or CANON consistency pass, a research write-up). Not for taste rounds with Feras (that is a Narrative child chat).
+description: Narrative department subagent, opened by the father for multi-step (~30k+ tokens), one-sitting story work (a dialogue draft, names, a lore or CANON consistency pass, a research write-up). Not for taste rounds with Feras (that is a Narrative child chat).
 model: opus
 effort: high
 tools: Read, Grep, Glob, Edit, Write, Agent
