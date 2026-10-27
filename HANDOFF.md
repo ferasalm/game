@@ -18,7 +18,7 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 |---|---|---|---|---|---|---|
 | 1 | Efficiency fixes 1-6 as hooks and checks: docs/briefs/efficiency-hooks.md | Ops | builder + chat (review) | cf; Opus high | next, when Feras says go: chat "Process: turn the broken rules into hooks and checks" | Feras's go |
 | 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | queued | 1 |
-| 4 | M1 build from that brief + the Android export (D17), players-eye-gate before Feras | Gameplay | builder | agy | queued | 3 |
+| 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | queued | 3 |
 | 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | QA | Feras | - | queued | 4 |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | queued: runs while agy builds row 4 | 3; free memory >= 3 GB |
 | 7 | Art batch: Bilqis re-model (v2), guard, props (booth, floodlight, qamariya window, umbrella), icons; title = Flow Omni | Art | chat (MCP) | Opus high | queued; Rodin credits end ~11-17 | 6 |
@@ -38,10 +38,9 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 | More concept pictures + an empty plate per scene (no characters, HUD or rain) | 10-24 | inbox/ |
 | Icon art | 10-27 | row 7 |
 
-## This week (Claude Pro weekly limit: 59% used Tue 10-27, resets Sat 10-31 13:00 UTC: spend ~10% a day)
+## This week (Claude Pro weekly limit: 62% used Wed 10-28, resets Sat 10-31 13:00 UTC: spend ~10% a day)
 | Day | Plan |
 |---|---|
-| Tue 10-27 | Row 2 done (render OK, merged 10-28). No new Opus chat. |
 | Wed 10-28 | Row 1 once Feras says go (cf builds, one Opus review chat). Nothing else. |
 | Thu 10-29 | Row 3 brief; row 4 agy builds overnight while row 6 bakes Roya. |
 | Fri 10-30 | Play day 1 (row 5) if row 4 passed the eye gate by noon; else it moves to Sat or Sun. |
