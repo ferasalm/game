@@ -3,7 +3,8 @@
 
 Warns (exit 0) at 75% of a cap. Caps: CLAUDE.md 80 lines, HANDOFF.md 60, docs/DECISIONS.md 70, docs/LESSONS.md 100, and 27 KB for all four
 (about 6k tokens loaded at every session start). Every HANDOFF queue row names a department from the
-docs/WORKFLOW.md Departments table and a lane; every decision is dated; a struck decision says what superseded it;
+docs/WORKFLOW.md Departments table and a lane; a subagent-mode department has its Opus .claude/agents/dept-<id>.md and
+every dept-*.md is in the table; every decision is dated; a struck decision says what superseded it;
 docs/MAP.md is current (tools/map.py --check).
 """
 import pathlib, re, subprocess, sys
@@ -44,8 +45,25 @@ def table(text: str, heading: str) -> list:
 
 
 workflow = ROOT / "docs/WORKFLOW.md"
-depts = {r[0].strip("*") for r in table(workflow.read_text(encoding="utf-8"), "## Departments")[1:]} if workflow.exists() else set()
-check(bool(depts), "docs/WORKFLOW.md has a '## Departments' table (Id first)")
+dtable = table(workflow.read_text(encoding="utf-8"), "## Departments") if workflow.exists() else []
+dhead = dtable[0] if dtable else []
+dhead_ok = dhead[:3] == ["Id", "Mode", "Agent"]
+check(dhead_ok, f"docs/WORKFLOW.md has a '## Departments' table starting Id | Mode | Agent: {dhead}")
+depts = {r[0].strip("*") for r in dtable[1:] if r}
+# Hybrid departments (Feras 2026-10-28): a subagent-mode department has an Opus agent file .claude/agents/dept-<id>.md
+agents = {p.stem: p for p in (ROOT / ".claude/agents").glob("dept-*.md")}
+for row in (r for r in dtable[1:] if dhead_ok and len(r) >= 3):
+    dept, modes, agent = row[0].strip("*"), row[1].split(" + "), row[2]
+    check(all(m in ("subagent", "chat", "father") for m in modes), f"department mode is subagent, chat or father: {row[:3]}")
+    if "subagent" in modes:
+        check(agent == f"dept-{dept.lower()}" and agent in agents, f"subagent department has .claude/agents/dept-{dept.lower()}.md: {row[:3]}")
+        text = agents[agent].read_text(encoding="utf-8") if agent in agents else ""
+        check(re.search(r"^model: opus$", text, re.M) is not None, f"{agent} runs on Opus (Feras 10-28): model: opus")
+    else:
+        check(agent == "-", f"a department with no subagent mode names no agent (-): {row[:3]}")
+named = {r[2] for r in dtable[1:] if len(r) >= 3}
+for stem in agents:
+    check(stem in named, f".claude/agents/{stem}.md is named in the WORKFLOW Departments table")
 queue = table(texts["HANDOFF.md"], "## Queue")
 head = queue[0] if queue else []
 rows = [r for r in queue[1:] if r and r[0].isdigit()]

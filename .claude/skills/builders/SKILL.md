@@ -7,8 +7,9 @@ description: Run code builders (agy, Cloudflare DeepSeek, free text runs) from s
 ## When to use
 Any code or text work handed to someone else: a builder run (agy, DeepSeek via cf_build, opencode :free), a Haiku/Sonnet
 subagent, a review lens, or a bug you diagnose. Claude plans, orchestrates and reviews; builders write (CLAUDE.md).
-Who runs it (Feras 10-28): the department's Opus child chat, opened by the father with a child brief (docs/WORKFLOW.md,
-Start here); the father uses it only to write that brief. Many children may run at once; tools/slots.sh still caps runs.
+Who runs it (Feras 10-28, hybrid): the department, as a dept-<id> subagent (launches runs, returns without waiting;
+on PASS the father opens one to review and merge) or an Opus child chat (waits idle on its runs and merges them);
+docs/WORKFLOW.md, Start here. Many may run at once; tools/slots.sh still caps runs.
 
 ## Roster and caps
 Numbers live in `tools/builders.conf` (caps, memory floor, idle minutes, models); never copy them here. `bash tools/slots.sh`

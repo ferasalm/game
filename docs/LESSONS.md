@@ -43,7 +43,7 @@
 - A superseded rule lives on in a doc or prompt string -> grep for it when a decision changes.
 - Gemini research contains invented numbers -> ideas and norms only, never facts.
 - A skill with `paths:` frontmatter (flow-media, 3d-model, sprite-bake, players-eye-gate) is not in a chat's skill list
-  until it touches a matching file -> the child brief says Read .claude/skills/<name>/SKILL.md (2026-10-28).
+  until it touches a matching file -> the department brief says Read .claude/skills/<name>/SKILL.md (2026-10-28).
 - Where is X: grep docs/MAP.md (generated), not `ls -R`; map.py lists tracked files only (`git ls-files --cached`): a new file checked before `git add` passes "MAP.md current" locally and fails it in CI -> `git add` new files, then `python tools/map.py`, then check.sh (2026-10-26/27).
 - A blind id rename (zayd -> rydan) also rewrote decisions-log lines, manifest sources naming Feras's real files and a
   one-letter test ("Z") -> exclude logs/archive/manifest, protect external names, then let check.sh find the rest (2026-10-27).

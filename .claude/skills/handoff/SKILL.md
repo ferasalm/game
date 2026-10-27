@@ -28,5 +28,5 @@ HANDOFF, DECISIONS and LESSONS load at every session start, so every line costs 
    After a push to main, `gh run list --branch main --limit 1`: a red CI run is fixed before the chat ends
    (2026-10-27: main stayed red for 5 pushes because a Windows-only tool test ran on the Linux runner).
 7. **Report.** A department child chat (docs/WORKFLOW.md, Start here) ends with a report of 15 lines or fewer for the
-   father: commits on main, what failed, questions for Feras. The father (or a chat Feras drives) tells the owner in a
+   father (dept-<id> subagents run no /handoff: the father writes their rows): commits on main, what failed, questions for Feras. The father (or a chat Feras drives) tells the owner in a
    few lines: what was done, where it is (branch, main or not), the top queue row with its Dept, lane and who.

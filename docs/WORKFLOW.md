@@ -4,23 +4,34 @@ Why the rules in CLAUDE.md exist. Not loaded at session start. Built 2026-10-19 
 orchestrator skill and doc check) and feras-career (its efficiency playbook), read critically, plus this repo's own
 methods. Drop a rule when its why stops being true.
 
-## Start here: one unit of work (Feras 2026-10-28)
-Feras -> the **father** chat (Opus, the producer) -> one Opus **child** chat per department task -> lanes (builders,
-readers, reviewers) -> gates -> Feras plays -> his notes become queue rows. Opus thinks; cheap models do the work
-(Feras's standing rule, D1). tools/doc_check.py makes every queue row name a department (below) and a lane.
+## Start here: one unit of work (Feras 2026-10-28, hybrid)
+Feras -> the **father** chat (Opus high; xhigh only for planning) -> the department, in one of two modes -> lanes
+(builders, readers, reviewers) -> gates -> Feras plays -> his notes become queue rows. Opus thinks; cheap models do
+the work (D1). tools/doc_check.py makes every queue row name a department and a lane, and every subagent-mode
+department have its agent file.
 1. **Look** (free): `bash tools/status.sh`: builders, branches not on main, worktrees, the queue, Feras's list.
 2. **Pick**: the top HANDOFF queue rows. Each row names its department (Dept) and its lane.
-3. **Father or child**: open a child for multi-step department work, i.e. it needs a department's skill plus
-   several steps or builder runs (about 30k+ tokens). A quick read, one edit or a yes/no stays in the father. Open
-   as many children as the work needs (Feras: speed is not traded for tokens); the machine caps in
-   tools/builders.conf (Godot runs, memory floor) still hold, and tools/slots.sh decides when a builder starts.
-4. **Open the child**: a new Opus chat in its own worktree with a fresh context, given the child brief below; the
-   father writes the brief from the Departments table and sets the row's Status to "child open: <branch>".
-5. **The child orchestrates**: it loads its skills, routes each piece by lane (table), briefs builders from
-   docs/briefs/TEMPLATE.md and launches build_pipeline.sh in the background (builders skill), sends reads over ~20k
-   tokens to a Haiku high reader, runs review-code on every diff and its department's reviewer; anything visual
-   passes players-eye-gate, review-player and review-feras. It runs check.sh, merges its checked work into main
-   (standing OK), updates its own queue row at /handoff, and ends with a report of 15 lines or fewer.
+3. **Father, subagent or child**: a quick read, one edit or a yes/no stays in the father. Multi-step department work
+   (a department's skill plus several steps or builder runs, about 30k+ tokens) goes to the department:
+   - **Department subagent** (Agent tool, `dept-<id>` from the table; Opus high, medium for mechanical work): short,
+     well-scoped work with no questions to Feras and no long builder waits: audits, docs, code review, builder briefs,
+     merging builder PASS runs, research write-ups. It may launch builders (build_pipeline.sh runs outside it) and
+     returns without waiting on them. Its report (15 lines or fewer) comes back to the father, who writes its HANDOFF row.
+   - **Department child chat** (a new Opus chat in its own worktree, fresh context, the department brief below): long work,
+     taste work, MCP work (Blender, Flow, Rodin), anything that waits on builders (an idle chat costs nothing), anything
+     Feras may want to watch or answer. It updates its own queue row at /handoff and reports back through the app;
+     the father sets the row's Status to "child open: <branch>" when it opens one.
+   Open as many as the work needs (Feras: speed is not traded for tokens); the caps in tools/builders.conf (Godot
+   runs, memory floor) still hold, and tools/slots.sh decides when a builder starts.
+4. **Brief**: the father writes the brief below from the Departments table (subagent: the Agent prompt; child: its
+   first message).
+5. **The department orchestrates**: it routes each piece by lane (table), briefs builders from docs/briefs/TEMPLATE.md
+   and launches build_pipeline.sh in the background, sends reads over ~20k tokens to a Haiku high reader, runs
+   review-code on every diff and its department's reviewer; anything visual passes players-eye-gate, review-player and
+   review-feras. It runs check.sh and merges its checked work into main (standing OK; a subagent only when its brief
+   says so). Nested agents work (tested 10-28: a subagent opened its own Haiku agent and got its answer), but each
+   costs a fresh start (~70k tokens with every tool loaded), so dept-* agents list few tools and open reviewers only
+   when the brief needs them.
    (Terms: a builder run goes through tools/slots.sh and build_pipeline.sh; a Haiku reader is a cheap Claude
    subagent that reads and summarises; review-* are reviewer agents (Departments table); the eye gate = players-eye-gate.)
 6. **The father** reads the report, checks it with `bash tools/status.sh` (branch on main, row updated), picks next.
@@ -28,26 +39,26 @@ readers, reviewers) -> gates -> Feras plays -> his notes become queue rows. Opus
 7. **Evolve**: each chat upgrades one tool, check, skill or doc; every 5 chats ops-review reads /session-report
    (plugin) and review-cost; a lesson becomes a check or is archived after 30 days (D9). The claude-md-management
    plugin runs only inside /handoff and within the doc_check caps.
-Emergency mode (emergency-efficiency skill, the 5-hour window past 50%) suspends steps 3-4: one director chat, no
-children, until the window resets.
+Emergency mode (emergency-efficiency skill, the 5-hour window past 50%) suspends child chats: one director chat,
+department subagents only, until the window resets.
 
 | Work | Lane | Who |
 |---|---|---|
 | Godot code + tests | builder | agy (Gemini 3.8 Flash high) or Cloudflare DeepSeek V4.1 Flash; <= 2 Godot runs |
 | Text: docs, research, summaries, review lenses | builder | opencode (DeepSeek V4.1 Flash free) or OpenRouter :free; 1 run, 50 requests a day |
 | Big or many-file reads | reader | a Haiku high agent with an exact output template |
-| Taste, MCP (Blender, Flow, Rodin), the final review | chat | Opus (every chat and child; Feras 10-28) |
+| Taste, MCP (Blender, Flow, Rodin), the final review | chat | Opus (every chat, child and department subagent; Feras 10-28) |
 
-**Child brief** (the father pastes it as the child's first message; fill every line):
+**Department brief** (fill every line; a subagent gets it as its prompt, a child chat as its first message):
 ```
-Department: <id from the Departments table>. Queue row: <#>. Model: Opus (every child).
+Department: <Id>. Mode: <subagent dept-<id> | child chat>. Queue row: <#>. Model: Opus.
 Skills: <names; a skill the chat does not list yet: Read .claude/skills/<name>/SKILL.md>
 Goal: <one line; player-visible where it can be>
 Context: <the decisions, files and CANON lines it needs; no chat history>
-Lane plan: <pieces for agy / cf / oc, Haiku readers, reviewers; what the child does itself>
-May edit: <paths>. Do NOT edit: <paths other chats own right now>
+Lane plan: <pieces for agy / cf / oc, Haiku readers, reviewers; what the department does itself>
+May edit: <paths>. Do NOT edit: <paths other chats own right now>. Commit and merge: <yes | no, the father does>
 Done when: <check.sh passes; the gate or render; merged to main; queue row updated>
-Report: 15 lines or fewer: commits on main, what failed, questions for Feras.
+Report: 15 lines or fewer: what changed (commits), runs launched, what failed, questions for Feras.
 ```
 
 ## The budget
@@ -68,21 +79,23 @@ are: what loads at start, how long a chat runs, what gets read, and output.
   unused. A rule the agent keeps breaking becomes a check.
 
 ## Departments
-A department is a skill set plus a reviewer agent. The father opens an Opus child chat for a department's multi-step
-work (Start here, step 3); no department chat stays open between tasks (an idle chat would pay ~89k start tokens a
-turn). Its lessons and research queue live in its skill folder, read only when it works. The Id column is what the
-HANDOFF queue's Dept column names (tools/doc_check.py). review-feras is the last review for anything that reaches Feras.
+A department is a skill set plus a reviewer agent, run in one of two modes (Start here, step 3): a **subagent**
+(`.claude/agents/dept-<id>.md`: Opus, few tools, its skill rules inline) for short scoped work, or a **chat** (an Opus
+child chat in its own worktree) for long, taste, MCP or builder-waiting work. No department chat stays open between
+tasks (an idle chat would pay ~89k start tokens a turn). Its lessons and research queue live in its skill folder. The
+Id column is what the HANDOFF queue's Dept column names; tools/doc_check.py fails when a queue row names an unknown
+Id or a subagent-mode department has no agent file. review-feras is the last review for anything that reaches Feras.
 
-| Id | Does | Skill(s) a child loads | Reviewer |
-|---|---|---|---|
-| Producer | the father chat: the queue, picks, child briefs, reads reports (Feras directs) | builders (to brief); tools/status.sh | review-feras |
-| Ops | efficiency, process, tools, hooks, checks | ops-review, builders; emergency-efficiency when the window is tight | review-cost |
-| Art | images, 3D models, sprites, renders | flow-media, 3d-model, sprite-bake; docs/design/art-bible.md | review-player |
-| Gameplay | combat and systems design and code | builders + a spec; game-designer, level-designer, godot-gameplay-scripter | review-code |
-| Narrative | story, dialogue, names | narrative-designer; docs/CANON.md + the story bible | review-canon |
-| UI | menus, HUD, UI text | .agents/skills/ui-card; docs/design/ui.md, rpg-menus.md | review-player (UI half) |
-| QA | the player's eye before Feras plays; his play sessions | players-eye-gate + the F12 capture (features/debug/playtest) | review-player |
-| Market | audience, price, store page, playtests | market-player; role cards (Business Strategist, Product Manager, UX Researcher, Behavioral Nudge Engine, Persona Walkthrough Specialist, Feedback Synthesizer) | review-market |
+| Id | Mode | Agent | Does | Skill(s) it loads | Reviewer |
+|---|---|---|---|---|---|
+| Producer | father | - | the father chat: the queue, picks, briefs, reads reports (Feras directs) | builders (to brief); tools/status.sh | review-feras |
+| Ops | subagent + chat | dept-ops | efficiency, process, tools, hooks, checks, merging PASS runs | ops-review, builders; emergency-efficiency when the window is tight | review-cost |
+| Art | chat | - | images, 3D models, sprites, renders (MCP and taste) | flow-media, 3d-model, sprite-bake; docs/design/art-bible.md | review-player |
+| Gameplay | subagent + chat | dept-gameplay | combat and systems: specs, briefs, tests, reviews (subagent); builds it waits on (chat) | builders + a spec; game-designer, level-designer, godot-gameplay-scripter | review-code |
+| Narrative | subagent + chat | dept-narrative | story, dialogue, names; taste rounds with Feras are a chat | narrative-designer; docs/CANON.md + the story bible | review-canon |
+| UI | chat | - | menus, HUD, UI text (taste and renders) | .agents/skills/ui-card; docs/design/ui.md, rpg-menus.md | review-player (UI half) |
+| QA | chat | - | the player's eye before Feras plays; his play sessions | players-eye-gate + the F12 capture (features/debug/playtest) | review-player |
+| Market | subagent + chat | dept-market | audience, price, store page, playtests (drafts only) | market-player; role cards (Business Strategist, Product Manager, UX Researcher, Behavioral Nudge Engine, Persona Walkthrough Specialist, Feedback Synthesizer) | review-market |
 
 ## Limits (one table)
 | Limit | Value | Enforced by |
@@ -133,7 +146,7 @@ Everyone except Claude researches. Claude writes the questions and reads only th
 |---|---|---|
 | Design, specs, briefs, hard engineering, judging art and renders | Opus | high |
 | Anything briefed exactly: code, content, tests, docs, audits | agy (Gemini 3.8 Flash), Cloudflare DeepSeek, or opencode :free for text | the tool's default |
-| Reviewing and merging its own builders' branches, small fixes | the department's Opus child (Feras 10-28: Opus for every child) | high |
+| Reviewing and merging builders' branches, small fixes | the department's Opus subagent or child (Feras 10-28: Opus for every department worker) | high |
 
 Claude's own tasks go to Haiku first, Sonnet only when Haiku can't do it well (Readers). Claude subagents only where a
 builder can't (art judgment loops, Opus code review), at most 2 at once per chat.
@@ -152,7 +165,8 @@ brief names one game-dev skill (.agents/skills/). Free models may train on promp
    what a WARN names, and the renders. Then a Haiku subagent (effort high) compares the diff with the brief and its
    Checklist and lists the misses; Opus reads only that list, the WARN lines and the renders.
 4. **Merge:** `bash tools/merge_run.sh <task> <gemini|oc>`. A fast-forward onto the checked commit reuses the check; any
-   other merge runs check.sh. It removes the worktree and branch. The child that started the run merges it. A repeated miss
+   other merge runs check.sh. It removes the worktree and branch. The child chat that started a run merges
+   it; a subagent returns at launch, so on PASS the father opens a dept-<id> subagent to review and merge. A repeated miss
    goes into GEMINI.md <review_misses>.
 5. **Runs belong to the chat that started them.** A chat that ends early leaves its runs going only while its session
    stays open. The next chat checks `git -C ../game-wt/<task> log` and the log; a dead run is restarted with the same
