@@ -17,15 +17,15 @@ Format: [ ] id | item | how to check
 - [x] P1.10 | Dry run on a toy brief: a planted test edit gives BREACH and a non-zero exit; merged only with 0 runs live | .result of the dry run -- done: docs/audits/2026-10-27-p1-dryrun.md (BREACH exit 1; clean PASS exit 0)
 
 ## P2 Skills and reviewers (Sonnet, medium)
-- [ ] P2.0 | Calibration: free readers vs Haiku low/high/max on the gold set; routing table chosen | docs/research/calibration-2026-10.md
-- [ ] P2.1 | builders skill (<= 80 lines); architecting-, coding-, debugging-games deleted; emergency-efficiency a <= 30-line delta (D3) | ls .claude/skills
+- [x] P2.0 | Calibration: free readers vs Haiku low/high/max on the gold set; routing table chosen | docs/research/calibration-2026-10.md -- done P2a: reader Haiku high, lens nemotron-3-ultra :free / Haiku low (docs/research/calibration-2026-10.md)
+- [x] P2.1 | builders skill (<= 80 lines); architecting-, coding-, debugging-games deleted; emergency-efficiency a <= 30-line delta (D3) | ls .claude/skills -- done P2a: builders skill 81 lines, 3 skills deleted, emergency delta 24 lines
 - [ ] P2.2 | flow-media skill with the exact Flow JS (Nano Banana images, Omni video); localhost route marked dead | grep "file_upload" .claude/skills/flow-media/SKILL.md
 - [ ] P2.3 | 3d-model skill: Rodin call order, credit rules, free route stub to prove before access ends | grep "rodin_generate_rigging"
 - [ ] P2.4 | sprite-bake skill; tools/art/bake_all.sh with arguments; tools/art/test_sprite_sheet.py | test passes in check.sh
 - [ ] P2.5 | players-eye-gate skill; tools/eye_gate.sh; tools/eye_metrics.py + test; docs/design/acceptance.md draft | one eye_gate render of neon_game
 - [ ] P2.6 | ops-review (context: fork, agent: Explore) and market-player skills | ls .claude/skills
-- [ ] P2.7 | Reviewer agents review-code/-player/-canon/-cost/-market/-feras with name, description, model, tools, maxTurns | panel run on the neon-battle diff flags the model shrink
-- [ ] P2.8 | Each skill has lessons.md + research-queue.md | find .claude/skills -name research-queue.md
+- [x] P2.7 | Reviewer agents review-code/-player/-canon/-cost/-market/-feras with name, description, model, tools, maxTurns | panel run on the neon-battle diff flags the model shrink -- done P2a: six review-*.md; review-code 6/6 on cal/planted; agents list after a fresh chat (Agent tool cannot name them in this chat)
+- [x] P2.8 | Each skill has lessons.md + research-queue.md | find .claude/skills -name research-queue.md -- builders + emergency-efficiency only (lessons.md, research-queue.md) done P2a; other skills with P2b
 - [ ] P2.9 | Agency retire list moved to .agents/archive/; role cards gameplay, art, ui | ls .agents
 - [ ] P2.10 | Fixes: design/characters-3d.md:92 dead ref; shot_neon_game.gd:5 inbox path | grep
 

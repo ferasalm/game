@@ -1,5 +1,5 @@
 # HANDOFF (current state only; one section per track, each edited only by its owner; max 60 lines)
-Last updated: 2026-10-27 (Efficiency: P1 tools done; P2 next), Sonnet 5.5 (`claude-sonnet-5-5`).
+Last updated: 2026-10-27 (Efficiency: P1, P2a done; P2b next), Sonnet 5.5 (`claude-sonnet-5-5`).
 
 ## Shared
 - Builders: DECISIONS 10-27 (D1): <= 2 Godot runs (agy, DeepSeek) + 1 free text run; slots.sh enforces it (P1 done): total cap, memory floor, pipeline refuses when full.
@@ -34,7 +34,7 @@ Next, after the 5-hour reset, in this order (Feras 10-26):
 - Playtest 2026-10-24: inbox/playtest_*.png, concept_*.png; crossing freeze fixed. docs/briefs/: render-clean,
   menus-equip-fix, holo-map-real (+ their fix passes), then cyber-look, items-menu, gear-slots (save: line review).
 1. Review + merge the fix passes, then Feras playtests; items-menu, gear-slots next. Model: Opus. Effort: medium.
-2. Environment overhaul (DECISIONS 10-24) via /architecting-games after his test. Model: Opus. Effort: high.
+2. Environment overhaul (DECISIONS 10-24) via the builders skill after his test. Model: Opus. Effort: high.
 `Continue ferasalm/game on main. Read HANDOFF.md (Level 1 + playtest fixes). Do its next step; /handoff.`
 
 ## Track: RPG + menus (owner: the next chat from this prompt)
@@ -52,5 +52,6 @@ Next, after the 5-hour reset, in this order (Feras 10-26):
 ## Track: Efficiency (owner: the process-audit chats P1-P4, 2026-10-27)
 - Plan: docs/audits/2026-10-27-process-audit-plan.md (D1-D22 logged), checklist 2026-10-27-plan-checklist.md;
   sequential before game work (D12). Neon Glitch steps 1-2 are folded into P0 and P1-P2. Each P-chat ticks its lines.
-1. P1 done + Opus-reviewed (docs/audits/2026-10-27-p1-review.md). P2 is split: P2a then P2b. Model: Sonnet. Effort: medium.
-`Continue ferasalm/game on main. First type /advisor opus. Do docs/briefs/p2a-calibration-reviewers.md exactly; then /handoff.`
+1. P1 done + Opus-reviewed; P2a done (calibration: reader Haiku high, lens nemotron-3-ultra :free; builders skill; six review-* agents).
+   P2b: docs/briefs/p2b-art-eye-gate.md. Model: Sonnet + /advisor opus. Effort: medium.
+`Continue ferasalm/game on main. First type /advisor opus. Do docs/briefs/p2b-art-eye-gate.md exactly; then /handoff.`
