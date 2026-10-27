@@ -11,7 +11,10 @@ the work (D1). tools/doc_check.py makes every queue row name a department and a 
 department have its agent file.
 1. **Look** (free): `bash tools/status.sh`: builders, branches not on main, worktrees, the queue, Feras's list.
 2. **Pick**: the top HANDOFF queue rows. Each row names its department (Dept) and its lane.
-3. **Father, subagent or child**: a quick read, one edit or a yes/no stays in the father. Multi-step department work
+3. **Father, subagent or child**: a quick read, one edit or a yes/no stays in the father, and even then a step too easy
+   for Opus goes to a builder whenever its brief is shorter than the work (code, tests, renames, edits across files,
+   summaries; Feras 10-28); the father writes it itself only when the brief would hold the whole text anyway (a logged
+   decision in his words, a 1-3 line fix). Multi-step department work
    (a department's skill plus several steps or builder runs, about 30k+ tokens) goes to the department. Both modes
    take that size; what decides the mode is whether the work finishes in one sitting:
    - **Department subagent** (Agent tool, `dept-<id>` from the table; Opus high, medium for mechanical work): "short"
