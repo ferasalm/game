@@ -1,5 +1,5 @@
 # HANDOFF (current state only; one section per track, each edited only by its owner; max 60 lines)
-Last updated: 2026-10-27 (Efficiency: P0 VISION done; P3 next), Opus 5.5 (`claude-opus-5-5`).
+Last updated: 2026-10-27 (Efficiency: P3 part 1 merged; P3 rest + P4 next), Opus 5.5 (`claude-opus-5-5`).
 
 ## Shared
 - Builders: DECISIONS 10-27 (D1): <= 2 Godot runs (agy, DeepSeek) + 1 free text run; slots.sh enforces it (P1 done): total cap, memory floor, pipeline refuses when full.
@@ -52,8 +52,8 @@ Next, after the 5-hour reset, in this order (Feras 10-26):
 ## Track: Efficiency (owner: the process-audit chats P1-P4, 2026-10-27)
 - Plan: docs/audits/2026-10-27-process-audit-plan.md (D1-D22 logged), checklist 2026-10-27-plan-checklist.md;
   sequential before game work (D12). Neon Glitch steps 1-2 are folded into P0 and P1-P2. Each P-chat ticks its lines.
-1. Done: P1, P2a, P2b (+ Opus review 813e97e, kill_tree fix), P0: docs/VISION.md (4 pillars, combat wins ties; free
-   20-30 min demo first; PC leads, Android kept alive), docs/playtest/2026-10-27.md (17 notes M1, 6 M2, 2 art), hades-digest.
-   Next: P3 docs, memory, ~/.claude (checklist P3.1-P3.12, plan "P3"; keep the 6 market personas; lessons in
-   docs/audits/2026-10-27-p2b-review.md). Model: Opus. Effort: high.
-`Continue ferasalm/game on main. Do P3 (HANDOFF Efficiency; checklist P3.1-P3.12, plan section P3); then /handoff.`
+1. Done: P1, P2a, P2b, P0 (VISION; P0.1 waits on Feras's OK), P3 part 1 (367428a: CLAUDE.md, DECISIONS/CANON, LESSONS 52,
+   WORKFLOW, rules/code.md, design index, settings + hooks, memory, 46 agents archived). Next: P3 rest + P4: P3.7 systems-map,
+   P3.8 TEMPLATE, P3.11 start cost after (get_usage Skills/Memory at chat start vs 7458/9004) + connector list, P3.12
+   audit doc; then P4 conformance pass, check.sh, push, /handoff. Model: Opus. Effort: high.
+`Continue ferasalm/game on main. Do the rest of P3 and P4 (HANDOFF Efficiency; checklist open P3 lines); then /handoff.`

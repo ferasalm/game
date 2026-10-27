@@ -8,7 +8,7 @@ Story detail: docs/story/bible.md (CONFIRMED = locked). Vision and pillars: docs
 - 2026-10-21 | Real places: Souq al-Milh, al-Saila, Bab al-Yaman, Zubairi, Haddah, Bayt Baws | Feras
 - 2026-10-21 | Save spot: sabil fountain (full refill; patrols return); HP/SP carry over; losing offers retry | Feras
 - 2026-10-25 | Rydan only for now, Bilqis set aside (two campaigns, one story: later); first build = start flow + one rooftop fight, on the prison roof of the escape (2026-10-26) | Feras
-- 2026-10-26 | Opening: start flow -> Roya cold open (in-engine, not Flow video) -> prison escape tutorial -> "Earlier": Zayd's first shift -> back to the escape; old 3D level 1 retired | Feras
+- 2026-10-26 | Opening: start flow -> Roya cold open (in-engine, not Flow video) -> prison escape tutorial -> "Earlier": Zayd's first shift -> back to the escape; old 3D level 1 parked, its content not used | Feras
 - 2026-10-21 | Currency: riyal | Claude
 ## Heroes
 - 2026-10-25 | The hero is Rydan (was Zayd); code id "zayd" = Rydan until the rename step | Feras

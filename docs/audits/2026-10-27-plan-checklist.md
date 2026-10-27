@@ -36,18 +36,18 @@ Format: [ ] id | item | how to check
 - [x] P0.4 | docs/research/hades-digest.md from the plan's appendix | file exists -- done P0
 
 ## P3 Docs, memory, ~/.claude (Sonnet, high)
-- [ ] P3.1 | CLAUDE.md: north star, advisor duty, Opus standard, D1/D4/D10, one usage rule, python, sync_main.sh, CANON pointer, skill map line | doc_check; grep P3 must KEEP the six market personas in ~/.claude/agents: business-strategist, product-manager, design-ux-researcher, product-behavioral-nudge-engine, design-persona-walkthrough, product-feedback-synthesizer (market-card source).
-- [ ] P3.2 | .claude/rules/code.md with paths:; GEMINI.md/AGENTS.md builder-only, Neon Glitch | grep -c Qarnaw = 0
-- [ ] P3.3 | DECISIONS process-only, superseded struck to decisions-archive, D1-D22 summarized; docs/CANON.md holds content lines | doc_check
-- [ ] P3.4 | LESSONS ~50 lines; route lessons in skills; opencode/Inkling lines archived; today's 4 lessons | wc -l
-- [ ] P3.5 | docs/WORKFLOW.md (from EFFICIENCY.md): protocols, departments, limits table, routes table (free first), research protocol | file exists; old refs updated
-- [ ] P3.6 | docs/design index with statuses; 3D-era designs to docs/archive/design-3d/; BRIEFING to docs/archive | ls
-- [ ] P3.7 | docs/SPEND.md; docs/feras-notes.md; docs/design/systems-map.md | files exist
-- [ ] P3.8 | TEMPLATE: base origin/main, D6 defaults (tests, assets, tools/, .github/), May edit, Ripple, player-visible tests, timebox, first commit, pillar | grep
-- [ ] P3.9 | settings.json: binary read-denies, skillOverrides name-only (syntax verified), InstructionsLoaded log, paid-tool hook wired | settings.json
-- [ ] P3.10 | Memory: claude-as-manager deleted, big-asks fixed, openrouter-free-only updated, MEMORY.md index | ls memory dir
-- [ ] P3.11 | ~/.claude: unused agents/skills moved to ~/.claude/archive with MOVED.txt; start cost measured before and after into USAGE; connector list for Feras | MOVED.txt; USAGE row
-- [ ] P3.12 | docs/audits/2026-10-27-process-audit.md: findings, sources, notes for other track owners | file exists
+- [x] P3.1 | CLAUDE.md: north star, advisor duty, Opus standard, D1/D4/D10, one usage rule, python, sync_main.sh, CANON pointer, skill map line | doc_check; grep P3 must KEEP the six market personas in ~/.claude/agents: business-strategist, product-manager, design-ux-researcher, product-behavioral-nudge-engine, design-persona-walkthrough, product-feedback-synthesizer (market-card source). -- done 367428a: north star, advisor duty, Opus standard, D1/D4/D10, usage rule, python, sync_main.sh, CANON pointer, skill map; 59 lines; 6 market personas kept in ~/.claude/agents
+- [x] P3.2 | .claude/rules/code.md with paths:; GEMINI.md/AGENTS.md builder-only, Neon Glitch | grep -c Qarnaw = 0 -- done 367428a: .claude/rules/code.md (paths:), GEMINI.md 61->50, AGENTS.md builder-only; Qarnaw 0
+- [x] P3.3 | DECISIONS process-only, superseded struck to decisions-archive, D1-D22 summarized; docs/CANON.md holds content lines | doc_check -- done 367428a: DECISIONS 45 lines (scope, process, tools, engine; D-lines summarized), docs/CANON.md content, 4 superseded lines to decisions-archive
+- [x] P3.4 | LESSONS ~50 lines; route lessons in skills; opencode/Inkling lines archived; today's 4 lessons | wc -l -- done 367428a: LESSONS 100->52; route lessons in builders/flow-media/players-eye-gate lessons.md; Inkling/OpenRouter lines archived; new 10-27 lessons
+- [x] P3.5 | docs/WORKFLOW.md (from EFFICIENCY.md): protocols, departments, limits table, routes table (free first), research protocol | file exists; old refs updated -- done 367428a: docs/WORKFLOW.md (protocols, departments, limits, routes, research, readers); refs updated (history files untouched)
+- [x] P3.6 | docs/design index with statuses; 3D-era designs to docs/archive/design-3d/; BRIEFING to docs/archive | ls -- done 367428a: docs/design/README.md index; 6 files + retire-3d/ to docs/archive/design-3d/; BRIEFING to docs/archive
+- [ ] P3.7 | docs/SPEND.md; docs/feras-notes.md; docs/design/systems-map.md | files exist -- open: SPEND.md and feras-notes.md exist; docs/design/systems-map.md not written (next P3 chat)
+- [ ] P3.8 | TEMPLATE: base origin/main, D6 defaults (tests, assets, tools/, .github/), May edit, Ripple, player-visible tests, timebox, first commit, pillar | grep -- open: only the base line fixed (367428a); D6 defaults, May edit, Ripple, player-visible tests, timebox, first commit, pillar remain (next P3 chat)
+- [x] P3.9 | settings.json: binary read-denies, skillOverrides name-only (syntax verified), InstructionsLoaded log, paid-tool hook wired | settings.json -- done 367428a: binary read-denies, skillOverrides name-only for 3 manual + 8 persona skills (syntax from code.claude.com skills docs; both dir and frontmatter names keyed: confirm the listing in a fresh chat), InstructionsLoaded log (.claude/hooks/instructions-loaded.sh), pre_spend PreToolUse wired (tested from this worktree: block exit 2, spend ok exit 0, Hyper3D reminder)
+- [x] P3.10 | Memory: claude-as-manager deleted, big-asks fixed, openrouter-free-only updated, MEMORY.md index | ls memory dir -- done: claude-as-manager deleted, big-asks fixed (Haiku high), openrouter-free-only updated (one-shot text + lenses), MEMORY.md 3 lines
+- [ ] P3.11 | ~/.claude: unused agents/skills moved to ~/.claude/archive with MOVED.txt; start cost measured before and after into USAGE; connector list for Feras | MOVED.txt; USAGE row -- partial: 46 never-called user agents moved to ~/.claude/archive/agents with MOVED.txt (6 market personas + 4 used design agents kept); start cost before in USAGE; after-measure and connector list open (next P3 chat)
+- [ ] P3.12 | docs/audits/2026-10-27-process-audit.md: findings, sources, notes for other track owners | file exists -- open: docs/audits/2026-10-27-process-audit.md not written (next P3 chat)
 
 ## P4 Close
 - [ ] P4.1 | Conformance pass over this checklist: every line [x] or open with a reason | this file

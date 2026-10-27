@@ -53,7 +53,7 @@ turn). Its lessons live in its skill folder (lessons.md), read only when it work
 ## Routes (free first)
 | Need | Free route first | Paid fallback and cap |
 |---|---|---|
-| Images | Flow, Nano Banana (Feras's Flow outputs; flow-media skill) | Paid image APIs, <= $1 a job, only on Feras's OK |
+| Images | Flow, Nano Banana (Feras's Flow outputs; flow-media skill) | Paid image APIs (Runware, OpenRouter image) only after Flow fails for the job, <= $1, only on Feras's OK (feras-notes: paid was once used before free) |
 | Video | Flow, Omni (title loop, VFX plates; flow-media skill) | Paid video only on Feras's OK, cost named first |
 | 3D models | Blender MCP search_assets / import_asset (CC0: Poly Haven, Poly Pizza; Sketchfab only with a licence check); open-source image-to-3D on a free host (TRELLIS, Hunyuan3D, TripoSR; unverified) | Hyper3D Rodin while its credits last: name the cost first, log in SPEND.md, one approved hero asset before any batch |
 | Sprites | tools/art bake: offline renders (bake_sprites.tscn); no 3D at runtime | none needed |
@@ -61,7 +61,7 @@ turn). Its lessons live in its skill folder (lessons.md), read only when it work
 | Research | see Research protocol | Cloudflare DeepSeek, up to $10 over its free neurons (Feras, 2026-10-23) |
 
 The PreToolUse hook tools/pre_spend.py blocks paid generation tools unless one of Feras's last 8 messages says "spend ok"
-(settings.json wiring pending, P3.9). Before Rodin access ends, prove the free 3D route on one character.
+(wired in .claude/settings.json PreToolUse, P3.9; Hyper3D calls get a credit-cost reminder). Before Rodin access ends, prove the free 3D route on one character.
 
 ## Research protocol (audit plan D18)
 Everyone except Claude researches. Claude writes the questions and reads only the digests.
