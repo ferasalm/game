@@ -45,6 +45,8 @@ def put(path, text, mode=None):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8", newline="\n") as f:
         f.write(text)
+    if mode is not None:
+        os.chmod(path, mode)
 
 
 def ping_count():
@@ -153,7 +155,7 @@ def test_idle_after_commits_is_checked_not_nowork():  # review 2026-10-27: build
 
 def fake_bin(top):
     for n in ("opencode", "agy"):
-        put(f"{top}/bin/{n}", FAKE_BIN)
+        put(f"{top}/bin/{n}", FAKE_BIN, 0o755)
     return {**os.environ, "PATH": f"{top}/bin{os.pathsep}" + os.environ["PATH"], "HOME": top, "FREE_MB": "99999"}
 
 
