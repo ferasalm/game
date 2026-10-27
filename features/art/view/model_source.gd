@@ -1,6 +1,6 @@
 class_name ModelSource
 extends VisualSource
-## The live 3D source of a CharacterVisual (docs/design/characters-3d.md): a skinned model (ModelRig) or a rigid one
+## The live 3D source of a CharacterVisual (docs/archive/design-3d/characters-3d.md): a skinned model (ModelRig) or a rigid one
 ## (RigidRig) from the ModelDef with the sprite's id. Gait clips play at the rate that keeps the feet on the ground
 ## (speed measured from the body's own movement); one-shots play on the retimed ClipTiming curve and announce &"impact"
 ## / &"end" on it; the body turns by yaw (never a negative scale), leans into acceleration, freezes on a hit pause.

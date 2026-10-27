@@ -23,11 +23,18 @@ tool_tests() {  # every tools/**/test_*.py (a new test file is picked up by itse
 }
 step docs $py tools/doc_check.py
 step lint $py tools/lint_gd.py
+step res_graph $py tools/res_graph.py --check  # no file under features/ core/ content/ assets/ that nothing uses
 step import tools/run_godot.sh --import
 step tool_tests tool_tests
+git status --porcelain --untracked-files=all > .check/before_tests.txt  # tests and boot must leave the repo as found
 . tools/check_slot.sh; acquire_check_slot || { echo "FAIL no test slot (see .check)"; exit 1; }; trap release_check_slot EXIT
 step tests env GODOT_TIMEOUT=600 tools/run_godot.sh -s res://tests/runner.gd
 step boot env GODOT_TIMEOUT=180 tools/run_godot.sh --quit-after 120  # the main scene starts without errors
 release_check_slot
+repo_untouched() {  # a file a test or the boot wrote into the checkout (a relative save folder was committed once)
+  git status --porcelain --untracked-files=all | grep -vxF -f .check/before_tests.txt
+  ! git status --porcelain --untracked-files=all | grep -qvxF -f .check/before_tests.txt
+}
+step repo_untouched repo_untouched
 grep -h '^tests:' .check/tests.log 2>/dev/null | sed 's/^/     /'
 if [ $fails -eq 0 ]; then echo "all checks passed"; else echo "$fails check(s) FAILED"; exit 1; fi

@@ -27,7 +27,7 @@ Format: [ ] id | item | how to check
 - [x] P2.7 | Reviewer agents review-code/-player/-canon/-cost/-market/-feras with name, description, model, tools, maxTurns | panel run on the neon-battle diff flags the model shrink -- done P2a: six review-*.md; review-code 6/6 on cal/planted; agents list after a fresh chat (Agent tool cannot name them in this chat)
 - [x] P2.8 | Each skill has lessons.md + research-queue.md | find .claude/skills -name research-queue.md -- builders + emergency-efficiency only (lessons.md, research-queue.md) done P2a; other skills with P2b
 - [x] P2.9 | Agency retire list moved to .agents/archive/; role cards gameplay, art, ui | ls .agents
-- [x] P2.10 | Fixes: design/characters-3d.md:92 dead ref; shot_neon_game.gd:5 inbox path | grep
+- [x] P2.10 | Fixes: archive/design-3d/characters-3d.md:92 dead ref; shot_neon_game.gd:5 inbox path | grep
 
 ## P0 VISION (Opus, high; an interview)
 - [ ] P0.1 | docs/VISION.md (<= 60 lines): vision, mission, pillars, objectives, roadmap M1..Mn, market brief; Feras edited it | file exists, Feras OK logged -- open: drafted from Feras's 8 interview answers (decisions-log 2026-10-27 P0); his edit/OK pending

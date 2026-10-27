@@ -29,6 +29,14 @@ func test_round_trip_and_summary() -> void:
 	service.delete(1)
 
 
+func test_a_relative_save_folder_is_refused() -> void:
+	var service := SaveService.new("relative_save_probe/deeper")
+	check(not service.write(1, _data(10)), "a relative folder is not written")
+	check(service.last_error.contains("user://"), "the error says why (%s)" % service.last_error)
+	check(not service.write_thumbnail(1), "nor is a thumbnail")
+	check(not DirAccess.dir_exists_absolute("relative_save_probe"), "nothing lands in the working directory")
+
+
 func test_writing_again_overwrites_and_keeps_a_backup() -> void:
 	var service: SaveService = _service()
 	check(service.write(1, _data(10)), "first write")

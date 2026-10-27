@@ -39,7 +39,7 @@ docs/DECISIONS.md (the binding rules; newest wins). Then only the lines named be
 `docs/briefs/`
 `docs/design/level-1.md`
 `docs/design/valve-puzzles.md`
-`docs/design/slice.md`
+`docs/archive/design-3d/slice.md`
 `features/`
 `core/`
 `content/`

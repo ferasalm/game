@@ -15,7 +15,7 @@ Every spend gets a line in docs/SPEND.md (date, asset, credits, reason). The P2b
 3. PUT the bytes: `curl -s -o /dev/null -w "%{http_code}\n" -X PUT -H "Content-Type: image/jpeg" --data-binary @<file> "<upload_url>"`.
 4. `rodin_generate` {"reference_upload_ids":[id],"prompt":"<name>, a lean game character in A-pose: <clothes>. Ink comic style textures.",
    "mesh_mode":"Raw","quality_override":40000,"tier":"Gen-2.5-Medium","geometry_file_format":"glb"}. Options seen: mesh_mode
-   Raw|Quad; tier Gen-2.5-Medium|High|Extreme-Low. A Quad mesh came out ~12k faces: ask for ~7k (docs/design/characters-3d.md).
+   Raw|Quad; tier Gen-2.5-Medium|High|Extreme-Low. A Quad mesh came out ~12k faces: ask for ~7k (docs/archive/design-3d/characters-3d.md).
 5. `rodin_wait` {generation_id, timeout_seconds}; `rodin_generate_rigging` {"asset_id":<generation id>,"bone_template":"human_UE",
    "geometry_file_format":"glb"} (`human_UE` = the old `ue` 70-node rig, so ModelRig retargets the UAL clips; NO animation_preset:
    presets need the `human` skeleton and fail with "Animation retarget requires target Hips"); `rodin_wait` the rig
@@ -24,7 +24,7 @@ Every spend gets a line in docs/SPEND.md (date, asset, credits, reason). The P2b
    `python tools/rodin/rewrite_glb.py inbox/rodin/<id>_rigged_shaded.glb - assets/characters/<id>_rodin.glb`
    (usage: SRC IDX_BIN DST [--cut BOX | --keep BOX] [--press BOX] [--place OX,OY,OZ,YAW_DEG,SCALE]); the texture comes out as t_<id>.png.
    Texture: pull the GLB's one image (2048 png) and resize to 1024 as assets/characters/t_<id>.png (Roya 2026-10-27).
-7. ModelDef with `pose_source`, then the bake: docs/design/characters-3d.md steps 3-6 and the sprite-bake skill.
+7. ModelDef with `pose_source`, then the bake: docs/archive/design-3d/characters-3d.md steps 3-6 and the sprite-bake skill.
 The Rodin tools are deferred: ToolSearch "hyper3d rodin" loads them (the MCP may still be connecting at session start).
 
 ## Batch priorities (plan section 12)

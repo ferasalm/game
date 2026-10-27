@@ -46,7 +46,7 @@ research-queue.md. Frontmatter carries `paths:` where it helps (art skills: `ass
   - Free route stub: TRELLIS / Hunyuan3D / TripoSR on Hugging Face Spaces, unverified; Blender MCP
     search_assets/import_asset from CC0 libraries; Rigify, then ModelRig retarget. To prove before access ends
     (an art-chat task).
-  - Fix docs/design/characters-3d.md:92 (it cites the deleted tools/shot_models.gd).
+  - Fix docs/archive/design-3d/characters-3d.md:92 (it cites the deleted tools/shot_models.gd).
   - Do not spend credits in this chat.
 - **sprite-bake**:
   - Move the batch to `tools/art/bake_all.sh`. Its source is in docs/audits/2026-10-27-process-audit-plan.md,

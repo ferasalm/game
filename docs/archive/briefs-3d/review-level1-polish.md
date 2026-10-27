@@ -6,7 +6,7 @@ godot-gameplay-scripter skill. You REVIEW; you change no file in the repo.
 agy built gemini/level1-polish (gate PASS). A second model (you) checks it against its brief before Feras playtests main tonight.
 
 ## Read first
-The brief: docs/briefs/level1-polish.md.
+The brief: docs/archive/briefs-3d/level1-polish.md.
 The diff: `git fetch origin; git diff origin/main...gemini/level1-polish -- . ':!*.uid' ':!docs/MAP.md'`
 (read it per path; skip *.png and *.glb).
 
@@ -30,7 +30,7 @@ issues first. Nothing else.
 None.
 
 ## Checklist
-- file: docs/briefs/level1-polish.md
+- file: docs/archive/briefs-3d/level1-polish.md
 
 ## Proof
 The appended lines; final message ends with `Built-by: <model> (opencode)`.

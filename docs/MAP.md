@@ -99,7 +99,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/items/pistols.json`: content: pistol x4
 - `content/items/rarities.json`: content: rarity x6
 - `content/jambiyah/blades.json`: content: blade x3
-- `content/jambiyah/heirloom.json`: content: heirloom x3
 - `content/jambiyah/hilts.json`: content: hilt x3
 - `content/jambiyah/loadouts.json`: content: loadout x2
 - `content/jambiyah/stones.json`: content: stone x12
@@ -155,8 +154,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `core/text_db.gd`: Player text (autoload TextDB): loads every res://localization/*.csv (header "keys,<lang>,...") into the TranslationServer at startup, so tr("KEY") works
 
 ## features
-- `features/art/defs/clip_def.gd`: The timing of one model clip (an animation of the shared library): its length, whether it loops, and for a one-shot the Hades-style retiming (docs/design/characters-3d.md 4): the clip runs slow to `windup_t`, holds a beat, runs fast through the strike to `strike_end_t` (`impact_t` lands inside it) and eases out
-- `features/art/defs/model_def.gd`: One live 3D character model (docs/design/characters-3d.md 5): a skinned glTF (or a rigid model built in code) with its height, footprint, anchors (bone names), the facade state -> ClipDef map, stride and turn speed, skin tint, and the parts it wears
+- `features/art/defs/clip_def.gd`: The timing of one model clip (an animation of the shared library): its length, whether it loops, and for a one-shot the Hades-style retiming (docs/archive/design-3d/characters-3d.md 4): the clip runs slow to `windup_t`, holds a beat, runs fast through the strike to `strike_end_t` (`impact_t` lands inside it) and eases out
+- `features/art/defs/model_def.gd`: One live 3D character model (docs/archive/design-3d/characters-3d.md 5): a skinned glTF (or a rigid model built in code) with its height, footprint, anchors (bone names), the facade state -> ClipDef map, stride and turn speed, skin tint, and the parts it wears
 - `features/art/defs/model_part_def.gd`: One part worn by a model on a bone (a "part" of a ModelDef): hair or brows from a glTF, a rigid mesh from a glb (the drone's hull), a garment lathed around the bone's up axis from a radius profile (skirt, coat, head wrap), a sleeve (capsule from the bone to its child), or the grandfather's jambiyah hilt (Rodin grip and sheath scenes)
 - `features/art/defs/palette_def.gd`: The locked colour palette: one letter per colour ("." is transparent and never listed here)
 - `features/art/defs/sprite_def.gd`: One pixel sprite: rows of palette letters ('.' = transparent), all the same width, feet on the last row
@@ -193,7 +192,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/art/view/model_parts.gd`: Puts one ModelPartDef on a rig: hair or a rigid mesh from its glTF, a lathed garment, a sleeve capsule or the jambiyah, each on a BoneAttachment3D so it follows the bone through every animation
 - `features/art/view/model_react.gd`: What a live 3D character does in answer to the battle's cues, on its materials and on `visual.body`: the hit flash, the revive glow, the knocked-out tint, the small squash of a hit (squash lives on the facade's body node, never on bones) and the victory hop
 - `features/art/view/model_rig.gd`: Builds one skinned character under a holder node from its ModelDef: the glTF body (scaled to height_m), its painted materials, the parts it wears on BoneAttachment3D nodes, and a MANUAL AnimationPlayer that carries the shared Quaternius animation library (the same 65-bone rig as the stand-in bodies; a body with other bone axes names a `pose_source` that plays the clips hidden and PoseFollow retargets; the library scene is loaded once and only its AnimationLibrary is kept)
-- `features/art/view/model_source.gd`: The live 3D source of a CharacterVisual (docs/design/characters-3d.md): a skinned model (ModelRig) or a rigid one (RigidRig) from the ModelDef with the sprite's id
+- `features/art/view/model_source.gd`: The live 3D source of a CharacterVisual (docs/archive/design-3d/characters-3d.md): a skinned model (ModelRig) or a rigid one (RigidRig) from the ModelDef with the sprite's id
 - `features/art/view/model_weapon.gd`: The grandfather's jambiyah in use: drawn from the belt into the hand when a strike begins (the weapon trail starts tracking its hilt and its point), an arc smear on the impact frame, sheathed and the trail released when the clip ends
 - `features/art/view/node_scan.gd`: Finds nodes inside an imported scene by walking its children: every node of a class (the skeleton, the meshes) and the chain of nodes from the root down to one of them (to multiply their transforms)
 - `features/art/view/painted_light.gdshaderinc`
@@ -317,8 +316,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/dialogue/tests/test_talk_picker.gd`: Tests for TalkPicker: first dialogue, after-battle dialogue on victory, chat sequence and wrapping, battle interruption resuming chats, and defensive fallbacks
 - `features/dialogue/view/dialogue_box.gd`: The dialogue box, Hades II style: a big portrait slides in when the speaker changes, a nameplate sits on the box, lines are typed out, and choice buttons offer branching dialogue
 - `features/dialogue/view/dialogue_choice_list.gd`: Manages the focusable button list for dialogue choices
-- `features/dialogue/view/dialogue_demo.gd`: Manual check: plays the workshop_first dialogue over a plain background (F6 in the editor)
-- `features/dialogue/view/dialogue_demo.tscn`: scene
 - `features/dialogue/view/dialogue_layout.gd`: Builds the dialogue box's controls in code (Hades II style; sizes from the UI style, laid out for 1920x1080): a big portrait at the left that slides in, an ornate glass text box at the bottom right with a frieze, a nameplate tab on the box's top edge (name in brass, epithet under it) and the button hints
 - `features/dialogue/view/portraits.gd`: Finds the portrait texture for (speaker, expression): res://assets/portraits/<speaker>_<expression>.png when it exists (loaded straight from the file, the "keep" importer needs no import step), else the speaker's painted neutral (a painted face beats a stand-in), else a stand-in disc with the expression's brows and mouth (StandinPortrait)
 - `features/equipment/defs/hologram_2d_def.gd`: purpose: Anchor points of a 2D menu hologram as fractions of its rect (0..1 from the left and the top)
@@ -331,15 +328,11 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/equipment/view/equipment_boxes.gd`: purpose: Manages the 8 equipment slot boxes, their positions, visibility per hero and focus navigation
 - `features/equipment/view/equipment_data.gd`: purpose: What the equipment screen needs from ContentDB, read once
 - `features/equipment/view/equipment_desc_bar.gd`: purpose: Description bar (1760x90 at 80,900) showing item name, rarity, description and combat effect
-- `features/equipment/view/equipment_detail.gd`: The right-hand side of the equipment screen: the focused item (name in its rarity colour, tag, text, perk and the tech moves it teaches) above the stat comparison (base, with the staged kit, an up / down arrow)
 - `features/equipment/view/equipment_hero_header.gd`: purpose: Hero info box (500x140 at 80,124) with portrait bust, name, class, Lv N, and HP/SP/XP bars
-- `features/equipment/view/equipment_item_button.gd`: Builds one owned item as a menu button: its name in the rarity colour, the rarity tag and an "Equipped" mark on the right
 - `features/equipment/view/equipment_menu.gd`: purpose: Equipment menu with Neon sprite hologram hero, slot boxes, owned list, stats comparison and tabs
 - `features/equipment/view/equipment_owned_list.gd`: purpose: Owned items panel (420x620 at 80,260) populated with ListRows and worn "E" chips
 - `features/equipment/view/equipment_stats_panel.gd`: purpose: Stats preview panel (440x560) showing now vs after comparison and derived battle rolls
 - `features/equipment/view/equipment_tabs_bar.gd`: purpose: Shared top bar (1760x64 at 80,40) with the screen title and the Equipment / Items / Map tabs
-- `features/equipment/view/grid_disc.gdshader`
-- `features/equipment/view/hologram.gdshader`
 - `features/equipment/view/hologram_sprite.gd`: purpose: The still a 2D menu hologram shows: a hero's Neon idle sprite facing the camera, or their portrait
 - `features/equipment/view/hologram_stage.gd`: purpose: 800x760 menu hologram: the hero's Neon idle sprite (or portrait) with leader lines to the slot boxes
 - `features/equipment/view/slot_box.gd`: purpose: 150x150 equipment slot box showing slot label, item icon or gemstone sockets
@@ -385,15 +378,12 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/items/tests/test_rewards.gd`: Rewards: the first win pays everything and sets patrol_paid_<id>, a repeat win pays half the riyal and nothing else, herbs over the stack turn into riyal, the purse has a cap, a chest pays once
 - `features/items/tests/test_shop.gd`: The herb stall: buy and sell rules and their edge cases (economy.md section 9), the ShopService purse signal, and using consumables in the field (FieldUse, ItemService)
 - `features/jambiyah/defs/blade_def.gd`: A jambiyah blade: adds to attack, adds knockback to every hit the wielder lands, adds weight
-- `features/jambiyah/defs/heirloom_def.gd`: Maps heirloom restoration rank to open stone slots and story flags (content/jambiyah/heirloom.json)
 - `features/jambiyah/defs/hilt_def.gd`: A jambiyah hilt: adds to agility, multiplies cast speed, adds weight, and grants exactly one move
 - `features/jambiyah/defs/loadout_def.gd`: A hero's starting gear: which weapon parts, prosthetic and accessory they own and wear at the start (each optional)
 - `features/jambiyah/defs/stone_def.gd`: A gemstone socketed into a jambiyah hilt (content/jambiyah/stones.json)
 - `features/jambiyah/logic/jambiyah.gd`: Builds Zayd's fighter from a base CombatantDef plus one hilt and one blade (docs/design/combat.md)
 - `features/jambiyah/logic/loadout.gd`: Which gear a hero wears: the saved choice per slot ("<hero>.<part>" in GameState.equipment), else the starting gear
-- `features/jambiyah/logic/stat_row.gd`: One line of the workshop comparison: label key, value now (base) and value with the chosen pair
 - `features/jambiyah/logic/stones.gd`: Pure rules for jambiyah hilt gemstones: open socket counts, rarity fitting rules, and socket mutations
-- `features/jambiyah/logic/workshop_stats.gd`: The comparison rows the equipment screen shows: base fighter against the fighter built by Jambiyah.equip
 - `features/jambiyah/tests/test_jambiyah.gd`: T3: every hilt + blade pairing gives a different Zayd stat sets, inside the timeline caps; each hilt adds exactly one move; the shared base definition is never changed
 - `features/jambiyah/tests/test_loadout.gd`: The loadout fallback: a hero wears the saved item per slot, else the start loadout
 - `features/neon/battle/battle_demo.gd`: purpose: The battle demo scene (docs/design/first-playable.md section 3): the prison-roof plate, a y-sorted world with Rydan and two guards, and a MapBattle that begins on ready at the contact between them
@@ -473,7 +463,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/puzzles/defs/light_lock_mirror.gd`: purpose: One rotatable mirror in a light lock puzzle with four directional targets
 - `features/puzzles/defs/light_lock_window.gd`: purpose: One colored qamariya window in a light lock puzzle
 - `features/puzzles/defs/puzzle_def_coords.gd`: purpose: Typed optional [x, y] and [x, y, z] reads used by the puzzle definitions
-- `features/puzzles/defs/puzzle_yard_def.gd`: purpose: Defines the grey-box puzzle yard: floor, walls, ledge, tower, camera, colours and view sizes
 - `features/puzzles/defs/water_net_def.gd`: purpose: Defines a water routing network puzzle (valves, splits, gates, spouts, outlets)
 - `features/puzzles/defs/water_node_def.gd`: purpose: One node in a water network puzzle (source, split, gate, spout, or outlet)
 - `features/puzzles/logic/light_lock.gd`: purpose: Pure logic for light lock beam tracing, shutter toggling, mirror rotation, and solution check
@@ -595,9 +584,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `localization/workshop.csv`
 - `localization/world.csv`
 
-## nonexistent_dir_for_b5
-- `nonexistent_dir_for_b5/deeper/slot_1.json`: content: ? x0
-
 ## tests
 - `tests/base_test.gd`: Base class for test files
 - `tests/runner.gd`: Headless test runner: runs every test_* method of every res://**/tests/test_*.gd file
@@ -650,8 +636,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/oc_task.sh`: Runs opencode on one task brief inside its own git worktree, never in the main checkout (DECISIONS 2026-10-23).
 - `tools/playtest.sh`: Runs the game with playtest capture and mirrors its output into inbox/playtest/game.log.
 - `tools/pre_spend.py`: PreToolUse hook (D21): blocks paid generation tools (exit 2) unless a recent USER message says "spend ok"; reminds before Hyper3D.
+- `tools/res_graph.py`: What does the game actually use? Walks res:// paths, class_name references and glTF side files from roots and sorts
 - `tools/rodin/rewrite_glb.py`: Rebuild a Rodin glb with new triangle indices (from Godot, winding flipped back; IDX_BIN '-' keeps its own), no
-- `tools/rodin/slim_indices.gd`: Rodin step 1: simplifies a Rodin glb mesh with Godot's LOD generator and writes the index buffer (env SRC, IDX, MAX_TRIS, DST); rewrite_glb.py then builds the slim glb (usage: docs/design/characters-3d.md 8)
+- `tools/rodin/slim_indices.gd`: Rodin step 1: simplifies a Rodin glb mesh with Godot's LOD generator and writes the index buffer (env SRC, IDX, MAX_TRIS, DST); rewrite_glb.py then builds the slim glb (usage: docs/archive/design-3d/characters-3d.md 8)
 - `tools/run_godot.sh`: Runs the pinned Godot headless on this project with the given arguments; fails on a non-zero exit or on
 - `tools/shot_menu.gd`: purpose: Renders pause, save, shop, or equipment menu at 1920x1080 to an inbox PNG
 - `tools/shot_menu.tscn`: scene
@@ -679,6 +666,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_kill_tree.py`: Tests kill_tree (tools/lib.sh): a tree with a native grandchild and a parent still forking during the kill dies whole.
 - `tools/test_map.py`: Self-test for map.py: only tracked files are mapped (an untracked file made CI fail "MAP.md current").
 - `tools/test_pre_spend.py`: Self-test for pre_spend.py: a paid tool is blocked without Feras's OK in a user message; Hyper3D gets a reminder.
+- `tools/test_res_graph.py`: Self-test for res_graph.py --check: python tools/test_res_graph.py (a fake project in a temp folder, exit 1 on failure).
 - `tools/test_session_start.py`: Self-test for .claude/hooks/session-start.sh (reports the session's own worktree) and the .gitignore .env rule.
 - `tools/test_slots.py`: Self-test for tools/slots.sh: python tools/test_slots.py (temp dirs, plain asserts, exit 1 on failure).
 - `tools/test_template.py`: TEMPLATE.md stays readable by the gate (P3.8, 2026-10-27): its headings, an empty forbidden list, parseable checklist.

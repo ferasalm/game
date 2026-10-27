@@ -53,8 +53,8 @@ func exists(slot: int) -> bool:
 func write(slot: int, data: Dictionary) -> bool:
 	last_error = ""
 	var path: String = path_for(slot)
-	if DirAccess.make_dir_recursive_absolute(dir) != OK:
-		return _fail("cannot create the save folder '%s'" % dir)
+	if not _make_dir():
+		return _fail("cannot create the save folder '%s' (it must be user:// or absolute)" % dir)
 	var tmp: String = path + ".tmp"
 	var file := FileAccess.open(tmp, FileAccess.WRITE)
 	if file == null:
@@ -130,7 +130,7 @@ func write_thumbnail(slot: int, image: Image = null) -> bool:
 	elif img.get_width() != 480 or img.get_height() != 270:
 		img = img.duplicate()
 		img.resize(480, 270, Image.INTERPOLATE_BILINEAR)
-	if DirAccess.make_dir_recursive_absolute(dir) != OK:
+	if not _make_dir():
 		return false
 	return img.save_png(thumbnail_path_for(slot)) == OK
 
@@ -166,6 +166,14 @@ func _parse(path: String, label: String) -> Dictionary:
 		_fail("%s is not a save (not a JSON object)" % label)
 		return {}
 	return json.data as Dictionary
+
+
+## Creates the save folder. A relative folder is refused: it resolves against the working directory, which is the
+## repo when tests or tools run (a stray nonexistent_dir_for_b5/ save was committed that way, 2026-10-27).
+func _make_dir() -> bool:
+	if dir.is_relative_path():
+		return false
+	return DirAccess.make_dir_recursive_absolute(dir) == OK
 
 
 func _fail(reason: String) -> bool:

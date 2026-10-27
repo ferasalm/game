@@ -1,7 +1,7 @@
 class_name ClipDef
 extends Def
 ## The timing of one model clip (an animation of the shared library): its length, whether it loops, and for a one-shot
-## the Hades-style retiming (docs/design/characters-3d.md 4): the clip runs slow to `windup_t`, holds a beat, runs fast
+## the Hades-style retiming (docs/archive/design-3d/characters-3d.md 4): the clip runs slow to `windup_t`, holds a beat, runs fast
 ## through the strike to `strike_end_t` (`impact_t` lands inside it) and eases out. ClipTiming turns this into
 ## time; the numbers are placeholders tuned on renders.
 

@@ -7,7 +7,6 @@
 | art-bible.md | PAUSED | Palette and look rules for the city; scale rules are 3D, the palette may carry to 2D |
 | art-prompts-v03.md | PAUSED | Owner's image prompts: model pictures (3D, retired), icons and sabil concept still usable |
 | audio.md | LIVE | Audio system: AudioDirector, buses, pooled sounds (features/audio) |
-| characters-3d.md | PAUSED | Runtime 3D characters (retired); the offline render-to-sprite part feeds the 2D look |
 | combat.md | PAUSED | Timeline battle rules (turn timeline archived by D15); formations and numbers may inform real-time |
 | dialogue-notes.md | LIVE | Culture notes for dialogue terms (qishr, jiddi, jambiyah) |
 | economy.md | PAUSED | Riyal, herbs, HP/SP carry-over, sabil save; turn-based numbers are placeholders |
@@ -23,7 +22,6 @@
 | prosthetics.md | DRAFT | Prosthetic and rarity rules; jambiyah part rules need the 2026-10-26/27 update |
 | rpg-menus.md | PAUSED | RPG menu layouts at 1920x1080; may be reskinned for the 2D look |
 | rpg-systems.md | PAUSED | XP, classes, LCK, dodge and crit; flee and turn parts tied to the timeline |
-| slice.md | PAUSED | Old chapter-1 story slice (parked); the old story is cut, candidate to archive (owner call) |
 | systems-map.md | LIVE | What a change touches: shared assets (portraits, sprites, light, sound, VFX), change types, EventBus (D21 Ripple) |
 | ui.md | LIVE | UI look: night-glass panels, gypsum frame, Musnad titles |
 | v03-text.md | PAUSED | Draft text for herb seller, sabil, items, pause and defeat (v0.3 names) |
@@ -31,4 +29,4 @@
 | world.md | PAUSED | World and cast draft; names are old, the story bible (docs/story/bible.md) is canon |
 | zayd-moves.md | LIVE | Rydan's kit: one combat job per move (numbers are placeholders) |
 
-Archived in docs/archive/design-3d/: demo-plan.md, playtest-2026-10-23.md, prototype.md, retire-3d-audit.md, rooftop-v3.md, v03-plan.md, retire-3d/ (file lists); docs/archive/BRIEFING.md.
+Archived in docs/archive/design-3d/: characters-3d.md, slice.md (Qarnaw story), demo-plan.md, playtest-2026-10-23.md, prototype.md, retire-3d-audit.md, rooftop-v3.md, v03-plan.md, retire-3d/ (file lists); docs/archive/BRIEFING.md. Old 3D briefs: docs/archive/briefs-3d/.

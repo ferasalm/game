@@ -1,6 +1,6 @@
 class_name ModelDef
 extends Def
-## One live 3D character model (docs/design/characters-3d.md 5): a skinned glTF (or a rigid model built in code) with
+## One live 3D character model (docs/archive/design-3d/characters-3d.md 5): a skinned glTF (or a rigid model built in code) with
 ## its height, footprint, anchors (bone names), the facade state -> ClipDef map, stride and turn speed, skin tint,
 ## and the parts it wears. Everything a ModelSource needs; the shared animation library is not per model.
 

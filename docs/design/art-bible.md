@@ -1,9 +1,9 @@
 # Art bible: cyberpunk Sana'a 2150 (locked palette, scale and rules; owner may veto)
-Characters are live 3D models (docs/design/characters-3d.md). The old pixel sprites (rows of palette letters in
+Characters are live 3D models (docs/archive/design-3d/characters-3d.md). The old pixel sprites (rows of palette letters in
 `content/art/sprites.json`, turned into textures by PixelArt) stay only as the fallback source. Palette: `content/art/palette.json` (id "main", 32 colours, never add one casually).
 
 ## Scale and light
-- Godot units are metres. Characters are live 3D models, 2 m tall (Feras 2026-10-21; characters-3d.md).
+- Godot units are metres. Characters are live 3D models, 2 m tall (Feras 2026-10-21; archive/design-3d/characters-3d.md).
   The pixel sprites are Claude's stand-ins, kept only as the fallback source.
 - Feet on the model origin (the ground). Characters turn to face their move (`CharacterVisual.face_dir`); never
   mirror a model with a negative scale. Light comes from the upper left.
@@ -38,7 +38,7 @@ plus x for the glint. Glow: C or M with a on top.
 - Workshop bench: low table, a glowing screen, tools, a brass-hilted blade.
 
 ## Pipeline
-Characters (docs/design/characters-3d.md): CC0 stand-in bodies and moves (Quaternius) now, retargeted at import.
+Characters (docs/archive/design-3d/characters-3d.md): CC0 stand-in bodies and moves (Quaternius) now, retargeted at import.
 The owner's own later: Flow A-pose picture -> Hyper3D Rodin (model and rig) -> Blender only if needed. Painted textures go through
 `tools/art/painterly_bake.py`. Every file gets a manifest entry with its source and licence.
 Pixel fallback only (PixelSource, until a model exists). Gemini/Flow picture to sprite entry: `python tools/art/pixelize.py --in PIC.png --id ID [--height 64] [--out content/art/sprites.json]`; Zayd and Bilqis (2026-10-21) used `--contrast 1.3 --saturation 1.5 --outline` (soft painted art loses its hues when snapped; the outline is the dark 'k' ring).

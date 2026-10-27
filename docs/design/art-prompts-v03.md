@@ -1,6 +1,6 @@
 # Art prompts v0.3: herb seller, model pictures, hilt, item icons, sabil concept
 Owner-made art (Google Flow and Gemini, $0). Character model pictures (sections 1, 2a, 2b, 2c) are for image-to-3D
-(characters-3d.md section 8): painted, semi-realistic, full body, A-pose, front view, even flat light, plain mid-grey
+(archive/design-3d/characters-3d.md section 8): painted, semi-realistic, full body, A-pose, front view, even flat light, plain mid-grey
 background, 768x1376 portrait. Icons and the sabil concept keep the flat #00FF00 background.
 Each prompt is one block. Save each result under the name given, in the repo's inbox/ folder (git-ignored).
 
@@ -43,7 +43,7 @@ Save as `inbox/concept_sabil.png`.
 
 ## How to use
 1. Flow and Gemini prompts above: paste, generate, download to C:\dev\game\inbox\ with the name shown.
-2. Model pictures (1, 2a, 2b, 2c) go into inbox/ for the image-to-3D step (characters-3d.md section 8), not for cutting
+2. Model pictures (1, 2a, 2b, 2c) go into inbox/ for the image-to-3D step (archive/design-3d/characters-3d.md section 8), not for cutting
    parts. Keep the reference picture attached for 2b.
 3. Tell Claude the file names when they are ready; it will run the image-to-3D step or import them and log the source in the manifest.
 

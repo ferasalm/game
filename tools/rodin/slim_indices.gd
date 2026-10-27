@@ -1,6 +1,6 @@
 extends SceneTree
 ## Rodin step 1: simplifies a Rodin glb mesh with Godot's LOD generator and writes the index buffer (env SRC, IDX, MAX_TRIS, DST);
-## rewrite_glb.py then builds the slim glb (usage: docs/design/characters-3d.md 8).
+## rewrite_glb.py then builds the slim glb (usage: docs/archive/design-3d/characters-3d.md 8).
 
 func _initialize() -> void:
 	var doc := GLTFDocument.new()
