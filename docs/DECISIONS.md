@@ -8,7 +8,7 @@ it; log every new decision verbatim in docs/decisions-log.md too.
 - 2026-10-26 | Old 3D game retired from the tree, archived on branch archive/3d + tag 3d-archive; reuse what fits Neon (docs/archive/3d-reuse.md) | Feras
 - 2026-10-26 | Look gate: no system work on a scene until Feras OKs its render from the play camera; shared code never names one mode (lint) | Feras
 - 2026-10-26 | Kaizen: Claude plans strategically, keeps one vision/mission/objectives doc, upgrades systems and workflow each session | Feras
-- 2026-10-25 | Neon Glitch = the whole game (plan: design/neon-glitch-plan.md); one person, low budget | Feras
+- 2026-10-27 | Neon Glitch = the whole game; docs/VISION.md holds pillars (combat, Old Sana'a, corrupted-trust story, small and replayable; combat feel wins ties), objectives, roadmap: free 20-30 min demo first, then premium; PC (Steam) leads, Android kept alive from M1, iOS later; Feras plays gated builds twice a week | Feras
 - 2026-10-22 | Log: never reword; struck (~~...~~) lines go to docs/decisions-archive.md | Claude
 - 2026-10-21 | Ask Feras 2-4 multiple-choice questions, recommended first; big asks: plan mode (Opus xhigh), agent audit, then orchestrate | Feras
 - 2026-10-21 | Runs stop only for owner questions, logins, CAPTCHAs, downloads, spending | Feras/Claude
@@ -49,7 +49,7 @@ it; log every new decision verbatim in docs/decisions-log.md too.
 - 2026-10-23 | Rydan's kit (zayd-moves.md): a combat job per move; ATK split across multi-hit moves so SP beats the free strike | Feras/Claude
 - 2026-10-24 | Bilqis: rivet pistol; frame and barrel upgraded like Rydan's hilt and blade | Feras
 - 2026-10-21 | Rarity: Common to Legendary (white, green, blue, purple, gold); Heirloom tier story-only | Feras
-- 2026-10-24 | Combat: RPG layer (XP, levels, fixed class per hero, Luck, dodge/crit/resist; no flee vs bosses); battles on the map; timeline kept | Feras
+- 2026-10-24 | Combat: RPG layer (XP, levels, fixed class per hero, Luck, dodge/crit/resist; no flee vs bosses); battles on the map (real-time since 2026-10-27, D15; the turn timeline is archived) | Feras
 - 2026-10-25 | Hero fights alone; story allies are call-in assists; combat rules in logic/ apart from turn order; Hard = stronger enemies, tighter resources | Feras
 - 2026-10-23 | Abu Nabil, a 40-year-old herb seller (R2, no patrols): optional haggle; spice-cloud fight, qishr cures; fair prices; risk-free rematches | Feras
 ### Art and audio

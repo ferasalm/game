@@ -30,10 +30,10 @@ Format: [ ] id | item | how to check
 - [x] P2.10 | Fixes: design/characters-3d.md:92 dead ref; shot_neon_game.gd:5 inbox path | grep
 
 ## P0 VISION (Opus, high; an interview)
-- [ ] P0.1 | docs/VISION.md (<= 60 lines): vision, mission, pillars, objectives, roadmap M1..Mn, market brief; Feras edited it | file exists, Feras OK logged
-- [ ] P0.2 | docs/playtest/2026-10-27.md: the 25 notes re-triaged for real-time combat (D15) | file exists
-- [ ] P0.3 | M1 spike defined: real-time combat, Mobile renderer + touch, full-colour 24-30 fps bake, 2D lights, Android CI export | VISION M1 section
-- [ ] P0.4 | docs/research/hades-digest.md from the plan's appendix | file exists
+- [ ] P0.1 | docs/VISION.md (<= 60 lines): vision, mission, pillars, objectives, roadmap M1..Mn, market brief; Feras edited it | file exists, Feras OK logged -- open: drafted from Feras's 8 interview answers (decisions-log 2026-10-27 P0); his edit/OK pending
+- [x] P0.2 | docs/playtest/2026-10-27.md: the 25 notes re-triaged for real-time combat (D15) | file exists -- done P0: 17 notes M1, 6 M2, 2 art chat; 2 decided; flee and KO carried over as real-time rules
+- [x] P0.3 | M1 spike defined: real-time combat, Mobile renderer + touch, full-colour 24-30 fps bake, 2D lights, Android CI export | VISION M1 section -- done P0: VISION roadmap M1
+- [x] P0.4 | docs/research/hades-digest.md from the plan's appendix | file exists -- done P0
 
 ## P3 Docs, memory, ~/.claude (Sonnet, high)
 - [ ] P3.1 | CLAUDE.md: north star, advisor duty, Opus standard, D1/D4/D10, one usage rule, python, sync_main.sh, CANON pointer, skill map line | doc_check; grep P3 must KEEP the six market personas in ~/.claude/agents: business-strategist, product-manager, design-ux-researcher, product-behavioral-nudge-engine, design-persona-walkthrough, product-feedback-synthesizer (market-card source).

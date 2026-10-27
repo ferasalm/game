@@ -118,3 +118,11 @@ it. docs/DECISIONS.md is the loaded summary of the rules in force; docs/decision
 - 2026-10-27 | D20 The 3D archive is lookup only: reuse only what we want and already have | Feras: "Let's not reuse the 3D archive if it would mean costing us tokens and misalign our work" | Feras
 - 2026-10-27 | D21 Claude acts as advisor and systems thinker: advisor duty, systems map + Ripple section, player-visible tests, paid-tool hook, feras-notes ledger, review-feras agent | Feras: "I want Claude (Opus) overall to also act as my advisor ... think about dependencies and how everything works together" | Feras
 - 2026-10-27 | D22 The Opus standard: root cause not patch, automate before asking, creative range, think before acting, leave the system better | Feras: "solving problems at the root rather than just patching issues" | Feras
+- 2026-10-27 | P0 pillars: Hades-feel combat, Living Old Sana'a, corrupted-trust story, small/dense/replayable; every spec names its pillar | Feras: "Hades-feel combat,Living Old Sana'a,Corrupted-trust story,Small, dense, replayable" | Feras
+- 2026-10-27 | P0 tie-breaker: combat feel wins when time or budget forces a cut | Feras: "Combat feel (Recommended)" | Feras
+- 2026-10-27 | P0 first ship: a free demo first, then the full game | Feras: "Free demo first (Recommended)" | Feras
+- 2026-10-27 | P0 platforms: PC (Steam) leads; Android kept alive (CI + phone test each milestone); iOS later | Feras: "PC (Steam) leads, Android kept alive (Recommended)" | Feras
+- 2026-10-27 | P0 money: premium full game + free demo; price from comparables research | Feras: "Premium + free demo (Recommended)" | Feras
+- 2026-10-27 | P0 6-month goal (~2027-04): public demo, 5+ outside players fun >= 4/5, core action unprompted within ~30 s | Feras: "Public demo, playtested (Recommended)" | Feras
+- 2026-10-27 | P0 demo length: 20-30 min | Feras: "20-30 min (Recommended)" | Feras
+- 2026-10-27 | P0 cadence: Feras plays gated builds twice a week | Feras: "Twice a week" | Feras

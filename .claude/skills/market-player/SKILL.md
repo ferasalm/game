@@ -11,8 +11,8 @@ Gemini output is ideas only (LESSONS section 3).
 1. **Audience**: who plays, on what device, how long, why this game (Hades-like action, Old Sana'a setting). One persona per line.
 2. **Comparables** (3-6): title | price | scope (hours, content) | review count and score | what we copy | what we avoid. Source link each.
 3. **Hook**: one sentence a stranger repeats; the one image and the one 15-second clip that show it.
-4. **Platforms**: Android first, iOS later (DECISIONS 2026-10-27); PC later or never: say which and why.
-5. **Price model**: free, premium, or free demo + premium; one recommended default with the reason.
+4. **Platforms**: PC (Steam) leads; Android kept green in CI and tested on Feras's phone each milestone; iOS later (docs/VISION.md, Feras 2026-10-27).
+5. **Price model**: premium full game + free 20-30 min demo (docs/VISION.md); the brief proposes the price from comparables.
 6. **Budget line**: store fees, tools, ads, all in $; $0 art budget stays. Nothing is bought without Feras's OK.
 
 ## Success checks per milestone
