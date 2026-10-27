@@ -611,6 +611,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 ## tools
 - `tools/agy_review.sh`: Shows what an agy task did, cheaply: its completion report, the check result, commits, file stats and the diff of
 - `tools/agy_task.sh`: Runs Gemini (agy) on one task brief inside its own git worktree, never in the main checkout (DECISIONS 2026-10-22).
+- `tools/art/bake_all.sh`: Bakes and packs Neon Glitch sprite sets, one Godot at a time (never two: LESSONS, commit memory).
 - `tools/art/figure_cut.py`: Cut one painted full-body figure out of a Flow picture on green (look spike: a static painted billboard).
 - `tools/art/painterly_bake.py`: Offline painterly bake: repaint the code-painted world atlases as brush strokes (numpy + Pillow, deterministic).
 - `tools/art/painterly_recipes.json`: content: ? x0
@@ -622,6 +623,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/art/test_pixelize.py`: Self-test for pixelize.py: python tools/art/test_pixelize.py (plain asserts, exits non-zero on failure).
 - `tools/art/test_portrait.py`: Self-test for portrait.py on a synthetic picture in a temp dir; exit 1 on any failure.
 - `tools/art/test_sprite_png.py`: Self-test for sprite_png.py: python tools/art/test_sprite_png.py (plain asserts, exits non-zero on failure).
+- `tools/art/test_sprite_sheet.py`: Tests tools/art/sprite_sheet.py with tiny generated frames. Run: python tools/art/test_sprite_sheet.py
 - `tools/audio/arc_synth.py`: Synthesizes the Arc Discharge sound (vfx_arc_all): 3 seeded variations as 44.1 kHz mono 16-bit WAV.
 - `tools/audio/levels.py`: Loudness table for the sound effects: reads the audio of a Godot movie capture (.avi, PCM) made by
 - `tools/audio/measure_levels.gd`: Plays every sfx file of content/audio/sounds.json one after another at 0 dB for the movie writer's audio capture; prints "SLOT <path> <start seconds> <seconds>" lines for tools/audio/levels.py
@@ -637,6 +639,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/check.sh`: One command for every check (docs, lint, Godot import, tests). One ok/FAIL line per step; logs in .check/.
 - `tools/check_slot.sh`: Test-run slots shared by every worktree on this machine: at most CHECK_SLOTS Godot test suites at once. Four at once
 - `tools/doc_check.py`: Keeps the always-loaded notes small and well-formed (docs/EFFICIENCY.md); exit 1 on any failure.
+- `tools/eye_gate.sh`: Player's-eye gate step 1: records a render wrapper non-headless and makes what a reader can look at.
 - `tools/fps_probe.gd`: FPS probe: plays a scene with vsync off and prints the average and worst frames per second after a warm-up
 - `tools/gate_checklist.py`: Checklist parsing and verification for build_gate.
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.
@@ -658,7 +661,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_menu.tscn`: scene
 - `tools/shot_neon_battle.gd`: purpose: Renders the on-map Neon battle mid-fight (auto-play) to C:/dev/game/inbox/neon_battle.png with the HUD
 - `tools/shot_neon_battle.tscn`: scene
-- `tools/shot_neon_game.gd`: purpose: Renders the Neon Glitch first playable stage by stage (start, cold open shots 2 and 3 and the lock, the roof after the hatch burst, the fight on the roof) to C:/dev/game/inbox/neon_game_<n>.png; run non-headless
+- `tools/shot_neon_game.gd`: purpose: Renders the Neon Glitch first playable stage by stage (start, cold open shots 2 and 3 and the lock, the roof after the hatch burst, the fight on the roof) to this checkout's inbox/neon_game_<n>.png; run non-headless
 - `tools/shot_neon_game.tscn`: scene
 - `tools/shot_neon_roof.gd`: purpose: renders hero walking with a guard visible on the prison roof to inbox PNG for proof
 - `tools/shot_neon_roof.tscn`: scene
@@ -674,6 +677,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_build_pipeline.py`: Self-test for build_pipeline.sh, oc_task.sh, agy_task.sh and lib.sh on a toy repo: stub builder, stub memory, real git.
 - `tools/test_check_slot.py`: check_slot.sh: a full set of slots makes the next run wait; a released or stale slot lets it in.
 - `tools/test_doc_check.py`: Self-test for doc_check.py: warns (exit 0) when an always-loaded note passes 75% of its cap.
+- `tools/test_eye_metrics.py`: Tests tools/eye_metrics.py on a temp project root. Run: python tools/test_eye_metrics.py
 - `tools/test_gate_checklist.py`: Tests for brief checklist verification in build_gate.
 - `tools/test_gate_d6.py`: Self-test for the D6 gate rules (2026-10-27): protected tests and assets, removed checks, new tests fail on base.
 - `tools/test_map.py`: Self-test for map.py: only tracked files are mapped (an untracked file made CI fail "MAP.md current").
