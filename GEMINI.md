@@ -16,7 +16,7 @@ missing prerequisites.
 - Before finishing, run `bash tools/check.sh` and paste its raw last 15 lines. A check counts only if you ran it.
 - Skills: .agents/skills/<name>/SKILL.md: game (godot-gameplay-scripter, godot-shader-developer, technical-artist,
   level-designer, game-designer, narrative-designer, game-audio-engineer, blender-addon-engineer) and agency personas
-  (code-reviewer, minimal-change-engineer, software-architect, workflow-architect, test-results-analyzer, ...; `ls`).
+  (code-reviewer, minimal-change-engineer, ...) and role cards (gameplay-card, art-card, ui-card, market-card); retired personas: .agents/archive/; `ls`.
   Act as the ones your brief names; where they differ from these rules (typed GDScript, no C#), these rules win.
 </operating_rules>
 

@@ -75,7 +75,7 @@ across all sessions (DECISIONS 2026-10-23): 2 agy, 2 Cloudflare DeepSeek (item 6
 for code and scenes when agy is full; Inkling for docs, content, research and second opinions. Every brief names
 one game-dev skill (.agents/skills/: godot-gameplay-scripter, godot-shader-developer, technical-artist,
 level-designer, game-designer, narrative-designer, game-audio-engineer, blender-addon-engineer) and may add one agency
-persona (tools/import_agents.py: minimal-change-engineer, code-reviewer, software-architect...); "<name> skill" in the
+persona (tools/import_agents.py: minimal-change-engineer, code-reviewer, ...) and the role cards gameplay-card, art-card, ui-card); "<name> skill" in the
 brief makes build_pipeline paste up to 2 into the prompt; opencode may hand parts to its skill subagents (AGENTS.md).
 1. Brief from docs/briefs/TEMPLATE.md (<= 60 lines, a do-not-edit list so parallel runs never share files).
 2. From the main checkout, in the background: `bash <session worktree>/tools/build_pipeline.sh <oc|agy> <task>
