@@ -42,7 +42,7 @@
 - Audit cost: 3 Haiku audits at max effort reading whole doc sets cost ~15% of a 5-hour window -> narrow briefs, Haiku high (calibrated), exact files and an output template (2026-10-27).
 - A superseded rule lives on in a doc or prompt string -> grep for it when a decision changes.
 - Gemini research contains invented numbers -> ideas and norms only, never facts.
-- Where is X: grep docs/MAP.md (generated), not `ls -R`; map.py lists untracked files too: with the marketing-* files in the checkout CI failed "MAP.md current" -> regenerate in a clean worktree before main (2026-10-26).
+- Where is X: grep docs/MAP.md (generated), not `ls -R`; map.py lists tracked files only (`git ls-files --cached`): a new file checked before `git add` passes "MAP.md current" locally and fails it in CI -> `git add` new files, then `python tools/map.py`, then check.sh (2026-10-26/27).
 - A blind id rename (zayd -> rydan) also rewrote decisions-log lines, manifest sources naming Feras's real files and a
   one-letter test ("Z") -> exclude logs/archive/manifest, protect external names, then let check.sh find the rest (2026-10-27).
 - Scratchpad scripts vanish when the session ends (bake_all.sh was nearly lost) -> any script worth rerunning goes into tools/ with a test (2026-10-27).
