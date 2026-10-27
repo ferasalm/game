@@ -640,6 +640,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/check_slot.sh`: Test-run slots shared by every worktree on this machine: at most CHECK_SLOTS Godot test suites at once. Four at once
 - `tools/doc_check.py`: Keeps the always-loaded notes small and well-formed (docs/EFFICIENCY.md); exit 1 on any failure.
 - `tools/eye_gate.sh`: Player's-eye gate step 1: records a render wrapper non-headless and makes what a reader can look at.
+- `tools/eye_metrics.py`: Player's-eye metrics for Neon clips and UI fonts (report only; always exits 0).
 - `tools/fps_probe.gd`: FPS probe: plays a scene with vsync off and prints the average and worst frames per second after a warm-up
 - `tools/gate_checklist.py`: Checklist parsing and verification for build_gate.
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.
