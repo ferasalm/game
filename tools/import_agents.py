@@ -11,28 +11,14 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DEST = ROOT / ".agents" / "skills"
-# Source file stem -> skill name. Left out on purpose: web, business, sales and product-management agents.
+# Source file stem -> skill name. The 14 retired personas live in .agents/archive/ (P2b); do not import them again. Left out on purpose: web, business, sales and product-management agents.
 CHOSEN = {
     "engineering-code-reviewer": "code-reviewer",
     "engineering-minimal-change-engineer": "minimal-change-engineer",
-    "engineering-software-architect": "software-architect",
-    "engineering-codebase-onboarding-engineer": "codebase-onboarding-engineer",
-    "engineering-technical-writer": "technical-writer",
-    "engineering-prompt-engineer": "prompt-engineer",
-    "engineering-rapid-prototyper": "rapid-prototyper",
-    "engineering-git-workflow-master": "git-workflow-master",
-    "engineering-devops-automator": "devops-automator",
-    "specialized-codebase-archaeologist": "codebase-archaeologist",
-    "specialized-workflow-architect": "workflow-architect",
-    "specialized-mcp-builder": "mcp-builder",
     "specialized-cultural-intelligence-strategist": "cultural-intelligence-strategist",
-    "testing-test-results-analyzer": "test-results-analyzer",
-    "testing-performance-benchmarker": "performance-benchmarker",
     "design-ui-designer": "ui-designer",
-    "design-ux-architect": "ux-architect",
     "design-ui-finish-gate-reviewer": "ui-finish-gate-reviewer",
     "design-image-prompt-engineer": "image-prompt-engineer",
-    "product-feedback-synthesizer": "feedback-synthesizer",
 }
 NOTE = ("> Builder note: GEMINI.md and the brief win where this differs (typed GDScript in Godot 4.7, no web stacks, "
         "<= 200 lines a file, numbers in content JSON). Source: agency-agents (MIT), .agents/skills/AGENCY-LICENSE.\n\n")
