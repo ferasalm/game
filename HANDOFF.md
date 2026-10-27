@@ -1,5 +1,5 @@
 # HANDOFF (current state only; one section per track, each edited only by its owner; max 60 lines)
-Last updated: 2026-10-27 (archive chat: old 3D models archived, tag pre-cleanup; rename + efficiency next), Opus 5.5.
+Last updated: 2026-10-27 (archive chat: stages 2-3 done, code id rydan, save v7, res_graph + guard checks), Opus 5.5.
 
 ## Shared
 - Builders (D1): <= 2 Godot runs + 1 free text run (slots.sh). Briefs: docs/briefs/TEMPLATE.md (D6 defaults, May edit,
@@ -7,9 +7,10 @@ Last updated: 2026-10-27 (archive chat: old 3D models archived, tag pre-cleanup;
 - Waiting on the owner: OK on docs/VISION.md (P0.1); connectors to switch off and the pre_spend question
   (docs/audits/2026-10-27-process-audit.md); icon art; play the Abu Nabil fight.
 ### Next steps (one per chat; reviews Sonnet, design and art judgment Opus)
-1. Finish the 3D archive + zayd -> rydan rename: docs/briefs/archive-cleanup.md (Feras 10-27). Model: Opus. Effort: high.
-2. Efficiency fixes 1-5 as hooks/checks (Feras's number-one priority): docs/briefs/efficiency-hooks.md. Model: Opus. Effort: high.
-3. Then Efficiency + art step 1 (bake Roya, hero OK, batch). Model: Opus. Effort: high. Balance pass 2 dropped (D15).
+- Archive done (restore from tag pre-cleanup): hero code id is rydan (save v7); Bilqis's portraits are now the Neon ones
+  (bilqis_ng merged into bilqis, old set archived: Feras may overturn). Branches in ../game-wt and the RPG + menus briefs predate it: zayd paths conflict.
+1. Efficiency fixes 1-5 as hooks/checks (Feras's number-one priority): docs/briefs/efficiency-hooks.md. Model: Opus. Effort: high.
+2. Then Efficiency + art step 1 (bake Roya, hero OK, batch). Model: Opus. Effort: high. Balance pass 2 dropped (D15).
 
 ## Track: 2D redesign (owner: the chat "2D redesign brainstorm", 2026-10-24)
 - DECISIONS 2026-10-24: 2D isometric ink-comic look per Feras's concepts, offline-rendered sprites, on-map
@@ -24,7 +25,7 @@ Last updated: 2026-10-27 (archive chat: old 3D models archived, tag pre-cleanup;
   docs/archive/3d-reuse.md. Dialogue fights emit EventBus.battle_requested (no host yet); menu holograms show
   portraits or Neon sprites; the Map tab is greyed (no 2D map yet).
 - Feras: play it (Esc/back, Enter/Space, WASD, E). Gaps: Normal/Hard not applied; guards close in formation;
-  title twice; floodlight numbers in code; no call-in ally; code id "zayd" = Rydan.
+  title twice; floodlight numbers in code; no call-in ally.
 Next, after the 5-hour reset, in this order (Feras 10-26):
 1. Vision, mission, objectives + roadmap (docs/VISION.md from bible + DECISIONS; Feras edits). Model: Opus. Effort: high.
 2. Builder quality system: gate rejects removed checks and asset edits, tests/assets Do NOT edit by default, layer

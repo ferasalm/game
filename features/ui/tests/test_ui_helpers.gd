@@ -135,7 +135,7 @@ func test_transition_sweep_builds_five_shards_in_qamariya_colours() -> void:
 
 func test_icons_fall_back_to_a_disc_with_the_initial() -> void:
 	check(CharacterIcons.texture(&"rydan") == null, "no icon file yet: null")
-	check_eq(CharacterIcons.initial(&"rydan"), "Z", "initial from the name")
+	check_eq(CharacterIcons.initial(&"rydan"), "R", "initial from the name")
 	check_eq(CharacterIcons.initial(&"nobody"), "?", "unknown character")
 	var face: Control = CharacterIcons.face(&"bilqis", Ui.style().colour(&"c_party"))
 	check_eq((face.get_child(0) as Label).text, "B", "the disc carries the initial")

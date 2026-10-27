@@ -32,8 +32,9 @@ step tests env GODOT_TIMEOUT=600 tools/run_godot.sh -s res://tests/runner.gd
 step boot env GODOT_TIMEOUT=180 tools/run_godot.sh --quit-after 120  # the main scene starts without errors
 release_check_slot
 repo_untouched() {  # a file a test or the boot wrote into the checkout (a relative save folder was committed once)
-  git status --porcelain --untracked-files=all | grep -vxF -f .check/before_tests.txt
-  ! git status --porcelain --untracked-files=all | grep -qvxF -f .check/before_tests.txt
+  local new  # captured first: grep -q under pipefail could stop git early (SIGPIPE) and pass by mistake
+  new=$(git status --porcelain --untracked-files=all | grep -vxF -f .check/before_tests.txt)
+  [ -z "$new" ] || { echo "$new"; return 1; }
 }
 step repo_untouched repo_untouched
 grep -h '^tests:' .check/tests.log 2>/dev/null | sed 's/^/     /'

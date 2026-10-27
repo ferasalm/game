@@ -29,7 +29,7 @@ func test_v3_fixture_migrates_to_v4() -> void:
 
 
 func test_unknown_versions_are_refused() -> void:
-	check(not bool(SaveCodec.migrate({"version": 7})["ok"]), "future version refused")
+	check(not bool(SaveCodec.migrate({"version": 8})["ok"]), "future version refused")
 	check(not bool(SaveCodec.migrate({})["ok"]), "no version refused")
 	check_eq(SaveCodec.migrate({"version": 0})["error"], "save version 0, expected 7", "reason names both versions")
 

@@ -1,4 +1,4 @@
-# Chat brief: finish the 3D archive + rename zayd -> rydan (Feras 2026-10-27, decisions-log)
+# DONE 2026-10-27 (stages 1-3 on main). Chat brief: finish the 3D archive + rename zayd -> rydan (Feras 2026-10-27, decisions-log)
 Model: Opus. Effort: high. One chat. Restore anything from tag `pre-cleanup` (pushed). Drafts from the first chat:
 docs/briefs/archive-cleanup/res_graph.py.txt (static res:// + class_name graph) and save_v7_migration.patch.txt.
 

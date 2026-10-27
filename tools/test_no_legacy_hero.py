@@ -12,7 +12,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 OLD = "za" + "yd"  # spelled apart so this file does not trip itself
 SCANNED = ("features/", "core/", "content/", "localization/", "tools/", "tests/", "project.godot")
 ALLOWED_FILES = {"core/save/save_codec.gd"}  # LEGACY_HERO: the v6 -> v7 step renames the old id
-ALLOWED_PREFIXES = ("core/tests/fixtures/save_v",)  # saves written before v7; never edited
+ALLOWED_PREFIXES = ("core/tests/fixtures/save_v3.json", "core/tests/fixtures/save_v5.json")  # pre-v7 saves; never edited
 ALLOWED_WORDS = re.compile(r"officer_" + OLD + r"|flow_" + OLD + r"_full_a")  # the story officer; inbox picture name
 FIND = re.compile(OLD, re.I)
 
@@ -47,6 +47,8 @@ def main() -> int:
         fails.append("the officer's own id was flagged")
     if hits("core/tests/fixtures/save_v5.json", f'"party": ["{OLD}"]'):
         fails.append("an old save fixture was flagged")
+    if not hits("core/tests/fixtures/save_v7.json", f'"party": ["{OLD}"]'):
+        fails.append("a new fixture with the old id passed")
     fails += scan()
     for f in fails:
         print("FAIL", f)

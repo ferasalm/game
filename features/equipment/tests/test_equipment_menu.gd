@@ -84,7 +84,7 @@ func test_hologram_is_a_neon_sprite() -> void:
 		check_eq(atlas.atlas, load("res://assets/sprites/neon/rydan_idle.png"), "the atlas is rydan's idle sheet")
 		check_eq(atlas.region.position, Vector2(0.0, 6.0 * 194.0), "row 6 (toward camera), frame 0")
 		check_eq(atlas.region.size, Vector2(108.0, 194.0), "one idle frame")
-	stage.set_hero(&"rydan")
+	stage.set_hero(&"bilqis")
 	var portrait: Texture2D = stage.sprite_texture()
 	check(portrait != null, "a hero without a Neon set shows a portrait")
 	check(not (portrait is AtlasTexture), "the portrait is not a sprite sheet frame")

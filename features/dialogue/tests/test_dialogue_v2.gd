@@ -13,7 +13,7 @@ func test_nameplate_shows_name_and_epithet() -> void:
 	var box: DialogueBox = _box()
 	box.play(&"workshop_first")
 	check_eq(box._layout.name_label.text, "Bilqis", "speaker name")
-	check_eq(box._layout.epithet_label.text, "Engineer behind the coffee stall", "epithet under the name")
+	check_eq(box._layout.epithet_label.text, "Voice on the Wire", "epithet under the name (the Neon Bilqis)")
 	check_eq(box._layout.name_label.get_theme_color("font_color"), Ui.style().colour(&"c_brass"), "name in brass")
 	box.free()
 
