@@ -53,8 +53,8 @@ Next, after the 5-hour reset, in this order (Feras 10-26):
   old Bilqis picture + model retired. Hero Roya: Rodin 400ebe9f + rig e744d0d1 -> roya_rodin.glb, t_roya.png, ModelDef "roya";
   NOT baked (free memory 624 MB < 3 GB floor). SPEND: 3 Roya lines, est. costs. Next (credits end ~11-17):
 1. Close Chrome/Blender, bake Roya (sprite-bake), eye_metrics, native-scale render on the prison roof, review-player +
-   review-feras, Feras OKs; ask his hyper3d.ai balance. Then the batch, cost first: Rydan + Bilqis re-models (v2 pictures),
-   guard, props (booth, floodlight, qamariya window, umbrella), icons; title loop = Flow Omni. Model: Opus. Effort: high.
-2. Free 3D route (OK'd: rydan_style_v2 to a TRELLIS/Hunyuan3D HF Space, GLB, rig, bake; never Blender generate_3d), write it
-   into the 3d-model skill. Model: Opus. Effort: medium. 3. M1 spike, prison roof. Model: Opus. Effort: high.
+   review-feras, Feras OKs (balance 50; 1.5/char). Rydan: FREE recolour first (Blender: project rydan_style_v2 onto t_rydan.png
+   UVs, front + mirrored back, bake), Rodin only if it fails. Batch: Bilqis re-model (v2), guard, props (booth, floodlight, qamariya window, umbrella), icons; title = Flow Omni. Model: Opus. Effort: high.
+2. Free image-to-3D proof (OK'd: rydan_style_v2 to a TRELLIS HF Space; never Blender generate_3d) -> 3d-model skill. Model: Opus. Effort: medium.
+3. M1 spike, prison roof. Model: Opus. Effort: high.
 `Continue ferasalm/game on main. Read HANDOFF.md (Efficiency + art). Do its next step 1; /handoff.`
