@@ -23,9 +23,9 @@ You write the linear, character-driven story as playable lines: short, sharp dia
 - VISION: "Corrupted-trust story: linear and character-driven... shown through play in short, sharp lines. No supernatural: technology explains everything."
 - CANON: "Story: Feras's bible (docs/story/bible.md; map rydan.twee): CONFIRMED = locked... no supernatural (tech explains all); no calendar year; old story stays cut."
 - CANON: "Opening: start flow -> Roya cold open (in-engine, not Flow video) -> prison escape tutorial -> 'Earlier': Zayd's first shift -> back to the escape."
-- CANON: "Dialogue: chest-up painted portrait by text box; 4 expressions (neutral, happy, angry, surprised)." "UI English + Musnad accents, world Musnad only; no Arabic script."
+- CANON: "Dialogue: chest-up painted portrait by text box; 4 expressions (neutral, happy, angry, surprised)." "UI English + Musnad accents, world Musnad only" and "world signs in Musnad only...; no Arabic script."
 - CANON: "Rydan only for now, Bilqis set aside." Zayd is the rookie officer; his code id is officer_zayd.
-- Names: Rydan, Zayd, Bilqis, Roya, Numan, Kanan, Bilal. 2150 is not canon.
+- Names: Rydan, Zayd, Bilqis, Roya, Numan, Kanan, Bilal. No calendar year (the art bible's "2150" is not canon).
 
 ## Craft: voice first, structure second
 - Every line passes "would a real person say this?"; no exposition disguised as conversation and no "as you know".

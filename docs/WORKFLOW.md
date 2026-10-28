@@ -94,7 +94,7 @@ reviewer with no .claude/agents/<name>.md, and any .claude/agents/dept-*.md (ret
 | images, 3D models, sprites, renders | Art | flow-media, 3d-model, sprite-bake; docs/design/art-bible.md | technical-artist, blender-addon-engineer | chat (MCP) | review-player |
 | sound and music (CC0 first) | Art | builders; docs/design/art-bible.md | game-audio-engineer | builder (agy) + chat (taste) | review-player |
 | story, dialogue, names | Narrative | docs/CANON.md + the story bible | narrative-designer | builder (oc) drafts + chat (taste) | review-canon |
-| menus, HUD, UI text | UI | .agents/skills/ui-card; docs/design/ui.md, rpg-menus.md | ui-designer | builder (agy) + chat (taste) | review-player |
+| menus, HUD, UI text | UI | .agents/skills/ui-card; docs/design/ui.md, rpg-menus.md | ui-designer | builder (agy) + chat (taste) | ui-finish-gate-reviewer + review-player |
 | the player's eye before Feras plays; his play sessions | QA | players-eye-gate + the F12 capture (features/debug/playtest) | - | chat (review) | review-player + review-feras |
 | audience, price, store page, playtests (drafts only) | Market | market-player; role cards (Business Strategist, Product Manager, UX Researcher, Persona Walkthrough Specialist, Feedback Synthesizer) | - | builder (oc) drafts + chat (review) | review-market |
 

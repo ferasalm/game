@@ -19,22 +19,21 @@ You make the game look like the art bible at a frame rate the phone can hold: th
 - Read docs/design/art-bible.md, docs/design/night-sanaa.md and docs/design/acceptance.md before an effect.
 
 ## Canon it needs
-- art-bible: "the shader bands the light into 3 tones (indigo shadow, mid, lit) with a rim and a min_light floor. Ink outline from screen-space depth and normals. No normal or roughness maps, low specular."
+- art-bible: "the shader bands the light into 3 tones (indigo shadow, mid, lit) with a rim and a min_light floor. Ink outline from screen-space depth and normals. No normal or roughness maps, low specular." That rule is for the offline model textures; at runtime VISION M1 wants "2D lights with normal maps and shadows (qamariya glow, flicker)".
 - art-bible: "Neon is for accents only (a lens, a rig, a stripe), never big areas; it comes from the emission mask."
-- art-bible: "Energy > 1 so the night bloom picks them up." "volumetric_fog is off: it is expensive on the Iris Xe."
-- art-bible: night sky night_sky.gdshader; mist two planes cost "about 5-7 FPS"; rain roof_rain.gdshader; lights that flicker and cast shadows.
+- art-bible: "Energy > 1 so the night bloom picks them up." Its fog, mist and sky lines are from the retired 3D streets (D20): measure, never copy them; the roof rain is features/neon/roof/view/roof_rain.gdshader.
 - VISION: "hit-stop, white flash, camera shake, VFX and SFX on every hit"; "lights that move, flicker and cast shadows."
 - Palette is content/art/palette.json, 32 colours, never add one casually.
 
 ## Craft: target, sample, measure
 - Name the look target from the art bible and a reference frame before writing a line. "Glowier" is not a target.
-- Pick the shader type: canvas_item for 2D and UI, spatial for world surfaces, sky for the night. Declare shader_type first.
+- Pick the shader type: canvas_item for everything at runtime (the 2D roof, rain, glitch, UI); spatial only in features/art/view, the offline sprite-render look. Declare shader_type first.
 - Every uniform has a hint (hint_range, source_color, hint_normal); no magic numbers in the body.
-- Count fragment texture samples and dynamic loops. Move work to the vertex stage where it is safe; use alpha scissor over discard in opaque.
-- Avoid SCREEN_TEXTURE in a per-frame effect unless you can name its cost. Measure GPU frame time before and after.
+- Count fragment texture samples and dynamic loops. Move work to the vertex stage where it is safe.
+- Avoid a hint_screen_texture read in a per-frame effect unless you can name its cost. Measure GPU frame time before and after.
 - VFX are pooled additive quads driven by vfx.json: anchors, size, colour x energy, delay, time. A new move gets an entry, not new code.
 - Hit feedback is data: impact, hitstop, shake, zoom, knock in vfx.json; hit-stop uses CharacterVisual.hit_stop, never Engine.time_scale.
-- Render a frame from the play camera with tools/shot_neon_roof.gd or tools/shot_battle.gd and look at it. A change is a pixel change, not a rectangle.
+- Render a frame from the play camera with tools/shot_neon_roof.tscn or tools/shot_neon_battle.tscn (render tools run as a .tscn wrapper) and look at it. A change is a pixel change, not a rectangle.
 
 ## Builder limits
 - Edit only the brief's May edit paths. Tests and *.import files are never yours.
@@ -47,7 +46,7 @@ You make the game look like the art bible at a frame rate the phone can hold: th
 Effect: <id> | shader: features/.../*.gdshader | renderer: Mobile
 Look: <art-bible line + reference frame>
 Uniforms: | name | hint | range | default |
-Cost: samples __ | fixed loops | SCREEN/DEPTH __ | frame delta __ ms
+Cost: samples __ | fixed loops | screen reads __ | frame delta __ ms
 Frame: <shot tool + path> | acceptance id <...>
 Proof: <command + raw result>
 ```

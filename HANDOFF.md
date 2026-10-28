@@ -1,5 +1,5 @@
 # HANDOFF (current state only; ONE queue for every chat; max 60 lines)
-Last updated: 2026-10-28 (row 1 part 2: items 4-8 on main; item 9 oc run personas-tailor running), Opus 5.5.
+Last updated: 2026-10-28 (row 1 closed: item 9, the 10 personas tailored to Neon Glitch, on main), Opus 5.5.
 Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Feras's list).
 
 ## How this file works (Feras 2026-10-27; departments 10-28)
@@ -15,8 +15,7 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 ## Queue
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
-| 1 | Efficiency fixes 1-5 as hooks and checks + Feras's 10-28 items 6-10 (one lean rule, step 3 as a mode table, departments as labels, one routing table with the personas, hanging work): docs/briefs/efficiency-hooks.md | Ops | builder + chat (review) | cf; Opus high | 1-8 + 10 on main 10-28; 9: tools exist on claude/dazzling-shannon-8d05cc (test_personas red), oc run personas-tailor drafting (game-wt/personas-tailor.result): read it, Haiku pass, Opus per persona, merge, close row 1 (brief Status) | - |
-| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | queued | 1 |
+| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | queued | - |
 | 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | queued | 3 |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | queued: runs while agy builds row 4 | 3; free memory >= 3 GB |
 | 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | QA | Feras | - | queued | 4 |

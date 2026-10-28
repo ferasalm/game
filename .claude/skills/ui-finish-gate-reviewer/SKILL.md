@@ -16,15 +16,15 @@ You are the last demanding interface review before a build reaches Feras. You do
 - Player text is a localization key through TextDB; an internal id on screen is a finding.
 - Mobile renderer and Android touch are part of the finished product; the phone is a review size, not an afterthought.
 - 2D isometric; combat feel wins every tie (VISION).
-- Read docs/design/ui.md, docs/design/ui.md's wireframes, docs/design/acceptance.md and the latest frames before judging.
+- Read docs/design/ui.md (its wireframes too), docs/design/acceptance.md and the latest frames before judging. The old menu mockups and renders are retired (HANDOFF): judge the current frames only.
 
 ## Canon it needs
 - ui.md: "night glass plus gypsum plus qamariya"; panels are dark indigo glass, brass outline, gypsum tracery; a Musnad + English pair on title bars; the five qamariya colours sweep on focus.
 - ui.md: Reem Kufi for English titles and numbers, Noto Sans Old South Arabian for Musnad, Amiri for descriptions and dialogue; motion runs while paused.
-- CANON: "UI English + Musnad accents, world Musnad only; no Arabic script." "Dialogue: chest-up painted portrait by text box; 4 expressions."
+- CANON: "UI English + Musnad accents, world Musnad only" and "world signs in Musnad only...; no Arabic script." "Dialogue: chest-up painted portrait by text box; 4 expressions."
 - acceptance U1 "smallest font 18 px at 720p", U2 outlined text readable over light and dark, U3 icons legible at the smallest screen, U4 title picture loop, P1 portrait real cut-out, P2 head whole and centred.
 - VISION O3: "Eye gate before Feras plays: every acceptance.md line passes."
-- GEMINI review_misses: a menu or cutscene stops walking and saving while it is up and restores them after; nobody hides unless the brief says so.
+- GEMINI.md <review_misses>: a menu or cutscene stops walking and saving while it is up and restores them after; nobody hides unless the brief says so.
 
 ## Craft: evidence, then a decision
 - Write the product lens first: who plays, what they finish, the first-read object, the primary action, density, and the phone constraint.

@@ -23,7 +23,7 @@ You own one screen's look, hierarchy and behaviour: the pause, items, equipment 
 - ui.md: "Panel = dark indigo glass (c_glass), brass outline, gypsum tracery frame"; "The same five colours wipe across the screen in t_transition_sweep."
 - ui.md: "Fonts: Reem Kufi for English titles, names, numbers, prices, button prompts; Noto Sans Old South Arabian for Musnad; Amiri for descriptions and dialogue."
 - ui.md: "Motion (tweens ignore time scale, run while paused)... Input: move = d-pad/left stick/arrows; accept = A/Enter/Space... Tabs: LB/RB or Q/E."
-- CANON: "UI English + Musnad accents, world Musnad only; no Arabic script." "Dialogue: chest-up painted portrait by text box; 4 expressions (neutral, happy, angry, surprised)." "Menus: equipment menu (hologram hero, paused)."
+- CANON: "UI English + Musnad accents, world Musnad only" and "world signs in Musnad only...; no Arabic script." "Dialogue: chest-up painted portrait by text box; 4 expressions (neutral, happy, angry, surprised)." "Menus: equipment menu (hologram hero, paused)."
 - acceptance U1 "smallest font 18 px at 720p", U2 outlined text readable over light and dark; P1 portraits are real cut-outs.
 - VISION O3: the eye gate passes every acceptance line before Feras plays.
 
@@ -55,4 +55,4 @@ Proof: <command + raw result>
 ```
 
 ## Reviewer
-review-player (Routing: menus, HUD, UI text; lane agy + chat taste). The finish gate and the player lens check the render; Feras keeps the final call.
+ui-finish-gate-reviewer + review-player (Routing: menus, HUD, UI text; lane agy + chat taste). The finish gate and the player lens check the render; Feras keeps the final call.
