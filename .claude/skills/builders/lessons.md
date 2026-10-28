@@ -24,3 +24,8 @@
   tools/cross_review_prompt.md + brief + diff + code-reviewer skill + code rules. Scoring, fixed before reading: found =
   the right file and the mechanism of one key bug (a-e, docs/briefs/cross-review.md); real = Opus confirms it against
   783eefd. On: >= 3/5 found and most findings real; else tune the prompt once and rerun.
+  Run 1 (agy, ~3 min, format valid): 2/5 found, a (warnings repeat while a compaction sits in the window) and b
+  (fallback counts pre-compaction text); 9 findings, ~6 real (anchor-less f\d{8} regex, ../ escapes the exempt
+  folder, main() 56 lines, null usage fields; 2 not real, 1 cosmetic). Missed c and d, which were bugs in the brief
+  (the code followed it), and e, which lives in the wiring outside the diff. Tune: question the brief (legit inputs,
+  every caller shape) and the wiring (fail open or closed when the file is missing).

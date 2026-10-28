@@ -4,6 +4,11 @@ them. Read the whole diff against the brief, then trace each new branch with a c
 wrong behaviour, a requirement of the brief not met, an input or state the code mishandles (empty, missing file,
 repeated call, error path, Windows paths), a test that would pass on broken code, a broken code rule. Do not report
 style, naming or praise. Run no Godot, edit no file, make no commit.
+The brief can be wrong too (calibration 10-28): code that follows a wrong rule is still a defect. For every rule that
+blocks, rejects or filters, try a legitimate input it should let through (a document where media is expected, an
+empty but valid value), and every input shape the real caller can send, not only the shapes the brief lists (a plain
+string, a list of strings, a list of objects, a dict). Then think how the code is wired in: when its own file, config
+or dependency is missing, or it crashes, does its caller fail open or fail closed, and is that the safe side?
 
 ## Output (exactly this; the block is machine-parsed)
 Print one block between these two marker lines, one finding per line, most severe first, at most 12:
