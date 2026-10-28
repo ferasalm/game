@@ -28,12 +28,11 @@
 - A UiScreen closed while another covered it stayed frozen (its fade tween pauses with the node) -> close() re-enables processing (2026-10-23).
 - content/ is game data: ContentDB loads every content/**/*.json and an unknown kind breaks boot and every test (a
   pipeline list nearly went there, 10-28) -> non-game data lives in tools/ or docs/; test_content_kinds.py (no Godot).
-- A fresh worktree's first import crashed (139) twice on the first font at 1.8 GB free, then passed at 2.3 GB -> run
-  `tools/run_godot.sh --import` alone before check.sh in a new worktree (2026-10-28).
 - A test counting processes by name machine-wide is flaky with parallel checkouts -> mark the test's children (2026-10-27).
 
-- An import that crashed (exit 139) leaves `*.import<digits>.tmp` files in assets/ -> test_asset_manifest fails on them:
-  delete them, rerun the import (2026-10-27).
+- An import that crashed (exit 139: low memory, e.g. a fresh worktree's first import at 1.8 GB free, 10-28) leaves
+  `*.import<digits>.tmp` files in assets/ -> test_asset_manifest fails on them: delete them, rerun the import; in a new
+  worktree run `tools/run_godot.sh --import` alone before check.sh (2026-10-27/28).
 
 ## 3. Process (general; reem-bot and feras-career ones verified there)
 - Builders sat idle (0 agy runs 10-27) while D1 said "builders write": doc_check demanded Model + Effort on every HANDOFF

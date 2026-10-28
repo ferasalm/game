@@ -6,6 +6,8 @@ then 6-8 (docs + doc_check), then 9: Claude writes tools/sync_personas.py (sourc
 verbatim; .claude/agents/<name>.md = name + description + source body) and tools/test_personas.py (drift; no Unity,
 Unreal, FMOD, Wwise or C#; names Godot 4.7.2 + code.md; an "Adapted from" line; an Output template and Reviewer section),
 red on the base; then one oc run (pipeline, May edit .agents/skills/<10>/SKILL.md); a Haiku pass, then Opus per persona.
+Item 6 also: only the gate's BLOCKED message tells a chat to run tools/hooks/review_stamp.py after review-player +
+review-feras: add that step to the players-eye-gate skill flow.
 HANDOFF queue row 1. Archive cleanup merged 10-27 (d9c1735): start now. Lanes (Feras 10-27, one Opus chat at a time):
 items 1-2 are Python hooks + tests -> Cloudflare DeepSeek builds (builders skill, TEMPLATE brief, May edit tools/hooks/
 and the new tools/test_*.py only); the Opus chat wires them in .claude/settings.json (it also wires the pre_spend money
