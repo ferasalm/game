@@ -21,8 +21,8 @@ Next goal: a free 20-30 min demo, PC (Steam) first, Android kept alive. Check ev
 
 ## Enforced by a tool (obey its message unless get_usage contradicts it; then log the mismatch in the USAGE row)
 - Hand-off at a unit boundary past ~250k context (get_usage; review-heavy work to ~300k) or ~85% of the 5-hour window:
-  tools/hooks/token_handoff.py says "finish the unit" at 200k, "/handoff" at 250k.
-- Paid generation needs Feras's "spend ok": tools/hooks/pre_spend.py, which also asks for the Ripple and Pre-mortem lines.
+  tools/hooks/token_handoff.py says "finish the unit" at 200k (not a stop: keep working), "/handoff" at 250k.
+- Paid generation needs Feras's "spend ok": tools/hooks/pre_spend.py (fails closed), asking for Ripple + Pre-mortem.
 - A render reaches Feras only after review-player + review-feras: tools/hooks/review_gate.py (stamp: review_stamp.py).
 - Queue rows name a Dept from the WORKFLOW Routing table and a lane; departments are labels, no dept-* agents; note
   caps: tools/doc_check.py. Briefs keep Ripple, Pre-mortem, Tests, Checklist: test_template.py; builder edits: build_gate.
@@ -53,11 +53,12 @@ the advisor; machinery, a brief, a paid call or anything that reaches Feras gets
 - IMPORTANT: one task, model and effort per chat. Check get_usage at the start and before a big step.
 - Builders write when the brief is shorter than the work and the risk is low or well tested (<= 2 Godot runs, 1 text
   run); Opus writes small, risky machinery itself (hooks, gates, slots, saves). Claude plans, briefs (TEMPLATE),
-  reviews and merges. Every brief names its persona (.agents/skills); our rules outrank persona text.
+  reviews and merges. Every brief names its persona (.agents/skills); our rules outrank persona text. One builder a
+  task, no races (10-28); a run red on the pipeline itself: Opus fixes the pipeline and re-gates.
 - Edit, don't rewrite; no recaps; a few lines to the owner; side sessions report only at milestones; leave one tool,
   check, skill or doc better.
-- Code rules: .claude/rules/code.md (loads when code is touched). Every rule and fixed bug gets a test; a check
-  counts only when its output was read. Python is `python` here (not python3).
+- Code rules + Godot traps: .claude/rules/code.md (loads with code; in builder prompts). Every rule and fixed bug
+  gets a test; a check counts only when its output was read. Python is `python` here (not python3).
 
 ## The owner's limits
 - He decides scope, story, art direction, spending, models and releases; Claude advises with a recommended
