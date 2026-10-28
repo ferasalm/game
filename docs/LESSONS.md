@@ -45,6 +45,7 @@
 - A harness summary can lie (99.8% party HP: its AI chain-interrupted the boss) -> print one seed's events (2026-10-23).
 - A subagent costs 150-290k tokens -> delegate only when the worker reads far more than its brief.
 - Audit cost: 3 Haiku audits at max effort reading whole doc sets cost ~15% of a 5-hour window -> narrow briefs, Haiku high (calibrated), exact files and an output template (2026-10-27).
+  A Haiku quote check without the files the drafts cite (art-bible.md, ui.md) spent half its 117k on "unverified" flags -> its read set = every file the text quotes (2026-10-28).
 - A superseded rule lives on in a doc or prompt string -> grep for it when a decision changes.
 - Gemini research contains invented numbers -> ideas and norms only, never facts.
 - A skill with `paths:` frontmatter (flow-media, 3d-model, sprite-bake, players-eye-gate) is not in a chat's skill list
