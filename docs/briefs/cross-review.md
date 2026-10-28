@@ -1,5 +1,5 @@
 # Chat brief: cross-review lane (A), agy's wider lane (C), one race (B) (Feras 2026-10-28)
-HANDOFF queue row 11 (Dept Ops). Free builders build (agy, cf); the chat (Opus) briefs, calibrates, reviews, merges.
+HANDOFF queue row 12 (Dept Ops). Free builders build (agy, cf); the chat (Opus) briefs, calibrates, reviews, merges.
 
 ## Why
 Feras 10-28: "Queue A + C, and also try B (two builders race on the same brief, each reviews the other) on one small
@@ -41,4 +41,4 @@ docs/MAP.md.
 
 ## Done when
 check.sh passes; the calibration result is written; A and C merged and on (or A off, with the reason); the race verdict
-logged; row 11 closed; /handoff.
+logged; row 12 closed; /handoff.

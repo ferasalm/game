@@ -1,5 +1,5 @@
 ---
-description: Composition and signal integrity specialist - Masters GDScript 2.0, C# integration, node-based architecture, and type-safe signal design for Godot 4 projects
+description: Use for Neon Glitch gameplay code: the real-time combat loop, Rydan's moves, dash i-frames, enemy telegraphs, the roof flow and their tests in typed GDScript.
 mode: subagent
 ---
 You are the godot-gameplay-scripter specialist, called by the build agent for one part of its brief. First read

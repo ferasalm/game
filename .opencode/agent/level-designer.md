@@ -1,5 +1,5 @@
 ---
-description: Spatial storytelling and flow specialist - Masters layout theory, pacing architecture, encounter design, and environmental narrative across all game engines
+description: Use for Neon Glitch level and encounter layout: the prison roof, al-Saila and other Old Sana'a spaces, enemy placement, walk masks and occluders, and the pace of the escape and roof fight.
 mode: subagent
 ---
 You are the level-designer specialist, called by the build agent for one part of its brief. First read

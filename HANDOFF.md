@@ -1,5 +1,5 @@
 # HANDOFF (current state only; ONE queue for every chat; max 60 lines)
-Last updated: 2026-10-28 (row 1 part 2: items 4-8 on main; item 9 oc run personas-tailor running), Opus 5.5.
+Last updated: 2026-10-28 (row 1 closed: item 9, the 10 personas tailored to Neon Glitch, on main), Opus 5.5.
 Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Feras's list).
 
 ## How this file works (Feras 2026-10-27; departments 10-28)
@@ -8,16 +8,15 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
   taste, MCP or builder-waiting rows go to an Opus child chat (it writes its own row; Status "child open: <branch>").
 - Lane: who does the work inside it: builder (agy, cf, oc) by default; chat = the Opus chat itself, only for taste, MCP
   (Blender, Flow, Rodin), review or plan, said in brackets; Feras = his move. tools/doc_check.py checks every row.
-- Systems first (Feras 10-28): row 1 and anything urgent or hanging, then M1 (rows 3-6).
+- Systems first (Feras 10-28): row 1 (closed 10-28), then row 12 (cross-review), then M1 (rows 3-6).
 - Builders (D1): <= 2 Godot runs + 1 free text run (slots.sh). Briefs: docs/briefs/TEMPLATE.md. Balance band: start
   gear 82.7-89% wins; arc_arm needs an upside.
 
 ## Queue
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
-| 1 | Efficiency fixes 1-5 as hooks and checks + Feras's 10-28 items 6-10 (one lean rule, step 3 as a mode table, departments as labels, one routing table with the personas, hanging work): docs/briefs/efficiency-hooks.md | Ops | builder + chat (review) | cf; Opus high | 1-8 + 10 on main 10-28; 9: tools exist on claude/dazzling-shannon-8d05cc (test_personas red), oc run personas-tailor drafting (game-wt/personas-tailor.result): read it, Haiku pass, Opus per persona, merge, close row 1 (brief Status) | - |
-| 11 | Cross-review lane (A: the other model family reviews every PASS run before Claude), agy's wider lane (C), one two-builder race (B): docs/briefs/cross-review.md | Ops | builder + chat (review) | agy + cf; Opus high | queued | 1 |
-| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | queued | 11 |
+| 12 | Cross-review lane (A: the other model family reviews every PASS run before Claude), agy's wider lane (C), one two-builder race (B): docs/briefs/cross-review.md | Ops | builder + chat (review) | agy + cf; Opus high | next | - |
+| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | queued | 12 |
 | 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | queued | 3 |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | queued: runs while agy builds row 4 | 3; free memory >= 3 GB |
 | 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | QA | Feras | - | queued | 4 |
@@ -25,6 +24,7 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 | 8 | Free image-to-3D proof (rydan_style_v2 to a TRELLIS HF Space; never Blender generate_3d) -> 3d-model skill | Art | chat (MCP) | Opus medium | queued | 7 |
 | 9 | Asset preparation pipeline (jpg -> png, sizes, import settings, manifest check) | Art | builder | cf | parked | 5 |
 | 10 | Obscura proof: builders fetch web pages with the Obscura headless browser instead of Chrome (never --stealth); a tools/ wrapper + test | Ops | builder | cf | parked | 5 |
+| 11 | Art bible 2D pass: drop the retired 3D runtime lines (fog, mist, sky, spatial shading, the "2150" title) the personas nearly copied; docs/design/art-bible.md | Art | builder | oc | parked | 5 |
 Key: builders are free code bots (agy = Gemini Flash, cf = Cloudflare DeepSeek, oc = free text models); chat (MCP) = a
 Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-time fight, on the prison roof.
 
@@ -40,8 +40,8 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 ## This week (Claude Pro weekly limit: ~75% used Wed 10-28, resets Sat 10-31 13:00 UTC = 16:00 Feras's time (GMT+3); on his calendar)
 | Day | Plan |
 |---|---|
-| Wed 10-28 | Row 1 closes (part 3: review + merge the tailored personas); Feras OKs docs/VISION.md. |
-| Thu 10-29 | Row 11: cross-review lane + agy's wider lane (agy, cf build; Opus calibrates and reviews); the race test. |
+| Wed 10-28 | Row 1 closed (personas tailored, on main); Feras OKs docs/VISION.md. |
+| Thu 10-29 | Row 12: cross-review lane + agy's wider lane (agy, cf build; Opus calibrates and reviews); the race test. |
 | Fri 10-30 | Row 3 M1 brief (Feras answers its feel questions); row 4 agy builds overnight. Feras: art homework, Bilqis call. |
 | Sat 10-31 | Limit resets 16:00: row 4 review + eye gate (cross-reviewed); row 6 Roya bake. |
 | Sun-Mon | Play day 1 (row 5) on PC and phone; fix passes from his notes; rows 7-8. |

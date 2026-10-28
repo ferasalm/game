@@ -1,4 +1,8 @@
 # Chat brief: efficiency fixes 1-5 as hooks and checks (Feras's number-one priority, 2026-10-27)
+Status 10-28 (part 3, confident-mcclintock): DONE 9: oc run personas-tailor merged after a Haiku pass and an Opus read of
+each persona (fixed: 3D shader types and fog/mist lines, Rodin credits + spend ok, normal maps models-only, split quotes,
+render .tscn names); UI reviewer back to ui-finish-gate-reviewer + review-player; sync_personas + test_personas green.
+ROW 1 CLOSED.
 Status 10-28 (part 2, dazzling-shannon): DONE 4-8 + item 6's stamp step (aaabb88, 30288f0 on main): CLAUDE.md
 "Enforced by a tool" + 5 judgment duties with triggers; WORKFLOW step 3 worker table, one Routing table, tiered review,
 Sonnet subagent + advisor (probed: it has `advisor`, ~67k start); dept-* agents archived; doc_check checks personas and
