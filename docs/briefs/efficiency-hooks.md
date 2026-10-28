@@ -1,4 +1,11 @@
 # Chat brief: efficiency fixes 1-5 as hooks and checks (Feras's number-one priority, 2026-10-27)
+Status 10-28 (part 1, determined-hertz): DONE 1, 2 (cf run + 5 review fixes; wired via tools/hooks/run.sh), 3, 10
+(generate_3d guard; pre_spend question + archive/removal asks in Waiting on Feras; status.sh's old branches: oc/interact-
+focus, oc/souq-place, claude/recursing-mirzakhani-6cd00a, worktree-agent-a7a39e37..., -a4cf40c0...: kept, D7). NEXT: 4, 5,
+then 6-8 (docs + doc_check), then 9: Claude writes tools/sync_personas.py (source frontmatter -> .claude/skills copy
+verbatim; .claude/agents/<name>.md = name + description + source body) and tools/test_personas.py (drift; no Unity,
+Unreal, FMOD, Wwise or C#; names Godot 4.7.2 + code.md; an "Adapted from" line; an Output template and Reviewer section),
+red on the base; then one oc run (pipeline, May edit .agents/skills/<10>/SKILL.md); a Haiku pass, then Opus per persona.
 HANDOFF queue row 1. Archive cleanup merged 10-27 (d9c1735): start now. Lanes (Feras 10-27, one Opus chat at a time):
 items 1-2 are Python hooks + tests -> Cloudflare DeepSeek builds (builders skill, TEMPLATE brief, May edit tools/hooks/
 and the new tools/test_*.py only); the Opus chat wires them in .claude/settings.json (it also wires the pre_spend money
@@ -19,7 +26,7 @@ that fails on one bad case. Keep always-loaded notes under tools/doc_check.py ca
    inbox/flow/ and "inbox/Neon Glitch concept art/", .bake/, eye_gate contact.png, clip.mp4, f########.png) needs a
    stamp by sha256 in .check/reviews/ written by a review_stamp tool after both reviews; a test that every
    tools/shot_*.gd output path is caught.
-3. content/art/refs.json: character id -> approved reference path + date + CANON line. Roya
+3. tools/art/refs.json: character id -> approved reference path + date + CANON line. Roya
    inbox/flow/roya_style_v3_2k.jpg, Rydan rydan_style_v2_2k.jpg, Bilqis bilqis_style_v2_2k.jpg (concept:
    inbox/Neon Glitch concept art/Bilqis.jpg). Test: every ModelDef with a Rodin scene has an entry (inbox/ is
    git-ignored: schema only). 3d-model + flow-media skills take references only from refs.json.

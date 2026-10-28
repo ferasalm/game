@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""content/art/refs.json: one approved reference per character (row 1 item 3, 10-28). Every Rodin model has an entry,
+"""tools/art/refs.json: one approved reference per character (row 1 item 3, 10-28). Every Rodin model has an entry,
 each entry cites a live CANON line, and the art skills take references from refs.json, never a hard-coded inbox path."""
 import json
 import os
@@ -15,14 +15,14 @@ def load(rel):
 
 
 def refs():
-    return {r["id"]: r for r in json.loads(load("content/art/refs.json"))["items"]}
+    return {r["id"]: r for r in json.loads(load("tools/art/refs.json"))["items"]}
 
 
 def test_every_rodin_model_has_a_reference():
     have = refs()
     for m in json.loads(load("content/art/models.json"))["items"]:
         if "rodin" in m.get("scene", "").lower():
-            assert m["id"] in have, f"{m['id']} has a Rodin scene but no content/art/refs.json entry"
+            assert m["id"] in have, f"{m['id']} has a Rodin scene but no tools/art/refs.json entry"
 
 
 def test_entries_are_complete_and_cite_canon():
@@ -37,7 +37,7 @@ def test_entries_are_complete_and_cite_canon():
 def test_art_skills_read_refs_json():
     for rel in SKILLS:
         text = load(rel)
-        assert "content/art/refs.json" in text, f"{rel} must take references from content/art/refs.json"
+        assert "tools/art/refs.json" in text, f"{rel} must take references from tools/art/refs.json"
         hard = re.findall(r"inbox/flow/\w+_style_v\d\w*\.(?:jpg|png)", text)
         assert not hard, f"{rel} hard-codes a reference ({hard[0]}): name the character, the path lives in refs.json"
 

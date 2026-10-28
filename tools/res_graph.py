@@ -24,9 +24,8 @@ RUNTIME_DIRS = {
     "assets/textures/ui_bg/": "menu backdrops read by Image.load_webp_from_buffer (.gdignore folder)",
     "assets/textures/painted/": "painted skins read from a .gdignore folder",
 }
-# Not resources: licences, notes, the asset manifest, the art reference list (the art skills read it, not the game)
-# and Godot's ignore markers.
-NOT_RESOURCES = re.compile(r"(\.txt|\.md|/\.gdignore|^assets/manifest\.json|^content/art/refs\.json)$")
+# Not resources: licences, notes, the asset manifest and Godot's ignore markers.
+NOT_RESOURCES = re.compile(r"(\.txt|\.md|/\.gdignore|^assets/manifest\.json)$")
 
 
 def tracked(root: pathlib.Path) -> list[str]:

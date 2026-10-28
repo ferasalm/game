@@ -1,5 +1,5 @@
 # HANDOFF (current state only; ONE queue for every chat; max 60 lines)
-Last updated: 2026-10-28 (lean-process chat: departments as labels (B), systems first, the lean process), Opus 5.5.
+Last updated: 2026-10-28 (row 1 part 1: cf hooks reviewed, fixed, wired; refs.json; generate_3d guard), Opus 5.5.
 Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Feras's list).
 
 ## How this file works (Feras 2026-10-27; departments 10-28)
@@ -15,7 +15,7 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 ## Queue
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
-| 1 | Efficiency fixes 1-5 as hooks and checks + Feras's 10-28 items 6-10 (one lean rule, step 3 as a mode table, departments as labels, one routing table with the personas, hanging work): docs/briefs/efficiency-hooks.md | Ops | builder + chat (review) | cf; Opus high | next: review the cf run on oc/efficiency-hooks-build (items 1-2, 3 commits 10-28) | - |
+| 1 | Efficiency fixes 1-5 as hooks and checks + Feras's 10-28 items 6-10 (one lean rule, step 3 as a mode table, departments as labels, one routing table with the personas, hanging work): docs/briefs/efficiency-hooks.md | Ops | builder + chat (review) | cf; Opus high | items 1-3 + 10 on main 10-28 (hooks wired, refs.json, generate_3d guard); next: items 4-5, then 6-9 (brief Status block) | - |
 | 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | queued | 1 |
 | 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | queued | 3 |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | queued: runs while agy builds row 4 | 3; free memory >= 3 GB |
@@ -32,7 +32,7 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 |---|---|---|
 | Play M1 on PC and phone, send notes | Fri 10-30 | row 5 |
 | OK on the vision | 10-27 | docs/VISION.md |
-| The pre_spend question | 10-27 | docs/audits/2026-10-27-process-audit.md |
+| Keep pre_spend blocking ElevenLabs, vidIQ, Runware and Blender generate_3d without "spend ok"? (done in P4 before his yes); archive 5 finished sessions + remove nervous-boyd's worktree (stale edit saved) | 10-27 | row 1 |
 | Bilqis's portraits are now the Neon ones (overturn?) | 10-27 | archive-cleanup, decisions-log |
 | More concept pictures + an empty plate per scene (no characters, HUD or rain) | 10-24 | inbox/ |
 | Icon art | 10-27 | row 7 |

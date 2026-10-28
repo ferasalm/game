@@ -26,6 +26,10 @@
 - load() of a painted .webp returns null when its folder is .gdignore (assets/textures/painted/) -> Image.load_webp_from_buffer (2026-10-23).
 - `find_children(pattern, "MyClass")` never matches a script class_name -> walk the children and test `is MyClass` (2026-10-23).
 - A UiScreen closed while another covered it stayed frozen (its fade tween pauses with the node) -> close() re-enables processing (2026-10-23).
+- content/ is game data: ContentDB loads every content/**/*.json and an unknown kind breaks boot and every test (a
+  pipeline list nearly went there, 10-28) -> non-game data lives in tools/ or docs/; test_content_kinds.py (no Godot).
+- A fresh worktree's first import crashed (139) twice on the first font at 1.8 GB free, then passed at 2.3 GB -> run
+  `tools/run_godot.sh --import` alone before check.sh in a new worktree (2026-10-28).
 - A test counting processes by name machine-wide is flaky with parallel checkouts -> mark the test's children (2026-10-27).
 
 - An import that crashed (exit 139) leaves `*.import<digits>.tmp` files in assets/ -> test_asset_manifest fails on them:
@@ -63,5 +67,9 @@
 - The SessionStart hook read the main checkout ($CLAUDE_PROJECT_DIR), not the worktree -> it uses $PWD (P1.8) (2026-10-27).
   Still wrong 10-28: the app ran it in C:\dev\game with main's stale copy ("main is 12 behind" in a level worktree) ->
   it reads cwd from the hook's stdin JSON and runs that checkout's own copy (test_session_start).
+  Same class for every hook (10-28): `python "$CLAUDE_PROJECT_DIR/<new hook>.py"` runs main's copy, and a missing file
+  exits 2, which BLOCKS a PreToolUse tool -> new hooks go through `bash .../tools/hooks/run.sh <name>` (test_hook_run).
+- A hook's settings.json matcher and its own regex are two lists: generate_3d slipped past both -> test_pre_spend checks
+  the matcher reaches every paid sample (2026-10-28).
 - tools/slots.sh counted 0 runs from a worktree (it looked for game-wt relative to the checkout) -> it finds C:/dev/game-wt from any worktree (P1.2, test_slots.py) (2026-10-27).
 - Python on Windows writes CRLF -> `newline="\n"` (python is `python` here, not python3). A `\\n` in a Bash-tool heredoc/sed arrives as a real newline, and `\b` as a backspace (doc_check regex, 10-28): write such code with Write/Edit (2026-10-27).

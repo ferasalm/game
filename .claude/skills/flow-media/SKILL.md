@@ -15,7 +15,7 @@ Free first (D21): Flow before any paid image API. Paid image APIs <= $1, only wi
 - Ratios allowed: 1:1, 16:9, 9:16, 4:3, 3:4 (2:3 is refused). Images = Nano Banana (the Flow agent picks it); video = Omni.
 
 ## Upload a reference image
-A character's reference is its content/art/refs.json entry, never another inbox picture (inbox/retired/ is never a source).
+A character's reference is its tools/art/refs.json entry, never another inbox picture (inbox/retired/ is never a source).
 1. Click "Add media" (opens the menu), which creates an `input[type=file]`.
 2. `file_upload` the local file into that input.
 3. If the grid does not take it, dispatch a synthetic drop with javascript_tool:
