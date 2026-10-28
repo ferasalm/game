@@ -20,7 +20,10 @@ The bars live in docs/design/acceptance.md (ids C1, M1, U1 ...); Feras edits the
    `mcp__openrouter__send-message` with public content only) reads 4-6 frames at 640x360 plus contact.png against
    acceptance.md, and answers each id seen: OK / MISS / CANNOT SEE, one line each. Frames, not code.
 4. Confirm: Opus (or the advisor) re-reads the flagged frames and confirms or drops each MISS. A lens finding is a flag, not a fact.
-5. Only then does the build reach Feras, with the WARN/MISS list and the contact sheet. Open MISSes are named, not hidden.
+5. Stamp: after review-player and review-feras, `python tools/hooks/review_stamp.py --player "<verdict>" --feras
+   "<verdict>" <contact.png> <clip.mp4> <frames sent>`. The review gate hook blocks SendUserFile and Artifact on any
+   unstamped render (tools/hooks/review_gate.py).
+6. Only then does the build reach Feras, with the WARN/MISS list and the contact sheet. Open MISSes are named, not hidden.
 
 ## Rules
 - Frames come from the play camera at the shipped resolution; a render of a different scene does not count.
