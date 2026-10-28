@@ -122,6 +122,22 @@ def test_nonzero_exit_unless_pass():
     assert rc != 0 and result(top).startswith("NOWORK"), (rc, result(top))
 
 
+CHECK_COUNT = '#!/bin/bash\nn=$(( $(cat ../checks.n 2>/dev/null || echo 0) + 1 )); echo $n > ../checks.n\n' \
+    '[ $n -ge 3 ] && { echo "all checks passed"; exit 0; }\necho "FAIL toy $n"; exit 1\n'
+
+
+def test_two_free_fix_passes_by_default():  # Feras 10-28: builder time is free, so a second pass before Opus
+    for passes, word in ((None, "PASS"), ("1", "FAIL")):
+        top, g = toy()
+        put(g + "/tools/check.sh", CHECK_COUNT)
+        git(g, "add", "-A")
+        git(g, "commit", "-qm", "check passes on its third run")
+        git(g, "push", "-q", "origin", "HEAD:main")
+        rc, out, err = pipeline(g, top, **({"FIX_PASSES": passes} if passes else {}))
+        assert result(top).startswith(word), (passes, result(top), err)
+        assert "Fix pass" in open(top + "/game-wt/job.fix.md", encoding="utf-8").read()
+
+
 def test_refuses_when_slots_full():
     top, g = toy()
     for n, b in (("a", "agy"), ("b", "cf")):

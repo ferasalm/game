@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Free builder pipeline (DECISIONS 2026-10-23, hardened 2026-10-27): slots check -> builder run (idle watchdog) ->
-# check.sh -> one free fix pass fed the FAIL lines -> check.sh -> tools/build_gate.py -> game-wt/<task>.result
+# check.sh -> up to FIX_PASSES free fix passes fed the FAIL lines, each checked -> tools/build_gate.py -> game-wt/<task>.result
 # (first word PASS/FAIL/NOWORK/BREACH, the gate's checklist, the checked commit, the pipeline's pid). Exit 0 only for PASS.
 # Claude reads only a PASS; tools/merge_run.sh merges it.
 # Usage (cwd = a checkout whose origin has <base> pushed): bash tools/build_pipeline.sh <oc|agy|cf> <task> <brief> <base> [model]
@@ -96,17 +96,19 @@ if [ -f "$root/.claude/rules/code.md" ]; then
 fi
 if [ -z "${SKIP_BUILD:-}" ]; then run "$prompt" || idle_exit build; fi
 leftovers "build"; cp "$wt.log" "$wt.build.log" 2> /dev/null; fix_from=""
-if check; then :; else
-  fix_from="$(git -C "$wt" rev-parse HEAD)"
-  status_line RUNNING "fix pass"
-  { echo "# Fix pass: $name (<= 45 min)"
+fix=0  # FIX_PASSES free fix passes (builders.conf; Feras 10-28: builder time is free), each fed the latest FAIL lines
+until check; do
+  fix=$((fix + 1)); [ "$fix" -le "$FIX_PASSES" ] || break
+  [ -n "$fix_from" ] || fix_from="$(git -C "$wt" rev-parse HEAD)"
+  status_line RUNNING "fix pass $fix"
+  { echo "# Fix pass $fix of $FIX_PASSES: $name (<= 45 min)"
     echo "You are in your own worktree on branch $prefix/$name. Your build of the brief below left checks failing."
     echo "Fix the causes, never weaken a test's intent, keep the brief's Do NOT edit list, run \`$chk\`"
     echo "until it prints \"all checks passed\", commit. The FAIL lines:"
     echo '```'; grep -A13 '^FAIL' "$wt.check.txt"; echo '```'
     echo; echo "## The brief"; cat "$brief"; } > "$wt.fix.md"
-  OC_TIMEOUT=45m AGY_TIMEOUT=45m run "$wt.fix.md" || idle_exit "fix pass"; leftovers "fix pass"; check
-fi
+  OC_TIMEOUT=45m AGY_TIMEOUT=45m run "$wt.fix.md" || idle_exit "fix pass $fix"; leftovers "fix pass $fix"
+done
 leftovers "check"  # the .uid files Godot wrote during the last check belong to the checked tree
 gate="$($py "$here/build_gate.py" gate --wt "$wt" --base "$base" --brief "$brief" --check "$wt.check.txt" \
   --kind "$RUN_KIND" \

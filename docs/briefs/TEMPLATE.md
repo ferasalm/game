@@ -1,4 +1,4 @@
-# Brief: <task> (copy to docs/briefs/<task>.md; <= 60 lines; tools/test_template.py keeps the gate's headings here)
+# Brief: <task> (copy to docs/briefs/<task>.md; <= 80 lines; tools/test_template.py keeps the gate's headings here)
 You are in your own worktree on branch <gemini|oc>/<task> (made from origin/main; push the base first). Follow GEMINI.md, including
 <review_misses>. Load the <persona> skill (the persona from the docs/WORKFLOW.md Routing table; build_pipeline.sh pastes .agents/skills/<persona> into the prompt; our rules outrank its text).
 Timebox: <N> min (<= 45; the pipeline only kills at AGY_TIMEOUT/OC_TIMEOUT, 90 min). First commit within 15 min, then small WIP commits: no commit for 25 min (IDLE_MIN) = NOWORK.
@@ -22,11 +22,11 @@ backticks: every backticked token in this section is a forbidden path, and May e
 <backticked paths inside the D6 defaults the task must touch, one per line; empty = none. Shared files: smallest edit>
 
 ## Ripple
-<what else this change touches: every listener, signal, key, id and save field it renames or rewires; every place
+<a small, low-risk brief may write 'none: <reason>'. Else: what else this change touches: every listener, signal, key, id and save field it renames or rewires; every place
 the changed asset appears (docs/design/systems-map.md), each with how the build keeps it working>
 
 ## Pre-mortem
-<three lines: how this build fails in the player's hands, in the gate or in review, and what in this brief stops each>
+<a small, low-risk brief: 'none: <reason>'. Else three lines: how this build fails in the player's hands, in the gate or in review, and what in this brief stops each>
 
 ## Tests
 <written first by Claude, red on the base, read-only for the builder. One line per rule or bug. At least one

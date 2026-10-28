@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Self-test for tools/hooks/token_handoff.py (D4): a PostToolUse hook that warns at 80k and 100k work tokens.
+"""Self-test for tools/hooks/token_handoff.py (hand-off rule, Feras 10-28): warns at 200k and 250k of context.
 
 Black box: the hook runs as a subprocess with the hook JSON on stdin. Env: TOKEN_HANDOFF_STATE_DIR (state files),
 TOKEN_HANDOFF_STEP_BYTES (throttle; 0 = parse every call).
@@ -54,29 +54,40 @@ class Session:
         return out["additionalContext"]
 
 
-def test_quiet_below_80k():
+def test_quiet_below_200k():
     s = Session()
-    write(s.path, [user_line(), usage_line(90_000), usage_line(160_000)])
-    assert s.call() == "", "70k work tokens: no warning"
+    write(s.path, [user_line(), usage_line(90_000), usage_line(199_000)])
+    assert s.call() == ""
 
 
-def test_warns_at_80k_once():
+def test_finish_the_unit_at_200k_once():
     s = Session()
-    write(s.path, [user_line(), usage_line(90_000), usage_line(171_000)])
+    write(s.path, [user_line(), usage_line(90_000), usage_line(205_000)])
     msg = s.call()
-    assert "finish the unit" in msg and "81" in msg, msg
-    write(s.path, [usage_line(175_000)], "a")
-    assert s.call() == "", "the 80k warning fires once"
+    assert "finish the unit" in msg and "~205k" in msg and "get_usage" in msg, msg
+    write(s.path, [usage_line(240_000)], "a")
+    assert s.call() == "", "the 200k warning fires once"
 
 
-def test_warns_at_100k_then_every_10k():
+def test_handoff_at_250k_then_every_25k():
     s = Session()
-    write(s.path, [user_line(), usage_line(90_000), usage_line(191_000)])
-    assert "/handoff" in s.call()
-    write(s.path, [usage_line(195_000)], "a")
-    assert s.call() == "", "no repeat before +10k"
-    write(s.path, [usage_line(202_000)], "a")
-    assert "/handoff" in s.call(), "again at +10k"
+    write(s.path, [user_line(), usage_line(90_000), usage_line(252_000)])
+    assert "/handoff at the next unit boundary" in s.call()
+    write(s.path, [usage_line(270_000)], "a")
+    assert s.call() == "", "no repeat before +25k"
+    write(s.path, [usage_line(276_000)], "a")
+    assert "/handoff" in s.call(), "again at 275k"
+
+
+def test_advisor_turn_counts_the_main_call_only():  # 10-28: the advisor's own call made a 137k chat read as 271k
+    s = Session()
+    line = usage_line(271_000)
+    line["message"]["usage"]["iterations"] = [
+        {"type": "message", "input_tokens": 2, "cache_read_input_tokens": 126_980, "cache_creation_input_tokens": 8_035},
+        {"type": "advisor_message", "input_tokens": 131_796, "cache_read_input_tokens": 0},
+        {"type": "message", "input_tokens": 4, "cache_read_input_tokens": 127_000, "cache_creation_input_tokens": 9_755}]
+    write(s.path, [user_line(), usage_line(90_000), line])
+    assert s.call() == "", "136,759 tokens of context: quiet"
 
 
 def test_sidechain_usage_is_ignored():
@@ -85,37 +96,21 @@ def test_sidechain_usage_is_ignored():
     assert s.call() == "", "a subagent's usage line is not this chat's context"
 
 
-def test_baseline_restarts_after_compaction():
+def test_compaction_starts_the_warnings_over():
     s = Session()
-    write(s.path, [user_line(), usage_line(20_000), usage_line(185_000), COMPACT, user_line("summary"),
-                   usage_line(110_000), usage_line(140_000)])
-    assert s.call() == "", "after a compact boundary the work counts from the first usage after it (30k)"
-
-
-def test_compaction_seen_on_a_later_call():
-    s = Session()
-    write(s.path, [user_line(), usage_line(90_000), usage_line(150_000)])
-    assert s.call() == ""
-    write(s.path, [COMPACT, user_line("summary"), usage_line(110_000), usage_line(170_000)], "a")
-    assert s.call() == "", "60k since the compaction: still quiet, not 80k from the old baseline"
-
-
-def test_compaction_in_the_window_resets_once():  # review 10-28: each parse re-found it and warned again
-    s = Session()
-    write(s.path, [user_line(), usage_line(20_000), usage_line(185_000), dict(COMPACT, uuid="c1"), user_line("s"),
-                   usage_line(110_000), usage_line(200_000)])
-    assert "finish the unit" in s.call(), "90k since the compaction"
-    write(s.path, [usage_line(201_000)], "a")
-    assert s.call() == "", "the same compaction is still in the window: no second 80k warning"
-    write(s.path, [usage_line(215_000)], "a")
+    write(s.path, [user_line(), usage_line(90_000), usage_line(260_000)])
     assert "/handoff" in s.call()
-    write(s.path, [usage_line(216_000)], "a")
-    assert s.call() == ""
+    write(s.path, [dict(COMPACT, uuid="c1"), user_line("summary"), usage_line(110_000)], "a")
+    assert s.call() == "", "the compaction shrank the context"
+    write(s.path, [usage_line(150_000)], "a")
+    assert s.call() == "", "the same compaction is still in the window: quiet, not a repeat"
+    write(s.path, [usage_line(206_000)], "a")
+    assert "finish the unit" in s.call(), "a new climb past 200k warns again"
 
 
-def test_fallback_counts_only_after_compaction():  # review 10-28: the fallback read the whole file
+def test_compaction_without_usage_after_it_is_quiet():  # the pre-compaction usage must not count
     s = Session()
-    write(s.path, [user_line("a" * 600_000), dict(COMPACT, uuid="c1"), user_line("go")])
+    write(s.path, [user_line("a" * 600_000), usage_line(300_000), dict(COMPACT, uuid="c1"), user_line("go")])
     assert s.call() == "", "no usage since the compaction and a few bytes: quiet"
 
 
@@ -123,17 +118,25 @@ def test_throttle_skips_small_growth():
     s = Session(step_bytes="40000")
     write(s.path, [user_line(), usage_line(90_000), usage_line(100_000)])
     assert s.call() == ""
-    write(s.path, [usage_line(195_000)], "a")
+    write(s.path, [usage_line(255_000)], "a")
     assert s.call() == "", "under 40 KB of growth since the last parse: not parsed yet"
-    write(s.path, [user_line("p" * 41_000), usage_line(196_000)], "a")
+    write(s.path, [user_line("p" * 41_000), usage_line(256_000)], "a")
     assert "/handoff" in s.call(), "after 40 KB the hook parses and warns"
 
 
 def test_fallback_without_usage_counts_bytes():
     s = Session()
-    write(s.path, [user_line("a" * 300_000), {"type": "assistant", "isSidechain": False,
-                                             "message": {"role": "assistant", "content": "b" * 300_000}}])
-    assert "/handoff" in s.call(), "~600 KB / 5.7 = ~105k tokens: warn even with no usage lines"
+    write(s.path, [user_line("a" * 700_000), {"type": "assistant", "isSidechain": False,
+                                             "message": {"role": "assistant", "content": "b" * 700_000}}])
+    assert "finish the unit" in s.call(), "~1.4 MB / 5.7 = ~245k tokens: warn even with no usage lines"
+
+
+def test_odd_lines_never_crash():  # calibration 10-28: null usage fields, a string message, a non-dict line
+    s = Session()
+    odd = usage_line(260_000)
+    odd["message"]["usage"]["cache_creation_input_tokens"] = None
+    write(s.path, [7, "x", {"type": "assistant", "message": "text"}, user_line(), odd])
+    assert "/handoff" in s.call()
 
 
 def test_bad_input_never_blocks():

@@ -2,6 +2,7 @@
 
 One row per session, so the estimates in docs/BRIEFING.md are recalibrated from real numbers after three build
 sessions. "Window %" = the share of the Pro 5-hour window the session used (from `/usage` at start and end).
+Since 10-28 the result names each merged run with its Opus fixes and cross-review hits (cost per verified merge).
 
 | Date | Model | Effort | Task | Window % | Result |
 |---|---|---|---|---|---|

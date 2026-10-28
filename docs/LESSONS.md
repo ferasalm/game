@@ -41,6 +41,8 @@
   existed only on origin) -> a read-only review reads `git show origin/main:<file>` or a fresh worktree (2026-10-28).
 - Finished session worktrees are often detached (no branch): a tool listing worktrees by branch misses them ->
   tools/status.sh reads `worktree list --porcelain` HEADs (test_status.py) (2026-10-27).
+- The hand-off hook warned ~182k in a 137k chat: an advisor turn's top-level usage sums the advisor's own call -> it
+  reads the main model's last "message" iteration (test_token_handoff); a hook that contradicts get_usage loses (10-28).
 - A check that only prints never fails -> every check exits non-zero; probe each new rule with one bad case.
 - A harness summary can lie (99.8% party HP: its AI chain-interrupted the boss) -> print one seed's events (2026-10-23).
 - A subagent costs 150-290k tokens -> delegate only when the worker reads far more than its brief.

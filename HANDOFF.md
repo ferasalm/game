@@ -1,5 +1,5 @@
 # HANDOFF (current state only; ONE queue for every chat; max 60 lines)
-Last updated: 2026-10-28 (row 12 part 1: C merged, agy calibrated as reviewer; race B + A runner next), Opus 5.5.
+Last updated: 2026-10-28 (row 12 part 1 on main; Feras's 10-28 process decisions applied: hand-off ~250k, hook fixed), Opus 5.5.
 Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Feras's list).
 
 ## How this file works (Feras 2026-10-27; departments 10-28)
@@ -16,7 +16,6 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
 | 12 | Cross-review lane (A: the other model family reviews every PASS run before Claude), agy's wider lane (C), one two-builder race (B): docs/briefs/cross-review.md | Ops | builder + chat (review) | agy + cf; Opus high | part 1 on main (C on, agy reviewer calibrated 3/5); next: race B from branch claude/row12-race-base, then the A runner (notes: row12-part1) | - |
-| 13 | token_handoff.py counts an advisor turn's usage (one entry 271k): it warned ~182k when the work was ~50k; count main-thread context growth only, with a test | Ops | builder | agy (RUN_KIND=py) | queued | 12 |
 | 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | queued | 12 |
 | 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | queued | 3 |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | queued: runs while agy builds row 4 | 3; free memory >= 3 GB |

@@ -36,7 +36,7 @@ docs/research/calibration-2026-10.md.
 5. Add the check that stops the class (lint rule, gate rule, or test), not only this instance.
 
 ## Prompt recipes
-Every brief, for any executor, fits in 60 lines:
+Every brief, for any executor, fits in 80 lines:
 - **Goal**: why, in one line.
 - **Inputs**: exact paths and line ranges, then "read nothing else".
 - **Steps**: numbered, each with an observable output.
@@ -61,7 +61,7 @@ Per executor:
   - `/advisor opus`; a loop cap of 3 rounds;
   - "grep, then read the named lines";
   - the delegation briefs pre-written;
-  - milestone-only reports; hand off at ~100k work tokens.
+  - milestone-only reports; hand off past ~250k context.
 - **agy** (Gemini Flash; Godot UI and code with renders; Python tools, docs and reviews when its quota is free; not creative):
   - geometry, colour and size numbers plus the concept path for any visual;
   - first commit within 15 minutes (the idle watchdog);

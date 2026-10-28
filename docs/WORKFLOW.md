@@ -17,7 +17,7 @@ row name a Dept from the Routing table and a lane.
 | Worker | When | Rough cost to the Claude limit | Who reviews |
 |---|---|---|---|
 | The father itself | a targeted read, one edit, a yes/no, a decision logged in Feras's words, a 1-3 line fix: the brief would hold the whole text | its own turns only | the gates, then itself; review-feras before Feras |
-| Builder (agy, cf, oc) | anything a brief can state exactly: code, tests, renames, edits across files, docs, summaries, persona drafts (Feras 10-28: whenever the brief is shorter than the work) | ~0 (free models); Claude pays the brief and the review | tiered (Protocols: Review) |
+| Builder (agy, cf, oc) | anything a brief can state exactly: code, tests, renames, edits across files, docs, summaries, persona drafts (Feras 10-28: whenever the brief is shorter than the work and the risk is low or well tested; small, risky machinery: the father writes it) | ~0 (free models); Claude pays the brief and the review | tiered (Protocols: Review) |
 | Haiku reader (effort high) | a read over ~20k tokens or across many files, with an exact output template | ~70k start + its reading | Opus reads only the template answer |
 | review-* agent | review-code on a diff, review-player on renders, review-feras last; one each, only when the tier needs it | ~30-70k each (a fresh start) | Opus weighs the findings |
 | Sonnet subagent + advisor | a scoped multi-step job where Opus is overkill and a builder can't (needs Claude tools); loop cap 3 rounds | ~67k start + its work | Opus, tiered |
@@ -56,7 +56,7 @@ are: what loads at start, how long a chat runs, what gets read, and output.
 
 ## Protocols
 - **Start:** the hook prints the sync for this worktree; then the HANDOFF line; then get_usage.
-- **Brief:** docs/briefs/TEMPLATE.md (<= 60 lines, with a Do NOT edit list).
+- **Brief:** docs/briefs/TEMPLATE.md (<= 80 lines, with a Do NOT edit list).
 - **Build:** slots (tools/slots.sh), then the pipeline (tools/build_pipeline.sh).
 - **Review (tiered, Feras 10-28: Opus never reads needlessly, and signs off on whatever reaches Feras):**
   1. Gates first: check.sh, build_gate (.result first line). FAIL, NOWORK or BREACH goes back unread.
@@ -67,7 +67,7 @@ are: what loads at start, how long a chat runs, what gets read, and output.
   4. Anything that reaches Feras: the eye gate (tools/eye_gate.sh), review-player + review-feras, then
      `python tools/hooks/review_stamp.py <file>`; the review_gate hook blocks SendUserFile and Artifact on an
      unstamped render (tools/hooks/review_gate.py).
-- **Handoff:** at ~100k work tokens (get_usage Messages). It records one improvement made and one proposed.
+- **Handoff:** at a unit boundary past ~250k context (review-heavy ~300k) or ~85% of the 5-hour window (CLAUDE.md). It records one improvement made and one proposed.
 - **ops-review:** every 5 sessions, or at 50% of the window: usage trend and start cost; promote lessons to checks;
   condense the notes on schedule; dispatch research from the department queues and read the digests (Research
   protocol); archive idle sessions.
@@ -107,7 +107,7 @@ reviewer with no .claude/agents/<name>.md, and any .claude/agents/dept-*.md (ret
 | Free memory before a Godot run | >= 3000 MB (MIN_FREE_MB=3000) | tools/slots.sh |
 | Builder with no commit | killed after 25 min (IDLE_MIN=25); result NOWORK | tools/build_pipeline.sh |
 | OpenRouter :free requests | 50 a day, shared by all :free models | the provider; check before a run |
-| Claude's handoff | ~100k work tokens (get_usage Messages) | Handoff protocol; review-cost |
+| Claude's handoff | a unit boundary past ~250k context (review-heavy ~300k) or ~85% of the 5-hour window | tools/hooks/token_handoff.py; review-cost |
 | Always-loaded notes | 27 KB each; lines: CLAUDE.md 80, HANDOFF 60, DECISIONS 70, LESSONS 100 (warns at 75%) | tools/doc_check.py |
 | Godot code | <= 200 lines a file, <= 40 lines a function | tools/lint_gd.py |
 | Paid image APIs | <= $1 each, only with Feras's OK | tools/pre_spend.py (see Routes) |
@@ -188,7 +188,7 @@ brief names one game-dev skill (.agents/skills/). Free models may train on promp
 | Notes split by change rate: CLAUDE.md rare, HANDOFF rewritten, DECISIONS = rules in force, LESSONS curated; full log in decisions-log.md | Adopted | Old state never reads as current |
 | @ imports of HANDOFF, DECISIONS, LESSONS under the 27 KB cap | Adopted, enforced by doc_check | reem-bot's loaded log grew past 100 KB: paid at every start |
 | /handoff at the end of every session | Adopted (handoff skill) | The next chat starts with no resume step |
-| A lane and a department on every queue row (doc_check); one model and effort per chat; one task per chat, hand off past ~100k work tokens | Adopted | Effort can't change mid-chat; switching models drops the cache; Pro windows are small |
+| A lane and a department on every queue row (doc_check); one model and effort per chat; one task per chat, hand off past ~250k context | Adopted | Effort can't change mid-chat; switching models drops the cache; Pro windows are small |
 | SessionStart hook with a sync report | Adopted | Catches a stale branch before work starts |
 | Grep first, read only the needed lines; never read generated files | Adopted, enforced by deny rules in .claude/settings.json | A rule nobody enforces drifts |
 | A check counts only when its output was read; every bug gets a regression test | Adopted (tools/check.sh, run_godot.sh) | A summary line hid broken results before; fixes stay fixed |
