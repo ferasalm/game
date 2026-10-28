@@ -26,3 +26,20 @@ paths: ["**/*.gd", "**/*.tscn", "**/*.tres", "tools/**", "tests/**"]
 - Check: `bash tools/check.sh`, then read the FAIL lines. Exit 124 with no FAIL line is the 600 s timeout, not a test.
 - One test file: `bash tools/run_godot.sh -s res://tests/runner.gd -- <name>`.
 - A check counts only when its output was read.
+
+## Godot traps (moved from docs/LESSONS.md 2026-10-28; add dated lines here)
+- `"abc".contains("")` is false in 4.7; a `const` Dictionary can't hold class_name refs (use preload); `match` is a
+  keyword (`var match` fails) (2026-10-19/22).
+- A scene added in a SceneTree script's `_initialize()` has no `_ready()` yet: tests start from the first `_process()`.
+- Godot exits 0 on a runtime error; run_godot.sh fails the run on a SCRIPT ERROR/ERROR line, and headless get_image()
+  prints one -> tests inject the grab (2026-10-26).
+- A lambda assigning an outer local changes nothing (captured by value) -> hold it in an Array (2026-10-26).
+- Commit every `.uid`, never read it; never write *.import (Godot's CSV import breaks a fresh clone: CSVs keep the
+  "keep" importer, test_text_db) (2026-10-19/22).
+- `move_and_slide` does nothing when `_physics_process` is called by hand -> move_and_collide + slide (2026-10-21).
+- Sorting StringNames compares addresses (rows flipped between runs) -> sort by String (2026-10-21).
+- load() of a .webp in a .gdignore folder (assets/textures/painted/) returns null -> Image.load_webp_from_buffer.
+- `find_children(pattern, "MyClass")` never matches a script class_name -> walk the children, test `is MyClass`.
+- A tween pauses with its node: a UiScreen closed while another covered it stayed frozen -> close() re-enables
+  processing (2026-10-23).
+- A test counting processes by name machine-wide is flaky with parallel checkouts -> mark the test's children (10-27).

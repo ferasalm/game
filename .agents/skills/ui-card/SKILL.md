@@ -26,8 +26,8 @@ You own one UI screen in the Godot 4.7 game (typed GDScript). Before coding, wri
 - (review_misses, undated) A file near 200 lines: split it before adding; never squeeze lines out of formatting.
 - (review_misses, undated) Tests touching saves, timers or frames: run three times; a flaky pass is a fail.
 - (review_misses, undated) Shared files (neon_game.gd, ui_stack.gd, content_db.gd, MAP.md): the smallest edit that works.
-- (LESSONS 4, 2026-10-22) agy passes check.sh yet misses what a player sees: judge the render, not the green check.
-- (LESSONS 4, 2026-10-23) agy is not creative: a described look came back as cones and gems; give geometry recipes with numbers and judge renders from the play camera.
+- (builders lessons, 2026-10-22) agy passes check.sh yet misses what a player sees: judge the render, not the green check.
+- (builders lessons, 2026-10-23) agy is not creative: a described look came back as cones and gems; give geometry recipes with numbers and judge renders from the play camera.
 
 ## Checks before done
 1. `tools/check.sh`: read every FAIL line. Exit 124 with no FAIL line is the 600 s timeout, not a test. One file: `tools/run_godot.sh -s res://tests/runner.gd -- <name>` (it fails on any SCRIPT ERROR line even when Godot exits 0).

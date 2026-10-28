@@ -1,5 +1,5 @@
 # HANDOFF (current state only; ONE queue for every chat; max 60 lines)
-Last updated: 2026-10-28 (row 12 part 1 on main; Feras's process decisions applied; rows 14-15 queued), Opus 5.5.
+Last updated: 2026-10-28 (row 12 part 1 on main; row 14 closed in chat: LESSONS triaged, Godot traps in code.md; row 15 queued), Opus 5.5.
 Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Feras's list).
 
 ## How this file works (Feras 2026-10-27; departments 10-28)
@@ -16,7 +16,6 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
 | 12 | Cross-review lane (A: the other model family reviews every PASS run before Claude), agy's wider lane (C), one two-builder race (B): docs/briefs/cross-review.md | Ops | builder + chat (review) | agy + cf; Opus high | part 1 on main; next: race B (base claude/row12-race-base), then the A runner | - |
-| 14 | Curate docs/LESSONS.md to ~50 lines: archive lessons a test already enforces (D9); notes at the 27 KB cap | Ops | builder | agy (RUN_KIND=py) | queued | - |
 | 15 | Session-start hook prints the top queue row (Dept, lane, who); test_session_start | Ops | builder | agy (RUN_KIND=py) | queued | - |
 | 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | queued | 12 |
 | 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | queued | 3 |

@@ -1,4 +1,6 @@
 # Lessons (curated; symptom -> cause -> fix; dated; max 100 lines; aim ~50; condense back to ~70)
+Triage (D9, 10-28): a line a test enforces (deleting it, a FAIL still stops the next chat) -> docs/lessons-archive.md
+naming the test; Godot code traps -> .claude/rules/code.md; builder-only -> .claude/skills/builders/lessons.md.
 
 ## 1. You can do this yourself
 - check.sh `exit code 124` with no FAIL line = the 600 s timeout, not a test (10-19/23); 124/139 with "Parameter mem is null" while other Godot runs are open = memory: rerun first (10-23).
@@ -10,37 +12,11 @@
 - Read an Electron app's screen (Twine): PowerShell Start-Process with --remote-debugging-port=N (a bash `&` launch died),
   then node fetch + WebSocket CDP Runtime.evaluate document.body.innerText (2026-10-25).
 
-## 2. Traps (Godot)
-- `"abc".contains("")` is false in 4.7 (runner found 0 tests); a `const` Dictionary can't hold class_name refs (use
-  preload); `match` is a keyword (`var match` fails) (2026-10-19/22).
-- A scene added in a SceneTree script's `_initialize()` has no `_ready()` yet -> tests start from the first `_process()`
-  (tests/runner.gd) (2026-10-19).
-- A test with a runtime error still counts as passed: run_godot.sh fails only on a SCRIPT ERROR/ERROR line though Godot
-  exits 0 (headless get_image() prints one -> tests inject the grab, 10-26) -> read the FAIL lines.
-- A lambda assigning an outer local changes nothing (captured by value) -> hold it in an Array (2026-10-26).
-- Commit every `.uid` and never read it; helper files in tests/ must not start with `test_` (2026-10-19).
-- No agent may write *.import -> new text goes into an existing CSV (CSVs use the "keep" importer and TextDB loads them;
-  Godot's CSV import breaks a fresh clone, and a test enforces "keep") (2026-10-21/22).
-- `move_and_slide` does nothing when `_physics_process` is called by hand -> move_and_collide + slide (2026-10-21).
-- Sorting StringNames compares addresses (rows flipped between runs) -> sort by String (2026-10-21).
-- load() of a painted .webp returns null when its folder is .gdignore (assets/textures/painted/) -> Image.load_webp_from_buffer (2026-10-23).
-- `find_children(pattern, "MyClass")` never matches a script class_name -> walk the children and test `is MyClass` (2026-10-23).
-- A UiScreen closed while another covered it stayed frozen (its fade tween pauses with the node) -> close() re-enables processing (2026-10-23).
-- content/ is game data: ContentDB loads every content/**/*.json and an unknown kind breaks boot and every test (a
-  pipeline list nearly went there, 10-28) -> non-game data lives in tools/ or docs/; test_content_kinds.py (no Godot).
-- A test counting processes by name machine-wide is flaky with parallel checkouts -> mark the test's children (2026-10-27).
-
-- An import that crashed (exit 139: low memory, e.g. a fresh worktree's first import at 1.8 GB free, 10-28) leaves
-  `*.import<digits>.tmp` files in assets/ -> test_asset_manifest fails on them: delete them, rerun the import; in a new
-  worktree run `tools/run_godot.sh --import` alone before check.sh (2026-10-27/28).
+## 2. Godot traps: .claude/rules/code.md (loads with code; build_pipeline pastes it into every builder prompt)
 
 ## 3. Process (general; reem-bot and feras-career ones verified there)
-- Builders sat idle (0 agy runs 10-27) while D1 said "builders write": doc_check demanded Model + Effort on every HANDOFF
-  step and nothing asked for a lane, so every plan came out as an Opus chat -> the queue check requires a lane (2026-10-27).
 - A review run from the main checkout while it was 9 commits behind nearly judged retired docs (the hybrid departments
   existed only on origin) -> a read-only review reads `git show origin/main:<file>` or a fresh worktree (2026-10-28).
-- Finished session worktrees are often detached (no branch): a tool listing worktrees by branch misses them ->
-  tools/status.sh reads `worktree list --porcelain` HEADs (test_status.py) (2026-10-27).
 - A check that only prints never fails -> every check exits non-zero; probe each new rule with one bad case.
 - A harness summary can lie (99.8% party HP: its AI chain-interrupted the boss) -> print one seed's events (2026-10-23).
 - A subagent costs 150-290k tokens -> delegate only when the worker reads far more than its brief.
@@ -50,26 +26,23 @@
 - Gemini research contains invented numbers -> ideas and norms only, never facts.
 - A skill with `paths:` frontmatter (flow-media, 3d-model, sprite-bake, players-eye-gate) is not in a chat's skill list
   until it touches a matching file -> the department brief says Read .claude/skills/<name>/SKILL.md (2026-10-28).
-- Where is X: grep docs/MAP.md (generated), not `ls -R`; map.py lists tracked files only (`git ls-files --cached`): a new file checked before `git add` passes "MAP.md current" locally and fails it in CI -> `git add` new files, then `python tools/map.py`, then check.sh (2026-10-26/27).
+- map.py lists tracked files only: a new file checked before `git add` passes "MAP.md current" locally and fails it in
+  CI -> `git add` new files, then `python tools/map.py`, then check.sh (2026-10-26/27).
 - A blind id rename (zayd -> rydan) also rewrote decisions-log lines, manifest sources naming Feras's real files and a
   one-letter test ("Z") -> exclude logs/archive/manifest, protect external names, then let check.sh find the rest (2026-10-27).
 - Scratchpad scripts vanish when the session ends (bake_all.sh was nearly lost) -> any script worth rerunning goes into tools/ with a test (2026-10-27).
 - An approved design with no brief was never built (rydan-moves.md) -> brief it the same day (2026-10-23).
-- `python - <<EOF < /dev/null` gave Python no script: it spun in an empty REPL -> script files for background runs; `cmd | grep` hid a crash (exit 0) -> `set -o pipefail` (2026-10-25).
+- Background runs: `python - <<EOF < /dev/null` spun in an empty REPL, `cmd | grep` hid a crash (exit 0), agy, opencode
+  and ffmpeg hung on stdin (20-25 min lost) -> script files, `< /dev/null`, ffmpeg `-nostdin`, `set -o pipefail`, child
+  timeouts; check each job at its expected end (2026-10-25).
 - `check.sh | tail && git commit` committed a failing run -> grep .check/*.log for FAIL first; never push before reading the
   final check line (2026-10-23).
-- Silent stdin hangs (agy, opencode, ffmpeg: 20-25 min lost) -> `< /dev/null`, ffmpeg `-nostdin`, child timeouts, progress;
-  check background jobs at their expected end (2026-10-25).
 
-## 4. Parallel builders and worktrees (Claude agents 2026-10-21; agy 2026-10-22)
-- A pull into C:/dev/game without an import: the game did not run (stale class cache) -> `bash tools/sync_main.sh` after every pull (2026-10-24).
-- One session owns git in C:\dev\game; others message it for the window. `cd` into a worktree moves the session's directory -> `git -C <path>`.
-- The SessionStart hook read the main checkout ($CLAUDE_PROJECT_DIR), not the worktree -> it uses $PWD (P1.8) (2026-10-27).
-  Still wrong 10-28: the app ran it in C:\dev\game with main's stale copy ("main is 12 behind" in a level worktree) ->
-  it reads cwd from the hook's stdin JSON and runs that checkout's own copy (test_session_start).
-  Same class for every hook (10-28): `python "$CLAUDE_PROJECT_DIR/<new hook>.py"` runs main's copy, and a missing file
-  exits 2, which BLOCKS a PreToolUse tool -> new hooks go through `bash .../tools/hooks/run.sh <name>` (test_hook_run).
-- A hook's settings.json matcher and its own regex are two lists: generate_3d slipped past both -> test_pre_spend checks
-  the matcher reaches every paid sample (2026-10-28).
-- tools/slots.sh counted 0 runs from a worktree (it looked for game-wt relative to the checkout) -> it finds C:/dev/game-wt from any worktree (P1.2, test_slots.py) (2026-10-27).
+## 4. Worktrees and hooks (Claude chats)
+- `cd` into another worktree moves the session's directory -> `git -C <path>` (2026-10-21).
+- A hook started as `python "$CLAUDE_PROJECT_DIR/<hook>.py"` runs main's stale copy, and a missing file exits 2, which
+  BLOCKS a PreToolUse tool -> new hooks go through `bash .../tools/hooks/run.sh <name>` (test_hook_run) (2026-10-28).
+- A crashed import (exit 139: low memory, e.g. a fresh worktree's first import at 1.8 GB free) leaves
+  `*.import<digits>.tmp` files in assets/, which test_asset_manifest reports as unlisted -> delete them, rerun
+  `tools/run_godot.sh --import` alone, then check.sh (2026-10-27/28).
 - Python on Windows writes CRLF -> `newline="\n"` (python is `python` here, not python3). A `\\n` in a Bash-tool heredoc/sed arrives as a real newline, and `\b` as a backspace (doc_check regex, 10-28): write such code with Write/Edit (2026-10-27).

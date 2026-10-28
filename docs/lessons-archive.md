@@ -1,4 +1,4 @@
-# Lessons archive (3D-only; moved 2026-10-25 when 3D was archived, tag 3d-archive)
+# Lessons archive (lookup only, never loaded; first section 3D-only, moved 2026-10-25 when 3D was archived, tag 3d-archive)
 
 - Lathe garments: torso pieces end at the waist over pelvis pieces raised 0.15 m; coats split at the pelvis (2026-10-22).
 - Rodin glb: centred feet, other bone axes, stale buffers, props baked into the body -> tools/rodin (LOD indices, glb
@@ -23,3 +23,13 @@
 - Inkling on balance-gear hit permission rejections, committed nothing -> empty `git diff base...branch`: rerun on agy (2026-10-23).
 - opencode "Free usage limit reached" (GLM, DeepSeek share it) then `opencode run` hangs -> read ~/.local/share/oc-cli/opencode/log, kill the CLI's PID only (OpenCode.exe is the app) (2026-10-23).
 - With an OpenRouter key opencode chose a PAID title model -> small_model pinned :free; laguna is missing from opencode's catalogue; Inkling :free works only inside agents (403 on the MCP) (2026-10-23).
+
+## Enforced by a test or a loaded rule (moved from docs/LESSONS.md 2026-10-28, D9 triage; the check is the rule now)
+- Builders sat idle (0 agy runs 10-27): nothing asked a queue row for a lane -> doc_check requires one (tools/test_doc_check.py test_queue_rows_need_a_lane) (2026-10-27).
+- Finished worktrees are often detached: a listing by branch missed them -> tools/status.sh reads `worktree list --porcelain` HEADs (tools/test_status.py) (2026-10-27).
+- tools/slots.sh counted 0 runs from a worktree -> it finds C:/dev/game-wt from any worktree (P1.2, tools/test_slots.py) (2026-10-27).
+- The SessionStart hook read the main checkout, then ran main's stale copy ("main is 12 behind" in a level worktree) -> it reads cwd from the hook's stdin JSON and runs that checkout's copy (tools/test_session_start.py) (2026-10-27/28).
+- A hook's settings.json matcher and its own regex are two lists: generate_3d slipped past both -> tools/test_pre_spend.py test_settings_matcher_reaches_every_paid_tool (2026-10-28).
+- content/ is game data: an unknown kind breaks boot and every test (a pipeline list nearly went there) -> tools/test_content_kinds.py, whose FAIL says keep non-game data out of content/ (2026-10-28).
+- A pull into C:/dev/game without an import left a stale class cache -> CLAUDE.md: `bash tools/sync_main.sh` after every pull (2026-10-24).
+- "One session owns git in C:\dev\game; others message it" -> superseded by D10: no chat runs git there, worktrees only (2026-10-27).
