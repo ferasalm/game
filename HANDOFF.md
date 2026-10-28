@@ -16,7 +16,8 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
 | 1 | Efficiency fixes 1-5 as hooks and checks + Feras's 10-28 items 6-10 (one lean rule, step 3 as a mode table, departments as labels, one routing table with the personas, hanging work): docs/briefs/efficiency-hooks.md | Ops | builder + chat (review) | cf; Opus high | 1-8 + 10 on main 10-28; 9: tools exist on claude/dazzling-shannon-8d05cc (test_personas red), oc run personas-tailor drafting (game-wt/personas-tailor.result): read it, Haiku pass, Opus per persona, merge, close row 1 (brief Status) | - |
-| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | queued | 1 |
+| 11 | Cross-review lane (A: the other model family reviews every PASS run before Claude), agy's wider lane (C), one two-builder race (B): docs/briefs/cross-review.md | Ops | builder + chat (review) | agy + cf; Opus high | queued | 1 |
+| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | queued | 11 |
 | 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | queued | 3 |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | queued: runs while agy builds row 4 | 3; free memory >= 3 GB |
 | 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | QA | Feras | - | queued | 4 |
@@ -36,14 +37,14 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 | More concept pictures + an empty plate per scene (no characters, HUD or rain) | 10-24 | inbox/ |
 | Icon art | 10-27 | row 7 |
 
-## This week (Claude Pro weekly limit: 72% used Wed 10-28, resets Sat 10-31 13:00 UTC = 09:00 New York: ~8% a day; on Feras's calendar)
+## This week (Claude Pro weekly limit: ~75% used Wed 10-28, resets Sat 10-31 13:00 UTC = 16:00 Feras's time (GMT+3); on his calendar)
 | Day | Plan |
 |---|---|
-| Wed 10-28 | Row 1 part 2 (items 4-9): Feras starts its card, answers its questions; Feras OKs docs/VISION.md. |
-| Thu 10-29 | Row 1 closes; row 3 M1 brief (Feras answers its feel questions); row 4 agy builds overnight. |
-| Fri 10-30 | Row 4 review + eye gate if the weekly limit allows (else Sat); Feras: concept pictures, plates, icons, Bilqis call. |
-| Sat 10-31 | Limit resets 09:00 New York: row 6 Roya bake; play day 1 (row 5) once row 4 passed the eye gate. |
-| Sun-Mon | Fix passes from his notes; rows 7-8; play day 2. |
+| Wed 10-28 | Row 1 closes (part 3: review + merge the tailored personas); Feras OKs docs/VISION.md. |
+| Thu 10-29 | Row 11: cross-review lane + agy's wider lane (agy, cf build; Opus calibrates and reviews); the race test. |
+| Fri 10-30 | Row 3 M1 brief (Feras answers its feel questions); row 4 agy builds overnight. Feras: art homework, Bilqis call. |
+| Sat 10-31 | Limit resets 16:00: row 4 review + eye gate (cross-reviewed); row 6 Roya bake. |
+| Sun-Mon | Play day 1 (row 5) on PC and phone; fix passes from his notes; rows 7-8. |
 
 ## Parked and context (resume only through a queue row)
 - On main: features/neon/neon_game.tscn (start flow -> Roya cold open -> prison roof -> turn-based map fight -> cable
