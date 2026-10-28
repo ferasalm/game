@@ -672,7 +672,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_build_pipeline.py`: Self-test for build_pipeline.sh, oc_task.sh, agy_task.sh and lib.sh on a toy repo: stub builder, stub memory, real git.
 - `tools/test_check_slot.py`: check_slot.sh: a full set of slots makes the next run wait; a released or stale slot lets it in.
 - `tools/test_content_kinds.py`: ContentDB loads every content/**/*.json and errors on a kind it does not know, which breaks boot and every Godot test
-- `tools/test_cross_review.py`: Self-test for the cross-review findings parser (row 12 A/B, 2026-10-28): python tools/test_cross_review.py.
 - `tools/test_doc_check.py`: Self-test for doc_check.py: warns (exit 0) at 75% of a cap; every queue row needs a lane and a WORKFLOW department;
 - `tools/test_eye_metrics.py`: Tests tools/eye_metrics.py on a temp project root. Run: python tools/test_eye_metrics.py
 - `tools/test_gate_checklist.py`: Tests for brief checklist verification in build_gate.
