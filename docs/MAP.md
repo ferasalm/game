@@ -665,6 +665,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/smoke_keeper.tscn`: scene
 - `tools/status.sh`: One look at the state of the work (Feras 2026-10-27): builders, branches not yet on main, worktrees with nothing left,
 - `tools/sync_main.sh`: Brings the main checkout up to origin/main and proves the game starts (2026-10-24: merges pulled without a re-import
+- `tools/sync_personas.py`: Copies the 10 Neon Glitch personas from their one source (.agents/skills/<name>/SKILL.md) to .claude/skills/<name>/SKILL.md
 - `tools/test_art_refs.py`: tools/art/refs.json: one approved reference per character (row 1 item 3, 10-28). Every Rodin model has an entry,
 - `tools/test_build_gate.py`: Self-test for build_gate.py: python tools/test_build_gate.py (temp git repos, plain asserts, exit 1 on failure).
 - `tools/test_build_pipeline.py`: Self-test for build_pipeline.sh, oc_task.sh, agy_task.sh and lib.sh on a toy repo: stub builder, stub memory, real git.
@@ -678,6 +679,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_kill_tree.py`: Tests kill_tree (tools/lib.sh): a tree with a native grandchild and a parent still forking during the kill dies whole.
 - `tools/test_map.py`: Self-test for map.py: only tracked files are mapped (an untracked file made CI fail "MAP.md current").
 - `tools/test_no_legacy_hero.py`: Guard: the hero's old code id stays gone (renamed to rydan, save v7, Feras 2026-10-27). Fails on the old id in the
+- `tools/test_personas.py`: The 10 personas are tailored to Neon Glitch (Feras 10-28: "not generic") and their copies never drift (row 1 item 9).
 - `tools/test_pre_spend.py`: Self-test for pre_spend.py: a paid tool is blocked without Feras's OK in a user message; Hyper3D gets a reminder.
 - `tools/test_res_graph.py`: Self-test for res_graph.py --check: python tools/test_res_graph.py (a fake project in a temp folder, exit 1 on failure).
 - `tools/test_review_gate.py`: Self-test for tools/hooks/review_gate.py + review_stamp.py (D5, D21): no game render reaches Feras unreviewed.
