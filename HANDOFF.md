@@ -32,19 +32,18 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 |---|---|---|
 | Play M1 on PC and phone, send notes | Fri 10-30 | row 5 |
 | OK on the vision | 10-27 | docs/VISION.md |
-| Keep pre_spend blocking ElevenLabs, vidIQ, Runware and Blender generate_3d without "spend ok"? (done in P4 before his yes); archive 5 finished sessions + remove nervous-boyd's worktree (stale edit saved) | 10-27 | row 1 |
 | Bilqis's portraits are now the Neon ones (overturn?) | 10-27 | archive-cleanup, decisions-log |
 | More concept pictures + an empty plate per scene (no characters, HUD or rain) | 10-24 | inbox/ |
 | Icon art | 10-27 | row 7 |
 
-## This week (Claude Pro weekly limit: 67% used Wed 10-28, resets Sat 10-31 13:00 UTC: spend ~10% a day)
+## This week (Claude Pro weekly limit: 72% used Wed 10-28, resets Sat 10-31 13:00 UTC = 09:00 New York: ~8% a day; on Feras's calendar)
 | Day | Plan |
 |---|---|
-| Wed 10-28 | Row 1: review + merge the cf run (oc/efficiency-hooks-build), items 3-10, hanging work. |
-| Thu 10-29 | Row 3 brief; row 4 agy builds overnight while row 6 bakes Roya. |
-| Fri 10-30 | Play day 1 (row 5) if row 4 passed the eye gate by noon; else it moves to Sat or Sun. |
-| Sat 10-31 | Limit resets 13:00 UTC; fix passes from his notes; row 7 starts. |
-| Sun-Mon | Row 7-8; play day 2 on the fix pass. |
+| Wed 10-28 | Row 1 part 2 (items 4-9): Feras starts its card, answers its questions; Feras OKs docs/VISION.md. |
+| Thu 10-29 | Row 1 closes; row 3 M1 brief (Feras answers its feel questions); row 4 agy builds overnight. |
+| Fri 10-30 | Row 4 review + eye gate if the weekly limit allows (else Sat); Feras: concept pictures, plates, icons, Bilqis call. |
+| Sat 10-31 | Limit resets 09:00 New York: row 6 Roya bake; play day 1 (row 5) once row 4 passed the eye gate. |
+| Sun-Mon | Fix passes from his notes; rows 7-8; play day 2. |
 
 ## Parked and context (resume only through a queue row)
 - On main: features/neon/neon_game.tscn (start flow -> Roya cold open -> prison roof -> turn-based map fight -> cable
