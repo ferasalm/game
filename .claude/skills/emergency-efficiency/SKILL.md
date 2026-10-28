@@ -7,9 +7,9 @@ Everything in `.claude/skills/builders/SKILL.md` applies; this only tightens it.
 
 ## Claude's budget
 - ONE director chat, no Claude side sessions. At most 2 Haiku subagents, only for jobs that read > ~20k tokens.
-  This overrides the normal hybrid (docs/WORKFLOW.md, Start here: dept-<id> subagents and Opus child chats, as many
+  This overrides the normal routing (docs/WORKFLOW.md, Start here step 3: Opus child chats and subagents, as many
   as needed; Feras 10-28) while the 5-hour window is past 50%: open no new child chats (let running ones finish their
-  unit and /handoff); dept-<id> subagents only when a job reads > ~20k tokens, until the window resets.
+  unit and /handoff); Haiku subagents only when a job reads > ~20k tokens, until the window resets.
 - Hand off at ~100k work tokens or 80% of the 5-hour window, whichever comes first (/handoff, fresh chat).
 - Claude reads: the first line of `../game-wt/<task>.result`, `bash tools/slots.sh`, greps of what it must decide,
   and the calibrated lens output (<= 15 lines). Never diffs, logs, test output or whole files.

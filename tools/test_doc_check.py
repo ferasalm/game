@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Self-test for doc_check.py: warns (exit 0) at 75% of a cap; every queue row needs a lane and a WORKFLOW department;
-a subagent-mode department needs its Opus .claude/agents/dept-<id>.md."""
+departments are labels: no dept-* agent, and every routing persona and reviewer file exists."""
 import os
 import shutil
 import subprocess
@@ -20,10 +20,11 @@ QUEUE = ["## Queue", "| # | Task | Dept | Lane | Who | Status | Blocked by |", "
          "| 1 | hooks | Ops | builder + chat (review) | cf; Opus high | next | - |",
          "| 2 | M1 brief | Gameplay | chat (plan) | Opus high | queued | 1 |",
          "| 3 | play M1 | QA | Feras | - | queued | 2 |", "## Waiting on Feras", "| What | Since |", "|---|---|", "| 9 | not a queue row |"]
-WORKFLOW = ["# WORKFLOW", "## Departments", "| Id | Mode | Agent | Does | Reviewer |", "|---|---|---|---|---|",
-            "| Ops | subagent + chat | dept-ops | process | review-cost |", "| Gameplay | subagent | dept-gameplay | code | review-code |",
-            "| QA | chat | - | eye | review-player |", "## Limits", "| Cap | Value |", "|---|---|", "| Art | not a department |"]
-AGENT = ["---", "name: dept-x", "model: opus", "---", "# body"]
+WORKFLOW = ["# WORKFLOW", "## Routing", "| Request | Dept | Skills | Persona | Lane | Reviewer |", "|---|---|---|---|---|---|",
+            "| a hook | Ops | builders | - | builder | review-cost |", "| combat code | Gameplay | builders | godot-gameplay-scripter | builder | review-code |",
+            "| eye gate | QA | players-eye-gate | - | chat (review) | review-player + review-feras |",
+            "## Limits", "| Cap | Value |", "|---|---|", "| Art | not a department |"]
+AGENTS = {"review-cost": ["# r"], "review-code": ["# r"], "review-player": ["# r"], "review-feras": ["# r"]}
 
 
 def run_check(handoff, claude_lines=61, workflow=WORKFLOW, agents=None):
@@ -34,8 +35,9 @@ def run_check(handoff, claude_lines=61, workflow=WORKFLOW, agents=None):
     write(root, "CLAUDE.md", ["@HANDOFF.md", "@docs/DECISIONS.md", "@docs/LESSONS.md"] + ["x"] * claude_lines)
     write(root, "HANDOFF.md", handoff)
     write(root, "docs/WORKFLOW.md", workflow)
-    for name, lines in (agents if agents is not None else {"dept-ops": AGENT, "dept-gameplay": AGENT}).items():
+    for name, lines in (agents if agents is not None else AGENTS).items():
         write(root, f".claude/agents/{name}.md", lines)
+    write(root, ".agents/skills/godot-gameplay-scripter/SKILL.md", ["# persona"])
     write(root, "docs/DECISIONS.md", ["x"] * 10)
     write(root, "docs/LESSONS.md", ["x"] * 10)
     return subprocess.run([sys.executable, root + "/tools/doc_check.py"], capture_output=True, text=True)
@@ -62,7 +64,7 @@ def test_queue_rows_need_a_lane():
 def test_queue_rows_need_a_department():
     r = run_check(QUEUE)
     assert r.returncode == 0, r.stdout + r.stderr
-    for bad in ("| 4 | x | Art | builder | agy | next | - |",  # only in a non-Departments table of WORKFLOW
+    for bad in ("| 4 | x | Art | builder | agy | next | - |",  # only in a non-Routing table of WORKFLOW
                 "| 4 | x | - | Feras | - | next | - |", "| 4 | x | art department | builder | agy | next | - |"):
         r = run_check(QUEUE[:6] + [bad] + QUEUE[6:])
         assert r.returncode == 1 and "names a department from WORKFLOW" in r.stdout, bad + "\n" + r.stdout
@@ -71,15 +73,12 @@ def test_queue_rows_need_a_department():
     assert r.returncode == 1 and "Dept, Lane and Who columns" in r.stdout, r.stdout  # an old 6-column table
 
 
-def test_subagent_departments_need_an_opus_agent_file():
-    ok = {"dept-ops": AGENT, "dept-gameplay": AGENT}
+def test_departments_are_labels_with_real_personas_and_reviewers():
     for agents, workflow, why in (
-            ({"dept-ops": AGENT}, WORKFLOW, "has .claude/agents/dept-gameplay.md"),  # the file is missing
-            ({**ok, "dept-ops": [l.replace("opus", "sonnet") for l in AGENT]}, WORKFLOW, "dept-ops runs on Opus"),
-            ({**ok, "dept-art": AGENT}, WORKFLOW, "dept-art.md is named in the WORKFLOW"),  # an orphan agent file
-            (ok, [l.replace("| QA | chat | - |", "| QA | chat | dept-qa |") for l in WORKFLOW], "names no agent (-)"),
-            (ok, [l.replace("subagent + chat", "subagent + session") for l in WORKFLOW], "mode is subagent, chat or father"),
-            (ok, [l.replace("| Id | Mode | Agent |", "| Id | Agent | Mode |") for l in WORKFLOW], "starting Id | Mode | Agent")):
+            ({**AGENTS, "dept-ops": ["---", "model: opus", "---"]}, WORKFLOW, "departments are labels (B)"),  # a dept-* agent
+            ({k: v for k, v in AGENTS.items() if k != "review-feras"}, WORKFLOW, "has .claude/agents/review-feras.md"),
+            (AGENTS, [l.replace("godot-gameplay-scripter", "unity-scripter") for l in WORKFLOW], "has .agents/skills/unity-scripter"),
+            (AGENTS, [l.replace("| Request | Dept |", "| Id | Mode |") for l in WORKFLOW], "'## Routing' table")):
         r = run_check(QUEUE, workflow=workflow, agents=agents)
         assert r.returncode == 1 and why in r.stdout, why + "\n" + r.stdout
 
@@ -88,5 +87,5 @@ if __name__ == "__main__":
     test_warns_at_75_percent_but_passes()
     test_queue_rows_need_a_lane()
     test_queue_rows_need_a_department()
-    test_subagent_departments_need_an_opus_agent_file()
+    test_departments_are_labels_with_real_personas_and_reviewers()
     print("test_doc_check: 4 tests passed")

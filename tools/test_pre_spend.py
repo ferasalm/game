@@ -29,6 +29,7 @@ def run(tool, path=""):
 def test_paid_tool_blocked_without_ok():
     r = run("mcp__openrouter__generate-image", transcript(user("make a picture")))
     assert r.returncode == 2 and "BLOCKED" in r.stderr, (r.returncode, r.stderr)
+    assert "Ripple" in r.stderr and "Pre-mortem" in r.stderr, r.stderr  # the trigger moment for both duties (row 1 item 5)
     assert run("mcp__runware__imageInference").returncode == 2
 
 

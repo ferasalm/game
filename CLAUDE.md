@@ -19,32 +19,38 @@ Next goal: a free 20-30 min demo, PC (Steam) first, Android kept alive. Check ev
 3. Before changing code in an area: grep docs/MAP.md, then docs/ARCHITECTURE.md for that area's section.
 4. Before content work (story, names, art, UI, combat design): read docs/CANON.md.
 
-## Advisor duty (D21)
-- Check every request and decision against VISION and our goals.
-- Warn, critique and offer a better alternative with a recommended default, design included.
-- Help shape the vision; ask batched multiple-choice questions when intent or edge cases are vague, before building.
-- Map the ripple (docs/design/systems-map.md): what else a change touches; run review-feras before he sees it.
+## Enforced by a tool (obey its message; don't restate it)
+- Hand-off at ~100k work tokens (D4): tools/hooks/token_handoff.py says "finish the unit" at 80k, "/handoff" at 100k.
+- Paid generation needs Feras's "spend ok": tools/pre_spend.py, which also asks for the Ripple and Pre-mortem lines.
+- A render reaches Feras only after review-player + review-feras: tools/hooks/review_gate.py (stamp: review_stamp.py).
+- Queue rows name a Dept from the WORKFLOW Routing table and a lane; departments are labels, no dept-* agents; note
+  caps: tools/doc_check.py. Briefs keep Ripple, Pre-mortem, Tests, Checklist: test_template.py; builder edits: build_gate.
+- Never-read paths (.godot/, *.import, *.uid): deny rules in .claude/settings.json. Checks: `bash tools/check.sh`
+  (read the FAIL lines); one file: `tools/run_godot.sh -s res://tests/runner.gd -- <name>`.
 
-## The Opus standard (D22; every model)
-- Root cause, not patch: state the cause chain in one line and add the test, check or rule that stops the class.
-- Automate before asking him: try Chrome, Flow, renders, playtest capture, scripts; only logins, spending, taste go to him.
-- Creative range: design questions get 2-3 distinct options, one bold, each with its trade-off and a recommendation.
-- Think before acting (ripple, edge cases, player's view, 3-line pre-mortem); leave one tool, check, skill or doc better.
+## Judgment duties (D21 advisor, D22 Opus standard; every model; each has its trigger)
+1. A request or decision arrives -> check it against VISION; warn, critique and offer a better default (design too);
+   vague intent or edge cases -> batched multiple-choice questions, recommended first, before building.
+2. Before a change, a brief or a paid call -> Ripple (docs/design/systems-map.md: what else it touches) and a 3-line
+   pre-mortem; root cause, not patch: a one-line cause chain plus the test, check or rule that stops the class.
+3. Before asking Feras anything -> automate first (Chrome, Flow, renders, playtest capture, scripts); only logins,
+   spending and taste go to him. Design questions get 2-3 distinct options, one bold, each with its trade-off and a pick.
+4. Before handing out a task -> the lean rule below; before anything reaches Feras -> review-feras.
+5. Before reading -> the reading rule: grep, then read small targeted excerpts yourself; a Haiku high reader only for a
+   read over ~20k tokens or across many files. Never read assets/ binaries (pictures only when judging art, small),
+   docs/research/gemini-blueprint-citations.md; gemini-blueprint.md one section at a time.
 
-## Lean process (Feras 10-28; how: docs/WORKFLOW.md)
+## Lean process (Feras 10-28; how: docs/WORKFLOW.md Start here)
 - Aims, always learning: think deeply and critically; finish fast; maximum quality; minimum cost; save Feras's time;
-  get more organized. Speed, never needless spend: each task goes to the cheapest worker that does it well.
-- Opus orchestrates and owns every output that reaches Feras as if it did the work: it reviews whatever another model made.
-- IMPORTANT: one task, model and effort per chat; hand off at ~100k work tokens (get_usage Messages) (D4): finish
-  the unit, /handoff, new chat. Check get_usage at the start and before a big step.
-- Grep, then read only the lines needed. Never read .godot/, *.import, *.uid, assets/ binaries (pictures only when
-  judging art, small), docs/research/gemini-blueprint-citations.md; gemini-blueprint.md one section at a time.
+  get more organized. Speed, never needless spend: each task goes to the cheapest worker that does it well (WORKFLOW
+  step 3: the father, builder, Haiku reader, review-* agent, Sonnet subagent + advisor, Opus child chat).
+- Opus orchestrates and owns every output that reaches Feras as if it did the work: it reviews whatever another model
+  made, tiered (gates, a Haiku pass on big diffs, then Opus on the list and the risky hunks).
+- IMPORTANT: one task, model and effort per chat. Check get_usage at the start and before a big step.
 - Builders write (D1: <= 2 Godot runs on agy + DeepSeek, 1 free text run); Claude plans, briefs (TEMPLATE),
-  reviews and merges. Where Opus is overkill: Sonnet or Haiku with `/advisor opus`; reading goes to Haiku high.
-- Edit, don't rewrite; no recaps; a few lines to the owner; side sessions report only at milestones.
-- Departments are labels (B, 10-28): a row's Dept names the skills, persona (.agents/skills) and reviewer to load; long,
-  taste, MCP or builder-waiting work -> an Opus child chat with a department brief; no dept-* subagents.
-- Checks: `bash tools/check.sh` (read the FAIL lines); one file: `tools/run_godot.sh -s res://tests/runner.gd -- <name>`.
+  reviews and merges. Every brief names its persona (.agents/skills); our rules outrank persona text.
+- Edit, don't rewrite; no recaps; a few lines to the owner; side sessions report only at milestones; leave one tool,
+  check, skill or doc better.
 - Code rules: .claude/rules/code.md (loads when code is touched). Every rule and fixed bug gets a test; a check
   counts only when its output was read. Python is `python` here (not python3).
 
