@@ -56,6 +56,7 @@ now=$(date +%s)
 count_agy=0
 count_cf=0
 count_oc=0
+count_godot=0
 free="$(free_mb)"
 
 for res in "$dir"/*.result; do
@@ -76,6 +77,9 @@ for res in "$dir"/*.result; do
   if [ -z "$builder" ]; then  # results from before the builder line: guess from the branch prefix
     case "$(git -C "$dir/$task" rev-parse --abbrev-ref HEAD 2>/dev/null)" in gemini/*) builder=agy ;; *) builder=oc ;; esac
   fi
+
+  kind="$(sed -n 's/^kind //p' "$res" | head -n 1)"
+  [ -n "$kind" ] || kind=godot
 
   pid="$(sed -n 's/^pid //p' "$res" | head -n 1)"
   if [ -n "$pid" ] && ! kill -0 "$pid" 2> /dev/null; then  # the pipeline died without finishing its .result
@@ -98,24 +102,38 @@ for res in "$dir"/*.result; do
   else
     echo "$builder $task $step_val since $time_val"
     case "$builder" in
-      agy) count_agy=$((count_agy + 1)) ;;
-      cf)  count_cf=$((count_cf + 1)) ;;
+      agy) count_agy=$((count_agy + 1)); [ "$kind" = "godot" ] && count_godot=$((count_godot + 1)) ;;
+      cf)  count_cf=$((count_cf + 1)); [ "$kind" = "godot" ] && count_godot=$((count_godot + 1)) ;;
       oc)  count_oc=$((count_oc + 1)) ;;
     esac
   fi
 done
 
-count_godot=$((count_agy + count_cf))
 echo "agy $count_agy/$CAP_AGY  cf $count_cf/$CAP_CF  oc $count_oc/$CAP_OC"
 echo "godot $count_godot/$CAP_GODOT  free ${free} MB (floor $MIN_FREE_MB)"
 
-if [ "${1:-}" = "can-start" ]; then  # slots.sh can-start <agy|cf|oc>: exit 0 only when a run of that kind may start
-  case "${2:-}" in
-    oc) [ $count_oc -lt $CAP_OC ] || { echo "REFUSED: text run slot busy"; exit 1; } ;;
-    agy|cf) [ $count_godot -lt $CAP_GODOT ] || { echo "REFUSED: godot $count_godot/$CAP_GODOT"; exit 1; } ;;
-    *) echo "can-start: builder agy|cf|oc"; exit 2 ;;
+if [ "${1:-}" = "can-start" ]; then  # slots.sh can-start <agy|cf|oc> [godot|py]: exit 0 only when a run of that kind may start
+  builder="${2:-}"
+  run_kind="${3:-godot}"
+  case "$builder" in
+    oc)
+      [ $count_oc -lt $CAP_OC ] || { echo "REFUSED: text run slot busy"; exit 1; }
+      exit 0
+      ;;
+    agy)
+      [ $count_agy -lt $CAP_AGY ] || { echo "REFUSED: agy $count_agy/$CAP_AGY"; exit 1; }
+      ;;
+    cf)
+      [ $count_cf -lt $CAP_CF ] || { echo "REFUSED: cf $count_cf/$CAP_CF"; exit 1; }
+      ;;
+    *)
+      echo "can-start: builder agy|cf|oc"; exit 2
+      ;;
   esac
-  [ "$2" = oc ] || [ "$free" -ge "$MIN_FREE_MB" ] || { echo "REFUSED: memory ${free} MB free < $MIN_FREE_MB"; exit 1; }
+  if [ "$run_kind" = "godot" ]; then
+    [ $count_godot -lt $CAP_GODOT ] || { echo "REFUSED: godot $count_godot/$CAP_GODOT"; exit 1; }
+    [ "$free" -ge "$MIN_FREE_MB" ] || { echo "REFUSED: memory ${free} MB free < $MIN_FREE_MB"; exit 1; }
+  fi
   exit 0
 fi
 
