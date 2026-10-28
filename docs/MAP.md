@@ -71,6 +71,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `content/art/clips.json`: content: clip x15
 - `content/art/models.json`: content: model x2
 - `content/art/palette.json`: content: palette x1
+- `content/art/refs.json`: content: art_refs x3
 - `content/art/sprites.json`: content: sprite x5
 - `content/art/visual.json`: content: visual_rules x1
 - `content/audio/music.json`: content: music x10
@@ -664,6 +665,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/smoke_keeper.tscn`: scene
 - `tools/status.sh`: One look at the state of the work (Feras 2026-10-27): builders, branches not yet on main, worktrees with nothing left,
 - `tools/sync_main.sh`: Brings the main checkout up to origin/main and proves the game starts (2026-10-24: merges pulled without a re-import
+- `tools/test_art_refs.py`: content/art/refs.json: one approved reference per character (row 1 item 3, 10-28). Every Rodin model has an entry,
 - `tools/test_build_gate.py`: Self-test for build_gate.py: python tools/test_build_gate.py (temp git repos, plain asserts, exit 1 on failure).
 - `tools/test_build_pipeline.py`: Self-test for build_pipeline.sh, oc_task.sh, agy_task.sh and lib.sh on a toy repo: stub builder, stub memory, real git.
 - `tools/test_check_slot.py`: check_slot.sh: a full set of slots makes the next run wait; a released or stale slot lets it in.

@@ -51,5 +51,6 @@ plain version of the side colours); fingers thinner than ~3 picture px take the 
 
 ## Style (CANON 2026-10-27)
 Every character reference: Flow picture in the unified Basilisk anime + sumi-e ink style, full colour, A-pose, plain grey
-background; Feras OKs the picture before any credit is spent. Roya = inbox/flow/roya_style_v3_2k.jpg; Rydan = free recolour
-from inbox/flow/rydan_style_v2_2k.jpg (above); Bilqis v2 waits for her re-model batch.
+background; Feras OKs the picture before any credit is spent. The reference for each character is its content/art/refs.json
+entry and nothing else (a new approved picture: update that entry first, with its CANON line). Rydan = free recolour from
+his entry (above); Bilqis's model waits for her re-model batch.

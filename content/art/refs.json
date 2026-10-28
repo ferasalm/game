@@ -1,0 +1,13 @@
+{
+  "kind": "art_refs",
+  "note": "The one approved reference picture per character (3d-model and flow-media take references only from here). inbox/ is git-ignored: tools/test_art_refs.py checks the schema and the CANON line, not the files.",
+  "items": [
+    {"id": "roya", "ref": "inbox/flow/roya_style_v3_2k.jpg", "approved": "2026-10-27",
+     "canon": "Roya = the owner's \"after the tragedy\" picture"},
+    {"id": "rydan", "ref": "inbox/flow/rydan_style_v2_2k.jpg", "approved": "2026-10-27",
+     "canon": "Rydan and Bilqis re-coloured to match"},
+    {"id": "bilqis", "ref": "inbox/flow/bilqis_style_v2_2k.jpg", "approved": "2026-10-27",
+     "concept": "inbox/Neon Glitch concept art/Bilqis.jpg",
+     "canon": "Bilqis ref = concept art Bilqis.jpg"}
+  ]
+}
