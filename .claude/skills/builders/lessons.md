@@ -29,3 +29,7 @@
   folder, main() 56 lines, null usage fields; 2 not real, 1 cosmetic). Missed c and d, which were bugs in the brief
   (the code followed it), and e, which lives in the wiring outside the diff. Tune: question the brief (legit inputs,
   every caller shape) and the wiring (fail open or closed when the file is missing).
+  Run 2 (tuned prompt, ~8 min): 3/5 found (b; c inbox documents; d files as a list of strings), a dropped, e never
+  found; 12 findings, ~8 real (by-design flags: the Flow folder exemption, fail-open on errors). Verdict: agy is ON as
+  the cross-reviewer of DeepSeek-built runs; recall varies run to run (union 4/5), so Opus still reads the risky hunks.
+  DeepSeek reviewing agy-built runs is uncalibrated: provisional, Opus reads the whole diff until it is calibrated.
