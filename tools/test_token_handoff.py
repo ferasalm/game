@@ -65,6 +65,7 @@ def test_finish_the_unit_at_200k_once():
     write(s.path, [user_line(), usage_line(90_000), usage_line(205_000)])
     msg = s.call()
     assert "finish the unit" in msg and "~205k" in msg and "get_usage" in msg, msg
+    assert "/handoff comes at 250k" in msg, "200k is not a stop: a chat read 'then /handoff' as hand off now (10-28)"
     write(s.path, [usage_line(240_000)], "a")
     assert s.call() == "", "the 200k warning fires once"
 

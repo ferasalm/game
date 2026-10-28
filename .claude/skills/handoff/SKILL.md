@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: End-of-session wrap-up for the game repo. Runs the checks, logs the owner's decisions, curates LESSONS, adds a USAGE row, updates its rows of the HANDOFF.md queue, commits and pushes. Use when the user types /handoff, says "wrap up", or the chat passes ~100k work tokens (get_usage Messages).
+description: End-of-session wrap-up for the game repo. Runs the checks, logs the owner's decisions, curates LESSONS, adds a USAGE row, updates its rows of the HANDOFF.md queue, commits and pushes. Use when the user types /handoff, says "wrap up", or the chat passes ~250k context at a unit boundary (get_usage; the 200k hook line only means finish the unit).
 ---
 
 # Handoff (game)

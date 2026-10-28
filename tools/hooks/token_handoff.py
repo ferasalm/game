@@ -128,7 +128,7 @@ def message(ctx, warned):
     if ctx < HANDOFF:
         if warned:
             return None, warned
-        return f"Context ~{k}k (hand-off rule): finish the unit, then /handoff.{TAIL}", FINISH
+        return f"Context ~{k}k (hand-off rule): finish the unit you are in, then keep working; /handoff comes at 250k.{TAIL}", FINISH
     level = HANDOFF + int((ctx - HANDOFF) // REPEAT) * REPEAT
     if level <= warned:
         return None, warned
