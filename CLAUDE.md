@@ -22,7 +22,7 @@ Next goal: a free 20-30 min demo, PC (Steam) first, Android kept alive. Check ev
 ## Enforced by a tool (obey its message unless get_usage contradicts it; then log the mismatch in the USAGE row)
 - Hand-off at a unit boundary past ~250k context (get_usage; review-heavy work to ~300k) or ~85% of the 5-hour window:
   tools/hooks/token_handoff.py says "finish the unit" at 200k, "/handoff" at 250k.
-- Paid generation needs Feras's "spend ok": tools/pre_spend.py, which also asks for the Ripple and Pre-mortem lines.
+- Paid generation needs Feras's "spend ok": tools/hooks/pre_spend.py, which also asks for the Ripple and Pre-mortem lines.
 - A render reaches Feras only after review-player + review-feras: tools/hooks/review_gate.py (stamp: review_stamp.py).
 - Queue rows name a Dept from the WORKFLOW Routing table and a lane; departments are labels, no dept-* agents; note
   caps: tools/doc_check.py. Briefs keep Ripple, Pre-mortem, Tests, Checklist: test_template.py; builder edits: build_gate.

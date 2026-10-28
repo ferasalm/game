@@ -110,7 +110,7 @@ reviewer with no .claude/agents/<name>.md, and any .claude/agents/dept-*.md (ret
 | Claude's handoff | a unit boundary past ~250k context (review-heavy ~300k) or ~85% of the 5-hour window | tools/hooks/token_handoff.py; review-cost |
 | Always-loaded notes | 27 KB each; lines: CLAUDE.md 80, HANDOFF 60, DECISIONS 70, LESSONS 100 (warns at 75%) | tools/doc_check.py |
 | Godot code | <= 200 lines a file, <= 40 lines a function | tools/lint_gd.py |
-| Paid image APIs | <= $1 each, only with Feras's OK | tools/pre_spend.py (see Routes) |
+| Paid image APIs | <= $1 each, only with Feras's OK | tools/hooks/pre_spend.py (see Routes) |
 
 ## Routes (free first)
 | Need | Free route first | Paid fallback and cap |
@@ -122,7 +122,7 @@ reviewer with no .claude/agents/<name>.md, and any .claude/agents/dept-*.md (ret
 | Sound and fonts | CC0 SFX (Freesound CC0, Kenney); CC0 textures and fonts (OFL) | none; Feras's OK before each download, plus a manifest entry |
 | Research | see Research protocol | Cloudflare DeepSeek, up to $10 over its free neurons (Feras, 2026-10-23) |
 
-The PreToolUse hook tools/pre_spend.py blocks paid generation tools unless one of Feras's last 8 messages says "spend ok"
+The PreToolUse hook tools/hooks/pre_spend.py blocks paid generation tools unless one of Feras's last 8 messages says "spend ok"
 (wired in .claude/settings.json PreToolUse, P3.9; Hyper3D calls get a credit-cost reminder). Before Rodin access ends, prove the free 3D route on one character.
 
 ## Research protocol (audit plan D18)

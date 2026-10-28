@@ -56,7 +56,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"$CLAUDE_PROJECT_DIR/tools/pre_spend.py\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/tools/hooks/run.sh\" pre_spend --required"
           }
         ]
       },

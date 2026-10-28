@@ -6,7 +6,7 @@ import subprocess
 import sys
 import tempfile
 
-HOOK = os.path.join(os.path.dirname(os.path.abspath(__file__)), "pre_spend.py")
+HOOK = os.path.join(os.path.dirname(os.path.abspath(__file__)), "hooks", "pre_spend.py")
 
 
 def transcript(*entries):
@@ -81,11 +81,11 @@ def test_rodin_connector_reminds():
 
 def test_settings_matcher_reaches_every_paid_tool():
     """The hook only runs for tools the settings.json matcher names: the two lists drift (generate_3d, 10-28)."""
-    root = os.path.dirname(os.path.dirname(HOOK))
+    root = os.path.dirname(os.path.dirname(os.path.dirname(HOOK)))
     with open(os.path.join(root, ".claude", "settings.json"), encoding="utf-8") as f:
         pre = json.load(f)["hooks"]["PreToolUse"]
-    matchers = [m["matcher"] for m in pre if any("pre_spend.py" in h["command"] for h in m["hooks"])]
-    assert matchers, "pre_spend.py is not wired in .claude/settings.json"
+    matchers = [m["matcher"] for m in pre if any("run.sh\" pre_spend --required" in h["command"] for h in m["hooks"])]
+    assert matchers, "pre_spend is not wired through run.sh --required in .claude/settings.json"
     import re
     for tool in PAID_SAMPLES + REMIND_SAMPLES:
         assert any(re.search(m, tool) for m in matchers), f"settings.json matcher misses {tool}"

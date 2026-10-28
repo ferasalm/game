@@ -27,7 +27,7 @@ UI): docs/CANON.md, read before any content work. D1-D22 = the process audit pla
 ### Tools and builders
 - 2026-10-28 | Cross-review (row 12): the other model family reviews every PASS run before Claude's gate (agy <-> DeepSeek), after a calibration on known bugs; agy's lane widens to Python tools, docs and reviews; one two-builder race as an experiment | Feras
 - 2026-10-27 | Builders (D1): Godot code on agy + Cloudflare DeepSeek, <= 2 Godot runs machine-wide under a free-memory floor; text work + calibrated review lenses on opencode/OpenRouter :free (+1 run, no Godot); Claude's own reads: the cheapest calibrated reader (Haiku high today); one builders skill (D2); research by everyone except Claude (D18) | Feras
-- 2026-10-27 | Paid tools: free route first (WORKFLOW routes table); paid image APIs <= $1 with Feras's OK; a PreToolUse hook (tools/pre_spend.py) blocks paid generation without his "spend ok"; one docs/SPEND.md line per paid call | Feras
+- 2026-10-27 | Paid tools: free route first (WORKFLOW routes table); paid image APIs <= $1 with Feras's OK; a PreToolUse hook (tools/hooks/pre_spend.py) blocks paid generation without his "spend ok"; one docs/SPEND.md line per paid call | Feras
 - 2026-10-27 | Hyper3D Rodin: ~50 credits, ~3 weeks left: use early, name the credit cost first, prove a free route (Blender stays) before access ends (D14); Flow = Nano Banana images, Omni video | Feras
 - 2026-10-26 | Builder briefs: tests and assets Do NOT edit by default with a "May edit" list (D6); the gate rejects removed checks; strong player-visible tests | Feras
 - 2026-10-23 | Builds: build_pipeline.sh + build_gate.py; Claude reads PASS runs only; the chat that started the run (the father or its child chat) merges it after Opus review (10-28) | Feras

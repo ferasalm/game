@@ -18,6 +18,21 @@ def test_missing_script_passes():
     assert r.returncode == 0 and r.stdout == "", (r.returncode, r.stdout, r.stderr)
 
 
+
+def test_required_missing_script_blocks():
+    r = subprocess.run(["bash", RUN, "no_such_hook", "--required"], input="{}", capture_output=True, text=True)
+    assert r.returncode == 2 and "BLOCKED" in r.stderr, (r.returncode, r.stderr)
+
+
+def test_every_hook_goes_through_run_sh():
+    """A raw `python "$CLAUDE_PROJECT_DIR/..."` hook runs main's stale copy (LESSONS 4); pre_spend did until 10-28."""
+    root = os.path.dirname(os.path.dirname(os.path.dirname(RUN)))
+    with open(os.path.join(root, ".claude", "settings.json"), encoding="utf-8") as f:
+        hooks = json.load(f)["hooks"]
+    py = [h["command"] for ms in hooks.values() for m in ms for h in m["hooks"] if "python" in h["command"]]
+    assert not py, f"hooks started with python, not tools/hooks/run.sh: {py}"
+
+
 def test_session_copy_wins_and_exit_code_carries():
     repo = tempfile.mkdtemp()
     subprocess.run(["git", "init", "-q", repo], check=True)

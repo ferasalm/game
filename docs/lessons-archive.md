@@ -33,3 +33,4 @@
 - content/ is game data: an unknown kind breaks boot and every test (a pipeline list nearly went there) -> tools/test_content_kinds.py, whose FAIL says keep non-game data out of content/ (2026-10-28).
 - A pull into C:/dev/game without an import left a stale class cache -> CLAUDE.md: `bash tools/sync_main.sh` after every pull (2026-10-24).
 - "One session owns git in C:\dev\game; others message it" -> superseded by D10: no chat runs git there, worktrees only (2026-10-27).
+- A hook started as `python "$CLAUDE_PROJECT_DIR/<hook>.py"` ran main's stale copy (pre_spend did until 10-28) -> every hook goes through tools/hooks/run.sh; a money gate passes --required so a missing script blocks (tools/test_hook_run.py test_every_hook_goes_through_run_sh, test_required_missing_script_blocks) (2026-10-28).

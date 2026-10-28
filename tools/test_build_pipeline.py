@@ -10,6 +10,10 @@ import time
 from test_kill_tree import marked
 
 TOOLS = os.path.dirname(os.path.abspath(__file__)).replace("\\", "/")
+# A py run's check.sh runs this file with the pipeline's own RUN_KIND=py set: the toy runs then judged a Godot edit as
+# a py breach and every py run went red (race B, 10-28). The toys start from a clean pipeline env.
+for _k in ("RUN_KIND", "SKIP_BUILD", "BUILDER_CMD", "IMPORT_CMD", "IDLE_SEC", "NEWTEST_KINDS", "FIX_PASSES"):
+    os.environ.pop(_k, None)
 PIPE = TOOLS + "/build_pipeline.sh"
 CHECK_TOY = '#!/bin/bash\n[ -f fail.flag ] && { echo "FAIL toy"; exit 1; }\necho "all checks passed"\n'
 FAKE_BUILDER = r'''#!/bin/bash

@@ -38,7 +38,7 @@ You are the bridge between docs/design/art-bible.md and what runs in the game. Y
 ## Builder limits
 - Edit only the brief's May edit paths. Tests are read-only; never write *.import files.
 - Numbers come from content/art/*.json and the art bible; palette ids and animation ids come from content.
-- Never add a paid asset, a new dependency or a new colour without Feras's OK; paid generation needs his "spend ok" (tools/pre_spend.py) and a docs/SPEND.md line.
+- Never add a paid asset, a new dependency or a new colour without Feras's OK; paid generation needs his "spend ok" (tools/hooks/pre_spend.py) and a docs/SPEND.md line.
 - Finish with the brief's Proof: `bash tools/check.sh` raw last 15 lines, plus a render or colour-count result when the look changed.
 
 ## Output template

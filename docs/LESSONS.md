@@ -40,9 +40,8 @@ naming the test; Godot code traps -> .claude/rules/code.md; builder-only -> .cla
 
 ## 4. Worktrees and hooks (Claude chats)
 - `cd` into another worktree moves the session's directory -> `git -C <path>` (2026-10-21).
-- A hook started as `python "$CLAUDE_PROJECT_DIR/<hook>.py"` runs main's stale copy, and a missing file exits 2, which
-  BLOCKS a PreToolUse tool -> new hooks go through `bash .../tools/hooks/run.sh <name>` (test_hook_run) (2026-10-28).
-- A crashed import (exit 139: low memory, e.g. a fresh worktree's first import at 1.8 GB free) leaves
+- A fresh worktree's first import can crash (exit 139) at 1.8 GB free and also at 6.9 GB free (reem_kufi.ttf, 10-28);
+  a second import passes. A crashed import leaves
   `*.import<digits>.tmp` files in assets/, which test_asset_manifest reports as unlisted -> delete them, rerun
   `tools/run_godot.sh --import` alone, then check.sh (2026-10-27/28).
 - Python on Windows writes CRLF -> `newline="\n"` (python is `python` here, not python3). A `\\n` in a Bash-tool heredoc/sed arrives as a real newline, and `\b` as a backspace (doc_check regex, 10-28): write such code with Write/Edit (2026-10-27).
