@@ -1,4 +1,12 @@
 # Chat brief: efficiency fixes 1-5 as hooks and checks (Feras's number-one priority, 2026-10-27)
+Status 10-28 (part 2, dazzling-shannon): DONE 4-8 + item 6's stamp step (aaabb88, 30288f0 on main): CLAUDE.md
+"Enforced by a tool" + 5 judgment duties with triggers; WORKFLOW step 3 worker table, one Routing table, tiered review,
+Sonnet subagent + advisor (probed: it has `advisor`, ~67k start); dept-* agents archived; doc_check checks personas and
+reviewers. LEFT: 9. Branch claude/dazzling-shannon-8d05cc holds tools/sync_personas.py + test_personas.py (red) and
+docs/briefs/personas-tailor.md; oc run personas-tailor launched from that branch. Next chat: read the .result first line;
+PASS -> Haiku diff pass vs the brief, Opus reads each persona (canon quoted, stack right, no generic craft), fix or
+rerun, merge the run into the session branch, run sync_personas.py, set the UI reviewer in WORKFLOW Routing back to
+ui-finish-gate-reviewer + review-player, check.sh, merge to main, close row 1. FAIL/NOWORK -> fix the brief, rerun.
 Status 10-28 (part 1, determined-hertz): DONE 1, 2 (cf run + 5 review fixes; wired via tools/hooks/run.sh), 3, 10
 (generate_3d guard; pre_spend question + archive/removal asks in Waiting on Feras; status.sh's old branches: oc/interact-
 focus, oc/souq-place, claude/recursing-mirzakhani-6cd00a, worktree-agent-a7a39e37..., -a4cf40c0...: kept, D7). NEXT: 4, 5,
