@@ -45,7 +45,8 @@ def main():
         if any(OK.search(t) for t in user_texts(data.get("transcript_path"))[-RECENT:]):
             return 0
         print(f"BLOCKED {tool}: a paid generation tool. Free routes first (docs/WORKFLOW.md routes table). Name the job and "
-              "its cost, then ask Feras; he answers 'spend ok' in chat.", file=sys.stderr)
+              "its cost, its Ripple (what else it touches) and a 3-line Pre-mortem (how it wastes the money), then ask Feras; "
+              "he answers 'spend ok' in chat.", file=sys.stderr)
         return 2
     if HYPER.search(tool):
         msg = "Hyper3D job: name the credit cost to Feras before this call, and use the cheapest settings that do the job."

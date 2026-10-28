@@ -19,14 +19,17 @@ HANDOFF, DECISIONS and LESSONS load at every session start, so every line costs 
    task, share of the 5-hour window used if the owner told you (`/usage`), result.
 5. **HANDOFF.md**, max 60 lines: one `## Queue` table (# | Task | Dept | Lane | Who | Status | Blocked by), then Waiting on
    Feras, This week, Parked and context (Feras 2026-10-27: no per-chat tracks). A /handoff updates its own rows,
-   removes its done rows, adds rows for work it found (Dept = an Id from the docs/WORKFLOW.md Departments table; lane
+   removes its done rows, adds rows for work it found (Dept = a label from the docs/WORKFLOW.md Routing table; lane
    builder with agy/cf/oc by default; `chat (taste|MCP|review|plan)` with Opus and its effort; `Feras`) and the Last
    updated line; tools/doc_check.py checks every row. Then run
    `bash tools/status.sh` and archive the side sessions it started whose work is on main.
+   Lean check (Feras 10-28): every non-Opus output merged this session was reviewed tiered (WORKFLOW Protocols:
+   Review: gates, a Haiku pass on big diffs, Opus on the list and risky hunks); anything sent to Feras carried a
+   review stamp (tools/hooks/review_stamp.py). Name any task an Opus chat did that a cheaper worker could have.
 6. **Commit and push.** `tools/check.sh` again, commit (one message saying what changed), `git push -u origin
    <branch>`. Merge into `main` only if the owner gave his standing OK (DECISIONS); then `git push origin HEAD:main`.
    After a push to main, `gh run list --branch main --limit 1`: a red CI run is fixed before the chat ends
    (2026-10-27: main stayed red for 5 pushes because a Windows-only tool test ran on the Linux runner).
 7. **Report.** A department child chat (docs/WORKFLOW.md, Start here) ends with a report of 15 lines or fewer for the
-   father (dept-<id> subagents run no /handoff: the father writes their rows): commits on main, what failed, questions for Feras. The father (or a chat Feras drives) tells the owner in a
+   father (a subagent runs no /handoff: the father writes its row): commits on main, what failed, questions for Feras. The father (or a chat Feras drives) tells the owner in a
    few lines: what was done, where it is (branch, main or not), the top queue row with its Dept, lane and who.

@@ -9,6 +9,10 @@ effort: low
 # review-code: lens agent (calibrated 2026-10-27, docs/research/calibration-2026-10.md)
 Free route: the same brief goes to nvidia/nemotron-3-ultra-550b-a55b:free (public content only, 50 requests a day).
 
+## Where it sits (the review tiers, docs/WORKFLOW.md Protocols: Review)
+Tier 2-3: after the gates (check.sh, build_gate) passed, on a big diff or when the Haiku pass was not clean. Opus reads
+this output and the risky hunks, never the whole diff again.
+
 ## Inputs (read exactly these, nothing else)
 - The diff (git diff base...HEAD), the brief (its Goal, Do NOT edit, May edit, Ripple), CLAUDE.md code rules.
 - Files the diff touches, only the changed functions.

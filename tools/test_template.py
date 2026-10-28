@@ -18,12 +18,13 @@ def section(heading):
 
 
 def test_template_has_the_sections_the_gate_and_reviewers_read():
-    for heading in ("Why", "Do NOT edit", "May edit", "Ripple", "Tests", "Checklist", "Proof"):
+    for heading in ("Why", "Do NOT edit", "May edit", "Ripple", "Pre-mortem", "Tests", "Checklist", "Proof"):
         assert f"\n## {heading}\n" in TEMPLATE, heading
 
 
 def test_template_names_pillar_timebox_first_commit_and_player_visible_tests():
-    for phrase in ("Pillar served (docs/VISION.md)", "Timebox:", "First commit within 15 min", "player-visible test"):
+    for phrase in ("Pillar served (docs/VISION.md)", "Timebox:", "First commit within 15 min", "player-visible test",
+                   "Routing table", "our rules outrank"):
         assert phrase in TEMPLATE, phrase
 
 
