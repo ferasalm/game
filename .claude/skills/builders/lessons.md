@@ -19,3 +19,8 @@
 - Retiring code: an import-graph script (res://, uid://, class_name, ContentDB kinds) gave each run an exact delete list; a brief that allows cross-run deletions must not list those paths as Do NOT edit (2026-10-26).
 - A nohup builder is not in the app's task list: watch its .result (2026-10-27).
 - msys exec of an msys program = a new Windows process whose parent (the fork) exits: Windows-tree kills miss it -> freeze the tree before killing and join msys `ps` (PID, PPID, WINPID) to the Windows snapshot (tools/kill_tree.py) (2026-10-27).
+- Cross-review calibration (row 12, 2026-10-28; D11): agy reviews cf's hook diff `git diff 152f962 783eefd` with the
+  brief as cf saw it (152f962), one-shot from an empty folder (no repo, so no `git log` to 5008b5d), packet =
+  tools/cross_review_prompt.md + brief + diff + code-reviewer skill + code rules. Scoring, fixed before reading: found =
+  the right file and the mechanism of one key bug (a-e, docs/briefs/cross-review.md); real = Opus confirms it against
+  783eefd. On: >= 3/5 found and most findings real; else tune the prompt once and rerun.

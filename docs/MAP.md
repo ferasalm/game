@@ -622,6 +622,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/cf_mcp/test_server.py`: Tests for tools/cf_mcp/server.py over its real stdio protocol, in dry mode (no Cloudflare call, no credentials).
 - `tools/check.sh`: One command for every check (docs, lint, Godot import, tests). One ok/FAIL line per step; logs in .check/.
 - `tools/check_slot.sh`: Test-run slots shared by every worktree on this machine: at most CHECK_SLOTS Godot test suites at once. Four at once
+- `tools/cross_review_prompt.md`
 - `tools/doc_check.py`: Keeps the always-loaded notes small and well-formed (docs/WORKFLOW.md); exit 1 on any failure.
 - `tools/eye_gate.sh`: Player's-eye gate step 1: records a render wrapper non-headless and makes what a reader can look at.
 - `tools/eye_metrics.py`: Player's-eye metrics for Neon clips and UI fonts (report only; always exits 0).
@@ -681,6 +682,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_no_legacy_hero.py`: Guard: the hero's old code id stays gone (renamed to rydan, save v7, Feras 2026-10-27). Fails on the old id in the
 - `tools/test_personas.py`: The 10 personas are tailored to Neon Glitch (Feras 10-28: "not generic") and their copies never drift (row 1 item 9).
 - `tools/test_pre_spend.py`: Self-test for pre_spend.py: a paid tool is blocked without Feras's OK in a user message; Hyper3D gets a reminder.
+- `tools/test_py_runs.py`: Self-test for non-Godot builder runs (row 12 C, 2026-10-28): python tools/test_py_runs.py.
 - `tools/test_res_graph.py`: Self-test for res_graph.py --check: python tools/test_res_graph.py (a fake project in a temp folder, exit 1 on failure).
 - `tools/test_review_gate.py`: Self-test for tools/hooks/review_gate.py + review_stamp.py (D5, D21): no game render reaches Feras unreviewed.
 - `tools/test_session_start.py`: Self-test for .claude/hooks/session-start.sh (reports the session's own worktree) and the .gitignore .env rule.
