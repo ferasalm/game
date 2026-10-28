@@ -46,3 +46,6 @@ naming the test; Godot code traps -> .claude/rules/code.md; builder-only -> .cla
   `*.import<digits>.tmp` files in assets/, which test_asset_manifest reports as unlisted -> delete them, rerun
   `tools/run_godot.sh --import` alone, then check.sh (2026-10-27/28).
 - Python on Windows writes CRLF -> `newline="\n"` (python is `python` here, not python3). A `\\n` in a Bash-tool heredoc/sed arrives as a real newline, and `\b` as a backspace (doc_check regex, 10-28): write such code with Write/Edit (2026-10-27).
+- A worktree-isolated session refuses a Bash call that starts powershell, or whose text names git in a complex form
+  -> free memory: `bash tools/slots.sh`; edit text naming git with Edit; under the 3 GB floor a docs-only change runs
+  `bash tools/check.sh --no-godot` (2026-10-28).
