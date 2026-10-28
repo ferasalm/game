@@ -622,6 +622,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/cf_mcp/test_server.py`: Tests for tools/cf_mcp/server.py over its real stdio protocol, in dry mode (no Cloudflare call, no credentials).
 - `tools/check.sh`: One command for every check (docs, lint, Godot import, tests). One ok/FAIL line per step; logs in .check/.
 - `tools/check_slot.sh`: Test-run slots shared by every worktree on this machine: at most CHECK_SLOTS Godot test suites at once. Four at once
+- `tools/cross_review.py`: Parse cross-review finding blocks from reviewer logs into structured data.
 - `tools/cross_review_prompt.md`
 - `tools/doc_check.py`: Keeps the always-loaded notes small and well-formed (docs/WORKFLOW.md); exit 1 on any failure.
 - `tools/eye_gate.sh`: Player's-eye gate step 1: records a render wrapper non-headless and makes what a reader can look at.
