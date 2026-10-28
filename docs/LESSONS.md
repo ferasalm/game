@@ -34,6 +34,8 @@
 ## 3. Process (general; reem-bot and feras-career ones verified there)
 - Builders sat idle (0 agy runs 10-27) while D1 said "builders write": doc_check demanded Model + Effort on every HANDOFF
   step and nothing asked for a lane, so every plan came out as an Opus chat -> the queue check requires a lane (2026-10-27).
+- A review run from the main checkout while it was 9 commits behind nearly judged retired docs (the hybrid departments
+  existed only on origin) -> a read-only review reads `git show origin/main:<file>` or a fresh worktree (2026-10-28).
 - Finished session worktrees are often detached (no branch): a tool listing worktrees by branch misses them ->
   tools/status.sh reads `worktree list --porcelain` HEADs (test_status.py) (2026-10-27).
 - A check that only prints never fails -> every check exits non-zero; probe each new rule with one bad case.

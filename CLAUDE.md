@@ -31,17 +31,19 @@ Next goal: a free 20-30 min demo, PC (Steam) first, Android kept alive. Check ev
 - Creative range: design questions get 2-3 distinct options, one bold, each with its trade-off and a recommendation.
 - Think before acting (ripple, edge cases, player's view, 3-line pre-mortem); leave one tool, check, skill or doc better.
 
-## Spend little (how: docs/WORKFLOW.md)
+## Lean process (Feras 10-28; how: docs/WORKFLOW.md)
+- Aims, always learning: think deeply and critically; finish fast; maximum quality; minimum cost; save Feras's time;
+  get more organized. Speed, never needless spend: each task goes to the cheapest worker that does it well.
+- Opus orchestrates and owns every output that reaches Feras as if it did the work: it reviews whatever another model made.
 - IMPORTANT: one task, model and effort per chat; hand off at ~100k work tokens (get_usage Messages) (D4): finish
   the unit, /handoff, new chat. Check get_usage at the start and before a big step.
 - Grep, then read only the lines needed. Never read .godot/, *.import, *.uid, assets/ binaries (pictures only when
   judging art, small), docs/research/gemini-blueprint-citations.md; gemini-blueprint.md one section at a time.
 - Builders write (D1: <= 2 Godot runs on agy + DeepSeek, 1 free text run); Claude plans, briefs (TEMPLATE),
-  reviews and merges. Claude's own reading goes to Haiku at effort high (calibrated), Sonnet only when Haiku can't.
+  reviews and merges. Where Opus is overkill: Sonnet or Haiku with `/advisor opus`; reading goes to Haiku high.
 - Edit, don't rewrite; no recaps; a few lines to the owner; side sessions report only at milestones.
-- Departments (docs/WORKFLOW.md, Start here + table): multi-step department work -> a dept-<id> subagent (one
-  sitting) or an Opus child chat (long, taste, MCP, builder waits), with a department brief; it loads that department's
-  skills (builders, flow-media, 3d-model, sprite-bake, players-eye-gate, market-player, ops-review), reports <= 15 lines.
+- Departments are labels (B, 10-28): a row's Dept names the skills, persona (.agents/skills) and reviewer to load; long,
+  taste, MCP or builder-waiting work -> an Opus child chat with a department brief; no dept-* subagents.
 - Checks: `bash tools/check.sh` (read the FAIL lines); one file: `tools/run_godot.sh -s res://tests/runner.gd -- <name>`.
 - Code rules: .claude/rules/code.md (loads when code is touched). Every rule and fixed bug gets a test; a check
   counts only when its output was read. Python is `python` here (not python3).

@@ -1,26 +1,25 @@
 # HANDOFF (current state only; ONE queue for every chat; max 60 lines)
-Last updated: 2026-10-28 (Ops child chat: Dept column, hybrid departments: subagents + child chats), Opus 5.5.
+Last updated: 2026-10-28 (lean-process chat: departments as labels (B), M1 first, the lean process), Opus 5.5.
 Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Feras's list).
 
 ## How this file works (Feras 2026-10-27; departments 10-28)
 - One queue, top row first. A chat edits its own rows (Status, Blocked by) and adds rows for new work it finds.
-- Dept: the department that owns the row (docs/WORKFLOW.md Departments). Multi-step rows go to that department as a
-  dept-<id> subagent (one sitting: no waits, no questions; the father writes its row) or an Opus child chat (long, taste, MCP, builder waits;
-  it writes its own row; Status "child open: <branch>"): WORKFLOW, Start here, step 3. As many as needed.
+- Dept: a label (B, Feras 10-28): the skills, persona and reviewer the chat loads (docs/WORKFLOW.md Departments). Long,
+  taste, MCP or builder-waiting rows go to an Opus child chat (it writes its own row; Status "child open: <branch>").
 - Lane: who does the work inside it: builder (agy, cf, oc) by default; chat = the Opus chat itself, only for taste, MCP
   (Blender, Flow, Rodin), review or plan, said in brackets; Feras = his move. tools/doc_check.py checks every row.
-- Process work is frozen after row 1 until Feras has played M1 (row 5).
+- M1 first (Feras 10-28): process work (row 1) waits until Feras has played M1 (row 5).
 - Builders (D1): <= 2 Godot runs + 1 free text run (slots.sh). Briefs: docs/briefs/TEMPLATE.md. Balance band: start
   gear 82.7-89% wins; arc_arm needs an upside.
 
 ## Queue
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
-| 1 | Efficiency fixes 1-6 as hooks and checks: docs/briefs/efficiency-hooks.md | Ops | builder + chat (review) | cf; Opus high | next, when Feras says go: chat "Process: turn the broken rules into hooks and checks" | Feras's go |
-| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | queued | 1 |
+| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | next: chat "M1 brief" | - |
 | 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | queued | 3 |
-| 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | QA | Feras | - | queued | 4 |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | queued: runs while agy builds row 4 | 3; free memory >= 3 GB |
+| 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | QA | Feras | - | queued | 4 |
+| 1 | Efficiency fixes 1-5 as hooks and checks + Feras's 10-28 additions 6-9 (one lean rule, step 3 as a mode table, departments as labels, one routing table with the personas): docs/briefs/efficiency-hooks.md | Ops | builder + chat (review) | cf; Opus high | queued after M1 | 5 |
 | 7 | Art batch: Bilqis re-model (v2), guard, props (booth, floodlight, qamariya window, umbrella), icons; title = Flow Omni | Art | chat (MCP) | Opus high | queued; Rodin credits end ~11-17 | 6 |
 | 8 | Free image-to-3D proof (rydan_style_v2 to a TRELLIS HF Space; never Blender generate_3d) -> 3d-model skill | Art | chat (MCP) | Opus medium | queued | 7 |
 | 9 | Asset preparation pipeline (jpg -> png, sizes, import settings, manifest check) | Art | builder | cf | parked | 5 |
@@ -38,13 +37,13 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 | More concept pictures + an empty plate per scene (no characters, HUD or rain) | 10-24 | inbox/ |
 | Icon art | 10-27 | row 7 |
 
-## This week (Claude Pro weekly limit: 62% used Wed 10-28, resets Sat 10-31 13:00 UTC: spend ~10% a day)
+## This week (Claude Pro weekly limit: 67% used Wed 10-28, resets Sat 10-31 13:00 UTC: spend ~10% a day)
 | Day | Plan |
 |---|---|
-| Wed 10-28 | Row 1 once Feras says go (cf builds, one Opus review chat). Nothing else. |
-| Thu 10-29 | Row 3 brief; row 4 agy builds overnight while row 6 bakes Roya. |
+| Wed 10-28 | Lean process logged. Row 3 (M1 brief) once the 5-hour window has reset; row 4 agy builds overnight. |
+| Thu 10-29 | Row 4 builds and passes the eye gate while row 6 bakes Roya. |
 | Fri 10-30 | Play day 1 (row 5) if row 4 passed the eye gate by noon; else it moves to Sat or Sun. |
-| Sat 10-31 | Limit resets 13:00 UTC; fix passes from his notes; row 7 starts. |
+| Sat 10-31 | Limit resets 13:00 UTC; fix passes from his notes; row 1 (process) and row 7 start. |
 | Sun-Mon | Row 7-8; play day 2 on the fix pass. |
 
 ## Parked and context (resume only through a queue row)

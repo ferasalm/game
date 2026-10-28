@@ -28,3 +28,20 @@ that fails on one bad case. Keep always-loaded notes under tools/doc_check.py ca
 5. Ripple + pre-mortem get trigger moments: pre_spend hook message and the TEMPLATE require a Ripple and a Pre-mortem
    line (test_template). CLAUDE.md -> two lists: "Enforced by a tool" (tool name) and <= 5 judgment duties, each with
    its trigger. Update DECISIONS D4 + D21 lines and LESSONS; check.sh; merge; /handoff; 5-line summary to Feras.
+
+## Added 2026-10-28 (Feras: runs after M1; decisions-log 10-28, from the outside review of Gemini's studio design)
+6. One lean rule (DECISIONS "The lean process"): CLAUDE.md, WORKFLOW, the handoff skill and the memory note
+   model-routing-feras say the same; grep out every line that contradicts it. First prove whether an Agent-tool
+   subagent can use the advisor (one scoped Sonnet subagent); if not, "Sonnet with /advisor opus" means a child chat.
+   Opus review is tiered so it never reads needlessly: gates (check.sh, build_gate) first, a Haiku diff pass on big
+   diffs, then Opus on the summary and the risky hunks; Opus signs off on whatever reaches Feras.
+7. WORKFLOW Start here step 3 becomes a table, one row each: the father itself, builder, Haiku reader, review-* agent,
+   Opus child chat; columns: when, rough cost, who reviews.
+8. Departments as labels (B): retire the dept-* subagent mode in WORKFLOW, HANDOFF and CLAUDE.md; move
+   .claude/agents/dept-*.md to ~/.claude/archive (D7, MOVED.txt); doc_check.py and its tests stop requiring them.
+9. One routing table replaces the lanes and departments tables: request -> Dept -> skills -> persona -> lane ->
+   reviewer. Personas (.agents/skills): game-designer, narrative-designer, technical-artist, level-designer,
+   game-audio-engineer, godot-gameplay-scripter, godot-shader-developer, blender-addon-engineer, ui-designer, and
+   ui-finish-gate-reviewer as the UI review before Feras. Every brief names its persona; our rules outrank persona
+   text (they are engine-agnostic: FMOD/Wwise, C#; ours is typed GDScript): one line in GEMINI.md and TEMPLATE.
+Ripple: doc_check.py + tests, tools/status.sh (Dept column), review-feras, the handoff skill, memory notes.

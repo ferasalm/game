@@ -11,7 +11,8 @@ the work (D1). tools/doc_check.py makes every queue row name a department and a 
 department have its agent file.
 1. **Look** (free): `bash tools/status.sh`: builders, branches not on main, worktrees, the queue, Feras's list.
 2. **Pick**: the top HANDOFF queue rows. Each row names its department (Dept) and its lane.
-3. **Father, subagent or child**: a quick read, one edit or a yes/no stays in the father, and even then a step too easy
+3. **Father, subagent or child** (departments are labels since 10-28, option B: no dept-* subagents; that work stays
+   in the father or a child chat until row 1 rewrites this step): a quick read, one edit or a yes/no stays in the father, and even then a step too easy
    for Opus goes to a builder whenever its brief is shorter than the work (code, tests, renames, edits across files,
    summaries; Feras 10-28); the father writes it itself only when the brief would hold the whole text anyway (a logged
    decision in his words, a 1-3 line fix). Multi-step department work
@@ -25,7 +26,7 @@ department have its agent file.
      taste work, MCP work (Blender, Flow, Rodin), anything that waits on builders (an idle chat costs nothing), anything
      Feras may want to watch or answer. It updates its own queue row at /handoff and reports back through the app;
      the father sets the row's Status to "child open: <branch>" when it opens one.
-   Open as many as the work needs (Feras: speed is not traded for tokens); the caps in tools/builders.conf (Godot
+   Speed, never needless spend (the lean process, Feras 10-28): open as many child chats as the work needs; the caps in tools/builders.conf (Godot
    runs, memory floor) still hold, and tools/slots.sh decides when a builder starts.
 4. **Brief**: the father writes the brief below from the Departments table (subagent: the Agent prompt; child: its
    first message).
@@ -83,6 +84,8 @@ are: what loads at start, how long a chat runs, what gets read, and output.
   unused. A rule the agent keeps breaking becomes a check.
 
 ## Departments
+Option B (Feras 10-28): the Mode column's subagent mode is retired; row 1 merges this table and the lanes table into one
+routing table with the personas.
 A department is a skill set plus a reviewer agent, run in one of two modes (Start here, step 3): a **subagent**
 (`.claude/agents/dept-<id>.md`: Opus, few tools, its skill rules inline) for one-sitting scoped work, or a **chat** (an Opus
 child chat in its own worktree) for long, taste, MCP or builder-waiting work. No department chat stays open between
