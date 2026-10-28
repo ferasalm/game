@@ -21,21 +21,28 @@ tool_tests() {  # every tools/**/test_*.py (a new test file is picked up by itse
   for t in "${bad[@]}"; do echo "FAIL tool test: $t"; done
   [ ${#bad[@]} -eq 0 ]
 }
+no_godot=0; [ "${1:-}" = "--no-godot" ] && no_godot=1
 step docs $py tools/doc_check.py
 step lint $py tools/lint_gd.py
 step res_graph $py tools/res_graph.py --check  # no file under features/ core/ content/ assets/ that nothing uses
-step import tools/run_godot.sh --import
+[ $no_godot -eq 0 ] && step import tools/run_godot.sh --import
 step tool_tests tool_tests
 git status --porcelain --untracked-files=all > .check/before_tests.txt  # tests and boot must leave the repo as found
-. tools/check_slot.sh; acquire_check_slot || { echo "FAIL no test slot (see .check)"; exit 1; }; trap release_check_slot EXIT
-step tests env GODOT_TIMEOUT=600 tools/run_godot.sh -s res://tests/runner.gd
-step boot env GODOT_TIMEOUT=180 tools/run_godot.sh --quit-after 120  # the main scene starts without errors
-release_check_slot
+if [ $no_godot -eq 0 ]; then
+  . tools/check_slot.sh; acquire_check_slot || { echo "FAIL no test slot (see .check)"; exit 1; }; trap release_check_slot EXIT
+  step tests env GODOT_TIMEOUT=600 tools/run_godot.sh -s res://tests/runner.gd
+  step boot env GODOT_TIMEOUT=180 tools/run_godot.sh --quit-after 120  # the main scene starts without errors
+  release_check_slot
+fi
 repo_untouched() {  # a file a test or the boot wrote into the checkout (a relative save folder was committed once)
   local new  # captured first: grep -q under pipefail could stop git early (SIGPIPE) and pass by mistake
   new=$(git status --porcelain --untracked-files=all | grep -vxF -f .check/before_tests.txt)
   [ -z "$new" ] || { echo "$new"; return 1; }
 }
 step repo_untouched repo_untouched
-grep -h '^tests:' .check/tests.log 2>/dev/null | sed 's/^/     /'
+if [ $no_godot -eq 1 ]; then
+  echo "     no Godot: import, tests and boot skipped (--no-godot)"
+else
+  grep -h '^tests:' .check/tests.log 2>/dev/null | sed 's/^/     /'
+fi
 if [ $fails -eq 0 ]; then echo "all checks passed"; else echo "$fails check(s) FAILED"; exit 1; fi

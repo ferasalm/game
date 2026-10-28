@@ -10,12 +10,14 @@
 set -uo pipefail
 . "$(dirname "$0")/lib.sh"
 builder="$1"; name="$2"; brief="$(cd "$(dirname "$3")" && pwd)/$(basename "$3")"; base="$4"; model="${5:-}"
+RUN_KIND="${RUN_KIND:-godot}"
+case "$RUN_KIND" in godot|py) ;; *) refuse "RUN_KIND must be godot or py" ;; esac
 here="$lib_dir"; root="$(git rev-parse --show-toplevel)"; dir="$(wt_dir)"; wt="$dir/$name"; res="$wt.result"
 prefix="$(builder_prefix "$builder")"
 idle_sec="${IDLE_SEC:-$((IDLE_MIN * 60))}"; poll="${WATCH_POLL:-20}"
 
 refuse() { echo "REFUSED: $*" >&2; echo "REFUSED: $*"; exit 3; }
-bash "$here/slots.sh" can-start "$builder" < /dev/null > "$dir.slots.tmp" 2>&1 || refuse "$(grep REFUSED "$dir.slots.tmp" | head -1)"
+bash "$here/slots.sh" can-start "$builder" "$RUN_KIND" < /dev/null > "$dir.slots.tmp" 2>&1 || refuse "$(grep REFUSED "$dir.slots.tmp" | head -1)"
 rm -f "$dir.slots.tmp"
 # A stale or unpushed base made builders fork old code: pin <base> to origin's commit, refuse when local is ahead.
 git fetch -q origin < /dev/null 2> /dev/null
@@ -30,7 +32,7 @@ base="$(git rev-parse "$base")"
 mkdir -p "$dir"
 
 status_line() {  # <word> <step>
-  { echo "$1 $(date +%H:%M) $2"; echo "builder $builder"; echo "pid $$"; } > "$res"
+  { echo "$1 $(date +%H:%M) $2"; echo "builder $builder"; echo "pid $$"; echo "kind $RUN_KIND"; } > "$res"
 }
 
 run() {  # <brief file>; watched: no commit in the worktree for idle_sec -> kill the tree. Returns 99 when killed idle.
@@ -53,7 +55,7 @@ idle_exit() {  # <step>: killed idle. Committed work still goes to check and gat
   if [ -n "$(git -C "$wt" log --oneline "$base..HEAD" 2> /dev/null)" ]; then
     idle_note="idle: $1 killed after ${idle_sec}s without a commit; its commits were checked"; return 0
   fi
-  { echo "NOWORK $(date +%H:%M) $prefix/$name"; echo "builder $builder"; echo "pid $$"
+  { echo "NOWORK $(date +%H:%M) $prefix/$name"; echo "builder $builder"; echo "pid $$"; echo "kind $RUN_KIND"
     echo "idle: no commit for ${idle_sec}s, builder killed (the brief needs a first-commit deadline)"; } > "$res"
   cat "$res"; exit 1
 }
@@ -63,7 +65,11 @@ import_wt() {  # a fresh worktree has no class cache; Godot's import then rewrit
   git -C "$wt" ls-files -m -- 'assets/*.import' | xargs -r git -C "$wt" checkout -- 2> /dev/null
 }
 check() {  # -> 0 when all checks pass; output in <task>.check.txt
-  import_wt; (cd "$wt" && bash tools/check.sh < /dev/null > "$wt.check.txt" 2>&1)
+  if [ "$RUN_KIND" = py ]; then
+    (cd "$wt" && bash tools/check.sh --no-godot < /dev/null > "$wt.check.txt" 2>&1)
+  else
+    import_wt; (cd "$wt" && bash tools/check.sh < /dev/null > "$wt.check.txt" 2>&1)
+  fi
 }
 leftovers() {  # builders die mid-edit: keep their work as a WIP commit (only .uid files after import_wt's restore)
   if [ -n "$(git -C "$wt" status --porcelain 2> /dev/null)" ]; then
@@ -102,11 +108,13 @@ if check; then :; else
 fi
 leftovers "check"  # the .uid files Godot wrote during the last check belong to the checked tree
 gate="$($py "$here/build_gate.py" gate --wt "$wt" --base "$base" --brief "$brief" --check "$wt.check.txt" \
+  --kind "$RUN_KIND" \
   --run-new-tests "${NEWTEST_KINDS:-py,gd}" ${fix_from:+--fix-from "$fix_from"} --inbox "$root/inbox" < /dev/null 2>&1)"
 status="$(echo "$gate" | sed -n 's/^VERDICT //p')"; status="${status:-FAIL}"
 { echo "$status $(date +%H:%M) $prefix/$name"
   echo "builder $builder"
   echo "pid $$"
+  echo "kind $RUN_KIND"
   [ -n "$idle_note" ] && echo "$idle_note"
   echo "checked $(git -C "$wt" rev-parse HEAD)"
   echo "$gate"; grep -E '^ {5}tests:' "$wt.check.txt" | head -3

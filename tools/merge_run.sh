@@ -12,7 +12,7 @@ word="$(head -1 "$res" | cut -d' ' -f1)"
 [ "$word" = PASS ] || { echo "refusing: $res says $word" >&2; exit 1; }
 checked="$(sed -n 's/^checked //p' "$res")"
 plan="$($py "$here/build_gate.py" can-skip --repo "$root" --checked "$checked" --tip "$branch")"
-if [ "$plan" = SKIP ]; then
+if [ "$plan" = SKIP ] && ! grep -q '^kind py' "$res"; then
   git -C "$root" merge -q --ff-only "$branch"; echo "fast-forward onto checked $checked: check reused"
 else
   git -C "$root" merge -q --no-edit "$branch"

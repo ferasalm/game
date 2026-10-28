@@ -174,12 +174,20 @@ def checklist(files, added, brief_text, inbox, fix_test_files):
     return items
 
 
-def verdict(check_text, files, hits, misses=(), extra=()):
+GODOT_EXTS = (".gd", ".tscn", ".tres", ".gdshader", ".import")
+GODOT_DIRS = ("assets/", "content/", "localization/", "features/", "core/", "scenes/", "tests/")
+
+
+def is_godot_file(path):
+    return path == "project.godot" or any(path.endswith(e) for e in GODOT_EXTS) or any(path.startswith(d) for d in GODOT_DIRS)
+
+
+def verdict(check_text, files, hits, misses=(), extra=(), py_godot=()):
     if not real_files(files):
         return "NOWORK"
     if hits:
         return "BREACH"
-    if fail_lines(check_text) or "all checks passed" not in check_text or misses or extra:
+    if fail_lines(check_text) or "all checks passed" not in check_text or misses or extra or py_godot:
         return "FAIL"
     return "PASS"
 
@@ -226,6 +234,8 @@ def run_gate(a):
     hits += [f for f in protected_hits({f: status[f] for f in real_files(files)}, section_paths(brief, "May edit"))
              if f not in hits]
     added, removed = diff_lines(a.wt, a.base)
+    py_godot = [f for f in files if is_godot_file(f)] if getattr(a, "kind", "godot") == "py" else []
+    hits = [f for f in hits if f not in py_godot]
     extra = []
     if not re.search(r"^## Do NOT edit\s*$", brief, re.M):
         extra.append("brief has no '## Do NOT edit' section (D6: add one, even if it only lists the protected defaults)")
@@ -238,7 +248,9 @@ def run_gate(a):
             print(f"ok   new test fails on base: {f}")
     fix_tests = [f for f in changed(a.wt, f"{a.fix_from}...HEAD") if is_test(f)] if a.fix_from else []
     misses, warns = brief_checklist(a.wt, brief)
-    word = verdict(check_text, files, hits, misses, extra)
+    word = verdict(check_text, files, hits, misses, extra, py_godot)
+    for f in py_godot:
+        print(f"py run changed a Godot file: {f}")
     for e in extra:
         print(f"GATE FAIL: {e}")
     for ln in fail_lines(check_text):
@@ -273,6 +285,7 @@ def main(argv):
     g.add_argument("--fix-from", default="")
     g.add_argument("--run-new-tests", default="", help="comma list of kinds to run on the base: py,gd")
     g.add_argument("--inbox", default="C:/dev/game/inbox")
+    g.add_argument("--kind", default="godot", choices=["godot", "py"])
     s = sub.add_parser("can-skip")
     for k in ("--repo", "--checked", "--tip"):
         s.add_argument(k, required=True)
