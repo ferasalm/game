@@ -105,12 +105,12 @@ def main(argv=None) -> int:
         sys.stderr.write("Usage: cross_review.py parse <log> [--out <file>]\n")
         return 2
     try:
-        with open(args.log, encoding="utf-8") as f:
+        with open(args.log, encoding="utf-8", errors="replace") as f:
             content = f.read()
     except OSError as e:
         print(f"CROSS INVALID cannot read log file: {e}")
         if args.out:
-            with open(args.out, "w", encoding="utf-8") as f:
+            with open(args.out, "w", encoding="utf-8", newline="\n") as f:
                 f.write(f"INVALID: cannot read log file: {e}\n")
         return 1
     res = parse(content)
@@ -120,12 +120,12 @@ def main(argv=None) -> int:
         l = sum(1 for f in res["findings"] if f["severity"] == "low")
         print(f"CROSS OK {len(res['findings'])} (high {h}, medium {m}, low {l})")
         if args.out:
-            with open(args.out, "w", encoding="utf-8") as f:
+            with open(args.out, "w", encoding="utf-8", newline="\n") as f:
                 f.write(_format_markdown(res["findings"]))
         return 0
     print(f"CROSS INVALID {res['reason']}")
     if args.out:
-        with open(args.out, "w", encoding="utf-8") as f:
+        with open(args.out, "w", encoding="utf-8", newline="\n") as f:
             f.write(f"INVALID: {res['reason']}\n")
     return 1
 

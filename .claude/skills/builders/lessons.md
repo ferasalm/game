@@ -36,3 +36,4 @@
   called before its definition (an untested refusal path), BREACH filtered into FAIL (Claude's red test demanded FAIL
   for an assets/ edit: a red test can force a wrong design, so test verdict precedence too) and a fix-pass prompt
   that ran Godot in a py run. Brief every refusal path with a test.
+- Race B (row 12, 10-28; parser brief, py run): agy and cf each made a first commit in 17-20 min and both parsers passed the 7 red tests, but both runs then burned ~70 min of fix passes on a pipeline leak (RUN_KIND=py reached test_build_pipeline); cf "fixed" it in protected check.sh = BREACH, agy PASSed once re-gated. Cross-review gave 0/2 usable blocks (agy headless denies its tools without --dangerously-skip-permissions; DeepSeek explored 520 s and wrote no block); Opus found 2 real bugs (non-UTF-8 log crash, CRLF out). Verdict: no races for now; one builder + Opus review is cheaper (2026-10-28).
