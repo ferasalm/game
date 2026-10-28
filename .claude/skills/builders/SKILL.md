@@ -21,7 +21,8 @@ docs/research/calibration-2026-10.md.
 3. Brief from docs/briefs/TEMPLATE.md: Why, Read first, What to build, Do NOT edit, May edit, Ripple (every listener, key
    and id the change touches), Tests, Checklist, Proof. The builder's skill is named in the brief ("<name> skill").
 4. `bash tools/slots.sh`, then `bash tools/build_pipeline.sh <oc|agy|cf> <task> <brief> <base>` with run_in_background
-   (cf: tools/cf_build.sh). It refuses when full or the base is unpushed.
+   (cf: tools/cf_build.sh). It refuses when full or the base is unpushed. Python or docs only: `RUN_KIND=py` (no Godot
+   slot or memory floor; `check.sh --no-godot`; the gate fails any Godot file; merge_run reruns the full check).
 5. Read the first word of `../game-wt/<task>.result` (PASS / FAIL / NOWORK / BREACH). Read a PASS only.
 6. Review panel on the diff: `.claude/agents/review-code` (and review-player for renders), flags only; Claude confirms
    each flag against the code before acting. Max 3 fix rounds, then stop and report.
@@ -61,7 +62,7 @@ Per executor:
   - "grep, then read the named lines";
   - the delegation briefs pre-written;
   - milestone-only reports; hand off at ~100k work tokens.
-- **agy** (Gemini Flash; Godot UI and code with renders; not creative):
+- **agy** (Gemini Flash; Godot UI and code with renders; Python tools, docs and reviews when its quota is free; not creative):
   - geometry, colour and size numbers plus the concept path for any visual;
   - first commit within 15 minutes (the idle watchdog);
   - GEMINI.md review_misses;

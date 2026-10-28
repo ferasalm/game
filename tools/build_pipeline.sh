@@ -11,12 +11,13 @@ set -uo pipefail
 . "$(dirname "$0")/lib.sh"
 builder="$1"; name="$2"; brief="$(cd "$(dirname "$3")" && pwd)/$(basename "$3")"; base="$4"; model="${5:-}"
 RUN_KIND="${RUN_KIND:-godot}"
-case "$RUN_KIND" in godot|py) ;; *) refuse "RUN_KIND must be godot or py" ;; esac
 here="$lib_dir"; root="$(git rev-parse --show-toplevel)"; dir="$(wt_dir)"; wt="$dir/$name"; res="$wt.result"
 prefix="$(builder_prefix "$builder")"
 idle_sec="${IDLE_SEC:-$((IDLE_MIN * 60))}"; poll="${WATCH_POLL:-20}"
 
 refuse() { echo "REFUSED: $*" >&2; echo "REFUSED: $*"; exit 3; }
+case "$RUN_KIND" in godot) chk="bash tools/check.sh" ;; py) chk="bash tools/check.sh --no-godot" ;;
+  *) refuse "RUN_KIND must be godot or py, not $RUN_KIND" ;; esac
 bash "$here/slots.sh" can-start "$builder" "$RUN_KIND" < /dev/null > "$dir.slots.tmp" 2>&1 || refuse "$(grep REFUSED "$dir.slots.tmp" | head -1)"
 rm -f "$dir.slots.tmp"
 # A stale or unpushed base made builders fork old code: pin <base> to origin's commit, refuse when local is ahead.
@@ -100,7 +101,7 @@ if check; then :; else
   status_line RUNNING "fix pass"
   { echo "# Fix pass: $name (<= 45 min)"
     echo "You are in your own worktree on branch $prefix/$name. Your build of the brief below left checks failing."
-    echo "Fix the causes, never weaken a test's intent, keep the brief's Do NOT edit list, run \`bash tools/check.sh\`"
+    echo "Fix the causes, never weaken a test's intent, keep the brief's Do NOT edit list, run \`$chk\`"
     echo "until it prints \"all checks passed\", commit. The FAIL lines:"
     echo '```'; grep -A13 '^FAIL' "$wt.check.txt"; echo '```'
     echo; echo "## The brief"; cat "$brief"; } > "$wt.fix.md"

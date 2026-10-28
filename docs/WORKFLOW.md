@@ -77,8 +77,8 @@ are: what loads at start, how long a chat runs, what gets read, and output.
 ## Routing (one table; departments are labels, Feras 10-28 option B)
 A department is a label, not an agent: the HANDOFF queue's Dept column names a Dept below, and that row says which
 skills and persona the worker loads, its lane and its reviewer. Every brief names its persona; our rules (CLAUDE.md,
-.claude/rules/code.md, CANON) outrank persona text. Lanes: agy = Godot code with tests and UI renders; cf = Godot
-code when agy is full, Python tools; oc = text, drafts, review lenses (<= 2 Godot runs, 1 text run: Limits); chat =
+.claude/rules/code.md, CANON) outrank persona text. Lanes: agy = Godot code with tests and UI renders, and Python
+tools, docs and reviews whenever its quota is free (row 12); cf = Godot code when agy is full, Python tools; oc = text, drafts, review lenses (<= 2 Godot runs, 1 text run: Limits); chat =
 Opus for plan, taste, MCP, review. No department chat stays open between tasks; its lessons and research queue live in
 its skill folder. tools/doc_check.py fails on an unknown Dept, a persona with no .agents/skills/<name>/SKILL.md, a
 reviewer with no .claude/agents/<name>.md, and any .claude/agents/dept-*.md (retired to ~/.claude/archive, D7).
@@ -86,7 +86,7 @@ reviewer with no .claude/agents/<name>.md, and any .claude/agents/dept-*.md (ret
 | Request | Dept | Skills | Persona | Lane | Reviewer |
 |---|---|---|---|---|---|
 | the queue, picks, briefs, reading reports (Feras directs) | Producer | builders; tools/status.sh | - | chat (plan) | review-feras |
-| process, tools, hooks, checks, merging PASS runs | Ops | builders, ops-review; emergency-efficiency when the window is tight | - | builder (cf) + chat (review) | review-code + review-cost |
+| process, tools, hooks, checks, merging PASS runs | Ops | builders, ops-review; emergency-efficiency when the window is tight | - | builder (agy, cf) + chat (review) | review-code + review-cost |
 | combat and systems design: specs, balance | Gameplay | builders + a spec in docs/design/ | game-designer | chat (plan) | review-feras |
 | Godot gameplay code and tests | Gameplay | builders | godot-gameplay-scripter | builder (agy, cf) | review-code |
 | levels, encounters, the roof layout | Gameplay | builders; docs/design/systems-map.md | level-designer | builder (agy) + chat (review) | review-code + review-player |
@@ -101,7 +101,7 @@ reviewer with no .claude/agents/<name>.md, and any .claude/agents/dept-*.md (ret
 ## Limits (one table)
 | Limit | Value | Enforced by |
 |---|---|---|
-| Godot builder runs, machine-wide | 2 at once (CAP_GODOT=2; agy CAP_AGY=2, Cloudflare DeepSeek CAP_CF=2) | tools/slots.sh (refuses when full) |
+| Godot builder runs, machine-wide | 2 at once (CAP_GODOT=2; agy CAP_AGY=2, Cloudflare DeepSeek CAP_CF=2; a RUN_KIND=py run counts toward its builder cap only) | tools/slots.sh (refuses when full) |
 | Text run (opencode, OpenRouter :free; no Godot) | 1 (CAP_OC=1) | tools/slots.sh |
 | Godot test suites at once | 2 (CHECK_SLOTS=2) | tools/check_slot.sh |
 | Free memory before a Godot run | >= 3000 MB (MIN_FREE_MB=3000) | tools/slots.sh |
@@ -159,7 +159,9 @@ tokens), so "Sonnet with the Opus advisor" is a subagent, not a child chat; a So
 
 ## Builder loop (agy, Cloudflare DeepSeek, opencode)
 Low on Claude limit: .claude/skills/emergency-efficiency/SKILL.md overrides this section. Models and caps: tools/builders.conf.
-Lanes: agy for Godot code with tests and UI renders; Cloudflare DeepSeek when agy is full; opencode :free for text. Every
+Lanes: agy for Godot code with tests and UI renders, and Python tools, docs and reviews; Cloudflare DeepSeek when agy is
+full; opencode :free for text. A Python or docs-only run sets RUN_KIND=py: its builder's slot but no Godot slot or memory
+floor, `check.sh --no-godot`, the gate fails it on any Godot file, merge_run reruns the full check. Every
 brief names one game-dev skill (.agents/skills/). Free models may train on prompts: only public repo content goes in a brief.
 
 1. **Brief** from docs/briefs/TEMPLATE.md, with a Do NOT edit list so parallel runs never share files.

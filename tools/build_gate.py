@@ -234,8 +234,7 @@ def run_gate(a):
     hits += [f for f in protected_hits({f: status[f] for f in real_files(files)}, section_paths(brief, "May edit"))
              if f not in hits]
     added, removed = diff_lines(a.wt, a.base)
-    py_godot = [f for f in files if is_godot_file(f)] if getattr(a, "kind", "godot") == "py" else []
-    hits = [f for f in hits if f not in py_godot]
+    py_godot = [f for f in files if is_godot_file(f)] if getattr(a, "kind", "godot") == "py" else []  # a breach stays BREACH
     extra = []
     if not re.search(r"^## Do NOT edit\s*$", brief, re.M):
         extra.append("brief has no '## Do NOT edit' section (D6: add one, even if it only lists the protected defaults)")

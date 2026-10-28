@@ -99,8 +99,8 @@ CHECK_ARGS = '#!/bin/bash\necho "$@" > ../check.args\necho "all checks passed"\n
 BRIEF = "# Brief: toy\n## What to build\n1. a\n## Do NOT edit\n`content/none.json`\n## Checklist\n- file: tools/new_tool.py\n"
 
 
-def py_pipeline(top, g, **env_extra):
-    put(g + "/tools/check.sh", CHECK_ARGS)
+def py_pipeline(top, g, check=CHECK_ARGS, **env_extra):
+    put(g + "/tools/check.sh", check)
     git(g, "add", "-A")
     git(g, "commit", "-qm", "check records its args")
     git(g, "push", "-q", "origin", "HEAD:main")
@@ -133,6 +133,21 @@ def test_pipeline_py_run_that_touches_godot_fails():
     r = py_pipeline(top, g, FAKE_MODE="gd")
     res = result(top)
     assert r.returncode != 0 and res.startswith("FAIL") and "py run" in res and "features/a.gd" in res, res
+
+
+def test_py_fix_pass_says_no_godot_and_bad_kind_refuses():  # review 10-28: refuse() ran before it was defined
+    top, g = toy()
+    r = py_pipeline(top, g, check='#!/bin/bash\necho "FAIL toy"\nexit 1\n')
+    assert result(top).startswith("FAIL"), result(top)
+    fix = open(top + "/game-wt/job.fix.md", encoding="utf-8").read()
+    assert "bash tools/check.sh --no-godot" in fix, ("a py run's fix pass must not run Godot", fix[:400])
+    top, g = toy()
+    env = {**os.environ, "RUN_KIND": "python", "FREE_MB": "99999", "BUILDER_CMD": top + "/none.sh"}
+    env.pop("GAME_WT_DIR", None)
+    r = subprocess.run(["bash", PIPE, "agy", "job", top + "/brief.md", "main"], cwd=g, env=env,
+                       capture_output=True, text=True, stdin=subprocess.DEVNULL)
+    assert r.returncode == 3 and "REFUSED: RUN_KIND" in r.stdout, (r.returncode, r.stdout, r.stderr)
+    assert "command not found" not in r.stderr and not os.path.exists(top + "/game-wt/job.result"), r.stderr
 
 
 def gate_repo():
@@ -168,7 +183,8 @@ def test_gate_fails_a_py_run_that_changes_godot_files():
         git(repo, "add", "-A")
         git(repo, "commit", "-qm", "feat")
         code, out = run_gate(repo, base, "py")
-        assert code == 1 and "py run" in out and path in out and out.strip().endswith("VERDICT FAIL"), (path, out)
+        word = "BREACH" if path.startswith("assets/") else "FAIL"  # a D6 breach stays a BREACH (review 10-28)
+        assert code == 1 and f"py run changed a Godot file: {path}" in out and out.strip().endswith("VERDICT " + word), (path, out)
         code, out = run_gate(repo, base, "godot")
         assert "py run" not in out, (path, out)
     repo, base = gate_repo()

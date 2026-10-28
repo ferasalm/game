@@ -1,5 +1,5 @@
 # Brief: cross-review-parser (HANDOFF row 12, race B: agy and cf build this same brief in two worktrees)
-You are in your own worktree on branch <gemini|oc>/cross-review-parser-<agy|cf> (made from origin/claude/trusting-chatelet-141211). Follow GEMINI.md, including
+You are in your own worktree on branch <gemini|oc>/cross-review-parser-<agy|cf> (made from origin/claude/row12-race-base). Follow GEMINI.md, including
 <review_misses>. Load the minimal-change-engineer skill (build_pipeline.sh pastes it; our rules outrank its text).
 Timebox: 30 min. First commit within 15 min, then small WIP commits: no commit for 25 min (IDLE_MIN) = NOWORK.
 This is a Python-only run (RUN_KIND=py): change no Godot file; the check is `bash tools/check.sh --no-godot`.

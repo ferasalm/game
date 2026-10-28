@@ -33,3 +33,7 @@
   found; 12 findings, ~8 real (by-design flags: the Flow folder exemption, fail-open on errors). Verdict: agy is ON as
   the cross-reviewer of DeepSeek-built runs; recall varies run to run (union 4/5), so Opus still reads the risky hunks.
   DeepSeek reviewing agy-built runs is uncalibrated: provisional, Opus reads the whole diff until it is calibrated.
+- agy's first Python run (row 12 C, 10-28): PASS in ~40 min, +69 lines over 5 tools; Opus fixed 3: a bash function
+  called before its definition (an untested refusal path), BREACH filtered into FAIL (Claude's red test demanded FAIL
+  for an assets/ edit: a red test can force a wrong design, so test verdict precedence too) and a fix-pass prompt
+  that ran Godot in a py run. Brief every refusal path with a test.
