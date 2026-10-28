@@ -100,6 +100,25 @@ def test_compaction_seen_on_a_later_call():
     assert s.call() == "", "60k since the compaction: still quiet, not 80k from the old baseline"
 
 
+def test_compaction_in_the_window_resets_once():  # review 10-28: each parse re-found it and warned again
+    s = Session()
+    write(s.path, [user_line(), usage_line(20_000), usage_line(185_000), dict(COMPACT, uuid="c1"), user_line("s"),
+                   usage_line(110_000), usage_line(200_000)])
+    assert "finish the unit" in s.call(), "90k since the compaction"
+    write(s.path, [usage_line(201_000)], "a")
+    assert s.call() == "", "the same compaction is still in the window: no second 80k warning"
+    write(s.path, [usage_line(215_000)], "a")
+    assert "/handoff" in s.call()
+    write(s.path, [usage_line(216_000)], "a")
+    assert s.call() == ""
+
+
+def test_fallback_counts_only_after_compaction():  # review 10-28: the fallback read the whole file
+    s = Session()
+    write(s.path, [user_line("a" * 600_000), dict(COMPACT, uuid="c1"), user_line("go")])
+    assert s.call() == "", "no usage since the compaction and a few bytes: quiet"
+
+
 def test_throttle_skips_small_growth():
     s = Session(step_bytes="40000")
     write(s.path, [user_line(), usage_line(90_000), usage_line(100_000)])

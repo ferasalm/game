@@ -629,6 +629,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.
 - `tools/hooks/review_gate.py`: PreToolUse hook (D5, D21): blocks a game render sent to Feras unless review-player and review-feras stamped it.
 - `tools/hooks/review_stamp.py`: Record a player and a Feras review for a game render (D5, D21), keyed by the file's sha256.
+- `tools/hooks/run.sh`: Runs tools/hooks/<name>.py for a Claude hook. settings.json wires hooks as $CLAUDE_PROJECT_DIR/..., the main checkout,
 - `tools/hooks/token_handoff.py`: PostToolUse hook (D4): warns at 80k work tokens, then at 100k and every +10k after, so a chat hands off in time.
 - `tools/import_agents.py`: Copies the chosen agency agents (~/.claude/agents, MIT) into .agents/skills/<name>/SKILL.md for every builder.
 - `tools/kill_tree.py`: Kills a process and every descendant, also children forked while the kill runs (tools/lib.sh kill_tree calls it).
@@ -670,6 +671,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_eye_metrics.py`: Tests tools/eye_metrics.py on a temp project root. Run: python tools/test_eye_metrics.py
 - `tools/test_gate_checklist.py`: Tests for brief checklist verification in build_gate.
 - `tools/test_gate_d6.py`: Self-test for the D6 gate rules (2026-10-27): protected tests and assets, removed checks, new tests fail on base.
+- `tools/test_hook_run.py`: Self-test for tools/hooks/run.sh: hooks run the session's own copy, a missing script never blocks a tool.
 - `tools/test_kill_tree.py`: Tests kill_tree (tools/lib.sh): a tree with a native grandchild and a parent still forking during the kill dies whole.
 - `tools/test_map.py`: Self-test for map.py: only tracked files are mapped (an untracked file made CI fail "MAP.md current").
 - `tools/test_no_legacy_hero.py`: Guard: the hero's old code id stays gone (renamed to rydan, save v7, Feras 2026-10-27). Fails on the old id in the

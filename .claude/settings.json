@@ -52,11 +52,20 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "^mcp__.*__(generate-image|generate-speech|rodin_generate.*|creative_(generate|edit)_.*|creative_design_voice|vidiq_(generate_.*|voiceover_generate|edit_media|motion_graphics)|run)$|runware",
+        "matcher": "^mcp__.*__(generate-image|generate-speech|rodin_generate.*|creative_(generate|edit)_.*|creative_design_voice|vidiq_(generate_.*|voiceover_generate|edit_media|motion_graphics)|run|generate_3d)$|runware",
         "hooks": [
           {
             "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/tools/pre_spend.py\""
+          }
+        ]
+      },
+      {
+        "matcher": "^(SendUserFile|Artifact)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/tools/hooks/run.sh\" review_gate"
           }
         ]
       }
@@ -67,6 +76,16 @@
           {
             "type": "command",
             "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/instructions-loaded.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/tools/hooks/run.sh\" token_handoff"
           }
         ]
       }

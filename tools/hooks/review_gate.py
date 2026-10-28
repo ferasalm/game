@@ -13,6 +13,7 @@ import sys
 
 RENDER_NAME = re.compile(r"f\d{8}\.png$")
 EXEMPT = ("inbox/flow/", "inbox/neon glitch concept art/")
+MEDIA = (".png", ".jpg", ".jpeg", ".webp", ".gif", ".mp4", ".webm")  # a document in inbox/ is no render (review 10-28)
 
 
 def stamp_dir():
@@ -31,6 +32,8 @@ def is_render(path):
     p = path.replace("\\", "/").lower()
     segments = p.split("/")
     base = segments[-1]
+    if not base.endswith(MEDIA):
+        return False
     if "inbox" in segments:
         if any(x in p for x in EXEMPT) or base.startswith("concept_"):
             return False
@@ -61,7 +64,9 @@ def paths_for(tool, tool_input):
                 out.append(v["from"])
     elif isinstance(files, list):
         for v in files:
-            if isinstance(v, dict) and isinstance(v.get("path"), str):
+            if isinstance(v, str):
+                out.append(v)
+            elif isinstance(v, dict) and isinstance(v.get("path"), str):
                 out.append(v["path"])
     return out
 

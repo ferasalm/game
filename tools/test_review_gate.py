@@ -73,7 +73,8 @@ def test_relative_paths_resolve_against_cwd():
 def test_exempt_and_non_render_files_pass():
     b = Box()
     for rel in ("inbox/flow/roya_style_v3_2k.jpg", "inbox/Neon Glitch concept art/Bilqis.jpg",
-                "inbox/concept_roof.png", "docs/report.md", "notes/summary.png"):
+                "inbox/concept_roof.png", "docs/report.md", "notes/summary.png",
+                "inbox/Neon_Glitch_Story_Bible_Final.docx", "inbox/playtest/notes.md"):  # review 10-28
         r = b.send(b.file(rel))
         assert r.returncode == 0, (rel, r.stderr)
 
@@ -91,7 +92,8 @@ def test_artifact_inputs_are_all_checked():
     page = b.file("scratch/page.html", b"<html></html>")
     for tool_input in ({"file_path": png}, {"file_path": page, "files": {"shot.png": png}},
                        {"file_path": page, "files": {"shot.png": {"from": png}}},
-                       {"file_path": page, "files": [{"path": png}]}, {"url": "x", "asset": True, "file_paths": [png]}):
+                       {"file_path": page, "files": [{"path": png}]}, {"file_path": page, "files": [png]},
+                       {"url": "x", "asset": True, "file_paths": [png]}):
         assert b.gate("Artifact", tool_input).returncode == 2, tool_input
     assert b.gate("Artifact", {"file_path": page}).returncode == 0
 

@@ -10,8 +10,9 @@ import sys
 
 PAID = re.compile(r"runware|__generate-(image|speech)$|__creative_(generate|edit)_\w+$|__creative_design_voice$"  # ElevenLabs
                   r"|__vidiq_(generate_\w+|voiceover_generate|edit_media|motion_graphics)$"  # vidIQ
-                  r"|b4f13e4a-fbfa-405c-b7d5-efd7ae151a47__run$", re.I)  # the Runware connector (its tools lack the name)
-HYPER = re.compile(r"hyper3d__rodin_generate", re.I)
+                  r"|b4f13e4a-fbfa-405c-b7d5-efd7ae151a47__run$"  # the Runware connector (its tools lack the name)
+                  r"|^mcp__blender__generate_3d$", re.I)  # may cost a credit; the free route is TRELLIS (HANDOFF row 8)
+HYPER = re.compile(r"__rodin_generate", re.I)  # the hyper3d server and the Rodin connector
 OK = re.compile(r"spend\s+ok", re.I)
 RECENT = 8  # the OK must sit in one of the last user messages: it is per job, not for the rest of the session
 

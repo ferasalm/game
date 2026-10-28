@@ -60,6 +60,39 @@ def test_connector_paid_tools_blocked():  # 2026-10-27: these paid MCP tools sli
     assert run("mcp__b4f13e4a-fbfa-405c-b7d5-efd7ae151a47__list_models").returncode == 0
 
 
+PAID_SAMPLES = ("mcp__openrouter__generate-image", "mcp__openrouter__generate-speech", "mcp__runware__image",
+                "mcp__e90b7708-6075-49b9-9f7a-3728423bc323__creative_generate_image",
+                "mcp__5102e12a-bcea-4184-bf9f-903d6e0ac4ac__vidiq_generate_video",
+                "mcp__b4f13e4a-fbfa-405c-b7d5-efd7ae151a47__run", "mcp__blender__generate_3d")
+REMIND_SAMPLES = ("mcp__hyper3d__rodin_generate", "mcp__930f9a0f-42c9-4cbe-9299-18e97607aed2__rodin_generate_bang")
+
+
+def test_blender_generate_3d_blocked():  # 2026-10-28: it may cost a credit and slipped past both lists
+    assert run("mcp__blender__generate_3d", transcript(user("make a guard"))).returncode == 2
+    assert run("mcp__blender__generate_3d", transcript(user("spend ok"))).returncode == 0
+    assert run("mcp__blender__search_assets").returncode == 0
+
+
+def test_rodin_connector_reminds():
+    r = run(REMIND_SAMPLES[1], transcript(user("x")))
+    assert r.returncode == 0 and "credit cost" in r.stdout, r.stdout
+
+
+def test_settings_matcher_reaches_every_paid_tool():
+    """The hook only runs for tools the settings.json matcher names: the two lists drift (generate_3d, 10-28)."""
+    root = os.path.dirname(os.path.dirname(HOOK))
+    with open(os.path.join(root, ".claude", "settings.json"), encoding="utf-8") as f:
+        pre = json.load(f)["hooks"]["PreToolUse"]
+    matchers = [m["matcher"] for m in pre if any("pre_spend.py" in h["command"] for h in m["hooks"])]
+    assert matchers, "pre_spend.py is not wired in .claude/settings.json"
+    import re
+    for tool in PAID_SAMPLES + REMIND_SAMPLES:
+        assert any(re.search(m, tool) for m in matchers), f"settings.json matcher misses {tool}"
+        if tool in PAID_SAMPLES:
+            assert run(tool, transcript(user("make it"))).returncode == 2, f"pre_spend.py lets {tool} through"
+    assert not any(re.search(m, "mcp__blender__execute_blender_code") for m in matchers)
+
+
 if __name__ == "__main__":
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     for t in tests:

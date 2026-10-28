@@ -85,7 +85,9 @@ def fallback_work(path):
             e = json.loads(ln.decode("utf-8", "replace"))
         except ValueError:
             continue
-        if e.get("type") in ("user", "assistant"):
+        if is_boundary(e):
+            n = 0  # only the text since the last compaction is in the window
+        elif e.get("type") in ("user", "assistant"):
             n += len(ln) + 1
     return n / 5.7
 
@@ -116,13 +118,17 @@ def main():
 
     baseline = state.get("baseline") if state else None
     warned = state.get("warned", 0) if state else 0
+    seen = state.get("boundary") if state else None
     boundary = None
     for i, e in enumerate(entries):
         if is_boundary(e):
             boundary = i
     if boundary is not None:
-        baseline, warned = None, 0
+        e = entries[boundary]
+        key = e.get("uuid") or e.get("timestamp") or ""
         entries = entries[boundary + 1:]
+        if key != seen:  # a new compaction: count from its first usage; one still in the window was counted already
+            baseline, warned, seen = None, 0, key
 
     usages = [total(e) for e in entries if is_usage(e)]
     if usages:
@@ -142,7 +148,7 @@ def main():
         msg = f"Work tokens ~{int(work) // 1000}k (D4): finish the unit, then /handoff."
         warned = 80000
 
-    save_state(sp, {"size": size, "baseline": baseline, "warned": warned})
+    save_state(sp, {"size": size, "baseline": baseline, "warned": warned, "boundary": seen})
     if msg:
         print(json.dumps({"hookSpecificOutput": {"hookEventName": "PostToolUse", "additionalContext": msg}}))
     return 0
