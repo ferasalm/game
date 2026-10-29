@@ -1,22 +1,46 @@
 # How We Work
 Updated whenever docs/WORKFLOW.md Protocols change.
 
-## The loop
+## The whole system (v2, row 17)
+Orange = your moves. Each chat takes the top HANDOFF row; a run goes left to right through the pipeline.
 ```mermaid
-flowchart LR
-    Feras["Feras"] --> Opus["Opus chat"]
-    Opus --> Brief["Brief"]
-    Brief --> Pipeline["Builder pipeline (agy/cf/oc)"]
-    Pipeline --> BuildGate["Build gate"]
-    BuildGate --> CrossReview["Cross-review (other model family)"]
-    CrossReview --> OpusGate["Opus gate"]
-    OpusGate --> EyeGate["Eye gate"]
-    EyeGate --> Main["main"]
-    Main --> Handoff["Handoff"]
-    Handoff --> Calendar["Calendar + feras/BRIEFING.md"]
-    Calendar --> Plays["Feras plays"]
-    Plays --> Queue["Notes back to the queue"]
-    Queue --> Opus
+flowchart TB
+    subgraph You["Feras"]
+        Decide["Decides: scope, story, art, models, releases"]
+        Spend["Says 'spend ok' for a paid call"]
+        Play["Plays a gated build on PC and phone"]
+        Notes["Writes notes"]
+    end
+    subgraph Chats["Claude chats"]
+        Queue["HANDOFF queue: top row first"]
+        Father["Father chat (Opus): plans, briefs, reviews, merges"]
+        Child["Child chat (Opus, own worktree): long, taste, MCP art work"]
+        Readers["Haiku readers + review-* agents: big reads, review lenses"]
+    end
+    subgraph Pipe["Builder pipeline (free models: agy, cf, oc)"]
+        Slots["slots.sh: a free slot + memory floor"] --> Build["Builder writes code, tests, docs"]
+        Build --> Check["check.sh"]
+        Check -- "red" --> Fix["Up to 2 free fix passes"] --> Check
+        Check -- "green" --> Gate["Build gate: PASS / FAIL / NOWORK / BREACH"]
+        Gate --> XR["Cross-review by the other model family"]
+        XR --> OpusGate["Opus gate: reads the diff, fixes, owns it"]
+    end
+    OpusGate --> Eye["Eye gate: renders judged by review-player + review-feras"]
+    Eye --> Main["main on GitHub"]
+    Main --> Sync["sync_main.sh: your checkout updated"]
+    Main --> Reports["Reports: feras/BRIEFING.md, calendar 'Your moves today', HANDOFF Open points"]
+    Queue --> Father
+    Father --> Child
+    Father --> Readers
+    Father --> Slots
+    Child --> Slots
+    Decide --> Queue
+    Spend -.-> Father
+    Reports --> Play
+    Sync --> Play
+    Play --> Notes --> Queue
+    classDef feras fill:#f6a04d,stroke:#8a4b00,color:#000
+    class Decide,Spend,Play,Notes feras
 ```
 
 ## Roles
