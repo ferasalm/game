@@ -40,17 +40,23 @@ Next goal: a free 20-30 min demo, PC (Steam) first, Android kept alive. Check ev
 5. Before reading -> the reading rule: grep, then read small targeted excerpts yourself; a Haiku high reader only for a
    read over ~20k tokens or across many files. Never read assets/ binaries (pictures only when judging art, small),
    docs/research/gemini-blueprint-citations.md; gemini-blueprint.md one section at a time.
-Scale: a small, low-risk change (a few lines, no machinery, nothing player-visible) skips Ripple, pre-mortem and
-the advisor; machinery, a brief, a paid call or anything that reaches Feras gets them all.
+Scale: a small, low-risk change (a few lines, no machinery, nothing player-visible) skips Ripple and pre-mortem;
+machinery, a brief, a paid call or anything that reaches Feras gets them all.
+6. The advisor tool only with Feras's OK (10-29): a model stuck (the same step failed twice) asks him "May I use
+   /advisor opus?"; a subagent reports BLOCKED and its orchestrator asks.
 
 ## Lean process (Feras 10-28; how: docs/WORKFLOW.md Start here)
+- Motto COOKE (Clarity, Organization, Optimization, Kaizen, Efficiency); a fiduciary duty to Feras; top-down (big
+  picture, then details); foundations solid and flexible (tests, data-driven content, small modules, no hacks).
 - Aims, always learning: think deeply and critically; finish fast; maximum quality; minimum cost; save Feras's time;
   get more organized. Speed, never needless spend: each task goes to the cheapest worker that does it well (WORKFLOW
   step 3: the father, builder, Haiku reader, review-* agent, Sonnet subagent + advisor, Opus child chat). Tie-break
   (Feras 10-28): quality is a hard gate (checks pass, Opus signs off); Claude tokens are minimised; builder time is free.
 - Opus orchestrates and owns every output that reaches Feras as if it did the work: it reviews whatever another model
   made, tiered (gates, a Haiku pass on big diffs, then Opus on the list and the risky hunks).
-- IMPORTANT: one task, model and effort per chat. Check get_usage at the start and before a big step.
+- IMPORTANT: one task, model and effort per chat; a follow-up or correction of <= ~10 tool calls stays (its cache is
+  cheaper), a new multi-step task opens a fresh chat. get_usage at the start and before a big step. Independent steps
+  go as parallel tool calls in one message, never chained shell (the worktree guard refuses it; each refusal = a call).
 - Builders write when the brief is shorter than the work and the risk is low or well tested (<= 2 Godot runs, 1 text
   run); Opus writes small, risky machinery itself (hooks, gates, slots, saves). Claude plans, briefs (TEMPLATE),
   reviews and merges. Every brief names its persona (.agents/skills); our rules outrank persona text. One builder a

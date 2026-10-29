@@ -1,4 +1,4 @@
-# Story bible (Feras, 2026-10-26; from inbox/Neon_Glitch_Story_Bible_Final.docx (renamed by Feras 10-27), text unchanged)
+# Story bible (Feras, 2026-10-26; from inbox/docs/Neon_Glitch_Story_Bible_Final.docx (renamed by Feras 10-27), text unchanged)
 The Twine map (rydan.twee) is built from this. Where it collides with docs/DECISIONS.md, the map tags the passage "check".
 
 Old Sanaa Neon Glass

@@ -47,6 +47,23 @@ sees what was done, what was not, what was checked and what comes next. Measured
    the break-even is ~10-15 calls), the never-used connector list, the advisor facts (caller Opus 5.5 high; the
    advisor's model and effort are not visible).
 
+## Added late 10-29 (Feras; logged in decisions-log; fold each into the item named)
+- Combat first ("game juice"): M1 (row 3) is combat feel first -> VISION M1 line + row 3 text.
+- Open-source repos and games for assets, skills, ideas: read C:\dev\game\inbox\docs\ideas opensource game.pdf (a
+  Gemini chat: ideas, never facts; inbox is git-ignored, use the absolute path). Builder row (agy researches, D18):
+  candidates with licence (CC0/MIT/BSD/Apache first; CC-BY with attribution; no GPL code in the game; no NC: the
+  game goes premium), fit with docs/design/art-bible.md, manifest entries. Code, tools and sound first; art only if
+  it fits the art bible.
+- Top-down (big picture first) and solid-but-flexible foundations: in CLAUDE.md already (10-29); the "How we work"
+  page and docs/design/systems-map.md come before detail work.
+- Models (item 6b): Claude assigns any free model to the right task, several at once: Cloudflare-hosted (DeepSeek
+  V4.1 Flash, GLM-5.3-Flash; Feras: not billed), opencode free, OpenRouter :free. agy researches Artificial
+  Analysis benchmarks and reports; Claude reads the report only. Non-Godot runs: no cap but the memory floor; Godot
+  runs stay <= 2 (memory). DeepSeek stays a builder; as a reviewer it failed (0/3).
+- The advisor tool only with Feras's OK (CLAUDE.md duty 6, done 10-29).
+- His one file: feras/BRIEFING.md (created 10-29; handoff skill step 7 writes it): use it for every report to him.
+- The token hook (item 3) is NOT built yet: only proposed.
+
 ## Feras's own moves (Open points seed)
 - Switch off in the app (Settings -> Connectors): Gmail, Google Drive, Google Docs, the duplicate Rodin connector,
   Cloudflare Bindings (decided 10-29).

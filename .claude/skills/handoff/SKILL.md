@@ -34,5 +34,6 @@ HANDOFF, DECISIONS and LESSONS load at every session start, so every line costs 
 7. **Report.** A department child chat (docs/WORKFLOW.md, Start here) ends with a report of 15 lines or fewer for the
    father (a subagent runs no /handoff: the father writes its row): commits on main, what failed, questions for Feras. The father (or a chat Feras drives) tells the owner in
    five short parts (Feras 10-29): Done (where: branch or main) | Still open | When (a calendar day) | How (the queue
-   row: Dept, lane, who) | Your move vs mine. When the plan for the next 3 days changed, update those days' calendar
+   row: Dept, lane, who) | Your move vs mine | Checked and not checked. The same report goes at the top of
+   feras/BRIEFING.md (his one file; keep the last 5) and the chat names that file. When the plan for the next 3 days changed, update those days' calendar
    events (feras.almekhlaf@gmail.com, all-day, "Your moves today:" lists). New ideas go to docs/ideas.md, not the queue.

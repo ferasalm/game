@@ -565,6 +565,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `features/workshop/view/workshop_tabs_bar.gd`: purpose: Header bar (1760x64 at 80,40) with title pair, mode tabs, and money counter
 - `features/workshop/workshop_service.gd`: purpose: Executes workshop operations against GameState and emits toasts and bus events
 
+## feras
+- `feras/BRIEFING.md`
+
 ## localization
 - `localization/arena.csv`
 - `localization/battle.csv`
