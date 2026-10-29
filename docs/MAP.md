@@ -701,7 +701,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_template.py`: TEMPLATE.md stays readable by the gate (P3.8, 2026-10-27): its headings, an empty forbidden list, parseable checklist.
 - `tools/test_token_handoff.py`: Self-test for tools/hooks/token_handoff.py (hand-off rule, Feras 10-28): warns at 200k and 250k of context.
 - `tools/test_twine_sync.py`: Self-test for tools/twine_sync.py: python tools/test_twine_sync.py (temp dirs, plain asserts, exit 1 on failure).
+- `tools/test_wait_run.py`: Self-test for tools/wait_run.sh (row 16): after its wait it reports each run and the best move: re-arm a running
 - `tools/test_wt_clean.py`: Self-test for tools/wt_clean.sh: merged and dead builder worktrees go, live and unmerged ones stay.
 - `tools/twine_format.py`: Twee 3 <-> Twine 2 library HTML conversion for tools/twine_sync.py (parse, write, layout, to/from HTML).
 - `tools/twine_sync.py`: Syncs a Twee 3 story in the repo with the Twine 2 desktop library, both ways (docs/story/README.md).
+- `tools/wait_run.sh`: Cache waker for builder runs (row 16, Feras 10-29). A chat waiting on a run is idle and its prompt cache lives 1 hour:
 - `tools/wt_clean.sh`: Lists (default) or removes (--apply) builder worktrees in game-wt that are merged into origin/main, ended NOWORK, or

@@ -23,6 +23,9 @@ docs/research/calibration-2026-10.md.
 4. `bash tools/slots.sh`, then `bash tools/build_pipeline.sh <oc|agy|cf> <task> <brief> <base>` with run_in_background
    (cf: tools/cf_build.sh). It refuses when full or the base is unpushed. Python or docs only: `RUN_KIND=py` (no Godot
    slot or memory floor; `check.sh --no-godot`; the gate fails any Godot file; merge_run reruns the full check).
+   Then the cache waker, also in the background: `bash tools/wait_run.sh <task>...`; obey its "Best move" line; TaskStop
+   it in the message that gates the run. Expected over ~3 h (an overnight build) or context past 200k: /handoff at
+   launch instead (a fresh chat gates it).
 5. Read the first word of `../game-wt/<task>.result` (PASS / FAIL / NOWORK / BREACH). Read a PASS only.
 6. Review panel on the diff: `.claude/agents/review-code` (and review-player for renders), flags only; Claude confirms
    each flag against the code before acting. Max 3 fix rounds, then stop and report.

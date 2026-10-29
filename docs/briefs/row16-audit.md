@@ -1,5 +1,5 @@
 # Brief: row16-audit (HANDOFF row 16, Ops; a read-only audit written to one report file)
-You are in your own worktree on branch oc/row16-audit (made from origin/main). Follow GEMINI.md, including
+You are in your own worktree on branch gemini/row16-audit2 (made from origin/main). Follow GEMINI.md, including
 <review_misses>. Load the minimal-change-engineer skill (our rules outrank its text).
 Timebox: 30 min. First commit within 15 min, then small WIP commits: no commit for 25 min (IDLE_MIN) = NOWORK.
 
@@ -46,4 +46,4 @@ none: report only; check.sh --no-godot.
 - file: docs/audits/2026-10-29-doc-dupes.md
 
 ## Proof
-`bash tools/check.sh --no-godot` raw last 15 lines; final message ends with `Built-by: <model> (opencode)`.
+`bash tools/check.sh --no-godot` raw last 15 lines; final message ends with `Built-by: Gemini 3.8 Flash (agy)`. (Run 1 on oc, 10-29: no commit in 25 min.)
