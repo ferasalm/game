@@ -20,7 +20,7 @@ UI): docs/CANON.md, read before any content work. D1-D22 = the process audit pla
 - 2026-10-28 | Hand off at a unit boundary past ~250k context (get_usage; review-heavy work to ~300k) or ~85% of the 5-hour window (hook: 200k, 250k); a tool's message is obeyed unless get_usage contradicts it, then the mismatch is logged; milestone-only reports; HANDOFF = one queue, each row names its department and lane (builder by default) | Feras
 - 2026-10-23 | Emergency mode (50% of the 5-hour window): one director chat, builders on backups; builders never merge or push to main (D3) | Feras
 - 2026-10-22 | Always-loaded notes <= 27 KB; caps in tools/doc_check.py (warns at 75%); one task, model, effort per chat | Feras
-- 2026-10-27 | No chat edits in C:\dev\game: worktrees only; the main checkout is for Feras's play and builder launches (D10) | Feras
+- 2026-10-29 | No chat edits in C:\dev\game: worktrees only; the main checkout is for Feras's play and builder launches (D10); one exception: after merging to main, a chat runs `bash tools/sync_main.sh` there when it has no local changes (10-29) | Feras
 - 2026-10-19 | Merge checked work into main at each session's end (standing OK) | Feras
 - 2026-10-22 | Log: never reword; struck (~~...~~) lines go to docs/decisions-archive.md | Claude
 - 2026-10-19 | Blueprint and docs/research = design input only, never facts; WSL2 rule and 120-line cap rejected | Claude
