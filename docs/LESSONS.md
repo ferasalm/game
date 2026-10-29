@@ -35,6 +35,11 @@ naming the test; Godot code traps -> .claude/rules/code.md; builder-only -> .cla
 - Background runs: `python - <<EOF < /dev/null` spun in an empty REPL, `cmd | grep` hid a crash (exit 0), agy, opencode
   and ffmpeg hung on stdin (20-25 min lost) -> script files, `< /dev/null`, ffmpeg `-nostdin`, `set -o pipefail`, child
   timeouts; check each job at its expected end (2026-10-25).
+- Editing tools/build_pipeline.sh while two runs used it crashed both after their build ("syntax error near `)'",
+  line 98): bash reads a script as it runs -> never edit a tool a live run executes; re-gate with SKIP_BUILD=1 (2026-10-30).
+- "Builder hung / reviewer printed nothing" twice had silent causes: opencode's spent free quota (exit 0, no text) and
+  Workers AI DeepSeek thinking past the 32k cap -> first probe with `--print-logs` and `--format json` (finish reason,
+  tokens) before blaming the model (2026-10-30).
 - `check.sh | tail && git commit` committed a failing run -> grep .check/*.log for FAIL first; never push before reading the
   final check line (2026-10-23).
 

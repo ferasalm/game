@@ -2,6 +2,29 @@
 Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after a sync). Claude's own queue is
 HANDOFF.md; this file is your view of it. Each report: Done | Still open | When | How | Your move vs mine | Checked.
 
+## 2026-10-30 (Thu night): row 17 models, builders, licences, diagram (Opus 5.5 high), closed
+**Done (on main):**
+- DeepSeek 1017 fixed (done). Access works on every route. Your long builds never hit the bug because each agent step
+  is short. A one-shot review is one long answer: Cloudflare's default "high" thinking filled the whole 32k output
+  budget, hidden, with no text (3 of 3 replays). `reasoning_effort: low` fixed it: a valid review in 195 s, ~$0.04.
+- The opencode free "hang" (done): opencode's free usage limit is spent ("Free usage limit reached"), and opencode
+  hides it (no text, exit 0). Runs now log it and stop at once as "NOWORK quota: rerun on cf", with a test.
+- GLM-5.3 (Cloudflare) calibrated (done): same score as nemotron and DeepSeek-low (1 of 2 planted bugs), 3x slower.
+  GLM-5.3-flash: Cloudflare answers; opencode free timed out on the spent quota (calibration planned with row 18).
+- Your AI-search list (done, partly checked): Clef-flash is real (9B vision yes/no model, ~free). Jev, Clairic, bge-m3:
+  agy says real, unchecked. The AA scores are not trustworthy: AA shows DeepSeek V4.1 Flash as "Unknown"; agy wrote 32.
+- Licences (done): 13 of 15 rows verified; 2 dead links removed (GDQuest 2D RPG, Quaternius cyberpunk). 3 of 3 spot-checks right.
+- Diagram v2 (done): the whole system on one page, your moves in orange:
+  https://github.com/ferasalm/game/blob/main/docs/HOW_WE_WORK.md
+**Still open:** model routing proposal (waiting on Feras); cross-review keep/drop (in progress: 1 of 5 runs measured);
+row 18 Clef + Jev calibration (planned after your OK).
+**When:** your OK any day; row 3 M1 brief Sat 10-31 after 16:00 (unchanged).
+**How:** row 18 = Ops, builder agy. **Your move:** read the Routing table in .claude/skills/builders/models.md and OK or
+change it; subscribing to OpenCode Go is not needed (Cloudflare covers it for cents). **Mine:** M1 brief Saturday.
+**Checked:** both test suites (build pipeline 12, cross-review 5) and check.sh --no-godot run and read; the diagram renders
+on GitHub; 3 AA + 3 licence facts re-read. Not run: the Godot checks (only docs and Python tools changed; 1.5 GB free memory).
+My mistake (fixed): I edited a pipeline script while two runs were using it, so both crashed; I re-gated them, nothing lost.
+
 ## 2026-10-29 (Thu, late): row 16 process completion (Opus 5.5 high), closed
 **Done (on main):**
 - Calendar Thu-Mon matches the plan (new Mon 11-02 "play M1"). HANDOFF "Waiting on Feras" is now "Open points"
