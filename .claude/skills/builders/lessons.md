@@ -40,5 +40,8 @@
 - Cross-review calibration (row 12 A, 10-29): tools/cross_review.sh, agy with --dangerously-skip-permissions --sandbox
   from an empty box (packet.md only), on cf's hook diff 783eefd: one round, 11 min, a valid block, 10 findings, box
   untouched. Key 3 of 5: (b) pre-compaction fallback, (c) inbox documents blocked, (d) plain-list files unchecked;
-  (a) repeat warnings only brushed, (e) missed: it argued the opposite (fail closed), so wiring/fail-side questions
-  stay Opus's. PASS (>= 3). DeepSeek's leg (bash/edit denied, packet attached, forced round) is stub-tested only.
+  (a) repeat warnings only brushed, (e) missed. Of the other 7: 1 harmful (review_gate should fail closed = the
+  opposite of (e): sent as a fix pass it would bring that bug back), 1 false (git-common-dir join is right: cwd=here),
+  1 real and minor, still on main (RENDER_NAME.search is anchored only at the end), 1 moot (code since rewritten), 3
+  unchecked. PASS on found (>= 3), borderline on "most real": fail-open/closed findings go to Opus, never to the
+  builder. DeepSeek's leg (bash/edit denied, packet attached, forced round) is stub-tested only.
