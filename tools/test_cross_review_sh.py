@@ -92,12 +92,13 @@ def test_no_block_gets_one_forced_round():
     assert r.returncode == 0 and stub.count("ARGS ") == 2 and "forced round" in log, (r.stdout, stub)
 
 
-def test_deepseek_reviews_agy_runs_tools_denied_and_silence_is_invalid():
+def test_free_lens_reviews_agy_runs_tools_denied_and_silence_is_invalid():
     top, g = toy()
     git(g, "branch", "-m", "oc/job", "gemini/job")
     r, stub, out = review(top, g, mode="never")
     assert r.returncode == 1 and out.startswith("INVALID"), ("no block must never read as a clean review", out)
     assert stub.count("ARGS ") == 2 and "-f packet.md" in stub, stub
+    assert "nemotron" in stub and "deepseek" not in stub, ("DeepSeek gave 0 blocks in 3 live runs (10-29)", stub)
     assert "cross_review.opencode.json" in stub, ("DeepSeek must run with bash and edit denied", stub)
 
 

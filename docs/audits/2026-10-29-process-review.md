@@ -120,4 +120,4 @@ chats); long chats are what cost. (4) Fewer, bigger tool calls. (5) Compaction r
 Three days have gone to process (rows 1, 12, 14) while M1, the thing VISION ranks first, hasn't started, and 83% of
 the week is used. Pick: **process freeze until you have played M1** (Sunday). The only process work allowed before
 then: trimming connectors per chat (your toggle, free) and fresh chats per request. Everything else waits in
-docs/ideas.md.
+docs/ideas.md. **Feras 10-29: no freeze ("No, keep going").**

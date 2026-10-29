@@ -61,8 +61,9 @@ are: what loads at start, how long a chat runs, what gets read, and output.
 - **Review (tiered, Feras 10-28: Opus never reads needlessly, and signs off on whatever reaches Feras):**
   1. Gates first: check.sh, build_gate (.result first line). FAIL, NOWORK or BREACH goes back unread.
      PASS: cross-review (row 12 A, 10-29): `bash tools/cross_review.sh <run> <brief> <base>` in the background. On for
-     oc/* runs (agy reviews, free, ~11 min, 3/5 on calibration); gemini/* runs: none yet (DeepSeek gave 0 blocks in 3
-     live runs, 10-29; row 12 tries the nemotron :free lens). Opus vets the table
+     oc/* runs (agy reviews, free, ~11 min, 3/5 on calibration); gemini/* runs: nemotron :free (1/2 on calibration;
+     DeepSeek off: 0 blocks in 3 live runs, 10-29). USAGE logs real hits a run: under 1 on average over 5 runs ->
+     drop the step. Opus vets the table
      (.check/reviews/<run>-cross.md) in step 3; real findings go to the builder as its fix pass, then the gate again;
      fail-open/closed findings stay Opus's (agy argued the wrong side on calibration).
   2. Big diffs (over ~300 lines or ~10 files): a Haiku high pass (or a free lens, Readers) lists the misses against

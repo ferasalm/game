@@ -1,5 +1,5 @@
 # Ideas inbox (never loaded at start; triaged into HANDOFF queue rows at the weekly plan, Feras 10-29)
-Each line: date | idea | first verdict | by. Process ideas wait until Feras has played M1 (process freeze, 10-29).
+Each line: date | idea | first verdict | by. No process freeze (Feras 10-29): a row here may be queued any time.
 
 - 2026-10-29 | Cloudflare Workers AI embeddings (bge) find duplicate or superseded rules across docs and skills; a tools/ script + test, free tier | yes, builder (cf or agy, py run) | Feras
 - 2026-10-29 | Audit CLAUDE.md with the claude-md-management plugin (claude-md-improver) | once, a fresh Sonnet chat; small gain, CLAUDE.md is capped | Feras

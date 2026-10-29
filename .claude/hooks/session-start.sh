@@ -23,6 +23,12 @@ echo "SYNC: $branch is $behind behind and $ahead ahead of origin/main."
 [ "$behind" != "0" ] && echo "SYNC: merge origin/main before changing anything."
 [ -n "$(git status --porcelain 2>/dev/null)" ] && echo "SYNC: uncommitted changes are present; look before editing."
 [ -x tools/godot.sh ] && (tools/godot.sh >/dev/null 2>&1 &)
-echo "Next: tell the owner the top HANDOFF.md queue row (Dept, lane, who); the cheapest worker that does it well does it"
+# The top queue row, so telling the owner needs no HANDOFF read (row 15, 10-29): # | task | Dept | Lane | Who
+top="$(awk -F'|' 'function t(s) { gsub(/^ +| +$/, "", s); return s }
+  /^## Queue/ { q = 1; next } q && /^## / { exit }
+  q && $2 ~ /^ *[0-9]+ *$/ { print "#" t($2) " " substr(t($3), 1, 90) " | " t($4) " | " t($5) " | " t($6); exit }' \
+  HANDOFF.md 2> /dev/null)"
+[ -n "$top" ] && echo "TOP: $top"
+echo "Next: tell the owner the TOP row (Dept, lane, who); the cheapest worker that does it well does it"
 echo "(docs/WORKFLOW.md, Start here step 3); bash tools/status.sh shows the state."
 exit 0

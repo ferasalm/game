@@ -47,4 +47,6 @@
   builder. DeepSeek live (10-29, agy's parser, 2 known bugs): 3 runs, 0 blocks. Run 1: read the packet, then its step
   ended at opencode's 32k output cap (finish "length", --format json) with no text; the packet had main's newer
   commits + MAP.md (2-dot diff, fixed: merge base, generated files out); runs 2-3 on the 17 KB packet: no text again.
-  DeepSeek is off as a reviewer; agy runs try the calibrated nemotron :free lens next (row 12).
+  DeepSeek is off as a reviewer. nemotron-3-ultra :free (oc reviewer) on the same parser: one round, 7 min, 3
+  findings: 1 of 2 key (non-UTF-8 crash; CRLF missed), 1 real minor (unwritable --out crashes), 1 doubtful (drive-
+  letter paths, which the prompt excludes). On for agy runs as a free pre-pass; Opus vets every finding (10-29).

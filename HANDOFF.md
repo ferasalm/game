@@ -1,5 +1,5 @@
 # HANDOFF (current state only; ONE queue for every chat; max 60 lines)
-Last updated: 2026-10-29 (row 12: cross_review.sh + agy calibration 3/5 PASS on main, A on in WORKFLOW Review; only DeepSeek's live leg left), Opus 5.5.
+Last updated: 2026-10-29 (rows 12 and 15 closed: cross-review on both sides (agy 3/5, nemotron :free 1/2; DeepSeek off), session hook prints TOP; process review docs/audits/2026-10-29; no freeze, Feras), Opus 5.5.
 Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Feras's list).
 
 ## How this file works (Feras 2026-10-27; departments 10-28)
@@ -8,15 +8,13 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
   taste, MCP or builder-waiting rows go to an Opus child chat (it writes its own row; Status "child open: <branch>").
 - Lane: who does the work inside it: builder (agy, cf, oc) by default; chat = the Opus chat itself, only for taste, MCP
   (Blender, Flow, Rodin), review or plan, said in brackets; Feras = his move. tools/doc_check.py checks every row.
-- Systems first (Feras 10-28): row 1 (closed 10-28), then row 12 (cross-review), then M1 (rows 3-6).
+- Systems first (Feras 10-28): rows 1, 12, 15 closed (10-28/29); now M1 (rows 3-6); no process freeze (Feras 10-29).
 - Builders (D1): <= 2 Godot runs + 1 free text run (slots.sh). Briefs: docs/briefs/TEMPLATE.md. Balance band: start
   gear 82.7-89% wins; arc_arm needs an upside.
 
 ## Queue
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
-| 15 | Session-start hook prints the top queue row (Dept, lane, who); test_session_start | Ops | builder | agy (RUN_KIND=py) | queued | - |
-| 12 | Cross-review for agy runs: a `oc` reviewer in tools/cross_review.sh (opencode + nemotron-3-ultra :free, tools denied) + test, calibrated on agy's parser (gemini/cross-review-parser-agy, 2 known bugs: non-UTF-8 crash, CRLF out) | Ops | builder | agy (RUN_KIND=py) | queued (DeepSeek reviewer off: 0 blocks in 3 runs, 10-29) | - |
 | 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | queued | - |
 | 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | queued | 3 |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | queued: runs while agy builds row 4 | 3; free memory >= 3 GB |
@@ -42,7 +40,7 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 | Day | Plan |
 |---|---|
 | Wed 10-28 | Row 1 closed (personas tailored, on main); Feras OKs docs/VISION.md. |
-| Thu 10-29 | Row 12: cross-review lane + agy's wider lane (agy, cf build; Opus calibrates and reviews); the race test. |
+| Thu 10-29 | Rows 12 + 15 closed (cross-review on both sides, TOP line in the session hook); process review written. |
 | Fri 10-30 | Row 3 M1 brief (Feras answers its feel questions); row 4 agy builds overnight. Feras: art homework, Bilqis call. |
 | Sat 10-31 | Limit resets 16:00: row 4 review + eye gate (cross-reviewed); row 6 Roya bake. |
 | Sun-Mon | Play day 1 (row 5) on PC and phone; fix passes from his notes; rows 7-8. |

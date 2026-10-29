@@ -42,6 +42,17 @@ def test_hook_started_in_the_main_checkout_follows_the_session_cwd():
     assert out.strip() == "OWN COPY 1", out  # the worktree's own script runs, not the project dir's
 
 
+def test_hook_prints_the_top_queue_row():  # row 15 (10-29): the owner hears the top row without a HANDOFF read
+    top, env = repo_with_side_worktree()
+    assert "TOP:" not in run_hook(top + "/side", env), "no HANDOFF.md: no TOP line, no crash"
+    with open(top + "/side/HANDOFF.md", "w", encoding="utf-8", newline="\n") as f:
+        f.write("# H\n| 1 | not the queue | A | b | c | d | - |\n## Queue\n| # | Task | Dept | Lane | Who | Status | Blocked by |\n"
+                "|---|---|---|---|---|---|---|\n| 15 | Hook prints the row | Ops | builder | agy | queued | - |\n"
+                "| 12 | Later row | Ops | builder | agy | queued | 15 |\n")
+    out = run_hook(top + "/side", env)
+    assert "TOP: #15 Hook prints the row | Ops | builder | agy" in out and "Later row" not in out, out
+
+
 def test_fetch_is_capped_by_timeout():
     assert "timeout 15 git fetch" in open(HOOK, encoding="utf-8").read()
 
