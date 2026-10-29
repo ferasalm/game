@@ -6,7 +6,7 @@ UI): docs/CANON.md, read before any content work. D1-D22 = the process audit pla
 ### Scope
 - 2026-10-27 | Neon Glitch = the whole game: 2D isometric action RPG, real-time Hades-like combat, linear story (not a roguelite); docs/VISION.md holds pillars (combat feel wins ties), objectives, roadmap: free 20-30 min demo first, then premium; PC (Steam) leads, Android kept alive from M1 (D17), iOS later; Feras plays gated builds twice a week | Feras
 - 2026-10-26 | Old 3D game retired, archived on branch archive/3d + tag 3d-archive; lookup only (D20); reuse what fits (docs/archive/3d-reuse.md) | Feras
-- 2026-10-27 | Process audit P1 -> P2 -> P0 -> P3 -> P4 runs before game work (D12); repo public until before the first public demo, then private (D16) | Feras
+- 2026-10-29 | Process audit P1 -> P2 -> P0 -> P3 -> P4 ran before game work (D12; done: rows 1, 12, 15, 16 closed 10-28/29, M1 next); repo public until before the first public demo, then private (D16) | Feras
 ### Process
 - 2026-10-26 | Look gate: no system work on a scene until Feras OKs its render from the play camera; player's-eye gate (eye_gate) before any build reaches him, apart from check.sh (D5); shared code never names one game mode (layer lint) | Feras
 - 2026-10-27 | Claude is Feras's advisor (D21): checks requests against VISION, warns with a better default, maps ripples (docs/design/systems-map.md, a Ripple section in every spec), logs his repeated notes (docs/feras-notes.md), review-feras before anything reaches him; the Opus standard (D22) is in CLAUDE.md as 5 judgment duties, each with its trigger, apart from the rules a tool enforces (row 1, 10-28) | Feras

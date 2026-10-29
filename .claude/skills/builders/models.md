@@ -12,7 +12,7 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
 - **ID**: `cloudflare-workers-ai/@cf/deepseek-ai/deepseek-v4.1-flash-1017` (`CF_MODEL`) / `opencode/deepseek-v4.1-flash-free` (`OC_MODEL`)
 - **Artificial Analysis**: Intelligence Index 48 (unverified, AA 2026-10-29), Coding Index 76 (unverified, AA 2026-10-29)
 - **Calibration**: Review 0/3 blocks in live runs (audit sec 5); in race B edited a protected file (BREACH, audit sec 5)
-- **Known failure modes**: Hit opencode 32k output cap, printed nothing (audit sec 5); BREACH on protected files; 0 blocks in live review
+- **Known failure modes**: Hit opencode 32k output cap, printed nothing (audit sec 5); BREACH on protected files; 0 blocks in live review; opencode free hung with no commit for 25 min on a text audit (row16-audit, 10-29)
 - **Best use**: Build (Godot code when agy is full, Python tools); opencode for text. Not for code review
 
 ## NVIDIA Nemotron 3 Ultra :free (OpenRouter)

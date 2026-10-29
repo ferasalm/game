@@ -12,7 +12,7 @@ father, or an Opus child chat that waits idle on its runs; docs/WORKFLOW.md, Sta
 
 ## Roster and caps
 Numbers live in `tools/builders.conf` (caps, memory floor, idle minutes, models); never copy them here. `bash tools/slots.sh`
-shows what is running. Models and routes: DECISIONS "Tools and builders". Calibrated readers and lenses:
+shows what is running. Models and routes: DECISIONS "Tools and builders"; model cards: models.md (pick by card). Calibrated readers and lenses:
 docs/research/calibration-2026-10.md.
 
 ## The loop

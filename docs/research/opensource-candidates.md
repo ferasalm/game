@@ -16,6 +16,6 @@ Unverified research (D18): ideas, not facts; Claude verifies a licence before an
 | Dialogic 2 | https://github.com/dialogic-godot/dialogic | MIT | Visual dialogue timeline editor, portraits, branching choices, text effects | tool | github.com/dialogic-godot/dialogic (Dialogic Team, MIT) |
 | Kenney Audio (Impacts & Interface) | https://kenney.nl/assets/impact-sounds | CC0 1.0 Universal | Melee hit sounds, punch impacts, UI clicks, confirmations | sound | kenney.nl (Kenney, CC0) |
 | Kenney Sci-Fi Sounds | https://kenney.nl/assets/sci-fi-sounds | CC0 1.0 Universal | Cyberpunk neon hums, energy weapon buzz, tech interface cues | sound | kenney.nl (Kenney, CC0) |
-| Freesound Acid Rain & Ambience | https://freesound.org | CC0 1.0 Universal | Seamless acid-rain loop, Sana'a rooftop wind, night city hum | sound | freesound.org (Community, CC0) |
+| Freesound Acid Rain & Ambience | https://freesound.org | per sound (CC0, CC-BY, CC-BY-NC mixed): take CC0 or CC-BY only | Seamless acid-rain loop, Sana'a rooftop wind, night city hum | sound | freesound.org (Community, CC0) |
 | Quaternius Cyberpunk Characters | https://quaternius.com/packs/cyberpunkgamecharacters.html | CC0 1.0 Universal | Stand-in humanoid rigs and animations (walk, run, hit) for 2D sprite baking | art | quaternius.com (Quaternius, CC0) |
 | Poly Haven Urban Textures & HDRIs | https://polyhaven.com | CC0 1.0 Universal | Reference rooftop brick, gypsum plaster, and night lighting textures | art | polyhaven.com (Poly Haven, CC0) |

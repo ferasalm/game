@@ -176,8 +176,8 @@ brief names one game-dev skill (.agents/skills/). Free models may train on promp
    <brief> <base>`. It builds, runs check.sh, one free fix pass, check, then tools/build_gate.py, which writes
    ../game-wt/<task>.result.
 3. **Read** the .result's first line only: NOWORK (nothing real built), BREACH (touched a Do NOT edit path) or FAIL means
-   rerun or fix the brief, and read nothing else. PASS: read its WARN lines; run `bash tools/agy_review.sh <task>` only for
-   what a WARN names, and the renders. Then a Haiku subagent (effort high) compares the diff with the brief and its
+   rerun or fix the brief, and read nothing else. PASS: run `bash tools/cross_review.sh <task> <brief> <base>` (the other
+   model family; an INVALID review is noted in USAGE, not retried), read its WARN lines and the renders. Then a Haiku subagent (effort high) compares the diff with the brief and its
    Checklist and lists the misses; Opus reads only that list, the WARN lines and the renders.
 4. **Merge:** `bash tools/merge_run.sh <task> <gemini|oc>`. A fast-forward onto the checked commit reuses the check; any
    other merge runs check.sh. It removes the worktree and branch. The child chat that started a run merges

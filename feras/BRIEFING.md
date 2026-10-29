@@ -2,6 +2,24 @@
 Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after a sync). Claude's own queue is
 HANDOFF.md; this file is your view of it. Each report: Done | Still open | When | How | Your move vs mine | Checked.
 
+## 2026-10-29 (Thu, late): row 16 process completion (Opus 5.5 high), closed
+**Done (on main):**
+- Calendar Thu-Mon matches the plan (new Mon 11-02 "play M1"). HANDOFF "Waiting on Feras" is now "Open points"
+  (point | owner | since, max 10; a check fails without it; every /handoff closes or carries each).
+- Hooks: python heredocs with backslashes are blocked; the token hook also warns at 10M cumulative cache reads (it
+  fired live in this chat). New cache waker tools/wait_run.sh: wakes a chat waiting on a builder at 50 min so the
+  1-hour cache never expires; overnight runs hand off at launch.
+- docs/HOW_WE_WORK.md (loop diagram, roles, cost rules), model cards (.claude/skills/builders/models.md, numbers
+  unverified), open-source candidates (docs/research/opensource-candidates.md, licences to verify before import).
+- Doc audit by agy: 5 fixes applied (CLAUDE.md dupes, a stale WORKFLOW review step, a stale decision line).
+- VISION M1: combat feel first. Your Drive connector decision logged.
+**Still open:** your Open points (VISION OK, Bilqis portraits, art homework); keep/drop cross-review after 5 runs
+(nemotron :free returned an invalid review today).
+**When / How:** Sat 10-31 after 16:00: row 3 M1 brief (Gameplay, chat plan, Opus high). Fri: no Claude chats.
+**Your move vs mine:** yours = Fri art homework + the two calls; mine = M1 brief Saturday.
+**Checked:** all new tests; check.sh full run (582 passed) at the docs merge, again at the audit merge; the hooks live.
+**Not checked:** the open-source licences and benchmark numbers (marked unverified); CI is checked after the push.
+
 ## 2026-10-29 (Thu): row 12 chat (Opus 5.5 high), closed
 **Done (on main, CI green; your checkout synced):**
 - Cross-review: agy reviews DeepSeek/oc runs (3/5 known bugs); nemotron :free reviews agy runs (1/2); DeepSeek off

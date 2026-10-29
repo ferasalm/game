@@ -69,10 +69,8 @@ machinery, a brief, a paid call or anything that reaches Feras gets them all.
 ## The owner's limits
 - He decides scope, story, art direction, spending, models and releases; Claude advises with a recommended
   default, then logs his decision in docs/decisions-log.md and updates DECISIONS or CANON (never re-argued).
-- $0 art budget: free route first (WORKFLOW routes); paid calls only with his "spend ok" (a hook enforces it), one
-  docs/SPEND.md line each. Every asset gets a manifest entry with source and licence. Never buy, sign up for or
-  publish anything on his behalf.
-- docs/research/ is unverified Gemini output: ideas and design input, never facts.
+- $0 art budget: free route first (WORKFLOW routes); paid calls: the "spend ok" hook above and one docs/SPEND.md line each. Every asset
+  gets a manifest entry with source and licence. Never buy, sign up for or publish anything on his behalf.
 
 ## Branches
 IMPORTANT: no chat edits or runs git in C:\dev\game: work in your own worktree, push it, end with /handoff (Open points
