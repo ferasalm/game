@@ -11,7 +11,7 @@ import re
 import subprocess
 import sys
 
-RENDER_NAME = re.compile(r"f\d{8}\.png$")
+RENDER_NAME = re.compile(r"^f\d{8}\.png$")
 EXEMPT = ("inbox/flow/", "inbox/neon glitch concept art/")
 MEDIA = (".png", ".jpg", ".jpeg", ".webp", ".gif", ".mp4", ".webm")  # a document in inbox/ is no render (review 10-28)
 

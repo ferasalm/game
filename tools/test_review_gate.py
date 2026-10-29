@@ -84,6 +84,8 @@ def test_eye_gate_and_bake_outputs_are_renders():
     for rel in ("scratch/eye/contact.png", "scratch/eye/clip.mp4", "scratch/eye/f00000042.png",
                 ".bake/roya/idle_s.png", "inbox/playtest/frame_3.png"):
         assert b.send(b.file(rel)).returncode == 2, rel
+    # agy cross-review calibration, 10-29: the frame-name pattern matched anywhere in the name
+    assert b.send(b.file("scratch/concept_f00000001.png")).returncode == 0, "only a bare f<8 digits>.png is a frame"
 
 
 def test_artifact_inputs_are_all_checked():

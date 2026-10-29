@@ -24,7 +24,10 @@ fi
 box="$(wt_dir)/xr/$run-$rev"; log="$(wt_dir)/$run.xr-$rev.log"; out="$root/.check/reviews/$run-cross.md"
 rm -rf "$box"; mkdir -p "$box" "$(dirname "$out")"
 { cat "$lib_dir/cross_review_prompt.md"; echo; echo "## Brief"; cat "$brief"
-  echo; echo "## Diff ($base..$head, with whole functions)"; git -C "$root" diff -W "$base" "$head"
+  # from the merge base (three dots: never main's newer commits) and no generated files: a 2-dot diff with MAP.md
+  # sent DeepSeek into a 32k-token runaway with no block (10-29)
+  echo; echo "## Diff ($base...$head, with whole functions)"; git -C "$root" diff -W "$base...$head" -- . \
+    ':(exclude)docs/MAP.md' ':(exclude)*.uid' ':(exclude)*.import'
   echo; echo "## Reviewer skill"; sed '1,/^---$/{/^---$/!d}; /^---$/d' "$root/.agents/skills/code-reviewer/SKILL.md"
   echo; echo "## Code rules"; cat "$root/.claude/rules/code.md"; } > "$box/packet.md"
 
@@ -39,7 +42,7 @@ ask() {  # <timeout> <message>: one reviewer call from the box, appending to the
         "[Environment]::GetEnvironmentVariable('CLOUDFLARE_ACCOUNT_ID','User')" | tr -d '\r')"
     fi
     (cd "$box" && CLOUDFLARE_ACCOUNT_ID="$CLOUDFLARE_ACCOUNT_ID" OPENCODE_CONFIG="$lib_dir/cross_review.opencode.json" \
-      XDG_DATA_HOME="$HOME/.local/share/oc-cli" run_limited "$1" opencode run --model "$CF_MODEL" -f packet.md -- "$2" \
+      XDG_DATA_HOME="$HOME/.local/share/oc-cli" run_limited "$1" opencode run --model "$CF_MODEL" --format "${XR_OC_FORMAT:-default}" -f packet.md -- "$2" \
       < /dev/null >> "$log" 2>&1) || rc=$?
   fi
   [ $rc -eq 0 ] || echo "reviewer exited $rc" >> "$log"

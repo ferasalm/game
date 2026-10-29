@@ -16,7 +16,7 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
 | 15 | Session-start hook prints the top queue row (Dept, lane, who); test_session_start | Ops | builder | agy (RUN_KIND=py) | queued | - |
-| 12 | Cross-review: first live DeepSeek review of an agy PASS run (tools/cross_review.sh; bash/edit denied, stub-tested only); write the result in builders lessons.md | Ops | builder | cf (on row 15's run) | queued: runner + agy calibration (3/5 PASS) on main 10-29 | 15 |
+| 12 | Cross-review for agy runs: a `oc` reviewer in tools/cross_review.sh (opencode + nemotron-3-ultra :free, tools denied) + test, calibrated on agy's parser (gemini/cross-review-parser-agy, 2 known bugs: non-UTF-8 crash, CRLF out) | Ops | builder | agy (RUN_KIND=py) | queued (DeepSeek reviewer off: 0 blocks in 3 runs, 10-29) | - |
 | 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | queued | - |
 | 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | queued | 3 |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | queued: runs while agy builds row 4 | 3; free memory >= 3 GB |

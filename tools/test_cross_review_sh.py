@@ -42,9 +42,16 @@ def toy():
     git(g, "checkout", "-qb", "oc/job")
     with open(g + "/x.py", "w", newline="\n") as f:
         f.write("def f(name):\n    return name[0]\n")
+    os.makedirs(g + "/docs")
+    with open(g + "/docs/MAP.md", "w", newline="\n") as f:
+        f.write("GENERATED MAP LINE\n")
     git(g, "add", "-A")
     git(g, "commit", "-qm", "built")
     git(g, "checkout", "-q", "main")
+    with open(g + "/main_only.txt", "w", newline="\n") as f:
+        f.write("NEWER MAIN WORK\n")
+    git(g, "add", "-A")
+    git(g, "commit", "-qm", "main moved on")
     with open(top + "/brief.md", "w", newline="\n") as f:
         f.write("# Brief: f returns the first letter\n")
     os.makedirs(top + "/bin")
@@ -73,6 +80,8 @@ def test_oc_run_goes_to_agy_with_the_skip_flag_from_an_empty_box():
     assert "FILES packet.md" in stub, ("the box holds only the packet: no repo to explore or push from", stub)
     packet = open(top + "/game-wt/xr/job-agy/packet.md", encoding="utf-8").read()
     assert "BEGIN FINDINGS" in packet and "f returns the first letter" in packet and "return name[0]" in packet
+    assert "NEWER MAIN WORK" not in packet, "the diff runs from the merge base, never main's newer commits"
+    assert "GENERATED MAP LINE" not in packet, "generated files bloat the packet (DeepSeek runaway, 10-29)"
     assert "| high | tools/x.py:3 |" in out, ("colour codes and CRLF must not hide the block", out)
 
 

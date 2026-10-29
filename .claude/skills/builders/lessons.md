@@ -44,4 +44,7 @@
   opposite of (e): sent as a fix pass it would bring that bug back), 1 false (git-common-dir join is right: cwd=here),
   1 real and minor, still on main (RENDER_NAME.search is anchored only at the end), 1 moot (code since rewritten), 3
   unchecked. PASS on found (>= 3), borderline on "most real": fail-open/closed findings go to Opus, never to the
-  builder. DeepSeek's leg (bash/edit denied, packet attached, forced round) is stub-tested only.
+  builder. DeepSeek live (10-29, agy's parser, 2 known bugs): 3 runs, 0 blocks. Run 1: read the packet, then its step
+  ended at opencode's 32k output cap (finish "length", --format json) with no text; the packet had main's newer
+  commits + MAP.md (2-dot diff, fixed: merge base, generated files out); runs 2-3 on the 17 KB packet: no text again.
+  DeepSeek is off as a reviewer; agy runs try the calibrated nemotron :free lens next (row 12).

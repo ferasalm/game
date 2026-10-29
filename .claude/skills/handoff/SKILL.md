@@ -32,5 +32,7 @@ HANDOFF, DECISIONS and LESSONS load at every session start, so every line costs 
    After a push to main, `gh run list --branch main --limit 1`: a red CI run is fixed before the chat ends
    (2026-10-27: main stayed red for 5 pushes because a Windows-only tool test ran on the Linux runner).
 7. **Report.** A department child chat (docs/WORKFLOW.md, Start here) ends with a report of 15 lines or fewer for the
-   father (a subagent runs no /handoff: the father writes its row): commits on main, what failed, questions for Feras. The father (or a chat Feras drives) tells the owner in a
-   few lines: what was done, where it is (branch, main or not), the top queue row with its Dept, lane and who.
+   father (a subagent runs no /handoff: the father writes its row): commits on main, what failed, questions for Feras. The father (or a chat Feras drives) tells the owner in
+   five short parts (Feras 10-29): Done (where: branch or main) | Still open | When (a calendar day) | How (the queue
+   row: Dept, lane, who) | Your move vs mine. When the plan for the next 3 days changed, update those days' calendar
+   events (feras.almekhlaf@gmail.com, all-day, "Your moves today:" lists). New ideas go to docs/ideas.md, not the queue.
