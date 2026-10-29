@@ -15,11 +15,11 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 ## Queue
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
-| 18 | Calibrate on gold sets: cf GLM-5.3-flash (bulk text; effort option), Clef-flash (screenshot yes/no vs review-player on known frames), Jev (error sorting); then Feras OKs routing (models.md) | Ops | builder | agy; Opus gates | next: Sat 10-31 16:00, before row 3 | - |
-| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof, combat feel first (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | next: Sat 10-31 after 16:00 | - |
-| 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | queued | 3 |
-| 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | queued: runs while agy builds row 4 | 3; free memory >= 3 GB |
-| 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | QA | Feras | - | queued: Mon 11-02 | 4 |
+| 18 | System pass before M1 (Feras 10-30): (a) opencode v2: confirm the official install on opencode.ai, upgrade, rerun pipeline tests + probes, roll back to opencode-ai@1.19.4 if red; (b) opencode config from the real schema: tool-output limits, compaction buffer, per-model limit/options (GLM: Z.ai's max effort, temp 1, top_p 0.95, 128K out: test Cloudflare accepts each); (c) calibrate cf GLM-5.3-flash, Clef-flash (screenshot yes/no vs review-player), Jev (error sorting); (d) Feras OKs the whole routing | Ops | builder | agy; Opus gates | next: Sat 10-31 16:00 | - |
+| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof, combat feel first (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | later: after row 18 + routing OK (Feras 10-30) | - |
+| 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | later: after row 18 + routing OK (Feras 10-30) | 3 |
+| 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | later: after row 18 + routing OK (Feras 10-30) | 3; free memory >= 3 GB |
+| 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | QA | Feras | - | later: after row 4 | 4 |
 | 7 | Art batch: Bilqis re-model (v2), guard, props (booth, floodlight, qamariya window, umbrella), icons; title = Flow Omni | Art | chat (MCP) | Opus high | queued; Rodin credits end ~11-17 | 6 |
 | 8 | Free image-to-3D proof (rydan_style_v2 to a TRELLIS HF Space; never Blender generate_3d) -> 3d-model skill | Art | chat (MCP) | Opus medium | queued | 7 |
 | 9 | Asset preparation pipeline (jpg -> png, sizes, import settings, manifest check) | Art | builder | cf | parked | 5 |
@@ -33,7 +33,8 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 |---|---|---|
 | OK on the vision (docs/VISION.md) | Feras | 10-27 |
 | Bilqis's portraits are now the Neon ones: keep or overturn (archive-cleanup, decisions-log) | Feras | 10-27 |
-| OK on the model routing (models.md) after row 18 calibrations; remove the coach-cleanup worktree once the kaizen CLI session ends | Feras; Claude | 10-30 |
+| OK on the whole model routing (models.md) after row 18 | Feras | 10-30 |
+| Old worktree folders (coach-cleanup, row12-*, row16-process, ...): check each is merged, then clean up (ccd clean_up_worktrees) | Claude | 10-30 |
 | Cross-review keep or drop: 1 of 5 measured live runs so far (row16-docs INVALID); decide at 5 (< 1 real bug a run = drop) | Claude | 10-29 |
 | Art homework into inbox/: concept pictures, an empty plate per scene (no characters, HUD or rain), icon art (row 7) | Feras | 10-24 |
 
@@ -42,9 +43,9 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 |---|---|
 | Thu 10-29 | Row 16 closed: process complete (hooks, Open points, HOW_WE_WORK, model cards, open-source list). |
 | Fri 10-30 | Row 17 done (+ cf max effort, no cf cap, nemotron backup, bandwidth guard, cache hook). Feras: art homework, Bilqis call, VISION OK. |
-| Sat 10-31 | Limit resets 16:00: row 18 calibrations (agy), then row 3 M1 brief (Feras answers its feel questions); row 4 agy builds overnight. |
-| Sun 11-01 | Row 4 review + eye gate (cross-reviewed); row 6 Roya bake. |
-| Mon 11-02 | Play day 1 (row 5) on PC and phone; fix passes from his notes; rows 7-8. |
+| Sat 10-31 | Limit resets 16:00: row 18 chat (opencode v2, config, calibrations; agy builds, Opus gates). |
+| Sun 11-01 | Row 18 gate; Feras OKs the routing; then M1 brief (row 3) if the system pass is done. |
+| Mon 11-02 | M1 build (row 4) overnight from Sun; play day moves to when M1 passes its gates. |
 
 ## Parked and context (resume only through a queue row)
 - How we work, for Feras: docs/HOW_WE_WORK.md (the loop diagram, roles, cost rules, the week).

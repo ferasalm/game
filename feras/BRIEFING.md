@@ -18,6 +18,8 @@ HANDOFF.md; this file is your view of it. Each report: Done | Still open | When 
 OK (waiting on Feras after it); the first DeepSeek build at max effort is unwatched until then (planned with row 4); the
 coach-cleanup worktree is removed after the kaizen CLI session ends (planned, next chat).
 High effort was also measured: a valid review but 900 s, slower than max.
+**Later the same night (Feras):** routing OK waits for all of row 18 (waiting on Feras then); M1 moves after the system pass (planned: row 18 Sat, M1 brief Sun at the earliest); opencode v2 upgrade planned in row 18 with a rollback; coach branch deleted (done), old worktree folders checked and cleaned next chat (planned).
+**Next chat prompt** (Opus high, after Sat 16:00): "Continue ferasalm/game on main. Read HANDOFF.md. Take the top queue row for your lane; /handoff."
 **Checked:** tests (pipeline 12, cross-review 6, token hook 13, file sizes 2, personas 4) and check.sh --no-godot, read.
 
 ## 2026-10-30 (Thu night): row 17 models, builders, licences, diagram (Opus 5.5 high), closed
