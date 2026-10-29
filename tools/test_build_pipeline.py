@@ -29,6 +29,8 @@ case "${FAKE_MODE:-good}" in
   test_edit) echo "# edited" >> tests/t.gd; git add -A; git -c user.name=t -c user.email=t@t commit -qm cheat ;;
   nothing) : ;;
   hang) "$PYEXE" -c "import time; time.sleep(60)" "$FAKE_MARK" & echo up > "$(wt_dir)/$name.child"; wait ;;
+  quota) echo 'level=ERROR error.error="AI_APICallError: Free usage limit reached. Free models work in OpenCode"'
+    "$PYEXE" -c "import time; time.sleep(60)" "$FAKE_MARK" & wait ;;
   commit_then_hang) mkdir -p features; echo "## a" > features/a.gd; git add -A
     git -c user.name=t -c user.email=t@t commit -qm feat; "$PYEXE" -c "import time; time.sleep(60)" "$FAKE_MARK" & wait ;;
 esac
@@ -184,6 +186,15 @@ def test_idle_after_commits_is_checked_not_nowork():  # review 2026-10-27: build
     assert rc == 0 and res.startswith("PASS") and "idle" in res, (rc, res)
 
 
+def test_spent_free_quota_stops_the_run_at_once_as_nowork():  # row16-audit (10-29): 25 silent min on a spent quota
+    top, g = toy()
+    t0 = time.time()
+    rc, out, err = pipeline(g, top, FAKE_MODE="quota", IDLE_SEC="300", WATCH_POLL="1", **child_env())
+    res = result(top)
+    assert rc != 0 and res.startswith("NOWORK") and "quota" in res and "cf_build" in res, (out, err, res)
+    assert time.time() - t0 < 60, "the quota line must stop the run long before the idle limit"
+
+
 def fake_bin(top):
     for n in ("opencode", "agy"):
         put(f"{top}/bin/{n}", FAKE_BIN, 0o755)
@@ -204,6 +215,7 @@ def test_oc_task_default_model_deepseek_outer_timeout_and_base_check():
     r = task(g, top, "oc_task.sh", "job", "origin/main", OC_TIMEOUT="2s", **kids)
     log = open(top + "/game-wt/job.log", encoding="utf-8").read()
     assert "deepseek" in log and "free" in log, log
+    assert "--print-logs" in log, ("without it a spent free quota prints nothing (10-29)", log)
     assert "opencode exited 124" in log and time.time() - t0 < 40, (r.stdout, r.stderr, log)
     assert os.path.exists(top + "/child.up"), "the fake opencode never started its native child"
     time.sleep(1)

@@ -19,7 +19,9 @@ wt="$(cd "$wt" && pwd)"
 [ "$(git -C "$wt" rev-parse --abbrev-ref HEAD)" = "$branch" ] || { echo "worktree is not on $branch" >&2; exit 1; }
 cd "$wt"
 rc=0
-XDG_DATA_HOME="$HOME/.local/share/oc-cli" run_limited "${OC_TIMEOUT:-90m}" opencode run --model "$model" "$(cat "$brief")" \
+# --print-logs: API errors (a spent free quota) reach the log; without it opencode prints nothing and exits 0 (10-29)
+XDG_DATA_HOME="$HOME/.local/share/oc-cli" run_limited "${OC_TIMEOUT:-90m}" opencode run --print-logs --log-level ERROR \
+  --model "$model" "$(cat "$brief")" \
   < /dev/null > "$log" 2>&1 || rc=$?
 [ $rc -eq 0 ] || echo "opencode exited $rc" >> "$log"
 echo "done: $wt ($branch); log: $log"

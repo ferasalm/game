@@ -44,7 +44,8 @@ ask() {  # <timeout> <message>: one reviewer call from the box, appending to the
         "[Environment]::GetEnvironmentVariable('CLOUDFLARE_ACCOUNT_ID','User')" | tr -d '\r')"
     fi
     (cd "$box" && CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID:-}" OPENCODE_CONFIG="$lib_dir/cross_review.opencode.json" \
-      XDG_DATA_HOME="$HOME/.local/share/oc-cli" run_limited "$1" opencode run --model "$model" --format "${XR_OC_FORMAT:-default}" -f packet.md -- "$2" \
+      XDG_DATA_HOME="$HOME/.local/share/oc-cli" run_limited "$1" opencode run --print-logs --log-level ERROR \
+      --model "$model" --format "${XR_OC_FORMAT:-default}" -f packet.md -- "$2" \
       < /dev/null >> "$log" 2>&1) || rc=$?
   fi
   [ $rc -eq 0 ] || echo "reviewer exited $rc" >> "$log"
@@ -56,7 +57,7 @@ run no commands, edit no file, read no other file. Finish by printing the BEGIN 
 parse() { $py "$lib_dir/cross_review.py" parse "$log" --out "$out" < /dev/null; }
 if ! parse > /dev/null; then
   echo "== forced round" >> "$log"
-  ask 5m "Read packet.md in this folder. Do not explore, run or open anything else. Print only the \
+  ask "$REVIEW_TIMEOUT" "Read packet.md in this folder. Do not explore, run or open anything else. Print only the \
 BEGIN FINDINGS / END FINDINGS block the packet defines, from the diff it holds, now."
 fi
 [ "$rev" != cf ] || bash "$lib_dir/slots.sh" append-spend "$log" "$run-xr" "$CF_INPUT_RATE" "$CF_OUTPUT_RATE" \

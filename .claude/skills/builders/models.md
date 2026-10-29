@@ -12,8 +12,15 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
 - **ID**: `cloudflare-workers-ai/@cf/deepseek-ai/deepseek-v4.1-flash-1017` (`CF_MODEL`) / `opencode/deepseek-v4.1-flash-free` (`OC_MODEL`)
 - **Artificial Analysis**: Intelligence Index 48 (unverified, AA 2026-10-29), Coding Index 76 (unverified, AA 2026-10-29)
 - **Calibration**: Review 0/3 blocks in live runs (audit sec 5); in race B edited a protected file (BREACH, audit sec 5)
-- **Known failure modes**: Hit opencode 32k output cap, printed nothing (audit sec 5); BREACH on protected files; 0 blocks in live review; opencode free hung with no commit for 25 min on a text audit (row16-audit, 10-29)
-- **Best use**: Build (Godot code when agy is full, Python tools); opencode for text. Not for code review
+- **Root causes (row 17, 10-30)**: (1) cf one-shot review: Workers AI thinks at "high" by default, in a channel opencode
+  does not show; on the 17 KB parser packet it filled the 32k output cap (3 of 3 replays, 0 text). `reasoning_effort:
+  "low"` in the opencode model options fixed it (tools/cross_review.opencode.json); `--variant low` and a raised
+  `limit.output` did nothing. Builds never hit it: each agent step is short. (2) opencode free "hang": the free usage
+  limit was spent; opencode prints nothing and exits 0. Now --print-logs + the pipeline stops at once (NOWORK quota).
+- **Calibration (parser, 2 key bugs, 10-30, cf, low)**: valid block, 195 s, 25.5k out, ~$0.04: 1/2 key (non-UTF-8
+  crash; CRLF missed), 1 real minor (--out crash), 2 doubtful (drive-letter path, reversed range), 1 unchecked (pipe escape)
+- **Known failure modes**: BREACH on protected files (race B); opencode free quota runs out (opencode.ai/go to subscribe)
+- **Best use**: Build (Godot code when agy is full, Python tools); review lens at low effort = nemotron's score
 
 ## NVIDIA Nemotron 3 Ultra :free (OpenRouter)
 - **ID**: `openrouter/nvidia/nemotron-3-ultra-550b-a55b:free` (`XR_OC_MODEL` in `tools/builders.conf`)
@@ -22,12 +29,17 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
 - **Known failure modes**: Fails reader bar on absence claims; text-only input via OpenRouter tool (calibration-2026-10.md)
 - **Best use**: Review lens (calibrated cross-reviewer for gemini/* runs)
 
-## GLM-5.3-Flash (Cloudflare)
-- **ID**: not listed in `tools/builders.conf` (Cloudflare-hosted / `openrouter/z-ai/glm-5.3-flash:free`)
+## GLM-5.3 (Cloudflare)
+- **ID**: `cloudflare-workers-ai/@cf/zai-org/glm-5.3` (not in `tools/builders.conf`)
+- **Calibration (parser, 10-30, default effort)**: valid block, 619 s, 30.3k out (near the 32k cap): 1/2 key (non-UTF-8;
+  CRLF missed), 1 real minor (--out crash), 2 doubtful. Same score as nemotron and DeepSeek-low, 3x slower
+- **Best use**: second-reviewer candidate; set reasoning low before long one-shot work
+
+## GLM-5.3-Flash (Cloudflare, opencode free)
+- **ID**: `cloudflare-workers-ai/@cf/zai-org/glm-5.3-flash` / `opencode/glm-5.3-flash-free`
 - **Artificial Analysis**: Intelligence Index 36 (unverified, AA 2026-10-29), Coding Index 70 (unverified, AA 2026-10-29)
-- **Calibration**: none yet
-- **Known failure modes**: Uncalibrated; OpenRouter slug subject to drift (opencode-setup.md)
-- **Best use**: Candidate text/tools builder after calibration
+- **Calibration**: not run: cf answers (access checked 10-30); the opencode free route timed out (free quota spent)
+- **Best use**: Candidate bulk text after calibration
 
 ## Laguna-S 2.1 :free (OpenRouter)
 - **ID**: `openrouter/laguna/laguna-s-2.1:free` (not listed in `tools/builders.conf`)

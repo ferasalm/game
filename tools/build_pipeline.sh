@@ -46,18 +46,22 @@ run() {  # <brief file>; watched: no commit in the worktree for idle_sec -> kill
   while kill -0 "$pid" 2> /dev/null; do
     sleep "$poll"
     last="$(git -C "$wt" log -1 --format=%ct 2> /dev/null || echo 0)"; [ "${last:-0}" -gt "$mark" ] && mark="$last"
+    # opencode's spent free quota prints no text and exits 0 (row16-audit hung 25 min, 10-29): stop at the first sight
+    if grep -q "$OC_QUOTA_MSG" "$wt.log" 2> /dev/null; then quota=1; kill_tree "$pid"; wait "$pid" 2> /dev/null; return 99; fi
     if [ $(( $(date +%s) - mark )) -ge "$idle_sec" ]; then kill_tree "$pid"; wait "$pid" 2> /dev/null; return 99; fi
   done
   wait "$pid"; return 0
 }
-idle_note=""
+idle_note=""; quota=""
 idle_exit() {  # <step>: killed idle. Committed work still goes to check and gate (builders hang after a last commit)
   leftovers "$1"
   if [ -n "$(git -C "$wt" log --oneline "$base..HEAD" 2> /dev/null)" ]; then
     idle_note="idle: $1 killed after ${idle_sec}s without a commit; its commits were checked"; return 0
   fi
+  local why="idle: no commit for ${idle_sec}s, builder killed (the brief needs a first-commit deadline)"
+  [ -z "$quota" ] || why="quota: opencode's free usage limit is spent ($OC_QUOTA_MSG); rerun on cf (tools/cf_build.sh)"
   { echo "NOWORK $(date +%H:%M) $prefix/$name"; echo "builder $builder"; echo "pid $$"; echo "kind $RUN_KIND"
-    echo "idle: no commit for ${idle_sec}s, builder killed (the brief needs a first-commit deadline)"; } > "$res"
+    echo "$why"; } > "$res"
   cat "$res"; exit 1
 }
 import_wt() {  # a fresh worktree has no class cache; Godot's import then rewrites tracked assets/*.import: put those back

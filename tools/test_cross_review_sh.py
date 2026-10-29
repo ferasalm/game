@@ -98,14 +98,20 @@ def test_free_lens_reviews_agy_runs_tools_denied_and_silence_is_invalid():
     r, stub, out = review(top, g, mode="never")
     assert r.returncode == 1 and out.startswith("INVALID"), ("no block must never read as a clean review", out)
     assert stub.count("ARGS ") == 2 and "-f packet.md" in stub, stub
+    assert "--print-logs" in stub, ("a spent free quota or a dropped socket must reach the log (10-29)", stub)
     assert "nemotron" in stub and "deepseek" not in stub, ("DeepSeek gave 0 blocks in 3 live runs (10-29)", stub)
     assert "cross_review.opencode.json" in stub, ("DeepSeek must run with bash and edit denied", stub)
 
 
 def test_review_config_denies_bash_and_edit():
     import json
-    perm = json.load(open(f"{TOOLS}/cross_review.opencode.json", encoding="utf-8"))["permission"]
+    cfg = json.load(open(f"{TOOLS}/cross_review.opencode.json", encoding="utf-8"))
+    perm = cfg["permission"]
     assert perm["bash"] == "deny" and perm["edit"] == "deny", perm
+    # Workers AI DeepSeek 1017 thinks at "high" by default: on a 17 KB packet it filled opencode's 32k output cap with
+    # hidden reasoning and printed nothing (3 runs, 10-29); "low" gave a valid block in 195 s (10-30). --variant is ignored.
+    ds = cfg["provider"]["cloudflare-workers-ai"]["models"]["@cf/deepseek-ai/deepseek-v4.1-flash-1017"]
+    assert ds["options"]["reasoning_effort"] == "low", ds
 
 
 def test_usage_errors_exit_2():

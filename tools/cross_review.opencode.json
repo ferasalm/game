@@ -7,5 +7,16 @@
     "external_directory": {
       "*": "deny"
     }
+  },
+  "provider": {
+    "cloudflare-workers-ai": {
+      "models": {
+        "@cf/deepseek-ai/deepseek-v4.1-flash-1017": {
+          "options": {
+            "reasoning_effort": "low"
+          }
+        }
+      }
+    }
   }
 }
