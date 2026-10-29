@@ -31,8 +31,10 @@ HANDOFF, DECISIONS and LESSONS load at every session start, so every line costs 
    <branch>`. Merge into `main` only if the owner gave his standing OK (DECISIONS); then `git push origin HEAD:main`.
    After a push to main, `gh run list --branch main --limit 1`: a red CI run is fixed before the chat ends
    (2026-10-27: main stayed red for 5 pushes because a Windows-only tool test ran on the Linux runner).
-   Then, if `git -C C:/dev/game status --porcelain` prints nothing, `bash tools/sync_main.sh` in C:\dev\game (D10,
-   10-29) so Feras plays the merged main; if it prints anything, leave it and name it in the report.
+   Then sync Feras's checkout (D10, 10-29) with one PowerShell call (the worktree guard refuses `git -C`, and
+   PowerShell has no bash on PATH): `Set-Location C:\dev\game; $s = git status --porcelain; if ($s) { "DIRTY: $s" }
+   else { & "C:\Program Files\Git\bin\bash.exe" tools/sync_main.sh 2>&1 | Select-Object -Last 3 }`; last line SYNC
+   PASS; DIRTY: leave it and name it in the report.
 7. **Report.** A department child chat (docs/WORKFLOW.md, Start here) ends with a report of 15 lines or fewer for the
    father (a subagent runs no /handoff: the father writes its row): commits on main, what failed, questions for Feras. The father (or a chat Feras drives) tells the owner in
    five short parts (Feras 10-29): Done (where: branch or main) | Still open | When (a calendar day) | How (the queue
