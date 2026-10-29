@@ -8,7 +8,7 @@ HANDOFF.md; this file is your view of it. Each report: Done | Still open | When 
   binaries uploaded once. New check: no tracked file > 10 MB, or > 2 MB outside assets/. The bigger cost is AI
   traffic (this chat sent ~60 MB of context), so short fresh chats matter most.
 - Cloudflare: no $ cap (spend still logged). DeepSeek 1017 at max effort for reviews and builds, opencode's hidden
-  output cap raised to 128k (that cap broke "high"). Max vs low on the same review: same key bug, less noise, 443 s, ~$0.08.
+  output cap raised to 384k, DeepSeek's full output (that 32k cap broke "high"). Max vs low on the same review: same key bug, less noise, 443 s, ~$0.08.
 - Nemotron: backup lens only; Cloudflare DeepSeek now cross-reviews agy runs. agy stays high: proven it's
   Gemini 3.8 Flash's top level (agy refuses max). Cache hook: informs at 25M, never asks for an early wrap-up.
 - Kaizen coach session: its commit (ef1b284) is on main; its local-only changes (settings.local.json, memory, the
@@ -16,8 +16,8 @@ HANDOFF.md; this file is your view of it. Each report: Done | Still open | When 
   line is the test's own planted case (real drift check passes); now silenced so it can't mislead again.
 **Still open:** row 18 calibrations (GLM-5.3-flash on Cloudflare, Clef-flash, Jev), planned Sat 10-31 16:00, then your routing
 OK (waiting on Feras after it); the first DeepSeek build at max effort is unwatched until then (planned with row 4); the
-coach-cleanup worktree is removed after the kaizen CLI session ends (planned, next chat); high-effort DeepSeek replay
-(unchecked: still running at hand-off).
+coach-cleanup worktree is removed after the kaizen CLI session ends (planned, next chat).
+High effort was also measured: a valid review but 900 s, slower than max.
 **Checked:** tests (pipeline 12, cross-review 6, token hook 13, file sizes 2, personas 4) and check.sh --no-godot, read.
 
 ## 2026-10-30 (Thu night): row 17 models, builders, licences, diagram (Opus 5.5 high), closed

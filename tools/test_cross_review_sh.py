@@ -126,7 +126,7 @@ def test_review_config_denies_bash_and_edit():
     r = subprocess.run(["bash", "-c", f". '{TOOLS}/lib.sh'; echo $OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX"],
                        capture_output=True, text=True, env={k: v for k, v in os.environ.items()
                                                             if k != "OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX"})
-    assert int(r.stdout.strip() or 0) >= 128000, ("max effort needs ~66k output tokens; opencode's default is 32k", r)
+    assert int(r.stdout.strip() or 0) >= 384000, ("DeepSeek 1017 may write 384k; opencode's default is 32k (Feras 10-30)", r)
 
 
 def test_usage_errors_exit_2():

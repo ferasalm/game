@@ -65,7 +65,7 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
 ## Settings in force (Feras 10-30)
 - agy: `gemini-3.8-flash-high` is the top level (agy refuses --effort max: "available: low, medium, high"); no output cap flag.
 - Cloudflare DeepSeek 1017: reasoning_effort max (opencode.json, tools/cross_review.opencode.json) + opencode's hidden
-  output cap raised to 128k (OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX in builders.conf). Parser set at max: valid block,
+  output cap raised to 384k, its full output (OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX in builders.conf; high effort: 900 s, 88k out). Parser set at max: valid block,
   443 s, 66k out, ~$0.08: 1/2 key, 1 real minor, 1 doubtful (less noise than low). Watch the first max build: if steps
   trip the 25-min no-commit watchdog, builds drop to high. GLM: cap raised; effort option untested (row 18).
 - Cross-review: agy runs -> cf DeepSeek at max; nemotron only as a backup lens after cf fails twice. No $ cap on cf.
