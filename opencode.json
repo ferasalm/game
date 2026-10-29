@@ -13,5 +13,16 @@
       "C:\\dev\\game\\inbox\\*": "allow",
       "C:/dev/game/inbox/*": "allow"
     }
+  },
+  "provider": {
+    "cloudflare-workers-ai": {
+      "models": {
+        "@cf/deepseek-ai/deepseek-v4.1-flash-1017": {
+          "options": {
+            "reasoning_effort": "max"
+          }
+        }
+      }
+    }
   }
 }

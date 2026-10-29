@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """PostToolUse hook (hand-off rule, Feras 10-28): warns when this chat's context passes 200k ("finish the unit"),
 then at 250k and every +25k after ("hand off at the next unit boundary"), so a chat hands off in time. It also warns
-when the chat's cumulative cache reads (cost = calls x context, row 16 10-29) pass 10M tokens, then every +5M: read
+when the chat's cumulative cache reads (cost = calls x context, row 16 10-29) pass 25M tokens, then every +10M (Feras 10-30: information, not a wrap-up order): read
 incrementally from a byte offset, one API call counted once (its content blocks share a message id).
 
 Context = the main model's last call (input + cache read + cache write). An advisor turn's top-level usage also sums
@@ -20,8 +20,8 @@ WINDOW = 512 * 1024
 FINISH = 200000
 HANDOFF = 250000
 REPEAT = 25000
-READS = 10_000_000
-READS_REPEAT = 5_000_000
+READS = 25_000_000
+READS_REPEAT = 10_000_000
 TAIL = " If get_usage shows another context size, trust get_usage and log the mismatch."
 STATE_DIR = os.environ.get("TOKEN_HANDOFF_STATE_DIR") or os.path.join(tempfile.gettempdir(), "claude_token_handoff")
 try:
@@ -163,14 +163,15 @@ def new_reads(path, size, state):
 
 
 def reads_message(total, warned):
-    """(text or None, the warned level to keep): at 10M cumulative cache reads, then every +5M."""
+    """(text or None, the warned level to keep): at 25M cumulative cache reads, then every +10M."""
     if total < READS:
         return None, warned
     level = READS + int((total - READS) // READS_REPEAT) * READS_REPEAT
     if level <= warned:
         return None, warned
-    return (f"Cache reads ~{total / 1e6:.1f}M tokens in this chat (cost = calls x context): finish the unit with "
-            "parallel calls and few reads; a new multi-step task opens a fresh chat.", level)
+    return (f"Cache reads ~{total / 1e6:.1f}M tokens in this chat (cost = calls x context; information, not a stop): "
+            "keep finishing the task at hand at full quality; batch independent calls; a new multi-step task opens "
+            "a fresh chat. The context band (200k/250k) decides the hand-off.", level)
 
 
 def main():

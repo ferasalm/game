@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """The 10 personas are tailored to Neon Glitch (Feras 10-28: "not generic") and their copies never drift (row 1 item 9)."""
+import contextlib
+import io
 import os
 import re
 import subprocess
@@ -48,7 +50,9 @@ def test_drift_is_caught():  # probe the check with one bad case (LESSONS: a che
     old = path.read_text(encoding="utf-8") if path.exists() else None
     try:
         path.write_text((old or "") + "\nedited by hand\n", encoding="utf-8", newline="\n")
-        assert sp.main(check=True) == 1
+        # the planted drift's FAIL line is expected: hide it (an audit misread it as real drift, 10-30)
+        with contextlib.redirect_stdout(io.StringIO()):
+            assert sp.main(check=True) == 1
     finally:
         if old is None:
             path.unlink()

@@ -1,5 +1,5 @@
 # HANDOFF (current state only; ONE queue for every chat; max 60 lines)
-Last updated: 2026-10-30 (row 17 closed: DeepSeek 1017 fixed, opencode quota stop, GLM-5.3 calibrated, licences verified, evidence table, routing proposal, diagram v2), Opus 5.5.
+Last updated: 2026-10-30 (row 17 closed + Feras 10-30 follow-ups: cf max, no cap, nemotron backup, bandwidth guard; DeepSeek 1017 fixed, opencode quota stop, GLM-5.3 calibrated, licences verified, evidence table, routing proposal, diagram v2), Opus 5.5.
 Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Open points).
 
 ## How this file works (Feras 2026-10-27; departments 10-28)
@@ -15,6 +15,7 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 ## Queue
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
+| 18 | Calibrate on gold sets: cf GLM-5.3-flash (bulk text; effort option), Clef-flash (screenshot yes/no vs review-player on known frames), Jev (error sorting); then Feras OKs routing (models.md) | Ops | builder | agy; Opus gates | next: Sat 10-31 16:00, before row 3 | - |
 | 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof, combat feel first (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | next: Sat 10-31 after 16:00 | - |
 | 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | queued | 3 |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | queued: runs while agy builds row 4 | 3; free memory >= 3 GB |
@@ -23,7 +24,6 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 | 8 | Free image-to-3D proof (rydan_style_v2 to a TRELLIS HF Space; never Blender generate_3d) -> 3d-model skill | Art | chat (MCP) | Opus medium | queued | 7 |
 | 9 | Asset preparation pipeline (jpg -> png, sizes, import settings, manifest check) | Art | builder | cf | parked | 5 |
 | 10 | Obscura proof: builders fetch web pages with the Obscura headless browser instead of Chrome (never --stealth); a tools/ wrapper + test | Ops | builder | cf | parked | 5 |
-| 18 | Calibrate Clef-flash (screenshot yes/no gate vs review-player on known frames) and Jev (error sorting) once Feras OKs the routing (models.md Routing) | Ops | builder | agy | parked | Feras's routing OK |
 | 11 | Art bible 2D pass: drop the retired 3D runtime lines (fog, mist, sky, spatial shading, the "2150" title) the personas nearly copied; docs/design/art-bible.md | Art | builder | oc | parked | 5 |
 Key: builders are free code bots (agy = Gemini Flash, cf = Cloudflare DeepSeek, oc = free text models); chat (MCP) = a
 Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-time fight, on the prison roof.
@@ -33,7 +33,7 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 |---|---|---|
 | OK on the vision (docs/VISION.md) | Feras | 10-27 |
 | Bilqis's portraits are now the Neon ones: keep or overturn (archive-cleanup, decisions-log) | Feras | 10-27 |
-| OK on the model routing proposal (.claude/skills/builders/models.md Routing; Clef, Jev, bge-m3 placed there) | Feras | 10-30 |
+| OK on the model routing (models.md) after row 18 calibrations; remove the coach-cleanup worktree once the kaizen CLI session ends | Feras; Claude | 10-30 |
 | Cross-review keep or drop: 1 of 5 measured live runs so far (row16-docs INVALID); decide at 5 (< 1 real bug a run = drop) | Claude | 10-29 |
 | Art homework into inbox/: concept pictures, an empty plate per scene (no characters, HUD or rain), icon art (row 7) | Feras | 10-24 |
 
@@ -41,8 +41,8 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 | Day | Plan |
 |---|---|
 | Thu 10-29 | Row 16 closed: process complete (hooks, Open points, HOW_WE_WORK, model cards, open-source list). |
-| Fri 10-30 | Row 17 done Thu night. Feras: art homework, Bilqis call, VISION OK, routing OK (models.md). |
-| Sat 10-31 | Limit resets 16:00: row 3 M1 brief (Feras answers its feel questions); row 4 agy builds overnight. |
+| Fri 10-30 | Row 17 done (+ cf max effort, no cf cap, nemotron backup, bandwidth guard, cache hook). Feras: art homework, Bilqis call, VISION OK. |
+| Sat 10-31 | Limit resets 16:00: row 18 calibrations (agy), then row 3 M1 brief (Feras answers its feel questions); row 4 agy builds overnight. |
 | Sun 11-01 | Row 4 review + eye gate (cross-reviewed); row 6 Roya bake. |
 | Mon 11-02 | Play day 1 (row 5) on PC and phone; fix passes from his notes; rows 7-8. |
 

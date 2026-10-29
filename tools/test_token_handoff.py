@@ -147,17 +147,18 @@ def reads_line(read, mid=None):
     return e
 
 
-def test_cache_reads_warn_at_10m_then_every_5m():  # row 16 (10-29): cost = calls x context, not context alone
+def test_cache_reads_warn_at_25m_then_every_10m():  # row 16 (10-29): cost = calls x context; 25M/10M Feras 10-30
     s = Session()
-    write(s.path, [user_line()] + [reads_line(180_000)] * 55)  # 9.9M
+    write(s.path, [user_line()] + [reads_line(180_000)] * 138)  # 24.8M
     assert s.call() == ""
-    write(s.path, [reads_line(180_000)] * 5, "a")  # 10.8M
+    write(s.path, [reads_line(180_000)] * 2, "a")  # 25.2M
     msg = s.call()
-    assert "Cache reads ~10.8M" in msg and "fresh chat" in msg and "hand-off rule" not in msg, msg
-    write(s.path, [reads_line(180_000)] * 5, "a")  # 11.7M; a re-read from byte 0 would count 21.6M and warn
+    assert "Cache reads ~25.2M" in msg and "fresh chat" in msg and "hand-off rule" not in msg, msg
+    assert "not a stop" in msg and "finish the unit" not in msg, ("information, never an early wrap-up", msg)
+    write(s.path, [reads_line(180_000)] * 5, "a")  # 26.1M; a re-read from byte 0 would count 51M and warn
     assert s.call() == "", "the offset resumes: lines already counted are not counted again"
-    write(s.path, [reads_line(180_000)] * 20, "a")  # 15.3M
-    assert "Cache reads ~15.3M" in s.call()
+    write(s.path, [reads_line(180_000)] * 50, "a")  # 35.1M
+    assert "Cache reads ~35.1M" in s.call()
 
 
 def test_one_api_call_counts_once():  # an API call is one transcript line per content block, same id and usage
@@ -165,7 +166,9 @@ def test_one_api_call_counts_once():  # an API call is one transcript line per c
     lines = []
     for i in range(40):
         lines += [reads_line(180_000, f"msg_{i}"), reads_line(180_000, f"msg_{i}")]
-    write(s.path, [user_line()] + lines)  # 7.2M counted once; 14.4M if every line counted
+    for i in range(40, 70):
+        lines += [reads_line(180_000, f"msg_{i}"), reads_line(180_000, f"msg_{i}")]
+    write(s.path, [user_line()] + lines)  # 12.6M counted once; 25.2M (a warning) if every line counted
     assert s.call() == ""
 
 

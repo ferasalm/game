@@ -620,7 +620,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/build_gate.py`: Build gate: judges a builder run before Claude reads it (NOWORK, BREACH, FAIL or PASS plus a WARN checklist).
 - `tools/build_pipeline.sh`: Free builder pipeline (DECISIONS 2026-10-23, hardened 2026-10-27): slots check -> builder run (idle watchdog) ->
 - `tools/builders.conf`
-- `tools/cf_build.sh`: Paid fallback builder (DECISIONS 2026-10-23: Cloudflare Workers AI DeepSeek V4.1 Flash, Workers Paid, <= $10 usage): runs
+- `tools/cf_build.sh`: Paid fallback builder (DECISIONS 2026-10-23: Cloudflare Workers AI DeepSeek V4.1 Flash, Workers Paid, no $ cap since 10-30, spend in cf_spend.csv): runs
 - `tools/cf_mcp/server.py`: Stdio MCP server: triage_trace (DeepSeek V4.1 Flash), generate_patch (DeepSeek V4.1 Flash), optional .agents persona.
 - `tools/cf_mcp/test_server.py`: Tests for tools/cf_mcp/server.py over its real stdio protocol, in dry mode (no Cloudflare call, no credentials).
 - `tools/check.sh`: One command for every check (docs, lint, Godot import, tests). One ok/FAIL line per step; logs in .check/.
@@ -683,6 +683,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_cross_review_sh.py`: Self-test for the cross-review runner tools/cross_review.sh (row 12 A, 2026-10-29): python tools/test_cross_review_sh.py.
 - `tools/test_doc_check.py`: Self-test for doc_check.py: warns (exit 0) at 75% of a cap; every queue row needs a lane and a WORKFLOW department;
 - `tools/test_eye_metrics.py`: Tests tools/eye_metrics.py on a temp project root. Run: python tools/test_eye_metrics.py
+- `tools/test_file_sizes.py`: Bandwidth guard (Feras 10-30: his internet is metered): git sends only new objects, so a sync costs kilobytes until
 - `tools/test_gate_checklist.py`: Tests for brief checklist verification in build_gate.
 - `tools/test_gate_d6.py`: Self-test for the D6 gate rules (2026-10-27): protected tests and assets, removed checks, new tests fail on base.
 - `tools/test_hook_heredoc.py`: Self-test for tools/hooks/heredoc_guard.py (LESSONS 4): a python heredoc holding a backslash is blocked (exit 2);

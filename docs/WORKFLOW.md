@@ -132,7 +132,7 @@ reviewer with no .claude/agents/<name>.md, and any .claude/agents/dept-*.md (ret
 | 3D models | Blender MCP search_assets / import_asset (CC0: Poly Haven, Poly Pizza; Sketchfab only with a licence check); open-source image-to-3D on a free host (TRELLIS, Hunyuan3D, TripoSR; unverified) | Hyper3D Rodin while its credits last: name the cost first, log in SPEND.md, one approved hero asset before any batch |
 | Sprites | tools/art bake: offline renders (bake_sprites.tscn); no 3D at runtime | none needed |
 | Sound and fonts | CC0 SFX (Freesound CC0, Kenney); CC0 textures and fonts (OFL) | none; Feras's OK before each download, plus a manifest entry |
-| Research | see Research protocol | Cloudflare DeepSeek, up to $10 over its free neurons (Feras, 2026-10-23) |
+| Research | see Research protocol | Cloudflare DeepSeek, no $ cap, spend logged (Feras, 2026-10-30) |
 
 The PreToolUse hook tools/hooks/pre_spend.py blocks paid generation tools unless one of Feras's last 8 messages says "spend ok"
 (wired in .claude/settings.json PreToolUse, P3.9; Hyper3D calls get a credit-cost reminder). Before Rodin access ends, prove the free 3D route on one character.

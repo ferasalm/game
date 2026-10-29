@@ -62,16 +62,24 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
 - **Known failure modes**: Uncalibrated on gold sets
 - **Best use**: Small text / helper tasks
 
-## Routing (row 17, Opus proposal 10-30; Feras decides models: waiting on his OK)
+## Settings in force (Feras 10-30)
+- agy: `gemini-3.8-flash-high` is the top level (agy refuses --effort max: "available: low, medium, high"); no output cap flag.
+- Cloudflare DeepSeek 1017: reasoning_effort max (opencode.json, tools/cross_review.opencode.json) + opencode's hidden
+  output cap raised to 128k (OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX in builders.conf). Parser set at max: valid block,
+  443 s, 66k out, ~$0.08: 1/2 key, 1 real minor, 1 doubtful (less noise than low). Watch the first max build: if steps
+  trip the 25-min no-commit watchdog, builds drop to high. GLM: cap raised; effort option untested (row 18).
+- Cross-review: agy runs -> cf DeepSeek at max; nemotron only as a backup lens after cf fails twice. No $ cap on cf.
+
+## Routing (row 17, Opus proposal; Feras OKs it after row 18's calibrations)
 Evidence: docs/research/model-evidence-2026-10.md (AA numbers mostly UNVERIFIED: 1 of 3 spot-checked was invented)
 and the measured calibration lines above. Calibrated = passed a gold set (D11).
 | Task class | Model | Calibrated |
 |---|---|---|
 | Godot code, Python tools, docs | agy (Gemini 3.8 Flash); cf DeepSeek 1017 when agy is full | yes (agy 2/2 PASS row 16; cf builds) |
-| Review lens on agy runs | nemotron-3-ultra :free; on INVALID cf DeepSeek 1017 at low effort (~$0.04) | yes (parser 1/2 + gold B 6/6; DeepSeek-low 1/2) |
+| Review lens on agy runs | cf DeepSeek 1017 at max (~$0.08); nemotron :free only as backup lens | yes (parser 1/2 at low and max; nemotron gold B 6/6) |
 | Review lens on cf/oc runs | agy | yes (hook diff 3/5) |
 | Research, licences | agy, then Opus re-reads 3 facts in a browser | partly: licences 3/3 right, AA numbers 1/3 invented |
-| Bulk text (summaries, sorting, notes) | cf GLM-5.3-flash, checked work only | no (access only) |
+| Bulk text (summaries, sorting, notes) | cf GLM-5.3-flash (Feras 10-30), checked work only | no: row 18 calibrates it |
 | Screenshot yes/no gate | Clef-flash (cf, 9B vision decision model) as a pre-filter before review-player | no: calibrate on known frames first |
 | Error sorting, rubric scoring | Jev 1.13 (opencode decision API) | no: agy says it exists, unchecked |
 | Docs search (bge-m3 + reranker) | not before M1: grep over docs/MAP.md is enough for a small game | - |
