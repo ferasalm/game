@@ -62,5 +62,20 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
 - **Known failure modes**: Uncalibrated on gold sets
 - **Best use**: Small text / helper tasks
 
+## Routing (row 17, Opus proposal 10-30; Feras decides models: waiting on his OK)
+Evidence: docs/research/model-evidence-2026-10.md (AA numbers mostly UNVERIFIED: 1 of 3 spot-checked was invented)
+and the measured calibration lines above. Calibrated = passed a gold set (D11).
+| Task class | Model | Calibrated |
+|---|---|---|
+| Godot code, Python tools, docs | agy (Gemini 3.8 Flash); cf DeepSeek 1017 when agy is full | yes (agy 2/2 PASS row 16; cf builds) |
+| Review lens on agy runs | nemotron-3-ultra :free; on INVALID cf DeepSeek 1017 at low effort (~$0.04) | yes (parser 1/2 + gold B 6/6; DeepSeek-low 1/2) |
+| Review lens on cf/oc runs | agy | yes (hook diff 3/5) |
+| Research, licences | agy, then Opus re-reads 3 facts in a browser | partly: licences 3/3 right, AA numbers 1/3 invented |
+| Bulk text (summaries, sorting, notes) | cf GLM-5.3-flash, checked work only | no (access only) |
+| Screenshot yes/no gate | Clef-flash (cf, 9B vision decision model) as a pre-filter before review-player | no: calibrate on known frames first |
+| Error sorting, rubric scoring | Jev 1.13 (opencode decision API) | no: agy says it exists, unchecked |
+| Docs search (bge-m3 + reranker) | not before M1: grep over docs/MAP.md is enough for a small game | - |
+opencode free routes (DeepSeek, GLM-5.3-flash, Nemotron VL) are off while the free quota is spent (10-30).
+
 ## Rule
 A new model is used only after a calibration run (D11).

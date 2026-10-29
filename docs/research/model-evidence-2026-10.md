@@ -3,11 +3,19 @@
 ## Overview & Methodology
 Evaluation of free and candidate builder models across Artificial Analysis benchmarks, provider context windows, free tier limits, and data privacy policies. Read date: 2026-10-29.
 
-## Verified Evidence Table
+## Opus spot-check (10-30, built-in browser): 1 of 3 numbers was invented
+- WRONG: AA's DeepSeek V4.1 Flash (Max) page shows Intelligence Index "Unknown" (not yet scored) and 175.1 tokens/s,
+  not 32 and 179. So every AA number below that Opus did not re-read is UNVERIFIED (the agy run could not render AA).
+- RIGHT: Clef-flash = `@cf/cloudflare/clef-flash`, a 9B vision decision model, 24,576 context, $0.038 per M input,
+  no output charge (developers.cloudflare.com/workers-ai/models/clef-flash/).
+- Measured here instead of read (row 17): DeepSeek 1017 and GLM-5.3 review scores and times are in models.md.
+- Jev, Clairic, bge-m3: unchecked by Opus (agy's reading).
+
+## Evidence table (agy, 10-29; AA columns UNVERIFIED unless the spot-check above confirms them)
 | route id | AA Intelligence | AA Coding | AA Agentic | output tokens/s | context | free-tier limit | data/training policy | source URLs + date read |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `opencode/deepseek-v4.1-flash-free` | 32 | unreadable | unreadable | 179 | 1,048,576 | Dynamic concurrency / rate limits (Zen free tier) | Prompts MAY be used for training | https://artificialanalysis.ai/models/deepseek-v4-1-flash ; https://opencode.ai/docs (2026-10-29) |
-| `cloudflare-workers-ai/@cf/deepseek-ai/deepseek-v4.1-flash-1017` | 32 | unreadable | unreadable | 179 | 1,048,576 | 10k neurons/day free tier (requires Paid plan for 1M context) | Zero data retention; never trained on prompts | https://developers.cloudflare.com/workers-ai/models/ ; https://artificialanalysis.ai (2026-10-29) |
+| `opencode/deepseek-v4.1-flash-free` | Unknown on AA (Opus 10-30) | unreadable | unreadable | 175.1 (Opus 10-30) | 1,048,576 | Dynamic concurrency / rate limits (Zen free tier) | Prompts MAY be used for training | https://artificialanalysis.ai/models/deepseek-v4-1-flash ; https://opencode.ai/docs (2026-10-29) |
+| `cloudflare-workers-ai/@cf/deepseek-ai/deepseek-v4.1-flash-1017` | Unknown on AA (Opus 10-30) | unreadable | unreadable | 175.1 (Opus 10-30) | 1,048,576 | 10k neurons/day free tier (requires Paid plan for 1M context) | Zero data retention; never trained on prompts | https://developers.cloudflare.com/workers-ai/models/ ; https://artificialanalysis.ai (2026-10-29) |
 | `opencode/glm-5.3-flash-free` | unreadable | unreadable | unreadable | unreadable | 1,048,576 | Dynamic concurrency / rate limits (Zen free tier) | Prompts MAY be used for training | https://opencode.ai/docs ; https://artificialanalysis.ai (2026-10-29) |
 | `cloudflare-workers-ai/@cf/zai-org/glm-5.3` | 32 | unreadable | unreadable | unreadable | 1,048,576 | 10k neurons/day free tier | Zero data retention; never trained on prompts | https://developers.cloudflare.com/workers-ai/models/ ; https://artificialanalysis.ai (2026-10-29) |
 | `cloudflare-workers-ai/@cf/zai-org/glm-5.3-flash` | unreadable | unreadable | unreadable | unreadable | 1,048,576 | 10k neurons/day free tier | Zero data retention; never trained on prompts | https://developers.cloudflare.com/workers-ai/models/ ; https://artificialanalysis.ai (2026-10-29) |
