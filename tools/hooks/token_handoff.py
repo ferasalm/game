@@ -136,8 +136,8 @@ def message(ctx, warned):
     level = HANDOFF + int((ctx - HANDOFF) // REPEAT) * REPEAT
     if level <= warned:
         return None, warned
-    return (f"Context ~{k}k (hand-off rule): /handoff at the next unit boundary (review-heavy work may run to "
-            f"~300k).{TAIL}", level)
+    return (f"Context ~{k}k (hand-off band 200-300k, Feras 10-29): /handoff at the next unit boundary; finishing the "
+            f"unit you are in up to ~300k is fine, never stop mid-unit.{TAIL}", level)
 
 
 def new_reads(path, size, state):

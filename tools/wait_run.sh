@@ -4,12 +4,17 @@
 # restarts the hour. Start this with run_in_background right after the pipeline(s); it sleeps WAIT_SEC (default 3000 =
 # 50 min), then prints each run's state and the best move. The chat stops it (TaskStop) in the same message it gates
 # the run, so a finished run wakes the chat once. Never blocks anything.
-# Usage: bash tools/wait_run.sh <task> [<task>...]   (test: tools/test_wait_run.py)
+# No task = a plain timer for a father chat whose child chats are working (WORKFLOW Protocols, Feras 10-29).
+# Usage: bash tools/wait_run.sh [<task>...]   (test: tools/test_wait_run.py)
 set -uo pipefail
 . "$(dirname "$0")/lib.sh"
 dir="$(wt_dir)"; wait_sec="${WAIT_SEC:-3000}"; long_min="${WAIT_LONG_MIN:-180}"
-[ $# -gt 0 ] || { echo "usage: bash tools/wait_run.sh <task> [<task>...]"; exit 2; }
 sleep "$wait_sec"
+if [ $# -eq 0 ]; then
+  echo "Timer: check the child chats (list_sessions linked). Any still working: re-arm bash tools/wait_run.sh in the"
+  echo "background (one cheap call keeps the cache warm). None working: nothing to re-arm."
+  exit 0
+fi
 left=""
 for t in "$@"; do
   res="$dir/$t.result"; first="$(head -n 1 "$res" 2> /dev/null)"

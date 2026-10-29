@@ -56,6 +56,11 @@ are: what loads at start, how long a chat runs, what gets read, and output.
 
 ## Protocols
 docs/HOW_WE_WORK.md draws this loop for Feras: a change to these Protocols updates it in the same commit.
+- **Father and children (Feras 10-29):** Feras talks to the father chat. It starts a child chat only for an
+  independent part of ~15+ calls, at most 2 working at once, one writer per set of files; while a child works it keeps
+  itself warm with `bash tools/wait_run.sh` (no task: a 50-min timer) in the background. Children report at
+  milestones; the father reviews, merges each child branch into its own, runs check.sh, merges to main, runs
+  sync_main.sh in C:\dev\game and the final /handoff (report in feras/BRIEFING.md).
 - **Start:** the hook prints the sync for this worktree; then the HANDOFF line; then get_usage.
 - **Brief:** docs/briefs/TEMPLATE.md (<= 80 lines, with a Do NOT edit list).
 - **Build:** slots (tools/slots.sh), then the pipeline (tools/build_pipeline.sh).

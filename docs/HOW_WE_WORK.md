@@ -40,5 +40,13 @@ Cost = model calls x context size (each call re-reads the whole chat from cache 
 - The advisor only with Feras's OK. Scripts go through Write/Edit, never python heredocs (a hook blocks them).
 - Hand off at a unit boundary past ~250k context or ~85% of the 5-hour window (a hook warns at 200k and at 10M reads).
 
+## Who syncs, where you see things
+- Syncing: the father chat. Children work in their own worktrees (one writer per set of files, so no conflicts); the
+  father merges each, runs every check, merges to main and updates your checkout (sync_main.sh).
+- Reports: feras/BRIEFING.md (newest first) at every /handoff; the chat's last message; your calendar's "Your moves
+  today:"; HANDOFF "Open points" for anything agreed but not done, with its owner.
+- Every problem or fix Claude names carries a status: done | in progress | planned (when) | not planned | waiting on
+  Feras.
+
 ## The week
 HANDOFF.md "This week" and Feras's calendar ("Your moves today:" events) hold it; this page never copies it.

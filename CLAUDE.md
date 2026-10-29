@@ -20,7 +20,7 @@ Next goal: a free 20-30 min demo, PC (Steam) first, Android kept alive. Check ev
 4. Before content work (story, names, art, UI, combat design): read docs/CANON.md.
 
 ## Enforced by a tool (obey its message unless get_usage contradicts it; then log the mismatch in the USAGE row)
-- Hand-off at a unit boundary past ~250k context (get_usage; review-heavy work to ~300k) or ~85% of the 5-hour window:
+- Hand-off band 200-300k (Feras 10-29): a unit boundary near 250k (get_usage; any unit may finish to ~300k) or ~85% of the 5-hour window:
   tools/hooks/token_handoff.py says "finish the unit" at 200k (not a stop: keep working), "/handoff" at 250k.
 - Paid generation needs Feras's "spend ok": tools/hooks/pre_spend.py (fails closed), asking for Ripple + Pre-mortem.
 - A render reaches Feras only after review-player + review-feras: tools/hooks/review_gate.py (stamp: review_stamp.py).
@@ -62,7 +62,8 @@ machinery, a brief, a paid call or anything that reaches Feras gets them all.
   reviews and merges. Every brief names its persona (.agents/skills); our rules outrank persona text. One builder a
   task, no races (10-28); a run red on the pipeline itself: Opus fixes the pipeline and re-gates.
 - Edit, don't rewrite; no recaps; a few lines to the owner; side sessions report only at milestones; leave one tool,
-  check, skill or doc better.
+  check, skill or doc better. Every problem or fix named to Feras carries its status (Feras 10-29): done | in
+  progress | planned (when) | not planned | waiting on Feras.
 - Code rules + Godot traps: .claude/rules/code.md (loads with code; in builder prompts). Every rule and fixed bug
   gets a test; a check counts only when its output was read. Python is `python` here (not python3).
 

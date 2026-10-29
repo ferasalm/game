@@ -45,7 +45,13 @@ def test_dead_and_long_runs_are_not_re_armed():
     assert "Nothing to wait for" in out and "re-arm in the background" not in out, out
 
 
+def test_no_task_is_a_timer_for_child_chats():  # father/child (Feras 10-29)
+    out = run(tempfile.mkdtemp())
+    assert out.startswith("Timer: check the child chats") and "re-arm" in out, out
+
+
 if __name__ == "__main__":
     test_running_run_is_re_armed_and_finished_one_is_gated()
     test_dead_and_long_runs_are_not_re_armed()
-    print("test_wait_run: 2 tests passed")
+    test_no_task_is_a_timer_for_child_chats()
+    print("test_wait_run: 3 tests passed")
