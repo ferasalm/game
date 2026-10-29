@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """PostToolUse hook (hand-off rule, Feras 10-28): warns when this chat's context passes 200k ("finish the unit"),
-then at 250k and every +25k after ("hand off at the next unit boundary"), so a chat hands off in time.
+then at 250k and every +25k after ("hand off at the next unit boundary"), so a chat hands off in time. It also warns
+when the chat's cumulative cache reads (cost = calls x context, row 16 10-29) pass 10M tokens, then every +5M: read
+incrementally from a byte offset, one API call counted once (its content blocks share a message id).
 
 Context = the main model's last call (input + cache read + cache write). An advisor turn's top-level usage also sums
 the advisor's own call (271k for a 137k chat, 10-28): its last "message" iteration is read instead. A compaction
@@ -18,6 +20,8 @@ WINDOW = 512 * 1024
 FINISH = 200000
 HANDOFF = 250000
 REPEAT = 25000
+READS = 10_000_000
+READS_REPEAT = 5_000_000
 TAIL = " If get_usage shows another context size, trust get_usage and log the mismatch."
 STATE_DIR = os.environ.get("TOKEN_HANDOFF_STATE_DIR") or os.path.join(tempfile.gettempdir(), "claude_token_handoff")
 try:
@@ -136,6 +140,39 @@ def message(ctx, warned):
             f"~300k).{TAIL}", level)
 
 
+def new_reads(path, size, state):
+    """(the running cache-read sum, the byte offset read to, the last message id) after the whole lines added since
+    the last call; a shrunk file starts over."""
+    off, total, last = state.get("read_off", 0), state.get("reads", 0), state.get("last_id")
+    if not (isinstance(off, int) and 0 <= off <= size):
+        off, total, last = 0, 0, None
+    with open(path, "rb") as f:
+        f.seek(off)
+        raw = f.read(size - off)
+    end = raw.rfind(b"\n") + 1
+    for e in parse_lines(raw[:end].decode("utf-8", "replace")):
+        if not is_usage(e):
+            continue
+        mid = e["message"].get("id")
+        if mid is not None and mid == last:
+            continue  # one API call is written as one line per content block, each with the same usage
+        last = mid
+        r = e["message"]["usage"].get("cache_read_input_tokens")
+        total += r if isinstance(r, int) else 0
+    return total, off + end, last
+
+
+def reads_message(total, warned):
+    """(text or None, the warned level to keep): at 10M cumulative cache reads, then every +5M."""
+    if total < READS:
+        return None, warned
+    level = READS + int((total - READS) // READS_REPEAT) * READS_REPEAT
+    if level <= warned:
+        return None, warned
+    return (f"Cache reads ~{total / 1e6:.1f}M tokens in this chat (cost = calls x context): finish the unit with "
+            "parallel calls and few reads; a new multi-step task opens a fresh chat.", level)
+
+
 def main():
     data = json.load(sys.stdin)
     path = data.get("transcript_path")
@@ -156,9 +193,13 @@ def main():
     except (OSError, TypeError):
         return 0
     msg, warned = message(measure(entries, path), state.get("warned", 0))
-    save_state(sp, {"size": size, "warned": warned})
-    if msg:
-        print(json.dumps({"hookSpecificOutput": {"hookEventName": "PostToolUse", "additionalContext": msg}}))
+    total, read_off, last_id = new_reads(path, size, state)
+    rmsg, rwarned = reads_message(total, state.get("reads_warned", 0) if state.get("read_off", 0) <= size else 0)
+    save_state(sp, {"size": size, "warned": warned, "read_off": read_off, "reads": total, "last_id": last_id,
+                    "reads_warned": rwarned})
+    text = " ".join(m for m in (msg, rmsg) if m)
+    if text:
+        print(json.dumps({"hookSpecificOutput": {"hookEventName": "PostToolUse", "additionalContext": text}}))
     return 0
 
 

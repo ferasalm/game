@@ -68,6 +68,15 @@
             "command": "bash \"$CLAUDE_PROJECT_DIR/tools/hooks/run.sh\" review_gate"
           }
         ]
+      },
+      {
+        "matcher": "^Bash$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/tools/hooks/run.sh\" heredoc_guard"
+          }
+        ]
       }
     ],
     "InstructionsLoaded": [

@@ -17,7 +17,7 @@ HANDOFF = """# HANDOFF
 | 3 | M1 spike | chat | next |
 | 4 | art bake | chat | next |
 | 5 | fifth | builder | next |
-## Waiting on Feras
+## Open points
 | what | since |
 |---|---|
 | play M1 | 10-28 |
@@ -98,7 +98,7 @@ def test_branches_worktrees_and_queue():
     assert "hooks" in queue and "M1 spike" in queue and "art bake" in queue, out
     assert "old work" not in queue and "fifth" not in queue and "| # |" not in queue, out
     assert "|---" not in queue, out
-    waiting = section(out, "Waiting on Feras")
+    waiting = section(out, "Open points")
     assert "play M1" in waiting and "a queue row" not in waiting and "| what |" not in waiting, out
 
 
@@ -108,7 +108,7 @@ def test_no_queue_table():
     git(repo, "commit", "-q", "-am", "prose")
     out = run_status(repo)
     assert "(no Queue table in HANDOFF.md)" in section(out, "Queue"), out
-    assert "(none)" in section(out, "Waiting on Feras"), out
+    assert "(none)" in section(out, "Open points"), out
 
 
 if __name__ == "__main__":

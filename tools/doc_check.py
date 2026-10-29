@@ -4,7 +4,8 @@
 Warns (exit 0) at 75% of a cap. Caps: CLAUDE.md 80 lines, HANDOFF.md 60, docs/DECISIONS.md 70, docs/LESSONS.md 100, and 27 KB for all four
 (about 6k tokens loaded at every session start). Every HANDOFF queue row names a department from the
 docs/WORKFLOW.md Routing table and a lane; departments are labels (no .claude/agents/dept-*.md); every routing
-persona is in .agents/skills and every reviewer in .claude/agents; every decision is dated; a struck decision says what superseded it;
+persona is in .agents/skills and every reviewer in .claude/agents; HANDOFF has an Open points table of at most 10
+lines; every decision is dated; a struck decision says what superseded it;
 docs/MAP.md is current (tools/map.py --check).
 """
 import pathlib, re, subprocess, sys
@@ -74,6 +75,12 @@ for row in rows if len(cols) == 3 else []:
     check("builder" not in parts or re.search(r"\b(agy|cf|oc)\b", who), f"builder row names agy, cf or oc: {row[:5]}")
     check(not any(p.startswith("chat") for p in parts) or re.search(r"Opus (low|medium|high|xhigh)", who),
           f"chat row names Opus and its effort (Feras 10-28: Opus for every child), e.g. Opus high: {row[:5]}")
+
+# Open points (row 16, Feras 10-29): what is agreed but not done, with its owner; every /handoff closes or carries each
+OPEN_HEAD = ["Point", "Owner", "Since"]
+opens = table(texts["HANDOFF.md"], "## Open points")
+check(bool(opens) and opens[0] == OPEN_HEAD, f"HANDOFF.md has an '## Open points' table: {' | '.join(OPEN_HEAD)}")
+check(len(opens[1:]) <= 10, f"HANDOFF.md Open points has {len(opens[1:])} lines (max 10): close or move some")
 
 log = texts["docs/DECISIONS.md"].split("## Log", 1)[-1]
 for line in (l for l in log.splitlines() if l.startswith("- ")):

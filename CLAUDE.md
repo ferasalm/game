@@ -75,5 +75,5 @@ machinery, a brief, a paid call or anything that reaches Feras gets them all.
 - docs/research/ is unverified Gemini output: ideas and design input, never facts.
 
 ## Branches
-IMPORTANT: no chat edits or runs git in C:\dev\game: work in your own worktree on the session branch and push
-it. End every session with /handoff, then merge into `main` (standing OK, 2026-10-19).
+IMPORTANT: no chat edits or runs git in C:\dev\game: work in your own worktree, push it, end with /handoff (Open points
+closed or carried, 5-part report to feras/BRIEFING.md), merge into `main` (OK 10-19), then sync_main.sh there (D10).

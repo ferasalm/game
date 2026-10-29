@@ -140,6 +140,35 @@ def test_odd_lines_never_crash():  # calibration 10-28: null usage fields, a str
     assert "/handoff" in s.call()
 
 
+def reads_line(read, mid=None):
+    e = usage_line(read + 110)  # cache_read_input_tokens = read; context stays far below 200k
+    if mid is not None:
+        e["message"]["id"] = mid
+    return e
+
+
+def test_cache_reads_warn_at_10m_then_every_5m():  # row 16 (10-29): cost = calls x context, not context alone
+    s = Session()
+    write(s.path, [user_line()] + [reads_line(180_000)] * 55)  # 9.9M
+    assert s.call() == ""
+    write(s.path, [reads_line(180_000)] * 5, "a")  # 10.8M
+    msg = s.call()
+    assert "Cache reads ~10.8M" in msg and "fresh chat" in msg and "hand-off rule" not in msg, msg
+    write(s.path, [reads_line(180_000)] * 5, "a")  # 11.7M; a re-read from byte 0 would count 21.6M and warn
+    assert s.call() == "", "the offset resumes: lines already counted are not counted again"
+    write(s.path, [reads_line(180_000)] * 20, "a")  # 15.3M
+    assert "Cache reads ~15.3M" in s.call()
+
+
+def test_one_api_call_counts_once():  # an API call is one transcript line per content block, same id and usage
+    s = Session()
+    lines = []
+    for i in range(40):
+        lines += [reads_line(180_000, f"msg_{i}"), reads_line(180_000, f"msg_{i}")]
+    write(s.path, [user_line()] + lines)  # 7.2M counted once; 14.4M if every line counted
+    assert s.call() == ""
+
+
 def test_bad_input_never_blocks():
     for payload in ("not json", json.dumps({"session_id": "x", "transcript_path": "C:/no/such/file.jsonl"})):
         r = subprocess.run([sys.executable, HOOK], input=payload, capture_output=True, text=True,

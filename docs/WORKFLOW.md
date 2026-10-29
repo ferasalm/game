@@ -55,6 +55,7 @@ fixed; throughput is the limit. Every turn re-sends the whole chat (cheap when c
 are: what loads at start, how long a chat runs, what gets read, and output.
 
 ## Protocols
+docs/HOW_WE_WORK.md draws this loop for Feras: a change to these Protocols updates it in the same commit.
 - **Start:** the hook prints the sync for this worktree; then the HANDOFF line; then get_usage.
 - **Brief:** docs/briefs/TEMPLATE.md (<= 80 lines, with a Do NOT edit list).
 - **Build:** slots (tools/slots.sh), then the pipeline (tools/build_pipeline.sh).

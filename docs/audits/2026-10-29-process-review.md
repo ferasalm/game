@@ -14,9 +14,12 @@ Read once; not loaded at session start. Numbers are measured in the row 12 chat 
 1. **Too many round-trips.** About 20 calls were waits and wake-ups for background jobs, plus four calls to fix one regex
    mangled by a heredoc. Worktree isolation also refused compound commands, which split one step into three.
 2. **A fat fixed prefix.** 23k of MCP tools (Gmail, Drive, Docs, Cloudflare bindings, Rodin twice, OpenRouter, Blender)
-   ride on every call, though this task used none of them except Calendar.
-3. **Two tasks in one chat.** Your second request started at 190k context, so every call now costs about 2x what it
-   would in a fresh chat. The rule "one task per chat" exists; it was broken by continuing here.
+   ride on every call, though this task used none of them except Calendar. (Row 16, 10-29: Feras switched off Gmail,
+   Google Docs, the duplicate Hyper3D Rodin and Cloudflare Developer Platform; he keeps Google Drive, his only link to
+   his Google files. Never used in a chat so far: Gmail, Docs, Cloudflare bindings, the second Rodin.)
+3. **Two tasks in one chat.** Your second request started at 190k context, so each call re-read about 2x the tokens of
+   a fresh chat. Corrected (row 16): cached reads cost ~1/10 of fresh input, while a fresh chat pays its ~90k prefix
+   once uncached, so a fresh chat pays off only past ~10-15 calls; small follow-ups stay (the CLAUDE.md cache rule).
 4. **Advisor calls** forward the whole transcript to a stronger model: two at 100-150k each.
 
 **What is NOT the problem:** the docs. Always-loaded notes are 24 KB (~7k tokens), under 10% of the prefix.
@@ -55,7 +58,9 @@ Read once; not loaded at session start. Numbers are measured in the row 12 chat 
 3. **Builders write, Opus briefs and gates.** A builder run costs Claude only the brief (~2k) and the gate read.
 4. **Trim connectors per task** (you toggle them in the app; free): a code task needs none of Gmail, Drive, Docs,
    Cloudflare, Rodin, Blender, OpenRouter. That saves ~20k on every call, about 10-15% of a chat's cost.
-5. **The advisor once, at the start**, on chats over ~100k; skip the closing call on small changes.
+5. **The advisor once, at the start**, on chats over ~100k; skip the closing call on small changes. Superseded 10-29:
+   the advisor only with Feras's OK (CLAUDE.md duty 6). Facts: the caller here was Opus 5.5 at high effort; the
+   advisor's own model and effort are not visible to the chat.
 6. **Write code with Write/Edit, not heredocs** (a known lesson, broken again today: it cost 4 calls).
 
 ## 4. How CLAUDE.md and the skills represent it

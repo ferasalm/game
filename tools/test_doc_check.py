@@ -19,7 +19,8 @@ def write(root, name, lines):
 QUEUE = ["## Queue", "| # | Task | Dept | Lane | Who | Status | Blocked by |", "|---|---|---|---|---|---|---|",
          "| 1 | hooks | Ops | builder + chat (review) | cf; Opus high | next | - |",
          "| 2 | M1 brief | Gameplay | chat (plan) | Opus high | queued | 1 |",
-         "| 3 | play M1 | QA | Feras | - | queued | 2 |", "## Waiting on Feras", "| What | Since |", "|---|---|", "| 9 | not a queue row |"]
+         "| 3 | play M1 | QA | Feras | - | queued | 2 |", "## Waiting on Feras", "| What | Since |", "|---|---|", "| 9 | not a queue row |",
+         "## Open points", "| Point | Owner | Since |", "|---|---|---|", "| art homework | Feras | 10-24 |"]
 WORKFLOW = ["# WORKFLOW", "## Routing", "| Request | Dept | Skills | Persona | Lane | Reviewer |", "|---|---|---|---|---|---|",
             "| a hook | Ops | builders | - | builder | review-cost |", "| combat code | Gameplay | builders | godot-gameplay-scripter | builder | review-code |",
             "| eye gate | QA | players-eye-gate | - | chat (review) | review-player + review-feras |",
@@ -83,9 +84,18 @@ def test_departments_are_labels_with_real_personas_and_reviewers():
         assert r.returncode == 1 and why in r.stdout, why + "\n" + r.stdout
 
 
+def test_open_points_table_needed_and_capped():  # row 16 (Feras 10-29): nothing agreed slips between chats
+    no_open = QUEUE[:QUEUE.index("## Open points")]
+    r = run_check(no_open)
+    assert r.returncode == 1 and "'## Open points' table" in r.stdout, r.stdout
+    r = run_check(QUEUE + [f"| point {i} | Feras | 10-29 |" for i in range(10)])  # 11 lines
+    assert r.returncode == 1 and "Open points has 11 lines (max 10)" in r.stdout, r.stdout
+
+
 if __name__ == "__main__":
     test_warns_at_75_percent_but_passes()
     test_queue_rows_need_a_lane()
     test_queue_rows_need_a_department()
     test_departments_are_labels_with_real_personas_and_reviewers()
-    print("test_doc_check: 4 tests passed")
+    test_open_points_table_needed_and_capped()
+    print("test_doc_check: 5 tests passed")

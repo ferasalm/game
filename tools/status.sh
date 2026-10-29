@@ -53,6 +53,6 @@ rows() {  # <section heading regex>: the data rows of the first table under that
 echo "== Queue (HANDOFF.md on $tip, next 3 not done)"
 q="$(rows '^## Queue' | grep -v -i '| *done *|' | head -n 3)"
 echo "${q:-  (no Queue table in HANDOFF.md)}" | sed 's/^|/  |/'
-echo "== Waiting on Feras"
-w="$(rows '^## Waiting on Feras')"
+echo "== Open points"
+w="$(rows '^## Open points')"
 echo "${w:-  (none)}" | sed 's/^|/  |/'

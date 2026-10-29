@@ -635,6 +635,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/fps_probe.gd`: FPS probe: plays a scene with vsync off and prints the average and worst frames per second after a warm-up
 - `tools/gate_checklist.py`: Checklist parsing and verification for build_gate.
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.
+- `tools/hooks/heredoc_guard.py`: PreToolUse hook on Bash (LESSONS 4, broken again 10-29: 4 calls lost): blocks a `python - <<DELIM` heredoc whose
 - `tools/hooks/pre_spend.py`: PreToolUse hook (D21): blocks paid generation tools (exit 2) unless a recent USER message says "spend ok"; reminds before Hyper3D.
 - `tools/hooks/review_gate.py`: PreToolUse hook (D5, D21): blocks a game render sent to Feras unless review-player and review-feras stamped it.
 - `tools/hooks/review_stamp.py`: Record a player and a Feras review for a game render (D5, D21), keyed by the file's sha256.
@@ -684,6 +685,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_eye_metrics.py`: Tests tools/eye_metrics.py on a temp project root. Run: python tools/test_eye_metrics.py
 - `tools/test_gate_checklist.py`: Tests for brief checklist verification in build_gate.
 - `tools/test_gate_d6.py`: Self-test for the D6 gate rules (2026-10-27): protected tests and assets, removed checks, new tests fail on base.
+- `tools/test_hook_heredoc.py`: Self-test for tools/hooks/heredoc_guard.py (LESSONS 4): a python heredoc holding a backslash is blocked (exit 2);
 - `tools/test_hook_run.py`: Self-test for tools/hooks/run.sh: hooks run the session's own copy, a missing script never blocks a tool.
 - `tools/test_kill_tree.py`: Tests kill_tree (tools/lib.sh): a tree with a native grandchild and a parent still forking during the kill dies whole.
 - `tools/test_map.py`: Self-test for map.py: only tracked files are mapped (an untracked file made CI fail "MAP.md current").

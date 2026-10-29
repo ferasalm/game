@@ -35,8 +35,8 @@ Not this game: a roguelite (runs, death-return, seeded maps), turn-based battles
 | O6 | Phone | The current milestone plays with touch on Feras's Android phone | every milestone |
 
 ## Roadmap (after M0, the process audit P1-P4; Feras plays gated builds twice a week; each milestone ends on his OK)
-- **M1 Look-and-feel spike, prison roof.** Contents: real-time Rydan vs 2 guards (move, dash, attack, special, cast,
-  hit feedback); full-colour 24-30 fps bakes; 2D lights with normal maps and shadows (qamariya glow, flicker); a living
+- **M1 Look-and-feel spike, prison roof.** Combat feel first ("game juice", Feras 10-29): the fight must feel good
+  before the look is polished. Contents: real-time Rydan vs 2 guards (move, dash, attack, special, cast, hit feedback); full-colour 24-30 fps bakes; 2D lights with normal maps and shadows (qamariya glow, flicker); a living
   plate (wind, moving objects, particles); walk mask and occluders from object masks; portrait cut-outs checked in
   dialogue and menus; the UI style guide (docs/design/ui.md); Mobile renderer, touch, Android export in CI. Done: eye
   gate passes, Feras OKs it on PC and phone, the M1 notes in docs/playtest/2026-10-27.md are closed.
