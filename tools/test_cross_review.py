@@ -106,6 +106,14 @@ def test_cli_non_utf8_log_and_lf_output():  # Opus review of the race winner, 10
     assert b"\r\n" not in open(out, "rb").read(), "the table is written with LF, not CRLF"
 
 
+def test_colour_codes_and_crlf_around_markers():  # opencode/agy terminal output (row 12 runner, 10-29)
+    esc = "\x1b"
+    log = (f"{esc}]0;opencode{esc}\\{esc}[1;32mBEGIN FINDINGS{esc}[0m\r\n{esc}[2m{LINE_A}{esc}[0m\r\n"
+           f"{esc}[1mEND FINDINGS{esc}[0m\r\n")
+    r = cr.parse(log)
+    assert r["status"] == "OK" and r["findings"][0]["fix"] == "catch OSError", ("escapes hid the block", r)
+
+
 if __name__ == "__main__":
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     for t in tests:

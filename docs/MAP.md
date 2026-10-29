@@ -617,12 +617,14 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/build_gate.py`: Build gate: judges a builder run before Claude reads it (NOWORK, BREACH, FAIL or PASS plus a WARN checklist).
 - `tools/build_pipeline.sh`: Free builder pipeline (DECISIONS 2026-10-23, hardened 2026-10-27): slots check -> builder run (idle watchdog) ->
 - `tools/builders.conf`
-- `tools/cf_build.sh`: Rates (USD per million tokens)
+- `tools/cf_build.sh`: Paid fallback builder (DECISIONS 2026-10-23: Cloudflare Workers AI DeepSeek V4.1 Flash, Workers Paid, <= $10 usage): runs
 - `tools/cf_mcp/server.py`: Stdio MCP server: triage_trace (DeepSeek V4.1 Flash), generate_patch (DeepSeek V4.1 Flash), optional .agents persona.
 - `tools/cf_mcp/test_server.py`: Tests for tools/cf_mcp/server.py over its real stdio protocol, in dry mode (no Cloudflare call, no credentials).
 - `tools/check.sh`: One command for every check (docs, lint, Godot import, tests). One ok/FAIL line per step; logs in .check/.
 - `tools/check_slot.sh`: Test-run slots shared by every worktree on this machine: at most CHECK_SLOTS Godot test suites at once. Four at once
+- `tools/cross_review.opencode.json`: content: ? x0
 - `tools/cross_review.py`: Parse cross-review finding blocks from reviewer logs into structured data.
+- `tools/cross_review.sh`: Cross-review (row 12 A, DECISIONS 2026-10-28): the other model family reviews a PASS run before Claude's gate:
 - `tools/cross_review_prompt.md`
 - `tools/doc_check.py`: Keeps the always-loaded notes small and well-formed (docs/WORKFLOW.md); exit 1 on any failure.
 - `tools/eye_gate.sh`: Player's-eye gate step 1: records a render wrapper non-headless and makes what a reader can look at.
@@ -674,6 +676,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_check_slot.py`: check_slot.sh: a full set of slots makes the next run wait; a released or stale slot lets it in.
 - `tools/test_content_kinds.py`: ContentDB loads every content/**/*.json and errors on a kind it does not know, which breaks boot and every Godot test
 - `tools/test_cross_review.py`: Self-test for the cross-review findings parser (row 12 A/B, 2026-10-28): python tools/test_cross_review.py.
+- `tools/test_cross_review_sh.py`: Self-test for the cross-review runner tools/cross_review.sh (row 12 A, 2026-10-29): python tools/test_cross_review_sh.py.
 - `tools/test_doc_check.py`: Self-test for doc_check.py: warns (exit 0) at 75% of a cap; every queue row needs a lane and a WORKFLOW department;
 - `tools/test_eye_metrics.py`: Tests tools/eye_metrics.py on a temp project root. Run: python tools/test_eye_metrics.py
 - `tools/test_gate_checklist.py`: Tests for brief checklist verification in build_gate.

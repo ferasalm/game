@@ -1,5 +1,5 @@
 # HANDOFF (current state only; ONE queue for every chat; max 60 lines)
-Last updated: 2026-10-28 (row 12 part 1 on main; row 14 closed in chat: LESSONS triaged, Godot traps in code.md; row 15 queued), Opus 5.5.
+Last updated: 2026-10-29 (row 12: cross_review.sh + agy calibration 3/5 PASS on main, A on in WORKFLOW Review; only DeepSeek's live leg left), Opus 5.5.
 Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Feras's list).
 
 ## How this file works (Feras 2026-10-27; departments 10-28)
@@ -15,9 +15,9 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 ## Queue
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
-| 12 | Cross-review lane (A: the other model family reviews every PASS run before Claude), agy's wider lane (C), one two-builder race (B): docs/briefs/cross-review.md | Ops | builder + chat (review) | agy + cf; Opus high | part 1 + race B on main (verdict: no races; parser tools/cross_review.py merged); next: the A runner (strip ANSI, force the block) | Feras: agy permission rule for one-shot reviews |
 | 15 | Session-start hook prints the top queue row (Dept, lane, who); test_session_start | Ops | builder | agy (RUN_KIND=py) | queued | - |
-| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | queued | 12 |
+| 12 | Cross-review: first live DeepSeek review of an agy PASS run (tools/cross_review.sh; bash/edit denied, stub-tested only); write the result in builders lessons.md | Ops | builder | cf (on row 15's run) | queued: runner + agy calibration (3/5 PASS) on main 10-29 | 15 |
+| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | queued | - |
 | 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | queued | 3 |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | queued: runs while agy builds row 4 | 3; free memory >= 3 GB |
 | 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | QA | Feras | - | queued | 4 |

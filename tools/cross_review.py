@@ -3,6 +3,9 @@ import argparse
 import re
 import sys
 
+# Colour and title escapes that opencode and agy print around their text (row 12: they hid the markers)
+_ANSI = re.compile(r"\x1b\[[0-9;?]*[ -/]*[@-~]|\x1b\][^\x07\x1b]*(?:\x07|\x1b\\)")
+
 
 def _extract_block(text: str):
     raw_lines = text.splitlines()
@@ -60,7 +63,7 @@ def _parse_finding(line: str):
 
 
 def parse(text: str) -> dict:
-    lines, err = _extract_block(text)
+    lines, err = _extract_block(_ANSI.sub("", text).replace("\r", ""))
     if err:
         return {"status": "INVALID", "findings": [], "reason": err}
     if lines == ["NONE"]:

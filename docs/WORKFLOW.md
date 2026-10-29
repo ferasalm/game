@@ -60,6 +60,9 @@ are: what loads at start, how long a chat runs, what gets read, and output.
 - **Build:** slots (tools/slots.sh), then the pipeline (tools/build_pipeline.sh).
 - **Review (tiered, Feras 10-28: Opus never reads needlessly, and signs off on whatever reaches Feras):**
   1. Gates first: check.sh, build_gate (.result first line). FAIL, NOWORK or BREACH goes back unread.
+     PASS: cross-review (row 12 A, 10-29): `bash tools/cross_review.sh <run> <brief> <base>` in the background (the
+     other family: gemini/* -> DeepSeek, oc/* -> agy; ~11 min, free); real findings go to the builder as its fix pass,
+     then the gate again. Its table (.check/reviews/<run>-cross.md) feeds step 3; it misses fail-open/closed wiring.
   2. Big diffs (over ~300 lines or ~10 files): a Haiku high pass (or a free lens, Readers) lists the misses against
      the brief's Checklist; small diffs skip to 3.
   3. Opus reads that list, the WARN lines and the risky hunks only: logic/, saves, hooks, settings.json, anything no

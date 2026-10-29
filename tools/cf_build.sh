@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-# Rates (USD per million tokens)
-INPUT_RATE=0.30
-OUTPUT_RATE=1.20
 # Paid fallback builder (DECISIONS 2026-10-23: Cloudflare Workers AI DeepSeek V4.1 Flash, Workers Paid, <= $10 usage): runs
 # build_pipeline.sh on opencode with that model. Use only when agy and Inkling :free are out of quota.
 # Usage (cwd = the main checkout, run_in_background): bash <this repo>/tools/cf_build.sh <task> <brief> <base> [model]
@@ -26,5 +23,5 @@ bash "$here/build_pipeline.sh" cf "$task" "$brief" "$base" "$model" || rc=$?
 dir="$(wt_dir)"
 log="$dir/$task.log"
 spend_csv="$dir/cf_spend.csv"
-bash "$here/slots.sh" append-spend "$log" "$task" "$INPUT_RATE" "$OUTPUT_RATE" "$spend_csv"
+bash "$here/slots.sh" append-spend "$log" "$task" "$CF_INPUT_RATE" "$CF_OUTPUT_RATE" "$spend_csv"
 exit $rc

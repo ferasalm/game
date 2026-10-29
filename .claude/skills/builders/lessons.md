@@ -37,3 +37,8 @@
   for an assets/ edit: a red test can force a wrong design, so test verdict precedence too) and a fix-pass prompt
   that ran Godot in a py run. Brief every refusal path with a test.
 - Race B (row 12, 10-28; parser brief, py run): agy and cf each made a first commit in 17-20 min and both parsers passed the 7 red tests, but both runs then burned ~70 min of fix passes on a pipeline leak (RUN_KIND=py reached test_build_pipeline); cf "fixed" it in protected check.sh = BREACH, agy PASSed once re-gated. Cross-review gave 0/2 usable blocks (agy headless denies its tools without --dangerously-skip-permissions; DeepSeek explored 520 s and wrote no block); Opus found 2 real bugs (non-UTF-8 log crash, CRLF out). Verdict: no races for now; one builder + Opus review is cheaper (2026-10-28).
+- Cross-review calibration (row 12 A, 10-29): tools/cross_review.sh, agy with --dangerously-skip-permissions --sandbox
+  from an empty box (packet.md only), on cf's hook diff 783eefd: one round, 11 min, a valid block, 10 findings, box
+  untouched. Key 3 of 5: (b) pre-compaction fallback, (c) inbox documents blocked, (d) plain-list files unchecked;
+  (a) repeat warnings only brushed, (e) missed: it argued the opposite (fail closed), so wiring/fail-side questions
+  stay Opus's. PASS (>= 3). DeepSeek's leg (bash/edit denied, packet attached, forced round) is stub-tested only.
