@@ -13,10 +13,14 @@ HANDOFF.md; this file is your view of it. Each report: Done | Still open | When 
   unverified), open-source candidates (docs/research/opensource-candidates.md, licences to verify before import).
 - Doc audit by agy: 5 fixes applied (CLAUDE.md dupes, a stale WORKFLOW review step, a stale decision line).
 - VISION M1: combat feel first. Your Drive connector decision logged.
-**Still open:** your Open points (VISION OK, Bilqis portraits, art homework); keep/drop cross-review after 5 runs
-(nemotron :free returned an invalid review today).
-**When / How:** Sat 10-31 after 16:00: row 3 M1 brief (Gameplay, chat plan, Opus high). Fri: no Claude chats.
-**Your move vs mine:** yours = Fri art homework + the two calls; mine = M1 brief Saturday.
+- Late (done): hand-off is a band (200-300k, finish the unit); father/child chats (WORKFLOW Protocols; the father
+  syncs and merges; wait_run.sh with no task keeps it awake); every item I name carries a status; HOW_WE_WORK says
+  who syncs and where reports land; this report is now written last (handoff skill).
+**Still open:** planned Fri 10-30, row 17: model evidence + routing table (the AA numbers in models.md are
+unverified and suspect), calibration, why the opencode free run hung, cross-review retry, licence check, diagram v2.
+Waiting on you: VISION OK, Bilqis portraits, art homework. DeepSeek is not retired (builder yes, reviewer no).
+**When / How:** Fri 10-30: row 17 (Ops, Opus high father + agy). Sat 10-31 after 16:00: row 3 M1 brief.
+**Your move vs mine:** yours = start the row 17 chat Fri, art homework, the two calls; mine = row 17, then M1.
 **Checked:** all new tests; check.sh full run (582 passed) at the docs merge, again at the audit merge; the hooks live.
 **Not checked:** the open-source licences and benchmark numbers (marked unverified); CI is checked after the push.
 

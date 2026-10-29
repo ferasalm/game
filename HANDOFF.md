@@ -15,6 +15,7 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 ## Queue
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
+| 17 | Models, builders, licences, system diagram v2 (Feras 10-29): docs/briefs/row17-models-builders.md | Ops | chat (plan) + builder | Opus high; agy | next: Fri 10-30 (leftover weekly limit) | - |
 | 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof, combat feel first (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | next: Sat 10-31 after 16:00 | - |
 | 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | queued | 3 |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | queued: runs while agy builds row 4 | 3; free memory >= 3 GB |
@@ -33,13 +34,12 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 | OK on the vision (docs/VISION.md) | Feras | 10-27 |
 | Bilqis's portraits are now the Neon ones: keep or overturn (archive-cleanup, decisions-log) | Feras | 10-27 |
 | Art homework into inbox/: concept pictures, an empty plate per scene (no characters, HUD or rain), icon art (row 7) | Feras | 10-24 |
-| Cross-review: keep or drop after 5 measured runs (USAGE "cross-review hits"; < 1 real bug a run -> drop) | Claude | 10-29 |
 
 ## This week (Claude Pro weekly limit: ~90% used Thu 10-29, resets Sat 10-31 13:00 UTC = 16:00 Feras's time (GMT+3); on his calendar)
 | Day | Plan |
 |---|---|
 | Thu 10-29 | Row 16 closed: process complete (hooks, Open points, HOW_WE_WORK, model cards, open-source list). |
-| Fri 10-30 | No Claude chats (limit). Feras: art homework, Bilqis call, VISION OK. |
+| Fri 10-30 | Row 17 chat (the ~13% weekly left expires at the Sat reset anyway). Feras: art homework, Bilqis call, VISION OK. |
 | Sat 10-31 | Limit resets 16:00: row 3 M1 brief (Feras answers its feel questions); row 4 agy builds overnight. |
 | Sun 11-01 | Row 4 review + eye gate (cross-reviewed); row 6 Roya bake. |
 | Mon 11-02 | Play day 1 (row 5) on PC and phone; fix passes from his notes; rows 7-8. |
