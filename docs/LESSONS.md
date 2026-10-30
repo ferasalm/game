@@ -40,6 +40,7 @@ naming the test; Godot code traps -> .claude/rules/code.md; builder-only -> .cla
 - "Builder hung / reviewer printed nothing" twice had silent causes: opencode's spent free quota (exit 0, no text) and
   Workers AI DeepSeek thinking past the 32k cap -> first probe with `--print-logs` and `--format json` (finish reason,
   tokens) before blaming the model (2026-10-30).
+- A new tool version breaks silently (opencode v2) -> back up its data dirs, probe in a throwaway repo (2026-10-30).
 - `check.sh | tail && git commit` committed a failing run -> grep .check/*.log for FAIL first; never push before reading the
   final check line (2026-10-23).
 

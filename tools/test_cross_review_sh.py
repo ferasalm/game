@@ -64,7 +64,7 @@ def toy():
 
 def review(top, g, *extra, mode="block"):
     env = {**os.environ, "PATH": f"{top}/bin{os.pathsep}" + os.environ["PATH"], "STUB_TOP": top, "STUB_MODE": mode,
-           "GAME_WT_DIR": top + "/game-wt", "CLOUDFLARE_ACCOUNT_ID": "test", "REVIEW_TIMEOUT": "60s"}
+           "GAME_WT_DIR": top + "/game-wt", "CLOUDFLARE_ACCOUNT_ID": "test", "REVIEW_TIMEOUT": "60s", "OC_BIN": "opencode"}
     r = subprocess.run(["bash", f"{TOOLS}/cross_review.sh", "job", top + "/brief.md", "main", *extra], cwd=g, env=env,
                        capture_output=True, text=True, stdin=subprocess.DEVNULL)
     stub = open(top + "/stub.txt", encoding="utf-8").read() if os.path.exists(top + "/stub.txt") else ""
@@ -116,6 +116,8 @@ def test_review_config_denies_bash_and_edit():
     cfg = json.load(open(f"{TOOLS}/cross_review.opencode.json", encoding="utf-8"))
     perm = cfg["permission"]
     assert perm["bash"] == "deny" and perm["edit"] == "deny", perm
+    # v2's execute tool (a JS sandbox) ran echo and fetched a page past the bash and webfetch denies (probe, row 18 10-30)
+    assert all(perm.get(k) == "deny" for k in ("execute", "webfetch", "websearch", "task")), perm
     # Workers AI DeepSeek 1017 at "high" filled opencode's hidden 32k output cap with reasoning and printed nothing (3
     # runs, 10-29). Max with the cap at 128k: a valid block in 443 s, less noise than low (Feras 10-30: max).
     ds = cfg["provider"]["cloudflare-workers-ai"]["models"]["@cf/deepseek-ai/deepseek-v4.1-flash-1017"]
@@ -123,6 +125,8 @@ def test_review_config_denies_bash_and_edit():
     build = json.load(open(f"{ROOT}/opencode.json", encoding="utf-8"))
     bds = build["provider"]["cloudflare-workers-ai"]["models"]["@cf/deepseek-ai/deepseek-v4.1-flash-1017"]
     assert bds["options"]["reasoning_effort"] == "max", ("cf builds think at max too", bds)
+    # v2 dropped OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX (row 18): the cap lives on the model
+    assert ds["limit"]["output"] >= 384000 and bds["limit"]["output"] >= 384000, (ds, bds)
     r = subprocess.run(["bash", "-c", f". '{TOOLS}/lib.sh'; echo $OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX"],
                        capture_output=True, text=True, env={k: v for k, v in os.environ.items()
                                                             if k != "OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX"})

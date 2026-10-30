@@ -4,6 +4,9 @@
     "edit": "deny",
     "bash": "deny",
     "webfetch": "deny",
+    "task": "deny",
+    "execute": "deny",
+    "websearch": "deny",
     "external_directory": {
       "*": "deny"
     }
@@ -14,6 +17,10 @@
         "@cf/deepseek-ai/deepseek-v4.1-flash-1017": {
           "options": {
             "reasoning_effort": "max"
+          },
+          "limit": {
+            "context": 1048576,
+            "output": 384000
           }
         }
       }

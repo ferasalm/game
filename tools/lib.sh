@@ -56,3 +56,14 @@ run_limited() {  # <duration> cmd...: run it, kill its whole process tree when t
   done
   wait "$pid"
 }
+
+oc_run() {  # opencode run <args> on OC_BIN. v2 (row 18, 10-30): --standalone = a private server that reads this run's
+  # env (OPENCODE_CONFIG, keys), prints its logs (a spent quota) and dies with the tree; else the shared background
+  # service runs it under its own config. Lowercase log level; its own data dir (v2 migrates a database v1 then cannot
+  # read). OC_MAJOR=1 = the v1 rollback. --print-logs: a spent free quota prints nothing without it (10-29)
+  if [ "$OC_MAJOR" = 1 ]; then
+    XDG_DATA_HOME="$HOME/.local/share/oc-cli" "$OC_BIN" run --print-logs --log-level ERROR "$@"
+  else
+    XDG_DATA_HOME="$HOME/.local/share/oc-v2" "$OC_BIN" run --standalone --print-logs --log-level error "$@"
+  fi
+}

@@ -198,7 +198,8 @@ def test_spent_free_quota_stops_the_run_at_once_as_nowork():  # row16-audit (10-
 def fake_bin(top):
     for n in ("opencode", "agy"):
         put(f"{top}/bin/{n}", FAKE_BIN, 0o755)
-    return {**os.environ, "PATH": f"{top}/bin{os.pathsep}" + os.environ["PATH"], "HOME": top, "FREE_MB": "99999"}
+    return {**os.environ, "PATH": f"{top}/bin{os.pathsep}" + os.environ["PATH"], "HOME": top, "FREE_MB": "99999",
+            "OC_BIN": "opencode"}
 
 
 def task(g, top, script, name, base, **env_extra):
@@ -216,6 +217,9 @@ def test_oc_task_default_model_deepseek_outer_timeout_and_base_check():
     log = open(top + "/game-wt/job.log", encoding="utf-8").read()
     assert "deepseek" in log and "free" in log, log
     assert "--print-logs" in log, ("without it a spent free quota prints nothing (10-29)", log)
+    # v2 (row 18): without --standalone the shared service runs it (no logs, other config, survives the timeout);
+    # v2 rejects "ERROR" and exits 1
+    assert "--standalone" in log and "--log-level error" in log, log
     assert "opencode exited 124" in log and time.time() - t0 < 40, (r.stdout, r.stderr, log)
     assert os.path.exists(top + "/child.up"), "the fake opencode never started its native child"
     time.sleep(1)

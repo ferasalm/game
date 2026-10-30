@@ -2,6 +2,25 @@
 Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after a sync). Claude's own queue is
 HANDOFF.md; this file is your view of it. Each report: Done | Still open | When | How | Your move vs mine | Checked.
 
+## 2026-10-30 (Fri, late): opencode v2, row 18 part (a) (Opus 5.5)
+**Done (on main):** your exe (opencode 2.2.2, validly signed by Anomaly Innovations, opencode's maker) is installed next to
+v1 at ~/.local/opt/opencode-2.2.2 and pinned (auto-update off). Builders and cross-review now run it. I tested it in a throwaway repo first. Five v2 breaks found, all fixed with tests:
+1. `run` used a shared background service, which ignored each run's config, hid quota errors and outlived timeouts. Fix: `--standalone`.
+2. The log level must be lowercase.
+3. A new `execute` tool let the read-only reviewer run commands and fetch a web page. Fix: denied.
+4. The 384k output-cap variable is gone. Fix: set on the model instead.
+5. v2 converts any database it opens. Fix: v2 gets its own data dir.
+No hangs: an "ask" (reading .env) is auto-rejected, outside-folder reads are denied, and pipes run. A spent free quota
+now exits 1 (v1 exited 0). Every call stays under run_limited. No plugins to port.
+**Side effect:** an early test converted v1's default data dir (~/.local/share/opencode, interactive use only, no keys).
+v1 can't read it now; v2 can. The pipeline's v1 data (oc-cli) still works. A backup is in C:\Users\AUC\oc-v1-backup-2026-10-30.
+**Rollback:** one line: `OC_BIN=opencode OC_MAJOR=1` (tools/builders.conf).
+**Not confirmed:** that "max" effort reaches DeepSeek on Cloudflare. The config carries it, and a one-word test
+used 0 thinking tokens on v1 and v2 alike. That is planned for row 18(c), along with the native v2 config, 18(b).
+**When / How:** row 18 (b)-(d), Sat 10-31 16:00, once the weekly limit resets (Ops, builder agy, Opus gates). **Your move:** none for (a).
+**Checked:** check.sh without Godot (no Godot file changed), the pipeline (12) and cross-review (6) tests, live
+v2 probes. **Not run:** Godot tests, a real builder run on v2 (planned: the first 18(b) run).
+
 ## 2026-10-30 (Fri, early): your row 17 follow-ups (Opus 5.5 high), closed
 **Done (on main):**
 - Bandwidth: git already sends only changes (a sync is KBs; CI runs on GitHub, not your line). The 109 MB is old

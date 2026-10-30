@@ -44,8 +44,7 @@ ask() {  # <timeout> <message>: one reviewer call from the box, appending to the
         "[Environment]::GetEnvironmentVariable('CLOUDFLARE_ACCOUNT_ID','User')" | tr -d '\r')"
     fi
     (cd "$box" && CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID:-}" OPENCODE_CONFIG="$lib_dir/cross_review.opencode.json" \
-      XDG_DATA_HOME="$HOME/.local/share/oc-cli" run_limited "$1" opencode run --print-logs --log-level ERROR \
-      --model "$model" --format "${XR_OC_FORMAT:-default}" -f packet.md -- "$2" \
+      run_limited "$1" oc_run --model "$model" --format "${XR_OC_FORMAT:-default}" -f packet.md -- "$2" \
       < /dev/null >> "$log" 2>&1) || rc=$?
   fi
   [ $rc -eq 0 ] || echo "reviewer exited $rc" >> "$log"

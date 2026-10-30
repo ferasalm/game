@@ -3,7 +3,7 @@
 # build_pipeline.sh on opencode with that model. Use only when agy and Inkling :free are out of quota.
 # Usage (cwd = the main checkout, run_in_background): bash <this repo>/tools/cf_build.sh <task> <brief> <base> [model]
 # Needs (Feras sets them once; Claude never handles the token): the user env var CLOUDFLARE_ACCOUNT_ID (setx) and the
-# key from `XDG_DATA_HOME=~/.local/share/oc-cli opencode auth login` -> Cloudflare Workers AI. Spend: Cloudflare
+# key from `XDG_DATA_HOME=~/.local/share/oc-v2 <OC_BIN> auth login` (v2; v1 rollback: oc-cli, `opencode`) -> Cloudflare Workers AI. Spend: Cloudflare
 # dashboard -> AI -> Workers AI (10,000 free neurons a day, then $0.011 per 1,000).
 set -euo pipefail
 . "$(dirname "$0")/lib.sh"
