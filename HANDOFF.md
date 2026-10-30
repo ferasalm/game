@@ -44,7 +44,7 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 | Thu 10-29 | Row 16 closed: process complete (hooks, Open points, HOW_WE_WORK, model cards, open-source list). |
 | Fri 10-30 | Row 17 done (+ cf max effort, no cf cap, nemotron backup, bandwidth guard, cache hook). Feras: art homework, Bilqis call, VISION OK. |
 | Sat 10-31 | Limit resets 16:00: row 18 chat (opencode v2, config, calibrations; agy builds, Opus gates). |
-| Sun 11-01 | Row 18 gate; Feras OKs the routing; then M1 brief (row 3) if the system pass is done. |
+| Sun 11-01 | Row 18 gate; /kaizen:coach (ops-review); Feras OKs the routing; then M1 brief (row 3) if the system pass is done. |
 | Mon 11-02 | M1 build (row 4) overnight from Sun; play day moves to when M1 passes its gates. |
 
 ## Parked and context (resume only through a queue row)
