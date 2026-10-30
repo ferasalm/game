@@ -1,9 +1,32 @@
 # Briefing for Feras (one file for you: newest report first, the last 5 kept; every chat updates it at /handoff)
 Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after a sync). Claude's own queue is
-HANDOFF.md; this file is your view of it. Each report: Done | Still open | When | How | Your move vs mine | Checked.
+HANDOFF.md; this file is your view of it. "Open now" is rewritten at every /handoff; below it, reports newest first,
+each headed by its date and time (GMT+3): Done | Still open | When | How | Your move vs mine | Checked.
 
-## 2026-10-30 (Fri, late): opencode v2, row 18 part (a) (Opus 5.5)
-**Done (on main):** your exe (opencode 2.2.2, validly signed by Anomaly Innovations, opencode's maker) is installed next to
+## Open now (Fri 10-30 04:30)
+| # | Open item | Status | Checked | Your move? | When |
+|---|---|---|---|---|---|
+| 1 | Row 18(b): opencode config in v2's own format: tool-output limits, compaction buffer, per-model limits and options (GLM: Z.ai's max effort, temp 1, top_p 0.95, 128K out; in v2 these go on a model variant), each tested on Cloudflare | planned | - | no | Sat 10-31 16:00 |
+| 2 | First real builder run on opencode v2 (only probes and tests so far) | planned | not run | no | Sat 10-31, the first 18(b) run |
+| 3 | Row 18(c): calibrate GLM-5.3-flash, Clef-flash (screenshot yes/no vs review-player), Jev (error sorting); confirm DeepSeek "max" effort reaches Cloudflare | planned | - | no | Sat 10-31 to Sun 11-01 |
+| 4 | Row 18(d): your OK on the whole model routing (models.md) | waiting on Feras | after 1-3 | yes | Sun 11-01 |
+| 5 | First /kaizen:coach run in the ops-review; plus a trigger so the ops-review actually happens (WORKFLOW audit) | planned | - | no | Sun 11-01 |
+| 6 | Row 3, M1 brief (real-time Rydan vs 2 guards, prison roof) | planned | - | no | Sun 11-01, if row 18 is done |
+| 7 | Row 4, M1 build + Android export + archive the turn-based fight | planned | - | no | Mon 11-02 |
+| 8 | Row 6, bake Roya and a native-scale roof render | planned | - | no | after the routing OK |
+| 9 | Row 5, you play M1 on PC and phone | waiting on Feras (later) | - | yes | after row 4 passes its gates |
+| 10 | Row 7, art batch (Bilqis v2, guard, props, icons) | queued | - | no | before Rodin credits end ~11-17 |
+| 11 | Rows 8-11: free image-to-3D, asset pipeline, Obscura, art-bible pass | parked | - | no | not planned yet (after row 5) |
+| 12 | OK on the vision (docs/VISION.md) | waiting on Feras | - | yes | open since 10-27 |
+| 13 | Bilqis's portraits: keep the Neon ones or overturn | waiting on Feras | - | yes | open since 10-27 |
+| 14 | Art homework into inbox/: concept pictures, empty plates, icon art | waiting on Feras | - | yes | open since 10-24 |
+| 15 | Clean up old worktree folders (check each is merged first) | not planned yet | - | no | no date |
+| 16 | Cross-review keep or drop: 1 of 5 measured runs | in progress | 1 of 5 | no | at the 5th run |
+
+## Fri 10-30 03:45: opencode v2, row 18 part (a) (Opus 5.5)
+Row 18 has four parts: (a) move opencode to v2 [**done**, below]; (b) write its config in v2's own format [planned,
+Sat]; (c) calibrate the cheap models [planned, Sat-Sun]; (d) your routing OK [waiting on you, Sun]. Items 1-4 above say what each holds.
+**(a) Done (on main):** your exe (opencode 2.2.2, validly signed by Anomaly Innovations, opencode's maker) is installed next to
 v1 at ~/.local/opt/opencode-2.2.2 and pinned (auto-update off). Builders and cross-review now run it. I tested it in a throwaway repo first. Five v2 breaks found, all fixed with tests:
 1. `run` used a shared background service, which ignored each run's config, hid quota errors and outlived timeouts. Fix: `--standalone`.
 2. The log level must be lowercase.

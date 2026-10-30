@@ -43,5 +43,8 @@ HANDOFF, DECISIONS and LESSONS load at every session start, so every line costs 
    anything agreed this chat but not done becomes an Open point (point | owner | since; max 10, doc_check).
    The report is written last: work merged after it (late requests) updates it before the final push. Every item in
    it carries its status: done | in progress | planned (when) | not planned | waiting on Feras. The same report goes at the top of
-   feras/BRIEFING.md (his one file; keep the last 5) and the chat names that file. When the plan for the next 3 days changed, update those days' calendar
+   feras/BRIEFING.md (his one file; keep the last 5) and the chat names that file. Feras 10-30: the report is headed
+   by day, date and time (GMT+3), never "early/late"; a row in parts gets one line per part (a, b, c) with its
+   status; and the "Open now" table at the top is rewritten (every queue row, Open point and carried item: status,
+   checked, his move or not, when). When the plan for the next 3 days changed, update those days' calendar
    events (feras.almekhlaf@gmail.com, all-day, "Your moves today:" lists). New ideas go to docs/ideas.md, not the queue.

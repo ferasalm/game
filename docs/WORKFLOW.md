@@ -67,9 +67,9 @@ docs/HOW_WE_WORK.md draws this loop for Feras: a change to these Protocols updat
 - **Review (tiered, Feras 10-28: Opus never reads needlessly, and signs off on whatever reaches Feras):**
   1. Gates first: check.sh, build_gate (.result first line). FAIL, NOWORK or BREACH goes back unread.
      PASS: cross-review (row 12 A, 10-29): `bash tools/cross_review.sh <run> <brief> <base>` in the background. On for
-     oc/* runs (agy reviews, free, ~11 min, 3/5 on calibration); gemini/* runs: nemotron :free (1/2 on calibration;
-     DeepSeek off: 0 blocks in 3 live runs, 10-29). USAGE logs real hits a run: under 1 on average over 5 runs ->
-     drop the step. Opus vets the table
+     oc/* runs (agy reviews, free, ~11 min, 3/5 on calibration); gemini/* runs: Cloudflare DeepSeek 1017 at max effort
+     (Feras 10-30; nemotron :free only as the backup lens after cf fails twice). USAGE logs real hits a run: under 1 on
+     average over 5 runs -> drop the step. Opus vets the table
      (.check/reviews/<run>-cross.md) in step 3; real findings go to the builder as its fix pass, then the gate again;
      fail-open/closed findings stay Opus's (agy argued the wrong side on calibration).
   2. Big diffs (over ~300 lines or ~10 files): a Haiku high pass (or a free lens, Readers) lists the misses against
@@ -184,8 +184,9 @@ brief names one game-dev skill (.agents/skills/). Free models may train on promp
    ../game-wt/<task>.result.
 3. **Read** the .result's first line only: NOWORK (nothing real built), BREACH (touched a Do NOT edit path) or FAIL means
    rerun or fix the brief, and read nothing else. PASS: run `bash tools/cross_review.sh <task> <brief> <base>` (the other
-   model family; an INVALID review is noted in USAGE, not retried), read its WARN lines and the renders. Then a Haiku subagent (effort high) compares the diff with the brief and its
-   Checklist and lists the misses; Opus reads only that list, the WARN lines and the renders.
+   model family; an INVALID review is noted in USAGE, not retried), read its WARN lines and the renders. On a big diff (Protocols: Review, tier 2) a Haiku subagent (effort high) compares
+   it with the brief and its Checklist and lists the misses; Opus reads that list, the WARN lines, the renders and the
+   risky hunks.
 4. **Merge:** `bash tools/merge_run.sh <task> <gemini|oc>`. A fast-forward onto the checked commit reuses the check; any
    other merge runs check.sh. It removes the worktree and branch. The child chat that started a run merges
    it; a father that launched a run reviews (tiered) and merges it on PASS. A repeated miss
@@ -194,7 +195,7 @@ brief names one game-dev skill (.agents/skills/). Free models may train on promp
    stays open. The next chat checks `git -C ../game-wt/<task> log` and the log; a dead run is restarted with the same
    command (the worktree and its commits are kept).
 6. **Cloudflare DeepSeek** (Workers Paid; model in tools/builders.conf): `bash tools/cf_build.sh <task> <brief> <base>`.
-   Note its spend (Cloudflare dashboard, AI, Workers AI) in HANDOFF after each run.
+   No $ cap; slots.sh append-spend logs each run's spend in cf_spend.csv (Feras 10-30).
 
 ## Practices taken from reem-bot and feras-career
 | Practice | Here | Why |
