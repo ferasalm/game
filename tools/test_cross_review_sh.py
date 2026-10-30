@@ -125,6 +125,8 @@ def test_review_config_denies_bash_and_edit():
     build = json.load(open(f"{ROOT}/opencode.json", encoding="utf-8"))
     bds = build["provider"]["cloudflare-workers-ai"]["models"]["@cf/deepseek-ai/deepseek-v4.1-flash-1017"]
     assert bds["options"]["reasoning_effort"] == "max", ("cf builds think at max too", bds)
+    # v2's image tool could spend OpenRouter credit past pre_spend.py, which guards Claude's tools only (row 18, 10-30)
+    assert build["permission"]["experimental_image_generate"] == "deny", build["permission"]
     # v2 dropped OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX (row 18): the cap lives on the model
     assert ds["limit"]["output"] >= 384000 and bds["limit"]["output"] >= 384000, (ds, bds)
     r = subprocess.run(["bash", "-c", f". '{TOOLS}/lib.sh'; echo $OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX"],

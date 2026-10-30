@@ -53,6 +53,20 @@ def test_hook_prints_the_top_queue_row():  # row 15 (10-29): the owner hears the
     assert "TOP: #15 Hook prints the row | Ops | builder | agy" in out and "Later row" not in out, out
 
 
+def test_hook_says_when_the_ops_review_is_due():  # Feras 10-30: the every-5-sessions review never ran untriggered
+    top, env = repo_with_side_worktree()
+    os.makedirs(top + "/side/docs")
+    rows = ["| 2026-10-2%d | Opus | high | task %d | - | ok |\n" % (i, i) for i in range(6)]
+
+    def usage(lines):
+        with open(top + "/side/docs/USAGE.md", "w", encoding="utf-8", newline="\n") as f:
+            f.write("# Usage\n| Date | Model | Effort | Task | Window | Result |\n|---|---|---|---|---|---|\n" + "".join(lines))
+        return run_hook(top + "/side", env)
+    assert "OPS-REVIEW DUE: 6 sessions" in usage(rows), "6 rows and never a review"
+    assert "OPS-REVIEW" not in usage(rows[:2] + ["| 2026-10-29 | Opus | high | ops-review done | - | ok |\n"] + rows[2:5])
+    assert "OPS-REVIEW DUE: 5 sessions" in usage(rows[:1] + ["| 2026-10-29 | Opus | high | ops-review done |\n"] + rows[1:])
+
+
 def test_fetch_is_capped_by_timeout():
     assert "timeout 15 git fetch" in open(HOOK, encoding="utf-8").read()
 

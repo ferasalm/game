@@ -82,7 +82,8 @@ docs/HOW_WE_WORK.md draws this loop for Feras: a change to these Protocols updat
 - **Handoff:** at a unit boundary past ~250k context (review-heavy ~300k) or ~85% of the 5-hour window (CLAUDE.md). It records one improvement made and one proposed.
 - **ops-review:** every 5 sessions, or at 50% of the window: `/kaizen:coach` (reads ~/.claude/coach-usage-log.jsonl from
   the track_usage hook; its score, accepted and declined items go to .claude/coach-history.md, committed, so the next run
-  trends and never re-asks); usage trend and start cost; promote lessons to checks;
+  trends and never re-asks); its USAGE row says "ops-review done" (the session-start hook counts rows since it and
+  prints OPS-REVIEW DUE at 5); usage trend and start cost; promote lessons to checks;
   condense the notes on schedule; dispatch research from the department queues and read the digests (Research
   protocol); archive idle sessions.
 - **Lesson lifecycle:** a lesson is added, then promoted to a test, tool, hook or skill line, or archived after 30 days

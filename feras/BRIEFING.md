@@ -10,7 +10,7 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 | 2 | First real builder run on opencode v2 (only probes and tests so far) | planned | not run | no | Sat 10-31, the first 18(b) run |
 | 3 | Row 18(c): calibrate GLM-5.3-flash, Clef-flash (screenshot yes/no vs review-player), Jev (error sorting); confirm DeepSeek "max" effort reaches Cloudflare | planned | - | no | Sat 10-31 to Sun 11-01 |
 | 4 | Row 18(d): your OK on the whole model routing (models.md) | waiting on Feras | after 1-3 | yes | Sun 11-01 |
-| 5 | First /kaizen:coach run in the ops-review; plus a trigger so the ops-review actually happens (WORKFLOW audit) | planned | - | no | Sun 11-01 |
+| 5 | First ops-review: /kaizen:coach (writes .claude/coach-history.md), then send out the 6 department research queues that are at 3+ questions (small lookups to free builders, big ones as a Deep Research prompt for you). The start-of-chat reminder is live (done 10-30) | planned | trigger tested | maybe (a Deep Research prompt) | Sun 11-01 |
 | 6 | Row 3, M1 brief (real-time Rydan vs 2 guards, prison roof) | planned | - | no | Sun 11-01, if row 18 is done |
 | 7 | Row 4, M1 build + Android export + archive the turn-based fight | planned | - | no | Mon 11-02 |
 | 8 | Row 6, bake Roya and a native-scale roof render | planned | - | no | after the routing OK |

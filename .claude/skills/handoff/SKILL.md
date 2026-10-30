@@ -17,7 +17,8 @@ HANDOFF, DECISIONS and LESSONS load at every session start, so every line costs 
    Max 100 lines: condense back to ~70 when it gets there (owner, 2026-10-22).
 4. **Usage.** One row in docs/USAGE.md: date, model (name and raw ID from `get_session` when available), effort,
    each merged run with its Opus fixes and cross-review hits (cost per verified merge, Feras 10-28), any hook/get_usage mismatch,
-   task, share of the 5-hour window used if the owner told you (`/usage`), result.
+   task, share of the 5-hour window used if the owner told you (`/usage`), result, and Kaizen (Feras 10-30): one
+   improvement made, one proposed. An ops-review's row says "ops-review done" (the session-start hook counts from it).
 5. **HANDOFF.md**, max 60 lines: one `## Queue` table (# | Task | Dept | Lane | Who | Status | Blocked by), then Open points
    (Point | Owner | Since), This week, Parked and context (Feras 2026-10-27: no per-chat tracks). A /handoff updates its own rows,
    removes its done rows, adds rows for work it found (Dept = a label from the docs/WORKFLOW.md Routing table; lane

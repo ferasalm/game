@@ -29,6 +29,10 @@ top="$(awk -F'|' 'function t(s) { gsub(/^ +| +$/, "", s); return s }
   q && $2 ~ /^ *[0-9]+ *$/ { print "#" t($2) " " substr(t($3), 1, 90) " | " t($4) " | " t($5) " | " t($6); exit }' \
   HANDOFF.md 2> /dev/null)"
 [ -n "$top" ] && echo "TOP: $top"
+# ops-review every 5 sessions (WORKFLOW Protocols) never fired without a trigger (Feras 10-30): USAGE rows since the
+# last one that says "ops-review done"
+since="$(awk '/^\| 20/ { n++ } /ops-review done/ { n = 0 } END { print n + 0 }' docs/USAGE.md 2> /dev/null)"
+[ "${since:-0}" -ge 5 ] && echo "OPS-REVIEW DUE: $since sessions since the last; run it (/kaizen:coach first, WORKFLOW Protocols) unless HANDOFF This week dates it."
 echo "Next: tell the owner the TOP row (Dept, lane, who); the cheapest worker that does it well does it"
 echo "(docs/WORKFLOW.md, Start here step 3); bash tools/status.sh shows the state."
 exit 0

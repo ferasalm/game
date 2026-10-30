@@ -9,6 +9,7 @@
   "permission": {
     "edit": "allow",
     "bash": "allow",
+    "experimental_image_generate": "deny",
     "external_directory": {
       "*": "deny",
       "C:\\dev\\game\\inbox\\*": "allow",
