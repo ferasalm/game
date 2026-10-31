@@ -3,26 +3,40 @@ Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after 
 HANDOFF.md; this file is your view of it. "Open now" is rewritten at every /handoff; below it, reports newest first,
 each headed by its date and time (GMT+3): Done | Still open | When | How | Your move vs mine | Checked.
 
-## Open now (Sat 10-31 04:40)
+## Open now (Sat 10-31 10:00)
 | # | Open item | Status | Checked | Your move? | When |
 |---|---|---|---|---|---|
-| 0 | Restart the PC: 31 of 32 GB committed, ~600 MB free; builders need 3 GB | waiting on Feras | measured | yes | before Sat 16:00 |
-| 1 | Row 18(b): opencode config | done | fast alias tested live; tool_output and compaction stay at defaults (no evidence to change) | no | done |
-| 2 | First real builder run on opencode v2, and on `fast` | done | gate PASS, cross-review 0 findings, merged | no | done |
-| 3 | Row 18(c) rest: pipeline refreshes the map and commits for the builder, GLM-5.3-flash on real frames vs review-player, Clef-flash, Jev | planned | speed and basic vision done | no | Sat 10-31 to Sun 11-01 |
-| 4 | Row 18(d): your OK on the whole model routing, including GLM's CLI role being left out | waiting on Feras | after 2-3 | yes | Sun 11-01 |
-| 5 | Ops-review: coach run on the logs is done; the 6 department research queues are not sent | in progress | session_stats.py | maybe (a Deep Research prompt) | Sun 11-01 |
-| 6 | Row 3, M1 brief (real-time Rydan vs 2 guards, prison roof) | planned | - | no | Sun 11-01, if row 18 is done |
-| 7 | Row 4, M1 build + Android export + archive the turn-based fight | planned | - | no | Mon 11-02 |
-| 8 | Row 6, bake Roya and a native-scale roof render | planned | - | no | after the routing OK |
-| 9 | Row 5, you play M1 on PC and phone | waiting on Feras (later) | - | yes | after row 4 passes its gates |
-| 10 | Row 7, art batch (Bilqis v2, guard, props, icons) | queued | - | no | before Rodin credits end ~11-17 |
-| 11 | Rows 8-11: free image-to-3D, asset pipeline, Obscura, art-bible pass | parked | - | no | not planned yet (after row 5) |
+| 1 | Row 19, cleanup chat: DECISIONS, CLAUDE.md, memory | planned | - | start it | Sat 10-31 after 16:00 |
+| 2 | Ops-review: the 6 department research queues are not sent | in progress | session_stats.py | maybe (a Deep Research prompt) | Sun 11-01 |
+| 3 | Row 3, M1 brief (real-time Rydan vs 2 guards, prison roof) | planned | - | no | Sun 11-01 |
+| 4 | Row 4, M1 build + Android export + archive the turn-based fight | planned | - | no | Mon 11-02 |
+| 5 | Row 6, bake Roya and a native-scale roof render | planned | - | no | after row 3 |
+| 6 | Row 5, you play M1 on PC and phone | waiting on Feras (later) | - | yes | after row 4 passes its gates |
+| 7 | Row 7, art batch (Bilqis v2, guard, props, icons) | queued | - | no | before Rodin credits end ~11-17 |
+| 8 | Rows 8-11: free image-to-3D, asset pipeline, Obscura, art-bible pass | parked | - | no | not planned yet (after row 5) |
+| 9 | cross_review.py throws away a whole review on one line with no `->` | planned | seen twice on frame-score | no | next Ops chat |
+| 10 | Cross-review keep or drop: 3 of 5 measured runs | in progress | - | no | at 5 runs |
+| 11 | Nemotron 3.5 Super VL review: 3 tries hung on the packet, cause not found | not planned | tiny prompt works | no | only if you want it |
 | 12 | OK on the vision (docs/VISION.md) | waiting on Feras | - | yes | open since 10-27 |
 | 13 | Bilqis's portraits: keep the Neon ones or overturn | waiting on Feras | - | yes | open since 10-27 |
 | 14 | Art homework into inbox/: concept pictures, empty plates, icon art | waiting on Feras | - | yes | open since 10-24 |
 | 15 | Clean up old worktree folders (check each is merged first) | not planned yet | - | no | no date |
-| 16 | Cross-review keep or drop: 1 of 5 measured runs | in progress | 1 of 5 | no | at the 5th run |
+
+## Sat 10-31 10:00: row 18 parts (c) and (d) (Opus 5.5 high)
+**Done (on main):**
+- Part (c) pipeline gaps, each with a test: the map refreshes before each check; builders are told to commit before their first check and keep it in the foreground; a check moved to the background is killed after 5 min and its work checked; fork failures are named in the result; cf_probe flags a cut stream; slots counts token lines ($0.24 this month + 25 runs with no token count).
+- Why the fast builder never committed: the build died at its first check (fork failure at ~600 MB free, before any commit); fix pass 1 then polled its own background check until the 25-min kill.
+- [DONE]: direct cf streams are cut at none and at max (max returned nothing); opencode builds are not hit (fast and max whole reply).
+- agy medium's first gated build (frame-score, Python): PASS, no fix pass, two own commits. Reviews then found real edge cases; one agy fix pass, PASS, merged.
+- Part (c) calibrations (`.claude/skills/builders/models.md`): Clef-flash 12/12 vs review-player on colour and character visible, 3/6 on text; GLM-5.3-flash 11/12 and 2/6; Jev exists, needs no key, 8/8 on easy error lines.
+- Review head to head on that diff: cf max best (but rejected on format), Haiku medium and low good, GLM real but few, DeepSeek no-reasoning weak.
+- Part (d): you OKed the routing with limits; logged; `generate_patch` now runs with no reasoning. PC restart Open point closed; routing Open point closed.
+
+**Still open:** the items in Open now. Nemotron 3.5 Super VL: no result (not planned). DECISIONS, CLAUDE.md and memory are left to the cleanup chat, as you said.
+**When:** cleanup Sat 10-31 after 16:00; ops-review and M1 brief Sun 11-01; M1 build Mon 11-02.
+**How:** row 19 (Ops, chat, Opus high), then row 18's ops-review, then row 3.
+**Your move vs mine:** yours: start the cleanup chat after 16:00. Mine: everything else on the list above with "no" under Your move.
+**Checked:** `check.sh --no-godot` all passed on the merged code, then the doc check after the note edits; pipeline 19 tests, slots 13, cf_probe stream 3, cf_mcp ok; every review input run against the fixed scorer. Godot checks not run: no game code changed. Samples are small: 6 frames, 8 easy lines, 1 diff. Cross-review reads INVALID (format); I read its findings myself. The new background kill is tested on a stub only, no real builder has hit it.
 
 ## Sat 10-31 04:40: builder roles, row 18 parts (b) and (c) (Opus 5.5 high)
 (a) opencode v2 **done** 10-30. (b) config **done**. (c) calibrations **in progress**. (d) your routing OK **waiting on Feras**.
@@ -115,26 +129,3 @@ change it; subscribing to OpenCode Go is not needed (Cloudflare covers it for ce
 **Checked:** both test suites (build pipeline 12, cross-review 5) and check.sh --no-godot run and read; the diagram renders
 on GitHub; 3 AA + 3 licence facts re-read. Not run: the Godot checks (only docs and Python tools changed; 1.5 GB free memory).
 My mistake (fixed): I edited a pipeline script while two runs were using it, so both crashed; I re-gated them, nothing lost.
-
-## 2026-10-29 (Thu, late): row 16 process completion (Opus 5.5 high), closed
-**Done (on main):**
-- Calendar Thu-Mon matches the plan (new Mon 11-02 "play M1"). HANDOFF "Waiting on Feras" is now "Open points"
-  (point | owner | since, max 10; a check fails without it; every /handoff closes or carries each).
-- Hooks: python heredocs with backslashes are blocked; the token hook also warns at 10M cumulative cache reads (it
-  fired live in this chat). New cache waker tools/wait_run.sh: wakes a chat waiting on a builder at 50 min so the
-  1-hour cache never expires; overnight runs hand off at launch.
-- docs/HOW_WE_WORK.md (loop diagram, roles, cost rules), model cards (.claude/skills/builders/models.md, numbers
-  unverified), open-source candidates (docs/research/opensource-candidates.md, licences to verify before import).
-- Doc audit by agy: 5 fixes applied (CLAUDE.md dupes, a stale WORKFLOW review step, a stale decision line).
-- VISION M1: combat feel first. Your Drive connector decision logged.
-- Late (done): hand-off is a band (200-300k, finish the unit); father/child chats (WORKFLOW Protocols; the father
-  syncs and merges; wait_run.sh with no task keeps it awake); every item I name carries a status; HOW_WE_WORK says
-  who syncs and where reports land; this report is now written last (handoff skill).
-**Still open:** planned Fri 10-30, row 17: model evidence + routing table (the AA numbers in models.md are
-unverified and suspect), calibration, why the opencode free run hung, cross-review retry, licence check, diagram v2.
-Waiting on you: VISION OK, Bilqis portraits, art homework. DeepSeek is not retired (builder yes, reviewer no).
-**When / How:** Fri 10-30: row 17 (Ops, Opus high father + agy). Sat 10-31 after 16:00: row 3 M1 brief.
-**Your move vs mine:** yours = start the row 17 chat Fri, art homework, the two calls; mine = row 17, then M1.
-**Checked:** all new tests; check.sh full run (582 passed) at the docs merge, again at the audit merge; the hooks live.
-**Not checked:** the open-source licences and benchmark numbers (marked unverified); CI is checked after the push.
-

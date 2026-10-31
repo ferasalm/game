@@ -42,6 +42,7 @@ naming the test; Godot code traps -> .claude/rules/code.md; builder-only -> .cla
   tokens) before blaming the model (2026-10-30).
 - A new tool version breaks silently (opencode v2) -> back up its data dirs, probe in a throwaway repo (2026-10-30).
 - 4 paid probes crashed at their spend-log line (a path wrong in worktrees) -> one smoke call before a batch; results print first; parallel Bash = run_in_background (2026-10-31).
+- Bash `VAR=x cmd` given to Feras failed in his PowerShell -> his commands are PowerShell (2026-10-31).
 - `check.sh | tail && git commit` committed a failing run -> grep .check/*.log for FAIL first; never push before reading the
   final check line (2026-10-23).
 

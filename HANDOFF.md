@@ -1,5 +1,5 @@
 # HANDOFF (current state only; ONE queue for every chat; max 60 lines)
-Last updated: 2026-10-31 (row 18b done, 18c part: fast lane, agy medium, Claude model rules), Opus 5.5.
+Last updated: 2026-10-31 (row 18c, d done), Opus 5.5.
 Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Open points).
 
 ## How this file works (Feras 2026-10-27; departments 10-28)
@@ -15,7 +15,8 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 ## Queue
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
-| 18 | System pass before M1 (Feras 10-30): (a) opencode v2, (b) config: done; (c) fast run and agy medium cross-review done; left: pipeline runs map.py before check + commits for the builder, GLM-5.3-flash vs review-player on real frames, Clef-flash, Jev; (d) Feras OKs the whole routing | Ops | builder | agy, cf; Opus gates | (c): Sat 10-31 16:00, needs memory; (d): Sun 11-01 | - |
+| 19 | Cleanup chat: DECISIONS for the routing OK and pipeline rules, CLAUDE.md, memory | Ops | chat (review) | Opus high | Sat 10-31 after 16:00 | - |
+| 18 | System pass before M1: (a), (b) done; (c) done 10-31: map refresh, commit-first, foreground check, [DONE] detection, slots spend, agy medium's first gated build, GLM, Clef, Jev (models.md); (d) routing OKed with limits; left: ops-review | Ops | builder | agy, cf; Opus gates | Sun 11-01 | 19 |
 | 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof, combat feel first (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | later: after row 18 + routing OK (Feras 10-30) | - |
 | 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | later: after row 18 + routing OK (Feras 10-30) | 3 |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | later: after row 18 + routing OK (Feras 10-30) | 3; free memory >= 3 GB |
@@ -31,19 +32,18 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 ## Open points
 | Point | Owner | Since |
 |---|---|---|
-| Restart the PC before Sat 16:00: 31 of 32 GB committed, ~600 MB free, builders need 3 GB | Feras | 10-31 |
+| cross_review.py rejects a whole review on one line with no `->`: keep the valid lines | Claude | 10-31 |
 | OK on the vision (docs/VISION.md) | Feras | 10-27 |
 | Bilqis's portraits are now the Neon ones: keep or overturn (archive-cleanup, decisions-log) | Feras | 10-27 |
-| OK on the whole model routing (models.md) after row 18 | Feras | 10-30 |
 | Old worktree folders (coach-cleanup, row12-*, row16-process, ...): check each is merged, then clean up (ccd clean_up_worktrees) | Claude | 10-30 |
-| Cross-review keep or drop: 2 of 5 measured live runs so far (row16-docs INVALID); decide at 5 (< 1 real bug a run = drop) | Claude | 10-29 |
+| Cross-review keep or drop: 3 of 5 measured live runs (row16-docs INVALID; frame-score format INVALID, findings real); decide at 5 (< 1 real bug a run = drop) | Claude | 10-29 |
 | Art homework into inbox/: concept pictures, an empty plate per scene (no characters, HUD or rain), icon art (row 7) | Feras | 10-24 |
 
 ## This week (Claude Pro weekly limit: ~90% used Thu 10-29, resets Sat 10-31 13:00 UTC = 16:00 Feras's time (GMT+3); on his calendar)
 | Day | Plan |
 |---|---|
-| Sat 10-31 | Limit resets 16:00: row 18c (a real fast build, agy medium, GLM on real frames, Clef, Jev; Opus gates). |
-| Sun 11-01 | Row 18 gate; /kaizen:coach (ops-review); Feras OKs the routing; then M1 brief (row 3) if the system pass is done. |
+| Sat 10-31 | Limit resets 16:00: cleanup chat (row 19). |
+| Sun 11-01 | /kaizen:coach (ops-review); then M1 brief (row 3). |
 | Mon 11-02 | M1 build (row 4) overnight from Sun; play day moves to when M1 passes its gates. |
 
 ## Parked and context (resume only through a queue row)
@@ -56,4 +56,4 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 - Retired 3D (D20): tag 3d-archive, branch archive/3d, lookup only; old builder branches gemini/*, oc/* kept, worktrees gone.
 
 ## Prompt for the next chat
-`Continue ferasalm/game on main, Opus high. Read HANDOFF.md. Do row 18(c) only; /handoff.`
+`Continue ferasalm/game on main, Opus high, after 16:00. Read HANDOFF.md. Do row 19 only; /handoff.`

@@ -87,6 +87,7 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
 | Haiku low | 34 s, 35k tokens | 9, clean, packet line numbers | good: preamble shift, plain-string answers (Claude tokens) |
 | GLM-5.3-flash default | 429 s, 29k out | 4, clean format | real but few; only one to catch a BOM |
 | cf DeepSeek none (direct) | 13 s, 1k out | 14 lines, half thinking aloud ending "Skip" | 2-3 real; breaks the format, not a lens |
+| Nemotron 3.5 Super VL (`openrouter/nvidia/nemotron-3.5-super-vl:free`) | no result | 3 tries hung (2, 5, 15 min), no error | tiny prompt answers in 7 s; with `-f packet.md` and the review config the log stops at startup: cause not found; `opencode/...-free` quota spent |
 
 ## Settings in force (Feras 10-30)
 - agy: `gemini-3.8-flash-medium` (Feras 10-31); `agy models` lists low, medium, high; no output cap flag.
