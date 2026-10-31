@@ -634,6 +634,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/eye_gate.sh`: Player's-eye gate step 1: records a render wrapper non-headless and makes what a reader can look at.
 - `tools/eye_metrics.py`: Player's-eye metrics for Neon clips and UI fonts (report only; always exits 0).
 - `tools/fps_probe.gd`: FPS probe: plays a scene with vsync off and prints the average and worst frames per second after a warm-up
+- `tools/frame_score.py`: Score vision model yes/no answers on frames against reference labels.
 - `tools/gate_checklist.py`: Checklist parsing and verification for build_gate.
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.
 - `tools/hooks/heredoc_guard.py`: PreToolUse hook on Bash (LESSONS 4, broken again 10-29: 4 calls lost): blocks a `python - <<DELIM` heredoc whose
@@ -688,6 +689,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_doc_check.py`: Self-test for doc_check.py: warns (exit 0) at 75% of a cap; every queue row needs a lane and a WORKFLOW department;
 - `tools/test_eye_metrics.py`: Tests tools/eye_metrics.py on a temp project root. Run: python tools/test_eye_metrics.py
 - `tools/test_file_sizes.py`: Bandwidth guard (Feras 10-30: his internet is metered): git sends only new objects, so a sync costs kilobytes until
+- `tools/test_frame_score.py`: Tests tools/frame_score.py. Run: python tools/test_frame_score.py
 - `tools/test_gate_checklist.py`: Tests for brief checklist verification in build_gate.
 - `tools/test_gate_d6.py`: Self-test for the D6 gate rules (2026-10-27): protected tests and assets, removed checks, new tests fail on base.
 - `tools/test_hook_heredoc.py`: Self-test for tools/hooks/heredoc_guard.py (LESSONS 4): a python heredoc holding a backslash is blocked (exit 2);
