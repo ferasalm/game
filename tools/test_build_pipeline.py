@@ -74,6 +74,8 @@ def toy():
     sh(top, "git", "init", "-q", "--bare", "-b", "main", "origin.git")
     sh(top, "git", "clone", "-q", "origin.git", "game")
     g = top + "/game"
+    git(g, "config", "user.name", "t")  # the pipeline's own commits: a CI runner has no global identity (row 18c)
+    git(g, "config", "user.email", "t@t")
     put(g + "/tools/check.sh", CHECK_TOY)
     put(g + "/tests/t.gd", "func test_a():\n\tcheck_true(true)\n")
     put(g + "/assets/a.png.import", "[remap]\nv=1\n")
