@@ -1,8 +1,8 @@
 # Coach history (kaizen:coach; committed; entries older than 30 days move to coach-history-archive.md)
-Last coach run: 2026-10-31, score 7/10, scope full (checklists, usage log, /insights, /skill-doctor, ops-review)
-Last deep CLAUDE.md optimization: never (declined for now 10-31: at its cap, 78/80 lines, only one line added)
+Last coach run: 2026-10-31, score 7/10, scope PARTIAL (read: usage-stale-friction, claude-md, permissions, part of hooks; not read: skills, rules, memory, plugins, rest of hooks; plus usage log, /insights, /skill-doctor, ops-review). The finishing audit is in progress; this line is corrected when it ends.
+Last deep CLAUDE.md optimization: never run. Nobody declined it (an earlier line here said "declined": false); it was not put to Feras before the 10-31 report.
 
-## 2026-10-31 (full run, row 18)
+## 2026-10-31 (partial run, row 18; first called "full", which was false)
 Setup is strong on enforcement (5 hooks, deny rules, doc caps, tests); the gap is what the setup costs per turn and Claude's habits.
 - Done: skip of the 2 slow toy tests; flaky time-limited tests run alone; 44 guard refusals read: 35 were one rule (worktree isolation on
   chained Bash), 5 false positives of session_stats; the rule was already in CLAUDE.md, 16 on 10-31 against 44.

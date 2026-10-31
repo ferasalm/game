@@ -29,7 +29,7 @@ You write typed GDScript gameplay for Godot 4.7: small, composable, signal-drive
 - agy described looks (herbs, a sabil) came back as cones and gems -> briefs give geometry recipes with numbers; judge renders from the play camera (2026-10-23).
 - Parallel worktrees shared user:// save data -> per-checkout test save dir (2026-10-22).
 - Commit memory: 4 runs plus Godot left 10 MB free -> <= 2-3 runs; check.sh exit 124/139 with other Godot runs open is memory, not a test: rerun first (2026-10-23, 10-26).
-- Python on Windows writes CRLF -> `newline="\n"`; a `\n` in a Bash heredoc arrives as a real newline, so write such code with Write/Edit (2026-10-27).
+- Python on Windows writes CRLF -> `newline="\n"`; the Bash tool collapses a doubled backslash to one anywhere in a command, so write such code with Write/Edit (2026-10-27).
 - Player text shows internal ids (move ids, flag names, file names) -> use the display name from localization/.
 - Never register fake screens, ids or stubs to make a test pass; change the test or report BLOCKED.
 - A dialogue, menu or cutscene must stop walking and saving while it is up and restore them after (rooftop.freeze_actors, Router.set_busy).

@@ -61,7 +61,7 @@ Cost = model calls x context size (each call re-reads the whole chat from cache 
   expires; an overnight run or a chat past 200k hands off at launch instead.
 - Connectors: Gmail, Google Docs, the second Rodin and Cloudflare bindings are off; Drive stays (Feras 10-29). Never
   toggle connectors mid-chat (a changed prefix is a full cache miss).
-- The advisor only with Feras's OK. Scripts go through Write/Edit, never python heredocs (a hook blocks them).
+- The advisor only with Feras's OK. Scripts go through Write/Edit, never python heredocs (a hook blocks those holding a backslash).
 - Hand off at a unit boundary past ~250k context or ~85% of the 5-hour window (a hook warns at 200k and at 10M reads).
 
 ## Who syncs, where you see things
