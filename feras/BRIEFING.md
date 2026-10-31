@@ -3,7 +3,7 @@ Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after 
 HANDOFF.md; this file is your view of it. "Open now" is rewritten at every /handoff; below it, reports newest first,
 each headed by its date and time (GMT+3): Done | Still open | When | How | Your move vs mine | Checked.
 
-## Open now (Sat 10-31 20:55)
+## Open now (Sat 10-31 21:50)
 | # | Open item | Status | Checked | Your move? | When |
 |---|---|---|---|---|---|
 | 1 | Row 3, M1 brief (real-time Rydan vs 2 guards, prison roof) | planned | - | start the next chat (prompt in HANDOFF) | Sun 11-01 |
@@ -13,13 +13,32 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 | 5 | Row 7, art batch (Bilqis v2, guard, props, icons) | queued | - | no | before Rodin credits end ~11-17 |
 | 6 | Research prompts: 5 for Gemini Deep Research (feras/research-prompts.md) | waiting on Feras | written, not run | yes: paste them; 1 helps row 6, 2 helps row 5 | before those rows |
 | 7 | Cleanup Open point (empty row18-routing folder, b5_tests.log, remote base-xr-salvage) | planned | - | no | a later chat |
-| 8 | Coach picks left: 8 synced skills off, 9 connectors off, 10 one row part a chat, 11 archive agents, 12 Stop hook | waiting on Feras | measured, /skill-doctor and get_usage | yes: take or leave each | any day |
 | 9 | Row 20, audit leftovers (session_stats dates, lesson caps, Gameplay files, frame_score blank line) | not planned yet | listed | no | after row 5 |
 | 11 | Rows 8-11: free image-to-3D, asset pipeline, Obscura, art-bible pass | parked | - | no | after row 5 |
 | 12 | OpenRouter key expired, so Nemotron is off | waiting on Feras | 401 read | yes: a new key in opencode, or leave it off | any day |
 | 13 | Bilqis's portraits: keep the Neon ones or overturn | waiting on Feras | - | yes | open since 10-27 |
-| 15 | Coach 4 and 6: copy 2 git-ignored files to the main checkout (commands below) | waiting on Feras | worktree copies smoke-tested | yes: 2 commands | any day |
 | 14 | Art homework into inbox/: concept pictures, empty plates, icon art | waiting on Feras | - | yes | open since 10-24 |
+
+## Sat 10-31 21:50: your answers applied; correction to the 20:55 report (Opus 5.5)
+**Correction:** the 20:55 report called items "waiting on Feras" that I had never asked you about. I had parked them. All were then asked with a pick and are closed below.
+
+**Done (on main):**
+- Context rule **done**: the 200-300k hand-off band and emergency mode's ~100k hand-off are retired. A chat finishes its task; only ~85% of the 5-hour window hands off. The hook no longer warns on context; its cache-read note stays, as information.
+- New rule **done**: stuck or refused means ask you at once with a pick; "waiting on Feras" only for what you were asked in that chat. In CLAUDE.md, the handoff skill, DECISIONS and memory.
+- One row part per chat **done**, as scope only, with no size limit.
+- 4 and 6 **done**: both files copied to the main checkout with your OK, around the guard once.
+- 8 **done**: 9 synced skills off for this repo only, ~2.3k tokens a turn. A fresh /skill-doctor shows them gone.
+- 11 **done**: 9 persona agents and 4 unrouted global agents moved to `~/.claude/archive`, ~580 tokens a turn (estimate). Personas still work for builders and as skills.
+- 12 **done**: Stop notification, 3 tests. I fired one by hand; I can't see your screen, so tell me if no balloon appeared.
+- 13 **done**: RTK declined for the record. Score 9/10; the gap left is a project-aware plugin.
+
+**Not planned:** 9 connectors, dropped on measure. Blender, hyper3d, Chrome and OpenRouter load on demand, so turning them off saves only their names. The 20.4k is real but is mostly app tools. My first-run proposal aimed at the wrong tools.
+
+**Still open:** nothing from the coach audit. The cleanup Open point stays with Claude.
+
+**When:** row 3 on Sun 11-01. **How:** Gameplay, chat (plan), Opus high. **Your move:** start the next chat with the HANDOFF prompt, or tell me to.
+
+**Checked:** check.sh passed (582 tests) before the last merge; the non-Godot check passed after it; both read. Hook, persona and doc tests ran and were read. **Not checked:** the balloon on your screen; whether fewer tokens a turn holds across real chats; the app's origin check was gone around once with your OK and returns for the next merge of protected files (Help > Troubleshooting > Review Pinned Git Origins clears it).
 
 ## Sat 10-31 20:55: coach audit finished (Opus 5.5)
 **Done (on main):**
@@ -67,7 +86,7 @@ times, one test at a time, on 8 cores (484 s in one file). Rust would need a rew
 - Vision **done**: your OK logged, Art clock line updated, Open point closed.
 - Nemotron **done**: every call capped at 5 min, tested; the run goes on without it. The capped probe found the OpenRouter key expired (401 in 1.3 s).
   The frame-score backup lens died on that same error. It does not prove the older hang: a tiny prompt had answered earlier that day.
-- Worktrees **in progress**: 15 of 17 removed, branches kept. row18c-gaps is locked by its idle chat; row18-routing left an empty 8 KB folder.
+- Worktrees **in progress**: row18c-gaps and row19-cleanup are now removed too, branches kept. row18-routing left an empty 8 KB folder (cleanup Open point).
 
 **In progress:** 2 agy runs, launched ~18:20, gated in the next chat: xr-salvage (item 9) and check-parallel. The skip for game builds comes after them.
 **Moved to the next chat (planned):** research prompts, keep-or-drop, CLAUDE.md, every audit. This chat reached the 250k band; a fresh chat is cheaper for those. /skill-doctor and /insights
@@ -92,31 +111,3 @@ are not in this app's skill list: tried there first, else you run them in a `cla
 **How:** row 19 (Ops, chat, Opus high), then row 18's ops-review, then row 3.
 **Your move vs mine:** yours: start the cleanup chat after 16:00. Mine: everything else on the list above with "no" under Your move.
 **Checked:** `check.sh --no-godot` all passed on the merged code; CI on main went red once (my new tests needed a git identity the runner lacks), fixed, green on 747d2b8; pipeline 19 tests, slots 13, cf_probe stream 3, cf_mcp ok; every review input run against the fixed scorer. Godot checks not run: no game code changed. Samples are small: 6 frames, 8 easy lines, 1 diff. Cross-review reads INVALID (format); I read its findings myself. The new background kill is tested on a stub only, no real builder has hit it.
-
-## Sat 10-31 04:40: builder roles, row 18 parts (b) and (c) (Opus 5.5 high)
-(a) opencode v2 **done** 10-30. (b) config **done**. (c) calibrations **in progress**. (d) your routing OK **waiting on Feras**.
-**Measured (same 16-field Def task, one sample each, Cloudflare):**
-| Model | Time | Tokens out | Result |
-|---|---|---|---|
-| DeepSeek, no reasoning, bare prompt | 6.7 s | 1.5k | 3 real flaws |
-| DeepSeek, no reasoning, rules + repo examples | 12 s | 2.6k | 1 flaw left, flagged the house pattern itself |
-| DeepSeek, max, bare prompt | 167 s | 28.3k | typing right, JSON flaw kept |
-| GLM-5.3-flash, default, bare prompt | 813 s | 44k | not reviewed |
-**Done (on main):** agy on medium; `cf_build.sh <task> <brief> <base> fast` (no reasoning, any failed check moves to max); `Pattern:`
-lines in briefs paste real repo files into the prompt; task skills from .claude/skills reach builders too; Sonnet only at high, Haiku
-never orchestrates; tools/cf_probe.py and tools/session_stats.py; a JSON trap in the code rules.
-**Your table:** DeepSeek's two roles adopted. Gemini gets discovery and stays the main Godot builder (the only one with clean gated
-runs; DeepSeek has a BREACH on record). GLM's CLI role left out: scripts run check, gate and merge, so no model is needed there. GLM's
-vision role waits on real frames. Its "fast TTFT" did not hold on code: first text at 763 s.
-**Real speed gain:** huge per call, less per build, because Godot checks take the same time. One real build measures it.
-**My errors:** ran DeepSeek at default and low unasked; assumed GLM-5.3-flash had effort levels; 4 calls crashed on my log path bug.
-~$0.2 on cf (estimate; 4 crashed calls unlogged). The `low` run, unasked, was the only one with context to catch the JSON trap: one sample.
-**Quality trend (session_stats):** failed calls are not rising (1.9%, then 0.9% on 10-30). Calls per user turn went ~11 -> ~33, guard refusals
-4 -> 44 a day, most chats pass 200k. Logic mistakes are not measured. Whether the model itself changed: unknown.
-**Non-reasoning tests, Sat 06:40 (one sample each):** sorting 8/8 in 0.44 s; code question right in 0.56 s (clumsy one-liner); diagnosed patch right
-in 1.0 s; real Python build: correct code in ~1 min, gate PASS, cross-review 0 findings, merged. End to end it took 57 min: checks ~11 min each on this
-PC, plus a max fix pass over a stale map that idled 25 min. Hazard: on Cloudflare a reply stops silently at the literal text `[DONE]`.
-Cross-review at non-reasoning: not tested, by my choice: builder time is free, a review costs ~$0.08, and it would muddy the keep-or-drop count.
-**When / How:** row 18(c) rest, Sat 10-31 16:00 (Ops, builders agy and cf, Opus gates). **Your move:** restart the PC before then; routing OK Sun.
-**Checked:** check.sh without Godot, pipeline tests (15), cf_probe and session_stats tests, a real `fast` build, cross-review. **Not run:** Godot tests
-(no Godot file changed; memory under the floor), review-feras (weekly limit at 96%).

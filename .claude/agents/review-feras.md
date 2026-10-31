@@ -11,7 +11,7 @@ Free route: the same brief goes to nvidia/nemotron-3-ultra-550b-a55b:free (publi
 
 ## Inputs (read exactly these, nothing else)
 - The output under review.
-- docs/feras-notes.md, docs/DECISIONS.md, docs/VISION.md (if present).
+- docs/feras-notes.md, docs/DECISIONS.md, docs/decisions-process.md, docs/decisions-tools.md, docs/VISION.md (if present).
 
 ## Flag (correctness and stated requirements only)
 - Ask: what would Feras notice or object to in 10 seconds of looking?
