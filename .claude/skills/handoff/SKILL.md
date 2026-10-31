@@ -11,7 +11,8 @@ HANDOFF, DECISIONS and LESSONS load at every session start, so every line costs 
    New or moved files: `git add` them, then `python tools/map.py` (the docs check fails on a stale map).
 2. **Decisions.** Each decision the owner made this session: one dated line appended to docs/decisions-log.md
    (`- YYYY-MM-DD | decision | why | by`), with his words where short; never delete or reword a log line. Then
-   update docs/DECISIONS.md (the loaded rules in force): edit or add the one line the decision changes.
+   update docs/DECISIONS.md (the loaded rules in force) or the docs/decisions-*.md file holding that line: edit or
+   add the one line the decision changes.
 3. **Lessons.** Anything that cost real time (an error, a wrong guess, nearly asking the owner for something you
    could do): symptom -> cause -> fix, dated, verified only. Merge with similar entries; fix or delete wrong ones.
    Max 100 lines: condense back to ~70 when it gets there (owner, 2026-10-22).

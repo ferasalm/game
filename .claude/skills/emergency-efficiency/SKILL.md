@@ -22,7 +22,7 @@ Everything in `.claude/skills/builders/SKILL.md` applies; this only tightens it.
 
 ## Safety
 - Before a merge round: `git push origin origin/main:refs/heads/backup/main-<YYYYMMDD-HHMM>`; delete backups > 1 week old.
-- Sensitive paths (core/save, core/game_state.gd, content registries, tools/check.sh, CLAUDE.md, docs/DECISIONS.md)
+- Sensitive paths (core/save, core/game_state.gd, content registries, tools/check.sh, CLAUDE.md, docs/DECISIONS.md, docs/decisions-*.md)
   change only in a brief that names them; the lens reads them line by line.
 - Local `main` goes stale: every base is `origin/main` after a `git fetch`.
 - Art, playtests and deep research go to Feras (Flow, Gemini) with 2-4 options, recommended first.

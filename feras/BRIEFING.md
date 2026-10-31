@@ -67,7 +67,7 @@ times, one test at a time, on 8 cores (484 s in one file). Rust would need a rew
 - Vision **done**: your OK logged, Art clock line updated, Open point closed.
 - Nemotron **done**: every call capped at 5 min, tested; the run goes on without it. The capped probe found the OpenRouter key expired (401 in 1.3 s).
   The frame-score backup lens died on that same error. It does not prove the older hang: a tiny prompt had answered earlier that day.
-- Worktrees **in progress**: 15 of 17 removed, branches kept. row18c-gaps is locked by its idle chat; row18-routing left an empty 8 KB folder.
+- Worktrees **in progress**: row18c-gaps and row19-cleanup are now removed too, branches kept. row18-routing left an empty 8 KB folder (cleanup Open point).
 
 **In progress:** 2 agy runs, launched ~18:20, gated in the next chat: xr-salvage (item 9) and check-parallel. The skip for game builds comes after them.
 **Moved to the next chat (planned):** research prompts, keep-or-drop, CLAUDE.md, every audit. This chat reached the 250k band; a fresh chat is cheaper for those. /skill-doctor and /insights
