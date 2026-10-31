@@ -37,7 +37,7 @@ status_line() {  # <word> <step>
 }
 
 run() {  # <brief file>; watched: no commit in the worktree for idle_sec -> kill the tree. Returns 99 when killed idle.
-  local started=$(date +%s) last pid mark
+  local started=$(date +%s) last pid mark bg_mark=""
   mark=$started
   if [ -n "${BUILDER_CMD:-}" ]; then bash "$BUILDER_CMD" "$name" "$1" "$base" ${model:+"$model"} < /dev/null > "$wt.log" 2>&1 &
   elif [ "$builder" = agy ]; then bash "$here/agy_task.sh" "$name" "$1" "$base" ${model:+"$model"} < /dev/null &
@@ -48,15 +48,22 @@ run() {  # <brief file>; watched: no commit in the worktree for idle_sec -> kill
     last="$(git -C "$wt" log -1 --format=%ct 2> /dev/null || echo 0)"; [ "${last:-0}" -gt "$mark" ] && mark="$last"
     # opencode's spent free quota prints no text and exits 0 (row16-audit hung 25 min, 10-29): stop at the first sight
     if grep -q "$OC_QUOTA_MSG" "$wt.log" 2> /dev/null; then quota=1; kill_tree "$pid"; wait "$pid" 2> /dev/null; return 99; fi
+    # A check the builder moved to the background reaches no commit (fast-probe-stream polled one for 25 min, row 18c)
+    if [ -z "$bg_mark" ] && grep -a -B2 "$OC_BG_MSG" "$wt.log" 2> /dev/null | grep -aq 'check\.sh'; then bg_mark="$(date +%s)"; fi
+    if [ -n "$bg_mark" ] && [ "$mark" -lt "$bg_mark" ] && [ $(( $(date +%s) - bg_mark )) -ge "$BG_WAIT_SEC" ]; then
+      bg_kill=1; kill_tree "$pid"; wait "$pid" 2> /dev/null; return 99; fi
     if [ $(( $(date +%s) - mark )) -ge "$idle_sec" ]; then kill_tree "$pid"; wait "$pid" 2> /dev/null; return 99; fi
   done
-  wait "$pid"; return 0
+  wait "$pid"; grep -aqE "$FORK_FAIL_RE" "$wt.log" 2> /dev/null && fork_note="memory: fork failed in the builder's shell, the PC ran out, not the model"
+  return 0
 }
-idle_note=""; quota=""
+idle_note=""; quota=""; bg_kill=""; fork_note=""
 idle_exit() {  # <step>: killed idle. Committed work still goes to check and gate (builders hang after a last commit)
   leftovers "$1"
   if [ -n "$(git -C "$wt" log --oneline "$base..HEAD" 2> /dev/null)" ]; then
-    idle_note="idle: $1 killed after ${idle_sec}s without a commit; its commits were checked"; return 0
+    idle_note="idle: $1 killed after ${idle_sec}s without a commit; its commits were checked"
+    [ -z "$bg_kill" ] || idle_note="background: $1 killed ${BG_WAIT_SEC}s after moving its check to the background; its commits were checked"
+    bg_kill=""; return 0
   fi
   local why="idle: no commit for ${idle_sec}s, builder killed (the brief needs a first-commit deadline)"
   [ -z "$quota" ] || why="quota: opencode's free usage limit is spent ($OC_QUOTA_MSG); rerun on cf (tools/cf_build.sh)"
@@ -69,7 +76,14 @@ import_wt() {  # a fresh worktree has no class cache; Godot's import then rewrit
   elif [ -f "$wt/tools/run_godot.sh" ]; then (cd "$wt" && bash tools/run_godot.sh --import) < /dev/null >> "$wt.import.txt" 2>&1; fi
   git -C "$wt" ls-files -m -- 'assets/*.import' | xargs -r git -C "$wt" checkout -- 2> /dev/null
 }
+refresh_map() {  # map.py lists tracked files, so after leftovers; a new file's stale MAP cost a fix pass (row 18c)
+  [ -f "$wt/tools/map.py" ] || return 0
+  (cd "$wt" && $py tools/map.py) < /dev/null > /dev/null 2>&1
+  [ -z "$(git -C "$wt" status --porcelain -- docs/MAP.md)" ] ||
+    git -C "$wt" commit -q -m "docs/MAP.md refreshed (build_pipeline)" -- docs/MAP.md
+}
 check() {  # -> 0 when all checks pass; output in <task>.check.txt
+  refresh_map
   if [ "$RUN_KIND" = py ]; then
     (cd "$wt" && bash tools/check.sh --no-godot < /dev/null > "$wt.check.txt" 2>&1)
   else
@@ -82,6 +96,12 @@ leftovers() {  # builders die mid-edit: keep their work as a WIP commit (only .u
   fi
 }
 
+run_rules() {  # fast-probe-stream died in its first check with nothing committed, then waited on a background check (row 18c)
+  echo; echo "## Pipeline rules (they outrank any timing in the brief)"
+  echo "- Commit before your first check (\`git add -A\`, then \`git commit\`) and after each step: a run that dies keeps only its commits."
+  echo "- Run \`$chk\` in the foreground and wait for it, however slow. Never background it or send it to a log to poll:"
+  echo "  the pipeline kills that run ${BG_WAIT_SEC}s later and checks your commits itself."
+}
 status_line RUNNING build
 # The skill the brief names goes into the prompt itself (builders skipped optional skills), then the code rules.
 prompt="$dir/$name.prompt.md"; cp "$brief" "$prompt"
@@ -108,6 +128,7 @@ done
 if [ -f "$root/.claude/rules/code.md" ]; then
   { echo; echo "## Code rules (.claude/rules/code.md)"; cat "$root/.claude/rules/code.md"; } >> "$prompt"
 fi
+run_rules >> "$prompt"
 if [ -z "${SKIP_BUILD:-}" ]; then run "$prompt" || idle_exit build; fi
 leftovers "build"; cp "$wt.log" "$wt.build.log" 2> /dev/null; fix_from=""
 fix=0  # FIX_PASSES free fix passes (builders.conf; Feras 10-28: builder time is free), each fed the latest FAIL lines
@@ -121,7 +142,7 @@ until check; do
     echo "Fix the causes, never weaken a test's intent, keep the brief's Do NOT edit list, run \`$chk\`"
     echo "until it prints \"all checks passed\", commit. The FAIL lines:"
     echo '```'; grep -A13 '^FAIL' "$wt.check.txt"; echo '```'
-    echo; echo "## The brief"; cat "$brief"; } > "$wt.fix.md"
+    run_rules; echo; echo "## The brief"; cat "$brief"; } > "$wt.fix.md"
   OC_TIMEOUT=45m AGY_TIMEOUT=45m run "$wt.fix.md" || idle_exit "fix pass $fix"; leftovers "fix pass $fix"
 done
 leftovers "check"  # the .uid files Godot wrote during the last check belong to the checked tree
@@ -134,6 +155,7 @@ status="$(echo "$gate" | sed -n 's/^VERDICT //p')"; status="${status:-FAIL}"
   echo "pid $$"
   echo "kind $RUN_KIND"
   [ -n "$idle_note" ] && echo "$idle_note"
+  [ -n "$fork_note" ] && echo "$fork_note"
   echo "checked $(git -C "$wt" rev-parse HEAD)"
   echo "$gate"; grep -E '^ {5}tests:' "$wt.check.txt" | head -3
   echo "--- commits"; git -C "$wt" log --oneline "$base..HEAD" | head -30

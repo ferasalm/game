@@ -36,7 +36,7 @@ def read_stream(lines, clock=time.monotonic) -> dict:
     """Folds an OpenAI-style SSE stream of bytes lines into timings, text and usage."""
     start = clock()
     out = {"first_thought_s": None, "first_text_s": None, "text": "", "thought_chars": 0, "finish": "", "usage": {},
-           "bad_lines": 0}
+           "bad_lines": 0, "stop_chunks": 0}
     for raw in lines:
         line = raw.decode("utf-8", errors="replace").strip()
         if not line.startswith("data:") or line.endswith("[DONE]"):
@@ -59,8 +59,15 @@ def read_stream(lines, clock=time.monotonic) -> dict:
                 if out["first_text_s"] is None:
                     out["first_text_s"] = round(clock() - start, 2)
             out["finish"] = choice.get("finish_reason") or out["finish"]
+            out["stop_chunks"] += 1 if choice.get("finish_reason") else 0
     out["total_s"] = round(clock() - start, 2)
     return out
+
+
+def was_cut(r: dict) -> bool:
+    """The literal end marker in a reply or a thought ends the direct stream early with finish "stop" and a whole-looking
+    usage. A whole stream carries two finish chunks, a cut one carries one (row 18c, none and max; opencode is not hit)."""
+    return r["finish"] == "stop" and r["stop_chunks"] < 2
 
 
 def summary(model: str, effort: str, r: dict) -> dict:
@@ -71,7 +78,7 @@ def summary(model: str, effort: str, r: dict) -> dict:
             "first_thought_s": r["first_thought_s"], "total_s": r["total_s"], "in": usage.get("prompt_tokens"),
             "out": done, "reasoning_tokens": details.get("reasoning_tokens"), "thought_chars": r["thought_chars"],
             "text_chars": len(r["text"]), "tok_s": round(done / r["total_s"], 1) if r["total_s"] else 0,
-            "finish": r["finish"], "bad_lines": r["bad_lines"]}
+            "finish": r["finish"], "bad_lines": r["bad_lines"], "cut": was_cut(r)}
 
 
 def main() -> int:
@@ -108,6 +115,9 @@ def main() -> int:
     usage = result["usage"]
     with server.SPEND_LOG.open("a", encoding="utf-8", newline="\n") as f:
         f.write(f"{date.today()},cf_probe,{usage.get('prompt_tokens', '')},{usage.get('completion_tokens', '')},{a.model}\n")
+    if was_cut(result):
+        print("ERROR: the stream was cut (one finish chunk): the reply is incomplete")
+        return 2
     return 0
 
 

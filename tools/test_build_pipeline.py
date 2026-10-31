@@ -35,6 +35,9 @@ case "${FAKE_MODE:-good}" in
     "$PYEXE" -c "import time; time.sleep(60)" "$FAKE_MARK" & wait ;;
   commit_then_hang) mkdir -p features; echo "## a" > features/a.gd; git add -A
     git -c user.name=t -c user.email=t@t commit -qm feat; "$PYEXE" -c "import time; time.sleep(60)" "$FAKE_MARK" & wait ;;
+  bg_check) mkdir -p features; echo "## a" > features/a.gd; echo '$ bash tools/check.sh --no-godot > log 2>&1'
+    echo 'Command moved to the background (shell ID: sh_1).'; "$PYEXE" -c "import time; time.sleep(60)" "$FAKE_MARK" & wait ;;
+  fork_fail) mkdir -p features; echo "## a" > features/a.gd; echo 'tools/lib.sh: fork: retry: Resource temporarily unavailable' ;;
 esac
 '''
 FAKE_BIN = r'''#!/bin/bash
@@ -217,6 +220,52 @@ def test_idle_after_commits_is_checked_not_nowork():  # review 2026-10-27: build
     rc, out, err = pipeline(g, top, FAKE_MODE="commit_then_hang", IDLE_SEC="10", WATCH_POLL="1", **child_env())
     res = result(top)
     assert rc == 0 and res.startswith("PASS") and "idle" in res, (rc, res)
+
+
+def test_a_check_moved_to_the_background_is_killed_and_its_work_checked():  # fast-probe-stream's 25 idle min (row 18c)
+    top, g = toy()
+    t0 = time.time()
+    rc, out, err = pipeline(g, top, FAKE_MODE="bg_check", BG_WAIT_SEC="2", IDLE_SEC="300", WATCH_POLL="1", **child_env())
+    res = result(top)
+    assert rc == 0 and res.startswith("PASS") and "background: build killed" in res, (rc, res, err)
+    assert time.time() - t0 < 120, "the background line must stop the run long before the idle limit"
+
+
+def test_builders_are_told_to_commit_first_and_keep_the_check_in_front():  # also the fix pass's prompt (row 18c)
+    top, g = toy()
+    rc, out, err = pipeline(g, top, FAKE_MODE="nothing", FIX_PASSES="0")
+    prompt = open(top + "/game-wt/job.prompt.seen", encoding="utf-8").read()
+    assert "Commit before your first check" in prompt and "in the foreground" in prompt, prompt[-400:]
+    top, g = toy()
+    put(g + "/fail.flag", "x\n")
+    git(g, "add", "-A")
+    git(g, "commit", "-qm", "fails")
+    git(g, "push", "-q", "origin", "HEAD:main")
+    rc, out, err = pipeline(g, top, FIX_PASSES="1")
+    fix = open(top + "/game-wt/job.fix.md", encoding="utf-8").read()
+    assert "Commit before your first check" in fix and "in the foreground" in fix, fix
+
+
+def test_stale_map_is_refreshed_and_committed_before_the_check():  # a new file cost fast-probe-stream a fix pass (row 18c)
+    top, g = toy()
+    put(g + "/tools/map.py", "open('docs/MAP.md', 'w', newline='\\n').write(__import__('subprocess').run("
+        "['git', 'ls-files'], capture_output=True, text=True).stdout)\n")
+    put(g + "/docs/MAP.md", "stale\n")
+    put(g + "/tools/check.sh", '#!/bin/bash\ngrep -q features/a.gd docs/MAP.md || { echo "FAIL stale"; exit 1; }\n'
+        'echo "all checks passed"\n')
+    git(g, "add", "-A")
+    git(g, "commit", "-qm", "map")
+    git(g, "push", "-q", "origin", "HEAD:main")
+    rc, out, err = pipeline(g, top, FIX_PASSES="0")
+    res = result(top)
+    assert rc == 0 and res.startswith("PASS"), (rc, res, err)
+    assert "docs/MAP.md refreshed" in res, res
+
+
+def test_a_fork_failure_is_named_in_the_result():  # 600 MB free killed a build at its first check, exit 127 (row 18c)
+    top, g = toy()
+    rc, out, err = pipeline(g, top, FAKE_MODE="fork_fail")
+    assert "memory: fork failed" in result(top), result(top)
 
 
 def test_spent_free_quota_stops_the_run_at_once_as_nowork():  # row16-audit (10-29): 25 silent min on a spent quota

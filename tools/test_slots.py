@@ -106,7 +106,17 @@ def test_slots_prints_monthly_spend():
     write(d, "cf_spend.csv", csv_text)
     r = run_slots(d)
     assert r.returncode == 0, r.stderr
-    assert "cf spend this month: $0.27" in r.stdout, r.stdout
+    assert "cf spend this month: $0.27 (+ 1 runs with no token count)" in r.stdout, r.stdout
+
+
+def test_spend_counts_the_token_lines_of_cf_mcp_and_cf_probe():  # their 5th column is the model: slots read $0 (row 18c)
+    d = tempfile.mkdtemp()
+    month = datetime.date.today().strftime("%Y-%m")
+    write(d, "cf_spend.csv", "date,task,input_tokens,output_tokens,usd\n"
+          f"{month}-01,t1,100000,50000,0.09\n"
+          f"{month}-02,cf_probe,1000000,1000000,@cf/zai-org/glm-5.3-flash\n")
+    r = run_slots(d, CF_INPUT_RATE="0.30", CF_OUTPUT_RATE="1.20")
+    assert "cf spend this month: $1.59\n" in r.stdout.replace("\r", ""), r.stdout
 
 
 def running(d, name, builder, extra=""):

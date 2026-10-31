@@ -142,21 +142,25 @@ month="$(date +%Y-%m)"
 spend="$($py -c '
 import sys, csv, os
 total = 0.0
+unpriced = 0
 path = sys.argv[1]
 month = sys.argv[2]
+in_rate, out_rate = float(sys.argv[3]), float(sys.argv[4])
 if os.path.isfile(path):
     with open(path, encoding="utf-8", errors="replace") as f:
         r = csv.reader(f)
         for row in r:
             if len(row) >= 5 and row[0].startswith(month):
                 val = row[4].strip()
-                if val and val != "?":
-                    try:
-                        total += float(val)
-                    except ValueError:
-                        pass
-print(f"{total:.2f}")
-' "$spend_csv" "$month")"
+                try:
+                    total += float(val)
+                except ValueError:  # cf_mcp and cf_probe lines: tokens, then the model; priced at the DeepSeek rates
+                    if row[2].isdigit() and row[3].isdigit():
+                        total += (int(row[2]) * in_rate + int(row[3]) * out_rate) / 1000000.0
+                    else:
+                        unpriced += 1
+print(f"{total:.2f}" + (f" (+ {unpriced} runs with no token count)" if unpriced else ""))
+' "$spend_csv" "$month" "$CF_INPUT_RATE" "$CF_OUTPUT_RATE")"
 
 echo "cf spend this month: \$$spend"
 
