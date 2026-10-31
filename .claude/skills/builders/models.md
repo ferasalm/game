@@ -4,7 +4,9 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
 ## Gemini 3.8 Flash (agy)
 - **ID**: `gemini-3.8-flash-medium` (`AGY_MODEL` in `tools/builders.conf`; Feras 10-31, the calibration lines below ran at high)
 - **Artificial Analysis**: Intelligence Index 31 (unverified, AA 2026-10-29), Coding Index 76.3 (unverified, AA 2026-10-29)
-- **Calibration**: Review 3/5 known bugs found twice (audit sec 5); race B reached passing code in ~20 min
+- **Calibration**: Review 3/5 known bugs found twice (audit sec 5); race B reached passing code in ~20 min. Medium, first gated build
+  (frame-score, RUN_KIND=py, 10-31): gate PASS with no fix pass, code and two own commits in ~6 min, 36 min end to end (the checks);
+  its own background tasks are waited on, not polled. Reviews then found 6 real edge-case bugs its tests missed
 - **Known failure modes**: 1 of 10 findings harmful, 1 false; argued wrong side on fail-open/closed (audit sec 5); cannot review its own runs
 - **Best use**: Build (Godot gameplay code with tests, UI renders, Python tools, docs); cross-review for oc/*
 
@@ -29,7 +31,8 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
   cross-review 0 findings (agy medium); 57 min end to end: checks ~11 min each, stale MAP sent it to a max fix pass that sat 25 min
   idle on its own background check; the builder never committed (pipeline WIP commits).
 - **Known failure modes**: BREACH on protected files (race B); opencode free quota runs out (opencode.ai/go to subscribe);
-  on cf a streamed reply stops silently at the literal text `[DONE]` with finish "stop" (3 of 3, none; renamed: whole reply; max untested)
+  a direct cf stream stops silently at the literal text `[DONE]` with finish "stop": none cuts the reply, max cuts in the thinking and
+  returns nothing (10-31); opencode builds are not hit (fast and max: whole reply); cf_mcp does not stream; cf_probe now exits 2, `"cut": true`
 - **Best use**: hard logic and debugging at max; `fast` (no reasoning) for exact work with a Pattern and tests, bulk text, quick code
   questions, patches from a written diagnosis; review lens at max (cross-review at none not tested: builder time is free, ~$0.08 a review)
 
@@ -49,7 +52,8 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
 ## GLM-5.3-Flash (Cloudflare, opencode free)
 - **ID**: `cloudflare-workers-ai/@cf/zai-org/glm-5.3-flash` / `opencode/glm-5.3-flash-free`
 - **Artificial Analysis**: Intelligence Index 36 (unverified, AA 2026-10-29), Coding Index 70 (unverified, AA 2026-10-29)
-- **Calibration**: vision works on cf (one synthetic image, right answer, 1.5 s, 10-31); real frames vs review-player not run. No
+- **Calibration**: vision works on cf (one synthetic image, right answer, 1.5 s, 10-31). 6 real 640 px frames vs review-player (10-31,
+  default, 4-17 s a frame): colour + character visible 11/12, text readable 2/6; both planted defects caught. No
   adjustable reasoning levels on the flash model (Feras 10-31; it still thought with `none`). Video, Terminal-Bench: unverified.
   Code is its weak spot: the 16-field Def task took 813 s (first text 763 s, 44k out, 54 tok/s) vs DeepSeek none 6.7 s
 - **Best use**: Candidate screenshot pre-filter and bulk text after calibration; never the CLI step (check.sh, gate, merge are scripts)
@@ -75,6 +79,15 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
 - **Known failure modes**: Uncalibrated on gold sets
 - **Best use**: Small text / helper tasks
 
+## Review head to head (one agy diff, frame-score, 10-31; all findings read by Opus)
+| Reviewer | Time | Findings | Worth |
+|---|---|---|---|
+| cf DeepSeek 1017 max (opencode) | ~10 min, 2 rounds | 10, then 6 | best: most real bugs, test gaps with concrete inputs; parser rejected both rounds on one line with no `->` |
+| Haiku medium | 51 s, 39k tokens | 7, clean format | good: only one to catch prose answers invented as two (Claude tokens) |
+| Haiku low | 34 s, 35k tokens | 9, clean, packet line numbers | good: preamble shift, plain-string answers (Claude tokens) |
+| GLM-5.3-flash default | 429 s, 29k out | 4, clean format | real but few; only one to catch a BOM |
+| cf DeepSeek none (direct) | 13 s, 1k out | 14 lines, half thinking aloud ending "Skip" | 2-3 real; breaks the format, not a lens |
+
 ## Settings in force (Feras 10-30)
 - agy: `gemini-3.8-flash-medium` (Feras 10-31); `agy models` lists low, medium, high; no output cap flag.
 - Cloudflare DeepSeek 1017: reasoning_effort max (opencode.json, tools/cross_review.opencode.json) + opencode's hidden
@@ -83,7 +96,8 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
   trip the 25-min no-commit watchdog, builds drop to high. GLM: cap raised; effort option untested (row 18).
 - Cross-review: agy runs -> cf DeepSeek at max; nemotron only as a backup lens after cf fails twice. No $ cap on cf.
 
-## Routing (row 17, Opus proposal; Feras OKs it after row 18's calibrations)
+## Routing (row 17, Opus proposal; OKed by Feras 10-31 "with limits", on small samples: 6 frames, 8 easy lines, 1 diff)
+Limits: Clef-flash pre-filters colour and character visible only, review-player keeps text; non-reasoning never reviews.
 Evidence: docs/research/model-evidence-2026-10.md (AA numbers mostly UNVERIFIED: 1 of 3 spot-checked was invented)
 and the measured calibration lines above. Calibrated = passed a gold set (D11).
 | Task class | Model | Calibrated |
@@ -92,9 +106,10 @@ and the measured calibration lines above. Calibrated = passed a gold set (D11).
 | Review lens on agy runs | cf DeepSeek 1017 at max (~$0.08); nemotron :free only as backup lens | yes (parser 1/2 at low and max; nemotron gold B 6/6) |
 | Review lens on cf/oc runs | agy | yes (hook diff 3/5) |
 | Research, licences | agy, then Opus re-reads 3 facts in a browser | partly: licences 3/3 right, AA numbers 1/3 invented |
-| Bulk text (summaries, sorting, notes) | cf DeepSeek no reasoning (8/8 on one sort, 0.44 s); GLM-5.3-flash candidate | one sample; awaits Feras |
-| Screenshot yes/no gate | Clef-flash (cf, 9B vision decision model) as a pre-filter before review-player | no: calibrate on known frames first |
-| Error sorting, rubric scoring | Jev 1.13 (opencode decision API) | no: agy says it exists, unchecked |
+| Bulk text (summaries, sorting, notes), quick code questions | cf DeepSeek no reasoning (8/8 on one sort, 0.44 s), through cf_probe `--effort none` | one sample; OKed 10-31 |
+| Patches from a written diagnosis (`generate_patch`) | cf DeepSeek no reasoning (wired in tools/cf_mcp/server.py; the cf-agents tools need a reconnect) | one sample; OKed 10-31 |
+| Screenshot yes/no gate | Clef-flash (`@cf/cloudflare/clef-flash`, not chat: `/ai/run`, model + state + questions, images = data-URI strings) as a pre-filter before review-player, colour and character visible only | 6 frames: 12/12 vs review-player, both planted defects, 3-9 s, ~$0.00002 a frame; text readable 3/6 (scores flat ~0.4): text stays with review-player and eye_metrics |
+| Error sorting, rubric scoring | Jev 1.13 Free (`jev-1.13-free`, opencode.ai/inference/systemone/v1/systemone, no key needed, free for a limited time) | exists, reachable; 8/8 on easy lines with labelled causes, 1-3.5 s; a hard set not run |
 | Docs search (bge-m3 + reranker) | not before M1: grep over docs/MAP.md is enough for a small game | - |
 opencode free routes (DeepSeek, GLM-5.3-flash, Nemotron VL) are off while the free quota is spent (10-30).
 

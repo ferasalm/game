@@ -43,6 +43,8 @@ def main() -> int:
     patch = json.loads(replies[3]["result"]["content"][0]["text"])
     if patch["model"] != "@cf/deepseek-ai/deepseek-v4.1-flash-1017" or "not a file inside the repo" not in patch["messages"][1]["content"]:
         fails.append("generate_patch: wrong model or a path outside the repo was read")
+    if patch.get("reasoning_effort") != "none" or "reasoning_effort" in triage:
+        fails.append("generate_patch runs with no reasoning, triage_trace keeps its default (Feras 10-31)")
     system = patch["messages"][0]["content"]
     if "# Minimal Change Engineer" not in system[:600] or not system.rstrip().endswith("Nothing else."):
         fails.append("generate_patch: the agent persona did not lead, or the tool rules did not come last")

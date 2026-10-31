@@ -22,6 +22,7 @@ MODELS = {
     "triage_trace": "@cf/deepseek-ai/deepseek-v4.1-flash-1017",
     "generate_patch": "@cf/deepseek-ai/deepseek-v4.1-flash-1017",
 }
+EFFORT = {"generate_patch": "none"}  # a patch from a written diagnosis needs no reasoning (Feras 10-31, routing OK)
 SYSTEM = {
     "triage_trace": (
         "You triage bugs in a Godot 4.7 typed-GDScript game. Given an error trace or a bug report and code, find the "
@@ -118,6 +119,8 @@ def call_model(tool: str, args: dict) -> str:
         {"role": "system", "content": _system(tool, str(args.get("agent", "")))},
         {"role": "user", "content": _user_message(tool, args)},
     ]}
+    if tool in EFFORT:
+        body["reasoning_effort"] = EFFORT[tool]
     if os.environ.get("CF_MCP_DRY") == "1":
         return json.dumps(body)
     acct, token = _env("CLOUDFLARE_ACCOUNT_ID"), _env("CLOUDFLARE_API_TOKEN")
