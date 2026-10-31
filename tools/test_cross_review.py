@@ -40,25 +40,58 @@ def test_crashed_or_empty_reviewer_is_invalid():
         assert r["status"] == "INVALID" and r["findings"] == [] and r["reason"], (log, r)
 
 
-def test_free_prose_and_bad_lines_are_invalid():
-    bad = [
-        "The code looks good overall, but the hook could be more robust.",
-        "- " + LINE_A,  # a list marker is prose
-        "high | tools/a.py:42 | a missing file -> crash",  # 3 fields
-        "critical | tools/a.py:42 | a missing file -> crash | catch it",  # unknown severity
-        "high | tools/a.py | a missing file -> crash | catch it",  # no line number
-        "high | tools/a.py:0 | a missing file -> crash | catch it",  # lines start at 1
-        "high | tools/a.py:42 | the error handling is weak | catch it",  # no "input -> result" scenario
-        "high | tools/a.py:42 | a missing file -> crash | ",  # empty fix
-    ]
-    for line in bad:
+BAD_LINES = [
+    "The code looks good overall, but the hook could be more robust.",
+    "- " + LINE_A,  # a list marker is prose
+    "high | tools/a.py:42 | a missing file -> crash",  # 3 fields
+    "critical | tools/a.py:42 | a missing file -> crash | catch it",  # unknown severity
+    "high | tools/a.py | a missing file -> crash | catch it",  # no line number
+    "high | tools/a.py:0 | a missing file -> crash | catch it",  # lines start at 1
+    "high | tools/a.py:42 | the error handling is weak | catch it",  # no "input -> result" scenario
+    "high | tools/a.py:42 | a missing file -> crash | ",  # empty fix
+]
+
+
+def test_a_block_with_no_valid_line_is_invalid():
+    for line in BAD_LINES:
         r = cr.parse(block(line))
         assert r["status"] == "INVALID" and r["findings"] == [], (line, r)
-        r = cr.parse(block(LINE_B, line))  # one bad line spoils the block
-        assert r["status"] == "INVALID", (line, r)
+        r = cr.parse(block(line, line))
+        assert r["status"] == "INVALID" and r["findings"] == [], (line, r)
     assert cr.parse(block("NONE", LINE_A))["status"] == "INVALID", "NONE mixed with findings"
     assert cr.parse(block(*([LINE_B] * 13)))["status"] == "INVALID", "over 12 findings"
     assert cr.parse(block(*([LINE_B] * 12)))["status"] == "OK"
+
+
+def test_a_bad_line_keeps_the_valid_lines_and_names_itself():
+    # Feras 10-31: frame-score's 10 real findings were thrown away, twice, on one line with no "->"
+    for line in BAD_LINES:
+        r = cr.parse(block(LINE_B, line, LINE_A))
+        assert r["status"] == "OK", (line, r)
+        assert [f["severity"] for f in r["findings"]] == ["medium", "high"], (line, r)
+        assert len(r["rejected"]) == 1 and line.strip() in r["rejected"][0], (line, r)
+    assert cr.parse(block(LINE_A))["rejected"] == [] and cr.parse(block("NONE"))["rejected"] == []
+    bad = BAD_LINES[0]
+    assert cr.parse(block(*([LINE_B] * 12), bad))["status"] == "INVALID", "over 12 lines stays a broken reply"
+
+
+def test_cli_shows_rejected_lines_in_the_review_file():
+    d = tempfile.mkdtemp()
+    log, out = os.path.join(d, "review.log"), os.path.join(d, "job.cross.md")
+    bad = "medium | tools/c.py:5 | the words carry no arrow | add one"
+    with open(log, "w", encoding="utf-8", newline="\n") as f:
+        f.write(block(LINE_A, bad))
+    r = subprocess.run([sys.executable, os.path.join(HERE, "cross_review.py"), "parse", log, "--out", out],
+                       capture_output=True, text=True)
+    assert r.returncode == 0, r.stdout + r.stderr
+    assert r.stdout.startswith("CROSS OK 1 (high 1, medium 0, low 0), 1 rejected"), r.stdout
+    text = open(out, encoding="utf-8").read()
+    assert "| high | tools/hooks/a.py:42 |" in text, text
+    assert "## Rejected lines" in text and bad in text, ("a rejected line must never vanish", text)
+    with open(log, "w", encoding="utf-8", newline="\n") as f:
+        f.write(block(LINE_A))
+    subprocess.run([sys.executable, os.path.join(HERE, "cross_review.py"), "parse", log, "--out", out], capture_output=True)
+    assert "Rejected" not in open(out, encoding="utf-8").read(), "no heading when nothing was rejected"
 
 
 def test_last_block_wins_fences_case_ranges_and_pipes():
