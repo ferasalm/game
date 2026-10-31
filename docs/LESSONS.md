@@ -37,7 +37,7 @@ naming the test; Godot code traps -> .claude/rules/code.md; builder-only -> .cla
 - A new tool version breaks silently (opencode v2) -> back up its data dirs, probe in a throwaway repo (2026-10-30).
 - 4 paid probes crashed at their spend-log line (a path wrong in worktrees) -> one smoke call before a batch; results print first; parallel Bash = run_in_background (2026-10-31).
 - Bash `VAR=x cmd` given to Feras failed in his PowerShell -> his commands are PowerShell (2026-10-31).
-- A slash command given to `claude -p` from Git Bash ran as a path (`/skill-doctor` became C:/Program Files/Git/skill-doctor) -> `MSYS_NO_PATHCONV=1`; both then work headless (2026-10-31).
+- `claude -p "/x"` from Git Bash turned the command into a path -> `MSYS_NO_PATHCONV=1` (2026-10-31).
 - A toy test failed 1 run in 3 and going serial did not cure it: stub setup outlasted IDLE_SEC=3 -> find the race first; fix the stub, never the limit (2026-10-31).
 - `check.sh | tail && git commit` committed a failing run -> grep .check/*.log for FAIL first; never push before reading the
   final check line (2026-10-23).
