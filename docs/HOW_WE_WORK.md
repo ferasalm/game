@@ -58,11 +58,11 @@ Cost = model calls x context size (each call re-reads the whole chat from cache 
 - Parallel tool calls in one message; never chained shell (the worktree guard refuses it).
 - Builders write, Opus briefs and gates: a builder run costs Claude only the brief and the gate read.
 - Waiting on a builder: the cache waker (tools/wait_run.sh) wakes the chat at 50 min so the 1-hour cache never
-  expires; an overnight run or a chat past 200k hands off at launch instead.
+  expires; an overnight run hands off at launch instead.
 - Connectors: Gmail, Google Docs, the second Rodin and Cloudflare bindings are off; Drive stays (Feras 10-29). Never
   toggle connectors mid-chat (a changed prefix is a full cache miss).
 - The advisor only with Feras's OK. Scripts go through Write/Edit, never python heredocs (a hook blocks those holding a backslash).
-- Hand off at a unit boundary past ~250k context or ~85% of the 5-hour window (a hook warns at 200k and at 10M reads).
+- Hand off when the chat's task is done or at ~85% of the 5-hour window; context size never cuts work short (Feras 10-31).
 
 ## Who syncs, where you see things
 - Syncing: the father chat. Children work in their own worktrees (one writer per set of files, so no conflicts); the

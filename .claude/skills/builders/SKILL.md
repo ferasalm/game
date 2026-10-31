@@ -24,8 +24,8 @@ docs/research/calibration-2026-10.md.
    (cf: tools/cf_build.sh). It refuses when full or the base is unpushed. Python or docs only: `RUN_KIND=py` (no Godot
    slot or memory floor; `check.sh --no-godot`; the gate fails any Godot file; merge_run reruns the full check).
    Then the cache waker, also in the background: `bash tools/wait_run.sh <task>...`; obey its "Best move" line; TaskStop
-   it in the message that gates the run. Expected over ~3 h (an overnight build) or context past 200k: /handoff at
-   launch instead (a fresh chat gates it).
+   it in the message that gates the run. Expected over ~3 h (an overnight build): /handoff at launch instead (a
+   fresh chat gates it).
 5. Read the first word of `../game-wt/<task>.result` (PASS / FAIL / NOWORK / BREACH). Read a PASS only.
 6. Review panel on the diff: `.claude/agents/review-code` (and review-player for renders), flags only; Claude confirms
    each flag against the code before acting. Max 3 fix rounds, then stop and report.
@@ -64,7 +64,7 @@ Per executor:
   - `/advisor opus`; a loop cap of 3 rounds;
   - "grep, then read the named lines";
   - the delegation briefs pre-written;
-  - milestone-only reports; hand off past ~250k context.
+  - milestone-only reports; finish the task, whatever the context size.
 - **agy** (Gemini Flash; Godot UI and code with renders; Python tools, docs and reviews when its quota is free; not creative):
   - geometry, colour and size numbers plus the concept path for any visual;
   - first commit within 15 minutes (the idle watchdog);

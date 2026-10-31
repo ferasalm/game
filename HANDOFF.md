@@ -35,8 +35,6 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 | Bilqis's portraits are now the Neon ones: keep or overturn (archive-cleanup, decisions-log) | Feras | 10-27 |
 | Art homework into inbox/: concept pictures, an empty plate per scene (no characters, HUD or rain), icon art (row 7) | Feras | 10-24 |
 | Cleanup: empty row18-routing folder (in use, 10-31), b5_tests.log, remote base-xr-salvage | Claude | 10-31 |
-| Coach 4, 6: copy settings.local.json and track_usage.py from blissful-meninsky-3a269f to the main checkout (git-ignored; the guard refuses a chat; BRIEFING has the commands) | Feras | 10-31 |
-| Coach picks left: 8 synced skills off, 9 connectors off, 10 one row part a chat, 11 archive agents, 12 Stop hook (.claude/coach-history.md) | Feras | 10-31 |
 
 ## This week (weekly limit resets Sat 16:00 GMT+3)
 | Day | Plan |

@@ -36,7 +36,16 @@
     "technical-artist": "name-only",
     "ui-designer": "name-only",
     "ui-finish-gate-reviewer": "name-only",
-    "market-player": "name-only"
+    "market-player": "name-only",
+    "anthropic-skills:docs": "off",
+    "anthropic-skills:docx": "off",
+    "anthropic-skills:pptx": "off",
+    "anthropic-skills:xlsx": "off",
+    "anthropic-skills:pdf": "off",
+    "anthropic-skills:google-workspace": "off",
+    "anthropic-skills:morning": "off",
+    "anthropic-skills:import-memory": "off",
+    "anthropic-skills:computer-use": "off"
   },
   "hooks": {
     "SessionStart": [
@@ -94,6 +103,16 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/tools/hooks/run.sh\" token_handoff"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/tools/hooks/run.sh\" stop_notify"
           }
         ]
       }

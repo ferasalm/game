@@ -643,7 +643,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/hooks/review_gate.py`: PreToolUse hook (D5, D21): blocks a game render sent to Feras unless review-player and review-feras stamped it.
 - `tools/hooks/review_stamp.py`: Record a player and a Feras review for a game render (D5, D21), keyed by the file's sha256.
 - `tools/hooks/run.sh`: Runs tools/hooks/<name>.py for a Claude hook. settings.json wires hooks as $CLAUDE_PROJECT_DIR/..., the main checkout,
-- `tools/hooks/token_handoff.py`: PostToolUse hook (hand-off rule, Feras 10-28): warns when this chat's context passes 200k ("finish the unit"),
+- `tools/hooks/stop_notify.py`: Stop hook (coach 12, Feras 10-31): a Windows balloon when a chat ends its turn, so Feras need not watch it. Runs the
+- `tools/hooks/token_handoff.py`: PostToolUse hook: tells a chat its cumulative cache reads (cost = calls x context, row 16 10-29) at 25M tokens, then
 - `tools/import_agents.py`: Copies the chosen agency agents (~/.claude/agents, MIT) into .agents/skills/<name>/SKILL.md for every builder.
 - `tools/kill_tree.py`: Kills a process and every descendant, also children forked while the kill runs (tools/lib.sh kill_tree calls it).
 - `tools/lib.sh`: Shared shell helpers for the builder tools (slots, pipeline, task runners, merge, check): paths, python, limits.
@@ -695,6 +696,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_gate_d6.py`: Self-test for the D6 gate rules (2026-10-27): protected tests and assets, removed checks, new tests fail on base.
 - `tools/test_hook_heredoc.py`: Self-test for tools/hooks/heredoc_guard.py (LESSONS 4): a python heredoc holding a backslash, in any form, and a
 - `tools/test_hook_run.py`: Self-test for tools/hooks/run.sh: hooks run the session's own copy, a missing script never blocks a tool.
+- `tools/test_hook_stop_notify.py`: Self-test for tools/hooks/stop_notify.py: a Stop makes one balloon command, a repeat Stop stays quiet, bad input never blocks.
 - `tools/test_kill_tree.py`: Tests kill_tree (tools/lib.sh): a tree with a native grandchild and a parent still forking during the kill dies whole.
 - `tools/test_map.py`: Self-test for map.py: only tracked files are mapped (an untracked file made CI fail "MAP.md current").
 - `tools/test_no_legacy_hero.py`: Guard: the hero's old code id stays gone (renamed to rydan, save v7, Feras 2026-10-27). Fails on the old id in the
@@ -708,7 +710,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_slots.py`: Self-test for tools/slots.sh: python tools/test_slots.py (temp dirs, plain asserts, exit 1 on failure).
 - `tools/test_status.py`: Self-test for tools/status.sh: python tools/test_status.py (a temp repo with planted branches, exit 1 on failure).
 - `tools/test_template.py`: TEMPLATE.md stays readable by the gate (P3.8, 2026-10-27): its headings, an empty forbidden list, parseable checklist.
-- `tools/test_token_handoff.py`: Self-test for tools/hooks/token_handoff.py (hand-off rule, Feras 10-28): warns at 200k and 250k of context.
+- `tools/test_token_handoff.py`: Self-test for tools/hooks/token_handoff.py: cache-read information at 25M, then every +10M; context size never warns
 - `tools/test_tool_tests.py`: Tests tool_tests.py parallel test execution and process runner.
 - `tools/test_twine_sync.py`: Self-test for tools/twine_sync.py: python tools/test_twine_sync.py (temp dirs, plain asserts, exit 1 on failure).
 - `tools/test_wait_run.py`: Self-test for tools/wait_run.sh (row 16): after its wait it reports each run and the best move: re-arm a running

@@ -19,9 +19,7 @@ Next goal: a free 20-30 min demo, PC (Steam) first, Android kept alive.
 3. Before changing code in an area: grep docs/MAP.md, then docs/ARCHITECTURE.md for that area's section.
 4. Before content work (story, names, art, UI, combat design): read docs/CANON.md.
 
-## Enforced by a tool (obey its message unless get_usage contradicts it; then log the mismatch in the USAGE row)
-- Hand-off band 200-300k (Feras 10-29): a unit boundary near 250k (get_usage; any unit may finish to ~300k) or ~85% of
-  the 5-hour window: tools/hooks/token_handoff.py says "finish the unit" at 200k (not a stop: keep working), "/handoff" at 250k.
+## Enforced by a tool (obey its message)
 - Paid generation needs Feras's "spend ok" (pre_spend.py); a render reaches him only after review-player + review-feras
   (review_gate.py; stamp: review_stamp.py); queue rows, note caps: doc_check.py; briefs: test_template.py; builder edits: build_gate.
 - Never-read paths (.godot/, *.import, *.uid): deny rules in .claude/settings.json. Checks: `bash tools/check.sh`
@@ -34,6 +32,7 @@ Next goal: a free 20-30 min demo, PC (Steam) first, Android kept alive.
    pre-mortem; root cause, not patch: a one-line cause chain plus the test, check or rule that stops the class.
 3. Before asking Feras anything -> automate first (Chrome, Flow, renders, playtest capture, scripts); only logins,
    spending and taste go to him. Design questions get 2-3 distinct options, one bold, each with its trade-off and a pick.
+   Stuck or refused -> ask him at once, options with a pick; never park work on him unasked (10-31).
 4. Before handing out a task -> the lean rule below; before anything reaches Feras -> review-feras.
 5. Before reading -> the reading rule: grep, then read small targeted excerpts yourself; a Haiku high reader only for a
    read over ~20k tokens or across many files. Never read assets/ binaries (pictures only when judging art, small),
@@ -53,15 +52,17 @@ machinery, a brief, a paid call or anything that reaches Feras gets them all.
   builder time is free.
 - Opus orchestrates and owns every output that reaches Feras as if it did the work: it reviews whatever another model
   made, tiered (gates, a Haiku pass on big diffs, then Opus on the list and the risky hunks).
-- IMPORTANT: one task, model and effort per chat; a follow-up or correction of <= ~10 tool calls stays (its cache is
-  cheaper), a new multi-step task opens a fresh chat. get_usage at the start and before a big step. Independent steps
+- IMPORTANT: one task, model and effort per chat: a chat holds one part of a queue row and finishes it at full quality;
+  context size never stops, shortens or hands off work (Feras 10-31). /handoff when the task is done, or at ~85% of the
+  5-hour window; a follow-up or correction of <= ~10 tool calls stays (its cache is cheaper), a new multi-step task opens
+  a fresh chat. get_usage at the start and before a big step. Independent steps
   go as parallel tool calls in one message, never chained shell (the worktree guard refuses it; each refusal = a call).
 - Builders write when the brief is shorter than the work and the risk is low or well tested; Opus writes small, risky
   machinery itself (hooks, gates, slots, saves). Claude plans, briefs (TEMPLATE), reviews and merges. A run red on the
   pipeline itself: Opus fixes the pipeline and re-gates.
 - Edit, don't rewrite; no recaps; a few lines to the owner; side sessions report only at milestones; leave one tool,
   check, skill or doc better. Every problem or fix named to Feras carries its status (Feras 10-29): done | in
-  progress | planned (when) | not planned | waiting on Feras.
+  progress | planned (when) | not planned | waiting on Feras (only what he was asked in that chat, with a pick; 10-31).
 - Code rules + Godot traps: .claude/rules/code.md (loads with code; in builder prompts). Every rule and fixed bug
   gets a test; a check counts only when its output was read.
 

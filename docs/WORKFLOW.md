@@ -79,7 +79,7 @@ docs/HOW_WE_WORK.md draws this loop for Feras: a change to these Protocols updat
   4. Anything that reaches Feras: the eye gate (tools/eye_gate.sh), review-player + review-feras, then
      `python tools/hooks/review_stamp.py <file>`; the review_gate hook blocks SendUserFile and Artifact on an
      unstamped render (tools/hooks/review_gate.py).
-- **Handoff:** at a unit boundary past ~250k context (review-heavy ~300k) or ~85% of the 5-hour window (CLAUDE.md). It records one improvement made and one proposed.
+- **Handoff:** when the chat's task is done or at ~85% of the 5-hour window; context size never triggers it (CLAUDE.md). It records one improvement made and one proposed.
 - **ops-review:** every 5 sessions, or at 50% of the window: `python tools/session_stats.py` (slips, guards, calls per turn,
   chats past 200k), then `/kaizen:coach` (reads ~/.claude/coach-usage-log.jsonl from the track_usage hook; its score, accepted and declined items go to .claude/coach-history.md, committed, so the next run
   trends and never re-asks); its USAGE row says "ops-review done" (the session-start hook counts rows since it and
@@ -122,7 +122,7 @@ reviewer with no .claude/agents/<name>.md, and any .claude/agents/dept-*.md (ret
 | Free memory before a Godot run | >= 3000 MB (MIN_FREE_MB=3000) | tools/slots.sh |
 | Builder with no commit | killed after 25 min (IDLE_MIN=25); result NOWORK | tools/build_pipeline.sh |
 | OpenRouter :free requests | 50 a day, shared by all :free models | the provider; check before a run |
-| Claude's handoff | a unit boundary past ~250k context (review-heavy ~300k) or ~85% of the 5-hour window | tools/hooks/token_handoff.py; review-cost |
+| Claude's handoff | the chat's task done, or ~85% of the 5-hour window; never context size (Feras 10-31) | get_usage; review-cost |
 | Always-loaded notes | 27 KB each; lines: CLAUDE.md 80, HANDOFF 60, DECISIONS 70, LESSONS 100 (warns at 75%) | tools/doc_check.py |
 | Godot code | <= 200 lines a file, <= 40 lines a function | tools/lint_gd.py |
 | Paid image APIs | <= $1 each, only with Feras's OK | tools/hooks/pre_spend.py (see Routes) |
@@ -207,7 +207,7 @@ brief names one game-dev skill (.agents/skills/). Free models may train on promp
 | Notes split by change rate: CLAUDE.md rare, HANDOFF rewritten, DECISIONS = rules in force, LESSONS curated; full log in decisions-log.md | Adopted | Old state never reads as current |
 | @ imports of HANDOFF, DECISIONS, LESSONS under the 27 KB cap | Adopted, enforced by doc_check | reem-bot's loaded log grew past 100 KB: paid at every start |
 | /handoff at the end of every session | Adopted (handoff skill) | The next chat starts with no resume step |
-| A lane and a department on every queue row (doc_check); one model and effort per chat; one task per chat, hand off past ~250k context | Adopted | Effort can't change mid-chat; switching models drops the cache; Pro windows are small |
+| A lane and a department on every queue row (doc_check); one model and effort per chat; one task per chat, finished whatever its context size (10-31) | Adopted | Effort can't change mid-chat; switching models drops the cache; Pro windows are small |
 | SessionStart hook with a sync report | Adopted | Catches a stale branch before work starts |
 | Grep first, read only the needed lines; never read generated files | Adopted, enforced by deny rules in .claude/settings.json | A rule nobody enforces drifts |
 | A check counts only when its output was read; every bug gets a regression test | Adopted (tools/check.sh, run_godot.sh) | A summary line hid broken results before; fixes stay fixed |

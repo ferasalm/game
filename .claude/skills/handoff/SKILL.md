@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: End-of-session wrap-up for the game repo. Runs the checks, logs the owner's decisions, curates LESSONS, adds a USAGE row, updates its rows of the HANDOFF.md queue, commits and pushes. Use when the user types /handoff, says "wrap up", or the chat passes ~250k context at a unit boundary (get_usage; the 200k hook line only means finish the unit).
+description: End-of-session wrap-up for the game repo. Runs the checks, logs the owner's decisions, curates LESSONS, adds a USAGE row, updates its rows of the HANDOFF.md queue, commits and pushes. Use when the user types /handoff, says "wrap up", or the chat's task is done. Context size never triggers it (Feras 10-31).
 ---
 
 # Handoff (game)
@@ -44,7 +44,8 @@ HANDOFF, DECISIONS and LESSONS load at every session start, so every line costs 
    and why). Every HANDOFF Open point is closed (its line removed, said in Done) or carried (its owner still right);
    anything agreed this chat but not done becomes an Open point (point | owner | since; max 10, doc_check).
    The report is written last: work merged after it (late requests) updates it before the final push. Every item in
-   it carries its status: done | in progress | planned (when) | not planned | waiting on Feras. The same report goes at the top of
+   it carries its status: done | in progress | planned (when) | not planned | waiting on Feras (only what he was asked in
+   this chat, with a pick: anything else, ask him now, then report). The same report goes at the top of
    feras/BRIEFING.md (his one file; keep the last 5) and the chat names that file. Feras 10-30: the report is headed
    by day, date and time (GMT+3), never "early/late"; a row in parts gets one line per part (a, b, c) with its
    status; and the "Open now" table at the top is rewritten (every queue row, Open point and carried item: status,
