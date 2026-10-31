@@ -593,6 +593,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 
 ## plugins
 - `plugins/studio/.claude-plugin/plugin.json`: content: ? x0
+- `plugins/studio/.lsp.json`: content: ? x0
 - `plugins/studio/agents/review-canon.md`
 - `plugins/studio/agents/review-code.md`
 - `plugins/studio/agents/review-cost.md`
@@ -601,6 +602,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `plugins/studio/agents/review-player.md`
 - `plugins/studio/agents/ui-finish-gate-reviewer.md`
 - `plugins/studio/hooks/hooks.json`: content: ? x0
+- `plugins/studio/scripts/godot_lsp.py`: Bridge Claude Code's stdio LSP to Godot's TCP language server, so an edit gets Godot's own errors and references.
 - `plugins/studio/scripts/loaded.sh`: Plugin SessionStart hook: leaves a marker named by the session_id so .claude/hooks/session-start.sh knows studio loaded.
 
 ## tests
