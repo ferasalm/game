@@ -332,7 +332,6 @@ def test_coreutils_timeout_is_the_gnu_one():
 
 
 if __name__ == "__main__":
+    from tool_tests import run_cases
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
-    for t in tests:
-        t()
-    print(f"test_build_pipeline: {len(tests)} tests passed")
+    run_cases(tests, "test_build_pipeline")
