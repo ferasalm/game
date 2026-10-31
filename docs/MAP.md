@@ -594,6 +594,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 ## plugins
 - `plugins/studio/.claude-plugin/plugin.json`: content: ? x0
 - `plugins/studio/.lsp.json`: content: ? x0
+- `plugins/studio/README.md`
 - `plugins/studio/agents/review-canon.md`
 - `plugins/studio/agents/review-code.md`
 - `plugins/studio/agents/review-cost.md`
