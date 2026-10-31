@@ -73,8 +73,8 @@ for row in rows if len(cols) == 3 else []:
     check(all(re.fullmatch(r"builder|Feras|chat \((taste|MCP|review|plan)\)", p) for p in parts),
           f"queue row lane is builder, Feras or 'chat (taste|MCP|review|plan)': {row[:4]}")
     check("builder" not in parts or re.search(r"\b(agy|cf|oc)\b", who), f"builder row names agy, cf or oc: {row[:5]}")
-    check(not any(p.startswith("chat") for p in parts) or re.search(r"Opus (low|medium|high|xhigh)", who),
-          f"chat row names Opus and its effort (Feras 10-28: Opus for every child), e.g. Opus high: {row[:5]}")
+    check(not any(p.startswith("chat") for p in parts) or re.search(r"Opus (low|medium|high|xhigh)|Sonnet high", who),
+          f"chat row names Opus and its effort, or Sonnet high (Feras 10-31: Sonnet only at high): {row[:5]}")
 
 # Open points (row 16, Feras 10-29): what is agreed but not done, with its owner; every /handoff closes or carries each
 OPEN_HEAD = ["Point", "Owner", "Since"]

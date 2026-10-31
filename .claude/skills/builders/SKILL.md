@@ -15,6 +15,20 @@ Numbers live in `tools/builders.conf` (caps, memory floor, idle minutes, models)
 shows what is running. Models and routes: DECISIONS "Tools and builders"; model cards: models.md (pick by card). Calibrated readers and lenses:
 docs/research/calibration-2026-10.md.
 
+## Who does what (Feras 10-31; only these workers and efforts)
+| Work | Worker | How | Gate |
+|---|---|---|---|
+| Code, tools, tests, docs from a brief | agy `gemini-3.8-flash-medium` | build_pipeline.sh agy; `RUN_KIND=py` for tools and docs | check, build_gate, cross-review by cf max |
+| Hard logic, risky scripts, every fix pass, cross-review | cf DeepSeek max | cf_build.sh | same; agy reviews |
+| Exact edits with a Pattern file | cf DeepSeek non-reasoning | cf_build.sh ... fast | same |
+| Sorting, summaries, quick questions, patches from a diagnosis | cf DeepSeek non-reasoning | cf_probe.py --effort none; generate_patch | the caller spot-checks 3 lines |
+| Bulk text, colour pre-filter | GLM-5.3-flash | cf_probe.py; off until its row 24 calibration passes | the caller spot-checks 3 lines |
+| Reads over ~20k tokens, Claude-only tasks | Haiku medium | Agent tool: `model: haiku`, `effort: medium`, template answer | the caller re-greps every "not found" claim |
+| The simplest Claude-only task | Haiku low | Agent tool: `model: haiku`, `effort: low` | template check |
+| A chunk of 10+ noisy calls, such as driving one builder run to its gate | a fork, at most 2 at once | Agent tool: `subagent_type: fork`, only under ~100k context; above that a fresh subagent with a brief | report of 15 lines or fewer |
+`/subtask` is the same fork, but only a person can type it. A fork runs on its parent's model, so it can't be a Haiku or a builder; it drives them.
+Every worker's result is one line: `worker | task | gate | evidence path | time | cost | real findings`. One smoke call before any batch.
+
 ## The loop
 1. Spec: a design with no open questions (Opus decides; Sonnet never invents design).
 2. Failing tests first, written by Claude; the builder may not edit them (the gate rejects it).
@@ -58,7 +72,7 @@ Per executor:
   - list what NOT to report;
   - split big jobs into parallel runs over disjoint inputs;
   - no design choices; effort from calibration (reader: high; lens: low).
-- **Sonnet** (subagent only: every chat is Opus, Feras 10-28; strong when scoped, loops when the task is vague):
+- **Sonnet** (the default executor, always at high, Feras 10-31; strong when scoped, loops when the task is vague):
   - Opus makes the decisions first, so no open design questions are left;
   - give the acceptance tests or checks;
   - `/advisor opus`; a loop cap of 3 rounds;

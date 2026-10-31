@@ -2,6 +2,8 @@
 Same line format as docs/DECISIONS.md. Log every new decision verbatim in docs/decisions-log.md too.
 
 ### Tools and builders
+- 2026-10-31 | Two in-repo plugins: studio (skills, agents, hooks, Godot LSP) and pm (queue, week, report, handoff on HANDOFF.md, no new database); pre_spend, review_gate and session-start stay wired in .claude/settings.json so they fail closed | Feras/Claude
+- 2026-10-31 | Worker calls stay under auto mode, no project allow list; a settings.json edit auto mode refuses goes to Feras, never around it | Feras
 - 2026-10-31 | Routing OK with limits (models.md table): agy builds, cf DeepSeek max reviews, Clef-flash pre-filters colour and character visible, review-player keeps text, Jev sorts errors; no reasoning = bulk text, quick questions, generate_patch, never review; Sonnet only at high, Haiku never orchestrates; only the efforts Feras names | Feras
 - 2026-10-31 | Pipeline: commit before the first check, check in the foreground (backgrounded = killed at 5 min); `cf ... fast` needs a Pattern, fix passes at max | Claude
 - 2026-10-31 | check.sh stays bash, no Rust: tool tests run side by side, the 2 slow toy tests skip when tools/ is unchanged since they passed, CI runs all | Feras

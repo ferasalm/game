@@ -39,6 +39,8 @@ naming the test; Godot code traps -> .claude/rules/code.md; builder-only -> .cla
 - Bash `VAR=x cmd` given to Feras failed in his PowerShell -> his commands are PowerShell (2026-10-31).
 - `claude -p "/x"` from Git Bash turned the command into a path -> `MSYS_NO_PATHCONV=1` (2026-10-31).
 - A toy test failed 1 run in 3 and going serial did not cure it: stub setup outlasted IDLE_SEC=3 -> find the race first; fix the stub, never the limit (2026-10-31).
+- `/subtask` looked absent (no repo or plugin hit) but is a CLI built-in only a person can type; "PM plugins need sign-ups" came from memory and was false -> check the docs commands page and the plugin directory cache before saying a tool does or doesn't exist (2026-10-31).
+- Auto mode refused a `.claude/settings.json` allow list as self-modification -> never script around it; ask Feras with the exact diff (2026-10-31).
 - `check.sh | tail && git commit` committed a failing run -> grep .check/*.log for FAIL first; never push before reading the
   final check line (2026-10-23).
 

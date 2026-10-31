@@ -38,7 +38,7 @@ Next goal: a free 20-30 min demo, PC (Steam) first, Android kept alive.
    read over ~20k tokens or across many files. Never read assets/ binaries (pictures only when judging art, small),
    docs/research/gemini-blueprint-citations.md; gemini-blueprint.md one section at a time.
 6. The advisor tool only with Feras's OK (10-29): a model stuck (the same step failed twice) asks him "May I use
-   /advisor opus?"; a subagent reports BLOCKED and its orchestrator asks.
+   /advisor opus?"; a subagent reports BLOCKED and its orchestrator asks. A Sonnet high chat stuck that way calls it unasked (10-31).
 7. Feras says pause or stop -> halt tools, one-line status, wait for his go; a direct question -> answer it first (10-31).
 Scale: a small, low-risk change (a few lines, no machinery, nothing player-visible) skips Ripple and pre-mortem;
 machinery, a brief, a paid call or anything that reaches Feras gets them all.
@@ -47,11 +47,12 @@ machinery, a brief, a paid call or anything that reaches Feras gets them all.
 - Motto COOKE (Clarity, Organization, Optimization, Kaizen, Efficiency); a fiduciary duty to Feras; top-down (big
   picture, then details); foundations solid and flexible (tests, data-driven content, small modules, no hacks).
 - Aims, always learning: think deeply and critically; finish fast; maximum quality; minimum cost; save Feras's time;
-  get more organized. Speed, never needless spend: each task goes to the cheapest worker that does it well (WORKFLOW
-  step 3). Tie-break (Feras 10-28): quality is a hard gate (checks pass, Opus signs off); Claude tokens are minimised;
-  builder time is free.
-- Opus orchestrates and owns every output that reaches Feras as if it did the work: it reviews whatever another model
-  made, tiered (gates, a Haiku pass on big diffs, then Opus on the list and the risky hunks).
+  get more organized. Each task goes to the cheapest worker that does it well (builders skill, Who does what).
+  Priorities, the higher wins a tie (Feras 10-31): 1 output quality, a hard gate (checks pass, Opus signs off); 2 codebase
+  integrity and flexibility; 3 Claude tokens and usage limits; 4 organization and simplicity; 5 speed. Builder time is free.
+- Opus plans and owns every output that reaches Feras as if it did the work; Sonnet high executes by default from an Opus
+  brief, delegating by that table (Feras 10-31). Opus reviews whatever another model made, tiered (gates, a Haiku pass
+  on big diffs, then Opus on the list and the risky hunks).
 - IMPORTANT: one task, model and effort per chat: a chat holds one part of a queue row and finishes it at full quality;
   context size never stops, shortens or hands off work (Feras 10-31). /handoff when the task is done, or at ~85% of the
   5-hour window; a follow-up or correction of <= ~10 tool calls stays (its cache is cheaper), a new multi-step task opens

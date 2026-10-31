@@ -58,6 +58,9 @@ def test_queue_rows_need_a_lane():
                      ("| 4 | x | Ops | chat (taste) | Sonnet medium | next | - |", "names Opus and its effort")):
         r = run_check(QUEUE[:6] + [bad] + QUEUE[6:])
         assert r.returncode == 1 and why in r.stdout, bad + "\n" + r.stdout
+    good = "| 4 | x | Ops | builder + chat (review) | agy, cf; Sonnet high | next | - |"  # Feras 10-31: Sonnet high executes
+    r = run_check(QUEUE[:6] + [good] + QUEUE[6:])
+    assert r.returncode == 0, good + "\n" + r.stdout
     r = run_check(["# HANDOFF", "1. step. Model: Sonnet. Effort: medium."])  # the old numbered steps
     assert r.returncode == 1 and "'## Queue' table" in r.stdout, r.stdout
 
