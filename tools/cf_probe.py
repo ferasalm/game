@@ -35,12 +35,17 @@ def build_body(model: str, prompt: str, system: str, effort: str, extra: dict, i
 def read_stream(lines, clock=time.monotonic) -> dict:
     """Folds an OpenAI-style SSE stream of bytes lines into timings, text and usage."""
     start = clock()
-    out = {"first_thought_s": None, "first_text_s": None, "text": "", "thought_chars": 0, "finish": "", "usage": {}}
+    out = {"first_thought_s": None, "first_text_s": None, "text": "", "thought_chars": 0, "finish": "", "usage": {},
+           "bad_lines": 0}
     for raw in lines:
         line = raw.decode("utf-8", errors="replace").strip()
         if not line.startswith("data:") or line.endswith("[DONE]"):
             continue
-        event = json.loads(line[5:])
+        try:
+            event = json.loads(line[5:])
+        except json.JSONDecodeError:
+            out["bad_lines"] += 1
+            continue
         out["usage"] = event.get("usage") or out["usage"]
         for choice in event.get("choices", []):
             delta = choice.get("delta") or {}
@@ -66,7 +71,7 @@ def summary(model: str, effort: str, r: dict) -> dict:
             "first_thought_s": r["first_thought_s"], "total_s": r["total_s"], "in": usage.get("prompt_tokens"),
             "out": done, "reasoning_tokens": details.get("reasoning_tokens"), "thought_chars": r["thought_chars"],
             "text_chars": len(r["text"]), "tok_s": round(done / r["total_s"], 1) if r["total_s"] else 0,
-            "finish": r["finish"]}
+            "finish": r["finish"], "bad_lines": r["bad_lines"]}
 
 
 def main() -> int:
