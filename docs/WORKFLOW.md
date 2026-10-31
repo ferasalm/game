@@ -61,7 +61,7 @@ docs/HOW_WE_WORK.md draws this loop for Feras: a change to these Protocols updat
   itself warm with `bash tools/wait_run.sh` (no task: a 50-min timer) in the background. Children report at
   milestones; the father reviews, merges each child branch into its own, runs check.sh, merges to main, runs
   sync_main.sh in C:\dev\game and the final /handoff (report in feras/BRIEFING.md).
-- **Start:** the hook prints the sync for this worktree; then the HANDOFF line; then get_usage.
+- **Start:** the hook prints the sync for this worktree; then the HANDOFF line; then the status line's usage (or Feras's /usage).
 - **Brief:** docs/briefs/TEMPLATE.md (<= 80 lines, with a Do NOT edit list).
 - **Build:** slots (tools/slots.sh), then the pipeline (tools/build_pipeline.sh).
 - **Review (tiered, Feras 10-28: Opus never reads needlessly, and signs off on whatever reaches Feras):**
@@ -77,7 +77,7 @@ docs/HOW_WE_WORK.md draws this loop for Feras: a change to these Protocols updat
   3. Opus reads that list, the WARN lines and the risky hunks only: logic/, saves, hooks, settings.json, anything no
      test reaches; review-code on the whole diff only when the tier-2 list is not clean.
   4. Anything that reaches Feras: the eye gate (tools/eye_gate.sh), review-player + review-feras, then
-     `python tools/hooks/review_stamp.py <file>`; the review_gate hook blocks SendUserFile and Artifact on an
+     `python tools/hooks/review_stamp.py <file>`; the review_gate hook blocks a send-to-Feras tool (a file send, an Artifact) on an
      unstamped render (tools/hooks/review_gate.py).
 - **Handoff:** when the chat's task is done or at ~85% of the 5-hour window; context size never triggers it (CLAUDE.md). It records one improvement made and one proposed.
 - **ops-review:** every 5 sessions, or at 50% of the window: `python tools/session_stats.py` (slips, guards, calls per turn,
@@ -122,7 +122,7 @@ reviewer with no plugins/studio/agents/<name>.md, and any plugins/studio/agents/
 | Free memory before a Godot run | >= 3000 MB (MIN_FREE_MB=3000) | tools/slots.sh |
 | Builder with no commit | killed after 25 min (IDLE_MIN=25); result NOWORK | tools/build_pipeline.sh |
 | OpenRouter :free requests | 50 a day, shared by all :free models | the provider; check before a run |
-| Claude's handoff | the chat's task done, or ~85% of the 5-hour window; never context size (Feras 10-31) | get_usage; review-cost |
+| Claude's handoff | the chat's task done, or ~85% of the 5-hour window; never context size (Feras 10-31) | the status line's usage; review-cost |
 | Always-loaded notes | 27 KB each; lines: CLAUDE.md 80, HANDOFF 60, DECISIONS 70, LESSONS 100 (warns at 75%) | tools/doc_check.py |
 | Godot code | <= 200 lines a file, <= 40 lines a function | tools/lint_gd.py |
 | Paid image APIs | <= $1 each, only with Feras's OK | tools/hooks/pre_spend.py (see Routes) |

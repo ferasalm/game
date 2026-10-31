@@ -14,7 +14,8 @@ Next goal: a free 20-30 min demo, PC (Steam) first, Android kept alive.
 
 ## Start of every session
 1. Read the SYNC lines (session hook; else `git fetch origin main && git status -sb`). Behind main: merge
-   origin/main before changing anything. After a pull in C:\dev\game: `bash tools/sync_main.sh`.
+   origin/main before changing anything (`bash tools/merge_base.sh` fetches and fast-forwards; `bash tools/main_file.sh <path>` prints
+   a file from origin/main). After a pull in C:\dev\game: `bash tools/sync_main.sh`.
 2. Tell the owner in one or two lines the top HANDOFF queue row (lane, who). Then work.
 3. Before changing code in an area: grep docs/MAP.md, then docs/ARCHITECTURE.md for that area's section.
 4. Before content work (story, names, art, UI, combat design): read docs/CANON.md.
@@ -56,7 +57,7 @@ machinery, a brief, a paid call or anything that reaches Feras gets them all.
 - IMPORTANT: one task, model and effort per chat: a chat holds one part of a queue row and finishes it at full quality;
   context size never stops, shortens or hands off work (Feras 10-31). /handoff when the task is done, or at ~85% of the
   5-hour window; a follow-up or correction of <= ~10 tool calls stays (its cache is cheaper), a new multi-step task opens
-  a fresh chat. get_usage at the start and before a big step. Independent steps
+  a fresh chat. The status line (or Feras's /usage) at the start and before a big step. Independent steps
   go as parallel tool calls in one message, never chained shell (the worktree guard refuses it; each refusal = a call).
 - Builders write when the brief is shorter than the work and the risk is low or well tested; Opus writes small, risky
   machinery itself (hooks, gates, slots, saves). Claude plans, briefs (TEMPLATE), reviews and merges. A run red on the

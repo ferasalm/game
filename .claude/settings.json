@@ -47,6 +47,10 @@
     "anthropic-skills:import-memory": "off",
     "anthropic-skills:computer-use": "off"
   },
+  "statusLine": {
+    "type": "command",
+    "command": "python \"$CLAUDE_PROJECT_DIR/tools/statusline.py\""
+  },
   "hooks": {
     "SessionStart": [
       {

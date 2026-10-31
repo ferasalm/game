@@ -11,7 +11,7 @@ Skip yourself (one line "nothing changed") when fewer than 5 sessions passed or 
 
 ## Steps
 1. **Usage trend.** docs/USAGE.md rows since the last ops-review against the P1 baseline row (start /context cost, window % of
-   the last 3 sessions, .result verdict counts, 25-notes-per-build). Also `get_usage` if the parent supplies it. Say better / same / worse per number.
+   the last 3 sessions, .result verdict counts, 25-notes-per-build). Also the usage figures (`.check/usage.json`, or Feras's /usage) if the parent supplies them. Say better / same / worse per number.
 2. **Lessons.** docs/LESSONS.md (max 100 lines; condense back to ~70): list lines to promote (recurring, now a rule or a lint)
    and lines to archive (fixed by a tool, or about retired things). The department lessons.md files (`.claude/skills/*/lessons.md`) too.
 3. **Doc warnings.** Run `python tools/doc_check.py`; list each warning with the file it names.

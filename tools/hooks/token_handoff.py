@@ -10,6 +10,7 @@ import json
 import os
 import sys
 import tempfile
+import time
 
 STEP_DEFAULT = 40000
 READS = 25_000_000
@@ -95,6 +96,19 @@ def reads_message(total, warned):
             "a fresh chat.", level)
 
 
+def usage_note(cwd):
+    """' 5-hour window N% used.' from .check/usage.json (written by tools/statusline.py) when under an hour old, else ''."""
+    try:
+        with open(os.path.join(cwd, ".check", "usage.json"), encoding="utf-8") as f:
+            u = json.load(f)
+        pct = u.get("five_hour_pct")
+        if isinstance(pct, (int, float)) and time.time() - u.get("updated", 0) < 3600:
+            return f" 5-hour window {pct:.0f}% used."
+    except (OSError, ValueError, TypeError, AttributeError):
+        pass
+    return ""
+
+
 def main():
     data = json.load(sys.stdin)
     path = data.get("transcript_path")
@@ -110,6 +124,7 @@ def main():
     rmsg, rwarned = reads_message(total, state.get("reads_warned", 0) if state.get("read_off", 0) <= size else 0)
     save_state(sp, {"size": size, "read_off": read_off, "reads": total, "last_id": last_id, "reads_warned": rwarned})
     if rmsg:
+        rmsg += usage_note(data.get("cwd"))
         print(json.dumps({"hookSpecificOutput": {"hookEventName": "PostToolUse", "additionalContext": rmsg}}))
     return 0
 
