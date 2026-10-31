@@ -5,6 +5,7 @@ UI): docs/CANON.md, read before any content work. D1-D22 = the process audit pla
 
 ### Scope
 - 2026-10-27 | Neon Glitch = the whole game: 2D isometric action RPG, real-time Hades-like combat, linear story (not a roguelite); docs/VISION.md holds pillars (combat feel wins ties), objectives, roadmap: free 20-30 min demo first, then premium; PC (Steam) leads, Android kept alive from M1 (D17), iOS later; Feras plays gated builds twice a week | Feras
+- 2026-10-31 | docs/VISION.md OKed (the Art clock line updated) | Feras
 - 2026-10-26 | Old 3D game retired, archived on branch archive/3d + tag 3d-archive; lookup only (D20); reuse what fits (docs/archive/3d-reuse.md) | Feras
 - 2026-10-29 | Process audit P1 -> P2 -> P0 -> P3 -> P4 ran before game work (D12; done: rows 1, 12, 15, 16, 17 closed 10-28/30; row 18 system pass next, then M1, Feras 10-30); repo public until before the first public demo, then private (D16) | Feras
 ### Process
@@ -25,7 +26,10 @@ UI): docs/CANON.md, read before any content work. D1-D22 = the process audit pla
 - 2026-10-22 | Log: never reword; struck (~~...~~) lines go to docs/decisions-archive.md | Claude
 - 2026-10-19 | Blueprint and docs/research = design input only, never facts; WSL2 rule and 120-line cap rejected | Claude
 ### Tools and builders
-- 2026-10-30 | Cross-review: the other model family reviews every PASS run before Claude's gate via tools/cross_review.sh: gemini/* -> Cloudflare DeepSeek 1017 at max effort (nemotron :free only as a backup lens when cf fails twice; never a reader or sole reviewer); oc/* -> agy (--dangerously-skip-permissions --sandbox, empty box); no races; keep/drop decided at 5 measured runs | Feras
+- 2026-10-31 | Routing OK with limits (models.md table): agy builds, cf DeepSeek max reviews, Clef-flash pre-filters colour and character visible, review-player keeps text, Jev sorts errors; no reasoning = bulk text, quick questions, generate_patch, never review; Sonnet only at high, Haiku never orchestrates; only the efforts Feras names | Feras
+- 2026-10-31 | Pipeline: commit before the first check, check in the foreground (backgrounded = killed at 5 min); `cf ... fast` needs a Pattern, fix passes at max | Claude
+- 2026-10-31 | check.sh stays bash, no Rust: tool tests run side by side, the 2 slow toy tests skip when tools/ is unchanged since they passed, CI runs all | Feras
+- 2026-10-30 | Cross-review: the other model family reviews every PASS run before Claude's gate via tools/cross_review.sh: gemini/* -> Cloudflare DeepSeek 1017 at max effort (nemotron :free only as a backup lens when cf fails twice, capped at 5 min (10-31), no answer = no lens; never a reader or sole reviewer); oc/* -> agy (--dangerously-skip-permissions --sandbox, empty box); no races; keep/drop decided at 5 measured runs | Feras
 - 2026-10-27 | Builders (D1): Godot code on agy + Cloudflare DeepSeek, <= 2 Godot runs machine-wide under a free-memory floor; text work + calibrated review lenses on opencode/OpenRouter :free (+1 run, no Godot); Claude's own reads: the cheapest calibrated reader (Haiku high today); one builders skill (D2); research by everyone except Claude (D18) | Feras
 - 2026-10-27 | Paid tools: free route first (WORKFLOW routes table); paid image APIs <= $1 with Feras's OK; a PreToolUse hook (tools/hooks/pre_spend.py) blocks paid generation without his "spend ok"; one docs/SPEND.md line per paid call | Feras
 - 2026-10-30 | Cloudflare Workers AI: no $ cap (spend logged in cf_spend.csv); DeepSeek 1017 at reasoning_effort max with opencode's output cap 384k, its full output (builders.conf); GLM-5.3-flash on cf for bulk text after calibration; agy = gemini-3.8-flash-medium (10-31) | Feras

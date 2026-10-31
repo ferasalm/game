@@ -3,24 +3,44 @@ Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after 
 HANDOFF.md; this file is your view of it. "Open now" is rewritten at every /handoff; below it, reports newest first,
 each headed by its date and time (GMT+3): Done | Still open | When | How | Your move vs mine | Checked.
 
-## Open now (Sat 10-31 10:00)
+## Open now (Sat 10-31 18:45)
 | # | Open item | Status | Checked | Your move? | When |
 |---|---|---|---|---|---|
-| 1 | Row 19, cleanup chat: DECISIONS, CLAUDE.md, memory | planned | - | start it | Sat 10-31 after 16:00 |
-| 2 | Ops-review: the 6 department research queues are not sent | in progress | session_stats.py | maybe (a Deep Research prompt) | Sun 11-01 |
-| 3 | Row 3, M1 brief (real-time Rydan vs 2 guards, prison roof) | planned | - | no | Sun 11-01 |
-| 4 | Row 4, M1 build + Android export + archive the turn-based fight | planned | - | no | Mon 11-02 |
-| 5 | Row 6, bake Roya and a native-scale roof render | planned | - | no | after row 3 |
-| 6 | Row 5, you play M1 on PC and phone | waiting on Feras (later) | - | yes | after row 4 passes its gates |
-| 7 | Row 7, art batch (Bilqis v2, guard, props, icons) | queued | - | no | before Rodin credits end ~11-17 |
-| 8 | Rows 8-11: free image-to-3D, asset pipeline, Obscura, art-bible pass | parked | - | no | not planned yet (after row 5) |
-| 9 | cross_review.py throws away a whole review on one line with no `->` | planned | seen twice on frame-score | no | next Ops chat |
-| 10 | Cross-review keep or drop: 3 of 5 measured runs | in progress | - | no | at 5 runs |
-| 11 | Nemotron 3.5 Super VL review: 3 tries hung on the packet, cause not found | not planned | tiny prompt works | no | only if you want it |
-| 12 | OK on the vision (docs/VISION.md) | waiting on Feras | - | yes | open since 10-27 |
-| 13 | Bilqis's portraits: keep the Neon ones or overturn | waiting on Feras | - | yes | open since 10-27 |
-| 14 | Art homework into inbox/: concept pictures, empty plates, icon art | waiting on Feras | - | yes | open since 10-24 |
-| 15 | Clean up old worktree folders (check each is merged first) | not planned yet | - | no | no date |
+| 1 | Row 18: gate the 2 live agy runs, add the check.sh skip, time check.sh | in progress | runs live | start the next chat (prompt in HANDOFF) | Sun 11-01 |
+| 2 | cross_review.py keeps a review's valid lines (run xr-salvage) | in progress | red tests written | no | Sun 11-01 |
+| 3 | check.sh side by side + seconds per step (run check-parallel) | in progress | timed from logs | no | Sun 11-01 |
+| 4 | Cross-review keep or drop: 3 of 5 measured; the 2 live runs make 5 | in progress | - | no | Sun 11-01 |
+| 5 | Research queues: prompts for you, 2 lookups to agy | planned | - | maybe (paste the prompts) | Sun 11-01 |
+| 6 | Audits: coach, revise-claude-md (CLAUDE.md), ops-review, skill-doctor, insights | planned | /list-agents done | no | Sun 11-01 |
+| 7 | OpenRouter key expired, so Nemotron is off | waiting on Feras | 401 read | yes: a new key in opencode, or leave it off | any day |
+| 8 | Last worktree row18c-gaps (locked by its idle chat) and an empty row18-routing folder | planned | - | no | Sun 11-01 |
+| 9 | Row 3, M1 brief (real-time Rydan vs 2 guards, prison roof) | planned | - | no | Sun 11-01, after row 18 |
+| 10 | Row 4, M1 build + Android export + archive the turn-based fight | planned | - | no | Mon 11-02 |
+| 11 | Row 6, bake Roya and a native-scale roof render | planned | - | no | after row 3 |
+| 12 | Row 5, you play M1 on PC and phone | waiting on Feras (later) | - | yes | after row 4 passes its gates |
+| 13 | Row 7, art batch (Bilqis v2, guard, props, icons) | queued | - | no | before Rodin credits end ~11-17 |
+| 14 | Rows 8-11: free image-to-3D, asset pipeline, Obscura, art-bible pass | parked | - | no | not planned yet (after row 5) |
+| 15 | Bilqis's portraits: keep the Neon ones or overturn | waiting on Feras | - | yes | open since 10-27 |
+| 16 | Art homework into inbox/: concept pictures, empty plates, icon art | waiting on Feras | - | yes | open since 10-24 |
+
+## Sat 10-31 18:45: row 19 and your open items (Opus 5.5 high)
+**Your questions:** `cf` = yes: DeepSeek V4.1 Flash 1017 on Cloudflare (`@cf/deepseek-ai/deepseek-v4.1-flash-1017`) at max; `cf fast` = the same
+model with no reasoning. **Rust: no.** check.sh's own work is ~2 s. Of ~14 min, 11-12 min is Python tests that start bash and git thousands of
+times, one test at a time, on 8 cores (484 s in one file). Rust would need a rewrite of the whole pipeline to touch that. Sizes are from old logs, one run each.
+**Done (on main):**
+- Row 19 **done** but CLAUDE.md: routing, Claude model rules, pipeline rules, today's decisions in DECISIONS and the log; one stale memory line fixed.
+- Vision **done**: your OK logged, Art clock line updated, Open point closed.
+- Nemotron **done**: every call capped at 5 min, tested; the run goes on without it. The capped probe found the OpenRouter key expired (401 in 1.3 s).
+  The frame-score backup lens died on that same error. It does not prove the older hang: a tiny prompt had answered earlier that day.
+- Worktrees **in progress**: 15 of 17 removed, branches kept. row18c-gaps is locked by its idle chat; row18-routing left an empty 8 KB folder.
+
+**In progress:** 2 agy runs, launched ~18:20, gated in the next chat: xr-salvage (item 9) and check-parallel. The skip for game builds comes after them.
+**Moved to the next chat (planned):** research prompts, keep-or-drop, CLAUDE.md, every audit. This chat reached the 250k band; a fresh chat is cheaper for those. /skill-doctor and /insights
+are not in this app's skill list: tried there first, else you run them in a `claude` terminal.
+**My error:** I sized this chat's reading badly: the plan alone took it from 108k to 219k, so the audits slipped a day.
+**When:** Sun 11-01, then M1 brief the same day. I recommend this be the last system pass: no game work since 10-27.
+**How:** row 18 (Ops, chat review, Opus high). **Your move:** start the next chat; renew the OpenRouter key if you want Nemotron. **Mine:** the rest.
+**Checked:** `check.sh --no-godot` all passed, read; test_cross_review_sh 7 tests including the new cap test; the 401 read from the raw reply. **Not run:** Godot checks (no game code changed), review-feras (no render, only this report), the before-and-after check timing (needs the 2 runs merged). The speed figures are from old logs, and the ~4 min target is an estimate.
 
 ## Sat 10-31 10:00: row 18 parts (c) and (d) (Opus 5.5 high)
 **Done (on main):**
@@ -107,25 +127,3 @@ High effort was also measured: a valid review but 900 s, slower than max.
 **Next chat prompt** (Opus high, after Sat 16:00): "Continue ferasalm/game on main. Read HANDOFF.md. Take the top queue row for your lane; /handoff."
 **Checked:** tests (pipeline 12, cross-review 6, token hook 13, file sizes 2, personas 4) and check.sh --no-godot, read.
 
-## 2026-10-30 (Thu night): row 17 models, builders, licences, diagram (Opus 5.5 high), closed
-**Done (on main):**
-- DeepSeek 1017 fixed (done). Access works on every route. Your long builds never hit the bug because each agent step
-  is short. A one-shot review is one long answer: Cloudflare's default "high" thinking filled the whole 32k output
-  budget, hidden, with no text (3 of 3 replays). `reasoning_effort: low` fixed it: a valid review in 195 s, ~$0.04.
-- The opencode free "hang" (done): opencode's free usage limit is spent ("Free usage limit reached"), and opencode
-  hides it (no text, exit 0). Runs now log it and stop at once as "NOWORK quota: rerun on cf", with a test.
-- GLM-5.3 (Cloudflare) calibrated (done): same score as nemotron and DeepSeek-low (1 of 2 planted bugs), 3x slower.
-  GLM-5.3-flash: Cloudflare answers; opencode free timed out on the spent quota (calibration planned with row 18).
-- Your AI-search list (done, partly checked): Clef-flash is real (9B vision yes/no model, ~free). Jev, Clairic, bge-m3:
-  agy says real, unchecked. The AA scores are not trustworthy: AA shows DeepSeek V4.1 Flash as "Unknown"; agy wrote 32.
-- Licences (done): 13 of 15 rows verified; 2 dead links removed (GDQuest 2D RPG, Quaternius cyberpunk). 3 of 3 spot-checks right.
-- Diagram v2 (done): the whole system on one page, your moves in orange:
-  https://github.com/ferasalm/game/blob/main/docs/HOW_WE_WORK.md
-**Still open:** model routing proposal (waiting on Feras); cross-review keep/drop (in progress: 1 of 5 runs measured);
-row 18 Clef + Jev calibration (planned after your OK).
-**When:** your OK any day; row 3 M1 brief Sat 10-31 after 16:00 (unchanged).
-**How:** row 18 = Ops, builder agy. **Your move:** read the Routing table in .claude/skills/builders/models.md and OK or
-change it; subscribing to OpenCode Go is not needed (Cloudflare covers it for cents). **Mine:** M1 brief Saturday.
-**Checked:** both test suites (build pipeline 12, cross-review 5) and check.sh --no-godot run and read; the diagram renders
-on GitHub; 3 AA + 3 licence facts re-read. Not run: the Godot checks (only docs and Python tools changed; 1.5 GB free memory).
-My mistake (fixed): I edited a pipeline script while two runs were using it, so both crashed; I re-gated them, nothing lost.

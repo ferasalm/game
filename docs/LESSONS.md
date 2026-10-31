@@ -9,8 +9,6 @@ naming the test; Godot code traps -> .claude/rules/code.md; builder-only -> .cla
   (tools/shot_neon_game.tscn) (2026-10-23).
 - Writes into Documents fail as "No such file" even outside the sandbox: Windows Controlled Folder Access is on -> keep
   files elsewhere; Twine's library moved via %APPDATA%/Twine/app-prefs.json storyLibraryFolderPath (2026-10-25).
-- Read an Electron app's screen (Twine): PowerShell Start-Process with --remote-debugging-port=N (a bash `&` launch died),
-  then node fetch + WebSocket CDP Runtime.evaluate document.body.innerText (2026-10-25).
 
 ## 2. Godot traps: .claude/rules/code.md (loads with code; build_pipeline pastes it into every builder prompt)
 
@@ -20,16 +18,14 @@ naming the test; Godot code traps -> .claude/rules/code.md; builder-only -> .cla
 - A check that only prints never fails -> every check exits non-zero; probe each new rule with one bad case.
 - A harness summary can lie (99.8% party HP: its AI chain-interrupted the boss) -> print one seed's events (2026-10-23).
 - A subagent costs 150-290k tokens -> delegate only when the worker reads far more than its brief.
-- Audit cost: 3 Haiku audits at max effort reading whole doc sets cost ~15% of a 5-hour window -> narrow briefs, Haiku high (calibrated), exact files and an output template (2026-10-27).
-  A Haiku quote check without the files the drafts cite (art-bible.md, ui.md) spent half its 117k on "unverified" flags -> its read set = every file the text quotes (2026-10-28).
+- A slow check: `.check/*.log` times showed 82% of tool_tests in 2 files -> time the steps before choosing a fix (2026-10-31).
+- A model "hang" sat near `API key expired` in the same run's log -> grep a failed run's log for ERROR before probing (2026-10-31).
 - A superseded rule lives on in a doc or prompt string -> grep for it when a decision changes.
 - Gemini research contains invented numbers -> ideas and norms only, never facts.
 - A skill with `paths:` frontmatter (flow-media, 3d-model, sprite-bake, players-eye-gate) is not in a chat's skill list
   until it touches a matching file -> the department brief says Read .claude/skills/<name>/SKILL.md (2026-10-28).
 - map.py lists tracked files only: a new file checked before `git add` passes "MAP.md current" locally and fails it in
   CI -> `git add` new files, then `python tools/map.py`, then check.sh (2026-10-26/27).
-- A blind id rename (zayd -> rydan) also rewrote decisions-log lines, manifest sources naming Feras's real files and a
-  one-letter test ("Z") -> exclude logs/archive/manifest, protect external names, then let check.sh find the rest (2026-10-27).
 - Scratchpad scripts vanish when the session ends (bake_all.sh was nearly lost) -> any script worth rerunning goes into tools/ with a test (2026-10-27).
 - An approved design with no brief was never built (rydan-moves.md) -> brief it the same day (2026-10-23).
 - Background runs: `python - <<EOF < /dev/null` spun in an empty REPL, `cmd | grep` hid a crash (exit 0), agy, opencode
@@ -47,7 +43,8 @@ naming the test; Godot code traps -> .claude/rules/code.md; builder-only -> .cla
   final check line (2026-10-23).
 
 ## 4. Worktrees and hooks (Claude chats)
-- `cd` into another worktree moves the session's directory -> `git -C <path>` (2026-10-21).
+- `cd` into another worktree moves the session's directory -> `git -C <path>`, or absolute paths in a read (2026-10-21; again 10-31).
+- A worktree-isolated session's Bash refuses git on any other worktree (even `git worktree remove`) -> one PowerShell call from C:\dev\game (2026-10-31).
 - A fresh worktree's first import can crash (exit 139) at 1.8 GB free and also at 6.9 GB free (reem_kufi.ttf, 10-28);
   a second import passes. A crashed import leaves
   `*.import<digits>.tmp` files in assets/, which test_asset_manifest reports as unlisted -> delete them, rerun

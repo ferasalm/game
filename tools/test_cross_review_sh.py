@@ -9,13 +9,15 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 
 TOOLS = os.path.dirname(os.path.abspath(__file__)).replace("\\", "/")
 ROOT = os.path.dirname(TOOLS)
-# Stub reviewer: logs its args, cwd files and config env; prints per STUB_MODE (block | late | never)
+# Stub reviewer: logs its args, cwd files and config env; prints per STUB_MODE (block | late | never | slow_nemotron)
 STUB = r"""#!/usr/bin/env bash
 top="$STUB_TOP"; n=$(cat "$top/calls" 2> /dev/null || echo 0); n=$((n + 1)); echo $n > "$top/calls"
 { echo "ARGS $*"; echo "FILES $(ls)"; echo "CONFIG ${OPENCODE_CONFIG:-none}"; } >> "$top/stub.txt"
+[ "$STUB_MODE" = slow_nemotron ] && [ $n -ge 3 ] && sleep 20
 if [ "$STUB_MODE" = block ] || { [ "$STUB_MODE" = late ] && [ $n -ge 2 ]; }; then
   printf '\033[1;32mBEGIN FINDINGS\033[0m\r\nhigh | tools/x.py:3 | an empty name -> crash | refuse it\r\nEND FINDINGS\r\n'
 else
@@ -62,9 +64,10 @@ def toy():
     return top, g
 
 
-def review(top, g, *extra, mode="block"):
+def review(top, g, *extra, mode="block", **env_extra):
     env = {**os.environ, "PATH": f"{top}/bin{os.pathsep}" + os.environ["PATH"], "STUB_TOP": top, "STUB_MODE": mode,
-           "GAME_WT_DIR": top + "/game-wt", "CLOUDFLARE_ACCOUNT_ID": "test", "REVIEW_TIMEOUT": "60s", "OC_BIN": "opencode"}
+           "GAME_WT_DIR": top + "/game-wt", "CLOUDFLARE_ACCOUNT_ID": "test", "REVIEW_TIMEOUT": "60s", "OC_BIN": "opencode",
+           **env_extra}
     r = subprocess.run(["bash", f"{TOOLS}/cross_review.sh", "job", top + "/brief.md", "main", *extra], cwd=g, env=env,
                        capture_output=True, text=True, stdin=subprocess.DEVNULL)
     stub = open(top + "/stub.txt", encoding="utf-8").read() if os.path.exists(top + "/stub.txt") else ""
@@ -102,6 +105,17 @@ def test_cf_reviews_agy_runs_nemotron_only_as_backup_and_silence_is_invalid():  
     assert "deepseek" in calls[0] and "deepseek" in calls[1], ("cf DeepSeek reviews agy runs first", stub)
     assert "nemotron" in calls[2], ("nemotron is the backup lens only after cf fails twice", stub)
     assert "cross_review.opencode.json" in stub, ("opencode reviewers run with bash and edit denied", stub)
+
+
+def test_a_slow_nemotron_is_cut_at_its_own_cap():  # Feras 10-31: its one merit is speed, under 5 minutes
+    top, g = toy()
+    git(g, "branch", "-m", "oc/job", "gemini/job")
+    t0 = time.time()
+    r, stub, out = review(top, g, mode="slow_nemotron", XR_OC_TIMEOUT="2s")
+    assert time.time() - t0 < 15, ("REVIEW_TIMEOUT (60 s) ran the backup lens, not XR_OC_TIMEOUT", stub)
+    assert r.returncode == 1 and out.startswith("INVALID") and stub.count("ARGS ") == 3, (out, stub)
+    conf = open(f"{TOOLS}/builders.conf", encoding="utf-8").read()
+    assert 'XR_OC_TIMEOUT:=5m' in conf, "the cap Feras set"
 
 
 def test_nemotron_is_not_called_when_cf_answers():

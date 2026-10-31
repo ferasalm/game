@@ -40,8 +40,10 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
 - **ID**: `openrouter/nvidia/nemotron-3-ultra-550b-a55b:free` (`XR_OC_MODEL` in `tools/builders.conf`)
 - **Artificial Analysis**: Intelligence Index 40 (unverified, AA 2026-10-29), Coding Index 70 (unverified, AA 2026-10-29)
 - **Calibration**: Reading 8/12 right, 2 wrong (A8, A9), 0 unsure; lens 6/6 found, 0 false flags (calibration-2026-10.md)
-- **Known failure modes**: Fails reader bar on absence claims; text-only input via OpenRouter tool (calibration-2026-10.md)
-- **Best use**: Review lens (calibrated cross-reviewer for gemini/* runs)
+- **Known failure modes**: Fails reader bar on absence claims; text-only input via OpenRouter tool (calibration-2026-10.md);
+  the OpenRouter key in opencode expired (401 "API key expired", 10-31): every opencode OpenRouter route is off until Feras renews it
+- **Best use**: Backup lens only, capped at 5 min (`XR_OC_TIMEOUT`, Feras 10-31: speed is its one merit; ~7 min on a review on 10-29, so
+  the cap will often stop it, and then Claude's gate goes on alone)
 
 ## GLM-5.3 (Cloudflare)
 - **ID**: `cloudflare-workers-ai/@cf/zai-org/glm-5.3` (not in `tools/builders.conf`)
@@ -87,7 +89,7 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
 | Haiku low | 34 s, 35k tokens | 9, clean, packet line numbers | good: preamble shift, plain-string answers (Claude tokens) |
 | GLM-5.3-flash default | 429 s, 29k out | 4, clean format | real but few; only one to catch a BOM |
 | cf DeepSeek none (direct) | 13 s, 1k out | 14 lines, half thinking aloud ending "Skip" | 2-3 real; breaks the format, not a lens |
-| Nemotron 3.5 Super VL (`openrouter/nvidia/nemotron-3.5-super-vl:free`) | no result | 3 tries hung (2, 5, 15 min), no error | tiny prompt answers in 7 s; with `-f packet.md` and the review config the log stops at startup: cause not found; `opencode/...-free` quota spent |
+| Nemotron 3.5 Super VL (`openrouter/nvidia/nemotron-3.5-super-vl:free`) | no result | 3 tries hung (2, 5, 15 min), no error; 10-31 direct call: 401 in 1.3 s, key expired | tiny prompt answered in 7 s earlier, so the key may not explain the hang: unproven; speed on a real packet unmeasured until a new key; `opencode/...-free` quota spent |
 
 ## Settings in force (Feras 10-30)
 - agy: `gemini-3.8-flash-medium` (Feras 10-31); `agy models` lists low, medium, high; no output cap flag.

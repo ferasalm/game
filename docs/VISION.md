@@ -46,7 +46,7 @@ Not this game: a roguelite (runs, death-return, seeded maps), turn-based battles
 - **M3 Demo** (O1, O2). Contents: the bible's demo endpoint, Hard mode, an outside playtest (5 players, survey plus
   telemetry), a store page draft, and a Steam page once Feras OKs the fee.
 - **M4 Full game**: chapters to Numan's fall, then Bilal's return (a boss) and Kanan's exposure; planned from M3's data.
-- **Art clock**: the ~50 Hyper3D credits expire around 2026-11-17. The art chat right after P4 spends them (cast,
+- **Art clock**: the ~50 Hyper3D credits expire around 2026-11-17. The art batch spends them before then (cast,
   props, title video) and proves the free 3D route before access ends.
 
 ## Market brief (draft; research by others; numbers unverified until sourced)

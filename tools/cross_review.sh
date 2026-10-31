@@ -21,7 +21,7 @@ fi
 [ -n "$rev" ] || case "$head" in gemini/*) rev=cf ;; oc/*) rev=agy ;; *) echo "pass a reviewer for $head" >&2; exit 2 ;; esac
 case "$rev" in agy|oc|cf) ;; *) echo "reviewer: agy, oc or cf" >&2; exit 2 ;; esac
 # cf = DeepSeek 1017 (parser 1/2 key, 10-30); oc = nemotron :free, weak: a backup lens for obvious patterns only (10-30)
-model="$CF_MODEL"; [ "$rev" = oc ] && model="$XR_OC_MODEL"
+model="$CF_MODEL"; if [ "$rev" = oc ]; then model="$XR_OC_MODEL"; REVIEW_TIMEOUT="$XR_OC_TIMEOUT"; fi
 
 box="$(wt_dir)/xr/$run-$rev"; log="$(wt_dir)/$run.xr-$rev.log"; out="$root/.check/reviews/$run-cross.md"
 rm -rf "$box"; mkdir -p "$box" "$(dirname "$out")"
@@ -64,7 +64,7 @@ fi
 if [ "$rev" = cf ] && ! parse > /dev/null; then  # cf failed twice: nemotron as the backup lens (Feras 10-30)
   echo "== backup lens ($XR_OC_MODEL)" >> "$log"
   rev=oc; model="$XR_OC_MODEL"
-  ask "$REVIEW_TIMEOUT" "Read packet.md in this folder and do exactly what it says. The packet holds everything you need: \
+  ask "$XR_OC_TIMEOUT" "Read packet.md in this folder and do exactly what it says. The packet holds everything you need: \
 run no commands, edit no file, read no other file. Finish by printing the BEGIN FINDINGS block."
 fi
 rc=0; parse || rc=$?

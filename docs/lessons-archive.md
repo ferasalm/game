@@ -34,3 +34,9 @@
 - A pull into C:/dev/game without an import left a stale class cache -> CLAUDE.md: `bash tools/sync_main.sh` after every pull (2026-10-24).
 - "One session owns git in C:\dev\game; others message it" -> superseded by D10: no chat runs git there, worktrees only (2026-10-27).
 - A hook started as `python "$CLAUDE_PROJECT_DIR/<hook>.py"` ran main's stale copy (pre_spend did until 10-28) -> every hook goes through tools/hooks/run.sh; a money gate passes --required so a missing script blocks (tools/test_hook_run.py test_every_hook_goes_through_run_sh, test_required_missing_script_blocks) (2026-10-28).
+- Audit cost: 3 Haiku audits at max effort reading whole doc sets cost ~15% of a 5-hour window -> narrow briefs, Haiku high (calibrated), exact files and an output template (2026-10-27). Archived 10-31: the builders skill's Haiku recipe holds it.
+- A Haiku quote check without the files the drafts cite (art-bible.md, ui.md) spent half its 117k on "unverified" flags -> its read set = every file the text quotes (2026-10-28). Archived 10-31.
+- Read an Electron app's screen (Twine): PowerShell Start-Process with --remote-debugging-port=N (a bash `&` launch died),
+  then node fetch + WebSocket CDP Runtime.evaluate document.body.innerText (2026-10-25).
+- A blind id rename (zayd -> rydan) also rewrote decisions-log lines, manifest sources naming Feras's real files and a
+  one-letter test ("Z") -> exclude logs/archive/manifest, protect external names, then let check.sh find the rest (2026-10-27).
