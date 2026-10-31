@@ -334,4 +334,9 @@ def test_coreutils_timeout_is_the_gnu_one():
 if __name__ == "__main__":
     from tool_tests import run_cases
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
-    run_cases(tests, "test_build_pipeline")
+    # time limits: test_idle_watchdog failed 1 in 3 side by side (10-31), so these run alone; the limits stay
+    run_cases(tests, "test_build_pipeline", serial=(
+        "test_idle_watchdog_kills_the_tree_and_says_nowork", "test_idle_after_commits_is_checked_not_nowork",
+        "test_a_check_moved_to_the_background_is_killed_and_its_work_checked",
+        "test_spent_free_quota_stops_the_run_at_once_as_nowork",
+        "test_oc_task_default_model_deepseek_outer_timeout_and_base_check", "test_agy_task_has_an_outer_timeout"))

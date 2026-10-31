@@ -62,8 +62,9 @@ def check_toy():
     os.makedirs(d + "/tools")
     for f in ("check.sh", "lib.sh", "builders.conf", "check_slot.sh"):
         shutil.copy(f"{TOOLS}/{f}", f"{d}/tools/{f}")
-    for f in ("doc_check.py", "lint_gd.py", "res_graph.py", "oc_agents.py", "tool_tests.py"):
+    for f in ("doc_check.py", "lint_gd.py", "res_graph.py", "oc_agents.py"):
         put(f"{d}/tools/{f}", "print('ok')\n")
+    put(d + "/tools/tool_tests.py", "print('cached: tools/test_x.py (tools/ unchanged since it passed)')\n")
     put(d + "/tools/run_godot.sh", '#!/bin/bash\necho "$@" >> "$(dirname "$0")/../godot.calls"\n', 0o755)
     put(d + "/.gitignore", ".check/\ngodot.calls\n")
     git(d, "add", "-A")
@@ -80,6 +81,7 @@ def test_check_no_godot_runs_no_godot():
     for name in ("docs", "lint", "res_graph", "tool_tests", "repo_untouched"):
         assert f"ok   {name}" in r.stdout, (name, r.stdout)
     assert "no Godot" in r.stdout, ("say that import, tests and boot were skipped", r.stdout)
+    assert "     cached: tools/test_x.py" in r.stdout, ("a skipped tool test is said out loud", r.stdout)
     assert not os.path.isdir(d + "/slots") or not os.listdir(d + "/slots"), "a py check takes no Godot test slot"
     r = subprocess.run(["bash", "tools/check.sh"], cwd=d, env=env, capture_output=True, text=True)
     calls = open(d + "/godot.calls").read()

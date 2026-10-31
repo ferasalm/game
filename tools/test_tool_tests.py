@@ -4,6 +4,7 @@ from contextlib import redirect_stdout
 import io
 import os
 import shutil
+import subprocess
 import sys
 import tempfile
 import time
@@ -70,9 +71,46 @@ def test_run_cases_parallel_timing():
     assert dt < 1.8, f"expected under 1.8 s, took {dt}"
 
 
+def test_run_cases_serial_names_run_alone_after_the_pool():
+    log = []
+
+    def stamp(name):
+        log.append(name + " start")
+        time.sleep(0.2)
+        log.append(name + " end")
+
+    def t1():
+        stamp("t1")
+
+    def t2():
+        stamp("t2")
+
+    def timed():
+        stamp("timed")
+
+    with redirect_stdout(io.StringIO()):
+        run_cases([timed, t1, t2], "demo", jobs=2, serial=("timed",))
+    assert log[-2:] == ["timed start", "timed end"], log
+
+
+def test_a_test_that_calls_sys_exit_fails():  # DeepSeek's find on check-parallel (10-31): exit 0 read as a pass
+    def bad():
+        sys.exit(0)
+
+    buf = io.StringIO()
+    code = None
+    with redirect_stdout(buf):
+        try:
+            run_cases([bad], "demo")
+        except SystemExit as e:
+            code = e.code
+    assert code == 1 and "FAIL bad" in buf.getvalue(), (code, buf.getvalue())
+
+
 def test_workers_reads_test_workers():
-    old = os.environ.get("TEST_WORKERS")
+    old = os.environ.pop("TEST_WORKERS", None)
     try:
+        assert workers() == min(4, os.cpu_count() or 1)
         os.environ["TEST_WORKERS"] = "6"
         assert workers() == 6
     finally:
@@ -80,7 +118,6 @@ def test_workers_reads_test_workers():
             os.environ["TEST_WORKERS"] = old
         else:
             os.environ.pop("TEST_WORKERS", None)
-    assert workers() == min(4, os.cpu_count() or 1)
 
 
 def test_find_tests_nested_and_skips_others():
@@ -132,12 +169,13 @@ def test_serial_never_overlaps_side_by_side():
         p_par1 = f"{tmp}/test_p1.py"
         p_par2 = f"{tmp}/test_p2.py"
         p_ser = f"{tmp}/test_ser.py"
-        for path, name in ((p_par1, "P1"), (p_par2, "P2"), (p_ser, "SER")):
+        # P2 runs long, so a run_files that ignored serial would start SER (it gets P1's free worker) before P2 ends
+        for path, name, nap in ((p_par1, "P1", 0.2), (p_par2, "P2", 1.0), (p_ser, "SER", 0.2)):
             with open(path, "w", encoding="utf-8") as f:
                 f.write(
                     f"import time\n"
                     f"with open('{stamps}', 'a') as f: f.write('{name} START {{}}\\n'.format(time.time()))\n"
-                    f"time.sleep(0.2)\n"
+                    f"time.sleep({nap})\n"
                     f"with open('{stamps}', 'a') as f: f.write('{name} END {{}}\\n'.format(time.time()))\n"
                 )
         run_files([p_par1, p_par2, p_ser], log_dir, serial=(p_ser,), jobs=2)
@@ -152,6 +190,125 @@ def test_serial_never_overlaps_side_by_side():
         assert intervals["SER"]["START"] >= intervals["P2"]["END"], "serial overlapped with parallel P2"
     finally:
         shutil.rmtree(tmp)
+
+
+REAL = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tool_tests.py")
+SLOW = 'import os, sys\nopen("../runs", "a").write("{name}\\n")\nsys.exit(1 if os.path.exists("../fail.flag") else 0)\n'
+
+
+def put(path, text):
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        f.write(text)
+
+
+def skip_repo():
+    """<top>/repo with the 2 slow names as fast stubs that count their runs in <top>/repo/../runs; shared dir: <top>/game-wt."""
+    top = tempfile.mkdtemp().replace("\\", "/")
+    repo = top + "/repo"
+    os.makedirs(repo + "/tools")
+    os.makedirs(repo + "/docs")
+    put(repo + "/.gitignore", ".check/\n__pycache__/\n")
+    put(repo + "/docs/d.md", "d\n")
+    put(repo + "/tools/helper.py", "x = 1\n")
+    for name in ("test_build_pipeline", "test_py_runs"):
+        put(f"{repo}/tools/{name}.py", SLOW.format(name=name))
+    git(repo, "init", "-q")
+    commit(repo)
+    return top, repo
+
+
+def git(repo, *args):
+    subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", *args], cwd=repo, check=True, capture_output=True)
+
+
+def commit(repo):
+    git(repo, "add", "-A")
+    git(repo, "commit", "-qm", "x")
+
+
+def run_main(repo, **extra):
+    env = {k: v for k, v in os.environ.items() if k not in ("CI", "GAME_WT_DIR")}
+    return subprocess.run([sys.executable, REAL], cwd=repo, env={**env, **extra}, capture_output=True, text=True,
+                          stdin=subprocess.DEVNULL)
+
+
+def runs(top):
+    path = top + "/runs"
+    return len(open(path, encoding="utf-8").readlines()) if os.path.exists(path) else 0
+
+
+def test_a_passed_slow_test_is_skipped_and_said():
+    top, repo = skip_repo()
+    try:
+        r = run_main(repo)
+        assert r.returncode == 0 and runs(top) == 2 and "cached:" not in r.stdout, (r.stdout, r.stderr, runs(top))
+        r = run_main(repo)
+        assert r.returncode == 0 and runs(top) == 2, ("both must skip", runs(top), r.stdout)
+        assert "cached: tools/test_build_pipeline.py" in r.stdout and "cached: tools/test_py_runs.py" in r.stdout, r.stdout
+        put(repo + "/docs/d.md", "changed outside tools/\n")
+        run_main(repo)
+        assert runs(top) == 2, "a change outside tools/ keeps the skip"
+        os.remove(repo + "/docs/d.md")
+        git(repo, "checkout", "--", "docs/d.md")
+        wt = top + "/wt"
+        git(repo, "worktree", "add", "-q", wt)
+        r = run_main(wt)
+        assert runs(top) == 2 and "cached:" in r.stdout, ("a pass is shared with every worktree", r.stdout, r.stderr)
+    finally:
+        shutil.rmtree(top, ignore_errors=True)
+
+
+def test_a_changed_tool_reruns_the_slow_tests():  # the one bad case: a skip here would pass broken tools
+    top, repo = skip_repo()
+    try:
+        run_main(repo)
+        expected = 2
+        put(repo + "/tools/helper.py", "x = 2\n")  # uncommitted
+        run_main(repo)
+        expected += 2
+        assert runs(top) == expected, ("an uncommitted tools/ change must rerun", runs(top))
+        put(repo + "/tools/new_tool.py", "y = 1\n")  # new, not added
+        run_main(repo)
+        expected += 2
+        assert runs(top) == expected, ("a new tools/ file must rerun", runs(top))
+        commit(repo)
+        run_main(repo)
+        assert runs(top) == expected, ("committing the same files changes nothing", runs(top))
+        put(repo + "/tools/helper.py", "x = 3\n")
+        commit(repo)
+        run_main(repo)
+        expected += 2
+        assert runs(top) == expected, ("a committed tools/ change must rerun", runs(top))
+    finally:
+        shutil.rmtree(top, ignore_errors=True)
+
+
+def test_a_failed_slow_test_is_never_stored():
+    top, repo = skip_repo()
+    try:
+        put(top + "/fail.flag", "x")
+        assert run_main(repo).returncode == 1
+        assert run_main(repo).returncode == 1
+        assert runs(top) == 4, runs(top)
+        os.remove(top + "/fail.flag")
+        run_main(repo)
+        assert runs(top) == 6, ("no stale pass from the failing runs", runs(top))
+    finally:
+        shutil.rmtree(top, ignore_errors=True)
+
+
+def test_ci_never_skips_or_stores():
+    top, repo = skip_repo()
+    try:
+        run_main(repo, CI="true")
+        r = run_main(repo, CI="true")
+        assert runs(top) == 4 and "cached:" not in r.stdout, (runs(top), r.stdout)
+        assert not os.path.exists(top + "/game-wt"), "CI stores no pass"
+        run_main(repo)
+        r = run_main(repo, CI="true")
+        assert runs(top) == 8 and "cached:" not in r.stdout, "CI ignores a stored pass"
+    finally:
+        shutil.rmtree(top, ignore_errors=True)
 
 
 if __name__ == "__main__":

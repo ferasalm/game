@@ -23,6 +23,7 @@ step lint $py tools/lint_gd.py
 step res_graph $py tools/res_graph.py --check  # no file under features/ core/ content/ assets/ that nothing uses
 [ $no_godot -eq 0 ] && step import tools/run_godot.sh --import
 step tool_tests tool_tests
+grep -h '^cached:' .check/tool_tests.log 2>/dev/null | sed 's/^/     /'  # a skipped test is said out loud
 git status --porcelain --untracked-files=all > .check/before_tests.txt  # tests and boot must leave the repo as found
 if [ $no_godot -eq 0 ]; then
   . tools/check_slot.sh; acquire_check_slot || { echo "FAIL no test slot (see .check)"; exit 1; }; trap release_check_slot EXIT
