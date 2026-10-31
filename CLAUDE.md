@@ -27,7 +27,8 @@ Next goal: a free 20-30 min demo, PC (Steam) first, Android kept alive. Check ev
 - Queue rows name a Dept from the WORKFLOW Routing table and a lane; departments are labels, no dept-* agents; note
   caps: tools/doc_check.py. Briefs keep Ripple, Pre-mortem, Tests, Checklist: test_template.py; builder edits: build_gate.
 - Never-read paths (.godot/, *.import, *.uid): deny rules in .claude/settings.json. Checks: `bash tools/check.sh`
-  (read the FAIL lines); one file: `tools/run_godot.sh -s res://tests/runner.gd -- <name>`.
+  (read the FAIL lines; `cached:` = 2 slow tool tests skipped, tools/ unchanged; CI=1 runs them); one file:
+  `tools/run_godot.sh -s res://tests/runner.gd -- <name>`.
 
 ## Judgment duties (every model; each has its trigger; scaled to the task, Feras 10-28)
 1. A request or decision arrives -> check it against VISION; warn, critique and offer a better default (design too);

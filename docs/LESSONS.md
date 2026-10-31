@@ -39,6 +39,8 @@ naming the test; Godot code traps -> .claude/rules/code.md; builder-only -> .cla
 - A new tool version breaks silently (opencode v2) -> back up its data dirs, probe in a throwaway repo (2026-10-30).
 - 4 paid probes crashed at their spend-log line (a path wrong in worktrees) -> one smoke call before a batch; results print first; parallel Bash = run_in_background (2026-10-31).
 - Bash `VAR=x cmd` given to Feras failed in his PowerShell -> his commands are PowerShell (2026-10-31).
+- A slash command given to `claude -p` from Git Bash ran as a path (`/skill-doctor` became C:/Program Files/Git/skill-doctor) -> `MSYS_NO_PATHCONV=1`; both then work headless (2026-10-31).
+- A toy test passed 2 runs, failed the third under load (`test_idle_watchdog`, IDLE_SEC=3) -> the 3-run rule stays; a test with a time limit runs alone, never a looser limit (2026-10-31).
 - `check.sh | tail && git commit` committed a failing run -> grep .check/*.log for FAIL first; never push before reading the
   final check line (2026-10-23).
 
