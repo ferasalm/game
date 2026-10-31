@@ -13,6 +13,7 @@ docs/decisions-process.md (how chats, reviews, hand-offs and notes run; changing
 - 2026-10-21 | Ask Feras 2-4 multiple-choice questions, recommended first; big asks: plan mode (Opus xhigh), narrow audits by calibrated readers, then orchestrate; free models get text work and lenses only after calibration vs Haiku (D11) | Feras
 - 2026-10-21 | Runs stop only for owner questions, logins, CAPTCHAs, downloads, spending | Feras/Claude
 - 2026-10-31 | Finish the task at hand: context size never stops, shortens or hands off work (the 200-300k band and emergency's ~100k are retired); /handoff when the task is done or at ~85% of the 5-hour window; a chat holds one part of a queue row; rules that degrade work get replaced | Feras
+- 2026-10-31 | The system plan (row 21: a simple working system, a project-aware plugin) comes before M1; plan at Opus xhigh in his CLI session, execute at Sonnet high | Feras
 - 2026-10-31 | Stuck or refused -> ask Feras at once, options with a pick; "waiting on Feras" only for what he was asked in that chat | Feras
 - 2026-10-23 | Emergency mode (50% of the 5-hour window): one director chat, builders on backups; builders never merge or push to main (D3) | Feras
 - 2026-10-29 | No chat edits in C:\dev\game: worktrees only; the main checkout is for Feras's play and builder launches (D10); one exception: after merging to main, a chat runs `bash tools/sync_main.sh` there when it has no local changes (10-29) | Feras

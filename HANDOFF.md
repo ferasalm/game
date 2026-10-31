@@ -1,5 +1,5 @@
 # HANDOFF (current state only; ONE queue for every chat; max 60 lines)
-Last updated: 2026-10-31 (coach audit finished; cleanup still open), Opus 5.5.
+Last updated: 2026-10-31 (row 21 on top, Feras; coach audit finished; cleanup still open), Opus 5.5.
 Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Open points).
 
 ## How this file works (Feras 2026-10-27; departments 10-28)
@@ -15,7 +15,8 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 ## Queue
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
-| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof, combat feel first (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | next | - |
+| 21 | System plan (Feras 10-31, before M1): an optimized, efficient, organized, simple system to work with from now on, including a project-aware plugin (the coach's last gap; start from .claude/coach-history.md); the plan writes the execution rows, run at Sonnet high | Ops | chat (plan) | Opus xhigh | next: Feras's CLI session | - |
+| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof, combat feel first (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | after row 21 | 21 |
 | 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | after row 3 | 3 |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | after row 3 | 3; free memory >= 3 GB |
 | 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | QA | Feras | - | later: after row 4 | 4 |
@@ -39,8 +40,8 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 ## This week (weekly limit resets Sat 16:00 GMT+3)
 | Day | Plan |
 |---|---|
-| Sun 11-01 | M1 brief (row 3). |
-| Mon 11-02 | M1 build (row 4) overnight from Sun; play day moves to when M1 passes its gates. |
+| Sun 11-01 | System plan (row 21), then its execution rows at Sonnet high. |
+| After row 21 | M1 brief (row 3), then the M1 build (row 4); play day moves to when M1 passes its gates. |
 
 ## Parked and context (resume only through a queue row)
 - How we work, for Feras: docs/HOW_WE_WORK.md (the loop diagram, roles, cost rules, the week).
@@ -52,4 +53,4 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 - Retired 3D (D20): tag 3d-archive, branch archive/3d, lookup only; old builder branches gemini/*, oc/* kept, worktrees gone.
 
 ## Prompt for the next chat
-`Continue ferasalm/game on main, Opus high. Read HANDOFF.md. Do row 3 only; /handoff.`
+`Continue ferasalm/game on main, Opus xhigh, plan mode. Read HANDOFF.md. Do row 21 only: read-only in C:\dev\game; EnterWorktree before the first edit (D10); ask Feras when stuck, with a pick; /handoff.`

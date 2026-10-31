@@ -3,10 +3,11 @@ Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after 
 HANDOFF.md; this file is your view of it. "Open now" is rewritten at every /handoff; below it, reports newest first,
 each headed by its date and time (GMT+3): Done | Still open | When | How | Your move vs mine | Checked.
 
-## Open now (Sat 10-31 21:50)
+## Open now (Sat 10-31 22:15)
 | # | Open item | Status | Checked | Your move? | When |
 |---|---|---|---|---|---|
-| 1 | Row 3, M1 brief (real-time Rydan vs 2 guards, prison roof) | planned | - | start the next chat (prompt in HANDOFF) | Sun 11-01 |
+| 0 | Row 21, system plan with a project-aware plugin (before M1) | planned | queue, calendar updated | yes: start the CLI session (prompt in HANDOFF), Opus Extra High | Sun 11-01 |
+| 1 | Row 3, M1 brief (real-time Rydan vs 2 guards, prison roof) | planned | - | after row 21 | after row 21 |
 | 2 | Row 4, M1 build + Android export + archive the turn-based fight | planned | - | no | Mon 11-02 |
 | 3 | Row 6, bake Roya and a native-scale roof render | planned | - | no | after row 3 |
 | 4 | Row 5, you play M1 on PC and phone | waiting on Feras (later) | - | yes | after row 4 passes its gates |
