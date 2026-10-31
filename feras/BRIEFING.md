@@ -3,7 +3,7 @@ Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after 
 HANDOFF.md; this file is your view of it. "Open now" is rewritten at every /handoff; below it, reports newest first,
 each headed by its date and time (GMT+3): Done | Still open | When | How | Your move vs mine | Checked.
 
-## Open now (Sat 10-31 23:30)
+## Open now (Sat 10-31 23:59, with your answers)
 | # | Open item | Status | Checked | Your move? | When |
 |---|---|---|---|---|---|
 | 0 | Row 22, studio plugin (prompt lint first; Sonnet high) | planned | brief written; 4 workers answered | yes: paste the prompt, stay near for its first settings or /plugin question | Sun 11-01 |
@@ -17,8 +17,8 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 | 8 | Row 7, art batch (Bilqis v2, guard, props, icons) | queued | - | no | before Rodin credits end ~11-17 |
 | 9 | Research prompts: 5 for Gemini Deep Research (feras/research-prompts.md) | waiting on Feras | written, not run | yes: 1 helps row 6, 2 helps row 5 | before those rows |
 | 10 | Rows 8-11: free image-to-3D, asset pipeline, Obscura, art-bible pass | parked | - | no | after row 5 |
-| 11 | OpenRouter key expired, so Nemotron is off | waiting on Feras | 401 read | yes: pick: leave it off, cf covers it | any day |
-| 12 | Bilqis's portraits: keep the Neon ones or overturn | waiting on Feras | - | yes | open since 10-27 |
+| 11 | OpenRouter key renewed by you; Nemotron is back as the backup lens | done | one real call through opencode answered | no | done 10-31 |
+| 12 | Bilqis's portraits: keep the Neon ones or overturn | on hold until further notice (your call) | - | no | when you say |
 | 13 | Art homework into inbox/: concept pictures, empty plates, icon art | waiting on Feras | - | yes | before row 6 |
 
 ## Sat 10-31 23:30: row 21, System v3 plan (Opus 5.5 xhigh)
@@ -41,7 +41,7 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 
 **My errors:** I told you marketplace project-management plugins all need sign-ups; that came from memory and was false. The review caught it, and you then chose. I also tried a pre-approval list you hadn't asked for; auto mode refused it, you chose to skip it, and I removed its test.
 
-**Still open:** rows 22-25, all planned. Open points carried: OpenRouter key, Bilqis's portraits, art homework (yours); cleanup (row 24, part f). No new Open point.
+**Still open:** rows 22-25, all planned. Open point closed: OpenRouter key (you renewed it; tested). Carried: Bilqis's portraits (on hold), art homework (yours); cleanup (row 24, part f). No new Open point.
 **When:** Sun 11-01 rows 22, 23. Mon 11-02 rows 24, 25, hard stop 23:59. Tue 11-03 M1 brief. M1 build overnight into Wed 11-04 at the earliest.
 **How:** rows 22-24 Ops, builders + chat review, Sonnet high. Row 25 Ops, chat review, Opus high.
 **Your move:** type `/model sonnet`, `/effort high`, then paste the prompt at the end of HANDOFF.md. **Mine:** everything else.
@@ -52,11 +52,11 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 2. Priority 3: type `/usage` before each paste and say so if weekly use is 50% or more, until row 23's status line does this.
 3. Priority 2: stay near for row 22's first 20 minutes. Its settings or `/plugin` questions need you.
 4. Nothing to do: `/goal` now starts every Sonnet prompt, at your request (done). Paste it as one message; it starts the work itself and stops at the row's done line or after 40 turns.
-5. Priority 4: close 3 old items in one word each: OpenRouter key (pick: leave it off), Bilqis's portraits, art homework before row 6.
-6. Priority 1: fix two play slots a week, so gated builds have a date.
-7. Priority 3: turn off claude.ai connectors you never use here (Crypto.com, Fiscal.ai, GoDaddy, Indeed, Zoom, vidIQ), between chats, never mid-chat.
+5. Priority 4: close 3 old items in one word each: OpenRouter key (pick: leave it off), Bilqis's portraits, art homework before row 6. Your answer 23:46: "I have already updated the openrouter key, and I am leaving Bilqis portraits until further notice". Key **done**, tested. Portraits on hold. Art homework still open.
+6. Priority 1: fix two play slots a week, so gated builds have a date. Your answer 23:49: "keep on-hold until further notice". On hold.
+7. Priority 3: turn off claude.ai connectors you never use here (Crypto.com, Fiscal.ai, GoDaddy, Indeed, Zoom, vidIQ), between chats, never mid-chat. Your answer 23:47: "I already turned them off". **Done.**
 8. Priority 1: paste research prompts 1 and 2 (feras/research-prompts.md); they feed rows 6 and 5.
-9. Priority 3: after one measured week, decide whether Pro is enough. Only you can change the plan.
+9. Priority 3: after one measured week, decide whether Pro is enough. Only you can change the plan. Your answer 23:48: "I can't afford more than pro, so we should do with what we have". Logged: the system stays sized to Pro.
 
 ## Sat 10-31 21:50: your answers applied; correction to the 20:55 report (Opus 5.5)
 **Correction:** the 20:55 report called items "waiting on Feras" that I had never asked you about. I had parked them. All were then asked with a pick and are closed below.

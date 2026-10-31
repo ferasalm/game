@@ -4,6 +4,7 @@ Same line format as docs/DECISIONS.md. Log every new decision verbatim in docs/d
 ### Scope
 - 2026-10-31 | docs/VISION.md OKed (the Art clock line updated) | Feras
 - 2026-10-29 | Process audit P1 -> P2 -> P0 -> P3 -> P4 ran before game work (D12; done: rows 1, 12, 15, 16, 17 closed 10-28/30; row 18 system pass next, then M1, Feras 10-30); repo public until before the first public demo, then private (D16) | Feras
+- 2026-10-31 | Claude stays on Pro: no plan upgrade, the system is sized to it; fixed play slots and Bilqis's portraits are on hold until further notice | Feras
 ### Process
 - 2026-10-31 | Sonnet high executes from an Opus brief and calls the workers itself (builders skill, Who does what); Opus plans and signs off; a Sonnet chat stuck twice on one step calls the Opus advisor unasked; every Sonnet prompt starts with /goal; row 21's execution: 3 Sonnet chats in order, then a fresh Opus gate | Feras
 - 2026-10-27 | Claude is Feras's advisor (D21): checks requests against VISION, warns with a better default, maps ripples (docs/design/systems-map.md, a Ripple section in every spec), logs his repeated notes (docs/feras-notes.md), review-feras before anything reaches him; the Opus standard (D22) is in CLAUDE.md as judgment duties, each with its trigger, apart from the rules a tool enforces (row 1, 10-28) | Feras

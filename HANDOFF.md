@@ -34,8 +34,7 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 ## Open points
 | Point | Owner | Since |
 |---|---|---|
-| OpenRouter key expired (401, 10-31; the Nemotron backup lens died on it): a new key in opencode, or leave Nemotron off | Feras | 10-31 |
-| Bilqis's portraits are now the Neon ones: keep or overturn (archive-cleanup, decisions-log) | Feras | 10-27 |
+| Bilqis's portraits are now the Neon ones: keep or overturn (archive-cleanup, decisions-log); on hold until further notice (Feras 10-31) | Feras | 10-27 |
 | Art homework into inbox/: concept pictures, an empty plate per scene (no characters, HUD or rain), icon art (row 7) | Feras | 10-24 |
 | Cleanup (row 24, part f): .claude/worktrees/ empty row18-routing folder (in use 10-31; retry the delete) and b5_tests.log; base-xr-salvage local and remote; merged remote branches worktree-row12-*, row16-*, row17-*, row18-*, row18c-*, row19-* | Claude | 10-31 |
 

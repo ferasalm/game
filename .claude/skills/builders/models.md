@@ -41,7 +41,7 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
 - **Artificial Analysis**: Intelligence Index 40 (unverified, AA 2026-10-29), Coding Index 70 (unverified, AA 2026-10-29)
 - **Calibration**: Reading 8/12 right, 2 wrong (A8, A9), 0 unsure; lens 6/6 found, 0 false flags (calibration-2026-10.md)
 - **Known failure modes**: Fails reader bar on absence claims; text-only input via OpenRouter tool (calibration-2026-10.md);
-  the OpenRouter key in opencode expired (401 "API key expired", 10-31): every opencode OpenRouter route is off until Feras renews it
+  the OpenRouter key in opencode expired (401 "API key expired", 10-31); Feras renewed it the same day and one call through opencode answered
 - **Best use**: Backup lens only, capped at 5 min (`XR_OC_TIMEOUT`, Feras 10-31: speed is its one merit; ~7 min on a review on 10-29, so
   the cap will often stop it, and then Claude's gate goes on alone)
 
