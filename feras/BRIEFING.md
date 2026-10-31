@@ -8,8 +8,8 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 |---|---|---|---|---|---|
 | 0 | Restart the PC: 31 of 32 GB committed, ~600 MB free; builders need 3 GB | waiting on Feras | measured | yes | before Sat 16:00 |
 | 1 | Row 18(b): opencode config | done | fast alias tested live; tool_output and compaction stay at defaults (no evidence to change) | no | done |
-| 2 | First real builder run on opencode v2, and on `fast` | planned | one-call smoke only | no | Sat 10-31 16:00 |
-| 3 | Row 18(c) rest: agy medium's first gated run, GLM-5.3-flash on real frames vs review-player, Clef-flash, Jev | planned | speed and basic vision done | no | Sat 10-31 to Sun 11-01 |
+| 2 | First real builder run on opencode v2, and on `fast` | done | gate PASS, cross-review 0 findings, merged | no | done |
+| 3 | Row 18(c) rest: pipeline refreshes the map and commits for the builder, GLM-5.3-flash on real frames vs review-player, Clef-flash, Jev | planned | speed and basic vision done | no | Sat 10-31 to Sun 11-01 |
 | 4 | Row 18(d): your OK on the whole model routing, including GLM's CLI role being left out | waiting on Feras | after 2-3 | yes | Sun 11-01 |
 | 5 | Ops-review: coach run on the logs is done; the 6 department research queues are not sent | in progress | session_stats.py | maybe (a Deep Research prompt) | Sun 11-01 |
 | 6 | Row 3, M1 brief (real-time Rydan vs 2 guards, prison roof) | planned | - | no | Sun 11-01, if row 18 is done |
@@ -44,9 +44,13 @@ vision role waits on real frames. Its "fast TTFT" did not hold on code: first te
 ~$0.2 on cf (estimate; 4 crashed calls unlogged). The `low` run, unasked, was the only one with context to catch the JSON trap: one sample.
 **Quality trend (session_stats):** failed calls are not rising (1.9%, then 0.9% on 10-30). Calls per user turn went ~11 -> ~33, guard refusals
 4 -> 44 a day, most chats pass 200k. Logic mistakes are not measured. Whether the model itself changed: unknown.
-**When / How:** row 18(c), Sat 10-31 16:00 (Ops, builders agy and cf, Opus gates). **Your move:** restart the PC before then; routing OK Sun.
-**Checked:** check.sh without Godot, pipeline tests (15), cf_probe and session_stats tests, a live `fast` call. **Not run:** Godot tests (no
-Godot file changed; memory under the floor), a real `fast` build, review-feras (weekly limit at 95%).
+**Non-reasoning tests, Sat 06:40 (one sample each):** sorting 8/8 in 0.44 s; code question right in 0.56 s (clumsy one-liner); diagnosed patch right
+in 1.0 s; real Python build: correct code in ~1 min, gate PASS, cross-review 0 findings, merged. End to end it took 57 min: checks ~11 min each on this
+PC, plus a max fix pass over a stale map that idled 25 min. Hazard: on Cloudflare a reply stops silently at the literal text `[DONE]`.
+Cross-review at non-reasoning: not tested, by my choice: builder time is free, a review costs ~$0.08, and it would muddy the keep-or-drop count.
+**When / How:** row 18(c) rest, Sat 10-31 16:00 (Ops, builders agy and cf, Opus gates). **Your move:** restart the PC before then; routing OK Sun.
+**Checked:** check.sh without Godot, pipeline tests (15), cf_probe and session_stats tests, a real `fast` build, cross-review. **Not run:** Godot tests
+(no Godot file changed; memory under the floor), review-feras (weekly limit at 96%).
 
 ## Fri 10-30 03:45: opencode v2, row 18 part (a) (Opus 5.5)
 Row 18 has four parts: (a) move opencode to v2 [**done**, below]; (b) write its config in v2's own format [planned,

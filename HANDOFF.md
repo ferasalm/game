@@ -15,7 +15,7 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 ## Queue
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
-| 18 | System pass before M1 (Feras 10-30): (a) opencode v2, (b) config: done; (c) left: one real `cf_build ... fast` run, agy medium's first gated run, GLM-5.3-flash vs review-player on real frames, Clef-flash, Jev (error sorting); (d) Feras OKs the whole routing | Ops | builder | agy, cf; Opus gates | (c): Sat 10-31 16:00, needs memory; (d): Sun 11-01 | - |
+| 18 | System pass before M1 (Feras 10-30): (a) opencode v2, (b) config: done; (c) fast run and agy medium cross-review done; left: pipeline runs map.py before check + commits for the builder, GLM-5.3-flash vs review-player on real frames, Clef-flash, Jev; (d) Feras OKs the whole routing | Ops | builder | agy, cf; Opus gates | (c): Sat 10-31 16:00, needs memory; (d): Sun 11-01 | - |
 | 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof, combat feel first (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | later: after row 18 + routing OK (Feras 10-30) | - |
 | 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | later: after row 18 + routing OK (Feras 10-30) | 3 |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | later: after row 18 + routing OK (Feras 10-30) | 3; free memory >= 3 GB |
@@ -36,7 +36,7 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 | Bilqis's portraits are now the Neon ones: keep or overturn (archive-cleanup, decisions-log) | Feras | 10-27 |
 | OK on the whole model routing (models.md) after row 18 | Feras | 10-30 |
 | Old worktree folders (coach-cleanup, row12-*, row16-process, ...): check each is merged, then clean up (ccd clean_up_worktrees) | Claude | 10-30 |
-| Cross-review keep or drop: 1 of 5 measured live runs so far (row16-docs INVALID); decide at 5 (< 1 real bug a run = drop) | Claude | 10-29 |
+| Cross-review keep or drop: 2 of 5 measured live runs so far (row16-docs INVALID); decide at 5 (< 1 real bug a run = drop) | Claude | 10-29 |
 | Art homework into inbox/: concept pictures, an empty plate per scene (no characters, HUD or rain), icon art (row 7) | Feras | 10-24 |
 
 ## This week (Claude Pro weekly limit: ~90% used Thu 10-29, resets Sat 10-31 13:00 UTC = 16:00 Feras's time (GMT+3); on his calendar)

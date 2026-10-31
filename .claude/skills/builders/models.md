@@ -25,7 +25,9 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
   JSON traps; max, bare: typed, `is int`-style trap kept. none + code rules + Def examples (12 s): typed, Array handled, flagged the
   DefReader house pattern, `is int` kept. So a Pattern file and the gates do the work; none is unmeasured on a real build.
 - **Non-reasoning, other work (10-31, Opus scored)**: sorting 8/8 in 0.44 s; GDScript question right in 0.56 s (clumsy one-liner);
-  diagnosed patch right in 1.0 s. Text only: a tool-using agent run is unmeasured.
+  diagnosed patch right in 1.0 s. First real `fast` build (fast-probe-stream, RUN_KIND=py, 10-31): code in ~1 min, correct, gate PASS,
+  cross-review 0 findings (agy medium); 57 min end to end: checks ~11 min each, stale MAP sent it to a max fix pass that sat 25 min
+  idle on its own background check; the builder never committed (pipeline WIP commits).
 - **Known failure modes**: BREACH on protected files (race B); opencode free quota runs out (opencode.ai/go to subscribe);
   on cf a streamed reply stops silently at the literal text `[DONE]` with finish "stop" (3 of 3, none; renamed: whole reply; max untested)
 - **Best use**: hard logic and debugging at max; `fast` (no reasoning) for exact work with a Pattern and tests, bulk text, quick code
