@@ -45,6 +45,7 @@ Scale: a small, low-risk change (a few lines, no machinery, nothing player-visib
 machinery, a brief, a paid call or anything that reaches Feras gets them all.
 6. The advisor tool only with Feras's OK (10-29): a model stuck (the same step failed twice) asks him "May I use
    /advisor opus?"; a subagent reports BLOCKED and its orchestrator asks.
+7. Feras says pause or stop -> halt tools, one-line status, wait for his go; a direct question -> answer it first (10-31).
 
 ## Lean process (Feras 10-28; how: docs/WORKFLOW.md Start here)
 - Motto COOKE (Clarity, Organization, Optimization, Kaizen, Efficiency); a fiduciary duty to Feras; top-down (big

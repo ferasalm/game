@@ -12,7 +12,7 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 | 4 | Row 5, you play M1 on PC and phone | waiting on Feras (later) | - | yes | after row 4 passes its gates |
 | 5 | Row 7, art batch (Bilqis v2, guard, props, icons) | queued | - | no | before Rodin credits end ~11-17 |
 | 6 | Research prompts: 5 for Gemini Deep Research (feras/research-prompts.md) | waiting on Feras | written, not run | yes: paste them; 1 helps row 6, 2 helps row 5 | before those rows |
-| 7 | CLAUDE.md rule from /insights: "pause or stop = halt, one-line status; answer a direct question first" | waiting on Feras | read in the report | yes: OK or no (at the 80-line cap, so a line must go) | any day |
+| 7 | CLAUDE.md rule from /insights: pause or stop = halt, one-line status; answer a direct question first | done | in CLAUDE.md, duty 7 | no | - |
 | 8 | 22 skills never used add ~3k tokens a turn (/skill-doctor) | waiting on Feras | read | yes: turn off in /skills, or leave | any day |
 | 9 | Row 20, audit leftovers (session_stats dates, lesson caps, Gameplay files, frame_score blank line) | not planned yet | listed | no | after row 5 |
 | 10 | Worktrees row19-cleanup and row18c-gaps | planned | - | no | next chat, when their chats are closed |
@@ -29,10 +29,10 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 - Cross-review keep or drop **done: kept**. 6 real bugs in 5 runs = 1.2 a run, rule was < 1. Close call: 4 bugs in code, 2 in tests. Counting code alone it is 0.8, which would drop it. I counted test bugs because they let broken code pass. It cost one wasted paid round before the parser fix, and I missed all 3 of its check-parallel finds myself.
 - Research **done**: answered lines removed, 2 web lookups by agy in docs/research/art/ (Quaternius looks best for base bodies; marked unverified), 5 prompts in feras/research-prompts.md.
 - Audits **done**: coach full, ops-review, /skill-doctor and /insights both work through `claude -p`. Of the 44 guard refusals, 35 were one rule (chained Bash in a worktree), already in CLAUDE.md, 5 were false counts.
-**Still open:** items 6-10 above. **Not planned:** RTK output filter (it hides check output), a wrap-up status hook.
+**Still open:** items 6 and 8-10 above. **Not planned:** RTK output filter (it hides check output), a wrap-up status hook.
 **My errors:** I cut a paid review round short and asked for a process kill, refused, so that child ran to its own timeout. My first fix for the flaky test was the wrong one. I also changed a 12-line limit that a test pins, then reverted it.
 **When:** M1 brief Sun 11-01; the system pass is finished. **How:** row 3 (Gameplay, chat plan, Opus high).
-**Your move:** start the next chat; say yes or no to items 7 and 8; paste research prompts 1 and 2 first. **Mine:** the rest.
+**Your move:** start the next chat; say yes or no to item 8; paste research prompts 1 and 2 first. **Mine:** the rest.
 **Checked:** full `check.sh` all passed (582 Godot tests) and read, run twice; `test_tool_tests` 13 tests, 6 bad-case probes all caught; pipeline and py_runs repeated; check-parallel and xr-salvage cross-reviewed and read. Final check passed on the merged code; CI green on main (14e8957, 5 min 30 s). **Not run:** review-feras (no render, only this report and the prompts). `merge_run.sh` itself: the 3 runs merged by hand first so the fixes went in together, then one full check. Licences: Quaternius read, Kenney's page gave nothing to grep, so it stays unverified.
 
 ## Sat 10-31 18:45: row 19 and your open items (Opus 5.5 high)

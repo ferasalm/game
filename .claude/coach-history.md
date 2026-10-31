@@ -7,8 +7,8 @@ Setup is strong on enforcement (5 hooks, deny rules, doc caps, tests); the gap i
 - Done: skip of the 2 slow toy tests; flaky time-limited tests run alone; 44 guard refusals read: 35 were one rule (worktree isolation on
   chained Bash), 5 false positives of session_stats; the rule was already in CLAUDE.md, 16 on 10-31 against 44.
 - Proposed: 22 skills never invoked add ~3k tokens a turn (13 claude.ai synced, 8 project, 1 plugin; /skill-doctor): turn off in /skills. Waiting on Feras.
-- Proposed: CLAUDE.md "pause or stop = halt tools, one-line status; answer a direct question first" (/insights: the main source of
-  frustration). Waiting on Feras.
+- Done (Feras OK 10-31): CLAUDE.md duty 7, "pause or stop = halt tools, one-line status; answer a direct question first" (/insights:
+  the main source of frustration).
 - Proposed: RTK output filter: not planned (a filter on check output fights "a check counts only when its output was read").
 - Proposed: Stop hook for status tags: not planned (the handoff status rule covers it; revisit if overstated reports recur).
 - Open: row 20 (session_stats dates and regex, builders lessons cap, Gameplay queue and lessons files, doc_check byte warning).
