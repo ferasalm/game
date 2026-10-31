@@ -592,6 +592,14 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `localization/world.csv`
 
 ## plugins
+- `plugins/pm/.claude-plugin/plugin.json`: content: ? x0
+- `plugins/pm/scripts/pm.py`: Project management CLI for Neon Glitch (row 23, 2026-11-01).
+- `plugins/pm/scripts/pm_tables.py`: Table parsing and queue extraction helpers for pm CLI (row 23).
+- `plugins/pm/skills/next/SKILL.md`
+- `plugins/pm/skills/report/SKILL.md`
+- `plugins/pm/skills/row/SKILL.md`
+- `plugins/pm/skills/status/SKILL.md`
+- `plugins/pm/skills/week/SKILL.md`
 - `plugins/studio/.claude-plugin/plugin.json`: content: ? x0
 - `plugins/studio/.lsp.json`: content: ? x0
 - `plugins/studio/README.md`
@@ -714,6 +722,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_gate_checklist.py`: Tests for brief checklist verification in build_gate.
 - `tools/test_gate_d6.py`: Self-test for the D6 gate rules (2026-10-27): protected tests and assets, removed checks, new tests fail on base.
 - `tools/test_godot_lsp.py`: plugins/studio/scripts/godot_lsp.py bridges Claude Code (LSP over stdio) to Godot's LSP (TCP) (system-v3 row 22, 2026-11-01).
+- `tools/test_handoff.py`: Self-test for tools/handoff.sh (row 23 b, 2026-11-01) in a throwaway repo with a bare origin and stub steps.
 - `tools/test_hook_heredoc.py`: Self-test for tools/hooks/heredoc_guard.py (LESSONS 4): a python heredoc holding a backslash, in any form, and a
 - `tools/test_hook_run.py`: Self-test for tools/hooks/run.sh: hooks run the session's own copy, a missing script never blocks a tool.
 - `tools/test_hook_stop_notify.py`: Self-test for tools/hooks/stop_notify.py: a Stop makes one balloon command, a repeat Stop stays quiet, bad input never blocks.
@@ -722,6 +731,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_no_legacy_hero.py`: Guard: the hero's old code id stays gone (renamed to rydan, save v7, Feras 2026-10-27). Fails on the old id in the
 - `tools/test_personas.py`: The 10 personas are tailored to Neon Glitch (Feras 10-28: "not generic") and their copies never drift (row 1 item 9).
 - `tools/test_plugins.py`: The repo marketplace and the studio plugin stay loadable and consistent (system-v3 row 22, 2026-11-01).
+- `tools/test_pm.py`: Self-test for plugins/pm/scripts/pm.py (row 23 a, 2026-11-01): board, next, row add|set|done, week, report.
 - `tools/test_pre_spend.py`: Self-test for pre_spend.py: a paid tool is blocked without Feras's OK in a user message; Hyper3D gets a reminder.
 - `tools/test_prompt_check.py`: prompt_check.py lints a brief, a one-shot worker prompt or a chat prompt before it is sent (system-v3 row 22, 2026-11-01).
 - `tools/test_py_runs.py`: Self-test for non-Godot builder runs (row 12 C, 2026-10-28): python tools/test_py_runs.py.
@@ -735,6 +745,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_token_handoff.py`: Self-test for tools/hooks/token_handoff.py: cache-read information at 25M, then every +10M; context size never warns
 - `tools/test_tool_tests.py`: Tests tool_tests.py parallel test execution and process runner.
 - `tools/test_twine_sync.py`: Self-test for tools/twine_sync.py: python tools/test_twine_sync.py (temp dirs, plain asserts, exit 1 on failure).
+- `tools/test_usage_row.py`: Self-test for row 23 c (2026-11-01): session_stats.py --row <session id> prints a USAGE row; tools/runs_log.py appends
 - `tools/test_wait_run.py`: Self-test for tools/wait_run.sh (row 16): after its wait it reports each run and the best move: re-arm a running
 - `tools/test_wt_clean.py`: Self-test for tools/wt_clean.sh: merged and dead builder worktrees go, live and unmerged ones stay.
 - `tools/tool_tests.py`: Runs tool tests in parallel worker threads with logs in .check; the 2 slow toy tests skip while tools/ is unchanged.
