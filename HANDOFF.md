@@ -1,5 +1,5 @@
 # HANDOFF (current state only; ONE queue for every chat; max 60 lines)
-Last updated: 2026-10-31 (row 18 done but the coach audit, in session coach-finish, and the cleanup below), Opus 5.5.
+Last updated: 2026-10-31 (row 18 open: coach-finish, cleanup), Opus 5.5.
 Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Open points).
 
 ## How this file works (Feras 2026-10-27; departments 10-28)
@@ -34,7 +34,7 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 | OpenRouter key expired (401, 10-31; the Nemotron backup lens died on it): a new key in opencode, or leave Nemotron off | Feras | 10-31 |
 | Bilqis's portraits are now the Neon ones: keep or overturn (archive-cleanup, decisions-log) | Feras | 10-27 |
 | Art homework into inbox/: concept pictures, an empty plate per scene (no characters, HUD or rain), icon art (row 7) | Feras | 10-24 |
-| Cleanup: worktrees row18c-gaps, row19-cleanup (locked by their chats), empty row18-routing, stray b5_tests.log, remote branch base-xr-salvage | Claude | 10-31 |
+| Cleanup: worktrees row18c-gaps, row19-cleanup (locked), row18-routing, b5_tests.log, remote base-xr-salvage | Claude | 10-31 |
 
 ## This week (weekly limit resets Sat 16:00 GMT+3)
 | Day | Plan |
