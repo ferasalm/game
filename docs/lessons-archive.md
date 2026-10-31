@@ -40,3 +40,5 @@
   then node fetch + WebSocket CDP Runtime.evaluate document.body.innerText (2026-10-25).
 - A blind id rename (zayd -> rydan) also rewrote decisions-log lines, manifest sources naming Feras's real files and a
   one-letter test ("Z") -> exclude logs/archive/manifest, protect external names, then let check.sh find the rest (2026-10-27).
+- map.py lists tracked files only: a new file checked before `git add` passes "MAP.md current" locally and fails it in
+  CI -> `git add` new files, then `python tools/map.py`, then check.sh (2026-10-26/27). [test: doc_check MAP.md current; handoff skill step 1]

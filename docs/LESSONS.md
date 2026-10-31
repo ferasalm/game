@@ -24,8 +24,6 @@ naming the test; Godot code traps -> .claude/rules/code.md; builder-only -> .cla
 - Gemini research contains invented numbers -> ideas and norms only, never facts.
 - A skill with `paths:` frontmatter (flow-media, 3d-model, sprite-bake, players-eye-gate) is not in a chat's skill list
   until it touches a matching file -> the department brief says Read .claude/skills/<name>/SKILL.md (2026-10-28).
-- map.py lists tracked files only: a new file checked before `git add` passes "MAP.md current" locally and fails it in
-  CI -> `git add` new files, then `python tools/map.py`, then check.sh (2026-10-26/27).
 - Scratchpad scripts vanish when the session ends (bake_all.sh was nearly lost) -> any script worth rerunning goes into tools/ with a test (2026-10-27).
 - An approved design with no brief was never built (rydan-moves.md) -> brief it the same day (2026-10-23).
 - Background runs: `python - <<EOF < /dev/null` spun in an empty REPL, `cmd | grep` hid a crash (exit 0), agy, opencode
@@ -40,7 +38,7 @@ naming the test; Godot code traps -> .claude/rules/code.md; builder-only -> .cla
 - 4 paid probes crashed at their spend-log line (a path wrong in worktrees) -> one smoke call before a batch; results print first; parallel Bash = run_in_background (2026-10-31).
 - Bash `VAR=x cmd` given to Feras failed in his PowerShell -> his commands are PowerShell (2026-10-31).
 - A slash command given to `claude -p` from Git Bash ran as a path (`/skill-doctor` became C:/Program Files/Git/skill-doctor) -> `MSYS_NO_PATHCONV=1`; both then work headless (2026-10-31).
-- A toy test passed 2 runs, failed the third under load (`test_idle_watchdog`, IDLE_SEC=3) -> the 3-run rule stays; a test with a time limit runs alone, never a looser limit (2026-10-31).
+- A toy test failed 1 run in 3 and going serial did not cure it: stub setup outlasted IDLE_SEC=3 -> find the race first; fix the stub, never the limit (2026-10-31).
 - `check.sh | tail && git commit` committed a failing run -> grep .check/*.log for FAIL first; never push before reading the
   final check line (2026-10-23).
 

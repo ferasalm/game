@@ -21,6 +21,8 @@ FAKE_BUILDER = r'''#!/bin/bash
 # stub builder: <name> <prompt> <base> [model]; FAKE_MODE good|test_edit|nothing|hang; hang children carry $FAKE_MARK
 . "$LIBSH"
 name="$1"; root="$(git rev-parse --show-toplevel)"; wt="$(wt_dir)/$name"
+# before ensure_wt: its git calls can outlast IDLE_SEC=3, and then the child never started (failed 2 in 6 runs, 10-31)
+[ "${FAKE_MODE:-}" != hang ] || { "$PYEXE" -c "import time; time.sleep(60)" "$FAKE_MARK" & echo up > "$(wt_dir)/$name.child"; }
 ensure_wt "$root" "$wt" "oc/$name" "$3" || exit 1
 read -t 0.3 -r _ ; echo "$?" > "$(wt_dir)/$name.stdin.rc"
 cp "$2" "$(wt_dir)/$name.prompt.seen"
@@ -30,7 +32,7 @@ case "${FAKE_MODE:-good}" in
   good) mkdir -p features; echo "## a" > features/a.gd; git add -A; git -c user.name=t -c user.email=t@t commit -qm feat ;;
   test_edit) echo "# edited" >> tests/t.gd; git add -A; git -c user.name=t -c user.email=t@t commit -qm cheat ;;
   nothing) : ;;
-  hang) "$PYEXE" -c "import time; time.sleep(60)" "$FAKE_MARK" & echo up > "$(wt_dir)/$name.child"; wait ;;
+  hang) wait ;;
   quota) echo 'level=ERROR error.error="AI_APICallError: Free usage limit reached. Free models work in OpenCode"'
     "$PYEXE" -c "import time; time.sleep(60)" "$FAKE_MARK" & wait ;;
   commit_then_hang) mkdir -p features; echo "## a" > features/a.gd; git add -A
@@ -334,7 +336,7 @@ def test_coreutils_timeout_is_the_gnu_one():
 if __name__ == "__main__":
     from tool_tests import run_cases
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
-    # time limits: test_idle_watchdog failed 1 in 3 side by side (10-31), so these run alone; the limits stay
+    # these hold wall-clock limits: they run alone, and a limit is never loosened (10-31)
     run_cases(tests, "test_build_pipeline", serial=(
         "test_idle_watchdog_kills_the_tree_and_says_nowork", "test_idle_after_commits_is_checked_not_nowork",
         "test_a_check_moved_to_the_background_is_killed_and_its_work_checked",

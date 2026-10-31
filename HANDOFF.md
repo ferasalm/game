@@ -1,5 +1,5 @@
 # HANDOFF (current state only; ONE queue for every chat; max 60 lines)
-Last updated: 2026-10-31 (row 19 done but CLAUDE.md), Opus 5.5.
+Last updated: 2026-10-31 (row 18 done), Opus 5.5.
 Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Open points).
 
 ## How this file works (Feras 2026-10-27; departments 10-28)
@@ -15,16 +15,16 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 ## Queue
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
-| 18 | Last system pass: gate, cross-review, merge the 2 live agy runs (xr-salvage, check-parallel); skip of the 2 slow toy tests; time check.sh; keep-or-drop; research prompts (feras/research-prompts.md); /kaizen:coach deep, revise-claude-md (CLAUDE.md, row 19's rest), /ops-review, /skill-doctor, /insights | Ops | chat (review) | Opus high | Sun 11-01; runs live since Sat ~18:20 | - |
-| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof, combat feel first (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | later: after row 18 + routing OK (Feras 10-30) | - |
-| 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | later: after row 18 + routing OK (Feras 10-30) | 3 |
-| 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | later: after row 18 + routing OK (Feras 10-30) | 3; free memory >= 3 GB |
+| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof, combat feel first (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | next | - |
+| 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | after row 3 | 3 |
+| 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | after row 3 | 3; free memory >= 3 GB |
 | 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | QA | Feras | - | later: after row 4 | 4 |
 | 7 | Art batch: Bilqis re-model (v2), guard, props (booth, floodlight, qamariya window, umbrella), icons; title = Flow Omni | Art | chat (MCP) | Opus high | queued; Rodin credits end ~11-17 | 6 |
 | 8 | Free image-to-3D proof (rydan_style_v2 to a TRELLIS HF Space; never Blender generate_3d) -> 3d-model skill | Art | chat (MCP) | Opus medium | queued | 7 |
 | 9 | Asset preparation pipeline (jpg -> png, sizes, import settings, manifest check) | Art | builder | cf | parked | 5 |
 | 10 | Obscura proof: builders fetch web pages with the Obscura headless browser instead of Chrome (never --stealth); a tools/ wrapper + test | Ops | builder | cf | parked | 5 |
 | 11 | Art bible 2D pass: drop the retired 3D runtime lines (fog, mist, sky, spatial shading, the "2150" title) the personas nearly copied; docs/design/art-bible.md | Art | builder | oc | parked | 5 |
+| 20 | Audit leftovers: session_stats dates by entry and tighter guard regex; builders/lessons.md to its 40 lines; Gameplay lessons.md + research-queue.md; doc_check warns on bytes; frame_score blank-line slot | Ops | builder | agy | parked | 5 |
 Key: builders are free code bots (agy = Gemini Flash, cf = Cloudflare DeepSeek, oc = free text models); chat (MCP) = a
 Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-time fight, on the prison roof.
 
@@ -33,13 +33,12 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 |---|---|---|
 | OpenRouter key expired (401, 10-31; the Nemotron backup lens died on it): a new key in opencode, or leave Nemotron off | Feras | 10-31 |
 | Bilqis's portraits are now the Neon ones: keep or overturn (archive-cleanup, decisions-log) | Feras | 10-27 |
-| Cross-review keep or drop: 3 of 5 measured; runs 4, 5 = row 18's two; decide at 5 (< 1 real bug a run = drop) | Claude | 10-29 |
 | Art homework into inbox/: concept pictures, an empty plate per scene (no characters, HUD or rain), icon art (row 7) | Feras | 10-24 |
 
 ## This week (weekly limit resets Sat 16:00 GMT+3)
 | Day | Plan |
 |---|---|
-| Sun 11-01 | Row 18 (last system pass), then M1 brief (row 3). |
+| Sun 11-01 | M1 brief (row 3). |
 | Mon 11-02 | M1 build (row 4) overnight from Sun; play day moves to when M1 passes its gates. |
 
 ## Parked and context (resume only through a queue row)
@@ -52,4 +51,4 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 - Retired 3D (D20): tag 3d-archive, branch archive/3d, lookup only; old builder branches gemini/*, oc/* kept, worktrees gone.
 
 ## Prompt for the next chat
-`Continue ferasalm/game on main, Opus high. Read HANDOFF.md. Do row 18 only, gating the 2 live runs first; /handoff.`
+`Continue ferasalm/game on main, Opus high. Read HANDOFF.md. Do row 3 only; /handoff.`
