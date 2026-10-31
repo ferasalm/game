@@ -1,5 +1,5 @@
 # HANDOFF (current state only; ONE queue for every chat; max 60 lines)
-Last updated: 2026-10-30 (row 18a done: opencode v2.2.2), Opus 5.5.
+Last updated: 2026-10-31 (row 18b done, 18c part: fast lane, agy medium, Claude model rules), Opus 5.5.
 Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Open points).
 
 ## How this file works (Feras 2026-10-27; departments 10-28)
@@ -15,7 +15,7 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 ## Queue
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
-| 18 | System pass before M1 (Feras 10-30): (a) opencode v2 (done); (b) opencode config from the real schema: tool-output limits, compaction buffer, per-model limit/options (GLM: Z.ai's max effort, temp 1, top_p 0.95, 128K out: test Cloudflare accepts each); (c) calibrate cf GLM-5.3-flash, Clef-flash (screenshot yes/no vs review-player), Jev (error sorting); (d) Feras OKs the whole routing | Ops | builder | agy; Opus gates | (a) done 10-30; (b)-(d) next: Sat 10-31 16:00 | - |
+| 18 | System pass before M1 (Feras 10-30): (a) opencode v2, (b) config: done; (c) left: one real `cf_build ... fast` run, agy medium's first gated run, GLM-5.3-flash vs review-player on real frames, Clef-flash, Jev (error sorting); (d) Feras OKs the whole routing | Ops | builder | agy, cf; Opus gates | (c): Sat 10-31 16:00, needs memory; (d): Sun 11-01 | - |
 | 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof, combat feel first (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | later: after row 18 + routing OK (Feras 10-30) | - |
 | 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | later: after row 18 + routing OK (Feras 10-30) | 3 |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | later: after row 18 + routing OK (Feras 10-30) | 3; free memory >= 3 GB |
@@ -31,6 +31,7 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 ## Open points
 | Point | Owner | Since |
 |---|---|---|
+| Restart the PC before Sat 16:00: 31 of 32 GB committed, ~600 MB free, builders need 3 GB | Feras | 10-31 |
 | OK on the vision (docs/VISION.md) | Feras | 10-27 |
 | Bilqis's portraits are now the Neon ones: keep or overturn (archive-cleanup, decisions-log) | Feras | 10-27 |
 | OK on the whole model routing (models.md) after row 18 | Feras | 10-30 |
@@ -41,9 +42,7 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 ## This week (Claude Pro weekly limit: ~90% used Thu 10-29, resets Sat 10-31 13:00 UTC = 16:00 Feras's time (GMT+3); on his calendar)
 | Day | Plan |
 |---|---|
-| Thu 10-29 | Row 16 closed: process complete (hooks, Open points, HOW_WE_WORK, model cards, open-source list). |
-| Fri 10-30 | Row 17 done (+ cf max effort, no cf cap, nemotron backup, bandwidth guard, cache hook). Feras: art homework, Bilqis call, VISION OK. |
-| Sat 10-31 | Limit resets 16:00: row 18 chat (opencode v2, config, calibrations; agy builds, Opus gates). |
+| Sat 10-31 | Limit resets 16:00: row 18c (a real fast build, agy medium, GLM on real frames, Clef, Jev; Opus gates). |
 | Sun 11-01 | Row 18 gate; /kaizen:coach (ops-review); Feras OKs the routing; then M1 brief (row 3) if the system pass is done. |
 | Mon 11-02 | M1 build (row 4) overnight from Sun; play day moves to when M1 passes its gates. |
 
@@ -56,4 +55,5 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 - RPG + menus: after M1, reskin to the new look (the old menu mockups and renders are retired).
 - Retired 3D (D20): tag 3d-archive, branch archive/3d, lookup only; old builder branches gemini/*, oc/* kept, worktrees gone.
 
-`Continue ferasalm/game on main. Read HANDOFF.md. Take the top queue row for your lane; /handoff.`
+## Prompt for the next chat
+`Continue ferasalm/game on main, Opus high. Read HANDOFF.md. Do row 18(c) only; /handoff.`

@@ -14,7 +14,8 @@ from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-SPEND_LOG = ROOT.parent / "game-wt" / "cf_spend.csv"
+MAIN = ROOT.parents[2] if ROOT.parent.name == "worktrees" else ROOT  # a chat worktree sits in <main>/.claude/worktrees
+SPEND_LOG = MAIN.parent / "game-wt" / "cf_spend.csv"
 API = "https://api.cloudflare.com/client/v4/accounts/{acct}/ai/v1/chat/completions"
 MAX_FILE_CHARS = 60000
 MODELS = {

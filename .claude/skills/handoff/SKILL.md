@@ -23,7 +23,8 @@ HANDOFF, DECISIONS and LESSONS load at every session start, so every line costs 
    (Point | Owner | Since), This week, Parked and context (Feras 2026-10-27: no per-chat tracks). A /handoff updates its own rows,
    removes its done rows, adds rows for work it found (Dept = a label from the docs/WORKFLOW.md Routing table; lane
    builder with agy/cf/oc by default; `chat (taste|MCP|review|plan)` with Opus and its effort; `Feras`) and the Last
-   updated line; tools/doc_check.py checks every row. Then run
+   updated line, and rewrites its last section, "Prompt for the next chat": one line naming the row, model and effort
+   (Feras 10-31: one task). tools/doc_check.py checks every row. Then run
    `bash tools/status.sh` and archive the side sessions it started whose work is on main.
    Lean check (Feras 10-28): every non-Opus output merged this session was reviewed tiered (WORKFLOW Protocols:
    Review: gates, a Haiku pass on big diffs, Opus on the list and risky hunks); anything sent to Feras carried a

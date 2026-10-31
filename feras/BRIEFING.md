@@ -3,14 +3,15 @@ Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after 
 HANDOFF.md; this file is your view of it. "Open now" is rewritten at every /handoff; below it, reports newest first,
 each headed by its date and time (GMT+3): Done | Still open | When | How | Your move vs mine | Checked.
 
-## Open now (Fri 10-30 04:30)
+## Open now (Sat 10-31 04:40)
 | # | Open item | Status | Checked | Your move? | When |
 |---|---|---|---|---|---|
-| 1 | Row 18(b): opencode config in v2's own format: tool-output limits, compaction buffer, per-model limits and options (GLM: Z.ai's max effort, temp 1, top_p 0.95, 128K out; in v2 these go on a model variant), each tested on Cloudflare | planned | - | no | Sat 10-31 16:00 |
-| 2 | First real builder run on opencode v2 (only probes and tests so far) | planned | not run | no | Sat 10-31, the first 18(b) run |
-| 3 | Row 18(c): calibrate GLM-5.3-flash, Clef-flash (screenshot yes/no vs review-player), Jev (error sorting); confirm DeepSeek "max" effort reaches Cloudflare | planned | - | no | Sat 10-31 to Sun 11-01 |
-| 4 | Row 18(d): your OK on the whole model routing (models.md) | waiting on Feras | after 1-3 | yes | Sun 11-01 |
-| 5 | First ops-review: /kaizen:coach (writes .claude/coach-history.md), then send out the 6 department research queues that are at 3+ questions (small lookups to free builders, big ones as a Deep Research prompt for you). The start-of-chat reminder is live (done 10-30) | planned | trigger tested | maybe (a Deep Research prompt) | Sun 11-01 |
+| 0 | Restart the PC: 31 of 32 GB committed, ~600 MB free; builders need 3 GB | waiting on Feras | measured | yes | before Sat 16:00 |
+| 1 | Row 18(b): opencode config | done | fast alias tested live; tool_output and compaction stay at defaults (no evidence to change) | no | done |
+| 2 | First real builder run on opencode v2, and on `fast` | planned | one-call smoke only | no | Sat 10-31 16:00 |
+| 3 | Row 18(c) rest: agy medium's first gated run, GLM-5.3-flash on real frames vs review-player, Clef-flash, Jev | planned | speed and basic vision done | no | Sat 10-31 to Sun 11-01 |
+| 4 | Row 18(d): your OK on the whole model routing, including GLM's CLI role being left out | waiting on Feras | after 2-3 | yes | Sun 11-01 |
+| 5 | Ops-review: coach run on the logs is done; the 6 department research queues are not sent | in progress | session_stats.py | maybe (a Deep Research prompt) | Sun 11-01 |
 | 6 | Row 3, M1 brief (real-time Rydan vs 2 guards, prison roof) | planned | - | no | Sun 11-01, if row 18 is done |
 | 7 | Row 4, M1 build + Android export + archive the turn-based fight | planned | - | no | Mon 11-02 |
 | 8 | Row 6, bake Roya and a native-scale roof render | planned | - | no | after the routing OK |
@@ -22,6 +23,30 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 | 14 | Art homework into inbox/: concept pictures, empty plates, icon art | waiting on Feras | - | yes | open since 10-24 |
 | 15 | Clean up old worktree folders (check each is merged first) | not planned yet | - | no | no date |
 | 16 | Cross-review keep or drop: 1 of 5 measured runs | in progress | 1 of 5 | no | at the 5th run |
+
+## Sat 10-31 04:40: builder roles, row 18 parts (b) and (c) (Opus 5.5 high)
+(a) opencode v2 **done** 10-30. (b) config **done**. (c) calibrations **in progress**. (d) your routing OK **waiting on Feras**.
+**Measured (same 16-field Def task, one sample each, Cloudflare):**
+| Model | Time | Tokens out | Result |
+|---|---|---|---|
+| DeepSeek, no reasoning, bare prompt | 6.7 s | 1.5k | 3 real flaws |
+| DeepSeek, no reasoning, rules + repo examples | 12 s | 2.6k | 1 flaw left, flagged the house pattern itself |
+| DeepSeek, max, bare prompt | 167 s | 28.3k | typing right, JSON flaw kept |
+| GLM-5.3-flash, default, bare prompt | 813 s | 44k | not reviewed |
+**Done (on main):** agy on medium; `cf_build.sh <task> <brief> <base> fast` (no reasoning, any failed check moves to max); `Pattern:`
+lines in briefs paste real repo files into the prompt; task skills from .claude/skills reach builders too; Sonnet only at high, Haiku
+never orchestrates; tools/cf_probe.py and tools/session_stats.py; a JSON trap in the code rules.
+**Your table:** DeepSeek's two roles adopted. Gemini gets discovery and stays the main Godot builder (the only one with clean gated
+runs; DeepSeek has a BREACH on record). GLM's CLI role left out: scripts run check, gate and merge, so no model is needed there. GLM's
+vision role waits on real frames. Its "fast TTFT" did not hold on code: first text at 763 s.
+**Real speed gain:** huge per call, less per build, because Godot checks take the same time. One real build measures it.
+**My errors:** ran DeepSeek at default and low unasked; assumed GLM-5.3-flash had effort levels; 4 calls crashed on my log path bug.
+~$0.2 on cf (estimate; 4 crashed calls unlogged). The `low` run, unasked, was the only one with context to catch the JSON trap: one sample.
+**Quality trend (session_stats):** failed calls are not rising (1.9%, then 0.9% on 10-30). Calls per user turn went ~11 -> ~33, guard refusals
+4 -> 44 a day, most chats pass 200k. Logic mistakes are not measured. Whether the model itself changed: unknown.
+**When / How:** row 18(c), Sat 10-31 16:00 (Ops, builders agy and cf, Opus gates). **Your move:** restart the PC before then; routing OK Sun.
+**Checked:** check.sh without Godot, pipeline tests (15), cf_probe and session_stats tests, a live `fast` call. **Not run:** Godot tests (no
+Godot file changed; memory under the floor), a real `fast` build, review-feras (weekly limit at 95%).
 
 ## Fri 10-30 03:45: opencode v2, row 18 part (a) (Opus 5.5)
 Row 18 has four parts: (a) move opencode to v2 [**done**, below]; (b) write its config in v2's own format [planned,
@@ -109,28 +134,3 @@ Waiting on you: VISION OK, Bilqis portraits, art homework. DeepSeek is not retir
 **Checked:** all new tests; check.sh full run (582 passed) at the docs merge, again at the audit merge; the hooks live.
 **Not checked:** the open-source licences and benchmark numbers (marked unverified); CI is checked after the push.
 
-## 2026-10-29 (Thu): row 12 chat (Opus 5.5 high), closed
-**Done (on main, CI green; your checkout synced):**
-- Cross-review: agy reviews DeepSeek/oc runs (3/5 known bugs); nemotron :free reviews agy runs (1/2); DeepSeek off
-  as a reviewer (0 findings in 3 runs). The runner is tools/cross_review.sh; every finding is vetted by Opus.
-- The session hook prints the top queue row; the review gate's frame-name bug fixed; process review written
-  (docs/audits/2026-10-29-process-review.md); ideas inbox docs/ideas.md; the handoff report format.
-- CLAUDE.md: COOKE, fiduciary duty, top-down, solid + flexible foundations, the cache rule (<= ~10 calls stay),
-  parallel tool calls, the advisor only with your OK.
-- Decisions logged: process first, M1 Saturday; chats sync C:\dev\game at handoff; connectors off; DeepSeek and
-  other free models (Cloudflare-hosted, opencode free, OpenRouter :free) free to use, Claude assigns them, agy
-  researches them.
-
-**Still open (row 16, docs/briefs/process-completion.md):** calendar re-plan; Open points list in HANDOFF; the
-heredoc hook; the token hook's cumulative warning (proposed, NOT built); the "How we work" page with the diagram;
-builder jobs: doc_dupes (Cloudflare embeddings), model cards (agy researches Artificial Analysis), open-source
-research (licences, art bible); combat-first M1 framing; CLAUDE.md audit with the plugin.
-
-**When:** row 16 Thu-Fri; Sat 16:00 limit reset -> M1 brief (combat feel first); Sun M1 review; Mon you play.
-
-**Your moves:** (1) add the 4 allow rules to C:\Users\AUC\.claude\settings.json now; (2) after this chat ends,
-switch off Gmail, Google Drive, Google Docs, the duplicate Rodin connector, Cloudflare Bindings; (3) start a fresh
-chat with: "Take HANDOFF row 16: docs/briefs/process-completion.md." **Mine:** everything in row 16.
-
-**Checked:** check.sh (582 tests, earlier today; later changes docs/tools only: check.sh --no-godot passed),
-CI green on the pushes I watched. **Not checked:** the game was not run; CI on the last two pushes.

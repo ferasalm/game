@@ -27,6 +27,17 @@
             "context": 1048576,
             "output": 384000
           }
+        },
+        "deepseek-v4.1-flash-fast": {
+          "id": "@cf/deepseek-ai/deepseek-v4.1-flash-1017",
+          "name": "DeepSeek V4.1 Flash, no reasoning",
+          "options": {
+            "reasoning_effort": "none"
+          },
+          "limit": {
+            "context": 1048576,
+            "output": 384000
+          }
         }
       }
     }

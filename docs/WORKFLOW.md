@@ -18,9 +18,9 @@ row name a Dept from the Routing table and a lane.
 |---|---|---|---|
 | The father itself | a targeted read, one edit, a yes/no, a decision logged in Feras's words, a 1-3 line fix: the brief would hold the whole text | its own turns only | the gates, then itself; review-feras before Feras |
 | Builder (agy, cf, oc) | anything a brief can state exactly: code, tests, renames, edits across files, docs, summaries, persona drafts (Feras 10-28: whenever the brief is shorter than the work and the risk is low or well tested; small, risky machinery: the father writes it) | ~0 (free models); Claude pays the brief and the review | tiered (Protocols: Review) |
-| Haiku reader (effort high) | a read over ~20k tokens or across many files, with an exact output template | ~70k start + its reading | Opus reads only the template answer |
+| Haiku worker (Feras 10-31: low = the simplest Claude-only task, medium or high otherwise; never orchestrates) | a read over ~20k tokens or across many files (high, exact output template), or a task a non-Claude builder must not do | ~70k start + its reading | Opus reads only the template answer |
 | review-* agent | review-code on a diff, review-player on renders, review-feras last; one each, only when the tier needs it | ~30-70k each (a fresh start) | Opus weighs the findings |
-| Sonnet subagent + advisor | a scoped multi-step job where Opus is overkill and a builder can't (needs Claude tools); loop cap 3 rounds | ~67k start + its work | Opus, tiered |
+| Sonnet high child chat (Feras 10-31: Sonnet only at effort high) | orchestrates builders, or a scoped multi-step job where Opus is overkill and a builder can't (needs Claude tools); loop cap 3 rounds | ~67k start + its work | Opus, tiered |
 | Opus child chat | long, taste, MCP (Blender, Flow, Rodin) or builder-waiting work; anything Feras may watch or answer | a new chat in its own worktree (an idle one costs nothing) | itself + review-*; the father checks status.sh |
 
 4. **Brief**: a builder gets docs/briefs/TEMPLATE.md; a child chat or subagent gets the department brief below.
@@ -39,7 +39,7 @@ builders and Haiku readers only, until the window resets.
 
 **Department brief** (fill every line; a child chat gets it as its first message, a subagent as its prompt):
 ```
-Department: <Id> (a label: Routing table). Queue row: <#>. Model: Opus <effort> | Sonnet + advisor.
+Department: <Id> (a label: Routing table). Queue row: <#>. Model: Opus <effort> | Sonnet high.
 Skills: <names; a skill the chat does not list yet: Read .claude/skills/<name>/SKILL.md>. Persona: <.agents/skills name>
 Goal: <one line; player-visible where it can be>
 Context: <the decisions, files and CANON lines it needs; no chat history>
@@ -80,8 +80,8 @@ docs/HOW_WE_WORK.md draws this loop for Feras: a change to these Protocols updat
      `python tools/hooks/review_stamp.py <file>`; the review_gate hook blocks SendUserFile and Artifact on an
      unstamped render (tools/hooks/review_gate.py).
 - **Handoff:** at a unit boundary past ~250k context (review-heavy ~300k) or ~85% of the 5-hour window (CLAUDE.md). It records one improvement made and one proposed.
-- **ops-review:** every 5 sessions, or at 50% of the window: `/kaizen:coach` (reads ~/.claude/coach-usage-log.jsonl from
-  the track_usage hook; its score, accepted and declined items go to .claude/coach-history.md, committed, so the next run
+- **ops-review:** every 5 sessions, or at 50% of the window: `python tools/session_stats.py` (slips, guards, calls per turn,
+  chats past 200k), then `/kaizen:coach` (reads ~/.claude/coach-usage-log.jsonl from the track_usage hook; its score, accepted and declined items go to .claude/coach-history.md, committed, so the next run
   trends and never re-asks); its USAGE row says "ops-review done" (the session-start hook counts rows since it and
   prints OPS-REVIEW DUE at 5); usage trend and start cost; promote lessons to checks;
   condense the notes on schedule; dispatch research from the department queues and read the digests (Research
@@ -163,9 +163,12 @@ Everyone except Claude researches. Claude writes the questions and reads only th
 | Work | Who | Effort |
 |---|---|---|
 | Design, specs, briefs, hard engineering, judging art and renders | Opus | high |
-| Anything briefed exactly: code, content, tests, docs, audits | agy (Gemini 3.8 Flash), Cloudflare DeepSeek, or opencode :free for text | the tool's default |
+| Godot code with tests, UI renders, repo-wide discovery, docs | agy (Gemini 3.8 Flash) | medium (Feras 10-31) |
+| Hard logic: state machines, math, physics, debugging, every fix pass of a fast build | Cloudflare DeepSeek | max |
+| Mechanical, exact work with a Pattern file and tests: boilerplate, schema expansion, fixtures | `cf_build.sh <task> <brief> <base> fast` (DeepSeek, no reasoning; a failed check moves to max) | none |
+| Claude-only work | Haiku low for the simplest; Haiku medium or high beats Sonnet low or medium (Feras 10-31) | never Sonnet below high |
 | Reviewing and merging builders' branches, small fixes | the chat that launched the run (the father or its child), tiered (Protocols: Review) | high |
-| Scoped multi-step Claude work where Opus is overkill | a Sonnet subagent (Agent tool, model sonnet) with the advisor; loop cap 3 rounds | default |
+| Orchestrating builders, scoped multi-step Claude work where Opus is overkill | a Sonnet child chat; Haiku never orchestrates; loop cap 3 rounds | high |
 
 Speed, never needless spend: the cheapest worker that does the task well (Start here, step 3). Sonnet and the advisor
 (tested 2026-10-28): an Agent-tool subagent on Sonnet has the `advisor` tool and can call it (one probe, ~67k start

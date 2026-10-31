@@ -1,6 +1,7 @@
 # Brief: <task> (copy to docs/briefs/<task>.md; <= 80 lines; tools/test_template.py keeps the gate's headings here)
 You are in your own worktree on branch <gemini|oc>/<task> (made from origin/main; push the base first). Follow GEMINI.md, including
 <review_misses>. Load the <persona> skill (the persona from the docs/WORKFLOW.md Routing table; build_pipeline.sh pastes .agents/skills/<persona> into the prompt; our rules outrank its text).
+Pattern: <1-3 real repo files to copy, comma separated; the pipeline pastes them; required for `cf_build.sh ... fast`>
 Timebox: <N> min (<= 45; the pipeline only kills at AGY_TIMEOUT/OC_TIMEOUT, 90 min). First commit within 15 min, then small WIP commits: no commit for 25 min (IDLE_MIN) = NOWORK.
 
 ## Why

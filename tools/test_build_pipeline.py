@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Self-test for build_pipeline.sh, oc_task.sh, agy_task.sh and lib.sh on a toy repo: stub builder, stub memory, real git."""
+import json
 import os
 import subprocess
 import sys
@@ -23,6 +24,7 @@ name="$1"; root="$(git rev-parse --show-toplevel)"; wt="$(wt_dir)/$name"
 ensure_wt "$root" "$wt" "oc/$name" "$3" || exit 1
 read -t 0.3 -r _ ; echo "$?" > "$(wt_dir)/$name.stdin.rc"
 cp "$2" "$(wt_dir)/$name.prompt.seen"
+echo "model=${4:-}" >> "$(wt_dir)/$name.models"
 cd "$wt"
 case "${FAKE_MODE:-good}" in
   good) mkdir -p features; echo "## a" > features/a.gd; git add -A; git -c user.name=t -c user.email=t@t commit -qm feat ;;
@@ -144,6 +146,36 @@ def test_two_free_fix_passes_by_default():  # Feras 10-28: builder time is free,
         assert "Fix pass" in open(top + "/game-wt/job.fix.md", encoding="utf-8").read()
 
 
+def test_fix_passes_move_to_the_reasoning_model():  # row 18: a no-reasoning build, its failures go to DeepSeek at max
+    top, g = toy()
+    put(g + "/tools/check.sh", CHECK_COUNT)
+    git(g, "add", "-A")
+    git(g, "commit", "-qm", "check passes on its third run")
+    git(g, "push", "-q", "origin", "HEAD:main")
+    rc, out, err = pipeline(g, top, FIX_MODEL="think-model")
+    seen = open(top + "/game-wt/job.models", encoding="utf-8").read().split()
+    assert seen == ["model=", "model=think-model", "model=think-model"], seen
+
+
+def test_task_skills_and_pattern_files_reach_the_prompt():
+    top, g = toy()
+    brief = BRIEF + "Load the players-eye-gate skill.\nPattern: tests/t.gd, tests/ghost.gd\n"
+    rc, out, err = pipeline(g, top, brief=brief)
+    seen = open(top + "/game-wt/job.prompt.seen", encoding="utf-8").read()
+    assert "## Skill: players-eye-gate" in seen, "a .claude/skills task skill is pasted"
+    assert "## Pattern to follow: tests/t.gd" in seen and "check_true(true)" in seen, seen[-400:]
+    assert "WARN" in err and "tests/ghost.gd" in err and "Pattern to follow: tests/ghost" not in seen, err
+
+
+def test_fast_model_is_the_same_deepseek_without_reasoning():
+    cfg = json.load(open(os.path.join(TOOLS, "..", "opencode.json"), encoding="utf-8"))
+    models = cfg["provider"]["cloudflare-workers-ai"]["models"]
+    fast = models["deepseek-v4.1-flash-fast"]
+    assert fast["id"] in models and fast["options"]["reasoning_effort"] == "none", fast
+    conf = open(os.path.join(TOOLS, "builders.conf"), encoding="utf-8").read()
+    assert "cloudflare-workers-ai/deepseek-v4.1-flash-fast" in conf and "gemini-3.8-flash-medium" in conf
+
+
 def test_refuses_when_slots_full():
     top, g = toy()
     for n, b in (("a", "agy"), ("b", "cf")):
@@ -181,7 +213,8 @@ def test_idle_watchdog_kills_the_tree_and_says_nowork():
 
 def test_idle_after_commits_is_checked_not_nowork():  # review 2026-10-27: builders often hang after their last commit
     top, g = toy()
-    rc, out, err = pipeline(g, top, FAKE_MODE="commit_then_hang", IDLE_SEC="3", WATCH_POLL="1", **child_env())
+    # 3 s was shorter than the stub's worktree + first commit on a loaded machine: it read as NOWORK (10-31)
+    rc, out, err = pipeline(g, top, FAKE_MODE="commit_then_hang", IDLE_SEC="10", WATCH_POLL="1", **child_env())
     res = result(top)
     assert rc == 0 and res.startswith("PASS") and "idle" in res, (rc, res)
 

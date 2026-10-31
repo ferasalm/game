@@ -50,7 +50,7 @@ machinery, a brief, a paid call or anything that reaches Feras gets them all.
   picture, then details); foundations solid and flexible (tests, data-driven content, small modules, no hacks).
 - Aims, always learning: think deeply and critically; finish fast; maximum quality; minimum cost; save Feras's time;
   get more organized. Speed, never needless spend: each task goes to the cheapest worker that does it well (WORKFLOW
-  step 3: the father, builder, Haiku reader, review-* agent, Sonnet subagent + advisor, Opus child chat). Tie-break
+  step 3: the father, builder, Haiku worker, review-* agent, Sonnet high child, Opus child chat). Tie-break
   (Feras 10-28): quality is a hard gate (checks pass, Opus signs off); Claude tokens are minimised; builder time is free.
 - Opus orchestrates and owns every output that reaches Feras as if it did the work: it reviews whatever another model
   made, tiered (gates, a Haiku pass on big diffs, then Opus on the list and the risky hunks).

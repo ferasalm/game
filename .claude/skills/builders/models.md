@@ -2,7 +2,7 @@
 Model profiles, benchmarks, measured calibration scores, and failure modes.
 
 ## Gemini 3.8 Flash (agy)
-- **ID**: `gemini-3.8-flash-high` (`AGY_MODEL` in `tools/builders.conf`)
+- **ID**: `gemini-3.8-flash-medium` (`AGY_MODEL` in `tools/builders.conf`; Feras 10-31, the calibration lines below ran at high)
 - **Artificial Analysis**: Intelligence Index 31 (unverified, AA 2026-10-29), Coding Index 76.3 (unverified, AA 2026-10-29)
 - **Calibration**: Review 3/5 known bugs found twice (audit sec 5); race B reached passing code in ~20 min
 - **Known failure modes**: 1 of 10 findings harmful, 1 false; argued wrong side on fail-open/closed (audit sec 5); cannot review its own runs
@@ -19,8 +19,17 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
   limit was spent; opencode prints nothing and exits 0. Now --print-logs + the pipeline stops at once (NOWORK quota).
 - **Calibration (parser, 2 key bugs, 10-30, cf, low)**: valid block, 195 s, 25.5k out, ~$0.04: 1/2 key (non-UTF-8
   crash; CRLF missed), 1 real minor (--out crash), 2 doubtful (drive-letter path, reversed range), 1 unchecked (pipe escape)
-- **Known failure modes**: BREACH on protected files (race B); opencode free quota runs out (opencode.ai/go to subscribe)
-- **Best use**: Build (Godot code when agy is full, Python tools); review lens at low effort = nemotron's score
+- **Speed (cf_probe, 10-31, one 16-field Def task, n=1)**: `reasoning_effort: none` 6.7 s, 1.5k out, 228 tok/s, ~$0.002; max 167 s,
+  28.3k out, ~$0.034; `thinking: disabled` is ignored by Workers AI (it thought 72 s). Whole builds gain less: Godot checks do not speed up.
+- **Quality on that task**: none, bare prompt: untyped helpers (project.godot makes that a check failure), `is int` and `is PackedStringArray`
+  JSON traps; max, bare: typed, `is int`-style trap kept. none + code rules + Def examples (12 s): typed, Array handled, flagged the
+  DefReader house pattern, `is int` kept. So a Pattern file and the gates do the work; none is unmeasured on a real build.
+- **Non-reasoning, other work (10-31, Opus scored)**: sorting 8/8 in 0.44 s; GDScript question right in 0.56 s (clumsy one-liner);
+  diagnosed patch right in 1.0 s. Text only: a tool-using agent run is unmeasured.
+- **Known failure modes**: BREACH on protected files (race B); opencode free quota runs out (opencode.ai/go to subscribe);
+  on cf a streamed reply stops silently at the literal text `[DONE]` with finish "stop" (3 of 3, none; renamed: whole reply; max untested)
+- **Best use**: hard logic and debugging at max; `fast` (no reasoning) for exact work with a Pattern and tests, bulk text, quick code
+  questions, patches from a written diagnosis; review lens at max (cross-review at none not tested: builder time is free, ~$0.08 a review)
 
 ## NVIDIA Nemotron 3 Ultra :free (OpenRouter)
 - **ID**: `openrouter/nvidia/nemotron-3-ultra-550b-a55b:free` (`XR_OC_MODEL` in `tools/builders.conf`)
@@ -38,8 +47,10 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
 ## GLM-5.3-Flash (Cloudflare, opencode free)
 - **ID**: `cloudflare-workers-ai/@cf/zai-org/glm-5.3-flash` / `opencode/glm-5.3-flash-free`
 - **Artificial Analysis**: Intelligence Index 36 (unverified, AA 2026-10-29), Coding Index 70 (unverified, AA 2026-10-29)
-- **Calibration**: not run: cf answers (access checked 10-30); the opencode free route timed out (free quota spent)
-- **Best use**: Candidate bulk text after calibration
+- **Calibration**: vision works on cf (one synthetic image, right answer, 1.5 s, 10-31); real frames vs review-player not run. No
+  adjustable reasoning levels on the flash model (Feras 10-31; it still thought with `none`). Video, Terminal-Bench: unverified.
+  Code is its weak spot: the 16-field Def task took 813 s (first text 763 s, 44k out, 54 tok/s) vs DeepSeek none 6.7 s
+- **Best use**: Candidate screenshot pre-filter and bulk text after calibration; never the CLI step (check.sh, gate, merge are scripts)
 
 ## Laguna-S 2.1 :free (OpenRouter)
 - **ID**: `openrouter/laguna/laguna-s-2.1:free` (not listed in `tools/builders.conf`)
@@ -63,7 +74,7 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
 - **Best use**: Small text / helper tasks
 
 ## Settings in force (Feras 10-30)
-- agy: `gemini-3.8-flash-high` is the top level (agy refuses --effort max: "available: low, medium, high"); no output cap flag.
+- agy: `gemini-3.8-flash-medium` (Feras 10-31); `agy models` lists low, medium, high; no output cap flag.
 - Cloudflare DeepSeek 1017: reasoning_effort max (opencode.json, tools/cross_review.opencode.json) + opencode's hidden
   output cap raised to 384k, its full output (OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX in builders.conf; high effort: 900 s, 88k out). Parser set at max: valid block,
   443 s, 66k out, ~$0.08: 1/2 key, 1 real minor, 1 doubtful (less noise than low). Watch the first max build: if steps
@@ -79,7 +90,7 @@ and the measured calibration lines above. Calibrated = passed a gold set (D11).
 | Review lens on agy runs | cf DeepSeek 1017 at max (~$0.08); nemotron :free only as backup lens | yes (parser 1/2 at low and max; nemotron gold B 6/6) |
 | Review lens on cf/oc runs | agy | yes (hook diff 3/5) |
 | Research, licences | agy, then Opus re-reads 3 facts in a browser | partly: licences 3/3 right, AA numbers 1/3 invented |
-| Bulk text (summaries, sorting, notes) | cf GLM-5.3-flash (Feras 10-30), checked work only | no: row 18 calibrates it |
+| Bulk text (summaries, sorting, notes) | cf DeepSeek no reasoning (8/8 on one sort, 0.44 s); GLM-5.3-flash candidate | one sample; awaits Feras |
 | Screenshot yes/no gate | Clef-flash (cf, 9B vision decision model) as a pre-filter before review-player | no: calibrate on known frames first |
 | Error sorting, rubric scoring | Jev 1.13 (opencode decision API) | no: agy says it exists, unchecked |
 | Docs search (bge-m3 + reranker) | not before M1: grep over docs/MAP.md is enough for a small game | - |
