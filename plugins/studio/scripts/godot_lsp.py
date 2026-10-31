@@ -3,8 +3,7 @@
 Usage: python godot_lsp.py [--project DIR] [--port N] [--no-spawn] [--wait SECONDS]. Raw bytes are relayed both ways in
 two threads, so frames and unknown notifications (gdscript_client/changeWorkspace) pass through unchanged; the port is
 stable per worktree path, the editor is spawned only when nothing listens, and its tree is killed when this exits.
-Standard library only; the client side is plugins/studio/.lsp.json (system-v3 row 22, 2026-11-01).
-"""
+Standard library only; the client side is plugins/studio/.lsp.json (system-v3 row 22, 2026-11-01)."""
 import argparse
 import contextlib
 import os
@@ -24,14 +23,10 @@ CHUNK = 65536
 PLENTY_MB = 999999  # an unreadable memory figure must not stop the studio
 
 
-def normalize(path: str) -> str:
-    """One spelling per worktree: forward slashes, lower case, no trailing slash."""
-    return path.replace("\\", "/").rstrip("/").lower()
-
-
 def port_for(path: str) -> int:
     """A stable port in 40000..59999 from the worktree path, so two worktrees never fight over one server."""
-    return PORT_MIN + zlib.crc32(normalize(path).encode("utf-8")) % (PORT_MAX - PORT_MIN + 1)
+    key = path.replace("\\", "/").rstrip("/").lower().encode("utf-8")  # slash, case and trailing slash do not matter
+    return PORT_MIN + zlib.crc32(key) % (PORT_MAX - PORT_MIN + 1)
 
 
 def free_mb() -> int:
@@ -88,7 +83,10 @@ def godot_exe(project: str) -> str:
     try:
         done = subprocess.run(["bash", "tools/godot.sh"], cwd=project, capture_output=True, text=True, timeout=120)
         if done.returncode == 0 and done.stdout.strip():
-            return done.stdout.strip().splitlines()[-1].strip()
+            exe = done.stdout.strip().splitlines()[-1].strip()
+            if os.name == "nt" and len(exe) > 3 and exe[0] == "/" and exe[1].isalpha() and exe[2] == "/":
+                exe = exe[1].upper() + ":" + exe[2:]  # godot.sh prints an msys path (/c/dev/...) that Windows cannot run
+            return exe
     except (OSError, subprocess.SubprocessError):
         pass
     return os.environ.get("GODOT_BIN") or shutil.which("godot") or "godot"
@@ -107,9 +105,11 @@ def command_line(project: str, port: int) -> list:
 
 
 def spawn(project: str, port: int) -> subprocess.Popen:
-    """Starts the editor as its own process group, so stopping it also stops what it forked."""
+    """Starts the editor as its own process group, with the client's stdin/stdout kept away from it (stdout is the LSP
+    channel; Godot's console log would corrupt it). Its stderr stays visible as the bridge's own."""
     extra = {"start_new_session": True} if os.name != "nt" else {}
-    return subprocess.Popen(command_line(project, port), cwd=project, **extra)
+    return subprocess.Popen(command_line(project, port), cwd=project, stdin=subprocess.DEVNULL,
+                            stdout=subprocess.DEVNULL, **extra)
 
 
 def stop(proc: subprocess.Popen, project: str) -> None:
