@@ -1,0 +1,59 @@
+---
+name: handoff
+description: End-of-session wrap-up for the game repo. Runs the checks, logs the owner's decisions, curates LESSONS, adds a USAGE row, updates its rows of the HANDOFF.md queue, commits and pushes. Use when the user types /handoff, says "wrap up", or the chat's task is done. Context size never triggers it (Feras 10-31).
+---
+
+# Handoff (game)
+
+HANDOFF, DECISIONS and LESSONS load at every session start, so every line costs tokens in every future chat.
+
+0. **Mechanical steps, one call.** `bash tools/handoff.sh "<message>" [--main]` runs, in this order: `python tools/map.py`
+   (map), `python tools/doc_check.py` (doc_check), `bash tools/check.sh` (check; prints its last 15 lines, and every FAIL
+   line when it fails), commit, push to the current branch, and with `--main` the push to main plus CI. Read its last
+   line: `HANDOFF PASS`, or `HANDOFF FAIL <step>` with the step named; fix that step and run it again. The default target
+   is the current branch: only `--main`, with the owner's standing OK (DECISIONS), touches main. Do the steps below
+   first, so the one commit carries them.
+1. **Decisions.** Each decision the owner made this session: one dated line appended to docs/decisions-log.md
+   (`- YYYY-MM-DD | decision | why | by`), with his words where short; never delete or reword a log line. Then
+   update docs/DECISIONS.md (the loaded rules in force) or the docs/decisions-*.md file holding that line: edit or
+   add the one line the decision changes.
+2. **Lessons.** Anything that cost real time (an error, a wrong guess, nearly asking the owner for something you
+   could do): symptom -> cause -> fix, dated, verified only. Merge with similar entries; fix or delete wrong ones.
+   Max 100 lines: condense back to ~70 when it gets there (owner, 2026-10-22).
+3. **Usage.** One row in docs/USAGE.md via `python tools/session_stats.py --row <id>`: date, model (name and raw ID
+   from `get_session` when available), effort, each merged run with its Opus fixes and cross-review hits (cost per
+   verified merge, Feras 10-28), any hook/get_usage mismatch, task, share of the 5-hour window used if the owner told
+   you (`/usage`), result, and Kaizen (Feras 10-30): one improvement made, one proposed. An ops-review's row says
+   "ops-review done" (the session-start hook counts from it).
+4. **HANDOFF.md**, max 60 lines: one `## Queue` table (# | Task | Dept | Lane | Who | Status | Blocked by), then Open points
+   (Point | Owner | Since), This week, Parked and context (Feras 2026-10-27: no per-chat tracks). A /handoff updates its own rows,
+   removes its done rows, adds rows for work it found (Dept = a label from the docs/WORKFLOW.md Routing table; lane
+   builder with agy/cf/oc by default; `chat (taste|MCP|review|plan)` with Opus and its effort; `Feras`) and the Last
+   updated line, and rewrites its last section, "Prompt for the next chat": one line naming the row, model and effort
+   (Feras 10-31: one task); a Sonnet row's prompt starts with `/goal` (builders skill, Sonnet). Rows go in with
+   `python ${CLAUDE_PLUGIN_ROOT}/scripts/pm.py row ...`; `tools/doc_check.py` (inside handoff.sh) checks every row.
+   Then `bash tools/status.sh` and archive the side sessions it started whose work is on main.
+   Lean check (Feras 10-28): every non-Opus output merged this session was reviewed tiered (WORKFLOW Protocols:
+   Review: gates, a Haiku pass on big diffs, Opus on the list and risky hunks); anything sent to Feras carried a
+   review stamp (tools/hooks/review_stamp.py). Name any task an Opus chat did that a cheaper worker could have.
+5. **Commit and push.** `bash tools/handoff.sh "<one message saying what changed>" [--main]` and read its last line
+   (step 0). After a push to main, sync Feras's checkout (D10, 10-29) with one PowerShell call (the worktree guard
+   refuses `git -C`, and PowerShell has no bash on PATH): `Set-Location C:\dev\game; $s = git status --porcelain;
+   if ($s) { "DIRTY: $s" } else { & "C:\Program Files\Git\bin\bash.exe" tools/sync_main.sh 2>&1 | Select-Object
+   -Last 3 }`; last line SYNC PASS; DIRTY: leave it and name it in the report. A red CI run is fixed before the chat
+   ends (2026-10-27: main stayed red for 5 pushes because a Windows-only tool test ran on the Linux runner).
+6. **Report.** A department child chat (docs/WORKFLOW.md, Start here) ends with a report of 15 lines or fewer for the
+   father (a subagent runs no /handoff: the father writes its row): commits on main, what failed, questions for Feras. The father (or a chat Feras drives) tells the owner in
+   five short parts (Feras 10-29): Done (where: branch or main) | Still open | When (a calendar day) | How (the queue
+   row: Dept, lane, who) | Your move vs mine | Checked and not checked (each check run and read; what was not run,
+   and why). Every HANDOFF Open point is closed (its line removed, said in Done) or carried (its owner still right);
+   anything agreed this chat but not done becomes an Open point (point | owner | since; max 10, doc_check).
+   The report is written last: work merged after it (late requests) updates it before the final push. Every item in
+   it carries its status: done | in progress | planned (when) | not planned | waiting on Feras (only what he was asked in
+   this chat, with a pick: anything else, ask him now, then report). The same report goes at the top of
+   feras/BRIEFING.md (his one file; keep the last 5) via `pm.py report`, and the chat names that file. Feras 10-30:
+   the report is headed by day, date and time (GMT+3), never "early/late"; a row in parts gets one line per part
+   (a, b, c) with its status; and the "Open now" table at the top is rewritten (every queue row, Open point and carried
+   item: status, checked, his move or not, when). When the plan for the next 3 days changed, update those days'
+   calendar events (feras.almekhlaf@gmail.com, all-day, "Your moves today:" lists). New ideas go to docs/ideas.md,
+   not the queue.
