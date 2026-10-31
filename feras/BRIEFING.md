@@ -12,7 +12,7 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 | 4 | Row 5, you play M1 on PC and phone | waiting on Feras (later) | - | yes | after row 4 passes its gates |
 | 5 | Row 7, art batch (Bilqis v2, guard, props, icons) | queued | - | no | before Rodin credits end ~11-17 |
 | 6 | Research prompts: 5 for Gemini Deep Research (feras/research-prompts.md) | waiting on Feras | written, not run | yes: paste them; 1 helps row 6, 2 helps row 5 | before those rows |
-| 7 | Worktree cleanup Open point (row18c-gaps, row19-cleanup, row18-routing, b5_tests.log, base-xr-salvage) | planned | - | no | a later chat |
+| 7 | Cleanup Open point (empty row18-routing folder, b5_tests.log, remote base-xr-salvage) | planned | - | no | a later chat |
 | 8 | Coach picks left: 8 synced skills off, 9 connectors off, 10 one row part a chat, 11 archive agents, 12 Stop hook | waiting on Feras | measured, /skill-doctor and get_usage | yes: take or leave each | any day |
 | 9 | Row 20, audit leftovers (session_stats dates, lesson caps, Gameplay files, frame_score blank line) | not planned yet | listed | no | after row 5 |
 | 11 | Rows 8-11: free image-to-3D, asset pipeline, Obscura, art-bible pass | parked | - | no | after row 5 |
