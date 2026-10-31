@@ -31,7 +31,7 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 - Session start now warns in one line if the plugin is not loaded **done**.
 
 **Where this differs from the plan:**
-- **Skills stayed in `.claude/skills`** (the brief's fallback): moving them would lose the name-only setting and the `paths:` trigger. So the skills still list twice in worktree chats; row 24 is where that gets solved.
+- **Skills stayed in `.claude/skills`** (the brief's fallback): moving them would lose the name-only setting and the `paths:` trigger. A fresh session started inside a worktree lists each skill once (checked); the double listing seen in the chat that built row 22 did not reproduce there, so row 24 checks whether opening a chat from C:/dev/game and entering a worktree causes it.
 - **Your pick:** the 4 hooks leave settings.json at the row 25 gate, not now, so no chat loses its guards meanwhile.
 
 **Still open:** rows 23-25 planned. New Open point (yours, at row 25): after the merge, run `/plugin marketplace add C:/dev/game` once and accept the trust dialog.
