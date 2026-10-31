@@ -3,7 +3,7 @@ Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after 
 HANDOFF.md; this file is your view of it. "Open now" is rewritten at every /handoff; below it, reports newest first,
 each headed by its date and time (GMT+3): Done | Still open | When | How | Your move vs mine | Checked.
 
-## Open now (Sat 10-31 20:06)
+## Open now (Sat 10-31 20:55)
 | # | Open item | Status | Checked | Your move? | When |
 |---|---|---|---|---|---|
 | 1 | Row 3, M1 brief (real-time Rydan vs 2 guards, prison roof) | planned | - | start the next chat (prompt in HANDOFF) | Sun 11-01 |
@@ -12,14 +12,37 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 | 4 | Row 5, you play M1 on PC and phone | waiting on Feras (later) | - | yes | after row 4 passes its gates |
 | 5 | Row 7, art batch (Bilqis v2, guard, props, icons) | queued | - | no | before Rodin credits end ~11-17 |
 | 6 | Research prompts: 5 for Gemini Deep Research (feras/research-prompts.md) | waiting on Feras | written, not run | yes: paste them; 1 helps row 6, 2 helps row 5 | before those rows |
-| 7 | CLAUDE.md rule from /insights: pause or stop = halt, one-line status; answer a direct question first | done | in CLAUDE.md, duty 7 | no | - |
-| 8 | 22 skills never used add ~3k tokens a turn (/skill-doctor) | waiting on Feras | read | yes: turn off in /skills, or leave | any day |
+| 7 | Worktree cleanup Open point (row18c-gaps, row19-cleanup, row18-routing, b5_tests.log, base-xr-salvage) | planned | - | no | a later chat |
+| 8 | Coach picks left: 8 synced skills off, 9 connectors off, 10 one row part a chat, 11 archive agents, 12 Stop hook | waiting on Feras | measured, /skill-doctor and get_usage | yes: take or leave each | any day |
 | 9 | Row 20, audit leftovers (session_stats dates, lesson caps, Gameplay files, frame_score blank line) | not planned yet | listed | no | after row 5 |
-| 10 | Worktrees row19-cleanup and row18c-gaps | planned | - | no | next chat, when their chats are closed |
 | 11 | Rows 8-11: free image-to-3D, asset pipeline, Obscura, art-bible pass | parked | - | no | after row 5 |
 | 12 | OpenRouter key expired, so Nemotron is off | waiting on Feras | 401 read | yes: a new key in opencode, or leave it off | any day |
 | 13 | Bilqis's portraits: keep the Neon ones or overturn | waiting on Feras | - | yes | open since 10-27 |
+| 15 | Coach 4 and 6: copy 2 git-ignored files to the main checkout (commands below) | waiting on Feras | worktree copies smoke-tested | yes: 2 commands | any day |
 | 14 | Art homework into inbox/: concept pictures, empty plates, icon art | waiting on Feras | - | yes | open since 10-24 |
+
+## Sat 10-31 20:55: coach audit finished (Opus 5.5)
+**Done (on main):**
+- Coach record **done**: the 10-31 run was partial, not full, and nobody had declined the optimization. `.claude/coach-history.md` now says so. All 8 checklists are read.
+- heredoc_guard **done**: the Bash tool turns every doubled backslash into one, anywhere in a command. The guard missed 3 python forms and named the wrong cause. It now blocks a doubled backslash anywhere and every python heredoc form holding a backslash. 5 tests pass; a live probe was refused and a clean heredoc still ran.
+- Your picks: 1 stale memories **done**; 2 DECISIONS skillOverrides line **done**; 3 three more name-only skills **done**; 5 Edit and Write denied on `*.import`, `*.uid` **done**.
+- Deep CLAUDE.md optimization **done**, the first ever: 80 -> 76 lines, 6,972 -> 6,340 bytes. Only text that also lives elsewhere was cut, and no rule dropped. The list is in coach-history.
+
+**Still open:**
+- 4 and 6 **waiting on Feras**: applied in the worktree only, because the guard refuses a chat's edits to the main checkout. Both files are git-ignored, so a merge cannot carry them. The live log hook runs the main copy, so 6 has no effect until you copy it.
+- 8 synced skills off (~2.3k tokens a turn), 9 connectors off, 10 one row part a chat, 11 archive agents (~750), 12 Stop hook **waiting on Feras**.
+- 13 RTK, GDScript LSP, Context7 **not planned**. If you decline RTK yourself the score gains a point.
+- Cleanup Open point (Claude) **carried**.
+
+**When:** the copy, any day. The rest are yours to take or leave. **How:** Ops; both are HANDOFF Open points.
+
+**Your move vs mine:** run these two commands; mine is row 3 on Sun 11-01 (start the next chat).
+```
+cp C:/dev/game/.claude/worktrees/blissful-meninsky-3a269f/.claude/settings.local.json C:/dev/game/.claude/settings.local.json
+cp C:/dev/game/.claude/worktrees/blissful-meninsky-3a269f/.claude/hooks/track_usage.py C:/dev/game/.claude/hooks/track_usage.py
+```
+
+**Checked:** check.sh passed (582 tests); read before the merge. The hook tests and doc_check ran and were read. track_usage smoke on a throwaway home passed. **Not checked:** builder use of personas beyond briefs; 7,077 undated old tool calls; whether turning off synced skills affects your other projects; whether 20.4k MCP counts deferred tools; the backslash collapse on any other machine; review-feras did not run on this report. A hook fix cannot prove every future form is caught.
 
 ## Sat 10-31 20:06: row 18, last system pass (Opus 5.5 high)
 **Done (on main):**
@@ -97,24 +120,3 @@ Cross-review at non-reasoning: not tested, by my choice: builder time is free, a
 **When / How:** row 18(c) rest, Sat 10-31 16:00 (Ops, builders agy and cf, Opus gates). **Your move:** restart the PC before then; routing OK Sun.
 **Checked:** check.sh without Godot, pipeline tests (15), cf_probe and session_stats tests, a real `fast` build, cross-review. **Not run:** Godot tests
 (no Godot file changed; memory under the floor), review-feras (weekly limit at 96%).
-
-## Fri 10-30 03:45: opencode v2, row 18 part (a) (Opus 5.5)
-Row 18 has four parts: (a) move opencode to v2 [**done**, below]; (b) write its config in v2's own format [planned,
-Sat]; (c) calibrate the cheap models [planned, Sat-Sun]; (d) your routing OK [waiting on you, Sun]. Items 1-4 above say what each holds.
-**(a) Done (on main):** your exe (opencode 2.2.2, validly signed by Anomaly Innovations, opencode's maker) is installed next to
-v1 at ~/.local/opt/opencode-2.2.2 and pinned (auto-update off). Builders and cross-review now run it. I tested it in a throwaway repo first. Five v2 breaks found, all fixed with tests:
-1. `run` used a shared background service, which ignored each run's config, hid quota errors and outlived timeouts. Fix: `--standalone`.
-2. The log level must be lowercase.
-3. A new `execute` tool let the read-only reviewer run commands and fetch a web page. Fix: denied.
-4. The 384k output-cap variable is gone. Fix: set on the model instead.
-5. v2 converts any database it opens. Fix: v2 gets its own data dir.
-No hangs: an "ask" (reading .env) is auto-rejected, outside-folder reads are denied, and pipes run. A spent free quota
-now exits 1 (v1 exited 0). Every call stays under run_limited. No plugins to port.
-**Side effect:** an early test converted v1's default data dir (~/.local/share/opencode, interactive use only, no keys).
-v1 can't read it now; v2 can. The pipeline's v1 data (oc-cli) still works. A backup is in C:\Users\AUC\oc-v1-backup-2026-10-30.
-**Rollback:** one line: `OC_BIN=opencode OC_MAJOR=1` (tools/builders.conf).
-**Not confirmed:** that "max" effort reaches DeepSeek on Cloudflare. The config carries it, and a one-word test
-used 0 thinking tokens on v1 and v2 alike. That is planned for row 18(c), along with the native v2 config, 18(b).
-**When / How:** row 18 (b)-(d), Sat 10-31 16:00, once the weekly limit resets (Ops, builder agy, Opus gates). **Your move:** none for (a).
-**Checked:** check.sh without Godot (no Godot file changed), the pipeline (12) and cross-review (6) tests, live
-v2 probes. **Not run:** Godot tests, a real builder run on v2 (planned: the first 18(b) run).
