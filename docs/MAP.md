@@ -680,6 +680,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_build_gate.py`: Self-test for build_gate.py: python tools/test_build_gate.py (temp git repos, plain asserts, exit 1 on failure).
 - `tools/test_build_pipeline.py`: Self-test for build_pipeline.sh, oc_task.sh, agy_task.sh and lib.sh on a toy repo: stub builder, stub memory, real git.
 - `tools/test_cf_probe.py`: cf_probe: the stream folds into the right timings and tokens; effort, extras and an image reach the body.
+- `tools/test_cf_probe_stream.py`: cf_probe stream: a broken `data:` line is skipped and counted, never a crash; both good events survive.
 - `tools/test_check_slot.py`: check_slot.sh: a full set of slots makes the next run wait; a released or stale slot lets it in.
 - `tools/test_content_kinds.py`: ContentDB loads every content/**/*.json and errors on a kind it does not know, which breaks boot and every Godot test
 - `tools/test_cross_review.py`: Self-test for the cross-review findings parser (row 12 A/B, 2026-10-28): python tools/test_cross_review.py.
