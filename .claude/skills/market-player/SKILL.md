@@ -3,7 +3,7 @@ name: market-player
 description: Market brief and player-success checks for Neon Glitch: audience, comparables, platforms, price, and per-milestone checks (persona walkthrough, outside playtest, store signals). Use for any market, pricing, store-page or playtest-survey question. Claude drafts, Feras publishes.
 ---
 # Market and player (draft only: Feras decides, publishes and spends)
-Sources: the market-card role card (.agents/skills/market-card) and `.claude/agents/review-market`. Research is done by others
+Sources: the market-card role card (.agents/skills/market-card) and agent `studio:review-market`. Research is done by others
 (plan section 16: Feras's Gemini Deep Research, free models, agy; never Claude). Every number is marked verified or unverified;
 Gemini output is ideas only (LESSONS section 3).
 

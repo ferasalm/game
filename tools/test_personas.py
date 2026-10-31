@@ -46,7 +46,7 @@ def test_copies_match_the_source():
 
 
 def test_drift_is_caught():  # probe the check with one bad case (LESSONS: a check that only prints never fails)
-    path = sp.ROOT / ".claude/agents/ui-finish-gate-reviewer.md"
+    path = sp.ROOT / "plugins/studio/agents/ui-finish-gate-reviewer.md"
     old = path.read_text(encoding="utf-8") if path.exists() else None
     try:
         path.write_text((old or "") + "\nedited by hand\n", encoding="utf-8", newline="\n")

@@ -96,7 +96,7 @@ skills and persona the worker loads, its lane and its reviewer. Every brief name
 tools, docs and reviews whenever its quota is free (row 12); cf = Godot code when agy is full, Python tools; oc = text, drafts, review lenses (<= 2 Godot runs, 1 text run: Limits); chat =
 Opus for plan, taste, MCP, review. No department chat stays open between tasks; its lessons and research queue live in
 its skill folder. tools/doc_check.py fails on an unknown Dept, a persona with no .agents/skills/<name>/SKILL.md, a
-reviewer with no .claude/agents/<name>.md, and any .claude/agents/dept-*.md (retired to ~/.claude/archive, D7).
+reviewer with no plugins/studio/agents/<name>.md, and any plugins/studio/agents/dept-*.md (retired to ~/.claude/archive, D7).
 
 | Request | Dept | Skills | Persona | Lane | Reviewer |
 |---|---|---|---|---|---|

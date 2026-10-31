@@ -14,7 +14,7 @@ Timebox: <N> min (<= 45; the pipeline only kills at AGY_TIMEOUT/OC_TIMEOUT, 90 m
 1. <numbered, testable steps; numbers and text come from content and localization, never code>
 
 ## Do NOT edit
-D6 defaults, protected by tools/build_gate.py without being listed: existing tests, tools/, .github/ (edits and
+D6 defaults, protected by tools/build_gate.py without being listed: existing tests, tools/, .github/, plugins/ (edits and
 deletions; new test files are allowed) and every change under assets/ (incl. *.import). Keep this prose free of
 backticks: every backticked token in this section is a forbidden path, and May edit does not lift it.
 <one backticked path per line for anything else (a folder ends in /, globs allowed); an edit = BREACH>

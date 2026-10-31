@@ -3,8 +3,8 @@
 
 Warns (exit 0) at 75% of a cap. Caps: CLAUDE.md 80 lines, HANDOFF.md 60, docs/DECISIONS.md 70, docs/LESSONS.md 100, and 27 KB for all four
 (about 6k tokens loaded at every session start). Every HANDOFF queue row names a department from the
-docs/WORKFLOW.md Routing table and a lane; departments are labels (no .claude/agents/dept-*.md); every routing
-persona is in .agents/skills and every reviewer in .claude/agents; HANDOFF has an Open points table of at most 10
+docs/WORKFLOW.md Routing table and a lane; departments are labels (no plugins/studio/agents/dept-*.md); every routing
+persona is in .agents/skills and every reviewer in plugins/studio/agents; HANDOFF has an Open points table of at most 10
 lines; every decision is dated; a struck decision says what superseded it;
 docs/MAP.md is current (tools/map.py --check).
 """
@@ -53,13 +53,14 @@ check(dhead_ok, f"docs/WORKFLOW.md has a '## Routing' table: {' | '.join(ROUTE_H
 routes = [r for r in dtable[1:] if dhead_ok and len(r) == len(ROUTE_HEAD)]
 depts = {r[1].strip("*") for r in routes}
 # Departments are labels (option B, Feras 2026-10-28): no dept-* subagents; a row's persona and reviewer must exist
-for stem in (p.stem for p in (ROOT / ".claude/agents").glob("dept-*.md")):
-    check(False, f".claude/agents/{stem}.md: departments are labels (B), dept-* agents live in ~/.claude/archive")
+AGENTS_DIR = "plugins/studio/agents"  # the studio plugin holds the reviewer agents (row 22, 2026-11-01)
+for stem in (p.stem for p in (ROOT / AGENTS_DIR).glob("dept-*.md")):
+    check(False, f"{AGENTS_DIR}/{stem}.md: departments are labels (B), dept-* agents live in ~/.claude/archive")
 for row in routes:
     for persona in (x for x in row[3].split(", ") if x != "-"):
         check((ROOT / ".agents/skills" / persona / "SKILL.md").exists(), f"routing persona has .agents/skills/{persona}/SKILL.md: {row[:2]}")
     for rev in (x for x in row[5].split(" + ") if x != "-"):
-        check((ROOT / ".claude/agents" / f"{rev}.md").exists(), f"routing reviewer has .claude/agents/{rev}.md: {row[:2]}")
+        check((ROOT / AGENTS_DIR / f"{rev}.md").exists(), f"routing reviewer has {AGENTS_DIR}/{rev}.md: {row[:2]}")
 queue = table(texts["HANDOFF.md"], "## Queue")
 head = queue[0] if queue else []
 rows = [r for r in queue[1:] if r and r[0].isdigit()]

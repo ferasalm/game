@@ -7,6 +7,8 @@ if [ -z "$SESSION_START_REEXEC" ]; then
   input="$([ -t 0 ] || timeout 2 cat 2>/dev/null)"
   cwd="$(printf '%s' "$input" | sed -n 's/.*"cwd"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -n 1 | sed 's#\\\\#/#g')"
   [ -n "$cwd" ] && [ -d "$cwd" ] && cd "$cwd"
+  SESSION_ID="$(printf '%s' "$input" | sed -n 's/.*"session_id"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -n 1)"
+  export SESSION_ID  # the re-exec below has no stdin
 fi
 git rev-parse --show-toplevel > /dev/null 2>&1 || cd "${CLAUDE_PROJECT_DIR:-$(dirname "$0")/../..}" || exit 0
 cd "$(git rev-parse --show-toplevel)" || exit 0
@@ -33,6 +35,13 @@ top="$(awk -F'|' 'function t(s) { gsub(/^ +| +$/, "", s); return s }
 # last one that says "ops-review done"
 since="$(awk '/^\| 20/ { n++ } /ops-review done/ { n = 0 } END { print n + 0 }' docs/USAGE.md 2> /dev/null)"
 [ "${since:-0}" -ge 5 ] && echo "OPS-REVIEW DUE: $since sessions since the last; run it (/kaizen:coach first, WORKFLOW Protocols) unless HANDOFF This week dates it."
+# The studio plugin (row 22) carries the reviewer agents, the hook wiring and the Godot LSP; a plugin that fails to load
+# drops them silently. Its SessionStart hook leaves a marker named by session_id; hooks of one event run in parallel: wait.
+if [ -d plugins/studio ] && [ -n "$SESSION_ID" ]; then
+  marker="${TMPDIR:-/tmp}/neon-studio-loaded-$SESSION_ID"
+  for _ in 1 2 3 4 5 6 7 8; do [ -f "$marker" ] && break; sleep 0.5; done
+  [ -f "$marker" ] || echo "WARN: plugin studio is not loaded (reviewer agents and plugin hooks are off): start claude with --plugin-dir plugins/studio, or /plugin marketplace add C:/dev/game."
+fi
 echo "Next: tell the owner the TOP row (Dept, lane, who); the cheapest worker that does it well does it"
 echo "(docs/WORKFLOW.md, Start here step 3); bash tools/status.sh shows the state."
 exit 0

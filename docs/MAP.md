@@ -47,6 +47,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `.agents/skills/ui-designer/SKILL.md`
 - `.agents/skills/ui-finish-gate-reviewer/SKILL.md`
 
+## .claude-plugin
+- `.claude-plugin/marketplace.json`: content: ? x0
+
 ## .opencode
 - `.opencode/agent/art-card.md`
 - `.opencode/agent/blender-addon-engineer.md`
@@ -588,6 +591,18 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `localization/workshop.csv`
 - `localization/world.csv`
 
+## plugins
+- `plugins/studio/.claude-plugin/plugin.json`: content: ? x0
+- `plugins/studio/agents/review-canon.md`
+- `plugins/studio/agents/review-code.md`
+- `plugins/studio/agents/review-cost.md`
+- `plugins/studio/agents/review-feras.md`
+- `plugins/studio/agents/review-market.md`
+- `plugins/studio/agents/review-player.md`
+- `plugins/studio/agents/ui-finish-gate-reviewer.md`
+- `plugins/studio/hooks/hooks.json`: content: ? x0
+- `plugins/studio/scripts/loaded.sh`: Plugin SessionStart hook: leaves a marker named by the session_id so .claude/hooks/session-start.sh knows studio loaded.
+
 ## tests
 - `tests/base_test.gd`: Base class for test files
 - `tests/runner.gd`: Headless test runner: runs every test_* method of every res://**/tests/test_*.gd file
@@ -695,6 +710,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_frame_score.py`: Tests tools/frame_score.py. Run: python tools/test_frame_score.py
 - `tools/test_gate_checklist.py`: Tests for brief checklist verification in build_gate.
 - `tools/test_gate_d6.py`: Self-test for the D6 gate rules (2026-10-27): protected tests and assets, removed checks, new tests fail on base.
+- `tools/test_godot_lsp.py`: plugins/studio/scripts/godot_lsp.py bridges Claude Code (LSP over stdio) to Godot's LSP (TCP) (system-v3 row 22, 2026-11-01).
 - `tools/test_hook_heredoc.py`: Self-test for tools/hooks/heredoc_guard.py (LESSONS 4): a python heredoc holding a backslash, in any form, and a
 - `tools/test_hook_run.py`: Self-test for tools/hooks/run.sh: hooks run the session's own copy, a missing script never blocks a tool.
 - `tools/test_hook_stop_notify.py`: Self-test for tools/hooks/stop_notify.py: a Stop makes one balloon command, a repeat Stop stays quiet, bad input never blocks.
@@ -702,6 +718,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_map.py`: Self-test for map.py: only tracked files are mapped (an untracked file made CI fail "MAP.md current").
 - `tools/test_no_legacy_hero.py`: Guard: the hero's old code id stays gone (renamed to rydan, save v7, Feras 2026-10-27). Fails on the old id in the
 - `tools/test_personas.py`: The 10 personas are tailored to Neon Glitch (Feras 10-28: "not generic") and their copies never drift (row 1 item 9).
+- `tools/test_plugins.py`: The repo marketplace and the studio plugin stay loadable and consistent (system-v3 row 22, 2026-11-01).
 - `tools/test_pre_spend.py`: Self-test for pre_spend.py: a paid tool is blocked without Feras's OK in a user message; Hyper3D gets a reminder.
 - `tools/test_prompt_check.py`: prompt_check.py lints a brief, a one-shot worker prompt or a chat prompt before it is sent (system-v3 row 22, 2026-11-01).
 - `tools/test_py_runs.py`: Self-test for non-Godot builder runs (row 12 C, 2026-10-28): python tools/test_py_runs.py.

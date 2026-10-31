@@ -2,7 +2,7 @@
 """Build gate: judges a builder run before Claude reads it (NOWORK, BREACH, FAIL or PASS plus a WARN checklist).
 
 Also says when a merge may reuse the pipeline's check (a fast-forward onto the checked commit). DECISIONS 2026-10-23.
-D6 (2026-10-27): the brief needs a "## Do NOT edit" section; existing tests and the check machinery (tools/, .github/;
+D6 (2026-10-27): the brief needs a "## Do NOT edit" section; existing tests and the check machinery (tools/, .github/, plugins/;
 M/D) and anything under assets/ (incl. *.import) are protected unless "## May edit" lists them; removed asserts or test funcs FAIL; --run-new-tests py,gd runs
 each NEW test file against the base (a test that passes there proves nothing; .gd costs a Godot run in a check slot).
 Usage: build_gate.py gate --wt <worktree> --base <ref> --brief <file> --check <check.txt> [--fix-from <sha>]
@@ -55,7 +55,7 @@ def section_paths(brief_text, heading):
     return re.findall(r"`([^`\s]+)`", m.group(1)) if m else []
 
 
-MACHINERY = ("tools/", ".github/")  # the pipeline runs the worktree's own check.sh: editing it could fake a PASS
+MACHINERY = ("tools/", ".github/", "plugins/")  # the pipeline runs the worktree's own check.sh: editing it could fake a PASS; plugins/ holds hook wiring and reviewer agents (row 22)
 
 
 def protected_hits(status, may):

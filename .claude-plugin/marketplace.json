@@ -1,0 +1,8 @@
+{
+  "name": "neon",
+  "description": "Neon Glitch studio tools: reviewer agents, hook wiring and Godot language tools.",
+  "owner": { "name": "Feras" },
+  "plugins": [
+    { "name": "studio", "source": "./plugins/studio", "description": "How Neon Glitch is built: reviewer agents, hook wiring, Godot language tools." }
+  ]
+}

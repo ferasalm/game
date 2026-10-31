@@ -37,7 +37,7 @@ def run_check(handoff, claude_lines=61, workflow=WORKFLOW, agents=None):
     write(root, "HANDOFF.md", handoff)
     write(root, "docs/WORKFLOW.md", workflow)
     for name, lines in (agents if agents is not None else AGENTS).items():
-        write(root, f".claude/agents/{name}.md", lines)
+        write(root, f"plugins/studio/agents/{name}.md", lines)
     write(root, ".agents/skills/godot-gameplay-scripter/SKILL.md", ["# persona"])
     write(root, "docs/DECISIONS.md", ["x"] * 10)
     write(root, "docs/LESSONS.md", ["x"] * 10)
@@ -80,7 +80,7 @@ def test_queue_rows_need_a_department():
 def test_departments_are_labels_with_real_personas_and_reviewers():
     for agents, workflow, why in (
             ({**AGENTS, "dept-ops": ["---", "model: opus", "---"]}, WORKFLOW, "departments are labels (B)"),  # a dept-* agent
-            ({k: v for k, v in AGENTS.items() if k != "review-feras"}, WORKFLOW, "has .claude/agents/review-feras.md"),
+            ({k: v for k, v in AGENTS.items() if k != "review-feras"}, WORKFLOW, "has plugins/studio/agents/review-feras.md"),
             (AGENTS, [l.replace("godot-gameplay-scripter", "unity-scripter") for l in WORKFLOW], "has .agents/skills/unity-scripter"),
             (AGENTS, [l.replace("| Request | Dept |", "| Id | Mode |") for l in WORKFLOW], "'## Routing' table")):
         r = run_check(QUEUE, workflow=workflow, agents=agents)
