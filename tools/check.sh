@@ -6,20 +6,16 @@ cd "$(dirname "$0")/.."
 mkdir -p .check
 fails=0
 step() {
-  local name="$1"; shift
-  if "$@" > ".check/$name.log" 2>&1; then echo "ok   $name"
-  else echo "FAIL $name (.check/$name.log)"; grep -vE '^\s*$|\[ *[0-9]+% \]|DONE' ".check/$name.log" | tail -n 12 | sed 's/^/     /'; fails=$((fails + 1)); fi
+  local name="$1" t0=$SECONDS; shift
+  if "$@" > ".check/$name.log" 2>&1; then echo "ok   $name ($((SECONDS - t0)) s)"
+  else echo "FAIL $name ($((SECONDS - t0)) s) (.check/$name.log)"; grep -vE '^\s*$|\[ *[0-9]+% \]|DONE' ".check/$name.log" | tail -n 12 | sed 's/^/     /'; fails=$((fails + 1)); fi
 }
 . tools/lib.sh  # $py
-tool_tests() {  # every tools/**/test_*.py (a new test file is picked up by itself), then the agent-card check; lists ALL failures
-  local t bad=() log
-  for t in $(find tools -name 'test_*.py' | sort); do
-    log=".check/tool_$(echo "$t" | tr '/' '_').log"
-    $py "$t" > "$log" 2>&1 || { echo "--- $t"; tail -n 8 "$log"; bad+=("$t"); }
-  done
-  $py tools/oc_agents.py --check || bad+=(oc_agents)
-  for t in "${bad[@]}"; do echo "FAIL tool test: $t"; done
-  [ ${#bad[@]} -eq 0 ]
+tool_tests() {  # run $py tools/tool_tests.py, then $py tools/oc_agents.py --check; both always run, and it returns non-zero when either fails
+  local rc=0
+  $py tools/tool_tests.py || rc=1
+  $py tools/oc_agents.py --check || rc=1
+  return $rc
 }
 no_godot=0; [ "${1:-}" = "--no-godot" ] && no_godot=1
 step docs $py tools/doc_check.py

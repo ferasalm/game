@@ -62,7 +62,7 @@ def check_toy():
     os.makedirs(d + "/tools")
     for f in ("check.sh", "lib.sh", "builders.conf", "check_slot.sh"):
         shutil.copy(f"{TOOLS}/{f}", f"{d}/tools/{f}")
-    for f in ("doc_check.py", "lint_gd.py", "res_graph.py", "oc_agents.py"):
+    for f in ("doc_check.py", "lint_gd.py", "res_graph.py", "oc_agents.py", "tool_tests.py"):
         put(f"{d}/tools/{f}", "print('ok')\n")
     put(d + "/tools/run_godot.sh", '#!/bin/bash\necho "$@" >> "$(dirname "$0")/../godot.calls"\n', 0o755)
     put(d + "/.gitignore", ".check/\ngodot.calls\n")
@@ -217,7 +217,6 @@ def test_merge_run_never_reuses_a_py_check():
 
 
 if __name__ == "__main__":
+    from tool_tests import run_cases
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
-    for t in tests:
-        t()
-    print(f"test_py_runs: {len(tests)} tests passed")
+    run_cases(tests, "test_py_runs")
