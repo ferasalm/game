@@ -65,19 +65,19 @@ def check_oneshot(text: str) -> list[str]:
 def check_chat(text: str) -> list[str]:
     misses = []
     is_goal = text.startswith("/goal")
-    is_sonnet = is_goal or bool(re.search(r"\bModel:\s*Sonnet\b", text, re.I))
+    is_sonnet = is_goal or bool(re.search(r"\bModel:\s*(?:claude[\s-]*)?Sonnet\b", text, re.I))
 
     if is_sonnet:
         if not is_goal:
             misses.append("Sonnet prompt must start with /goal")
         if len(text) >= 4000:
             misses.append(f"Sonnet prompt exceeds 4000 characters ({len(text)})")
-        if not re.search(r"\b(?:\d+\s*turns?|turn\s+cap)\b", text, re.I):
+        if not re.search(r"\b(?:\d+[\s-]*turns?|turn\s+cap)\b", text, re.I):
             misses.append("Sonnet prompt missing turn cap")
 
     if not is_goal:
         for label in CHAT_LABELS:
-            pattern = rf"(?:(?:\b|^){re.escape(label)}:|^#+\s+{re.escape(label)}(?:\s|$))"
+            pattern = rf"(?:(?:\b|^){re.escape(label)}(?:\*\*)?:|^#+\s+{re.escape(label)}(?:\s|$))"
             if not re.search(pattern, text, re.M):
                 misses.append(f"missing chat label: {label}")
 
@@ -106,7 +106,7 @@ def main(argv=None) -> int:
         return code if code != 1 else 2
 
     try:
-        with open(args.file, "r", encoding="utf-8") as f:
+        with open(args.file, "r", encoding="utf-8-sig") as f:
             text = f.read()
     except Exception as exc:
         sys.stderr.write(f"Error reading {args.file}: {exc}\n")

@@ -149,6 +149,16 @@ def test_cli_rejects_an_unknown_kind_and_a_missing_file():
     assert done.returncode not in (0, 1), done.stdout + done.stderr
 
 
+def test_cross_review_misses_are_closed():  # row 22 cross-review (cf max), 2026-11-01
+    out = misses_text("chat", CHAT.replace("Model: Opus high", "Model: Claude Sonnet 4.5"))
+    assert "/goal" in out, out  # a Sonnet model line spelled with Claude is still Sonnet
+    bold = CHAT.replace("Goal:", "**Goal**:").replace("Report:", "**Report**:")
+    assert pc.check(bold, "chat") == []  # bold labels count, as in the oneshot kind
+    assert pc.check("/goal Row 22 is finished. A 40-turn cap applies.", "chat") == []
+    code, out = run_cli("﻿" + ONESHOT, "--kind", "oneshot")
+    assert code == 0, out  # a UTF-8 file saved with a BOM is not a miss
+
+
 if __name__ == "__main__":
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     for t in tests:
