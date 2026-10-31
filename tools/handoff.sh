@@ -62,7 +62,8 @@ if [ "$to_main" = 1 ]; then
     ci_word="$(tr -d '[:space:]' <<< "$ci_out")"
     [ "$ci_word" = success ] && break
     case "$ci_word" in
-      ""|null|in_progress|queued|requested|waiting|pending) ;;  # a run still on its way: poll
+      ""|null|in_progress|queued|requested|waiting|pending)  # a run still on its way: poll, and say so
+        echo "ci: ${ci_word:-no run yet}; waiting 20 s" ;;
       *) fail ci ;;
     esac
     [ "$waited" -ge 600 ] && fail ci
