@@ -1,0 +1,13 @@
+{
+  "godot": {
+    "command": "python",
+    "args": [
+      "${CLAUDE_PLUGIN_ROOT}/scripts/godot_lsp.py",
+      "--project",
+      "${CLAUDE_PROJECT_DIR}"
+    ],
+    "extensionToLanguage": { ".gd": "gdscript" },
+    "startupTimeout": 130000,
+    "restartOnCrash": false
+  }
+}
