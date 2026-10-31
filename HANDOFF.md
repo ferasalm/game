@@ -34,7 +34,7 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 | OpenRouter key expired (401, 10-31; the Nemotron backup lens died on it): a new key in opencode, or leave Nemotron off | Feras | 10-31 |
 | Bilqis's portraits are now the Neon ones: keep or overturn (archive-cleanup, decisions-log) | Feras | 10-27 |
 | Art homework into inbox/: concept pictures, an empty plate per scene (no characters, HUD or rain), icon art (row 7) | Feras | 10-24 |
-| Cleanup: worktrees row18c-gaps, row19-cleanup (locked), row18-routing, b5_tests.log, remote base-xr-salvage | Claude | 10-31 |
+| Cleanup: empty row18-routing folder (in use, 10-31), b5_tests.log, remote base-xr-salvage | Claude | 10-31 |
 
 ## This week (weekly limit resets Sat 16:00 GMT+3)
 | Day | Plan |
