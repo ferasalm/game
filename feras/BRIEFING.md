@@ -51,7 +51,7 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 1. Priority 1: before Tue, name 3 reference clips for "combat feel" and what M1 must do to pass. It's the biggest quality lever left, because no test can define feel.
 2. Priority 3: type `/usage` before each paste and say so if weekly use is 50% or more, until row 23's status line does this.
 3. Priority 2: stay near for row 22's first 20 minutes. Its settings or `/plugin` questions need you.
-4. Priority 3: start Sonnet chats with `/goal <done condition>` so they don't stop early (a new habit; I haven't tried it here).
+4. Nothing to do: `/goal` now starts every Sonnet prompt, at your request (done). Paste it as one message; it starts the work itself and stops at the row's done line or after 40 turns.
 5. Priority 4: close 3 old items in one word each: OpenRouter key (pick: leave it off), Bilqis's portraits, art homework before row 6.
 6. Priority 1: fix two play slots a week, so gated builds have a date.
 7. Priority 3: turn off claude.ai connectors you never use here (Crypto.com, Fiscal.ai, GoDaddy, Indeed, Zoom, vidIQ), between chats, never mid-chat.

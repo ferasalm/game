@@ -25,7 +25,7 @@ HANDOFF, DECISIONS and LESSONS load at every session start, so every line costs 
    removes its done rows, adds rows for work it found (Dept = a label from the docs/WORKFLOW.md Routing table; lane
    builder with agy/cf/oc by default; `chat (taste|MCP|review|plan)` with Opus and its effort; `Feras`) and the Last
    updated line, and rewrites its last section, "Prompt for the next chat": one line naming the row, model and effort
-   (Feras 10-31: one task). tools/doc_check.py checks every row. Then run
+   (Feras 10-31: one task); a Sonnet row's prompt starts with `/goal` (builders skill, Sonnet). tools/doc_check.py checks every row. Then run
    `bash tools/status.sh` and archive the side sessions it started whose work is on main.
    Lean check (Feras 10-28): every non-Opus output merged this session was reviewed tiered (WORKFLOW Protocols:
    Review: gates, a Haiku pass on big diffs, Opus on the list and risky hunks); anything sent to Feras carried a

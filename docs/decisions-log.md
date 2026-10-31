@@ -230,3 +230,4 @@ it. docs/DECISIONS.md is the loaded summary of the rules in force; docs/decision
 - 2026-10-31 | Row 21 runs as 3 Sonnet high chats in order, then a fresh Opus high gate; hard stop Mon 11-02; M1 brief Tue 11-03 | "3 Sonnet chats in order (Recommended)"; "Hard stop Mon 11-02 (Recommended)" | Feras
 - 2026-10-31 | A Sonnet high chat stuck (the same step failed twice) calls the Opus advisor without asking | "Yes, when stuck twice (Recommended)" | Feras
 - 2026-10-31 | Worker calls stay under auto mode, no project allow list: auto mode refused the settings.json edit as self-modification; all 4 non-Claude workers answered with no prompt | "Stay in auto mode (Recommended)" | Feras
+- 2026-10-31 | Every Sonnet prompt is one message starting /goal with a done condition and a turn cap; Sonnet shows each check's result in the chat and asks through AskUserQuestion | "Let's include "/goal" for sonnet in the prompt" | Feras

@@ -7,7 +7,7 @@ Do NOT edit: `features/`, `core/`, `content/`, `assets/`, `.agents/skills/`, `.c
 
 ## Steps
 1. Start: worktree, branch from origin/main, push to `system-v3`. Confirm the `advisor` tool is listed; if not, say so in the report (the rule then stays "ask Feras").
-2. First worker, agy `RUN_KIND=py`, driven by one fork: `tools/prompt_check.py <file> --kind brief|oneshot|chat`, exit 1 naming each miss. brief = the TEMPLATE headings; oneshot = Goal, Inputs, Do NOT, Output contract, Done, Stop rules; chat = the WORKFLOW department brief lines. You write `tools/test_prompt_check.py` first, red. cf max cross-reviews. This run is also the smoke test of the agy lane, the cf max lane and the fork: a failure here is fixed before anything else.
+2. First worker, agy `RUN_KIND=py`, driven by one fork: `tools/prompt_check.py <file> --kind brief|oneshot|chat`, exit 1 naming each miss. brief = the TEMPLATE headings; oneshot = Goal, Inputs, Do NOT, Output contract, Done, Stop rules; chat = the WORKFLOW department brief lines; a Sonnet prompt must start with `/goal`, be under 4,000 characters and hold a turn cap. You write `tools/test_prompt_check.py` first, red. cf max cross-reviews. This run is also the smoke test of the agy lane, the cf max lane and the fork: a failure here is fixed before anything else.
 3. Probe in a throwaway folder outside the repo, with a plugin of one skill, one agent, one hook and the LSP server. One line each in `docs/briefs/row22-probe.md`:
    a. A repo marketplace (`.claude-plugin/marketplace.json`) loads in a worktree chat. Does it load from the main checkout or the worktree? `--plugin-dir` for testing edits.
    b. Do short names work (`/builders`), or only `/studio:builders`?

@@ -50,6 +50,7 @@ Stays, with the reason:
 - A new design question stops and asks Feras with a pick. Max 3 fix rounds on one problem, then report.
 - Every worker prompt passes `tools/prompt_check.py` once row 22 ships it; until then it follows the builders Prompt recipes.
 - Each worker returns the one-line result; each chat ends with /handoff, a BRIEFING entry and the next prompt ready to paste.
+- Every Sonnet prompt is one message starting `/goal <condition>` (Feras 10-31): it starts the work itself, up to 4,000 characters. The condition names the row's Done-when lines, the /handoff, the next prompt and a turn cap (40). The goal check reads only the chat, so every check's result is shown there. Stuck: AskUserQuestion, never a turn ending on a question. The row 25 and M1 prompts are Opus: no `/goal`.
 
 ## Verification (row 25 prints this table; targets, not results)
 | Measure | Before | Target |

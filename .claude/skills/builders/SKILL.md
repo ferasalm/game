@@ -78,7 +78,8 @@ Per executor:
   - `/advisor opus`; a loop cap of 3 rounds;
   - "grep, then read the named lines";
   - the delegation briefs pre-written;
-  - milestone-only reports; finish the task, whatever the context size.
+  - milestone-only reports; finish the task, whatever the context size;
+  - the prompt is one message starting `/goal <done condition>` with a turn cap; it shows each check's result in the chat (the goal check reads only the chat) and asks with AskUserQuestion, never by ending a turn.
 - **agy** (Gemini Flash; Godot UI and code with renders; Python tools, docs and reviews when its quota is free; not creative):
   - geometry, colour and size numbers plus the concept path for any visual;
   - first commit within 15 minutes (the idle watchdog);
