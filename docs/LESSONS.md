@@ -55,3 +55,5 @@ naming the test; Godot code traps -> .claude/rules/code.md; builder-only -> .cla
 - A worktree-isolated session refuses a Bash call that starts powershell, or whose text names git in a complex form
   -> free memory: `bash tools/slots.sh`; edit text naming git with Edit; under the 3 GB floor a docs-only change runs
   `bash tools/check.sh --no-godot` (2026-10-28).
+- A repo plugin loads only from the MAIN checkout (a directory marketplace) and only after the workspace trust dialog; `claude -p` never loads it yet still registers the marketplace in ~/.claude/plugins/known_marketplaces.json; plugin skills ignore skillOverrides and `paths:` -> test edits with `claude --plugin-dir <worktree>/plugins/studio`, keep skills in .claude/skills, never name the real marketplace in a probe (2026-11-01).
+- A fork ran a cf cross-review with the bare base `system-v3` ("bad revision") and merge_run.sh defaulted to the gemini/ prefix for an oc/ branch -> write the base as origin/system-v3 and run `merge_run.sh <task> oc` for cf runs (2026-11-01).

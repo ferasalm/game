@@ -20,3 +20,6 @@ A failure that can't be fixed by the hard stop: leave main as it is, merge only 
 
 ## Done when
 All steps read and passed, or what is held is named; main green; Feras has the table, the 5-part report and the M1 prompt.
+
+## Carried from row 22 (Feras 11-01)
+Cutover: remove heredoc_guard, token_handoff, stop_notify and instructions-loaded from .claude/settings.json (plugins/studio/hooks/hooks.json holds them; tools/test_plugins.py checks the split), add extraKnownMarketplaces neon (path C:/dev/game) and enabledPlugins studio@neon (ask Feras with the exact diff if auto mode refuses), then Feras runs /plugin marketplace add C:/dev/game once and accepts the trust dialog. Proof: a fresh worktree chat on main shows no "plugin studio is not loaded" line, and studio:review-code runs. Skills stayed in .claude/skills (row 22 probe c, d): the double skill listing in worktree chats remains for row 24.

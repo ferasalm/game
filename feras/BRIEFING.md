@@ -3,11 +3,11 @@ Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after 
 HANDOFF.md; this file is your view of it. "Open now" is rewritten at every /handoff; below it, reports newest first,
 each headed by its date and time (GMT+3): Done | Still open | When | How | Your move vs mine | Checked.
 
-## Open now (Sat 10-31 23:59, with your answers)
+## Open now (Sun 11-01 01:50)
 | # | Open item | Status | Checked | Your move? | When |
 |---|---|---|---|---|---|
-| 0 | Row 22, studio plugin (prompt lint first; Sonnet high) | planned | brief written; 4 workers answered | yes: paste the prompt, stay near for its first settings or /plugin question | Sun 11-01 |
-| 1 | Row 23, pm plugin and one-call handoff (Sonnet high) | planned | brief written | yes: paste the prompt row 22 gives you | Sun 11-01, after row 22 |
+| 0 | Row 22, studio plugin (prompt lint, agents, hooks, Godot LSP) | done on branch system-v3 (not on main) | 16 + 10 + 6 tests, plugin validate --strict, a plugin reviewer ran | no | done Sun 11-01 |
+| 1 | Row 23, pm plugin and one-call handoff (Sonnet high) | planned | brief written | yes: paste the prompt in HANDOFF.md (Prompt for the next chat) | Sun 11-01 |
 | 2 | Row 24, one home, tidy, code audit, row 20 leftovers, cleanup (Sonnet high) | planned | brief written | yes: paste | Mon 11-02 |
 | 3 | Row 25, Opus gate, merge to main | planned | brief written | yes: paste, Opus high | Mon 11-02, always runs |
 | 4 | Row 3, M1 brief | planned | - | yes: paste | Tue 11-03 |
@@ -20,6 +20,25 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 | 11 | OpenRouter key renewed by you; Nemotron is back as the backup lens | done | one real call through opencode answered | no | done 10-31 |
 | 12 | Bilqis's portraits: keep the Neon ones or overturn | on hold until further notice (your call) | - | no | when you say |
 | 13 | Art homework into inbox/: concept pictures, empty plates, icon art | waiting on Feras | - | yes | before row 6 |
+
+## Sun 11-01 01:50: row 22, studio plugin (Sonnet 5.5 high)
+**Words:** plugin = a folder Claude Code loads; marketplace = the list that names it; fork = a copy of this chat sent off on a side job; LSP = Godot's language server (errors, find-references).
+
+**Done (branch system-v3, nothing on main):**
+- Prompt lint **done**: `tools/prompt_check.py <file> --kind brief|oneshot|chat` names every miss (Sonnet prompt: /goal, under 4,000 characters, a turn cap). Built by agy, cross-reviewed by cf max (6 flags, 4 real, fixed). It also proved the agy lane, the cf lane and the fork.
+- Plugin **done**: `plugins/studio` holds the 7 reviewer agents (now `studio:review-code` and so on), the hook wiring, and the Godot LSP bridge (cf max built it, agy review found nothing). `.claude-plugin/marketplace.json` names it; `claude plugin validate --strict` passes; a plugin reviewer agent ran.
+- Probes **done** (docs/briefs/row22-probe.md): a plugin loads only from the main checkout and only after you accept the trust dialog once; plugin skills ignore skillOverrides and `paths:`; plugin hooks see the worktree; the plugin costs 156 tokens at start; Godot's LSP works (errors in ~2 s, 189 references in 2 s, ~0.75 GB per worktree, `git status` clean).
+- Session start now warns in one line if the plugin is not loaded **done**.
+
+**Where this differs from the plan:**
+- **Skills stayed in `.claude/skills`** (the brief's fallback): moving them would lose the name-only setting and the `paths:` trigger. So the skills still list twice in worktree chats; row 24 is where that gets solved.
+- **Your pick:** the 4 hooks leave settings.json at the row 25 gate, not now, so no chat loses its guards meanwhile.
+
+**Still open:** rows 23-25 planned. New Open point (yours, at row 25): after the merge, run `/plugin marketplace add C:/dev/game` once and accept the trust dialog.
+**When:** row 23 Sun 11-01 (paste the prompt in HANDOFF.md); rows 24, 25 Mon 11-02.
+**How:** rows 23, 24: Ops, builders agy and cf, Sonnet high. Row 25: Opus high.
+**Your move vs mine:** yours: paste the row 23 prompt; the row 25 plugin step. Mine: everything else.
+**Checked / not checked:** read: prompt_check 16 tests, plugin tests 10, LSP tests 6, plugin validate, a live plugin agent call, the full check.sh (below). Not checked: loading the plugin through the marketplace in your own CLI (needs your trust dialog, row 25); the LSP inside a live Claude Code session (the bridge is tested against a fake server and the probe against real Godot). Noise seen: a `track_usage.py` hook error on every tool call (a hook outside the repo's settings points at a missing file); two deny rules in settings.json use `Write(...)` where only `Edit(...)` is matched. Neither is mine; both go to row 24.
 
 ## Sat 10-31 23:30: row 21, System v3 plan (Opus 5.5 xhigh)
 **Words:** agy = Gemini Flash builder; cf = Cloudflare DeepSeek builder; fork = a copy of a chat sent off on a side job; LSP = language server, which gives Claude Godot errors and find-references; gate = the checks a run must pass.
