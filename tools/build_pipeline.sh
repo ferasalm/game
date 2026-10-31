@@ -14,6 +14,7 @@ RUN_KIND="${RUN_KIND:-godot}"
 here="$lib_dir"; root="$(git rev-parse --show-toplevel)"; dir="$(wt_dir)"; wt="$dir/$name"; res="$wt.result"
 prefix="$(builder_prefix "$builder")"
 idle_sec="${IDLE_SEC:-$((IDLE_MIN * 60))}"; poll="${WATCH_POLL:-20}"
+pipeline_start=$(date +%s)
 
 refuse() { echo "REFUSED: $*" >&2; echo "REFUSED: $*"; exit 3; }
 case "$RUN_KIND" in godot) chk="bash tools/check.sh" ;; py) chk="bash tools/check.sh --no-godot" ;;
@@ -161,4 +162,7 @@ status="$(echo "$gate" | sed -n 's/^VERDICT //p')"; status="${status:-FAIL}"
   echo "--- commits"; git -C "$wt" log --oneline "$base..HEAD" | head -30
   echo "--- diffstat"; git -C "$wt" diff --stat "$base..HEAD" | tail -n 3; } > "$res"
 cat "$res"
+eff_m="${model:-}"; [ -n "$eff_m" ] || case "$builder" in agy) eff_m="${AGY_MODEL:-}" ;; cf) eff_m="${CF_MODEL:-}" ;; oc) eff_m="${OC_MODEL:-}" ;; esac
+effort="$(echo "$eff_m" | grep -o -E '(none|low|medium|high|max)' | tail -1 || true)"
+[ -f tools/runs_log.py ] && python tools/runs_log.py append --task "$name" --worker "$builder" --effort "${effort:--}" --gate "${status%% *}" --fix-passes "$fix" --minutes "$(( ($(date +%s) - pipeline_start) / 60 ))" --cost 0 --findings 0 || true
 [ "$status" = PASS ]

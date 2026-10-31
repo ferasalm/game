@@ -7,3 +7,4 @@
 *.ttf binary
 *.otf binary
 *.bin binary
+docs/runs.csv merge=union
