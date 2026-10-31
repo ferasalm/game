@@ -6,7 +6,7 @@ the code and runs every check itself. He is on Claude Pro: spend little.
 
 ## North star (docs/VISION.md)
 A small, replayable game whose combat feel wins every tie, set in Old Sana'a with a corrupted-trust story.
-Next goal: a free 20-30 min demo, PC (Steam) first, Android kept alive. Check every request against VISION.
+Next goal: a free 20-30 min demo, PC (Steam) first, Android kept alive.
 
 @HANDOFF.md
 @docs/DECISIONS.md
@@ -20,15 +20,12 @@ Next goal: a free 20-30 min demo, PC (Steam) first, Android kept alive. Check ev
 4. Before content work (story, names, art, UI, combat design): read docs/CANON.md.
 
 ## Enforced by a tool (obey its message unless get_usage contradicts it; then log the mismatch in the USAGE row)
-- Hand-off band 200-300k (Feras 10-29): a unit boundary near 250k (get_usage; any unit may finish to ~300k) or ~85% of the 5-hour window:
-  tools/hooks/token_handoff.py says "finish the unit" at 200k (not a stop: keep working), "/handoff" at 250k.
-- Paid generation needs Feras's "spend ok": tools/hooks/pre_spend.py (fails closed), asking for Ripple + Pre-mortem.
-- A render reaches Feras only after review-player + review-feras: tools/hooks/review_gate.py (stamp: review_stamp.py).
-- Queue rows name a Dept from the WORKFLOW Routing table and a lane; departments are labels, no dept-* agents; note
-  caps: tools/doc_check.py. Briefs keep Ripple, Pre-mortem, Tests, Checklist: test_template.py; builder edits: build_gate.
+- Hand-off band 200-300k (Feras 10-29): a unit boundary near 250k (get_usage; any unit may finish to ~300k) or ~85% of
+  the 5-hour window: tools/hooks/token_handoff.py says "finish the unit" at 200k (not a stop: keep working), "/handoff" at 250k.
+- Paid generation needs Feras's "spend ok" (pre_spend.py); a render reaches him only after review-player + review-feras
+  (review_gate.py; stamp: review_stamp.py); queue rows, note caps: doc_check.py; briefs: test_template.py; builder edits: build_gate.
 - Never-read paths (.godot/, *.import, *.uid): deny rules in .claude/settings.json. Checks: `bash tools/check.sh`
-  (read the FAIL lines; `cached:` = 2 slow tool tests skipped, tools/ unchanged; CI=1 runs them); one file:
-  `tools/run_godot.sh -s res://tests/runner.gd -- <name>`.
+  (read the FAIL lines; `cached:` = 2 slow tool tests skipped, tools/ unchanged; CI=1 runs them).
 
 ## Judgment duties (every model; each has its trigger; scaled to the task, Feras 10-28)
 1. A request or decision arrives -> check it against VISION; warn, critique and offer a better default (design too);
@@ -41,39 +38,38 @@ Next goal: a free 20-30 min demo, PC (Steam) first, Android kept alive. Check ev
 5. Before reading -> the reading rule: grep, then read small targeted excerpts yourself; a Haiku high reader only for a
    read over ~20k tokens or across many files. Never read assets/ binaries (pictures only when judging art, small),
    docs/research/gemini-blueprint-citations.md; gemini-blueprint.md one section at a time.
-Scale: a small, low-risk change (a few lines, no machinery, nothing player-visible) skips Ripple and pre-mortem;
-machinery, a brief, a paid call or anything that reaches Feras gets them all.
 6. The advisor tool only with Feras's OK (10-29): a model stuck (the same step failed twice) asks him "May I use
    /advisor opus?"; a subagent reports BLOCKED and its orchestrator asks.
 7. Feras says pause or stop -> halt tools, one-line status, wait for his go; a direct question -> answer it first (10-31).
+Scale: a small, low-risk change (a few lines, no machinery, nothing player-visible) skips Ripple and pre-mortem;
+machinery, a brief, a paid call or anything that reaches Feras gets them all.
 
 ## Lean process (Feras 10-28; how: docs/WORKFLOW.md Start here)
 - Motto COOKE (Clarity, Organization, Optimization, Kaizen, Efficiency); a fiduciary duty to Feras; top-down (big
   picture, then details); foundations solid and flexible (tests, data-driven content, small modules, no hacks).
 - Aims, always learning: think deeply and critically; finish fast; maximum quality; minimum cost; save Feras's time;
   get more organized. Speed, never needless spend: each task goes to the cheapest worker that does it well (WORKFLOW
-  step 3: the father, builder, Haiku worker, review-* agent, Sonnet high child, Opus child chat). Tie-break
-  (Feras 10-28): quality is a hard gate (checks pass, Opus signs off); Claude tokens are minimised; builder time is free.
+  step 3). Tie-break (Feras 10-28): quality is a hard gate (checks pass, Opus signs off); Claude tokens are minimised;
+  builder time is free.
 - Opus orchestrates and owns every output that reaches Feras as if it did the work: it reviews whatever another model
   made, tiered (gates, a Haiku pass on big diffs, then Opus on the list and the risky hunks).
 - IMPORTANT: one task, model and effort per chat; a follow-up or correction of <= ~10 tool calls stays (its cache is
   cheaper), a new multi-step task opens a fresh chat. get_usage at the start and before a big step. Independent steps
   go as parallel tool calls in one message, never chained shell (the worktree guard refuses it; each refusal = a call).
-- Builders write when the brief is shorter than the work and the risk is low or well tested (<= 2 Godot runs, 1 text
-  run); Opus writes small, risky machinery itself (hooks, gates, slots, saves). Claude plans, briefs (TEMPLATE),
-  reviews and merges. Every brief names its persona (.agents/skills); our rules outrank persona text. One builder a
-  task, no races (10-28); a run red on the pipeline itself: Opus fixes the pipeline and re-gates.
+- Builders write when the brief is shorter than the work and the risk is low or well tested; Opus writes small, risky
+  machinery itself (hooks, gates, slots, saves). Claude plans, briefs (TEMPLATE), reviews and merges. A run red on the
+  pipeline itself: Opus fixes the pipeline and re-gates.
 - Edit, don't rewrite; no recaps; a few lines to the owner; side sessions report only at milestones; leave one tool,
   check, skill or doc better. Every problem or fix named to Feras carries its status (Feras 10-29): done | in
   progress | planned (when) | not planned | waiting on Feras.
 - Code rules + Godot traps: .claude/rules/code.md (loads with code; in builder prompts). Every rule and fixed bug
-  gets a test; a check counts only when its output was read. Python is `python` here (not python3).
+  gets a test; a check counts only when its output was read.
 
 ## The owner's limits
 - He decides scope, story, art direction, spending, models and releases; Claude advises with a recommended
   default, then logs his decision in docs/decisions-log.md and updates DECISIONS or CANON (never re-argued).
-- $0 art budget: free route first (WORKFLOW routes); paid calls: the "spend ok" hook above and one docs/SPEND.md line each. Every asset
-  gets a manifest entry with source and licence. Never buy, sign up for or publish anything on his behalf.
+- $0 art budget: free route first (WORKFLOW routes); paid calls: one docs/SPEND.md line each. Every asset gets a
+  manifest entry with source and licence. Never buy, sign up for or publish anything on his behalf.
 
 ## Branches
 IMPORTANT: no chat edits or runs git in C:\dev\game: work in your own worktree, push it, end with /handoff (Open points

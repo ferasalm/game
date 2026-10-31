@@ -10,7 +10,7 @@ UI): docs/CANON.md, read before any content work. D1-D22 = the process audit pla
 - 2026-10-29 | Process audit P1 -> P2 -> P0 -> P3 -> P4 ran before game work (D12; done: rows 1, 12, 15, 16, 17 closed 10-28/30; row 18 system pass next, then M1, Feras 10-30); repo public until before the first public demo, then private (D16) | Feras
 ### Process
 - 2026-10-26 | Look gate: no system work on a scene until Feras OKs its render from the play camera; player's-eye gate (eye_gate) before any build reaches him, apart from check.sh (D5); shared code never names one game mode (layer lint) | Feras
-- 2026-10-27 | Claude is Feras's advisor (D21): checks requests against VISION, warns with a better default, maps ripples (docs/design/systems-map.md, a Ripple section in every spec), logs his repeated notes (docs/feras-notes.md), review-feras before anything reaches him; the Opus standard (D22) is in CLAUDE.md as 5 judgment duties, each with its trigger, apart from the rules a tool enforces (row 1, 10-28) | Feras
+- 2026-10-27 | Claude is Feras's advisor (D21): checks requests against VISION, warns with a better default, maps ripples (docs/design/systems-map.md, a Ripple section in every spec), logs his repeated notes (docs/feras-notes.md), review-feras before anything reaches him; the Opus standard (D22) is in CLAUDE.md as judgment duties, each with its trigger, apart from the rules a tool enforces (row 1, 10-28) | Feras
 - 2026-10-26 | Kaizen: Claude plans strategically, keeps VISION current, upgrades one tool, check, skill or doc each session | Feras
 - 2026-10-28 | The lean process: CLAUDE.md Lean process (aims and their tie-break, the cheapest worker that does it well, Opus reviews every non-Opus output and owns what reaches Feras); delegate when the brief is shorter than the work and the risk is low or well tested, Opus writes small, risky machinery; judgment duties scale with the task; FIX_PASSES=2 free fix passes; USAGE rows record each merged run (10-28, Tokenomics review) | Feras
 - 2026-10-28 | Departments = labels (option B; supersedes the 10-28 hybrid): a queue row's Dept names the skills, persona and reviewer the chat loads; the father works through builders, Haiku readers and review-* agents; an Opus child chat (own worktree) only for long, taste, MCP or builder-waiting work, as many as needed (builder caps and memory floor hold); no dept-* subagents (row 1 retires them) | Feras
@@ -41,7 +41,7 @@ UI): docs/CANON.md, read before any content work. D1-D22 = the process audit pla
 - 2026-10-23 | Briefs: TEMPLATE, gate-tested Checklist; Haiku diff pass before Opus (design, renders); tools/slots.sh counts slots | Feras
 - 2026-10-27 | ~/.claude tidy: unused agents and skills moved to ~/.claude/archive (MOVED.txt), never deleted (D7) | Feras
 - 2026-10-25 | Story map: docs/story/rydan.twee <-> Twine via tools/twine_sync.py; Twine library in docs/story/twine (git-ignored) | Feras/Claude
-- 2026-10-21 | Game skills: .agents/skills/ copied to .claude/skills/ (skillOverrides name-only set, NOT taking effect 10-27: unverified) | Feras
+- 2026-10-21 | Game skills: .agents/skills/ copied to .claude/skills/ (skillOverrides name-only works: < 20 tokens each, /skill-doctor 10-31) | Feras
 ### Engine and code
 - 2026-10-27 | Godot 4.7.2 pinned; typed GDScript; Windows first, exes git-ignored; Mobile renderer + touch controls + Android CI export from M1 (D17) | Feras/Claude
 - 2026-10-19 | Min target: Dell Latitude 5520 (16 GB) at 60 FPS, and Feras's phone (D17) | Claude

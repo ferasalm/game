@@ -15,7 +15,11 @@
       "Read(**/*.mp4)",
       "Read(**/*.webm)",
       "Read(**/*.ttf)",
-      "Read(**/*.otf)"
+      "Read(**/*.otf)",
+      "Edit(**/*.import)",
+      "Write(**/*.import)",
+      "Edit(**/*.uid)",
+      "Write(**/*.uid)"
     ]
   },
   "skillOverrides": {
@@ -29,7 +33,10 @@
     "godot-shader-developer": "name-only",
     "level-designer": "name-only",
     "narrative-designer": "name-only",
-    "technical-artist": "name-only"
+    "technical-artist": "name-only",
+    "ui-designer": "name-only",
+    "ui-finish-gate-reviewer": "name-only",
+    "market-player": "name-only"
   },
   "hooks": {
     "SessionStart": [
