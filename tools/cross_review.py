@@ -65,23 +65,26 @@ def _parse_finding(line: str):
 def parse(text: str) -> dict:
     lines, err = _extract_block(_ANSI.sub("", text).replace("\r", ""))
     if err:
-        return {"status": "INVALID", "findings": [], "reason": err}
+        return {"status": "INVALID", "findings": [], "reason": err, "rejected": []}
     if lines == ["NONE"]:
-        return {"status": "OK", "findings": [], "reason": ""}
+        return {"status": "OK", "findings": [], "reason": "", "rejected": []}
     if "NONE" in lines:
-        return {"status": "INVALID", "findings": [], "reason": "NONE mixed with other lines"}
+        return {"status": "INVALID", "findings": [], "reason": "NONE mixed with other lines", "rejected": []}
     if len(lines) > 12:
-        return {"status": "INVALID", "findings": [], "reason": f"too many findings ({len(lines)} > 12)"}
-    findings = []
+        return {"status": "INVALID", "findings": [], "reason": f"too many findings ({len(lines)} > 12)", "rejected": []}
+    findings, rejected = [], []
     for line in lines:
         finding, ferr = _parse_finding(line)
         if ferr:
-            return {"status": "INVALID", "findings": [], "reason": ferr}
-        findings.append(finding)
-    return {"status": "OK", "findings": findings, "reason": ""}
+            rejected.append(ferr)
+        else:
+            findings.append(finding)
+    if not findings:
+        return {"status": "INVALID", "findings": [], "reason": rejected[0] if rejected else "empty findings block", "rejected": rejected}
+    return {"status": "OK", "findings": findings, "reason": "", "rejected": rejected}
 
 
-def _format_markdown(findings: list[dict]) -> str:
+def _format_markdown(findings: list[dict], rejected: list[str] = None) -> str:
     if not findings:
         return "NONE\n"
     rows = [
@@ -94,7 +97,13 @@ def _format_markdown(findings: list[dict]) -> str:
         scen = f["scenario"].replace("|", r"\|")
         fix = f["fix"].replace("|", r"\|")
         rows.append(f"| {sev} | {loc} | {scen} | {fix} |")
-    return "\n".join(rows) + "\n"
+    out = "\n".join(rows) + "\n"
+    if rejected:
+        rej = ["", "## Rejected lines (the parser could not read these: read them)"]
+        for r in rejected:
+            rej.append(f"- {r}")
+        out += "\n".join(rej) + "\n"
+    return out
 
 
 def main(argv=None) -> int:
@@ -121,10 +130,11 @@ def main(argv=None) -> int:
         h = sum(1 for f in res["findings"] if f["severity"] == "high")
         m = sum(1 for f in res["findings"] if f["severity"] == "medium")
         l = sum(1 for f in res["findings"] if f["severity"] == "low")
-        print(f"CROSS OK {len(res['findings'])} (high {h}, medium {m}, low {l})")
+        rej = f", {len(res['rejected'])} rejected" if res.get("rejected") else ""
+        print(f"CROSS OK {len(res['findings'])} (high {h}, medium {m}, low {l}){rej}")
         if args.out:
             with open(args.out, "w", encoding="utf-8", newline="\n") as f:
-                f.write(_format_markdown(res["findings"]))
+                f.write(_format_markdown(res["findings"], res.get("rejected")))
         return 0
     print(f"CROSS INVALID {res['reason']}")
     if args.out:
