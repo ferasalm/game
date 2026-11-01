@@ -1,4 +1,6 @@
 # Lessons archive (lookup only, never loaded; first section 3D-only, moved 2026-10-25 when 3D was archived, tag 3d-archive)
+Triage of docs/LESSONS.md (D9, 10-28): a line a test enforces (deleting it, a FAIL still stops the next chat) -> here, naming the
+test; Godot code traps -> .claude/rules/code.md; builder-only -> .claude/skills/builders/lessons.md.
 
 - Lathe garments: torso pieces end at the waist over pelvis pieces raised 0.15 m; coats split at the pelvis (2026-10-22).
 - Rodin glb: centred feet, other bone axes, stale buffers, props baked into the body -> tools/rodin (LOD indices, glb

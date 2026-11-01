@@ -1,6 +1,5 @@
 # Lessons (curated; symptom -> cause -> fix; dated; max 100 lines; aim ~50; condense back to ~70)
-Triage (D9, 10-28): a line a test enforces (deleting it, a FAIL still stops the next chat) -> docs/lessons-archive.md
-naming the test; Godot code traps -> .claude/rules/code.md; builder-only -> .claude/skills/builders/lessons.md.
+Triage rules (D9): docs/lessons-archive.md header.
 
 ## 1. You can do this yourself
 - check.sh `exit code 124` with no FAIL line = the 600 s timeout, not a test (10-19/23); 124/139 with "Parameter mem is null" while other Godot runs are open = memory: rerun first (10-23).

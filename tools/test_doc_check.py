@@ -118,12 +118,19 @@ def test_a_second_worker_routing_table_fails():  # row 24 (one home): the builde
     assert arch.returncode == 0, "archived docs are history, not a routing table\n" + arch.stdout
 
 
+def test_a_second_routing_table_in_a_plugin_or_a_persona_fails():  # row 25 lens: the scan missed plugins/ and .agents/
+    for name in ("plugins/pm/skills/x/SKILL.md", ".agents/skills/p/SKILL.md"):
+        r = run_check(QUEUE, extra={".claude/skills/builders/SKILL.md": SKILL_TABLE, name: SKILL_TABLE})
+        assert r.returncode == 1 and "second worker routing table" in r.stdout and name in r.stdout, name + "\n" + r.stdout
+
+
 if __name__ == "__main__":
     test_warns_at_75_percent_but_passes()
+    test_a_second_routing_table_in_a_plugin_or_a_persona_fails()
     test_queue_rows_need_a_lane()
     test_queue_rows_need_a_department()
     test_departments_are_labels_with_real_personas_and_reviewers()
     test_open_points_table_needed_and_capped()
     test_a_second_worker_routing_table_fails()
     test_warns_when_always_loaded_bytes_reach_75_percent()
-    print("test_doc_check: 7 tests passed")
+    print("test_doc_check: 8 tests passed")

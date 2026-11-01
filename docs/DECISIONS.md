@@ -1,7 +1,6 @@
 # Decisions in force: the rules most tasks need (full history: docs/decisions-log.md)
-Each line: date of the deciding entry | the rule as it stands today | by. Update a line when a later decision changes
-it; log every new decision verbatim in docs/decisions-log.md too. Game content (world, story, heroes, combat, art,
-UI): docs/CANON.md, read before any content work. D1-D22 = the process audit plan (docs/archive/audits/2026-10-27-*).
+Line format and update rule: docs/decisions-log.md header. Game content: docs/CANON.md, read before any content work.
+D1-D22 = the process audit plan (docs/archive/audits/2026-10-27-*).
 Read before the work, not at start: docs/decisions-tools.md (builders, models, paid tools, pipeline, assets tooling);
 docs/decisions-process.md (how chats, reviews, hand-offs and notes run; changing the process). Same line format.
 

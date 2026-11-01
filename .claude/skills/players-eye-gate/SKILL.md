@@ -1,6 +1,6 @@
 ---
 name: players-eye-gate
-description: The gate before any build reaches Feras: record frames of the real scene, measure, have the calibrated player lens read them against the acceptance list, then Opus confirms the misses. Use before telling Feras to play or look at anything visual.
+description: The gate before any build reaches Feras (process: DECISIONS Process, look gate). Use before telling Feras to play or look at anything visual.
 paths:
   - "features/**"
   - "assets/**"

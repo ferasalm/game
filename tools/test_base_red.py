@@ -4,6 +4,7 @@ import os
 import subprocess
 import sys
 import tempfile
+import time
 
 TOOLS = os.path.dirname(os.path.abspath(__file__)).replace("\\", "/")
 sys.path.insert(0, TOOLS)
@@ -88,6 +89,47 @@ def test_it_says_when_it_could_not_run():
     top, g = toy()
     rc, out = run(top, g, "# brief\n", base="no-such-commit")
     assert rc == 2 and "could not run" in out, out
+
+
+def test_a_brief_naming_another_directorys_test_claims_nothing():
+    assert base_red.foreign(["tools/b/test_x.py"], "## Tests\n- tools/a/test_x.py\n") == ["tools/b/test_x.py"]
+
+
+def test_a_bare_name_still_claims_by_basename():
+    assert base_red.foreign(["tools/b/test_x.py"], "## Tests\n- test_x.py\n") == []
+
+
+def test_a_longer_file_name_claims_nothing():
+    assert base_red.foreign(["tools/test_a.py"], "## Tests\n- tools/test_a.py.bak\n") == ["tools/test_a.py"]
+    assert base_red.foreign(["tools/test_a.py"], "## Tests\n- tools/test_a.py.\n") == []  # a period ends the line
+    assert base_red.foreign(["tools/test_a.py"], "## Tests\n- tools/test_a.py, tools/test_b.py\n") == []
+    assert base_red.foreign(["tools/test_a.py"], "## Tests\n- (tools/test_a.py)\n") == []
+
+
+def stale_worktree(g, age_s):
+    """A registered worktree in a base_red* temp dir whose age is age_s: what a run killed by timeout leaves."""
+    stale = tempfile.mkdtemp(prefix="base_red").replace("\\", "/")
+    git(g, "worktree", "add", "-q", "--detach", stale + "/wt", "HEAD")
+    old = time.time() - age_s
+    os.utime(stale, (old, old))
+    return stale
+
+
+def test_a_worktree_left_by_a_killed_run_is_removed():
+    top, g = toy()
+    stale = stale_worktree(g, 2 * 3600)
+    rc, out = run(top, g, "# brief\n")
+    assert rc == 0, out
+    assert len(git(g, "worktree", "list").stdout.splitlines()) == 1, "a killed run's worktree stayed registered"
+    assert not os.path.exists(stale + "/wt"), "a killed run's worktree directory stayed"
+
+
+def test_a_fresh_worktree_of_a_concurrent_run_stays():
+    top, g = toy()
+    live = stale_worktree(g, 5)  # another launch is still testing its base: never pull its checkout away
+    rc, out = run(top, g, "# brief\n")
+    assert rc == 0, out
+    assert os.path.exists(live + "/wt") and len(git(g, "worktree", "list").stdout.splitlines()) == 2
 
 
 if __name__ == "__main__":

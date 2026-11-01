@@ -1,6 +1,8 @@
 # Decisions log (append-only, verbatim history; not loaded at start)
 One line each: date | decision | why | by. Never delete or reword; strike through (~~...~~) and say what superseded
 it. docs/DECISIONS.md is the loaded summary of the rules in force; docs/decisions-archive.md holds struck lines.
+DECISIONS.md line format: date of the deciding entry | the rule as it stands today | by. Update a line when a later decision
+changes it; log every new decision verbatim here too.
 
 ## Log
 - 2026-10-22 | Superseded lines move to docs/decisions-archive.md unchanged | keeps this file under its cap | Claude

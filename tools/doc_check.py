@@ -96,9 +96,9 @@ if (ROOT / "docs").exists():
         rel = p.relative_to(ROOT).as_posix()
         if not (rel.startswith("docs/archive/") or rel.startswith("docs/research/")):
             docs_md.append(p)
-if (ROOT / ".claude/skills").exists():
-    for p in (ROOT / ".claude/skills").rglob("*.md"):
-        docs_md.append(p)
+for sub in (".claude/skills", "plugins", ".agents/skills"):  # plugins and personas feed prompts too (row 25 lens)
+    if (ROOT / sub).exists():
+        docs_md.extend((ROOT / sub).rglob("*.md"))
 
 for p in docs_md:
     rel = p.relative_to(ROOT).as_posix()

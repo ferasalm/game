@@ -2,15 +2,7 @@
 Last updated: 2026-11-01 (row 25 gate run by Sonnet high without Opus sign-off, merged to main on Feras's OK; held items in Open points), Sonnet 5.5.
 Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Open points).
 
-## How this file works (Feras 2026-10-27; departments 10-28; Rank 1 11-01)
-- One queue, top row first. A chat edits its own rows (Status, Blocked by) and adds rows for new work it finds.
-- Dept: a label (B, Feras 10-28): the skills, persona and reviewer the chat loads (docs/WORKFLOW.md Departments). Long,
-  taste, MCP or builder-waiting rows go to an Opus child chat (it writes its own row; Status "child open: <branch>").
-- Lane: who does the work inside it: builder (agy, cf, oc) by default; chat = the Opus or Sonnet high chat itself, only for
-  taste, MCP (Blender, Flow, Rodin), review or plan, said in brackets; Feras = his move. tools/doc_check.py checks every row.
-- Open points: agreed but not done, with its owner; every /handoff closes or carries each line (max 10, doc_check).
-- Builders (D1): <= 2 Godot runs + 1 free text run (slots.sh). Briefs: docs/briefs/TEMPLATE.md. Balance band: start
-  gear 82.7-89% wins; arc_arm needs an upside.
+Queue rules (one queue, top row first; Dept, Lane, Open points, builder caps, balance band): docs/queue-rules.md.
 
 ## Queue
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
@@ -44,14 +36,8 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 | Mon 11-02 | Spare day: held row 25 items if Feras wants them, else start the M1 brief early. |
 | Tue 11-03 | M1 brief (row 3); M1 build (row 4) overnight into Wed 11-04 at the earliest; play day moves to when M1 passes its gates. |
 
-## Parked and context (resume only through a queue row)
-- How we work, for Feras: docs/HOW_WE_WORK.md (the loop diagram, roles, cost rules, the week).
-- On main: features/neon/neon_game.tscn (start flow -> Roya cold open -> prison roof -> turn-based map fight -> cable
-  line). M1 replaces the turn-based fight (CANON 10-27, real-time). Renders: tools/shot_neon_game.tscn.
-- Archive done 10-27: hero code id rydan (save v7), res_graph + guard checks; restore from tag pre-cleanup.
-- inbox/retired/ (Feras 10-27) = material he retired: never a reference or source. Story bible: inbox/docs/Neon_Glitch_Story_Bible_Final.docx.
-- RPG + menus: after M1, reskin to the new look (the old menu mockups and renders are retired).
-- Retired 3D (D20): tag 3d-archive, branch archive/3d, lookup only; old builder branches gemini/*, oc/* kept, worktrees gone.
+## Parked and context
+docs/context.md (what is on main, the 3D archive, inbox/retired/ never a source); resume only through a queue row.
 
 ## Prompt for the next chat
 Type `/model opus`, then `/effort high`, stay in auto mode, then paste this as one message (Opus: no `/goal`):

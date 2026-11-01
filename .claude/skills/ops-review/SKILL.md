@@ -15,7 +15,7 @@ Skip yourself (one line "nothing changed") when fewer than 5 sessions passed or 
 2. **Lessons.** docs/LESSONS.md (max 100 lines; condense back to ~70): list lines to promote (recurring, now a rule or a lint)
    and lines to archive (fixed by a tool, or about retired things). The department lessons.md files (`.claude/skills/*/lessons.md`) too.
 3. **Doc warnings.** Run `python tools/doc_check.py`; list each warning with the file it names.
-4. **Skill use.** `grep -E` transcripts `C:\Users\AUC\.claude\projects\C--dev-game\*.jsonl` for `"skill":"([^"]*:)?<name>"` (a plugin skill logs as `pm:handoff`, a worktree one as `<path>:handoff`): list skills never used
+4. **Skill use.** `grep -E` transcripts `~/.claude/projects/C--dev-game/*.jsonl` for `"skill":"([^"]*:)?<name>"` (a plugin skill logs as `pm:handoff`, a worktree one as `<path>:handoff`): list skills never used
    since the last review (candidates to retire) and briefs that skipped a skill they should have named.
 5. **Research prompts (plan section 16).** For each `research-queue.md` under `.claude/skills/*/` with 3 or more questions, or
    any answered since: write one prompt per question. Big question: a Gemini Deep Research prompt for Feras to run. Small lookup:
