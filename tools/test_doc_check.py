@@ -28,7 +28,7 @@ WORKFLOW = ["# WORKFLOW", "## Routing", "| Request | Dept | Skills | Persona | L
 AGENTS = {"review-cost": ["# r"], "review-code": ["# r"], "review-player": ["# r"], "review-feras": ["# r"]}
 
 
-def run_check(handoff, claude_lines=61, workflow=WORKFLOW, agents=None):
+def run_check(handoff, claude_lines=61, workflow=WORKFLOW, agents=None, extra=None):
     root = tempfile.mkdtemp()
     os.makedirs(root + "/tools")
     shutil.copy(HERE + "/doc_check.py", root + "/tools/doc_check.py")
@@ -41,6 +41,8 @@ def run_check(handoff, claude_lines=61, workflow=WORKFLOW, agents=None):
     write(root, ".agents/skills/godot-gameplay-scripter/SKILL.md", ["# persona"])
     write(root, "docs/DECISIONS.md", ["x"] * 10)
     write(root, "docs/LESSONS.md", ["x"] * 10)
+    for name, lines in (extra or {}).items():
+        write(root, name, lines)
     return subprocess.run([sys.executable, root + "/tools/doc_check.py"], capture_output=True, text=True)
 
 
@@ -95,10 +97,25 @@ def test_open_points_table_needed_and_capped():  # row 16 (Feras 10-29): nothing
     assert r.returncode == 1 and "Open points has 11 lines (max 10)" in r.stdout, r.stdout
 
 
+SKILL_TABLE = ["| Work | Worker | How | Gate |", "|---|---|---|---|", "| code | agy | build_pipeline.sh | check |"]
+
+
+def test_a_second_worker_routing_table_fails():  # row 24 (one home): the builders skill holds Who does what, nowhere else
+    ok = run_check(QUEUE, extra={".claude/skills/builders/SKILL.md": SKILL_TABLE})
+    assert ok.returncode == 0, ok.stdout + ok.stderr
+    for name, table in (("docs/WORKFLOW2.md", ["| Work | Who | Effort |", "|---|---|---|", "| code | agy | medium |"]),
+                        (".claude/skills/builders/models.md", ["| Task class | Model | Calibrated |", "|---|---|---|", "| code | agy | yes |"])):
+        r = run_check(QUEUE, extra={".claude/skills/builders/SKILL.md": SKILL_TABLE, name: table})
+        assert r.returncode == 1 and "second worker routing table" in r.stdout and name in r.stdout, name + "\n" + r.stdout
+    arch = run_check(QUEUE, extra={".claude/skills/builders/SKILL.md": SKILL_TABLE, "docs/archive/old.md": SKILL_TABLE})
+    assert arch.returncode == 0, "archived docs are history, not a routing table\n" + arch.stdout
+
+
 if __name__ == "__main__":
     test_warns_at_75_percent_but_passes()
     test_queue_rows_need_a_lane()
     test_queue_rows_need_a_department()
     test_departments_are_labels_with_real_personas_and_reviewers()
     test_open_points_table_needed_and_capped()
-    print("test_doc_check: 5 tests passed")
+    test_a_second_worker_routing_table_fails()
+    print("test_doc_check: 6 tests passed")
