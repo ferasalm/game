@@ -17,8 +17,13 @@ tool_tests() {  # run $py tools/tool_tests.py, then $py tools/oc_agents.py --che
   $py tools/oc_agents.py --check || rc=1
   return $rc
 }
+docs() {  # doc_check.py, then the doc graph: a stale docs/DOCMAP.md or a new dangling reference fails this step
+  $py tools/doc_check.py || return 1
+  [ -f tools/doc_graph.py ] || return 0  # a stub repo without the tool (the test_py_runs toy) skips it; tools/test_doc_graph.py covers the tool
+  $py tools/doc_graph.py --check
+}
 no_godot=0; [ "${1:-}" = "--no-godot" ] && no_godot=1
-step docs $py tools/doc_check.py
+step docs docs
 step lint $py tools/lint_gd.py
 step res_graph $py tools/res_graph.py --check  # no file under features/ core/ content/ assets/ that nothing uses
 [ $no_godot -eq 0 ] && step import tools/run_godot.sh --import

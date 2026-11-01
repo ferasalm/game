@@ -662,6 +662,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/cross_review.sh`: Cross-review (row 12 A, DECISIONS 2026-10-28): the other model family reviews a PASS run before Claude's gate:
 - `tools/cross_review_prompt.md`
 - `tools/doc_check.py`: Keeps the always-loaded notes small and well-formed (docs/WORKFLOW.md); exit 1 on any failure.
+- `tools/doc_graph.py`: Maps every doc node, its references, orphans and duplicated lines into docs/DOCMAP.md. --check: exit 1 on a stale map or a new dangling reference.
 - `tools/eye_gate.sh`: Player's-eye gate step 1: records a render wrapper non-headless and makes what a reader can look at.
 - `tools/eye_metrics.py`: Player's-eye metrics for Neon clips and UI fonts (report only; always exits 0).
 - `tools/fps_probe.gd`: FPS probe: plays a scene with vsync off and prints the average and worst frames per second after a warm-up
