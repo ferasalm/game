@@ -1,8 +1,6 @@
 # WORKFLOW: how the studio works (protocols, routing, limits, routes)
 
-Why the rules in CLAUDE.md exist. Not loaded at session start. Built 2026-10-19 from reem-bot (its portable playbook,
-orchestrator skill and doc check) and feras-career (its efficiency playbook), read critically, plus this repo's own
-methods. Drop a rule when its why stops being true.
+Why the rules in CLAUDE.md exist. Not loaded at session start. Built 2026-10-19 from reem-bot and feras-career playbooks plus repo methods. Drop a rule when its why stops being true.
 
 ## Start here: one unit of work (Feras 2026-10-28: the lean process; departments are labels)
 Feras -> the **father** chat (Opus high; xhigh only for planning) -> the worker from the step 3 table -> gates ->
@@ -19,10 +17,22 @@ row name a Dept from the Routing table and a lane.
 6. **The father** reads the report, checks it with `bash tools/status.sh` (branch on main, row updated), picks next.
    Open children are the queue rows whose Status says "child open"; status.sh lists their branches and worktrees.
 7. **Evolve**: each chat upgrades one tool, check, skill or doc; every 5 chats ops-review reads /session-report
-   (plugin) and review-cost; a lesson becomes a check or is archived after 30 days (D9). The claude-md-management
-   plugin runs only inside /handoff and within the doc_check caps.
+   and review-cost; a lesson becomes a check or is archived after 30 days (D9). claude-md-management runs inside
+   /handoff under doc_check caps.
 Emergency mode (emergency-efficiency skill, the 5-hour window past 50%) suspends child chats: one director chat,
 builders and Haiku readers only, until the window resets.
+
+**Department brief** (fill every line; a child chat gets it as its first message, a subagent as its prompt):
+```
+Department: <Id> (a label: Routing table). Queue row: <#>. Model: Opus <effort> | Sonnet high.
+Skills: <names; a skill the chat does not list yet: Read .claude/skills/<name>/SKILL.md>. Persona: <.agents/skills name>
+Goal: <one line; player-visible where it can be>
+Context: <the decisions, files and CANON lines it needs; no chat history>
+Lane plan: <pieces for agy / cf / oc, Haiku readers, reviewers; what the chat does itself>
+May edit: <paths>. Do NOT edit: <paths other chats own right now>. Commit and merge: <yes | no, the father does>
+Done when: <check.sh passes; the gate or render; merged to main; queue row updated>
+Report: 15 lines or fewer: what changed (commits), runs launched, what failed, questions for Feras.
+```
 
 ## The budget
 Feras is on Claude Pro ($20/month): a 5-hour usage window plus a weekly cap, shared with his other projects. Money is
@@ -105,15 +115,14 @@ reviewer with no plugins/studio/agents/<name>.md, and any plugins/studio/agents/
 ## Routes (free first)
 | Need | Free route first | Paid fallback and cap |
 |---|---|---|
-| Images | Flow, Nano Banana (Feras's Flow outputs; flow-media skill) | Paid image APIs (Runware, OpenRouter image) only after Flow fails for the job, <= $1, only on Feras's OK (feras-notes: paid was once used before free) |
-| Video | Flow, Omni (title loop, VFX plates; flow-media skill) | Paid video only on Feras's OK, cost named first |
-| 3D models | Blender MCP search_assets / import_asset (CC0: Poly Haven, Poly Pizza; Sketchfab only with a licence check); open-source image-to-3D on a free host (TRELLIS, Hunyuan3D, TripoSR; unverified) | Hyper3D Rodin while its credits last: name the cost first, log in SPEND.md, one approved hero asset before any batch |
-| Sprites | tools/art bake: offline renders (bake_sprites.tscn); no 3D at runtime | none needed |
-| Sound and fonts | CC0 SFX (Freesound CC0, Kenney); CC0 textures and fonts (OFL) | none; Feras's OK before each download, plus a manifest entry |
-| Research | see Research protocol | Cloudflare DeepSeek, no $ cap, spend logged (Feras, 2026-10-30) |
+| Images | Flow, Nano Banana (flow-media skill) | Paid image APIs only after Flow fails, <= $1, Feras OK |
+| Video | Flow, Omni (flow-media skill) | Paid video only on Feras OK, cost named first |
+| 3D models | Blender MCP search_assets / import_asset (CC0); open-source image-to-3D | Rodin while credits last: cost named first, log SPEND.md |
+| Sprites | tools/art bake: offline renders (bake_sprites.tscn) | none needed |
+| Sound and fonts | CC0 SFX (Freesound CC0, Kenney); CC0 fonts (OFL) | none; Feras OK before download, manifest entry |
+| Research | see Research protocol | Cloudflare DeepSeek, no $ cap, spend logged |
 
-The PreToolUse hook tools/hooks/pre_spend.py blocks paid generation tools unless one of Feras's last 8 messages says "spend ok"
-(wired in .claude/settings.json PreToolUse, P3.9; Hyper3D calls get a credit-cost reminder). Before Rodin access ends, prove the free 3D route on one character.
+PreToolUse hook tools/hooks/pre_spend.py blocks paid generation tools unless Feras says "spend ok" (P3.9). Before Rodin ends, prove free 3D route.
 
 ## Research protocol (audit plan D18)
 Department research queues and dispatch: `.claude/skills/ops-review/SKILL.md` (Research prompts); results to `docs/research/<department>/`.
