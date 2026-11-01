@@ -328,6 +328,19 @@ def test_agy_task_has_an_outer_timeout():
     assert "agy exited 124" in log and time.time() - t0 < 40, log
 
 
+def test_refuses_a_base_with_a_red_tool_test_the_brief_does_not_name():  # rows 23, 24: a sibling's red test
+    top, g = toy()
+    put(g + "/tools/test_red.py", "raise SystemExit(1)\n")
+    git(g, "add", "-A")
+    git(g, "commit", "-qm", "red")
+    git(g, "push", "-q", "origin", "HEAD:main")
+    rc, out, err = pipeline(g, top, **child_env())
+    assert rc == 3 and "tools/test_red.py" in out, out + err
+    assert not os.path.exists(top + "/game-wt/job.result"), "a refused run leaves no .result"
+    rc, out, err = pipeline(g, top, brief=BRIEF + "## Tests\n- tools/test_red.py\n", **child_env())
+    assert "REFUSED" not in out and os.path.exists(top + "/game-wt/job.result"), out + err
+
+
 def test_coreutils_timeout_is_the_gnu_one():
     r = sh(".", "bash", "-c", "timeout 1 sleep 5; echo $?")
     assert r.stdout.strip() == "124", r.stdout + r.stderr

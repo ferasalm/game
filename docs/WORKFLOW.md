@@ -3,9 +3,9 @@
 Why the rules in CLAUDE.md exist. Not loaded at session start. Built 2026-10-19 from reem-bot and feras-career playbooks plus repo methods. Drop a rule when its why stops being true.
 
 ## Start here: one unit of work (Feras 2026-10-28: the lean process; departments are labels)
-Feras -> the **father** chat (Opus high; xhigh only for planning) -> the worker from the step 3 table -> gates ->
+Feras -> the **father** chat (Opus high or the Sonnet high Lead; xhigh only for planning) -> the worker from the step 3 table -> gates ->
 Feras plays -> his notes become queue rows. Speed, never needless spend: each task goes to the cheapest worker that
-does it well; Opus reviews every non-Opus output and owns whatever reaches Feras. tools/doc_check.py makes every queue
+does it well; Opus or the Lead reviews what another model made, and Opus owns whatever reaches Feras. tools/doc_check.py makes every queue
 row name a Dept from the Routing table and a lane.
 1. **Look** (free): `bash tools/status.sh`: builders, branches not on main, worktrees, the queue, Feras's list.
 2. **Pick**: the top HANDOFF queue row. Its Dept is a label: the Routing table row says which skills and persona to
@@ -65,8 +65,8 @@ docs/HOW_WE_WORK.md draws this loop for Feras: a change to these Protocols updat
      `python tools/hooks/review_stamp.py <file>`; the review_gate hook blocks a send-to-Feras tool (a file send, an Artifact) on an
      unstamped render (tools/hooks/review_gate.py).
 - **Handoff:** when the chat's task is done or at ~85% of the 5-hour window; context size never triggers it (CLAUDE.md). It records one improvement made and one proposed.
-- **ops-review:** every 5 sessions, or at 50% of the window: `python tools/session_stats.py` (slips, guards, calls per turn,
-  chats past 200k), then `/kaizen:coach` (reads ~/.claude/coach-usage-log.jsonl from the track_usage hook; its score, accepted and declined items go to .claude/coach-history.md, committed, so the next run
+- **ops-review:** every 5 sessions, or at 50% of the window: `python tools/session_stats.py` (slips, guards, calls per turn),
+  then `/kaizen:coach` (reads ~/.claude/coach-usage-log.jsonl from the track_usage hook; its score, accepted and declined items go to .claude/coach-history.md, committed, so the next run
   trends and never re-asks); its USAGE row says "ops-review done" (the session-start hook counts rows since it and
   prints OPS-REVIEW DUE at 5); usage trend and start cost; promote lessons to checks;
   condense the notes on schedule; dispatch research from the department queues and read the digests (Research
@@ -77,8 +77,7 @@ docs/HOW_WE_WORK.md draws this loop for Feras: a change to these Protocols updat
 ## Routing (one table; departments are labels, Feras 10-28 option B)
 A department is a label, not an agent: the HANDOFF queue's Dept column names a Dept below, and that row says which
 skills and persona the worker loads, its lane and its reviewer. Every brief names its persona; our rules (CLAUDE.md,
-.claude/rules/code.md, CANON) outrank persona text. Lanes: agy = Godot code with tests and UI renders, and Python
-tools, docs and reviews whenever its quota is free (row 12); cf = Godot code when agy is full, Python tools; oc = text, drafts, review lenses (<= 2 Godot runs, 1 text run: Limits); chat =
+.claude/rules/code.md, CANON) outrank persona text. Lanes: agy, cf, oc = the builders (who takes what: builders skill, Who does what; run caps: Limits); chat =
 Opus for plan, taste, MCP, review. No department chat stays open between tasks; its lessons and research queue live in
 its skill folder. tools/doc_check.py fails on an unknown Dept, a persona with no .agents/skills/<name>/SKILL.md, a
 reviewer with no plugins/studio/agents/<name>.md, and any plugins/studio/agents/dept-*.md (retired to ~/.claude/archive, D7).
@@ -145,7 +144,7 @@ Adopted across repo: note split and @ imports (CLAUDE.md, doc_check); /handoff (
 
 
 ## This repo's own methods
-Methods adopted across repo: headless tests and summaries (CLAUDE.md, tools/check.sh); levels as text and code map (tools/map.py, docs/MAP.md); JSON content (content/); spec first and usage ledger (builders skill, docs/USAGE.md); eye gate (tools/eye_gate.sh); placeholders and engine (art-card skill, project.godot); manifest and CI (docs/ASSETS.md, .github/workflows/).
+Methods adopted across repo: headless tests and summaries (CLAUDE.md, tools/check.sh); levels as text and code map (tools/map.py, docs/MAP.md); JSON content (content/); spec first and usage ledger (builders skill, docs/USAGE.md); eye gate (tools/eye_gate.sh); placeholders and engine (art-card skill, project.godot); manifest and CI (assets/manifest.json, .github/workflows/).
 
 
 ## How Feras can save tokens (prompt tips)

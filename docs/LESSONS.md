@@ -58,3 +58,5 @@ naming the test; Godot code traps -> .claude/rules/code.md; builder-only -> .cla
 - Three parallel builder parts all failed `tool_tests`: the shared base held every red test, so each branch's check.sh ran its siblings' red tests -> put only a part's own red test in its branch, or merge by hand once each passes and run the full check after (2026-11-01).
 - A Haiku launch-and-wait hand-back said "UNSURE"; the `.result` sits in `/c/dev/game-wt/<task>.result` (not `../game-wt` of a worktree) -> read it yourself (2026-11-01).
 - A cf cross-review with the bare base `system-v3` failed ("bad revision"), merge_run.sh defaulted to gemini/ for an oc/ branch -> use origin/<base>, run `merge_run.sh <task> oc` for cf runs (2026-11-01).
+- An outside audit fed copies of files called 6 of its 10 findings live when commits had already fixed them, and its paste-in files would have undone row 24 -> test each claim on the branch (`git log -S`, grep) before applying any of it (2026-11-01).
+- `~/.claude/plugins/cache/neon` looked stale, but a plugin in a local-path marketplace loads in place -> `claude plugin list` (Read from) names the copy that runs (2026-11-01).

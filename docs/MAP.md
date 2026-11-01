@@ -645,6 +645,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/bake_light.gd`: purpose: The sprite baker's own world environment and key light, copied from the painted_b look so a bake needs no 3D world, LookDef or ContentDB look
 - `tools/bake_sprites.gd`: Sprite baker (Neon Glitch iso sprites): renders one model's states from the iso camera in 8 screen directions into transparent PNG frames, for tools/art/sprite_sheet.py
 - `tools/bake_sprites.tscn`: scene
+- `tools/base_red.py`: Refuses a base holding a red tool test the brief does not name (rows 23 and 24; the rule alone did not hold): a sibling's
 - `tools/build_gate.py`: Build gate: judges a builder run before Claude reads it (NOWORK, BREACH, FAIL or PASS plus a WARN checklist).
 - `tools/build_pipeline.sh`: Free builder pipeline (DECISIONS 2026-10-23, hardened 2026-10-27): slots check -> builder run (idle watchdog) ->
 - `tools/builders.conf`
@@ -711,6 +712,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/sync_main.sh`: Brings the main checkout up to origin/main and proves the game starts (2026-10-24: merges pulled without a re-import
 - `tools/sync_personas.py`: Copies the 10 Neon Glitch personas from their one source (.agents/skills/<name>/SKILL.md) to .claude/skills/<name>/SKILL.md
 - `tools/test_art_refs.py`: tools/art/refs.json: one approved reference per character (row 1 item 3, 10-28). Every Rodin model has an entry,
+- `tools/test_base_red.py`: base_red.py refuses a base holding a red tool test the brief does not name (rows 23, 24), on a toy git repo.
 - `tools/test_build_gate.py`: Self-test for build_gate.py: python tools/test_build_gate.py (temp git repos, plain asserts, exit 1 on failure).
 - `tools/test_build_pipeline.py`: Self-test for build_pipeline.sh, oc_task.sh, agy_task.sh and lib.sh on a toy repo: stub builder, stub memory, real git.
 - `tools/test_cf_probe.py`: cf_probe: the stream folds into the right timings and tokens; effort, extras and an image reach the body.

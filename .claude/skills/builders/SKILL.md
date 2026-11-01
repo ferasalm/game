@@ -12,7 +12,7 @@ father, or an Opus child chat that waits idle on its runs; docs/WORKFLOW.md, Sta
 
 ## Roster and caps
 Numbers live in `tools/builders.conf` (caps, memory floor, idle minutes, models); never copy them here. `bash tools/slots.sh`
-shows what is running. Models and routes: DECISIONS "Tools and builders"; model cards: models.md (pick by card). Calibrated readers and lenses:
+shows what is running. Models and routes: docs/decisions-tools.md; model cards: models.md (pick by card). Calibrated readers and lenses:
 docs/research/calibration-2026-10.md.
 
 ## Who does what (Feras 11-01 Rank 1; only these workers and efforts)
@@ -31,7 +31,7 @@ Every worker's result is one line: `worker | task | gate | evidence path | time 
 
 ## The loop
 1. Spec: a design with no open questions (Opus decides; Sonnet never invents design).
-2. Failing tests first, written or locked by Claude; the builder may not edit them (the gate rejects it). Parallel builder parts each get only their own red test in their branch (row 23 lesson: sibling red tests in the shared base fail every part's check; merge parts by hand once each part's own test passes).
+2. Failing tests first, written or locked by Claude; the builder may not edit them (the gate rejects it). Parallel builder parts each get only their own red test in their branch (row 23 lesson: sibling red tests in the shared base fail every part's check; merge parts by hand once each part's own test passes). `tools/base_red.py` refuses a launch whose base holds a red tool test the brief does not name; a red GDScript test it does not see.
 3. Brief from docs/briefs/TEMPLATE.md: Why, Read first, What to build, Do NOT edit, May edit, Ripple (every listener, key
    and id the change touches), Tests, Checklist, Proof. The builder's skill is named in the brief ("<name> skill").
 4. `bash tools/slots.sh`, then `bash tools/build_pipeline.sh <oc|agy|cf> <task> <brief> <base>` with run_in_background

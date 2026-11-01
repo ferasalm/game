@@ -4,8 +4,8 @@
 # (first word PASS/FAIL/NOWORK/BREACH, the gate's checklist, the checked commit, the pipeline's pid). Exit 0 only for PASS.
 # Claude reads only a PASS; tools/merge_run.sh merges it.
 # Usage (cwd = a checkout whose origin has <base> pushed): bash tools/build_pipeline.sh <oc|agy|cf> <task> <brief> <base> [model]
-# Refuses (exit 3, no .result) when slots/memory say no, or when <base> has commits origin lacks. Run it with
-# run_in_background. Env: SKIP_BUILD=1 (build already ran), BUILDER_CMD (stub builder, tests), IMPORT_CMD, IDLE_SEC,
+# Refuses (exit 3, no .result) when slots/memory say no, when <base> has commits origin lacks, or when <base> holds a
+# red tool test the brief does not name (base_red.py). Run it with run_in_background. Env: SKIP_BUILD=1 (build already ran), BUILDER_CMD (stub builder, tests), IMPORT_CMD, IDLE_SEC,
 # NEWTEST_KINDS (py,gd: new tests are run against the base by the gate).
 set -uo pipefail
 . "$(dirname "$0")/lib.sh"
@@ -104,6 +104,12 @@ run_rules() {  # fast-probe-stream died in its first check with nothing committe
   echo "  the pipeline kills that run ${BG_WAIT_SEC}s later and checks your commits itself."
 }
 status_line RUNNING build
+# A sibling's red test on the base failed every part's check and sent fix passes after it (rows 23, 24): refuse before the build.
+if [ -z "${SKIP_BUILD:-}" ]; then
+  red="$(timeout "$BASE_RED_SEC" "$py" "$here/base_red.py" "$brief" "$base" < /dev/null 2>&1)"; red_rc=$?
+  if [ "$red_rc" -eq 1 ]; then rm -f "$res"; refuse "$red"; fi
+  [ "$red_rc" -eq 0 ] || echo "WARN: base_red.py did not finish (exit $red_rc), the base is unchecked: $red" >&2
+fi
 # The skill the brief names goes into the prompt itself (builders skipped optional skills), then the code rules.
 prompt="$dir/$name.prompt.md"; cp "$brief" "$prompt"
 skill_file() {  # a persona (.agents/skills) or a task skill (.claude/skills, e.g. players-eye-gate)
