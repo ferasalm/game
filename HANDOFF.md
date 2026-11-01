@@ -1,5 +1,5 @@
 # HANDOFF (current state only; ONE queue for every chat; max 60 lines)
-Last updated: 2026-11-01 (outside audit of system-v4: stale rules, row 25 brief, base_red launch check), Opus 5.5.
+Last updated: 2026-11-01 (next-chat prompt moved to docs/next-chat.md; token trim waits on Feras's OK), Haiku 5.5.
 Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Open points).
 
 ## How this file works (Feras 2026-10-27; departments 10-28; Rank 1 11-01)
@@ -34,7 +34,7 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 |---|---|---|
 | Bilqis's portraits are now the Neon ones: keep or overturn (archive-cleanup, decisions-log); on hold until further notice (Feras 10-31) | Feras | 10-27 |
 | Art homework into inbox/: concept pictures, an empty plate per scene (no characters, HUD or rain), icon art (row 7) | Feras | 10-24 |
-| Token trim not done: ~4.9 KB of always-loaded text to move or merge, listed in docs/audits/2026-11-01-token-bleed.md; its CLAUDE.md lines need Feras's OK | Claude | 11-01 |
+| Token trim: the CLAUDE.md lines in docs/audits/2026-11-01-token-bleed.md (~0.6 KB) need Feras's OK; the rest is listed there | Claude | 11-01 |
 | Status line wired in .claude/settings.json (row 23 e); its real stdin JSON is not dumped yet: in the first fresh chat open `.check/statusline_raw.json` and confirm the field names (docs-based today) | Claude | 11-01 |
 | Row 20 leftovers parked in row 24 (specs too vague to brief): session_stats dates by entry and a tighter GUARD regex, Gameplay lessons.md + research-queue.md, frame_score blank-line slot; row 3 input: docs/audits/2026-11-02-integrity.md Top 10 (its item 5, test_action_def, is a false positive) | Claude | 11-01 |
 
@@ -56,4 +56,4 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 
 ## Prompt for the next chat
 Type `/model opus`, then `/effort high`, stay in auto mode, then paste this as one message (Opus: no `/goal`):
-`Row 25, Ops, Opus high: the gate on the system rebuild. Read docs/briefs/row25-opus-gate.md and docs/briefs/system-v3.md (the plan keeps the branch's old name: read system-v3 there as system-v4). Fresh worktree from origin/system-v4 (git worktree add, then EnterWorktree path), merge origin/main, run bash tools/check.sh and read it, then follow the brief's steps tiered (WORKFLOW Protocols: Review), risky hunks yourself. Row 24 left you: docs/audits/2026-11-02-integrity.md (input for row 3; its item 5 is a false positive), GLM-5.3-flash calibrated 9/10 and ON for bulk text digests (models.md), WORKFLOW 13.9 KB with one worker table in the builders skill, doc_check fails on a second worker table and warns on bytes, a Read(**/inbox/retired/**) deny rule added to settings.json, 77 briefs and audits archived, and Feras's 11-01 wish to try cf at max as a writer and log every merged worker is row 26. Builders ran as cf fast (FAIL by the sibling red test), agy (PASS) and agy (BREACH); docs/runs.csv holds them. An outside audit then added tools/base_red.py (a launch on a base with a red tool test the brief does not name is refused), logged Rank 1 in decisions-log from Feras's commit, and updated the row 25 brief: both plugins already load, so the 4 non-safety hooks run twice until your cutover. Workers: builders SKILL.md Who does what; no advisor unasked. End: merge to main, CI green, sync_main.sh, /handoff, and your last message holds the M1 brief prompt (row 3, Opus high). When stuck or refused, ask Feras with AskUserQuestion and a pick.`
+`Row 25, Ops, Opus high: read docs/next-chat.md first and do what it says.`
