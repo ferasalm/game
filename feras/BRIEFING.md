@@ -3,25 +3,34 @@ Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after 
 HANDOFF.md; this file is your view of it. "Open now" is rewritten at every /handoff; below it, reports newest first,
 each headed by its date and time (GMT+3): Done | Still open | When | How | Your move vs mine | Checked.
 
-## Open now (Sun 11-01 09:06)
+## Open now (Sun 11-01 20:01)
 | # | Open item | Status | Checked | Your move? | When |
 |---|---|---|---|---|---|
-| 1 | Opus gate on system-v4 (briefs call it system-v3): review, h | Mon 11-02; always runs | - | no | Mon 11-02; always runs |
+| 1 | M1 brief: real-time Rydan vs 2 guards on the prison roof, co | Tue 11-03 | - | no | Tue 11-03 |
 | 2 | Writer trial (Feras 11-01): one real brief to agy medium and | with row 4's first builds | - | no | with row 4's first builds |
-| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof, co | Tue 11-03 | - | no | Tue 11-03 |
-| 4 | M1 build from that brief + the Android export (D17) + archiv | after row 3 | - | no | after row 3 |
-| 5 | Bake Roya (sprite-bake), native-scale render on the prison r | after row 3 | - | no | after row 3 |
-| 6 | Feras plays M1 on PC and phone; notes -> fix-pass rows | later: after row 4 | - | yes | later: after row 4 |
-| 7 | Art batch: Bilqis re-model (v2), guard, props (booth, floodl | queued; Rodin credits end ~11-17 | - | no | queued; Rodin credits end ~11-17 |
-| 8 | Free image-to-3D proof (rydan_style_v2 to a TRELLIS HF Space | queued | - | no | queued |
-| 9 | Asset preparation pipeline (jpg -> png, sizes, import settin | parked | - | no | parked |
-| 10 | Obscura proof: builders fetch web pages with the Obscura hea | parked | - | no | parked |
-| 11 | Art bible 2D pass: drop the retired 3D runtime lines (fog, m | parked | - | no | parked |
-| 12 | Bilqis's portraits are now the Neon ones: keep or overturn ( | open | - | yes | 10-27 |
-| 13 | Art homework into inbox/: concept pictures, an empty plate p | open | - | yes | 10-24 |
-| 14 | Row 25 gate: after the merge to main, run once `/plugin mark | open | - | yes | 11-01 |
-| 15 | Status line wired in .claude/settings.json (row 23 e); its r | open | - | no | 11-01 |
-| 16 | Row 20 leftovers parked in row 24 (specs too vague to brief) | open | - | no | 11-01 |
+| 3 | M1 build from that brief + the Android export (D17) + archiv | after row 3 | - | no | after row 3 |
+| 4 | Bake Roya (sprite-bake), native-scale render on the prison r | after row 3 | - | no | after row 3 |
+| 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | later: after row 4 | - | yes | later: after row 4 |
+| 6 | Art batch: Bilqis re-model (v2), guard, props (booth, floodl | queued; Rodin credits end ~11-17 | - | no | queued; Rodin credits end ~11-17 |
+| 7 | Free image-to-3D proof (rydan_style_v2 to a TRELLIS HF Space | queued | - | no | queued |
+| 8 | Asset preparation pipeline (jpg -> png, sizes, import settin | parked | - | no | parked |
+| 9 | Obscura proof: builders fetch web pages with the Obscura hea | parked | - | no | parked |
+| 10 | Art bible 2D pass: drop the retired 3D runtime lines (fog, m | parked | - | no | parked |
+| 11 | Bilqis's portraits are now the Neon ones: keep or overturn ( | open | - | yes | 10-27 |
+| 12 | Art homework into inbox/: concept pictures, an empty plate p | open | - | yes | 10-24 |
+| 13 | Row 25 held, not done (Sonnet gate, no Opus sign-off): /kaiz | open | - | no | 11-01 |
+| 14 | Status line wired in .claude/settings.json (row 23 e); its r | open | - | no | 11-01 |
+| 15 | Row 20 leftovers parked in row 24 (specs too vague to brief) | open | - | no | 11-01 |
+
+## Sun 11-01 20:10: row 25, the gate on system-v4, run by Sonnet 5.5 high (you started it that way, with the new low-cost pipeline; no Opus sign-off)
+**Done** (branch system-v4, called system-v3 in older reports; merged to main when you said "merge now"): full check.sh passed (582 tests) and both plugins pass `claude plugin validate --strict`; four independent reviews ("lenses") of the system-v4 diff (cf DeepSeek max, cf GLM-5.3 max, Haiku low, my own read of the risky hunks); the cutover (heredoc_guard, token_handoff, stop_notify, instructions-loaded left `.claude/settings.json`; `test_plugins.py` now fails if they return; the old handoff pointer skill deleted); CLAUDE.md trimmed (your OK: genre/roadmap line, tool list, worker policy, context rule, each with a pointer); `tools/test_sync_main.py` (7 tests) and a dirty-tree guard in `sync_main.sh`; new skill `.claude/skills/low-cost-pipeline` (head Sonnet + GLM-5.3 max critic, middle GLM max tests, hand DeepSeek low/high/max or agy medium) with `opencode.json` entries for GLM max and DeepSeek low/high, each smoked through opencode; system-v3 and row 24/25 briefs archived.
+**Still open**: held, not done: /kaizen:coach score, the fresh Sonnet chat smoke (skills listed once, one worker call, /pm:status), a real CI run of `handoff.sh --main`, the rest of the token trim, the agy third lens (two runs timed out with no output, 15 and 8 min). Real lens findings not fixed (low): base_red matches a test by file name only; base_red leaves a worktree if killed by timeout; ops-review/SKILL.md path quoting. Row 25 had no Opus sign-off (priority 1 asks for one); you chose in chat to merge now anyway, so the held items above are the gap.
+**When**: M1 brief (row 3) Tue 11-03; Mon 11-02 is spare.
+**How**: row 3 is Gameplay, Opus high; the prompt is at the end of HANDOFF.md.
+**Your move vs mine**: yours: the one-time `/plugin marketplace add C:/dev/game` after the merge to main, if not already done. Mine: everything else.
+**Checked**: check.sh 582 passed 0 failed, twice (before the changes and after the hand run merged). Proof run: cf DeepSeek low built the sync_main guard from GLM-drafted red tests and passed the gate (run 2); run 1 failed because my own older test contradicted the new rule (my mistake, fixed, logged in docs/runs.csv). False flags from lenses, checked and rejected: BASE_RED_SEC undefined (it is in builders.conf), test_base_red.py missing (it exists), CI wait on docs-only pushes (the workflow runs on every push), missing doc paths. GLM max alone cut off at 32k tokens with no text until I raised max_tokens; agy needed your OK for its permission flag.
+**Table (before -> measured)**: tests 582 -> 582 (+ Python tool tests, all green) | worker routing tables 5 -> 1 (doc_check enforces) | WORKFLOW.md 23.5 -> 13.8 KB | cross-review real bugs per run 1.2 -> 1 real shared flag on this diff, 3 false flags rejected | first-try gate PASS: 1 of 2 hand runs (the miss was my test) | guard refusals today 41 (target <= 5: not met; they were mostly worktree-shell refusals while building) | not measured: handoff calls, start cost of a fresh chat, skills listed twice, coach score (held).
+**Workers**: cf GLM-5.3 max: critic lens (1 real, 3 false of 7) and test author (2 tests, 1 reviewed edit); cf DeepSeek max lens: 11 flags, 1 real that both lenses shared, rest low or by design; cf DeepSeek low: 1 PASS; Haiku low: 13 flags, 1 real; agy: no output.
 
 ## Sun 11-01 09:10: row 24, one home, archive, audit, calibration (Sonnet 5.5 high)
 **Done** (branch system-v4, nothing on main): (a) WORKFLOW 23.5 -> 13.9 KB, the models.md routing table gone, one worker table left (builders skill), HOW_WE_WORK redrawn for v3, doc_check fails on a second worker table and warns at 75% of the 27 KB loaded-notes cap (test first). (b) 77 finished briefs and audits moved to docs/archive/. (c) integrity audit docs/audits/2026-11-02-integrity.md: 9 of its Top 10 verified true, item 5 is a false positive. (d) calibration: Haiku medium 9/10, GLM-5.3-flash 9/10 on the same digest, so GLM is ON for bulk text digests (models.md, builders table). (e) smoke_keeper removed, builders/lessons.md 52 -> 21 lines, 4 stale "Haiku high / Sonnet subagent" lines fixed, deny rule for inbox/retired added. (f) 9 merged remote branches, 7 local ones, the empty folder and b5_tests.log removed.

@@ -8,7 +8,7 @@ docs/decisions-process.md (how chats, reviews, hand-offs and notes run; changing
 ### Scope
 - 2026-10-27 | Neon Glitch = the whole game: 2D isometric action RPG, real-time Hades-like combat, linear story (not a roguelite); docs/VISION.md holds pillars (combat feel wins ties), objectives, roadmap: free 20-30 min demo first, then premium; PC (Steam) leads, Android kept alive from M1 (D17), iOS later; Feras plays gated builds twice a week | Feras
 - 2026-10-26 | Old 3D game retired, archived on branch archive/3d + tag 3d-archive; lookup only (D20); reuse what fits (docs/archive/3d-reuse.md) | Feras
-- 2026-10-31 | System v3 comes before M1 (docs/briefs/system-v3.md): rows 22-25 on branch system-v4 (system-v3 until row 24), main untouched until the Opus gate; hard stop Mon 11-02, M1 brief Tue 11-03; the 4 non-safety hooks leave settings.json at the row 25 gate (Feras 11-01) | Feras
+- 2026-10-31 | System v3 comes before M1 (docs/archive/briefs/system-v3.md): rows 22-25 on branch system-v4 (system-v3 until row 24), main untouched until the Opus gate; hard stop Mon 11-02, M1 brief Tue 11-03; the 4 non-safety hooks leave settings.json at the row 25 gate (Feras 11-01) | Feras
 ### Process
 - 2026-10-26 | Look gate: no system work on a scene until Feras OKs its render from the play camera; player's-eye gate (eye_gate) before any build reaches him, apart from check.sh (D5); shared code never names one game mode (layer lint) | Feras
 - 2026-10-21 | Ask Feras 2-4 multiple-choice questions, recommended first; big asks: plan mode (Opus xhigh), narrow audits by calibrated readers, then orchestrate; free models get text work and lenses only after calibration vs Haiku (D11) | Feras
