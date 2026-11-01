@@ -62,6 +62,7 @@ def test_plugin_hooks_hold_the_non_safety_hooks_and_settings_keeps_the_safety_on
     settings_cmds = " ".join(hook_commands(load(".claude", "settings.json")))
     for name in PLUGIN_HOOKS:
         assert name in plugin_cmds, name
+        assert name not in settings_cmds, f"{name} runs twice: cut over to the plugin (row 25, 2026-11-01)"
     for name in SETTINGS_HOOKS:  # a plugin that fails to load drops its hooks silently: these must not depend on one
         assert name in settings_cmds and name not in plugin_cmds, name
 

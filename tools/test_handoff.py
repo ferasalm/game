@@ -130,12 +130,11 @@ def test_usage_and_script_hygiene():
     assert "--no-verify" not in text
 
 
-def test_skill_moved_to_pm_plugin_and_old_door_points_at_it():
+def test_skill_lives_only_in_the_pm_plugin():
     new = open(ROOT + "/plugins/pm/skills/handoff/SKILL.md", encoding="utf-8").read()
     assert new.startswith("---\nname: handoff") and "tools/handoff.sh" in new and "decisions-log" in new
     assert "tools/check.sh" in new and len(new.splitlines()) <= 60
-    old = open(ROOT + "/.claude/skills/handoff/SKILL.md", encoding="utf-8").read()
-    assert "plugins/pm/skills/handoff/SKILL.md" in old and len(old.splitlines()) <= 8, "a pointer until row 25's cutover"
+    assert not os.path.exists(ROOT + "/.claude/skills/handoff"), "the old pointer door left at row 25's cutover (2026-11-01)"
 
 
 if __name__ == "__main__":
