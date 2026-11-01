@@ -17,7 +17,7 @@ f. You: the HANDOFF cleanup Open point (empty row18-routing folder, b5_tests.log
 Late: e's row 20 items, then tidy b, park first; a and c never. Auto mode refuses a change: stop, ask Feras with the exact diff. Same step failed twice: call the advisor. 3 rounds: report. Budget: 80 main-chat calls.
 
 ## Done when
-`bash tools/check.sh` all passed and read; WORKFLOW <= 14 KB; one worker routing table; the audit and the calibration recorded; Open point closed or carried; pushed to `system-v3`.
+`bash tools/check.sh` all passed and read; WORKFLOW <= 14 KB; one worker routing table; the audit and the calibration recorded; Open point closed or carried; pushed to `system-v4`.
 
 ## Report
 15 lines or fewer: parts with status, runs with their one-line results, calibration scores, top audit findings, questions for Feras. No merge to main, no sync; row 24 done, row 25 next; the next prompt ready to paste, naming Opus high.

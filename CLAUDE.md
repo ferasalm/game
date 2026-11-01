@@ -5,8 +5,8 @@ in a cyberpunk Old Sana'a. The owner, Feras, is the creative director: he decide
 gates and reviews (delegating code and bulk reads to near-free builders) and runs every check itself. He is on Claude Pro: spend little.
 
 ## North star (docs/VISION.md)
-A small, replayable game whose combat feel wins every tie, set in Old Sana'a with a corrupted-trust story.
-Next goal: a free 20-30 min demo, PC (Steam) first, Android kept alive.
+A small, replayable game whose combat feel wins every tie, set in Old Sana'a with a corrupted-trust story. Next goal: a
+free 20-30 min demo, PC (Steam) first, Android kept alive.
 
 @HANDOFF.md
 @docs/DECISIONS.md
@@ -43,20 +43,18 @@ Next goal: a free 20-30 min demo, PC (Steam) first, Android kept alive.
    on the same step stops looping and asks him via AskUserQuestion "May I use /advisor opus?" with a pick (a subagent reports
    BLOCKED and its orchestrator asks). Never call /advisor opus or /advisor sonnet unasked.
 7. Feras says pause or stop -> halt tools, one-line status, wait for his go; a direct question -> answer it first (10-31).
-Scale: a small, low-risk change (a few lines, no machinery, nothing player-visible) skips Ripple and pre-mortem;
-machinery, a brief, a paid call or anything that reaches Feras gets them all.
+Scale: a small, low-risk change (a few lines, no machinery, nothing player-visible) skips Ripple and pre-mortem; the rest gets both.
 
 ## Lean process (Feras 10-28, Rank 1 11-01; how: docs/WORKFLOW.md Start here)
-- Motto COOKE (Clarity, Organization, Optimization, Kaizen, Efficiency); a fiduciary duty to Feras; top-down (big
-  picture, then details); foundations solid and flexible (tests, data-driven content, small modules, no hacks).
-- Aims, always learning: think deeply and critically; finish fast; maximum quality; minimum cost; save Feras's time;
-  get more organized. Each task goes to the cheapest worker that does it well (builders skill, Who does what).
-  Priorities, the higher wins a tie (Feras 10-31): 1 output quality, a hard gate (checks pass, Opus signs off); 2 codebase
-  integrity and flexibility; 3 Claude tokens and usage limits; 4 organization and simplicity; 5 speed. Builder time is free.
+- Motto COOKE (Clarity, Organization, Optimization, Kaizen, Efficiency); a fiduciary duty to Feras; top-down; foundations
+  solid and flexible (tests, data-driven content, small modules, no hacks). Always learning: think deeply and critically.
+- Each task goes to the cheapest worker that does it well (builders skill, Who does what). Priorities, the higher wins a
+  tie (Feras 10-31): 1 output quality, a hard gate (checks pass, Opus signs off); 2 codebase integrity and flexibility;
+  3 Claude tokens and usage limits; 4 organization and simplicity; 5 speed. Builder time is free.
 - Opus plans and owns every output that reaches Feras as if it did the work; Sonnet high executes by default from an Opus
   brief, delegating by the builders Who does what table (Feras 11-01: agy and cf do everything they can do just as well;
-  Haiku low subagents launch and wait; never spawn a Sonnet subagent to call builders; forks only under ~100k context when
-  a noisy chunk strictly needs this chat's memory). Opus (or the Lead chat) reviews whatever another model made, tiered
+  Haiku low subagents launch and wait; never a Sonnet subagent to call builders; forks only under ~100k context when a
+  noisy chunk strictly needs this chat's memory). Opus (or the Lead chat) reviews whatever another model made, tiered
   (gates, cross-review lens via cf max / agy or a Haiku low pass on big diffs, then Lead/Opus on the list and risky hunks).
 - IMPORTANT: one task, model and effort per chat: a chat holds one part of a queue row and finishes it at full quality;
   context size never stops, shortens or hands off work (Feras 10-31). /handoff when the task is done, or at ~85% of the
@@ -64,13 +62,12 @@ machinery, a brief, a paid call or anything that reaches Feras gets them all.
   a fresh chat. The status line (or Feras's /usage) at the start and before a big step. Independent steps
   go as parallel tool calls in one message, never chained shell (the worktree guard refuses it; each refusal = a call).
 - Builders write when the brief is shorter than the work and the risk is low or well tested; Opus writes small, risky
-  machinery itself (hooks, gates, slots, saves). Claude plans, briefs (TEMPLATE), reviews and merges. A run red on the
+  machinery itself (hooks, gates, slots, saves). Claude plans, briefs (TEMPLATE), reviews, merges. A run red on the
   pipeline itself: Opus fixes the pipeline and re-gates.
 - Edit, don't rewrite; no recaps; a few lines to the owner; side sessions report only at milestones; leave one tool,
-  check, skill or doc better. Every problem or fix named to Feras carries its status (Feras 10-29): done | in
-  progress | planned (when) | not planned | waiting on Feras (only what he was asked in that chat, with a pick; 10-31).
-- Code rules + Godot traps: .claude/rules/code.md (loads with code; in builder prompts). Every rule and fixed bug
-  gets a test; a check counts only when its output was read.
+  check, skill or doc better. Every problem or fix named to Feras carries its status (Feras 10-29): done | in progress |
+  planned (when) | not planned | waiting on Feras (only what he was asked in that chat, with a pick; 10-31).
+- Code rules + Godot traps: .claude/rules/code.md. Every rule and fixed bug gets a test; a check counts only when read.
 
 ## The owner's limits
 - He decides scope, story, art direction, spending, models and releases; Claude advises with a recommended

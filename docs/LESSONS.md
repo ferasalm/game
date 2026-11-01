@@ -18,8 +18,8 @@ naming the test; Godot code traps -> .claude/rules/code.md; builder-only -> .cla
 - A check that only prints never fails -> every check exits non-zero; probe each new rule with one bad case.
 - A harness summary can lie (99.8% party HP: its AI chain-interrupted the boss) -> print one seed's events (2026-10-23).
 - A subagent costs 150-290k tokens -> delegate only when the worker reads far more than its brief.
-- A slow check: `.check/*.log` times showed 82% of tool_tests in 2 files -> time the steps before choosing a fix (2026-10-31).
-- A model "hang" sat near `API key expired` in the same run's log -> grep a failed run's log for ERROR before probing (2026-10-31).
+- A slow check: `.check/*.log` showed 82% of tool_tests in 2 files -> time the steps before choosing a fix (2026-10-31).
+- A model "hang" sat near `API key expired` in the log -> grep a failed run's log for ERROR first (2026-10-31).
 - A superseded rule lives on in a doc or prompt string -> grep for it when a decision changes.
 - Gemini research contains invented numbers -> ideas and norms only, never facts.
 - A skill with `paths:` frontmatter (flow-media, 3d-model, sprite-bake, players-eye-gate) is not in a chat's skill list
@@ -31,15 +31,14 @@ naming the test; Godot code traps -> .claude/rules/code.md; builder-only -> .cla
   timeouts; check each job at its expected end (2026-10-25).
 - Editing tools/build_pipeline.sh while two runs used it crashed both after their build ("syntax error near `)'",
   line 98): bash reads a script as it runs -> never edit a tool a live run executes; re-gate with SKIP_BUILD=1 (2026-10-30).
-- "Builder hung / reviewer printed nothing" twice had silent causes: opencode's spent free quota (exit 0, no text) and
-  Workers AI DeepSeek thinking past the 32k cap -> first probe with `--print-logs` and `--format json` (finish reason,
-  tokens) before blaming the model (2026-10-30).
+- "Builder hung / reviewer printed nothing" had silent causes (opencode's spent free quota, DeepSeek thinking past the 32k
+  cap) -> probe with `--print-logs` and `--format json` before blaming the model (2026-10-30).
 - A new tool version breaks silently (opencode v2) -> back up its data dirs, probe in a throwaway repo (2026-10-30).
-- 4 paid probes crashed at their spend-log line (a path wrong in worktrees) -> one smoke call before a batch; results print first; parallel Bash = run_in_background (2026-10-31).
-- Bash `VAR=x cmd` given to Feras failed in his PowerShell -> his commands are PowerShell (2026-10-31).
+- 4 paid probes crashed at their spend-log line (path wrong in worktrees) -> one smoke call before a batch (2026-10-31).
+- Bash `VAR=x cmd` given to Feras failed in his PowerShell -> give him PowerShell (2026-10-31).
 - `claude -p "/x"` from Git Bash turned the command into a path -> `MSYS_NO_PATHCONV=1` (2026-10-31).
-- A toy test failed 1 run in 3 and going serial did not cure it: stub setup outlasted IDLE_SEC=3 -> find the race first; fix the stub, never the limit (2026-10-31).
-- `/subtask` looked absent (no repo or plugin hit) but is a CLI built-in only a person can type; "PM plugins need sign-ups" came from memory and was false -> check the docs commands page and the plugin directory cache before saying a tool does or doesn't exist (2026-10-31).
+- A toy test failed 1 run in 3: stub setup outlasted IDLE_SEC=3 -> find the race; fix the stub, never the limit (2026-10-31).
+- `/subtask` looked absent but is a CLI built-in only a person can type; "PM plugins need sign-ups" was false memory -> check the docs commands page and plugin cache before saying a tool does or doesn't exist (2026-10-31).
 - Auto mode refused a `.claude/settings.json` allow list as self-modification -> never script around it; ask Feras with the exact diff (2026-10-31).
 - `check.sh | tail && git commit` committed a failing run -> grep .check/*.log for FAIL first; never push before reading the
   final check line (2026-10-23).
@@ -55,7 +54,7 @@ naming the test; Godot code traps -> .claude/rules/code.md; builder-only -> .cla
 - A worktree-isolated session refuses a Bash call that starts powershell, or whose text names git in a complex form
   -> free memory: `bash tools/slots.sh`; edit text naming git with Edit; under the 3 GB floor a docs-only change runs
   `bash tools/check.sh --no-godot` (2026-10-28).
-- A repo plugin loads only from the MAIN checkout (a directory marketplace) and only after the workspace trust dialog; `claude -p` never loads it yet still registers the marketplace in ~/.claude/plugins/known_marketplaces.json; plugin skills ignore skillOverrides and `paths:` -> test edits with `claude --plugin-dir <worktree>/plugins/studio`, keep skills in .claude/skills, never name the real marketplace in a probe (2026-11-01).
-- Three parallel builder parts all failed `tool_tests`: every red test sat in the shared base, so each branch's check.sh also ran its siblings' red tests -> a part's own test passed (9, 7, 5) but its verdict was FAIL; fix: put only a part's own red test in its branch (siblings join after the merge), or merge by hand once each own test passes and run the full check after (2026-11-01).
-- The task id in a Haiku launch-and-wait hand-back said "UNSURE" and the `.result` sits in `C:/dev/game-wt/` (the main checkout's sibling), not `../game-wt` of a worktree -> read `/c/dev/game-wt/<task>.result` yourself; a `claude-code-guide` agent gave the status line's exact stdin fields in 6 calls (2026-11-01).
-- A fork ran a cf cross-review with the bare base `system-v3` ("bad revision") and merge_run.sh defaulted to the gemini/ prefix for an oc/ branch -> write the base as origin/system-v3 and run `merge_run.sh <task> oc` for cf runs (2026-11-01).
+- A repo plugin loads only from the MAIN checkout and only after the trust dialog; `claude -p` never loads it; plugin skills ignore skillOverrides and `paths:` -> test with `claude --plugin-dir <worktree>/plugins/studio`, keep skills in .claude/skills (2026-11-01).
+- Three parallel builder parts all failed `tool_tests`: the shared base held every red test, so each branch's check.sh ran its siblings' red tests -> put only a part's own red test in its branch, or merge by hand once each passes and run the full check after (2026-11-01).
+- A Haiku launch-and-wait hand-back said "UNSURE"; the `.result` sits in `/c/dev/game-wt/<task>.result` (not `../game-wt` of a worktree) -> read it yourself (2026-11-01).
+- A cf cross-review with the bare base `system-v3` failed ("bad revision"), merge_run.sh defaulted to gemini/ for an oc/ branch -> use origin/<base>, run `merge_run.sh <task> oc` for cf runs (2026-11-01).
