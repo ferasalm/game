@@ -706,8 +706,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/shot_playtest.gd`: purpose: Opens the playtest capture on the roof with the real screen grab, draws a circle and a stroke, and saves it
 - `tools/shot_playtest.tscn`: scene
 - `tools/slots.sh`: Slots reporter, start gate (can-start <builder>) and DeepSeek spend tracker (DECISIONS 2026-10-23, D1 2026-10-27)
-- `tools/smoke_keeper.gd`: Survives scene changes during a smoke run: starts a new game, waits, reports the scene, quits
-- `tools/smoke_keeper.tscn`: scene
 - `tools/status.sh`: One look at the state of the work (Feras 2026-10-27): builders, branches not yet on main, worktrees with nothing left,
 - `tools/statusline.py`: Status line command (row 23 e, 2026-11-01): reads Claude Code's status JSON on stdin, prints one line
 - `tools/sync_main.sh`: Brings the main checkout up to origin/main and proves the game starts (2026-10-24: merges pulled without a re-import

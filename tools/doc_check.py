@@ -33,6 +33,8 @@ for name, cap in CAPS.items():
         warns.append(f"WARN {name} is at {n}/{cap} lines (75%+): curate before it hits the cap")
 size = sum(len(t.encode()) for t in texts.values())
 check(size <= LOADED_BYTES, f"always-loaded notes are {size} bytes (max {LOADED_BYTES})")
+if LOADED_BYTES * 3 // 4 <= size <= LOADED_BYTES:
+    warns.append(f"WARN always-loaded notes are {size} bytes (75%+ of {LOADED_BYTES}): curate before they hit the cap")
 for name in ("HANDOFF.md", "docs/DECISIONS.md", "docs/LESSONS.md"):
     check(f"@{name}" in texts["CLAUDE.md"], f"CLAUDE.md loads @{name}")
 

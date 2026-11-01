@@ -97,6 +97,13 @@ def test_open_points_table_needed_and_capped():  # row 16 (Feras 10-29): nothing
     assert r.returncode == 1 and "Open points has 11 lines (max 10)" in r.stdout, r.stdout
 
 
+def test_warns_when_always_loaded_bytes_reach_75_percent():  # row 24 (row 20 leftover): bytes warn like lines do
+    small = run_check(QUEUE)
+    assert small.returncode == 0 and "WARN always-loaded notes" not in small.stdout, small.stdout
+    big = run_check(QUEUE, extra={"docs/DECISIONS.md": ["x" * 300] * 65, "docs/LESSONS.md": ["y" * 200] * 5})
+    assert big.returncode == 0 and "WARN always-loaded notes are" in big.stdout and "75%+ of 27000" in big.stdout, big.stdout
+
+
 SKILL_TABLE = ["| Work | Worker | How | Gate |", "|---|---|---|---|", "| code | agy | build_pipeline.sh | check |"]
 
 
@@ -118,4 +125,5 @@ if __name__ == "__main__":
     test_departments_are_labels_with_real_personas_and_reviewers()
     test_open_points_table_needed_and_capped()
     test_a_second_worker_routing_table_fails()
-    print("test_doc_check: 6 tests passed")
+    test_warns_when_always_loaded_bytes_reach_75_percent()
+    print("test_doc_check: 7 tests passed")
