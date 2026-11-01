@@ -103,6 +103,8 @@ Which worker does what: SKILL.md, Who does what.
 Limits: Clef-flash pre-filters colour and character visible only, review-player keeps text; non-reasoning never reviews.
 Evidence: docs/research/model-evidence-2026-10.md (AA numbers mostly UNVERIFIED: 1 of 3 spot-checked was invented)
 and the measured calibration lines above. Calibrated = passed a gold set (D11).
+- Clef-flash (`@cf/cloudflare/clef-flash`, not chat: `/ai/run`, model + state + questions, images = data-URI strings), colour/character pre-filter: 6 frames, 12/12 vs review-player, both planted defects, 3-9 s, ~$0.00002 a frame; text readable 3/6 (scores flat ~0.4).
+- Jev 1.13 Free (`jev-1.13-free`, opencode.ai/inference/systemone/v1/systemone, no key, free for a limited time), error sorting and rubric scoring: 8/8 on easy lines with labelled causes, 1-3.5 s; a hard set not run.
 opencode built-in free routes (DeepSeek, GLM-5.3-flash, Nemotron VL) are off while their free quota is spent (10-30); OpenRouter :free routes (XR_OC_MODEL nemotron-3-ultra) are active (key renewed 10-31).
 
 ## Rule
