@@ -23,3 +23,6 @@ All steps read and passed, or what is held is named; main green; Feras has the t
 
 ## Carried from row 22 (Feras 11-01)
 Cutover: remove heredoc_guard, token_handoff, stop_notify and instructions-loaded from .claude/settings.json (plugins/studio/hooks/hooks.json holds them; tools/test_plugins.py checks the split), add extraKnownMarketplaces neon (path C:/dev/game) and enabledPlugins studio@neon (ask Feras with the exact diff if auto mode refuses), then Feras runs /plugin marketplace add C:/dev/game once and accepts the trust dialog. Proof: a fresh worktree chat on main shows no "plugin studio is not loaded" line, and studio:review-code runs. Skills stayed in .claude/skills (row 22 probe c, d): a fresh session started inside a worktree lists each skill once (row 22 check); row 24 checks whether a chat opened from C:/dev/game then entering a worktree lists them twice.
+
+## Carried from row 23 (Feras 11-01)
+Enable pm@neon next to studio@neon (marketplace.json lists both); delete the pointer stub .claude/skills/handoff/SKILL.md once the plugin loads; confirm the status line's real stdin fields in .check/statusline_raw.json (tools/statusline.py reads docs-based names); read tools/handoff.sh and plugins/pm/scripts/pm.py as risky hunks; run handoff.sh --main once against real CI.

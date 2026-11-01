@@ -3,23 +3,33 @@ Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after 
 HANDOFF.md; this file is your view of it. "Open now" is rewritten at every /handoff; below it, reports newest first,
 each headed by its date and time (GMT+3): Done | Still open | When | How | Your move vs mine | Checked.
 
-## Open now (Sun 11-01 01:50)
+## Open now (Sun 11-01 03:48)
 | # | Open item | Status | Checked | Your move? | When |
 |---|---|---|---|---|---|
-| 0 | Row 22, studio plugin (prompt lint, agents, hooks, Godot LSP) | done on branch system-v3 (not on main) | 16 + 10 + 6 tests, plugin validate --strict, a plugin reviewer ran | no | done Sun 11-01 |
-| 1 | Row 23, pm plugin and one-call handoff (Sonnet high) | planned | brief written | yes: paste the prompt in HANDOFF.md (Prompt for the next chat) | Sun 11-01 |
-| 2 | Row 24, one home, tidy, code audit, row 20 leftovers, cleanup (Sonnet high) | planned | brief written | yes: paste | Mon 11-02 |
-| 3 | Row 25, Opus gate, merge to main | planned | brief written | yes: paste, Opus high | Mon 11-02, always runs |
-| 4 | Row 3, M1 brief | planned | - | yes: paste | Tue 11-03 |
-| 5 | Row 4, M1 build + Android export + archive the turn-based fight | planned | - | no | overnight into Wed 11-04 at the earliest |
-| 6 | Row 6, bake Roya and a native-scale roof render | planned | - | no | after row 3 |
-| 7 | Row 5, you play M1 on PC and phone | planned | - | yes | after row 4 passes its gates |
-| 8 | Row 7, art batch (Bilqis v2, guard, props, icons) | queued | - | no | before Rodin credits end ~11-17 |
-| 9 | Research prompts: 5 for Gemini Deep Research (feras/research-prompts.md) | waiting on Feras | written, not run | yes: 1 helps row 6, 2 helps row 5 | before those rows |
-| 10 | Rows 8-11: free image-to-3D, asset pipeline, Obscura, art-bible pass | parked | - | no | after row 5 |
-| 11 | OpenRouter key renewed by you; Nemotron is back as the backup lens | done | one real call through opencode answered | no | done 10-31 |
-| 12 | Bilqis's portraits: keep the Neon ones or overturn | on hold until further notice (your call) | - | no | when you say |
-| 13 | Art homework into inbox/: concept pictures, empty plates, icon art | waiting on Feras | - | yes | before row 6 |
+| 1 | One home for every rule, tidy, integrity audit, row 20 lefto | Mon 11-02 | - | no | Mon 11-02 |
+| 2 | Opus gate on system-v3: review, hook cutover to the studio p | Mon 11-02; always runs | - | no | Mon 11-02; always runs |
+| 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof, co | Tue 11-03 | - | no | Tue 11-03 |
+| 4 | M1 build from that brief + the Android export (D17) + archiv | after row 3 | - | no | after row 3 |
+| 5 | Bake Roya (sprite-bake), native-scale render on the prison r | after row 3 | - | no | after row 3 |
+| 6 | Feras plays M1 on PC and phone; notes -> fix-pass rows | later: after row 4 | - | yes | later: after row 4 |
+| 7 | Art batch: Bilqis re-model (v2), guard, props (booth, floodl | queued; Rodin credits end ~11-17 | - | no | queued; Rodin credits end ~11-17 |
+| 8 | Free image-to-3D proof (rydan_style_v2 to a TRELLIS HF Space | queued | - | no | queued |
+| 9 | Asset preparation pipeline (jpg -> png, sizes, import settin | parked | - | no | parked |
+| 10 | Obscura proof: builders fetch web pages with the Obscura hea | parked | - | no | parked |
+| 11 | Art bible 2D pass: drop the retired 3D runtime lines (fog, m | parked | - | no | parked |
+| 12 | Bilqis's portraits are now the Neon ones: keep or overturn ( | open | - | yes | 10-27 |
+| 13 | Art homework into inbox/: concept pictures, an empty plate p | open | - | yes | 10-24 |
+| 14 | Row 25 gate: after the merge to main, run once `/plugin mark | open | - | yes | 11-01 |
+| 15 | Status line wired in .claude/settings.json (row 23 e); its r | open | - | no | 11-01 |
+| 16 | Cleanup (row 24, part f): .claude/worktrees/ empty row18-rou | open | - | no | 10-31 |
+
+## Sun 11-01 03:55: row 23, pm plugin and one-call handoff (Sonnet 5.5 high)
+- **Done (branch system-v3, not on main):** a. `plugins/pm`: `pm.py` board, next, row add|set|done (restores HANDOFF if doc_check fails), week, report, plus 6 skills (status, next, row, week, report, handoff). b. `bash tools/handoff.sh "<message>" [--main]`: map, doc_check, check, commit, push, CI in one call; the handoff skill moved into the plugin (the old path is a pointer until row 25). c. `session_stats.py --row <id>` prints the USAGE row; `docs/runs.csv` is written by every builder run. d. `tools/merge_base.sh`, `tools/main_file.sh`. e. `tools/statusline.py` (status line wired in settings.json) writes `.check/usage.json`; token_handoff adds the 5-hour figure; get_usage/get_session wording replaced. Also: the two Write deny rules for .import/.uid are gone from the branch settings, as in your copies.
+- **Still open:** the status line's real stdin JSON is not dumped yet (field names come from the official docs): open `.check/statusline_raw.json` in the first fresh chat (planned: next chat). Row 25 enables pm@neon next to studio@neon and deletes the handoff pointer stub.
+- **When:** row 24 Mon 11-02, row 25 Mon 11-02.
+- **How:** row 24 (Ops, builder + Sonnet high review); the prompt is at the end of HANDOFF.md.
+- **Your move vs mine:** yours: paste the row 24 prompt; at row 25, `/plugin marketplace add C:/dev/game` once. Mine: everything else.
+- **Checked:** check.sh all passed (582 tests), `claude plugin validate plugins/pm --strict` passed, `/pm:status` ran under `--plugin-dir`, tests per part (9, 7, 5, 5, 7). Not checked: `/pm:next` in a fresh chat (same script as status, tested), the status line in a live CLI, handoff.sh with `--main` against real CI (only a stub). Builders: all three runs showed FAIL only because each branch also ran its siblings' red tests; merged by hand after their own tests passed (LESSONS).
 
 ## Sun 11-01 01:50: row 22, studio plugin (Sonnet 5.5 high)
 **Words:** plugin = a folder Claude Code loads; marketplace = the list that names it; fork = a copy of this chat sent off on a side job; LSP = Godot's language server (errors, find-references).

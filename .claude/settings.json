@@ -17,9 +17,7 @@
       "Read(**/*.ttf)",
       "Read(**/*.otf)",
       "Edit(**/*.import)",
-      "Write(**/*.import)",
-      "Edit(**/*.uid)",
-      "Write(**/*.uid)"
+      "Edit(**/*.uid)"
     ]
   },
   "skillOverrides": {

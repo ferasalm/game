@@ -1,5 +1,5 @@
 # HANDOFF (current state only; ONE queue for every chat; max 60 lines)
-Last updated: 2026-11-01 (row 22 done: studio plugin, skills fallback taken), Sonnet 5.5.
+Last updated: 2026-11-01 (row 23 done: pm plugin, handoff.sh, usage row, helpers, status line), Sonnet 5.5.
 Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Open points).
 
 ## How this file works (Feras 2026-10-27; departments 10-28)
@@ -15,8 +15,7 @@ Live state in one command: `bash tools/status.sh` (builders, branches not on mai
 ## Queue
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
-| 23 | pm plugin, one-call handoff, usage row, run scoreboard, helpers, status line (docs/briefs/row23-pm-handoff.md) | Ops | builder + chat (review) | agy, cf; Sonnet high | next: Sun 11-01, branch system-v3 | - |
-| 24 | One home for every rule, tidy, integrity audit, row 20 leftovers, cleanup (docs/briefs/row24-one-home.md) | Ops | builder + chat (review) | agy, cf; Sonnet high | Mon 11-02 | 23 |
+| 24 | One home for every rule, tidy, integrity audit, row 20 leftovers, cleanup (docs/briefs/row24-one-home.md) | Ops | builder + chat (review) | agy, cf; Sonnet high | Mon 11-02 | - |
 | 25 | Opus gate on system-v3: review, hook cutover to the studio plugin, proof runs, coach, merge to main, M1 prompt (docs/briefs/row25-opus-gate.md) | Ops | chat (review) | Opus high | Mon 11-02; always runs | 24 |
 | 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof, combat feel first (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | Tue 11-03 | 25 |
 | 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | after row 3 | 3 |
@@ -35,13 +34,14 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 |---|---|---|
 | Bilqis's portraits are now the Neon ones: keep or overturn (archive-cleanup, decisions-log); on hold until further notice (Feras 10-31) | Feras | 10-27 |
 | Art homework into inbox/: concept pictures, an empty plate per scene (no characters, HUD or rain), icon art (row 7) | Feras | 10-24 |
-| Row 25 gate: after the merge to main, run once `/plugin marketplace add C:/dev/game`, accept the trust dialog, enable studio@neon (a plugin loads only from the main checkout) | Feras | 11-01 |
+| Row 25 gate: after the merge to main, run once `/plugin marketplace add C:/dev/game`, accept the trust dialog, enable studio@neon and pm@neon (a plugin loads only from the main checkout) | Feras | 11-01 |
+| Status line wired in .claude/settings.json (row 23 e); its real stdin JSON is not dumped yet: in the first fresh chat open `.check/statusline_raw.json` and confirm the field names (docs-based today) | Claude | 11-01 |
 | Cleanup (row 24, part f): .claude/worktrees/ empty row18-routing folder (in use 10-31; retry the delete) and b5_tests.log; base-xr-salvage local and remote; merged remote branches worktree-row12-*, row16-*, row17-*, row18-*, row18c-*, row19-* | Claude | 10-31 |
 
 ## This week (weekly limit resets Sat 16:00 GMT+3)
 | Day | Plan |
 |---|---|
-| Sun 11-01 | Row 22 done; row 23 (Sonnet high, one paste). |
+| Sun 11-01 | Rows 22 and 23 done on system-v3. |
 | Mon 11-02 | Row 24 (Sonnet high), then row 25 (Opus gate). Hard stop 23:59. |
 | Tue 11-03 | M1 brief (row 3); M1 build (row 4) overnight into Wed 11-04 at the earliest; play day moves to when M1 passes its gates. |
 
@@ -56,4 +56,4 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 
 ## Prompt for the next chat
 Type `/model sonnet`, then `/effort high`, stay in auto mode, then paste this as one message (`/goal` first; it starts the work itself):
-`/goal Row 23 is finished: every Done-when line of docs/briefs/row23-pm-handoff.md is shown true in this chat, or its fallback was taken and reported; nothing was pushed to main; /handoff has run on branch system-v3; and your last message holds the row 24 prompt ready to paste. Or stop after 40 turns with a status report. How: you are Sonnet high in auto mode. Read HANDOFF.md, then that brief and docs/briefs/row22-probe.md, and do row 23 only. Read-only in C:\dev\game; EnterWorktree before the first edit (D10), then git merge --ff-only origin/system-v3, and end with git push origin HEAD:system-v3. Row 22 is merged there: skills stayed in .claude/skills (plugin skills ignore skillOverrides and paths:); the plugin is plugins/studio; its 4 hooks stay wired in settings.json until row 25 (Feras 11-01), so ignore session-start's "plugin studio is not loaded" line; test plugin edits with claude --plugin-dir <worktree>/plugins/studio. Call the workers by the builders skill's Who does what table. Efficiency (Feras 11-01): launch-and-wait for a builder run goes to a fresh Haiku medium subagent with a short template brief and a one-line answer; diff review, confirming cross-review flags, fix rounds and merging stay in this chat; no new fork for work under ~10 calls; no polling, wait for notifications; one parallel batch per step, plain commands, no compound shell or backslashes; WebFetch only with a narrow prompt; run bash tools/check.sh once after the last edit and read the FAIL lines; do not re-read files already in this chat. A cf run merges with merge_run.sh <task> oc, and its cross-review gets the base origin/system-v3. Show each check's result in this chat, because the goal check reads only the chat. When stuck or refused, ask Feras with AskUserQuestion and a pick; never end a turn on a question.`
+`/goal Row 24 is finished: every Done-when line of docs/briefs/row24-one-home.md is shown true in this chat, or its fallback was taken and reported; nothing was pushed to main; /handoff has run on branch system-v3 (bash tools/handoff.sh); and your last message holds the row 25 prompt (Opus high) ready to paste. Or stop after 40 turns with a status report. How: you are Sonnet high in auto mode. Read HANDOFF.md, then that brief, and do row 24 only. Read-only in C:\dev\game; EnterWorktree (or git worktree add from an origin/system-v3 branch, then EnterWorktree path) before the first edit (D10); bash tools/merge_base.sh, and end with git push origin HEAD:system-v3. Row 23 is merged there: plugins/pm (pm.py board|next|row|week|report, skills status/next/row/week/report/handoff), tools/handoff.sh (1 call = map, doc_check, check, commit, push), tools/merge_base.sh, tools/main_file.sh, tools/statusline.py, session_stats.py --row, tools/runs_log.py + docs/runs.csv. Test plugin edits with claude --plugin-dir <worktree>/plugins/pm. Feras 11-01 workers: Haiku 5.5 subagents (no effort set) for launch-and-wait and reading; a fork only for a noisy chunk that needs this chat's context; a subagent that must itself call subagents or builders is Sonnet; agy and cf do everything they can do as well (cheap), you write small things yourself when a brief costs more than the work; stuck twice on one thing: ask Feras for /advisor opus. Builder runs: parallel parts each get only their own red test in their branch (row 23 lesson: sibling red tests in the shared base fail every part's check; merge parts by hand once each part's own test passes). Show each check's result in this chat, because the goal check reads only the chat; no polling, wait for notifications; plain commands, no compound shell. When stuck or refused, ask Feras with AskUserQuestion and a pick; never end a turn on a question.`
