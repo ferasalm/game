@@ -5,8 +5,7 @@ in a cyberpunk Old Sana'a. The owner, Feras, is the creative director: he decide
 gates and reviews (delegating code and bulk reads to near-free builders) and runs every check itself. He is on Claude Pro: spend little.
 
 ## North star (docs/VISION.md)
-A small, replayable game whose combat feel wins every tie, set in Old Sana'a with a corrupted-trust story. Next goal: a
-free 20-30 min demo, PC (Steam) first, Android kept alive.
+A small, replayable game whose combat feel wins every tie, set in Old Sana'a with a corrupted-trust story; goal, platforms and demo: DECISIONS Scope.
 
 @HANDOFF.md
 @docs/DECISIONS.md
@@ -21,8 +20,8 @@ free 20-30 min demo, PC (Steam) first, Android kept alive.
 4. Before content work (story, names, art, UI, combat design): read docs/CANON.md.
 
 ## Enforced by a tool (obey its message)
-- Paid generation needs Feras's "spend ok" (pre_spend.py); a render reaches him only after review-player + review-feras
-  (review_gate.py; stamp: review_stamp.py); queue rows, note caps: doc_check.py; briefs: test_template.py; builder edits: build_gate.
+- Paid generation (pre_spend.py), renders (review_gate.py), queue rows and note caps (doc_check.py), briefs (test_template.py)
+  and builder edits (build_gate) each stop with their own message; stamp: review_stamp.py.
 - Never-read paths (.godot/, *.import, *.uid, inbox/retired/, docs/research/gemini-blueprint-citations.md): deny rules in
   .claude/settings.json. Checks: `bash tools/check.sh` (read the FAIL lines; `cached:` = 2 slow tool tests skipped, tools/ unchanged; CI=1 runs them).
 
@@ -51,16 +50,13 @@ Scale: a small, low-risk change (a few lines, no machinery, nothing player-visib
 - Each task goes to the cheapest worker that does it well (builders skill, Who does what). Priorities, the higher wins a
   tie (Feras 10-31): 1 output quality, a hard gate (checks pass, Opus signs off); 2 codebase integrity and flexibility;
   3 Claude tokens and usage limits; 4 organization and simplicity; 5 speed. Builder time is free.
-- Opus plans and owns every output that reaches Feras as if it did the work; Sonnet high executes by default from an Opus
-  brief, delegating by the builders Who does what table (Feras 11-01: agy and cf do everything they can do just as well;
-  Haiku low subagents launch and wait; never a Sonnet subagent to call builders; forks only under ~100k context when a
-  noisy chunk strictly needs this chat's memory). Opus (or the Lead chat) reviews whatever another model made, tiered
-  (gates, cross-review lens via cf max / agy or a Haiku low pass on big diffs, then Lead/Opus on the list and risky hunks).
-- IMPORTANT: one task, model and effort per chat: a chat holds one part of a queue row and finishes it at full quality;
-  context size never stops, shortens or hands off work (Feras 10-31). /handoff when the task is done, or at ~85% of the
-  5-hour window; a follow-up or correction of <= ~10 tool calls stays (its cache is cheaper), a new multi-step task opens
-  a fresh chat. The status line (or Feras's /usage) at the start and before a big step. Independent steps
-  go as parallel tool calls in one message, never chained shell (the worktree guard refuses it; each refusal = a call).
+- Opus plans and owns every output that reaches Feras as if it did the work; Sonnet high executes from an Opus brief,
+  delegating by the builders Who does what table (worker policy: DECISIONS Process 11-01). Opus (or the Lead chat) reviews
+  whatever another model made, tiered (gates, cross-review lens via cf max / agy or a Haiku low pass, then the list and risky hunks).
+- IMPORTANT: one task, model and effort per chat, finished at full quality; context size never stops or hands off work
+  (DECISIONS 10-31). /handoff when the task is done or at ~85% of the 5-hour window; a follow-up of <= ~10 tool calls stays,
+  a new multi-step task opens a fresh chat. Status line or /usage at the start. Independent steps go as parallel tool
+  calls in one message, never chained shell (the worktree guard refuses it; each refusal = a call).
 - Builders write when the brief is shorter than the work and the risk is low or well tested; Opus writes small, risky
   machinery itself (hooks, gates, slots, saves). Claude plans, briefs (TEMPLATE), reviews, merges. A run red on the
   pipeline itself: Opus fixes the pipeline and re-gates.
