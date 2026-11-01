@@ -1,5 +1,5 @@
-# Brief: row25-sync-dirty (copy of docs/briefs/TEMPLATE.md headings; pipeline proof run for row 25, cf DeepSeek low)
-You are in your own worktree on branch oc/row25-sync-dirty (made from origin/system-v4; the base is pushed). Follow GEMINI.md, including
+# Brief: row25-sync-dirty2 (copy of docs/briefs/TEMPLATE.md headings; pipeline proof run for row 25, cf DeepSeek low)
+You are in your own worktree on branch oc/row25-sync-dirty2 (made from origin/system-v4; the base is pushed). Follow GEMINI.md, including
 <review_misses>. Load the builders skill.
 Pattern: tools/sync_main.sh
 Timebox: 15 min (<= 45). First commit within 15 min, then small WIP commits.

@@ -83,13 +83,11 @@ def test_main_stays_main_and_passes():
         shutil.rmtree(top, ignore_errors=True)
 
 
-def test_a_switch_that_would_lose_local_work_fails_on_branch():
+def test_a_main_held_by_another_worktree_fails_on_branch():
     top, g, other = toy()
     try:
         git(g, "checkout", "-q", "-b", "side")
-        put(g + "/README.md", "side edit\n")
-        git(g, "commit", "-qam", "side")
-        put(g + "/README.md", "uncommitted\n")  # dirty file that differs on main: switch refuses
+        assert git(g, "worktree", "add", "-q", top + "/held", "main").returncode == 0  # main is checked out there
         r = run(g)
         assert last_line(r) == "SYNC FAIL branch", r.stdout + r.stderr
         assert head(g) == "side"
