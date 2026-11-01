@@ -1,0 +1,6 @@
+{
+  "name": "pm",
+  "version": "0.1.0",
+  "description": "Project management: queue board, next prompt, row edits, week plan, and briefing reports.",
+  "author": { "name": "Feras" }
+}
