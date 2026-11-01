@@ -595,6 +595,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `plugins/pm/.claude-plugin/plugin.json`: content: ? x0
 - `plugins/pm/scripts/pm.py`: Project management CLI for Neon Glitch (row 23, 2026-11-01).
 - `plugins/pm/scripts/pm_tables.py`: Table parsing and queue extraction helpers for pm CLI (row 23).
+- `plugins/pm/skills/handoff/SKILL.md`
 - `plugins/pm/skills/next/SKILL.md`
 - `plugins/pm/skills/report/SKILL.md`
 - `plugins/pm/skills/row/SKILL.md`
@@ -664,6 +665,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/frame_score.py`: Score vision model yes/no answers on frames against reference labels.
 - `tools/gate_checklist.py`: Checklist parsing and verification for build_gate.
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.
+- `tools/handoff.sh`: The mechanical half of /handoff in one call (row 23 b, 2026-11-01): map, doc_check, check, commit, push and (with
 - `tools/hooks/heredoc_guard.py`: PreToolUse hook on Bash (LESSONS 4, broken again 10-29: 4 calls lost): the Bash tool collapses every doubled
 - `tools/hooks/pre_spend.py`: PreToolUse hook (D21): blocks paid generation tools (exit 2) unless a recent USER message says "spend ok"; reminds before Hyper3D.
 - `tools/hooks/review_gate.py`: PreToolUse hook (D5, D21): blocks a game render sent to Feras unless review-player and review-feras stamped it.
@@ -675,7 +677,9 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/kill_tree.py`: Kills a process and every descendant, also children forked while the kill runs (tools/lib.sh kill_tree calls it).
 - `tools/lib.sh`: Shared shell helpers for the builder tools (slots, pipeline, task runners, merge, check): paths, python, limits.
 - `tools/lint_gd.py`: GDScript rules Godot itself doesn't enforce (docs/ARCHITECTURE.md, "Code rules"); exit 1 on any break.
+- `tools/main_file.sh`: Prints a file as it is on origin/main, after a fetch, without touching the work tree (row 23 d, 2026-11-01).
 - `tools/map.py`: Writes docs/MAP.md from each file's purpose line, so the map never drifts. --check: exit 1 if stale.
+- `tools/merge_base.sh`: Fetches and fast-forwards the current branch to origin/<branch> (default: the current branch; "main" for a branch that
 - `tools/merge_run.sh`: Merges one gated builder run into the current branch (DECISIONS 2026-10-23): only a PASS .result; a fast-forward onto
 - `tools/musnad.py`: Transliterate Arabic to Musnad (Old South Arabian) letter by letter; scan files for Arabic.
 - `tools/oc_agents.py`: Makes one opencode subagent per game skill (.agents/skills/<name> -> .opencode/agent/<name>.md); --check fails when stale.
@@ -704,6 +708,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/smoke_keeper.gd`: Survives scene changes during a smoke run: starts a new game, waits, reports the scene, quits
 - `tools/smoke_keeper.tscn`: scene
 - `tools/status.sh`: One look at the state of the work (Feras 2026-10-27): builders, branches not yet on main, worktrees with nothing left,
+- `tools/statusline.py`: Status line command (row 23 e, 2026-11-01): reads Claude Code's status JSON on stdin, prints one line
 - `tools/sync_main.sh`: Brings the main checkout up to origin/main and proves the game starts (2026-10-24: merges pulled without a re-import
 - `tools/sync_personas.py`: Copies the 10 Neon Glitch personas from their one source (.agents/skills/<name>/SKILL.md) to .claude/skills/<name>/SKILL.md
 - `tools/test_art_refs.py`: tools/art/refs.json: one approved reference per character (row 1 item 3, 10-28). Every Rodin model has an entry,
@@ -721,6 +726,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_frame_score.py`: Tests tools/frame_score.py. Run: python tools/test_frame_score.py
 - `tools/test_gate_checklist.py`: Tests for brief checklist verification in build_gate.
 - `tools/test_gate_d6.py`: Self-test for the D6 gate rules (2026-10-27): protected tests and assets, removed checks, new tests fail on base.
+- `tools/test_git_helpers.py`: Self-test for tools/main_file.sh and tools/merge_base.sh (row 23 d, 2026-11-01) in a throwaway repo with a bare origin.
 - `tools/test_godot_lsp.py`: plugins/studio/scripts/godot_lsp.py bridges Claude Code (LSP over stdio) to Godot's LSP (TCP) (system-v3 row 22, 2026-11-01).
 - `tools/test_handoff.py`: Self-test for tools/handoff.sh (row 23 b, 2026-11-01) in a throwaway repo with a bare origin and stub steps.
 - `tools/test_hook_heredoc.py`: Self-test for tools/hooks/heredoc_guard.py (LESSONS 4): a python heredoc holding a backslash, in any form, and a
@@ -741,6 +747,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_session_stats.py`: session_stats counts calls, failed calls, real user turns (not tool results or injected tags) and peak context.
 - `tools/test_slots.py`: Self-test for tools/slots.sh: python tools/test_slots.py (temp dirs, plain asserts, exit 1 on failure).
 - `tools/test_status.py`: Self-test for tools/status.sh: python tools/test_status.py (a temp repo with planted branches, exit 1 on failure).
+- `tools/test_statusline.py`: Self-test for tools/statusline.py (row 23 e, 2026-11-01). Field names are from the official statusline docs (fetched 11-01):
 - `tools/test_template.py`: TEMPLATE.md stays readable by the gate (P3.8, 2026-10-27): its headings, an empty forbidden list, parseable checklist.
 - `tools/test_token_handoff.py`: Self-test for tools/hooks/token_handoff.py: cache-read information at 25M, then every +10M; context size never warns
 - `tools/test_tool_tests.py`: Tests tool_tests.py parallel test execution and process runner.
