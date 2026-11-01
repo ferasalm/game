@@ -650,6 +650,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/build_gate.py`: Build gate: judges a builder run before Claude reads it (NOWORK, BREACH, FAIL or PASS plus a WARN checklist).
 - `tools/build_pipeline.sh`: Free builder pipeline (DECISIONS 2026-10-23, hardened 2026-10-27): slots check -> builder run (idle watchdog) ->
 - `tools/builders.conf`
+- `tools/cf_audit.sh`: Read-only audit by Cloudflare DeepSeek V4.1 Flash at max (row 25, Feras 11-01): the model reads the repository with opencode's
 - `tools/cf_build.sh`: Cloudflare builder (Workers AI DeepSeek V4.1 Flash, Workers Paid, no $ cap since 10-30, spend in cf_spend.csv): runs
 - `tools/cf_mcp/server.py`: Stdio MCP server: triage_trace (DeepSeek V4.1 Flash), generate_patch (DeepSeek V4.1 Flash), optional .agents persona.
 - `tools/cf_mcp/test_server.py`: Tests for tools/cf_mcp/server.py over its real stdio protocol, in dry mode (no Cloudflare call, no credentials).
@@ -665,6 +666,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/eye_metrics.py`: Player's-eye metrics for Neon clips and UI fonts (report only; always exits 0).
 - `tools/fps_probe.gd`: FPS probe: plays a scene with vsync off and prints the average and worst frames per second after a warm-up
 - `tools/frame_score.py`: Score vision model yes/no answers on frames against reference labels.
+- `tools/free_mb.py`: Prints the available PHYSICAL memory in MB, the number Task Manager calls "available" (Feras 11-01: the floor used to count
 - `tools/gate_checklist.py`: Checklist parsing and verification for build_gate.
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.
 - `tools/handoff.sh`: The mechanical half of /handoff in one call (row 23 b, 2026-11-01): map, doc_check, check, commit, push and (with
@@ -716,6 +718,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_base_red.py`: base_red.py refuses a base holding a red tool test the brief does not name (rows 23, 24), on a toy git repo.
 - `tools/test_build_gate.py`: Self-test for build_gate.py: python tools/test_build_gate.py (temp git repos, plain asserts, exit 1 on failure).
 - `tools/test_build_pipeline.py`: Self-test for build_pipeline.sh, oc_task.sh, agy_task.sh and lib.sh on a toy repo: stub builder, stub memory, real git.
+- `tools/test_cf_audit.py`: Self-test for tools/cf_audit.sh (row 25, 2026-11-01): the read-only cf audit stages its box, runs opencode with the
 - `tools/test_cf_probe.py`: cf_probe: the stream folds into the right timings and tokens; effort, extras and an image reach the body.
 - `tools/test_cf_probe_stream.py`: cf_probe stream: a broken `data:` line is skipped and counted, never a crash; both good events survive.
 - `tools/test_check_slot.py`: check_slot.sh: a full set of slots makes the next run wait; a released or stale slot lets it in.
@@ -723,9 +726,11 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_cross_review.py`: Self-test for the cross-review findings parser (row 12 A/B, 2026-10-28): python tools/test_cross_review.py.
 - `tools/test_cross_review_sh.py`: Self-test for the cross-review runner tools/cross_review.sh (row 12 A, 2026-10-29): python tools/test_cross_review_sh.py.
 - `tools/test_doc_check.py`: Self-test for doc_check.py: warns (exit 0) at 75% of a cap; every queue row needs a lane and a WORKFLOW department;
+- `tools/test_doc_graph.py`: Self-tests for tools/doc_graph.py: the generated DOCMAP must stay byte-stable, skip archive folders and itself, show purposes, resolve references, and flag dangling pairs, orphans, overlaps and a stale map.
 - `tools/test_eye_metrics.py`: Tests tools/eye_metrics.py on a temp project root. Run: python tools/test_eye_metrics.py
 - `tools/test_file_sizes.py`: Bandwidth guard (Feras 10-30: his internet is metered): git sends only new objects, so a sync costs kilobytes until
 - `tools/test_frame_score.py`: Tests tools/frame_score.py. Run: python tools/test_frame_score.py
+- `tools/test_free_mb.py`: The memory floor reads available PHYSICAL memory (Task Manager's "available"), not free virtual memory (row 25,
 - `tools/test_gate_checklist.py`: Tests for brief checklist verification in build_gate.
 - `tools/test_gate_d6.py`: Self-test for the D6 gate rules (2026-10-27): protected tests and assets, removed checks, new tests fail on base.
 - `tools/test_git_helpers.py`: Self-test for tools/main_file.sh and tools/merge_base.sh (row 23 d, 2026-11-01) in a throwaway repo with a bare origin.
