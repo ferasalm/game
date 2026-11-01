@@ -122,6 +122,16 @@ def test_detached_head_fails_at_push_with_no_commit_lost():
     assert r.returncode != 0 and last_line(r) == "HANDOFF FAIL push", r.stdout + r.stderr
 
 
+def test_map_runs_after_the_new_files_are_staged():  # map.py lists `git ls-files --cached`: CI went red on main with a stale MAP.md (11-02)
+    top, g = toy()
+    put(g + "/tools/map.py", "import subprocess\nout = subprocess.run(['git', 'ls-files', '--cached'], capture_output=True, text=True).stdout\n"
+        "open('map_saw.txt', 'w').write(out)\n")
+    put(g + "/brand_new.txt", "new\n")
+    r = run(g, "m")
+    assert last_line(r) == "HANDOFF PASS", r.stdout + r.stderr
+    assert "brand_new.txt" in open(g + "/map_saw.txt", encoding="utf-8").read(), "map ran before the new file was staged"
+
+
 def test_usage_and_script_hygiene():
     r = sh(ROOT, BASH, "tools/handoff.sh")
     assert r.returncode != 0 and "Usage" in r.stdout + r.stderr

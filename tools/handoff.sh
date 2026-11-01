@@ -25,7 +25,9 @@ cd "$root" || exit 2
 fail() { echo "HANDOFF FAIL $1"; exit 1; }
 
 echo "== map"
+git add -A || fail map  # map.py lists `git ls-files --cached`: a new file must be staged first or CI finds MAP.md stale (11-02)
 python tools/map.py || fail map
+git add -A || fail map  # and the regenerated map joins the commit
 
 echo "== doc_check"
 python tools/doc_check.py || fail doc_check
