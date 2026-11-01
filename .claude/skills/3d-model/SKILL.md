@@ -6,6 +6,7 @@ paths:
   - "tools/rodin/**"
 ---
 # 3D models (Rodin credits, about 50 left on 10-27 minus the Roya jobs in SPEND.md, expire about 2026-11-17)
+Blender MCP is not in `.mcp.json` between art rows (it cost session-start tokens and a process per chat; removed 11-02). Before a Blender step, run once in the worktree: `claude mcp add blender --scope project -- uvx blender-mcp`, start Blender with its add-on, then a new chat sees `mcp__blender__*`; remove it again with `claude mcp remove blender --scope project` when the art rows end. The spend hook for `generate_3d` stays active.
 Never spend credits without Feras's OK in the chat; name the cost first. **One approved hero asset before any batch.**
 Every spend gets a line in docs/SPEND.md (date, asset, credits, reason). The P2b chat spent none.
 

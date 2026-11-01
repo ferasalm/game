@@ -9,6 +9,7 @@ Queue rules (one queue, top row first; Dept, Lane, Open points, builder caps, ba
 |---|---|---|---|---|---|---|
 | 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof, combat feel first (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | Tue 11-03 | - |
 | 26 | Writer trial (Feras 11-01): one real brief to agy medium and cf at max (and default or high), results in docs/runs.csv; merge_run.sh logs each merged worker's findings and fix passes (test first). Row 25 proved the low-cost-pipeline skill on one small run | Ops | builder + chat (review) | agy, cf; Sonnet high | with row 4's first builds | - |
+| 27 | Plan the language server (LSP) for the reviewer agents: probe, verdict, then a brief for Sonnet high (docs/briefs/row27-lsp-reviewers-plan.md) | Ops | chat (plan) | Opus high | queued: dedicated chat | - |
 | 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | after row 3 | 3 |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | after row 3 | 3; free memory >= 2 GB |
 | 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | QA | Feras | - | later: after row 4 | 4 |
@@ -43,4 +44,4 @@ docs/context.md (what is on main, the 3D archive, inbox/retired/ never a source)
 
 ## Prompt for the next chat
 Type `/model opus`, then `/effort high`, stay in auto mode, then paste this as one message (Opus: no `/goal`):
-`Row 25 sign-off, Ops, Opus high: read docs/opus-signoff.md first and do what it says.` (After it: `Row 3, Gameplay, Opus high: write the M1 brief; read docs/next-chat.md first and do what it says.`)
+`Row 25 sign-off, Ops, Opus high: read docs/opus-signoff.md first and do what it says.` (After it: `Row 3, Gameplay, Opus high: write the M1 brief; read docs/next-chat.md first and do what it says.` A separate Opus high chat: `Row 27, Ops, Opus high: plan the LSP for the reviewer agents; read docs/briefs/row27-lsp-reviewers-plan.md first and do what it says.`)
