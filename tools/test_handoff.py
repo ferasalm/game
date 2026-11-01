@@ -31,6 +31,9 @@ def toy(map_ok=True, doc_ok=True, check_ok=True):
     sh(top, "git", "init", "-q", "--bare", "-b", "main", "origin.git")
     sh(top, "git", "clone", "-q", "origin.git", "repo")
     g = top + "/repo"
+    # handoff.sh runs plain `git commit`; the CI runner has no global identity (2026-11-01).
+    sh(g, "git", "config", "user.name", "t")
+    sh(g, "git", "config", "user.email", "t@t")
     os.makedirs(g + "/tools", exist_ok=True)
     shutil.copy(ROOT + "/tools/handoff.sh", g + "/tools/handoff.sh")
     put(g + "/tools/map.py", "import sys\nsys.exit(0 if %s else 1)\n" % map_ok)
