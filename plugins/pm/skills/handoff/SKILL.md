@@ -20,10 +20,10 @@ HANDOFF, DECISIONS and LESSONS load at every session start, so every line costs 
 2. **Lessons.** Anything that cost real time (an error, a wrong guess, nearly asking the owner for something you
    could do): symptom -> cause -> fix, dated, verified only. Merge with similar entries; fix or delete wrong ones.
    Max 100 lines: condense back to ~70 when it gets there (owner, 2026-10-22).
-3. **Usage.** One row in docs/USAGE.md via `python tools/session_stats.py --row <id>`: date, model (name and raw ID
-   from `get_session` when available), effort, each merged run with its Opus fixes and cross-review hits (cost per
-   verified merge, Feras 10-28), any hook/get_usage mismatch, task, share of the 5-hour window used if the owner told
-   you (`/usage`), result, and Kaizen (Feras 10-30): one improvement made, one proposed. An ops-review's row says
+3. **Usage.** One row in docs/USAGE.md via `python tools/session_stats.py --row <id>`: date, model (name and raw ID,
+   measured by the script), effort, each merged run with its Opus fixes and cross-review hits (cost per
+   verified merge, Feras 10-28), any hook/usage mismatch, task, share of the 5-hour window used (`.check/usage.json`
+   from the status line, or the owner's `/usage`), result, and Kaizen (Feras 10-30): one improvement made, one proposed. An ops-review's row says
    "ops-review done" (the session-start hook counts from it).
 4. **HANDOFF.md**, max 60 lines: one `## Queue` table (# | Task | Dept | Lane | Who | Status | Blocked by), then Open points
    (Point | Owner | Since), This week, Parked and context (Feras 2026-10-27: no per-chat tracks). A /handoff updates its own rows,
