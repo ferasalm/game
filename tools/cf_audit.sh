@@ -4,6 +4,8 @@
 # Staged under <repo>/.check/audit/: prompt.md, coach/ (the kaizen coach checklists), memory/ (the user's memory files), because
 # opencode may not read outside the repo (external_directory deny). COACH_DIR and MEMORY_DIR override where they come from.
 # Usage (cwd = a checkout): bash tools/cf_audit.sh <prompt-file> <out-file> [timeout, default AUDIT_TIMEOUT or 30m]
+# Model: AUDIT_MODEL, default cf DeepSeek V4.1 Flash max. GLM lens: AUDIT_MODEL=cloudflare-workers-ai/@cf/zai-org/glm-5.3-flash
+# (no effort levels, Feras 10-31) or cloudflare-workers-ai/@cf/zai-org/glm-5.3 (max). Their long-output caps live in cross_review.opencode.json.
 # Exit: 0 ran, 2 usage, 124 timed out (the partial report stays in <out-file>). Spend line: cf_spend.csv like a cross-review.
 set -uo pipefail
 . "$(dirname "$0")/lib.sh"
@@ -28,7 +30,7 @@ rc=0
 # The repo's own opencode.json allows bash and edit and outranks OPENCODE_CONFIG (probed 11-01: a file was written); inline
 # content outranks the project file, so the deny rules go in both. cross_review.sh needs no inline copy: its box has no project file.
 (cd "$root" && OPENCODE_CONFIG="$lib_dir/cross_review.opencode.json" \
-  OPENCODE_CONFIG_CONTENT="$(cat "$lib_dir/cross_review.opencode.json")" run_limited "$limit" oc_run --model "$CF_MODEL" \
+  OPENCODE_CONFIG_CONTENT="$(cat "$lib_dir/cross_review.opencode.json")" run_limited "$limit" oc_run --model "${AUDIT_MODEL:-$CF_MODEL}" \
   --format default -- "$ask" < /dev/null >> "$out" 2>&1) || rc=$?
 [ "$rc" -eq 0 ] || echo "audit exited $rc" >> "$out"
 bash "$lib_dir/slots.sh" append-spend "$out" "audit" "$CF_INPUT_RATE" "$CF_OUTPUT_RATE" "$(wt_dir)/cf_spend.csv" || true

@@ -65,6 +65,19 @@ def test_the_config_it_uses_denies_every_write_and_run_tool():
     assert cfg["external_directory"] == {"*": "deny"}, "it may read the repo only, nothing outside"
 
 
+def test_audit_model_picks_the_glm_lens_and_the_config_lets_glm_write_a_long_report():
+    top, repo = toy()
+    glm = "cloudflare-workers-ai/@cf/zai-org/glm-5.3-flash"
+    r = run(top, repo, top + "/prompt.md", top + "/out.md", AUDIT_MODEL=glm)
+    assert r.returncode == 0, r.stdout + r.stderr
+    out = open(top + "/out.md", encoding="utf-8").read()
+    assert "--model " + glm in out and "deepseek" not in out.split("ARGS")[1].split("CONFIG")[0], out
+    models = json.load(open(TOOLS + "/cross_review.opencode.json", encoding="utf-8"))["provider"]["cloudflare-workers-ai"]["models"]
+    for name in ("@cf/zai-org/glm-5.3", "@cf/zai-org/glm-5.3-flash"):  # opencode's hidden 32k output cap cut GLM off with no text (11-01)
+        assert models[name]["limit"]["output"] >= 100000, name
+    assert models["@cf/zai-org/glm-5.3"]["options"]["reasoning_effort"] == "max"
+
+
 def test_audit_root_audits_another_checkout():
     top, repo = toy()
     other = tempfile.mkdtemp().replace("\\", "/")  # not the cwd's repo: the box must land here

@@ -14,6 +14,21 @@
   "provider": {
     "cloudflare-workers-ai": {
       "models": {
+        "@cf/zai-org/glm-5.3": {
+          "options": {
+            "reasoning_effort": "max"
+          },
+          "limit": {
+            "context": 200000,
+            "output": 128000
+          }
+        },
+        "@cf/zai-org/glm-5.3-flash": {
+          "limit": {
+            "context": 200000,
+            "output": 128000
+          }
+        },
         "@cf/deepseek-ai/deepseek-v4.1-flash-1017": {
           "options": {
             "reasoning_effort": "max"

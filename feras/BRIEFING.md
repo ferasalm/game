@@ -72,7 +72,7 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 **Done (branch system-v3, nothing on main):**
 - Prompt lint **done**: `tools/prompt_check.py <file> --kind brief|oneshot|chat` names every miss (Sonnet prompt: /goal, under 4,000 characters, a turn cap). Built by agy, cross-reviewed by cf max (6 flags, 4 real, fixed). It also proved the agy lane, the cf lane and the fork.
 - Plugin **done**: `plugins/studio` holds the 7 reviewer agents (now `studio:review-code` and so on), the hook wiring, and the Godot LSP bridge (cf max built it, agy review found nothing). `.claude-plugin/marketplace.json` names it; `claude plugin validate --strict` passes; a plugin reviewer agent ran.
-- Probes **done** (docs/briefs/row22-probe.md): a plugin loads only from the main checkout and only after you accept the trust dialog once; plugin skills ignore skillOverrides and `paths:`; plugin hooks see the worktree; the plugin costs 156 tokens at start; Godot's LSP works (errors in ~2 s, 189 references in 2 s, ~0.75 GB per worktree, `git status` clean).
+- Probes **done** (docs/archive/briefs/row22-probe.md): a plugin loads only from the main checkout and only after you accept the trust dialog once; plugin skills ignore skillOverrides and `paths:`; plugin hooks see the worktree; the plugin costs 156 tokens at start; Godot's LSP works (errors in ~2 s, 189 references in 2 s, ~0.75 GB per worktree, `git status` clean).
 - Session start now warns in one line if the plugin is not loaded **done**.
 
 **Where this differs from the plan:**

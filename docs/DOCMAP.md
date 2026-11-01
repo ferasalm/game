@@ -41,7 +41,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | .agents/skills/ui-finish-gate-reviewer/SKILL.md | UI Finish-Gate Reviewer: Neon Glitch, before Feras | 2 | 4 |
 | .claude/coach-history.md | Coach history (kaizen:coach; committed; entries older than 30 days move to coach-history-archive.md) | 5 | 6 |
 | .claude/rules/code.md | Code rules (Claude and builders; build_pipeline pastes this file into every builder prompt) | 11 | 9 |
-| .claude/rules/tooling/lsp-fallbacks.md | GDScript language server (studio plugin) and what to do when it is down | 5 | 6 |
+| .claude/rules/tooling/lsp-fallbacks.md | GDScript language server (studio plugin) and what to do when it is down | 6 | 6 |
 | .claude/skills/3d-model/SKILL.md | 3D models (Rodin credits, about 50 left on 10-27 minus the Roya jobs in SPEND.md, expire about 2026-11-17) | 1 | 9 |
 | .claude/skills/3d-model/lessons.md | 3d-model lessons (dated lines, <= 40) | 0 | 1 |
 | .claude/skills/3d-model/research-queue.md | Research queue (open questions for free models and Feras's Gemini runs; remove a line when answered) | 0 | 0 |
@@ -109,12 +109,13 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/USAGE.md | Usage ledger | 4 | 15 |
 | docs/VISION.md | Neon Glitch: vision (Feras owns this file; it changes only by a logged decision) | 11 | 4 |
 | docs/WORKFLOW.md | WORKFLOW: how the studio works (protocols, routing, limits, routes) | 16 | 36 |
-| docs/audits/2026-11-01-coach-compare.md | Coach audit: cf DeepSeek V4.1 Flash max vs Haiku 5.5 medium (2026-11-01, row 25; for Feras and Claude) | 4 | 2 |
+| docs/audits/2026-11-01-coach-compare.md | Coach audit: cf DeepSeek V4.1 Flash max vs Haiku 5.5 medium (2026-11-01, row 25; for Feras and Claude) | 5 | 7 |
 | docs/audits/2026-11-01-coach-dsv4.md | Coach audit by cf DeepSeek V4.1 Flash max, read-only (2026-11-01, row 25; saved from the opencode output) | 0 | 23 |
+| docs/audits/2026-11-01-coach-glmflash.md | Coach audit by cf GLM-5.3-Flash, read-only (2026-11-02, row 25; saved from the opencode output) | 1 | 22 |
 | docs/audits/2026-11-01-coach-haiku.md | Coach audit by Haiku 5.5 medium, read-only (2026-11-01, row 25; saved verbatim from the sub-agent's hand-back) | 1 | 16 |
 | docs/audits/2026-11-01-token-bleed.md | Token bleed in the always-loaded notes (2026-11-01, one cf DeepSeek max pass, read by Opus; bytes approximate, not yet acted on) | 0 | 8 |
 | docs/audits/2026-11-02-integrity.md | Integrity Audit: 2026-11-02 | 4 | 62 |
-| docs/audits/coach-audit-prompt.md | Prompt: read-only Claude Code setup audit ("coach") for tools/cf_audit.sh | 2 | 6 |
+| docs/audits/coach-audit-prompt.md | Prompt: read-only Claude Code setup audit ("coach") for tools/cf_audit.sh | 3 | 6 |
 | docs/briefs/TEMPLATE.md | Brief: <task> (copy to docs/briefs/<task>.md; <= 80 lines; tools/test_template.py keeps the gate's headings here) | 5 | 13 |
 | docs/briefs/archive-cleanup.md | DONE 2026-10-27 (stages 1-3 on main). Chat brief: finish the 3D archive + rename zayd -> rydan (Feras 2026-10-27, decisions-log) | 0 | 9 |
 | docs/briefs/neon-cold-open.md | Brief: neon-cold-open (Neon Glitch: Roya cold open, watch only, about 40 s; <= 60 lines) | 1 | 22 |
@@ -148,8 +149,8 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/design/rpg-menus.md | RPG menus (v1, 2026-10-23; approved by Feras; layouts judged against inbox/ui_refs/01-09) | 1 | 4 |
 | docs/design/rpg-systems.md | RPG systems (v1, 2026-10-23; approved by Feras; every number is [PLACEHOLDER] until the harness and a play-through) | 1 | 10 |
 | docs/design/rydan-moves.md | Zayd's moves: audit and redesigned kit (design v1, 2026-10-22; numbers are [PLACEHOLDER] until the harness) | 2 | 2 |
-| docs/design/systems-map.md | Systems map: what a change touches (D21; read before writing a spec's or brief's Ripple section) | 4 | 17 |
-| docs/design/ui.md | UI look v2: Sana'a night glass, painted (menus, HUD, dialogue, popups) | 10 | 1 |
+| docs/design/systems-map.md | Systems map: what a change touches (D21; read before writing a spec's or brief's Ripple section) | 5 | 17 |
+| docs/design/ui.md | UI look v2: Sana'a night glass, painted (menus, HUD, dialogue, popups) | 11 | 1 |
 | docs/design/v03-text.md | v0.3 text: herb seller, sabil, items, nameplates, pause and defeat (draft for owner review) | 0 | 1 |
 | docs/design/valve-puzzles.md | The valve puzzles (level 1 finale; owner choices 2026-10-23) | 0 | 2 |
 | docs/design/world.md | World, cast and the jambiyah (draft for owner review; unverified culture details: owner corrects) | 6 | 0 |
@@ -164,7 +165,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/story/README.md | Story map: the repo and Twine, both ways | 1 | 2 |
 | docs/story/bible.md | Story bible (Feras, 2026-10-26; from inbox/docs/Neon_Glitch_Story_Bible_Final.docx (renamed by Feras 10-27), text unchanged) | 8 | 1 |
 | docs/story/chatgpt-prompt.md | Prompt for ChatGPT: turn the story into Twine passages | 0 | 0 |
-| feras/BRIEFING.md | Briefing for Feras (one file for you: newest report first, the last 5 kept; every chat updates it at /handoff) | 7 | 23 |
+| feras/BRIEFING.md | Briefing for Feras (one file for you: newest report first, the last 5 kept; every chat updates it at /handoff) | 9 | 24 |
 | feras/research-prompts.md | Research prompts for Feras (Gemini Deep Research, Argon High) | 2 | 1 |
 | plugins/pm/skills/handoff/SKILL.md | Handoff (game) | 3 | 14 |
 | plugins/pm/skills/next/SKILL.md | Run `python ${CLAUDE_PLUGIN_ROOT}/scripts/pm.py next` and show its output. | 1 | 0 |
@@ -172,7 +173,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | plugins/pm/skills/row/SKILL.md | Run `python ${CLAUDE_PLUGIN_ROOT}/scripts/pm.py row "$@"` and show its output. | 1 | 0 |
 | plugins/pm/skills/status/SKILL.md | Run `python ${CLAUDE_PLUGIN_ROOT}/scripts/pm.py board` and show its output. | 1 | 0 |
 | plugins/pm/skills/week/SKILL.md | Run `python ${CLAUDE_PLUGIN_ROOT}/scripts/pm.py week` and show its output. | 1 | 0 |
-| plugins/studio/README.md | studio: how Neon Glitch is built (Claude Code plugin) | 3 | 11 |
+| plugins/studio/README.md | studio: how Neon Glitch is built (Claude Code plugin) | 5 | 11 |
 | plugins/studio/agents/review-canon.md | review-canon: lens agent (calibrated 2026-10-27, docs/research/calibration-2026-10.md) | 1 | 4 |
 | plugins/studio/agents/review-code.md | review-code: lens agent (calibrated 2026-10-27, docs/research/calibration-2026-10.md) | 3 | 3 |
 | plugins/studio/agents/review-cost.md | review-cost: lens agent (calibrated 2026-10-27, docs/research/calibration-2026-10.md) | 1 | 2 |
