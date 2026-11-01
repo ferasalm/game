@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 # Brings the main checkout up to origin/main and proves the game starts (2026-10-24: merges pulled without a re-import
 # left a stale class cache; ~60 "not declared" errors and the game did not run). Usage (cwd = C:/dev/game):
-# bash tools/sync_main.sh   -> last line SYNC PASS <commit> or SYNC FAIL <step>.
+# bash tools/sync_main.sh   -> last line SYNC PASS <commit> or SYNC FAIL <step>. A dirty tracked tree fails with
+# SYNC FAIL dirty and the checkout is left untouched (untracked files are fine).
 root="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$root" || exit 1
+git diff --quiet HEAD -- || { echo "SYNC FAIL dirty"; exit 1; }  # never carry uncommitted tracked changes across the switch
 [ "$(git rev-parse --abbrev-ref HEAD)" = main ] || git switch -q main || { echo "SYNC FAIL branch"; exit 1; }  # a pull on a side branch left main behind
 git fetch -q origin && git pull -q --ff-only origin main || { echo "SYNC FAIL pull"; exit 1; }
 bash tools/run_godot.sh --import > /dev/null 2>&1 || { echo "SYNC FAIL import"; exit 1; }
