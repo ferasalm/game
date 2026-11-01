@@ -12,6 +12,8 @@ import pathlib
 import re
 import sys
 
+from doc_paths import repo_paths, resolve
+
 SELF = "docs/DOCMAP.md"
 ALLOW = "docs/doc_graph_allow.txt"
 SKIP = re.compile(r"^(docs/(archive|research)|inbox|assets|\.godot|\.check|\.claude/worktrees|\.git)(/|$)")
@@ -64,16 +66,6 @@ def refs(text: str) -> list:
     return list(dict.fromkeys(found))
 
 
-def resolve(root: pathlib.Path, node: str, tok: str) -> str:
-    """The token as a repo path when it exists from the root or the node's folder, else ''; build artifacts never count."""
-    here = pathlib.PurePosixPath(node).parent
-    for cand in (tok, (here / tok).as_posix()):
-        cand = cand.rstrip("/")
-        if cand.split("/")[0] not in (".check", ".godot", ".git") and (root / cand).exists():
-            return cand
-    return ""
-
-
 def allowlist(root: pathlib.Path) -> set:
     """The node :: token pairs the allowlist file silences (# comments and blank lines skipped)."""
     if not (root / ALLOW).exists():
@@ -97,12 +89,13 @@ def overlaps(texts: dict) -> list:
 
 def graph(root: pathlib.Path) -> dict:
     """Nodes, purposes, edge counts and the dangling, new, orphan and overlap lists for one root."""
-    names = walk(root)
+    known = repo_paths(root)
+    names = [n for n in walk(root) if known is None or n in known[0]]
     texts = {n: (root / n).read_text(encoding="utf-8", errors="replace") for n in names}
     edges, dangling = {}, []
     for name in names:
         for tok in refs(texts[name]):
-            hit = resolve(root, name, tok)
+            hit = resolve(root, name, tok, known)
             edges.setdefault(name, set()).add(hit) if hit else dangling.append((name, tok))
     inbound = dict.fromkeys(names, 0)
     for name, targets in edges.items():

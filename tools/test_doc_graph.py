@@ -192,6 +192,17 @@ def test_check_sh_runs_the_graph_after_doc_check():
     assert text.index("doc_check.py") < text.index("doc_graph.py --check"), text
 
 
+def test_in_a_git_checkout_an_ignored_file_and_a_wrong_case_do_not_resolve():  # CI failed on main for exactly this (row 27)
+    root = toy({".gitignore": "cfg/local.json\n", "cfg/local.json": "{}\n", "docs/b.md": "# b purpose\n",
+                "docs/a.md": "# a purpose\nsee cfg/local.json and Docs/b.md and docs/b.md\n"})
+    subprocess.run(["git", "init", "-q", root], check=True, capture_output=True)
+    assert run(root).returncode == 0
+    r = run(root, "--check")
+    assert r.returncode == 1, out(r)
+    assert "local.json" in out(r) and "Docs/b.md" in out(r), out(r)
+    assert "FAIL dangling: docs/a.md :: docs/b.md" not in out(r), out(r)
+
+
 def test_the_real_repo_has_a_fresh_map_and_no_new_dangling_reference():
     r = run(TOOLS + "/..", "--check")
     assert r.returncode == 0, out(r)

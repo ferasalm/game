@@ -28,6 +28,7 @@ def toy():
     for name, text in (("stub.sh", STUB), ("prompt.md", "audit it\n")):
         with open(top + "/" + name, "w", encoding="utf-8", newline="\n") as f:
             f.write(text)
+        os.chmod(top + "/" + name, 0o755)  # Linux CI: a stub opencode must be executable (the Windows run never noticed)
     os.makedirs(top + "/coach")
     open(top + "/coach/skills.md", "w").write("checklist\n")
     os.makedirs(top + "/mem")

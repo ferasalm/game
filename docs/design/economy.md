@@ -31,7 +31,7 @@ Rules: recovery is the same as actions; no SP cost; sell is explicit, never abov
 usable in the field (KO heroes stand up after victory, section 6). In the field an item cannot target a hero it would
 not change (full HP/SP): the row is greyed.
 ## 3. Riyal: start, sources, sinks, flow
-Start: 100 riyal, bag {pink_herb: 1}. Cap 9999. Content/economy/rules.json holds these (section 8).
+Start: 100 riyal, bag {pink_herb: 1}. Cap 9999. content/economy/rules.json holds these (section 8).
 | Source | When | Amount |
 |---|---|---|
 | patrol_scouts / rooftop_patrol / patrol_gate | first win | 40 / 70 / 120 |

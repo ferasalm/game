@@ -110,8 +110,8 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/VISION.md | Neon Glitch: vision (Feras owns this file; it changes only by a logged decision) | 11 | 4 |
 | docs/WORKFLOW.md | WORKFLOW: how the studio works (protocols, routing, limits, routes) | 16 | 36 |
 | docs/audits/2026-11-01-coach-compare.md | Coach audit: cf DeepSeek V4.1 Flash max vs Haiku 5.5 medium (2026-11-01, row 25; for Feras and Claude) | 2 | 2 |
-| docs/audits/2026-11-01-coach-dsv4.md | Coach audit by cf DeepSeek V4.1 Flash max, read-only (2026-11-01, row 25; saved from the opencode output) | 0 | 25 |
-| docs/audits/2026-11-01-coach-haiku.md | Coach audit by Haiku 5.5 medium, read-only (2026-11-01, row 25; saved verbatim from the sub-agent's hand-back) | 1 | 17 |
+| docs/audits/2026-11-01-coach-dsv4.md | Coach audit by cf DeepSeek V4.1 Flash max, read-only (2026-11-01, row 25; saved from the opencode output) | 0 | 23 |
+| docs/audits/2026-11-01-coach-haiku.md | Coach audit by Haiku 5.5 medium, read-only (2026-11-01, row 25; saved verbatim from the sub-agent's hand-back) | 1 | 16 |
 | docs/audits/2026-11-01-token-bleed.md | Token bleed in the always-loaded notes (2026-11-01, one cf DeepSeek max pass, read by Opus; bytes approximate, not yet acted on) | 0 | 8 |
 | docs/audits/2026-11-02-integrity.md | Integrity Audit: 2026-11-02 | 4 | 62 |
 | docs/audits/coach-audit-prompt.md | Prompt: read-only Claude Code setup audit ("coach") for tools/cf_audit.sh | 1 | 6 |
@@ -134,7 +134,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/design/audio.md | Audio (Godot built-ins, no FMOD/Wwise) | 2 | 4 |
 | docs/design/combat.md | Combat rules (v0, for the prototype; numbers are starting values in content/, tuned by the harness) | 3 | 6 |
 | docs/design/dialogue-notes.md | Dialogue notes (unverified culture details for the owner to check) | 0 | 2 |
-| docs/design/economy.md | Economy, items and rest (prototype v0.3; every number is [PLACEHOLDER] until the harness and a play-through) | 2 | 7 |
+| docs/design/economy.md | Economy, items and rest (prototype v0.3; every number is [PLACEHOLDER] until the harness and a play-through) | 2 | 6 |
 | docs/design/first-playable.md | Neon Glitch first playable (spec, 2026-10-26, overnight session) | 4 | 13 |
 | docs/design/hilt-stones.md | Hilt stones (design v1, 2026-10-22; every number is [PLACEHOLDER] until the harness and a play-through) | 2 | 3 |
 | docs/design/identity.md | Identity: the Hook (the game's signature motif) | 1 | 0 |
