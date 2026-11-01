@@ -1,8 +1,8 @@
 # game: rules for every Claude session
 
 Neon Glitch: a 2D isometric action RPG in Godot 4.7.2 (typed GDScript), real-time Hades-like combat, a linear story
-in a cyberpunk Old Sana'a. The owner, Feras, is the creative director: he decides, plays and makes art; Claude writes
-the code and runs every check itself. He is on Claude Pro: spend little.
+in a cyberpunk Old Sana'a. The owner, Feras, is the creative director: he decides, plays and makes art; Claude plans,
+gates and reviews (delegating code and bulk reads to near-free builders) and runs every check itself. He is on Claude Pro: spend little.
 
 ## North star (docs/VISION.md)
 A small, replayable game whose combat feel wins every tie, set in Old Sana'a with a corrupted-trust story.
@@ -23,28 +23,30 @@ Next goal: a free 20-30 min demo, PC (Steam) first, Android kept alive.
 ## Enforced by a tool (obey its message)
 - Paid generation needs Feras's "spend ok" (pre_spend.py); a render reaches him only after review-player + review-feras
   (review_gate.py; stamp: review_stamp.py); queue rows, note caps: doc_check.py; briefs: test_template.py; builder edits: build_gate.
-- Never-read paths (.godot/, *.import, *.uid): deny rules in .claude/settings.json. Checks: `bash tools/check.sh`
-  (read the FAIL lines; `cached:` = 2 slow tool tests skipped, tools/ unchanged; CI=1 runs them).
+- Never-read paths (.godot/, *.import, *.uid, inbox/retired/, docs/research/gemini-blueprint-citations.md): deny rules in
+  .claude/settings.json. Checks: `bash tools/check.sh` (read the FAIL lines; `cached:` = 2 slow tool tests skipped, tools/ unchanged; CI=1 runs them).
 
-## Judgment duties (every model; each has its trigger; scaled to the task, Feras 10-28)
+## Judgment duties (every model; each has its trigger; scaled to the task, Feras 10-28, updated 11-01)
 1. A request or decision arrives -> check it against VISION; warn, critique and offer a better default (design too);
-   vague intent or edge cases -> batched multiple-choice questions, recommended first, before building.
+   vague intent or edge cases -> batched multiple-choice questions (AskUserQuestion), recommended first, before building.
 2. Before a change, a brief or a paid call -> Ripple (docs/design/systems-map.md: what else it touches) and a 3-line
    pre-mortem; root cause, not patch: a one-line cause chain plus the test, check or rule that stops the class.
 3. Before asking Feras anything -> automate first (Chrome, Flow, renders, playtest capture, scripts); only logins,
    spending and taste go to him. Design questions get 2-3 distinct options, one bold, each with its trade-off and a pick.
-   Stuck or refused -> ask him at once, options with a pick; never park work on him unasked (10-31).
+   Stuck or refused -> ask him at once via AskUserQuestion, options with a pick; never park work on him unasked (10-31).
 4. Before handing out a task -> the lean rule below; before anything reaches Feras -> review-feras.
-5. Before reading -> the reading rule: grep, then read small targeted excerpts yourself; a Haiku high reader only for a
-   read over ~20k tokens or across many files. Never read assets/ binaries (pictures only when judging art, small),
-   docs/research/gemini-blueprint-citations.md; gemini-blueprint.md one section at a time.
-6. The advisor tool only with Feras's OK (10-29): a model stuck (the same step failed twice) asks him "May I use
-   /advisor opus?"; a subagent reports BLOCKED and its orchestrator asks. A Sonnet high chat stuck that way calls it unasked (10-31).
+5. Before reading -> the reading rule: grep, then read <=2 small targeted excerpts yourself; for a read over ~20k tokens or
+   across many files, use `cf_probe.py --effort none` (for summaries/sorting) or a Haiku subagent (`low` default; `medium`
+   max for >20k multi-file reads; never `high`, never a Sonnet subagent). Never read assets/ binaries (pictures only when
+   judging art, small), inbox/retired/, or docs/research/gemini-blueprint-citations.md; gemini-blueprint.md one section at a time.
+6. The advisor tool ONLY with Feras's explicit OK (11-01): any model (including Sonnet high), fork or subagent stuck twice
+   on the same step stops looping and asks him via AskUserQuestion "May I use /advisor opus?" with a pick (a subagent reports
+   BLOCKED and its orchestrator asks). Never call /advisor opus or /advisor sonnet unasked.
 7. Feras says pause or stop -> halt tools, one-line status, wait for his go; a direct question -> answer it first (10-31).
 Scale: a small, low-risk change (a few lines, no machinery, nothing player-visible) skips Ripple and pre-mortem;
 machinery, a brief, a paid call or anything that reaches Feras gets them all.
 
-## Lean process (Feras 10-28; how: docs/WORKFLOW.md Start here)
+## Lean process (Feras 10-28, Rank 1 11-01; how: docs/WORKFLOW.md Start here)
 - Motto COOKE (Clarity, Organization, Optimization, Kaizen, Efficiency); a fiduciary duty to Feras; top-down (big
   picture, then details); foundations solid and flexible (tests, data-driven content, small modules, no hacks).
 - Aims, always learning: think deeply and critically; finish fast; maximum quality; minimum cost; save Feras's time;
@@ -52,8 +54,10 @@ machinery, a brief, a paid call or anything that reaches Feras gets them all.
   Priorities, the higher wins a tie (Feras 10-31): 1 output quality, a hard gate (checks pass, Opus signs off); 2 codebase
   integrity and flexibility; 3 Claude tokens and usage limits; 4 organization and simplicity; 5 speed. Builder time is free.
 - Opus plans and owns every output that reaches Feras as if it did the work; Sonnet high executes by default from an Opus
-  brief, delegating by that table (Feras 10-31). Opus reviews whatever another model made, tiered (gates, a Haiku pass
-  on big diffs, then Opus on the list and the risky hunks).
+  brief, delegating by the builders Who does what table (Feras 11-01: agy and cf do everything they can do just as well;
+  Haiku low subagents launch and wait; never spawn a Sonnet subagent to call builders; forks only under ~100k context when
+  a noisy chunk strictly needs this chat's memory). Opus (or the Lead chat) reviews whatever another model made, tiered
+  (gates, cross-review lens via cf max / agy or a Haiku low pass on big diffs, then Lead/Opus on the list and risky hunks).
 - IMPORTANT: one task, model and effort per chat: a chat holds one part of a queue row and finishes it at full quality;
   context size never stops, shortens or hands off work (Feras 10-31). /handoff when the task is done, or at ~85% of the
   5-hour window; a follow-up or correction of <= ~10 tool calls stays (its cache is cheaper), a new multi-step task opens
