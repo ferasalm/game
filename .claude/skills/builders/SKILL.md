@@ -100,4 +100,4 @@ Per executor:
 
 ## Pointers
 - Lessons for builders: lessons.md next to this file. Open questions to research: research-queue.md.
-- Rules that apply to every task: CLAUDE.md, docs/WORKFLOW.md (Builder loop).
+- Rules that apply to every task: CLAUDE.md, builders skill.

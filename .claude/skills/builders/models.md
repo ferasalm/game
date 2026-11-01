@@ -6,7 +6,7 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
 - **Artificial Analysis**: Intelligence Index 31 (unverified, AA 2026-10-29), Coding Index 76.3 (unverified, AA 2026-10-29)
 - **Calibration**: Review 3/5 known bugs found twice (audit sec 5); race B reached passing code in ~20 min. Medium, first gated build
   (frame-score, RUN_KIND=py, 10-31): gate PASS with no fix pass, code and two own commits in ~6 min, 36 min end to end (the checks);
-  its own background tasks are waited on, not polled. Reviews then found 6 real edge-case bugs its tests missed
+  its own background tasks are waited on, not polled. Reviews then found 6 real edge-case bugs its tests missed; research: licences 3/3 right, AA numbers 1/3 invented
 - **Known failure modes**: 1 of 10 findings harmful, 1 false; argued wrong side on fail-open/closed (audit sec 5); cannot review its own runs
 - **Best use**: Build (Godot gameplay code with tests, UI renders, Python tools, docs); cross-review for oc/*
 
@@ -98,21 +98,11 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
   trip the 25-min no-commit watchdog, builds drop to high. GLM: cap raised; effort option untested (row 18).
 - Cross-review: agy runs -> cf DeepSeek at max; nemotron only as a backup lens after cf fails twice. No $ cap on cf.
 
-## Routing (row 17, Opus proposal; OKed by Feras 10-31 "with limits", on small samples: 6 frames, 8 easy lines, 1 diff)
+## Routing
+Which worker does what: SKILL.md, Who does what.
 Limits: Clef-flash pre-filters colour and character visible only, review-player keeps text; non-reasoning never reviews.
 Evidence: docs/research/model-evidence-2026-10.md (AA numbers mostly UNVERIFIED: 1 of 3 spot-checked was invented)
 and the measured calibration lines above. Calibrated = passed a gold set (D11).
-| Task class | Model | Calibrated |
-|---|---|---|
-| Godot code, Python tools, docs | agy (Gemini 3.8 Flash); cf DeepSeek 1017 when agy is full | yes (agy 2/2 PASS row 16; cf builds) |
-| Review lens on agy runs | cf DeepSeek 1017 at max (~$0.08); nemotron :free only as backup lens | yes (parser 1/2 at low and max; nemotron gold B 6/6) |
-| Review lens on cf/oc runs | agy | yes (hook diff 3/5) |
-| Research, licences | agy, then Opus re-reads 3 facts in a browser | partly: licences 3/3 right, AA numbers 1/3 invented |
-| Bulk text (summaries, sorting, notes), quick code questions | cf DeepSeek no reasoning (8/8 on one sort, 0.44 s), through cf_probe `--effort none` | one sample; OKed 10-31 |
-| Patches from a written diagnosis (`generate_patch`) | cf DeepSeek no reasoning (wired in tools/cf_mcp/server.py; the cf-agents tools need a reconnect) | one sample; OKed 10-31 |
-| Screenshot yes/no gate | Clef-flash (`@cf/cloudflare/clef-flash`, not chat: `/ai/run`, model + state + questions, images = data-URI strings) as a pre-filter before review-player, colour and character visible only | 6 frames: 12/12 vs review-player, both planted defects, 3-9 s, ~$0.00002 a frame; text readable 3/6 (scores flat ~0.4): text stays with review-player and eye_metrics |
-| Error sorting, rubric scoring | Jev 1.13 Free (`jev-1.13-free`, opencode.ai/inference/systemone/v1/systemone, no key needed, free for a limited time) | exists, reachable; 8/8 on easy lines with labelled causes, 1-3.5 s; a hard set not run |
-| Docs search (bge-m3 + reranker) | not before M1: grep over docs/MAP.md is enough for a small game | - |
 opencode built-in free routes (DeepSeek, GLM-5.3-flash, Nemotron VL) are off while their free quota is spent (10-30); OpenRouter :free routes (XR_OC_MODEL nemotron-3-ultra) are active (key renewed 10-31).
 
 ## Rule

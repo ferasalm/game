@@ -83,6 +83,29 @@ opens = table(texts["HANDOFF.md"], "## Open points")
 check(bool(opens) and opens[0] == OPEN_HEAD, f"HANDOFF.md has an '## Open points' table: {' | '.join(OPEN_HEAD)}")
 check(len(opens[1:]) <= 10, f"HANDOFF.md Open points has {len(opens[1:])} lines (max 10): close or move some")
 
+# One worker routing table (row 24, Feras 11-01): .claude/skills/builders/SKILL.md holds Who does what, nowhere else
+ROUTE_HEADERS = ("| Work | Who", "| Work | Worker", "| Task class | Model")
+EXCLUDED_SKILL = ".claude/skills/builders/SKILL.md"
+docs_md = []
+if (ROOT / "CLAUDE.md").exists():
+    docs_md.append(ROOT / "CLAUDE.md")
+if (ROOT / "docs").exists():
+    for p in (ROOT / "docs").rglob("*.md"):
+        rel = p.relative_to(ROOT).as_posix()
+        if not (rel.startswith("docs/archive/") or rel.startswith("docs/research/")):
+            docs_md.append(p)
+if (ROOT / ".claude/skills").exists():
+    for p in (ROOT / ".claude/skills").rglob("*.md"):
+        docs_md.append(p)
+
+for p in docs_md:
+    rel = p.relative_to(ROOT).as_posix()
+    if rel == EXCLUDED_SKILL:
+        continue
+    content = p.read_text(encoding="utf-8", errors="replace")
+    has_second = any(l.strip().startswith(ROUTE_HEADERS) for l in content.splitlines())
+    check(not has_second, f"second worker routing table: {rel}")
+
 log = texts["docs/DECISIONS.md"].split("## Log", 1)[-1]
 for line in (l for l in log.splitlines() if l.startswith("- ")):
     check(re.match(r"- (~~)?\d{4}-\d{2}-\d{2} ", line), f"decision dated: {line[:60]}")

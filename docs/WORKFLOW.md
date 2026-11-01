@@ -12,23 +12,10 @@ row name a Dept from the Routing table and a lane.
 1. **Look** (free): `bash tools/status.sh`: builders, branches not on main, worktrees, the queue, Feras's list.
 2. **Pick**: the top HANDOFF queue row. Its Dept is a label: the Routing table row says which skills and persona to
    load and who reviews.
-3. **Who does it** (one row per worker; the first row that fits wins):
+3. **Who does it**: `builders` skill (`.claude/skills/builders/SKILL.md`), Who does what.
 
-| Worker | When | Rough cost to the Claude limit | Who reviews |
-|---|---|---|---|
-| The father itself | a targeted read, one edit, a yes/no, a decision logged in Feras's words, a 1-3 line fix: the brief would hold the whole text | its own turns only | the gates, then itself; review-feras before Feras |
-| Builder (agy, cf, oc) | anything a brief can state exactly: code, tests, renames, edits across files, docs, summaries, persona drafts (Feras 10-28: whenever the brief is shorter than the work and the risk is low or well tested; small, risky machinery: the father writes it) | ~0 (free models); Claude pays the brief and the review | tiered (Protocols: Review) |
-| Haiku worker (Feras 10-31: low = the simplest Claude-only task, medium or high otherwise; never orchestrates) | a read over ~20k tokens or across many files (high, exact output template), or a task a non-Claude builder must not do | ~70k start + its reading | Opus reads only the template answer |
-| review-* agent | review-code on a diff, review-player on renders, review-feras last; one each, only when the tier needs it | ~30-70k each (a fresh start) | Opus weighs the findings |
-| Sonnet high child chat (Feras 10-31: Sonnet only at effort high) | orchestrates builders, or a scoped multi-step job where Opus is overkill and a builder can't (needs Claude tools); loop cap 3 rounds | ~67k start + its work | Opus, tiered |
-| Opus child chat | long, taste, MCP (Blender, Flow, Rodin) or builder-waiting work; anything Feras may watch or answer | a new chat in its own worktree (an idle one costs nothing) | itself + review-*; the father checks status.sh |
-
-4. **Brief**: a builder gets docs/briefs/TEMPLATE.md; a child chat or subagent gets the department brief below.
-5. **The worker orchestrates** (a child chat): it routes each piece by the Routing table's lane, briefs builders and
-   launches build_pipeline.sh in the background, sends reads over ~20k tokens to a Haiku high reader, reviews tiered;
-   anything visual passes players-eye-gate, review-player and review-feras, then `python tools/hooks/review_stamp.py`
-   (the review gate blocks sending an unstamped render). It runs check.sh and merges its checked work into main
-   (standing OK). Nested agents work (10-28) but each costs a fresh start.
+4. **Brief**: docs/briefs/TEMPLATE.md; child brief recipes in `builders` skill (`.claude/skills/builders/SKILL.md`, Prompt recipes).
+5. **The worker orchestrates** (a child chat): routes by the Routing table's lane; build loop in `builders` skill (`.claude/skills/builders/SKILL.md`, The loop); visual work passes players-eye-gate, review-player, review-feras and `python tools/hooks/review_stamp.py`. Nested agents work (10-28) but each costs a fresh start.
 6. **The father** reads the report, checks it with `bash tools/status.sh` (branch on main, row updated), picks next.
    Open children are the queue rows whose Status says "child open"; status.sh lists their branches and worktrees.
 7. **Evolve**: each chat upgrades one tool, check, skill or doc; every 5 chats ops-review reads /session-report
@@ -36,18 +23,6 @@ row name a Dept from the Routing table and a lane.
    plugin runs only inside /handoff and within the doc_check caps.
 Emergency mode (emergency-efficiency skill, the 5-hour window past 50%) suspends child chats: one director chat,
 builders and Haiku readers only, until the window resets.
-
-**Department brief** (fill every line; a child chat gets it as its first message, a subagent as its prompt):
-```
-Department: <Id> (a label: Routing table). Queue row: <#>. Model: Opus <effort> | Sonnet high.
-Skills: <names; a skill the chat does not list yet: Read .claude/skills/<name>/SKILL.md>. Persona: <.agents/skills name>
-Goal: <one line; player-visible where it can be>
-Context: <the decisions, files and CANON lines it needs; no chat history>
-Lane plan: <pieces for agy / cf / oc, Haiku readers, reviewers; what the chat does itself>
-May edit: <paths>. Do NOT edit: <paths other chats own right now>. Commit and merge: <yes | no, the father does>
-Done when: <check.sh passes; the gate or render; merged to main; queue row updated>
-Report: 15 lines or fewer: what changed (commits), runs launched, what failed, questions for Feras.
-```
 
 ## The budget
 Feras is on Claude Pro ($20/month): a 5-hour usage window plus a weekly cap, shared with his other projects. Money is
@@ -141,94 +116,28 @@ The PreToolUse hook tools/hooks/pre_spend.py blocks paid generation tools unless
 (wired in .claude/settings.json PreToolUse, P3.9; Hyper3D calls get a credit-cost reminder). Before Rodin access ends, prove the free 3D route on one character.
 
 ## Research protocol (audit plan D18)
-Everyone except Claude researches. Claude writes the questions and reads only the digests.
-- Each department keeps research-queue.md (open questions) and an upgrade log in its skill folder.
-- When a queue holds 3 or more questions, or at ops-review, Claude writes one prompt per question: a big question
-  goes to a Gemini Deep Research prompt (Argon High) that Feras runs and shares as a doc; a small lookup goes to
-  opencode + OpenRouter :free with web fetch, or agy; a code or tool question goes to Cloudflare DeepSeek.
-- Results go to docs/research/<department>/<date>-<topic>.md, marked unverified: ideas, never facts.
-- The calibrated reader (Readers below) digests each into <= 30 lines: adopt / adapt / skip, with sources. Claude reads
-  only the digest, then updates the department card, its lessons and its tools.
-- One department gets a deep upgrade at each ops-review, in rotation.
+Department research queues and dispatch: `.claude/skills/ops-review/SKILL.md` (Research prompts); results to `docs/research/<department>/`.
+
 
 ## Readers
-- **The reading rule** (one rule, CLAUDE.md): Claude reads small targeted excerpts itself (grep, then the lines it
-  needs); a Haiku high reader only for a read over ~20k tokens or across many files.
-- **Claude's delegated reading:** Haiku at effort high (calibrated 2026-10-27: docs/research/calibration-2026-10.md).
-  Max adds ~55% tokens for no gain; low gave one false verdict.
-- **Review lenses:** nemotron-3-ultra :free (6/6 on the planted set, 0 decoy flags), or Haiku low when the free route
-  is not available. Free route: tools/oc_review.sh, or the OpenRouter send-message tool with public content only.
+Reading rule: CLAUDE.md. Reader models and review lenses: `builders` skill (`.claude/skills/builders/SKILL.md`, Who does what).
+
 
 ## Model routing on Pro
-| Work | Who | Effort |
-|---|---|---|
-| Design, specs, briefs, hard engineering, judging art and renders | Opus | high |
-| Godot code with tests, UI renders, repo-wide discovery, docs | agy (Gemini 3.8 Flash) | medium (Feras 10-31) |
-| Hard logic: state machines, math, physics, debugging, every fix pass of a fast build | Cloudflare DeepSeek | max |
-| Mechanical, exact work with a Pattern file and tests: boilerplate, schema expansion, fixtures | `cf_build.sh <task> <brief> <base> fast` (DeepSeek, no reasoning; a failed check moves to max) | none |
-| Claude-only work | Haiku low for the simplest; Haiku medium or high beats Sonnet low or medium (Feras 10-31) | never Sonnet below high |
-| Reviewing and merging builders' branches, small fixes | the chat that launched the run (the father or its child), tiered (Protocols: Review) | high |
-| Orchestrating builders, scoped multi-step Claude work where Opus is overkill | a Sonnet child chat; Haiku never orchestrates; loop cap 3 rounds | high |
+Which worker does what and model routing: `builders` skill (`.claude/skills/builders/SKILL.md`, Who does what).
 
-Speed, never needless spend: the cheapest worker that does the task well (Start here, step 3). Sonnet and the advisor
-(tested 2026-10-28): an Agent-tool subagent on Sonnet has the `advisor` tool and can call it (one probe, ~67k start
-tokens), so "Sonnet with the Opus advisor" is a subagent, not a child chat; a Sonnet or Haiku chat Feras opens gets
-`/advisor opus`. Claude subagents only where a builder can't, at most 2 at once per chat.
 
 ## Builder loop (agy, Cloudflare DeepSeek, opencode)
-Low on Claude limit: .claude/skills/emergency-efficiency/SKILL.md overrides this section. Models and caps: tools/builders.conf.
-Lanes: agy for Godot code with tests and UI renders, and Python tools, docs and reviews; Cloudflare DeepSeek when agy is
-full; opencode :free for text. A Python or docs-only run sets RUN_KIND=py: its builder's slot but no Godot slot or memory
-floor, `check.sh --no-godot`, the gate fails it on any Godot file, merge_run reruns the full check. Every
-brief names one game-dev skill (.agents/skills/). Free models may train on prompts: only public repo content goes in a brief.
+Builder loop, debug recipe and prompt recipes: `builders` skill (`.claude/skills/builders/SKILL.md`).
 
-1. **Brief** from docs/briefs/TEMPLATE.md, with a Do NOT edit list so parallel runs never share files.
-2. **Build**, from the main checkout, in the background: `bash <session worktree>/tools/build_pipeline.sh <oc|agy> <task>
-   <brief> <base>`. It builds, runs check.sh, one free fix pass, check, then tools/build_gate.py, which writes
-   ../game-wt/<task>.result.
-3. **Read** the .result's first line only: NOWORK (nothing real built), BREACH (touched a Do NOT edit path) or FAIL means
-   rerun or fix the brief, and read nothing else. PASS: run `bash tools/cross_review.sh <task> <brief> <base>` (the other
-   model family; an INVALID review is noted in USAGE, not retried), read its WARN lines and the renders. On a big diff (Protocols: Review, tier 2) a Haiku subagent (effort high) compares
-   it with the brief and its Checklist and lists the misses; Opus reads that list, the WARN lines, the renders and the
-   risky hunks.
-4. **Merge:** `bash tools/merge_run.sh <task> <gemini|oc>`. A fast-forward onto the checked commit reuses the check; any
-   other merge runs check.sh. It removes the worktree and branch. The child chat that started a run merges
-   it; a father that launched a run reviews (tiered) and merges it on PASS. A repeated miss
-   goes into GEMINI.md <review_misses>.
-5. **Runs belong to the chat that started them.** A chat that ends early leaves its runs going only while its session
-   stays open. The next chat checks `git -C ../game-wt/<task> log` and the log; a dead run is restarted with the same
-   command (the worktree and its commits are kept).
-6. **Cloudflare DeepSeek** (Workers Paid; model in tools/builders.conf): `bash tools/cf_build.sh <task> <brief> <base>`.
-   No $ cap; slots.sh append-spend logs each run's spend in cf_spend.csv (Feras 10-30).
 
 ## Practices taken from reem-bot and feras-career
-| Practice | Here | Why |
-|---|---|---|
-| Notes split by change rate: CLAUDE.md rare, HANDOFF rewritten, DECISIONS = rules in force, LESSONS curated; full log in decisions-log.md | Adopted | Old state never reads as current |
-| @ imports of HANDOFF, DECISIONS, LESSONS under the 27 KB cap | Adopted, enforced by doc_check | reem-bot's loaded log grew past 100 KB: paid at every start |
-| /handoff at the end of every session | Adopted (handoff skill) | The next chat starts with no resume step |
-| A lane and a department on every queue row (doc_check); one model and effort per chat; one task per chat, finished whatever its context size (10-31) | Adopted | Effort can't change mid-chat; switching models drops the cache; Pro windows are small |
-| SessionStart hook with a sync report | Adopted | Catches a stale branch before work starts |
-| Grep first, read only the needed lines; never read generated files | Adopted, enforced by deny rules in .claude/settings.json | A rule nobody enforces drifts |
-| A check counts only when its output was read; every bug gets a regression test | Adopted (tools/check.sh, run_godot.sh) | A summary line hid broken results before; fixes stay fixed |
-| No subagents to explore; delegate only token-heavy mechanical work | Adopted; Claude's own tasks go to Haiku (Readers) | Measured: 150-290k tokens per worker |
-| Questions batched, each with a recommended default; paste-ready prompt in HANDOFF | Adopted | One round trip instead of several |
-| Hand-written MAP.md | Replaced: generated by tools/map.py | Hand upkeep every session |
-| Orchestrator skill with Haiku workers | Superseded by the builders skill (Builder loop) | A written spec and a builder beat a brief plus worker plus review on Pro |
+Adopted across repo: note split and @ imports (CLAUDE.md, doc_check); /handoff (handoff skill); lane/dept on queue (doc_check); sync report (SessionStart); grep first (CLAUDE.md); checks and tests (check.sh); subagent rules (builders skill); batched questions (HANDOFF.md); generated MAP.md (map.py); orchestrator in builders skill.
+
 
 ## This repo's own methods
-1. **Pure logic + headless tests.** Rules are checked by a test summary line, not by playing or screenshots.
-2. **Summaries, not logs.** tools/check.sh prints one line per step; full logs stay in `.check/` to grep on failure.
-3. **Levels as text.** A 20-line ASCII map plus JSON builds the scene; nobody edits a big .tscn by hand.
-4. **Content as JSON with validation.** Balance changes are one-line diffs Feras can tune himself.
-5. **Generated code map.** One purpose line per file feeds docs/MAP.md; the check fails when it is stale.
-6. **Spec first.** An Opus chat writes docs/design/<feature>.md (<= 60 lines, with acceptance tests); a builder builds from it.
-7. **Small pictures, only when judging visuals:** 640x360 screenshots (~300 tokens); regressions by pixel diff.
-8. **Placeholders first.** Art never blocks code; Claude never opens art files to write code.
-9. **Pinned engine, strict parser.** Godot 4.7.2; Godot 3 habits and typos fail at import, before a debug loop starts.
-10. **Asset and licence manifest from day one.** No costly audit before a release.
-11. **CI builds the game.** Feras downloads a Windows build to play; no tokens spent on how to run it.
-12. **Usage ledger** (docs/USAGE.md): one row per session with its share of the 5-hour window.
+Methods adopted across repo: headless tests and summaries (CLAUDE.md, tools/check.sh); levels as text and code map (tools/map.py, docs/MAP.md); JSON content (content/); spec first and usage ledger (builders skill, docs/USAGE.md); eye gate (tools/eye_gate.sh); placeholders and engine (art-card skill, project.godot); manifest and CI (docs/ASSETS.md, .github/workflows/).
+
 
 ## How Feras can save tokens (prompt tips)
 - Put the whole job in the first message, with what you already know; each missing detail costs a round trip.

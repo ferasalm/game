@@ -1,8 +1,8 @@
 # How We Work
 Updated whenever docs/WORKFLOW.md Protocols change.
 
-## The whole system (v2, row 17)
-Orange = your moves. Each chat takes the top HANDOFF row; a run goes left to right through the pipeline.
+## The whole system (v3, row 24)
+Orange = your moves. The row flow: `queue row -> brief -> red test -> builder run -> gate -> review -> merge -> /handoff`.
 ```mermaid
 flowchart TB
     subgraph You["Feras"]
@@ -11,44 +11,49 @@ flowchart TB
         Play["Plays a gated build on PC and phone"]
         Notes["Writes notes"]
     end
-    subgraph Chats["Claude chats"]
-        Queue["HANDOFF queue: top row first"]
-        Father["Father chat (Opus): plans, briefs, reviews, merges"]
-        Child["Child chat (Opus, own worktree): long, taste, MCP art work"]
-        Readers["Haiku readers + review-* agents: big reads, review lenses"]
+    subgraph PM["pm plugin"]
+        Queue["queue row: top row first"]
+        Handoff["/handoff: updates queue and moves"]
     end
-    subgraph Pipe["Builder pipeline (free models: agy, cf, oc)"]
-        Slots["slots.sh: a free slot + memory floor"] --> Build["Builder writes code, tests, docs"]
-        Build --> Check["check.sh"]
-        Check -- "red" --> Fix["Up to 2 free fix passes"] --> Check
-        Check -- "green" --> Gate["Build gate: PASS / FAIL / NOWORK / BREACH"]
-        Gate --> XR["Cross-review by the other model family"]
-        XR --> OpusGate["Opus gate: reads the diff, fixes, owns it"]
+    subgraph Lead["Lead (Claude)"]
+        OpusPlan["Opus: plans and writes specs"]
+        SonnetExec["Sonnet high: executes, briefs and red tests"]
+        HaikuWait["Haiku low: launches and waits on builders"]
+        OpusGate["Opus: gates diffs and signs off"]
     end
-    OpusGate --> Eye["Eye gate: renders judged by review-player + review-feras"]
-    Eye --> Main["main on GitHub"]
-    Main --> Sync["sync_main.sh: your checkout updated"]
-    Main --> Reports["Reports: feras/BRIEFING.md, calendar 'Your moves today', HANDOFF Open points"]
-    Queue --> Father
-    Father --> Child
-    Father --> Readers
-    Father --> Slots
-    Child --> Slots
+    subgraph Pipe["Builder pipeline (agy, cf, oc)"]
+        Brief["brief"] --> RedTest["red test"]
+        RedTest --> BuildRun["builder run (agy, cf, oc)"]
+    end
+    subgraph Studio["studio plugin"]
+        Gate["gate: build_gate, check.sh"]
+        Review["review: review-code, review-player, cross-review"]
+    end
+    Merge["merge to main"]
+
     Decide --> Queue
-    Spend -.-> Father
-    Reports --> Play
-    Sync --> Play
+    Queue --> OpusPlan
+    OpusPlan --> SonnetExec
+    SonnetExec --> Brief
+    BuildRun --> HaikuWait
+    BuildRun --> Gate
+    Gate --> Review
+    Review --> OpusGate
+    OpusGate --> Merge
+    Merge --> Handoff
+    Handoff --> Play
     Play --> Notes --> Queue
+    Spend -.-> SonnetExec
     classDef feras fill:#f6a04d,stroke:#8a4b00,color:#000
     class Decide,Spend,Play,Notes feras
 ```
 
 ## Roles
-| | Feras | Opus chat | Builders (agy, cf, oc) | Haiku / review-* agents |
-|---|---|---|---|---|
-| Decides | scope, story, art, spending, models, releases | nothing final: advises with a pick | nothing | nothing |
-| Does | plays builds, makes art, logins, "spend ok" | plans, briefs, reviews, merges, MCP art work | code, tests, docs, reviews | big reads, review lenses |
-| Reports | notes after each play | the 5-part report + calendar | .result + log | a findings list |
+| | Feras | Opus | Sonnet high | Builders (agy, cf, oc) | Haiku low / plugins |
+|---|---|---|---|---|---|
+| Decides | scope, story, art, spending, models, releases | architecture, plans, final sign-off | execution plan | nothing | nothing |
+| Does | plays builds, makes art, "spend ok" | writes specs, gates diffs, reviews | writes briefs & red tests, coordinates | code, tests, docs | launches/waits, studio reviews, pm queue |
+| Reports | notes after each play | signs off | status | .result + log | review findings |
 
 The 5-part report at the end of every chat: Done | Still open | When (calendar day) | How (lane, who) | Your move vs mine.
 
