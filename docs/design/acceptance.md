@@ -1,5 +1,5 @@
 # Acceptance list: what a player must see (draft by Haiku H3, edited by Claude 2026-10-27; Feras edits the bars)
-Sources: docs/audits/2026-10-26-overnight-retro.md B/C, docs/feras-notes.md, Hades digest (unverified numbers).
+Sources: docs/archive/audits/2026-10-26-overnight-retro.md B/C, docs/feras-notes.md, Hades digest (unverified numbers).
 Format: `id | what a player must see | how to check`. "bar: Feras sets" = no number yet. eye_metrics.py checks M1, C1, U1.
 Metric bars (eye_metrics.py, from the sources): fps >= 24, colours > 256, font >= 18 px at 720p.
 

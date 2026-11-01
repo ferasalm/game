@@ -7,7 +7,7 @@ Loaded from the repo marketplace `neon` (`.claude-plugin/marketplace.json`, plug
   stay in `tools/hooks/` and `.claude/hooks/` and run from `$CLAUDE_PROJECT_DIR`.
 - `.lsp.json` + `scripts/godot_lsp.py`: Godot's language server (diagnostics, find-references) over a stdio bridge, one port
   per worktree, off below the memory floor (MIN_FREE_MB).
-- Skills stay in `.claude/skills/`: `skillOverrides` and `paths:` do not work on plugin skills (docs/briefs/row22-probe.md).
+- Skills stay in `.claude/skills/`: `skillOverrides` and `paths:` do not work on plugin skills (docs/archive/briefs/row22-probe.md).
 
 ## Use it
 - Test edits in a worktree: `claude --plugin-dir <worktree>/plugins/studio`.

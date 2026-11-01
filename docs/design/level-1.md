@@ -72,8 +72,8 @@ off R4 by the leap. Crossings are interact-started set moves (input locked, 1.5-
 Top room of R3's tower: big qamariya arches on three sides, warm light spilling on the wet roof. Door on its south
 face; fade 0.4 s inside. 7 x 5 m: the majlis (cushions and armrests along two walls, a carpet, a brass tray with a
 jamana pot and cups, the grandfather's cracked holo-frame on a shelf) and, in the east corner, the workbench (the
-built prop). Two framed shots (door corner, window corner). Sit at a cushion: the qishr talk (docs/briefs/
-archive/briefs-3d/tayramana.md lines 1-7), +2 qishr the first time. The bench opens the existing workshop talk and equipment menu.
+built prop). Two framed shots (door corner, window corner). Sit at a cushion: the qishr talk (docs/archive/
+briefs-3d/tayramana.md lines 1-7), +2 qishr the first time. The bench opens the existing workshop talk and equipment menu.
 
 ## 7. Encounters (timeline battles in the arena, as today)
 | ID | Where | Enemies | Read time | Options | Fallback |

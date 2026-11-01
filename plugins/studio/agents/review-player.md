@@ -11,7 +11,7 @@ Free route: the same brief goes to nvidia/nemotron-3-ultra-550b-a55b:free (publi
 
 ## Inputs (read exactly these, nothing else)
 - The render PNGs or frame list given to you (view them small).
-- docs/design/acceptance.md; until it exists, section B of docs/audits/2026-10-26-overnight-retro.md.
+- docs/design/acceptance.md; until it exists, section B of docs/archive/audits/2026-10-26-overnight-retro.md.
 - docs/feras-notes.md.
 
 ## Flag (correctness and stated requirements only)
