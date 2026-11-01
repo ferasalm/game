@@ -132,6 +132,17 @@ def test_a_fresh_worktree_of_a_concurrent_run_stays():
     assert os.path.exists(live + "/wt") and len(git(g, "worktree", "list").stdout.splitlines()) == 2
 
 
+def test_a_broken_tool_tests_import_is_exit_2_not_a_refusal():  # row 25 agy lens: exit 1 would refuse a clean base
+    top, g = toy()
+    lone = tempfile.mkdtemp().replace("\\", "/")
+    with open(TOOLS + "/base_red.py", encoding="utf-8") as f:
+        put(lone + "/base_red.py", f.read())  # beside no tool_tests.py: the import fails
+    put(top + "/brief.md", "# brief\n")
+    p = subprocess.run([sys.executable, lone + "/base_red.py", top + "/brief.md", "HEAD"], cwd=g, capture_output=True,
+                       text=True, stdin=subprocess.DEVNULL)
+    assert p.returncode == 2 and "could not run" in p.stdout + p.stderr, (p.returncode, p.stdout, p.stderr)
+
+
 if __name__ == "__main__":
     from tool_tests import run_cases
     run_cases([v for k, v in sorted(globals().items()) if k.startswith("test_")], "test_base_red")

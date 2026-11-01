@@ -25,7 +25,8 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 |---|---|---|
 | Bilqis's portraits are now the Neon ones: keep or overturn (archive-cleanup, decisions-log); on hold until further notice (Feras 10-31) | Feras | 10-27 |
 | Art homework into inbox/: concept pictures, an empty plate per scene (no characters, HUD or rain), icon art (row 7) | Feras | 10-24 |
-| Row 25 held, not done (Sonnet gate, no Opus sign-off): /kaizen:coach score, the fresh Sonnet chat smoke (skills listed once, one worker call, /pm:status), real CI for `handoff.sh --main`; the rest of the token trim (HANDOFF/LESSONS/DECISIONS headers, docs/audits/2026-11-01-token-bleed.md) | Claude | 11-01 |
+| Opus sign-off on row 25 (Sonnet ran the gate): a dedicated Opus high chat, prompt in docs/opus-signoff.md; it also runs the full interactive /kaizen:coach (11-01 score 8/10 came from a Haiku audit) | Claude | 11-01 |
+| Studio and pm plugins: confirm once in C:\dev\game that `claude plugin list` shows studio@neon and pm@neon enabled (the smoke chat loaded both from a worktree off main) | Feras | 11-01 |
 | Status line wired in .claude/settings.json (row 23 e); its real stdin JSON is not dumped yet: in the first fresh chat open `.check/statusline_raw.json` and confirm the field names (docs-based today) | Claude | 11-01 |
 | Row 20 leftovers, no row yet (row 24 is done; specs too vague to brief): session_stats dates by entry and a tighter GUARD regex, Gameplay lessons.md + research-queue.md, frame_score blank-line slot; row 3 input: docs/audits/2026-11-02-integrity.md Top 10 (its item 5, test_action_def, is a false positive) | Claude | 11-01 |
 
@@ -33,7 +34,7 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 | Day | Plan |
 |---|---|
 | Sun 11-01 | Rows 22-25 done on system-v4 (row 25 by Sonnet high; held items in Open points). |
-| Mon 11-02 | Spare day: held row 25 items if Feras wants them, else start the M1 brief early. |
+| Mon 11-02 | Opus sign-off chat on row 25 (docs/opus-signoff.md), then the M1 brief early if time allows. |
 | Tue 11-03 | M1 brief (row 3); M1 build (row 4) overnight into Wed 11-04 at the earliest; play day moves to when M1 passes its gates. |
 
 ## Parked and context
@@ -41,4 +42,4 @@ docs/context.md (what is on main, the 3D archive, inbox/retired/ never a source)
 
 ## Prompt for the next chat
 Type `/model opus`, then `/effort high`, stay in auto mode, then paste this as one message (Opus: no `/goal`):
-`Row 3, Gameplay, Opus high: write the M1 brief; read docs/next-chat.md first and do what it says.`
+`Row 25 sign-off, Ops, Opus high: read docs/opus-signoff.md first and do what it says.` (After it: `Row 3, Gameplay, Opus high: write the M1 brief; read docs/next-chat.md first and do what it says.`)

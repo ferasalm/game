@@ -3,7 +3,7 @@ Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after 
 HANDOFF.md; this file is your view of it. "Open now" is rewritten at every /handoff; below it, reports newest first,
 each headed by its date and time (GMT+3): Done | Still open | When | How | Your move vs mine | Checked.
 
-## Open now (Sun 11-01 20:01)
+## Open now (Sun 11-01 21:16)
 | # | Open item | Status | Checked | Your move? | When |
 |---|---|---|---|---|---|
 | 1 | M1 brief: real-time Rydan vs 2 guards on the prison roof, co | Tue 11-03 | - | no | Tue 11-03 |
@@ -18,9 +18,18 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 | 10 | Art bible 2D pass: drop the retired 3D runtime lines (fog, m | parked | - | no | parked |
 | 11 | Bilqis's portraits are now the Neon ones: keep or overturn ( | open | - | yes | 10-27 |
 | 12 | Art homework into inbox/: concept pictures, an empty plate p | open | - | yes | 10-24 |
-| 13 | Row 25 held, not done (Sonnet gate, no Opus sign-off): /kaiz | open | - | no | 11-01 |
-| 14 | Status line wired in .claude/settings.json (row 23 e); its r | open | - | no | 11-01 |
-| 15 | Row 20 leftovers parked in row 24 (specs too vague to brief) | open | - | no | 11-01 |
+| 13 | Opus sign-off on row 25 (Sonnet ran the gate): a dedicated O | open | - | no | 11-01 |
+| 14 | Studio and pm plugins: confirm once in C:\dev\game that `cla | open | - | yes | 11-01 |
+| 15 | Status line wired in .claude/settings.json (row 23 e); its r | open | - | no | 11-01 |
+| 16 | Row 20 leftovers, no row yet (row 24 is done; specs too vagu | open | - | no | 11-01 |
+
+## Sun 11-01 22:00: row 25 follow-ups (Sonnet 5.5 high, same chat)
+**Done** (on main after this handoff): agy lens retried inline: 5 flags, 4 false on evidence (merge_run `--keep` under `set -e`, `gh run list --commit`, `timeout` on Git Bash, `BASE_RED_SEC` unset; all four ran fine in this chat), 1 real and fixed (a broken `tool_tests` import in `base_red.py` now exits 2, not a refusal). Low items fixed: `base_red.py` matches a test by full path or bare name with an end boundary and sweeps stale worktrees a killed run left (built by cf DeepSeek high from GLM-drafted red tests, gate PASS, I read the diff); `doc_check.py` scans plugins and personas for a second routing table; ops-review path and the models.md colour line corrected. Token trim finished: always-loaded notes 24.4 -> 22.5 KB (queue rules, parked context, LESSONS and DECISIONS headers moved to their homes; gate description shortened). Coach: 8/10 (Haiku read-only audit; 9/10 before: a GDScript server with no fallback rule, a stale memory line); fixed: `.claude/rules/tooling/lsp-fallbacks.md`, a test that every settings hook script exists, the memory file. Smoke chat (card you started): skills listed once, `studio:review-code` ran, cf worker call returned, `pm:status` printed the board.
+**Still open**: Opus sign-off in its own chat (prompt below, file docs/opus-signoff.md); full interactive /kaizen:coach by that chat; your one-time check that `claude plugin list` in C:\dev\game shows studio and pm enabled. The smoke chat ran as Haiku low, not Sonnet high (the card inherited a different model), so "a Sonnet chat" is proved only by this chat's own work.
+**When**: Mon 11-02 for the sign-off; M1 brief after it.
+**How**: paste into a fresh Opus high chat: `Row 25 sign-off, Ops, Opus high: read docs/opus-signoff.md first and do what it says.`
+**Your move vs mine**: yours: paste that prompt; the plugin-list check. Mine: nothing waits on you.
+**Checked**: check.sh 582 passed 0 failed after the base_red merge; `test_base_red.py` 13 tests, `test_plugins.py` 11, `test_doc_check.py` 8 (each new test seen red first). Not checked: the full interactive coach, an Opus read of the new hunks.
 
 ## Sun 11-01 20:10: row 25, the gate on system-v4, run by Sonnet 5.5 high (you started it that way, with the new low-cost pipeline; no Opus sign-off)
 **Done** (branch system-v4, called system-v3 in older reports; merged to main when you said "merge now"): full check.sh passed (582 tests) and both plugins pass `claude plugin validate --strict`; four independent reviews ("lenses") of the system-v4 diff (cf DeepSeek max, cf GLM-5.3 max, Haiku low, my own read of the risky hunks); the cutover (heredoc_guard, token_handoff, stop_notify, instructions-loaded left `.claude/settings.json`; `test_plugins.py` now fails if they return; the old handoff pointer skill deleted); CLAUDE.md trimmed (your OK: genre/roadmap line, tool list, worker policy, context rule, each with a pointer); `tools/test_sync_main.py` (7 tests) and a dirty-tree guard in `sync_main.sh`; new skill `.claude/skills/low-cost-pipeline` (head Sonnet + GLM-5.3 max critic, middle GLM max tests, hand DeepSeek low/high/max or agy medium) with `opencode.json` entries for GLM max and DeepSeek low/high, each smoked through opencode; system-v3 and row 24/25 briefs archived.

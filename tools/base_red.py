@@ -14,8 +14,6 @@ import sys
 import tempfile
 import time
 
-import tool_tests
-
 STALE_SEC = 30 * 60  # a live run lasts at most BASE_RED_SEC = 600 s: a fresher worktree is a concurrent launch
 END = r"(?![\w-])(?!\.\w)"  # a name ends at a period, comma, space, ) or backtick, not at .bak or .py.orig
 BEFORE = r"(?<![\w/\\-])"  # a path starts at a line start or a space, not inside a longer path or a word
@@ -63,6 +61,7 @@ def red_tests(root):
     start = os.getcwd()
     os.chdir(root)
     try:
+        import tool_tests  # inside the try of main(): an import fault is exit 2, not a refusal
         paths = [p for p in tool_tests.find_tests() if p not in tool_tests.SERIAL]
         return [p for p, rc, _ in tool_tests.run_files(paths, ".check") if rc != 0]
     finally:
