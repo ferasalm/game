@@ -12,6 +12,12 @@ from pathlib import Path
 DEFAULT_DIRS = Path.home() / ".claude" / "projects"  # the main checkout's chats and one folder per worktree
 PREFIX = "C--dev-game"
 GUARD = re.compile(r"refus|denied|rejected|blocked|isolated in the worktree|user doesn't want|hook", re.I)  # a guard, not a slip
+MODEL_NAMES = {
+    "claude-sonnet-5-5": "Sonnet 5.5",
+    "claude-opus-5-5": "Opus 5.5",
+    "claude-haiku-5-5": "Haiku 5.5",
+    "claude-fable-5-1": "Fable 5.1",
+}
 
 
 def blank() -> dict:
@@ -69,11 +75,62 @@ def rows(days: dict) -> list:
     return out
 
 
+def usage_row(path: Path) -> str:
+    first_ts = None
+    models: collections.Counter = collections.Counter()
+    calls = 0
+    errors = 0
+    cache_reads = 0
+    peak = 0
+    with path.open(encoding="utf-8", errors="replace") as f:
+        for line in f:
+            try:
+                event = json.loads(line)
+            except ValueError:
+                continue
+            if first_ts is None and event.get("timestamp"):
+                first_ts = event["timestamp"]
+            kind = event.get("type")
+            msg = event.get("message") or {}
+            if kind == "assistant":
+                usage = msg.get("usage") or {}
+                inp = usage.get("input_tokens", 0)
+                cr = usage.get("cache_read_input_tokens", 0)
+                cc = usage.get("cache_creation_input_tokens", 0)
+                peak = max(peak, inp + cr + cc)
+                cache_reads += cr
+                if msg.get("model"):
+                    models[msg["model"]] += 1
+                content = msg.get("content")
+                if isinstance(content, list):
+                    calls += sum(1 for c in content if isinstance(c, dict) and c.get("type") == "tool_use")
+            elif kind == "user":
+                content = msg.get("content")
+                if isinstance(content, list):
+                    errors += sum(1 for c in content if isinstance(c, dict) and c.get("is_error"))
+    date_str = str(first_ts)[:10] if first_ts else time.strftime("%Y-%m-%d", time.gmtime(path.stat().st_mtime))
+    raw_model = models.most_common(1)[0][0] if models else "-"
+    model_str = f"{MODEL_NAMES[raw_model]} (`{raw_model}`)" if raw_model in MODEL_NAMES else raw_model
+    result = f"calls {calls} ({errors} failed), cache reads {cache_reads:,}, peak context {peak // 1000}k; result: TODO; Kaizen: TODO"
+    return f"| {date_str} | {model_str} | TODO | TODO task | TODO | {result} |"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--days", type=int, default=14)
     ap.add_argument("--dir", default=str(DEFAULT_DIRS))
+    ap.add_argument("--row", default="", help="Session id for USAGE row")
     a = ap.parse_args()
+    if a.row:
+        session = a.row[:-6] if a.row.endswith(".jsonl") else a.row
+        matches = list(Path(a.dir).glob(f"*/{session}.jsonl"))
+        if not matches:
+            matches = list(Path(a.dir).glob(f"**/{session}.jsonl"))
+        if not matches:
+            print(f"no transcript for {a.row}")
+            return 1
+        print(usage_row(matches[0]))
+        return 0
     cutoff = time.time() - a.days * 86400
     days: dict = collections.defaultdict(blank)
     for path in Path(a.dir).glob(PREFIX + "*/*.jsonl"):
