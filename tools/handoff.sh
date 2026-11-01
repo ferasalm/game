@@ -48,7 +48,13 @@ else
 fi
 
 echo "== push"
-git push -u origin HEAD || fail push  # a detached HEAD fails here, after the commit is kept
+# A branch that tracks origin/<other> (a worktree branch following system-v3) pushes there, not to a new same-named branch.
+up="$(git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2> /dev/null || true)"
+if [ "${up#origin/}" != "$up" ] && [ "$up" != origin/HEAD ]; then
+  git push origin "HEAD:${up#origin/}" || fail push
+else
+  git push -u origin HEAD || fail push  # a detached HEAD fails here, after the commit is kept
+fi
 if [ "$to_main" = 1 ]; then
   git push origin HEAD:main || fail push
 fi

@@ -69,6 +69,17 @@ def test_pass_commits_and_pushes_the_current_branch_not_main():
     assert origin_rev(top, "refs/heads/main") != origin_rev(top, "refs/heads/work"), "only --main touches main"
 
 
+def test_branch_tracking_another_branch_pushes_to_that_branch():
+    top, g = toy()
+    git(g, "push", "-q", "origin", "HEAD:shared")
+    git(g, "branch", "-q", "--set-upstream-to=origin/shared")
+    put(g + "/README.md", "two\n")
+    r = run(g, "m")
+    assert r.returncode == 0 and last_line(r) == "HANDOFF PASS", r.stdout + r.stderr
+    assert origin_rev(top, "refs/heads/shared") == git(g, "rev-parse", "HEAD").stdout.strip()
+    assert origin_rev(top, "refs/heads/work") == "", "no stray same-named branch on origin"
+
+
 def test_each_failing_step_stops_the_run_and_names_itself():
     for kwargs, step in (({"map_ok": False}, "map"), ({"doc_ok": False}, "doc_check"), ({"check_ok": False}, "check")):
         top, g = toy(**kwargs)
