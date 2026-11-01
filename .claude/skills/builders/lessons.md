@@ -21,7 +21,7 @@
 - Cross-review calibration (row 12, 2026-10-28; D11): agy reviews cf's hook diff `git diff 152f962 783eefd` with the
   brief as cf saw it (152f962), one-shot from an empty folder (no repo, so no `git log` to 5008b5d), packet =
   tools/cross_review_prompt.md + brief + diff + code-reviewer skill + code rules. Scoring, fixed before reading: found =
-  the right file and the mechanism of one key bug (a-e, docs/briefs/cross-review.md); real = Opus confirms it against
+  the right file and the mechanism of one key bug (a-e, docs/archive/briefs/cross-review.md); real = Opus confirms it against
   783eefd. On: >= 3/5 found and most findings real; else tune the prompt once and rerun.
   Run 1 (agy, ~3 min, format valid): 2/5 found, a (warnings repeat while a compaction sits in the window) and b
   (fallback counts pre-compaction text); 9 findings, ~6 real (anchor-less f\d{8} regex, ../ escapes the exempt
