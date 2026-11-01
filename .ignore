@@ -1,0 +1,2 @@
+# Unscoped searches skip the archive (ripgrep reads this file); a search or Read that names the path still works.
+docs/archive/

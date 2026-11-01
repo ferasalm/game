@@ -6,6 +6,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 
 ## (root)
 - `.godot-version`
+- `.ignore`
 - `.mcp.json`: content: ? x0
 - `AGENTS.md`
 - `GEMINI.md`

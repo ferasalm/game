@@ -40,10 +40,10 @@ Every worker's result is one line: `worker | task | gate | evidence path | time 
    Then the cache waker, also in the background: `bash tools/wait_run.sh <task>...`; obey its "Best move" line; TaskStop
    it in the message that gates the run. Expected over ~3 h (an overnight build): /handoff at launch instead (a
    fresh chat gates it).
-5. Read the first word of `../game-wt/<task>.result` (PASS / FAIL / NOWORK / BREACH). Read a PASS only.
+5. Read the first word of `/c/dev/game-wt/<task>.result` (PASS / FAIL / NOWORK / BREACH). Read a PASS only.
 6. Review panel on the diff: agent `studio:review-code` (plugins/studio/agents; and studio:review-player for renders), flags only; Claude confirms
    each flag against the code before acting. Max 3 fix rounds, then stop and report.
-7. `bash tools/merge_run.sh <task>`; the child that started the run merges it; builders never merge or push to main.
+7. `bash tools/merge_run.sh <task>` (a cf or oc run lands on oc/<task>: add `oc`, the default is gemini); the child that started the run merges it; builders never merge or push to main.
 
 ## Debug recipe
 1. Reproduce headless (`tools/run_godot.sh -s res://tests/runner.gd -- <name>`; read the FAIL lines).
