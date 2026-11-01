@@ -72,14 +72,14 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
 - **Artificial Analysis**: Intelligence Index 28 (unverified, AA 2026-10-29), Coding Index 60 (unverified, AA 2026-10-29)
 - **Calibration**: none yet
 - **Known failure modes**: Works only inside agents (403 on MCP; lessons-archive.md)
-- **Best use**: Text drafts, research lookups
+- **Best use**: Text drafts, research lookups; opencode.json's bare default, so a build or review always passes its own --model
 
 ## NVIDIA Nemotron 3.5 Lightning :free (OpenRouter)
 - **ID**: `openrouter/nvidia/nemotron-3.5-lightning:free` (not listed in `tools/builders.conf`)
 - **Artificial Analysis**: Intelligence Index 30 (unverified, AA 2026-10-29), Coding Index 62 (unverified, AA 2026-10-29)
 - **Calibration**: none yet
 - **Known failure modes**: Uncalibrated on gold sets
-- **Best use**: Small text / helper tasks
+- **Best use**: Small text / helper tasks; opencode.json's small_model, never a build or a review
 
 ## Review head to head (one agy diff, frame-score, 10-31; all findings read by Opus)
 | Reviewer | Time | Findings | Worth |
@@ -94,19 +94,20 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
 ## Settings in force (Feras 10-30)
 - agy: `gemini-3.8-flash-medium` (Feras 10-31); `agy models` lists low, medium, high; no output cap flag.
 - Cloudflare DeepSeek 1017: reasoning_effort max (opencode.json, tools/cross_review.opencode.json) + opencode's hidden
-  output cap raised to 384k, its full output (OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX in builders.conf; high effort: 900 s, 88k out). Parser set at max: valid block,
+  output cap raised to 384k, its full output (limit.output on the model in opencode.json and tools/cross_review.opencode.json, builders.conf says why; high effort: 900 s, 88k out). Parser set at max: valid block,
   443 s, 66k out, ~$0.08: 1/2 key, 1 real minor, 1 doubtful (less noise than low). Watch the first max build: if steps
   trip the 25-min no-commit watchdog, builds drop to high. GLM: cap raised; effort option untested (row 18).
+- opencode.json defines cf DeepSeek at max and none only: a default or high run (row 26) needs its model entry first.
 - Cross-review: agy runs -> cf DeepSeek at max; nemotron only as a backup lens after cf fails twice. No $ cap on cf.
 
 ## Routing
-Which worker does what: SKILL.md, Who does what.
+Which worker does what: SKILL.md, Who does what. A card's Best use says what a model suits; that table decides who runs.
 Limits: Clef-flash pre-filters colour and character visible only, review-player keeps text; non-reasoning never reviews.
 Evidence: docs/research/model-evidence-2026-10.md (AA numbers mostly UNVERIFIED: 1 of 3 spot-checked was invented)
 and the measured calibration lines above. Calibrated = passed a gold set (D11).
 - Clef-flash (`@cf/cloudflare/clef-flash`, not chat: `/ai/run`, model + state + questions, images = data-URI strings), colour/character pre-filter: 6 frames, 12/12 vs review-player, both planted defects, 3-9 s, ~$0.00002 a frame; text readable 3/6 (scores flat ~0.4).
 - Jev 1.13 Free (`jev-1.13-free`, opencode.ai/inference/systemone/v1/systemone, no key, free for a limited time), error sorting and rubric scoring: 8/8 on easy lines with labelled causes, 1-3.5 s; a hard set not run.
-opencode built-in free routes (DeepSeek, GLM-5.3-flash, Nemotron VL) are off while their free quota is spent (10-30); OpenRouter :free routes (XR_OC_MODEL nemotron-3-ultra) are active (key renewed 10-31).
+opencode built-in free routes (DeepSeek, GLM-5.3-flash, Nemotron VL) are off while their free quota is spent (10-30); OpenRouter :free routes (XR_OC_MODEL nemotron-3-ultra) are active (key renewed 10-31). OC_MODEL still defaults to the spent DeepSeek route: a run on it ends NOWORK quota, use cf_build.sh.
 
 ## Rule
 A new model is used only after a calibration run (D11).

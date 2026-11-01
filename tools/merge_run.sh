@@ -3,6 +3,7 @@
 # the exact commit the pipeline checked reuses that check, anything else merges and runs tools/check.sh. Then removes
 # the run's worktree and branch. Usage (cwd = the session checkout): tools/merge_run.sh <task> [oc|gemini] [--keep]
 set -euo pipefail
+[ "${2:-}" = --keep ] && set -- "$1" gemini --keep
 name="$1"; prefix="${2:-gemini}"; keep="${3:-}"
 . "$(dirname "$0")/lib.sh"; here="$lib_dir"; root="$(git rev-parse --show-toplevel)"
 main="$(main_root)"

@@ -50,6 +50,9 @@ fi
 echo "== push"
 # A branch that tracks origin/<other> (a worktree branch following system-v3) pushes there, not to a new same-named branch.
 up="$(git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2> /dev/null || true)"
+if [ "$to_main" != 1 ] && { [ "$up" = origin/main ] || [ "$(git rev-parse --abbrev-ref HEAD)" = main ]; }; then
+  fail push  # only --main touches main (skill, step 0); the commit is kept
+fi
 if [ "${up#origin/}" != "$up" ] && [ "$up" != origin/HEAD ]; then
   git push origin "HEAD:${up#origin/}" || fail push
 else
@@ -61,7 +64,7 @@ fi
 
 if [ "$to_main" = 1 ]; then
   echo "== ci"
-  ci_cmd="${HANDOFF_CI:-gh run list --branch main --limit 1 --json conclusion -q '.[0].conclusion'}"
+  ci_cmd="${HANDOFF_CI:-gh run list --commit $(git rev-parse HEAD) --limit 1 --json conclusion -q '.[0].conclusion'}"
   waited=0
   while :; do
     ci_out="$(bash -c "$ci_cmd" 2>&1)" || ci_out="error"

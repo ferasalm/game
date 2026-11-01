@@ -6,6 +6,7 @@ Exit 0 clean, 1 a foreign red test (build_pipeline.sh refuses), 2 it could not r
 Usage (cwd = a checkout): python tools/base_red.py <brief> <base-commit>. Test: tools/test_base_red.py.
 """
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -15,8 +16,10 @@ import tool_tests
 
 
 def foreign(failed, brief_text):
-    """The failing tests the brief does not name; a named one is the part's own red test."""
-    return [p for p in failed if os.path.basename(p) not in brief_text]
+    """The failing tests the brief's Tests section does not name; a name in Do NOT edit claims nothing."""
+    m = re.search(r"^## Tests[^\n]*\n(.*?)(?=^## |\Z)", brief_text, re.M | re.S)
+    section = m.group(1) if m else ""
+    return [p for p in failed if not re.search(r"(?<![\w-])" + re.escape(os.path.basename(p)), section)]
 
 
 def red_tests(root):
@@ -42,7 +45,7 @@ def main(argv):
             text = f.read()
         subprocess.run(["git", "worktree", "add", "-q", "--detach", wt, base], check=True, capture_output=True)
         bad = foreign(red_tests(wt), text)
-    except (OSError, subprocess.CalledProcessError) as e:
+    except Exception as e:  # exit 1 means a red test: any fault of its own must not refuse a clean base
         print(f"base_red could not run: {e}")
         return 2
     finally:

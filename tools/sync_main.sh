@@ -4,6 +4,7 @@
 # bash tools/sync_main.sh   -> last line SYNC PASS <commit> or SYNC FAIL <step>.
 root="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$root" || exit 1
+[ "$(git rev-parse --abbrev-ref HEAD)" = main ] || git switch -q main || { echo "SYNC FAIL branch"; exit 1; }  # a pull on a side branch left main behind
 git fetch -q origin && git pull -q --ff-only origin main || { echo "SYNC FAIL pull"; exit 1; }
 bash tools/run_godot.sh --import > /dev/null 2>&1 || { echo "SYNC FAIL import"; exit 1; }
 out="$(bash tools/run_godot.sh --quit-after 300 2>&1)"

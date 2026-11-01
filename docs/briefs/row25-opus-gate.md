@@ -19,7 +19,7 @@ May edit: anything the fixes need. Commit and merge: yes, after the gate.
 A failure that can't be fixed by the hard stop: leave main as it is, merge only the parts that pass alone (each row's commits are separate), tell Feras what is held and why, and M1 still starts Tue 11-03. Same step failed twice: ask Feras before using the advisor.
 
 ## Done when
-All steps read and passed, or what is held is named; main green; Feras has the table, the 5-part report and the M1 prompt.
+All steps read and passed, or what is held is named; main green; Feras has the table, the 6-part report and the M1 prompt.
 
 ## Carried from row 22 (Feras 11-01)
 State on 11-01: the marketplace, the trust dialog, both installs and enabledPlugins are done; `claude plugin list` reads both plugins in place from C:\dev\game\plugins (the copies in ~/.claude/plugins/cache/neon are inert), worktree chats load them too, and changes arrive with sync_main.sh and a new session. So until the cutover the 4 hooks below run twice: a plugin's copy of a handler stays separate from settings.json's. Cutover, as the last commit before the merge: remove heredoc_guard, token_handoff, stop_notify and instructions-loaded from .claude/settings.json (plugins/studio/hooks/hooks.json holds them) and make tools/test_plugins.py assert they have left it (today it proves only that the plugin holds them). Ask Feras with the exact diff if auto mode refuses. Proof: a fresh worktree chat on main shows no "plugin studio is not loaded" line, and studio:review-code runs. Skills stayed in .claude/skills (row 22 probe c, d): a fresh session started inside a worktree lists each skill once (row 22 check); row 24 checks whether a chat opened from C:/dev/game then entering a worktree lists them twice.

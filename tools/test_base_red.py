@@ -47,6 +47,11 @@ def test_a_failing_test_the_brief_names_is_the_parts_own():
     assert base_red.foreign(["tools/test_a.py", "tools/test_b.py"], "## Tests\n- tools/test_a.py\n") == ["tools/test_b.py"]
 
 
+def test_a_name_outside_the_tests_section_claims_nothing():
+    brief = "## Do NOT edit\n`tools/test_a.py`\n## Tests\n- tools/my_test_a.py\n## Checklist\n- tools/test_a.py\n"
+    assert base_red.foreign(["tools/test_a.py"], brief) == ["tools/test_a.py"]
+
+
 def test_a_foreign_red_test_is_refused_and_the_worktree_goes():
     top, g = toy("test_sibling.py")
     rc, out = run(top, g, "# brief\n")

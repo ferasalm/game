@@ -55,7 +55,7 @@ flowchart TB
 | Does | plays builds, makes art, "spend ok" | writes specs, gates diffs, reviews | writes briefs & red tests, coordinates | code, tests, docs | launches/waits, studio reviews, pm queue |
 | Reports | notes after each play | signs off | status | .result + log | review findings |
 
-The 5-part report at the end of every chat: Done | Still open | When (calendar day) | How (lane, who) | Your move vs mine.
+The 6-part report at the end of every chat: Done | Still open | When (calendar day) | How (lane, who) | Your move vs mine.
 
 ## Cost rules
 Cost = model calls x context size (each call re-reads the whole chat from cache at ~1/10 price).

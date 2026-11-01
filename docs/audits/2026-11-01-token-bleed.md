@@ -1,0 +1,14 @@
+# Token bleed in the always-loaded notes (2026-11-01, one cf DeepSeek max pass, read by Opus; bytes approximate, not yet acted on)
+
+HANDOFF.md:57-58 | Paste-ready next-chat prompt loads every session; it is for one future chat and duplicates the next skill/row 25 brief. | ~1.7 KB | Move it to a prompt file or let the next skill/row 25 brief generate it; leave a one-line pointer.
+HANDOFF.md:47-54 | Parked/context block is marked "resume only through a queue row" but loads at every session start. | ~840 B | Move to docs/context.md or archive; queue rows point to it.
+HANDOFF.md:6,11-13 | Queue-editing rules, doc_check caps, builder slot limit and balance band load every session; needed only when editing HANDOFF or balancing. | ~395 B | Move to docs/WORKFLOW.md or the balance doc; keep a one-line pointer.
+CLAUDE.md:59-61 | Repeats DECISIONS.md:16 (context never stops, /handoff at ~85%, one queue row per chat). | ~360 B | Keep the owner rule in DECISIONS; leave only the chat-specific delta (one task/model/effort, follow-up cache rule).
+CLAUDE.md:55-57 | Worker-policy half repeats DECISIONS.md:19 (Haiku low/medium, never Sonnet subagent, agy/cf, stuck twice). | ~355 B | Point to DECISIONS.md:19; keep only the review-tier delta.
+docs/LESSONS.md:1-3 | Curation header and triage rules load every session; only needed when editing LESSONS at handoff. | ~330 B | Move to docs/lessons-archive.md or the handoff skill; keep a one-line pointer.
+CLAUDE.md:3,8-9 | Game genre and demo/platform roadmap repeat DECISIONS.md:9 and VISION. | ~310 B | Keep owner role/spend; point to VISION/DECISIONS for genre/roadmap.
+.claude/skills/handoff/SKILL.md:2 | Description duplicates plugins/pm/skills/handoff/SKILL.md:2; two handoff skills load. | ~300 B | Merge the two handoff skills or make one a pointer.
+CLAUDE.md:24-25 | Restates gates already enforced by pre_spend.py, review_gate.py, review_stamp.py, doc_check.py, test_template.py, build_gate. | ~260 B | Rely on the tool's failure message; move the list to tool docs/WORKFLOW.
+.claude/skills/players-eye-gate/SKILL.md:2 | Description repeats the gate process from DECISIONS.md:13; only the trigger is needed in the skill list. | ~260 B | Keep the trigger; point to DECISIONS.md:13 for the process.
+CLAUDE.md:79 | Repeats DECISIONS.md:21-22 worktree/merge rules; sync_main also appears in CLAUDE.md:18. | ~255 B | Merge the extra /handoff report detail into DECISIONS/HANDOFF; leave a pointer.
+docs/DECISIONS.md:2-3 | File-maintenance instructions load every session; needed only when editing DECISIONS. | ~240 B | Move to docs/decisions-log.md header or a template; keep a one-line pointer.

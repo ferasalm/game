@@ -45,7 +45,7 @@ HANDOFF, DECISIONS and LESSONS load at every session start, so every line costs 
    ends (2026-10-27: main stayed red for 5 pushes because a Windows-only tool test ran on the Linux runner).
 6. **Report.** A department child chat (docs/WORKFLOW.md, Start here) ends with a report of 15 lines or fewer for the
    father (a subagent runs no /handoff: the father writes its row): commits on main, what failed, questions for Feras. The father (or a chat Feras drives) tells the owner in
-   five short parts (Feras 10-29): Done (where: branch or main) | Still open | When (a calendar day) | How (the queue
+   six short parts (Feras 10-29): Done (where: branch or main) | Still open | When (a calendar day) | How (the queue
    row: Dept, lane, who) | Your move vs mine | Checked and not checked (each check run and read; what was not run,
    and why). Every HANDOFF Open point is closed (its line removed, said in Done) or carried (its owner still right);
    anything agreed this chat but not done becomes an Open point (point | owner | since; max 10, doc_check).

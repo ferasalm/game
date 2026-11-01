@@ -15,7 +15,7 @@ root="$(git rev-parse --show-toplevel)"
 [[ "$run" =~ ^[a-z0-9-]+$ ]] || { echo "run name: lowercase letters, digits and - only" >&2; exit 2; }
 [ -f "$brief" ] || { echo "no brief $brief" >&2; exit 2; }
 if [ -z "$head" ]; then
-  for p in gemini oc; do git -C "$root" rev-parse -q --verify "refs/heads/$p/$run" > /dev/null && head="$p/$run"; done
+  for p in gemini oc; do git -C "$root" rev-parse -q --verify "refs/heads/$p/$run" > /dev/null && { head="$p/$run"; break; }; done
 fi
 [ -n "$head" ] || { echo "no branch gemini/$run or oc/$run: pass a head ref" >&2; exit 2; }
 [ -n "$rev" ] || case "$head" in gemini/*) rev=cf ;; oc/*) rev=agy ;; *) echo "pass a reviewer for $head" >&2; exit 2 ;; esac

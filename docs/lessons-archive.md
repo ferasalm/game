@@ -42,4 +42,4 @@
   one-letter test ("Z") -> exclude logs/archive/manifest, protect external names, then let check.sh find the rest (2026-10-27).
 - map.py lists tracked files only: a new file checked before `git add` passes "MAP.md current" locally and fails it in
   CI -> `git add` new files, then `python tools/map.py`, then check.sh (2026-10-26/27). [test: doc_check MAP.md current; handoff skill step 1]
-- Three parallel builder parts all failed `tool_tests`: the shared base held every red test, so each branch's check.sh ran its siblings' red tests -> put only a part's own red test in its branch, or merge by hand once each passes and run the full check after (2026-11-01). Enforced by tools/base_red.py (test: tools/test_base_red.py).
+- Three parallel builder parts all failed `tool_tests`: the shared base held every red test, so each branch's check.sh ran its siblings' red tests -> put only a part's own red test in its branch, or merge by hand once each passes and run the full check after (2026-11-01). Enforced for tool tests by tools/base_red.py (test: tools/test_base_red.py).

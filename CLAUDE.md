@@ -77,4 +77,4 @@ Scale: a small, low-risk change (a few lines, no machinery, nothing player-visib
 
 ## Branches
 IMPORTANT: no chat edits or runs git in C:\dev\game: work in your own worktree, push it, end with /handoff (Open points
-closed or carried, 5-part report to feras/BRIEFING.md), merge into `main` (OK 10-19), then sync_main.sh there (D10).
+closed or carried, 6-part report to feras/BRIEFING.md), merge into `main` (OK 10-19), then sync_main.sh there (D10).
