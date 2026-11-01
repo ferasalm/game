@@ -3,7 +3,7 @@ Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after 
 HANDOFF.md; this file is your view of it. "Open now" is rewritten at every /handoff; below it, reports newest first,
 each headed by its date and time (GMT+3): Done | Still open | When | How | Your move vs mine | Checked.
 
-## Open now (Sun 11-01 21:16)
+## Open now (Sun 11-01 23:43)
 | # | Open item | Status | Checked | Your move? | When |
 |---|---|---|---|---|---|
 | 1 | M1 brief: real-time Rydan vs 2 guards on the prison roof, co | Tue 11-03 | - | no | Tue 11-03 |
@@ -20,8 +20,16 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 | 12 | Art homework into inbox/: concept pictures, an empty plate p | open | - | yes | 10-24 |
 | 13 | Opus sign-off on row 25 (Sonnet ran the gate): a dedicated O | open | - | no | 11-01 |
 | 14 | Studio and pm plugins: confirm once in C:\dev\game that `cla | open | - | yes | 11-01 |
-| 15 | Status line wired in .claude/settings.json (row 23 e); its r | open | - | no | 11-01 |
-| 16 | Row 20 leftovers, no row yet (row 24 is done; specs too vagu | open | - | no | 11-01 |
+| 15 | Doc graph cleanup (row 27 shipped `tools/doc_graph.py`, DOCM | open | - | no | 11-01 |
+| 16 | Status line wired in .claude/settings.json (row 23 e); its r | open | - | no | 11-01 |
+| 17 | Row 20 leftovers, no row yet (row 24 is done; specs too vagu | open | - | no | 11-01 |
+
+## Mon 11-02 00:10: your five asks after the first handoff (Sonnet 5.5 high, same chat)
+**Done** (on main after this handoff): (1) `tools/doc_graph.py` (built by cf DeepSeek max from 15 GLM-drafted red tests, gate PASS, I read all 200 lines): maps 173 docs/skills/rules, lists dangling paths, orphans and repeated lines in `docs/DOCMAP.md`, `--who-mentions TERM` lists every place to update, and `check.sh` fails on a stale map or a NEW dangling reference. Today it baselines 220 dangling pairs (mostly example paths in archived personas), 30 orphans, 240 repeated lines: cleanup is an Open point. (2) Memory floor is now AVAILABLE physical RAM (`tools/free_mb.py`, same reader as the GDScript server) with a 2000 MB floor; the old reading counted RAM plus pagefile (18 GB on your 16 GB PC). Logged in decisions-log. (3) `tools/cf_audit.sh`: a read-only audit by DeepSeek V4.1 Flash max; reports in docs/audits/ (coach-haiku, coach-dsv4, coach-compare). Verdict: 0 false claims in 15 checked on both sides, but each found only about 2 of the other's 5 true items, so the union is the audit. Fixed from them: OpenRouter memory line, dead `handoff` setting, LSP rule, hook-path test.
+**Found on the way**: the audit's read-only config did NOT hold in the repo (its own `opencode.json` allows bash and edit and outranks the audit config; a probe wrote a file). Fixed with inline config, probed, tested. The old cross-review boxes are safe (empty folder, no project file).
+**Still open**: Opus sign-off chat (prompt in HANDOFF); doc graph cleanup; the Notification hook, LSP in reviewer tools, a permissions allow list and blender in `.mcp.json` are suggestions for you, not done.
+**Your move vs mine**: yours: the Opus prompt. Mine: the rest.
+**Checked**: check.sh read to the end after each merge; new tests seen red first (test_free_mb 5, test_cf_audit 5, test_doc_graph 15).
 
 ## Sun 11-01 22:00: row 25 follow-ups (Sonnet 5.5 high, same chat)
 **Done** (on main after this handoff): agy lens retried inline: 5 flags, 4 false on evidence (merge_run `--keep` under `set -e`, `gh run list --commit`, `timeout` on Git Bash, `BASE_RED_SEC` unset; all four ran fine in this chat), 1 real and fixed (a broken `tool_tests` import in `base_red.py` now exits 2, not a refusal). Low items fixed: `base_red.py` matches a test by full path or bare name with an end boundary and sweeps stale worktrees a killed run left (built by cf DeepSeek high from GLM-drafted red tests, gate PASS, I read the diff); `doc_check.py` scans plugins and personas for a second routing table; ops-review path and the models.md colour line corrected. Token trim finished: always-loaded notes 24.4 -> 22.5 KB (queue rules, parked context, LESSONS and DECISIONS headers moved to their homes; gate description shortened). Coach: 8/10 (Haiku read-only audit; 9/10 before: a GDScript server with no fallback rule, a stale memory line); fixed: `.claude/rules/tooling/lsp-fallbacks.md`, a test that every settings hook script exists, the memory file. Smoke chat (card you started): skills listed once, `studio:review-code` ran, cf worker call returned, `pm:status` printed the board.

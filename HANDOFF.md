@@ -8,7 +8,6 @@ Queue rules (one queue, top row first; Dept, Lane, Open points, builder caps, ba
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
 | 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof, combat feel first (VISION M1, CANON 10-27, docs/playtest/2026-10-27.md); it rewrites ARCHITECTURE section 8 | Gameplay | chat (plan) | Opus high | Tue 11-03 | - |
-| 27 | Doc graph (Feras 11-01): tools/doc_graph.py maps docs, skills and rules with references, dangling paths, orphans and overlaps, --who-mentions, wired into check.sh (docs/briefs/row27-doc-graph.md) | Ops | builder + chat (review) | cf; Sonnet high | in progress: oc/row27-doc-graph | - |
 | 26 | Writer trial (Feras 11-01): one real brief to agy medium and cf at max (and default or high), results in docs/runs.csv; merge_run.sh logs each merged worker's findings and fix passes (test first). Row 25 proved the low-cost-pipeline skill on one small run | Ops | builder + chat (review) | agy, cf; Sonnet high | with row 4's first builds | - |
 | 4 | M1 build from that brief + the Android export (D17) + archive the turn-based battle code (Feras 10-28), players-eye-gate before Feras | Gameplay | builder | agy | after row 3 | 3 |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | after row 3 | 3; free memory >= 2 GB |
@@ -28,6 +27,7 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 | Art homework into inbox/: concept pictures, an empty plate per scene (no characters, HUD or rain), icon art (row 7) | Feras | 10-24 |
 | Opus sign-off on row 25 (Sonnet ran the gate): a dedicated Opus high chat, prompt in docs/opus-signoff.md; it also runs the full interactive /kaizen:coach (11-01 score 8/10 came from a Haiku audit) | Claude | 11-01 |
 | Studio and pm plugins: confirm once in C:\dev\game that `claude plugin list` shows studio@neon and pm@neon enabled (the smoke chat loaded both from a worktree off main) | Feras | 11-01 |
+| Doc graph cleanup (row 27 shipped `tools/doc_graph.py`, DOCMAP.md, check.sh gate): 220 baselined dangling pairs in docs/doc_graph_allow.txt (most are example paths in .agents/archive personas), 30 orphans and 240 overlap lines to merge or delete; bare file names (`models.md`) do not count as references yet | Claude | 11-01 |
 | Status line wired in .claude/settings.json (row 23 e); its real stdin JSON is not dumped yet: in the first fresh chat open `.check/statusline_raw.json` and confirm the field names (docs-based today) | Claude | 11-01 |
 | Row 20 leftovers, no row yet (row 24 is done; specs too vague to brief): session_stats dates by entry and a tighter GUARD regex, Gameplay lessons.md + research-queue.md, frame_score blank-line slot; row 3 input: docs/audits/2026-11-02-integrity.md Top 10 (its item 5, test_action_def, is a false positive) | Claude | 11-01 |
 
