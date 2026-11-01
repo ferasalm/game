@@ -8,7 +8,7 @@ import subprocess
 import sys
 from typing import List, Optional, Tuple
 
-REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent.parent
+REPO_ROOT = pathlib.Path(__file__).resolve().parents[3]
 
 
 def parse_table(text: str, heading: str) -> List[List[str]]:
