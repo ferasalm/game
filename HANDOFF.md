@@ -36,7 +36,6 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 | Art homework into inbox/: concept pictures, an empty plate per scene (no characters, HUD or rain), icon art (row 7) | Feras | 10-24 |
 | Row 25 gate: after the merge to main, run once `/plugin marketplace add C:/dev/game`, accept the trust dialog, enable studio@neon and pm@neon (a plugin loads only from the main checkout) | Feras | 11-01 |
 | Status line wired in .claude/settings.json (row 23 e); its real stdin JSON is not dumped yet: in the first fresh chat open `.check/statusline_raw.json` and confirm the field names (docs-based today) | Claude | 11-01 |
-| Cleanup (row 24, part f): .claude/worktrees/ empty row18-routing folder (in use 10-31; retry the delete) and b5_tests.log; base-xr-salvage local and remote; merged remote branches worktree-row12-*, row16-*, row17-*, row18-*, row18c-*, row19-* | Claude | 10-31 |
 
 ## This week (weekly limit resets Sat 16:00 GMT+3)
 | Day | Plan |
