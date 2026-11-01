@@ -57,6 +57,13 @@ def test_every_path_the_plugin_hooks_name_exists():
                 assert os.path.exists(os.path.join(base, rel)), (cmd, rel)
 
 
+def test_every_path_the_settings_hooks_name_exists():  # the cutover moved hooks by hand; a missing script drops one silently
+    for cmd in hook_commands(load(".claude", "settings.json")):
+        for rel in re.findall(r"\$CLAUDE_PROJECT_DIR/([\w./-]+)", cmd):
+            assert os.path.exists(os.path.join(ROOT, rel)), (cmd, rel)
+        assert re.findall(r"\$CLAUDE_PROJECT_DIR/", cmd), cmd
+
+
 def test_plugin_hooks_hold_the_non_safety_hooks_and_settings_keeps_the_safety_ones():
     plugin_cmds = " ".join(hook_commands(load("plugins", "studio", "hooks", "hooks.json")))
     settings_cmds = " ".join(hook_commands(load(".claude", "settings.json")))

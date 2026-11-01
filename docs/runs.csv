@@ -4,3 +4,4 @@ date,task,worker,effort,gate,fix_passes,minutes,cost,real_findings
 2026-11-01,row24c-audit,agy,medium,BREACH,1,52,0,1
 2026-11-01,row25-sync-dirty,cf,low,FAIL,1,41,0,0
 2026-11-01,row25-sync-dirty2,cf,low,PASS,0,29,0,0
+2026-11-01,row25-base-red,cf,high,PASS,0,31,0,0
