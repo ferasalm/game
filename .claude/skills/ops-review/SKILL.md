@@ -20,7 +20,7 @@ Skip yourself (one line "nothing changed") when fewer than 5 sessions passed or 
 5. **Research prompts (plan section 16).** For each `research-queue.md` under `.claude/skills/*/` with 3 or more questions, or
    any answered since: write one prompt per question. Big question: a Gemini Deep Research prompt for Feras to run. Small lookup:
    opencode + OpenRouter :free or agy. Code or tool question: Cloudflare DeepSeek. **Never Claude.** Results go to
-   docs/research/<department>/<date>-<topic>.md, marked unverified; the calibrated reader (Haiku, effort high) digests each to <= 30 lines.
+   docs/research/<department>/<date>-<topic>.md, marked unverified; a calibrated reader (cf_probe --effort none or GLM-5.3-flash, else Haiku medium) digests each to <= 30 lines.
 6. **Idle sessions.** `mcp__ccd_session_mgmt__list_sessions`: list sessions idle for days with no open PR (archive candidates;
    the parent asks Feras before archiving).
 7. **Department upgrade (one, in rotation).** Order: the docs/WORKFLOW.md Departments Ids (Gameplay, Art, UI, Market, Narrative, QA, Ops;

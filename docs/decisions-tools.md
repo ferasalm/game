@@ -20,3 +20,4 @@ Same line format as docs/DECISIONS.md. Log every new decision verbatim in docs/d
 - 2026-10-27 | ~/.claude tidy: unused agents and skills moved to ~/.claude/archive (MOVED.txt), never deleted (D7) | Feras
 - 2026-10-25 | Story map: docs/story/rydan.twee <-> Twine via tools/twine_sync.py; Twine library in docs/story/twine (git-ignored) | Feras/Claude
 - 2026-10-21 | Game skills: .agents/skills/ copied to .claude/skills/ (skillOverrides name-only works: < 20 tokens each, /skill-doctor 10-31) | Feras
+- 2026-11-01 | Defaults between agy and cf (writer, reviewer) come from docs/runs.csv after a few more runs, not a hunch; cf DeepSeek at max is tried as a writer too, its effort (none, default, high, max) chosen per task by routing judgement; every worker's result is logged to docs/runs.csv when its run is merged | Feras

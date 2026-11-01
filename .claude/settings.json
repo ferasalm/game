@@ -4,6 +4,7 @@
       "Read(**/.godot/**)",
       "Read(**/*.import)",
       "Read(**/*.uid)",
+      "Read(**/inbox/retired/**)",
       "Read(**/gemini-blueprint-citations.md)",
       "Read(**/*.glb)",
       "Read(**/*.gltf)",

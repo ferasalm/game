@@ -57,7 +57,7 @@ docs/HOW_WE_WORK.md draws this loop for Feras: a change to these Protocols updat
      average over 5 runs -> drop the step. Opus vets the table
      (.check/reviews/<run>-cross.md) in step 3; real findings go to the builder as its fix pass, then the gate again;
      fail-open/closed findings stay Opus's (agy argued the wrong side on calibration).
-  2. Big diffs (over ~300 lines or ~10 files): a Haiku high pass (or a free lens, Readers) lists the misses against
+  2. Big diffs (over ~300 lines or ~10 files): a Haiku low pass (or a free lens, Readers) lists the misses against
      the brief's Checklist; small diffs skip to 3.
   3. Opus reads that list, the WARN lines and the risky hunks only: logic/, saves, hooks, settings.json, anything no
      test reaches; review-code on the whole diff only when the tier-2 list is not clean.

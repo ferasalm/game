@@ -22,7 +22,7 @@ docs/research/calibration-2026-10.md.
 | Hard logic, risky scripts, complex test/spec drafts, every fix pass, cross-review | cf DeepSeek max | cf_build.sh (or `cf_probe.py --effort max` for 1-shot draft) | same; agy reviews |
 | Exact edits with a Pattern file and locked red tests | cf DeepSeek non-reasoning | cf_build.sh ... fast | same; agy reviews |
 | Sorting, summaries, repo recon digests, quick questions, patches from a diagnosis | cf DeepSeek non-reasoning | cf_probe.py --effort none; generate_patch | the caller spot-checks 3 lines (if `cf_probe` exits 2 on `[DONE]` cut, retry at `low` or `agy`) |
-| Bulk text, colour pre-filter | GLM-5.3-flash | cf_probe.py; off until its row 24 calibration passes | the caller spot-checks 3 lines |
+| Bulk text, colour pre-filter | GLM-5.3-flash | cf_probe.py; on for bulk text digests since row 24 (9/10 on one audit, models.md); colour pre-filter as calibrated | the caller spot-checks 3 lines |
 | Reads over ~20k tokens across files (when `cf_probe` cannot) | Haiku medium | Agent tool: `model: haiku`, `effort: medium`, template answer | the caller re-greps every "not found" claim |
 | Launch-and-wait CLI wrapper, template checks, simplest Claude-only task | Haiku low | Agent tool: `model: haiku`, `effort: low` (never spawn a Sonnet subagent) | template check |
 | A chunk of 10+ noisy calls that strictly needs this chat's memory | a fork, at most 2 at once | Agent tool: `subagent_type: fork`, only under ~100k context; above that a Haiku low subagent with a brief | report of 15 lines or fewer |

@@ -1,4 +1,4 @@
 date,task,worker,effort,gate,fix_passes,minutes,cost,real_findings
-2026-11-01,row24b-archive,cf,-,FAIL,3,33,0,0
-2026-11-01,row24a-one-home-docs,agy,medium,PASS,1,38,0,0
-2026-11-01,row24c-audit,agy,medium,BREACH,1,52,0,0
+2026-11-01,row24b-archive,cf,none,FAIL,3,33,0,1
+2026-11-01,row24a-one-home-docs,agy,medium,PASS,1,38,0,1
+2026-11-01,row24c-audit,agy,medium,BREACH,1,52,0,1

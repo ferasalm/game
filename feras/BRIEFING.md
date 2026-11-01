@@ -3,11 +3,11 @@ Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after 
 HANDOFF.md; this file is your view of it. "Open now" is rewritten at every /handoff; below it, reports newest first,
 each headed by its date and time (GMT+3): Done | Still open | When | How | Your move vs mine | Checked.
 
-## Open now (Sun 11-01 03:48)
+## Open now (Sun 11-01 09:06)
 | # | Open item | Status | Checked | Your move? | When |
 |---|---|---|---|---|---|
-| 1 | One home for every rule, tidy, integrity audit, row 20 lefto | Mon 11-02 | - | no | Mon 11-02 |
-| 2 | Opus gate on system-v3: review, hook cutover to the studio p | Mon 11-02; always runs | - | no | Mon 11-02; always runs |
+| 1 | Opus gate on system-v4 (briefs call it system-v3): review, h | Mon 11-02; always runs | - | no | Mon 11-02; always runs |
+| 2 | Writer trial (Feras 11-01): one real brief to agy medium and | with row 4's first builds | - | no | with row 4's first builds |
 | 3 | M1 brief: real-time Rydan vs 2 guards on the prison roof, co | Tue 11-03 | - | no | Tue 11-03 |
 | 4 | M1 build from that brief + the Android export (D17) + archiv | after row 3 | - | no | after row 3 |
 | 5 | Bake Roya (sprite-bake), native-scale render on the prison r | after row 3 | - | no | after row 3 |
@@ -21,7 +21,16 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 | 13 | Art homework into inbox/: concept pictures, an empty plate p | open | - | yes | 10-24 |
 | 14 | Row 25 gate: after the merge to main, run once `/plugin mark | open | - | yes | 11-01 |
 | 15 | Status line wired in .claude/settings.json (row 23 e); its r | open | - | no | 11-01 |
-| 16 | Cleanup (row 24, part f): .claude/worktrees/ empty row18-rou | open | - | no | 10-31 |
+| 16 | Row 20 leftovers parked in row 24 (specs too vague to brief) | open | - | no | 11-01 |
+
+## Sun 11-01 09:10: row 24, one home, archive, audit, calibration (Sonnet 5.5 high)
+**Done** (branch system-v4, nothing on main): (a) WORKFLOW 23.5 -> 13.9 KB, the models.md routing table gone, one worker table left (builders skill), HOW_WE_WORK redrawn for v3, doc_check fails on a second worker table and warns at 75% of the 27 KB loaded-notes cap (test first). (b) 84 finished briefs and audits moved to docs/archive/. (c) integrity audit docs/audits/2026-11-02-integrity.md: 9 of its Top 10 verified true, item 5 is a false positive. (d) calibration: Haiku medium 9/10, GLM-5.3-flash 9/10 on the same digest, so GLM is ON for bulk text digests (models.md, builders table). (e) smoke_keeper removed, builders/lessons.md 52 -> 21 lines, 4 stale "Haiku high / Sonnet subagent" lines fixed, deny rule for inbox/retired added. (f) 9 merged remote branches, 7 local ones, the empty folder and b5_tests.log removed.
+**Still open** (status): your 11-01 wish, cf at max as a writer plus a log of every merged worker = row 26, planned with row 4's first builds. Row 20's leftovers (session_stats dates and guard regex, Gameplay lessons, frame_score blank line) parked: specs too vague, in Open points. The Rank 1 rules have no verbatim decisions-log entry: waiting on Feras (your words, one line).
+**When**: row 25, the Opus gate, Mon 11-02.
+**How**: row 25 is Ops, chat (review), Opus high; the prompt is at the end of HANDOFF.md.
+**Your move**: none now. Mon: the one-time /plugin marketplace add after the row 25 merge.
+**Checked**: full check.sh read twice, 582 passed 0 failed (the first merge showed 13 failures: a fresh worktree needs --import twice, exit 139 once). Not run: the plugins in a live chat (row 25), a real cf-at-max write (row 26).
+**Workers**: agy PASS (WORKFLOW, 1 fix pass, 1 real finding: dropped Clef/Jev evidence), cf fast FAIL by the sibling red test (1 real finding: it reworded a decisions line to fit a byte cap), agy BREACH (its fix pass edited doc_check.py; its audit commit taken alone). Cheaper to run next time: the sibling red tests cost every part a run again.
 
 ## Sun 11-01 03:55: row 23, pm plugin and one-call handoff (Sonnet 5.5 high)
 - **Done (branch system-v3, not on main):** a. `plugins/pm`: `pm.py` board, next, row add|set|done (restores HANDOFF if doc_check fails), week, report, plus 6 skills (status, next, row, week, report, handoff). b. `bash tools/handoff.sh "<message>" [--main]`: map, doc_check, check, commit, push, CI in one call; the handoff skill moved into the plugin (the old path is a pointer until row 25). c. `session_stats.py --row <id>` prints the USAGE row; `docs/runs.csv` is written by every builder run. d. `tools/merge_base.sh`, `tools/main_file.sh`. e. `tools/statusline.py` (status line wired in settings.json) writes `.check/usage.json`; token_handoff adds the 5-hour figure; get_usage/get_session wording replaced. Also: the two Write deny rules for .import/.uid are gone from the branch settings, as in your copies.
