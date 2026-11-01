@@ -750,6 +750,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_slots.py`: Self-test for tools/slots.sh: python tools/test_slots.py (temp dirs, plain asserts, exit 1 on failure).
 - `tools/test_status.py`: Self-test for tools/status.sh: python tools/test_status.py (a temp repo with planted branches, exit 1 on failure).
 - `tools/test_statusline.py`: Self-test for tools/statusline.py (row 23 e, 2026-11-01). Field names are from the official statusline docs (fetched 11-01):
+- `tools/test_sync_main.py`: Self-test for tools/sync_main.sh (row 25, 2026-11-01) in a throwaway repo with a bare origin and a stub run_godot.sh.
 - `tools/test_template.py`: TEMPLATE.md stays readable by the gate (P3.8, 2026-10-27): its headings, an empty forbidden list, parseable checklist.
 - `tools/test_token_handoff.py`: Self-test for tools/hooks/token_handoff.py: cache-read information at 25M, then every +10M; context size never warns
 - `tools/test_tool_tests.py`: Tests tool_tests.py parallel test execution and process runner.
