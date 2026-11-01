@@ -106,6 +106,44 @@ def test_a_failing_import_is_reported():
         shutil.rmtree(top, ignore_errors=True)
 
 
+def test_uncommitted_tracked_change_fails_on_dirty():
+    top, g, other = toy()
+    try:
+        git(g, "checkout", "-q", "-b", "side")
+        put(g + "/extra.txt", "tracked\n")
+        git(g, "add", "extra.txt")
+        git(g, "commit", "-qm", "extra")  # extra.txt is tracked on side and absent on main
+        put(g + "/extra.txt", "uncommitted\n")  # uncommitted tracked edit: must refuse before any switch or pull
+        r = run(g)
+        assert last_line(r) == "SYNC FAIL dirty", r.stdout + r.stderr
+        assert head(g) == "side", head(g)
+        assert open(g + "/extra.txt", encoding="utf-8").read() == "uncommitted\n"
+    finally:
+        shutil.rmtree(top, ignore_errors=True)
+
+
+def test_a_dirty_file_a_switch_would_carry_still_fails_on_dirty():
+    top, g, other = toy()
+    try:
+        git(g, "checkout", "-q", "-b", "side")  # side == main, so git switch alone would carry the edit onto main
+        put(g + "/README.md", "carried?\n")
+        r = run(g)
+        assert last_line(r) == "SYNC FAIL dirty" and head(g) == "side", r.stdout + r.stderr
+    finally:
+        shutil.rmtree(top, ignore_errors=True)
+
+
+def test_untracked_file_does_not_fail():
+    top, g, other = toy()
+    try:
+        put(g + "/untracked.txt", "scratch\n")  # untracked, so the dirty check must not fire
+        r = run(g)
+        assert last_line(r).startswith("SYNC PASS"), r.stdout + r.stderr
+        assert head(g) == "main", head(g)
+    finally:
+        shutil.rmtree(top, ignore_errors=True)
+
+
 if __name__ == "__main__":
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     for t in tests:
