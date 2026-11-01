@@ -34,7 +34,9 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
   a direct cf stream stops silently at the literal text `[DONE]` with finish "stop": none cuts the reply, max cuts in the thinking and
   returns nothing (10-31); opencode builds are not hit (fast and max: whole reply); cf_mcp does not stream; cf_probe now exits 2, `"cut": true`
 - **Best use**: hard logic and debugging at max; `fast` (no reasoning) for exact work with a Pattern and tests, bulk text, quick code
-  questions, patches from a written diagnosis; review lens at max (cross-review at none not tested: builder time is free, ~$0.08 a review)
+  questions, patches from a written diagnosis; review lens at max (cross-review at none not tested: builder time is free, ~$0.08 a review);
+  setup audit lens at max via `tools/cf_audit.sh` (row 25 calibration 11-01, docs/audits/2026-11-01-coach-compare.md: 0 false claims in 15 checked,
+  complementary to Haiku, so the union is the audit; run it with inline read-only config, the repo's opencode.json outranks OPENCODE_CONFIG)
 
 ## NVIDIA Nemotron 3 Ultra :free (OpenRouter)
 - **ID**: `openrouter/nvidia/nemotron-3-ultra-550b-a55b:free` (`XR_OC_MODEL` in `tools/builders.conf`)

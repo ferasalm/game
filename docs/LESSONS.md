@@ -51,7 +51,7 @@ Triage rules (D9): docs/lessons-archive.md header.
   `tools/run_godot.sh --import` alone, then check.sh (2026-10-27/28).
 - Python on Windows writes CRLF -> `newline="\n"` (python is `python` here, not python3). The Bash tool collapses every `\\` to `\` anywhere in a command, even in single quotes (probed 10-31), so `\\n` reaches Python as a newline: write such code with Write/Edit; heredoc_guard blocks it (10-27, 10-31).
 - A worktree-isolated session refuses a Bash call that starts powershell, or whose text names git in a complex form
-  -> free memory: `bash tools/slots.sh`; edit text naming git with Edit; under the 3 GB floor a docs-only change runs
+  -> free memory: `bash tools/slots.sh`; edit text naming git with Edit; under the 2 GB floor (available RAM, not virtual) a docs-only change runs
   `bash tools/check.sh --no-godot` (2026-10-28).
 - A repo plugin loads only from the MAIN checkout and only after the trust dialog; `claude -p` never loads it; plugin skills ignore skillOverrides and `paths:` -> test with `claude --plugin-dir <worktree>/plugins/studio`, keep skills in .claude/skills (2026-11-01).
 - A Haiku launch-and-wait hand-back said "UNSURE"; the `.result` sits in `/c/dev/game-wt/<task>.result` (not `../game-wt` of a worktree) -> read it yourself (2026-11-01).

@@ -22,7 +22,6 @@
     ]
   },
   "skillOverrides": {
-    "handoff": "name-only",
     "emergency-efficiency": "name-only",
     "ops-review": "name-only",
     "blender-addon-engineer": "name-only",

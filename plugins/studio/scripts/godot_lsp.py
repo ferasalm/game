@@ -163,7 +163,7 @@ def serve(args) -> int:
     proc = None
     sock = wait_port(port, 0)
     if sock is None and not args.no_spawn:
-        floor = int(os.environ.get("MIN_FREE_MB") or "3000")
+        floor = int(os.environ.get("MIN_FREE_MB") or "2000")
         free = free_mb()
         if free < floor:
             sys.stderr.write("memory: %d MB free < %d MB floor, not starting Godot\n" % (free, floor))

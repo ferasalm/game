@@ -103,7 +103,7 @@ reviewer with no plugins/studio/agents/<name>.md, and any plugins/studio/agents/
 | Godot builder runs, machine-wide | 2 at once (CAP_GODOT=2; agy CAP_AGY=2, Cloudflare DeepSeek CAP_CF=2; a RUN_KIND=py run counts toward its builder cap only) | tools/slots.sh (refuses when full) |
 | Text run (opencode, OpenRouter :free; no Godot) | 1 (CAP_OC=1) | tools/slots.sh |
 | Godot test suites at once | 2 (CHECK_SLOTS=2) | tools/check_slot.sh |
-| Free memory before a Godot run | >= 3000 MB (MIN_FREE_MB=3000) | tools/slots.sh |
+| Free memory before a Godot run | >= 2000 MB of available RAM (MIN_FREE_MB=2000, Feras 11-01) | tools/slots.sh |
 | Builder with no commit | killed after 25 min (IDLE_MIN=25); result NOWORK | tools/build_pipeline.sh |
 | OpenRouter :free requests | 50 a day, shared by all :free models | the provider; check before a run |
 | Claude's handoff | the chat's task done, or ~85% of the 5-hour window; never context size (Feras 10-31) | the status line's usage; review-cost |

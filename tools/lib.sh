@@ -17,10 +17,10 @@ wt_dir() {  # where builder worktrees, .result and .log files live: <main checko
 
 builder_prefix() { [ "$1" = agy ] && echo gemini || echo oc; }
 
-free_mb() {  # free virtual memory in MB (Win32_OperatingSystem, KB); FREE_MB stubs it; unknown = plenty
+free_mb() {  # available PHYSICAL memory in MB (tools/free_mb.py; Feras 11-01: not RAM + pagefile); FREE_MB stubs it; unknown = plenty
   if [ -n "${FREE_MB:-}" ]; then echo "$FREE_MB"; return; fi
-  local kb; kb="$(powershell -NoProfile -Command '(Get-CimInstance Win32_OperatingSystem).FreeVirtualMemory' 2> /dev/null | tr -d '\r')"
-  case "$kb" in ''|*[!0-9]*) echo 999999 ;; *) echo $((kb / 1024)) ;; esac
+  local mb; mb="$($py "$lib_dir/free_mb.py" 2> /dev/null | tr -d '\r')"
+  case "$mb" in ''|*[!0-9]*) echo 999999 ;; *) echo "$mb" ;; esac
 }
 
 win_pid() { cat "/proc/$1/winpid" 2> /dev/null || echo "$1"; }  # msys pid -> Windows pid (taskkill needs it)
