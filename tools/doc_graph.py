@@ -65,20 +65,20 @@ def refs(text: str) -> list:
 
 
 def resolve(root: pathlib.Path, node: str, tok: str) -> str:
-    """The token as a repo path when it exists from the root or from the node's folder, else ''."""
+    """The token as a repo path when it exists from the root or the node's folder, else ''; build artifacts never count."""
     here = pathlib.PurePosixPath(node).parent
     for cand in (tok, (here / tok).as_posix()):
-        if (root / cand.rstrip("/")).exists():
-            return cand.rstrip("/")
+        cand = cand.rstrip("/")
+        if cand.split("/")[0] not in (".check", ".godot", ".git") and (root / cand).exists():
+            return cand
     return ""
 
 
 def allowlist(root: pathlib.Path) -> set:
     """The node :: token pairs the allowlist file silences (# comments and blank lines skipped)."""
-    path = root / ALLOW
-    if not path.exists():
+    if not (root / ALLOW).exists():
         return set()
-    rows = (line.split("#", 1)[0].strip() for line in path.read_text(encoding="utf-8").splitlines())
+    rows = (line.split("#", 1)[0].strip() for line in (root / ALLOW).read_text(encoding="utf-8").splitlines())
     return {tuple(x.strip() for x in row.split("::", 1)) for row in rows if "::" in row}
 
 

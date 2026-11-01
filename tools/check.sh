@@ -19,6 +19,7 @@ tool_tests() {  # run $py tools/tool_tests.py, then $py tools/oc_agents.py --che
 }
 docs() {  # doc_check.py, then the doc graph: a stale docs/DOCMAP.md or a new dangling reference fails this step
   $py tools/doc_check.py || return 1
+  [ -f tools/doc_graph.py ] || return 0  # a stub repo without the tool (the test_py_runs toy) skips it; tools/test_doc_graph.py covers the tool
   $py tools/doc_graph.py --check
 }
 no_godot=0; [ "${1:-}" = "--no-godot" ] && no_godot=1
