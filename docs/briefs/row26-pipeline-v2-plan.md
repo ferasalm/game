@@ -1,5 +1,5 @@
 # Plan: low-cost pipeline v2 (row 26, Feras 11-02; head = Claude, any model)
-Input: three independent critiques (docs/audits/2026-11-02-pipeline-claude.md, -glm53max.md, -dsv41max.md). Verified facts below were probed, not assumed.
+Input: three independent critiques (docs/research/pipeline-v2/ (claude.md, glm53max.md, dsv41max.md)). Verified facts below were probed, not assumed.
 
 ## What was verified (changes the plan)
 - Cost IS measurable: `opencode session export --standalone <id>` (cwd = the run's worktree, XDG_DATA_HOME=oc-v2) returns tokens {input, output, reasoning, cache read/write}, outcome and busy/idle times per session; `session list --standalone` lists a worktree's sessions (fix passes are separate sessions). The log and `--format json` carry no tokens.
