@@ -119,6 +119,7 @@ docs/LESSONS.md :: oc/
 docs/LESSONS.md :: origin/
 docs/MAP.md :: oc/
 docs/MAP.md :: origin/
+docs/MAP.md :: tools/kaizen_report.py
 docs/USAGE.md :: Videos/edit/
 docs/USAGE.md :: docs/BRIEFING.md
 docs/USAGE.md :: lib.sh/builders.conf

@@ -751,6 +751,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_hook_heredoc.py`: Self-test for tools/hooks/heredoc_guard.py (LESSONS 4): a python heredoc holding a backslash, in any form, and a
 - `tools/test_hook_run.py`: Self-test for tools/hooks/run.sh: hooks run the session's own copy, a missing script never blocks a tool.
 - `tools/test_hook_stop_notify.py`: Self-test for tools/hooks/stop_notify.py: a Stop makes one balloon command, a repeat Stop stays quiet, bad input never blocks.
+- `tools/test_kaizen_report.py`: Row 26 P2 locked tests for tools/kaizen_report.py: one Kaizen line per batch in at most 20 lines.
 - `tools/test_kill_tree.py`: Tests kill_tree (tools/lib.sh): a tree with a native grandchild and a parent still forking during the kill dies whole.
 - `tools/test_map.py`: Self-test for map.py: only tracked files are mapped (an untracked file made CI fail "MAP.md current").
 - `tools/test_merge_generated.py`: Row 26 S14 (11-02): every parallel part adds a tool, so every merge of two parts conflicted on the generated files
@@ -760,6 +761,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_part_report.py`: Row 26 S10 (Feras 11-02, no context pollution): the head reads ONE short report per part instead of a log or a diff.
 - `tools/test_parts_plan.py`: Row 26 S12 (Feras 11-02): one model may run several times at once (three DeepSeek max, two agy, two GLM) to finish
 - `tools/test_personas.py`: The 10 personas are tailored to Neon Glitch (Feras 10-28: "not generic") and their copies never drift (row 1 item 9).
+- `tools/test_pipeline_skill.py`: Row 26 S6 (Feras 11-02): the whole workflow lives in ONE skill folder, .claude/skills/low-cost-pipeline/, so it can be
 - `tools/test_plugin_prune.py`: Row 26 S7 (Feras 11-02, asked and agreed): `claude plugin list` showed kaizen@kaizen eight times, two of them for
 - `tools/test_plugins.py`: The repo marketplace and the studio plugin stay loadable and consistent (system-v3 row 22, 2026-11-01).
 - `tools/test_pm.py`: Self-test for plugins/pm/scripts/pm.py (row 23 a, 2026-11-01): board, next, row add|set|done, week, report.
