@@ -3,29 +3,37 @@
 An unknown cell (? or a missing column) is never 0; an old 9-column file reads every new column as unknown."""
 import argparse
 import csv
+import math
 
 MAX_LINES, MAX_GROUPS = 20, 12
 
 
 def number(value):
-    """A cell as a float, or None when it is missing, empty or a ? (an unknown is never a zero)."""
+    """A cell as a float, or None when it is missing, empty, a ? or not a finite number (an unknown is never a zero)."""
     text = "" if value is None else str(value).strip()
     try:
-        return float(text) if text and text != "?" else None
+        found = float(text) if text and text != "?" else None
     except ValueError:
         return None
+    return found if found is not None and math.isfinite(found) else None  # a nan or inf cell would poison every sum
 
 
 def fmt(value, digits=0):
-    """A number as the report writes it: ? when unknown, a whole number bare, else with the given digits."""
-    return "?" if value is None else (f"{value:.{digits}f}" if digits else f"{value:g}")
+    """A number as the report writes it: ? when unknown, a whole number in full (never 1.23457e+06), else with the digits."""
+    if value is None:
+        return "?"
+    if digits:
+        return f"{value:.{digits}f}"
+    return str(int(value)) if value == int(value) else f"{value:g}"
 
 
 def read_rows(path, since):
     """The csv rows as dicts; a missing or empty file gives no rows, and --since drops the older dates."""
     try:
-        with open(path, encoding="utf-8", newline="") as f:
-            return [r for r in csv.DictReader(f) if since is None or (r.get("date") or "").strip() >= since]
+        with open(path, encoding="utf-8-sig", newline="") as f:  # -sig: an Excel "CSV UTF-8" save starts with a BOM
+            return [r for r in csv.DictReader(f)  # a REFUSED launch ran nothing: it is not a run
+                    if (r.get("gate") or "").strip().upper() != "REFUSED"
+                    and (since is None or (r.get("date") or "").strip() >= since)]
     except (OSError, csv.Error, ValueError):
         return []
 
@@ -40,7 +48,7 @@ def summary(name, rows):
     """One group's line and numbers: <group>  runs N  pass P%  min avg A  fix avg F  idle I min  tok X/Y  usd U."""
     minutes = [v for v in (number(row.get("minutes")) for row in rows) if v is not None]
     fixes = [v for v in (number(row.get("fix_passes")) for row in rows) if v is not None]
-    passed = sum(1 for row in rows if (row.get("gate") or "").strip().upper() == "PASS")
+    passed = sum(1 for row in rows if (row.get("gate") or "").strip().upper() in ("PASS", "SCOPED"))  # SCOPED = a test run that passed its gate
     got = {"name": name, "n": len(rows), "pct": round(100 * passed / len(rows)) if rows else 0,
            "min_avg": sum(minutes) / len(minutes) if minutes else None,
            "fix_avg": sum(fixes) / len(fixes) if fixes else None,

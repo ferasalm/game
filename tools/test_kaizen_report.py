@@ -177,6 +177,43 @@ def test_the_report_never_exceeds_20_lines_and_caps_groups_at_12():
     assert len([ln for ln in loud_lines if "  runs " in ln]) <= 12, loud_lines
 
 
+def test_token_sums_over_a_million_print_in_full_not_in_scientific_notation():  # cross-review GLM 11-02: :g gave 1.23457e+06
+    with tempfile.TemporaryDirectory() as d:
+        lines = run(d, [row(tokens_in=1234567, tokens_out=2500000)])
+    assert "tok 1234567/2500000" in lines[1], lines
+
+
+def test_a_utf8_bom_header_from_excel_still_reads():
+    raw = "﻿" + HEADER + "\n" + ",".join(str(c) for c in row()) + "\n"
+    with tempfile.TemporaryDirectory() as d:
+        lines = run(d, raw=raw)
+        since = run(d, None, "--since", "2026-10-01", raw=raw)
+    assert lines[0] == "KAIZEN 1 runs, 2026-10-01..2026-10-01", lines
+    assert since[0] == "KAIZEN 1 runs, 2026-10-01..2026-10-01", since
+
+
+def test_nan_and_inf_cells_are_unknown_not_numbers():
+    rows = [row(usd="nan", tokens_in="inf"), row(usd="0.02", tokens_in=100)]
+    with tempfile.TemporaryDirectory() as d:
+        lines = run(d, rows)
+    assert "tok 100/20" in lines[1] and "usd 0.02 (1 unknown)" in lines[1], lines
+    assert lines[2] == "tune: 1 row(s) have no cost reading (older runs or non-opencode builders)", lines
+
+
+def test_pass_percent_rounds_it_does_not_floor():  # seeded-bug run 11-02: round -> int() survived the first test set
+    rows = [row(gate="PASS"), row(gate="PASS"), row(gate="FAIL")]
+    with tempfile.TemporaryDirectory() as d:
+        lines = run(d, rows)
+    assert "pass 67%" in lines[1], lines
+
+
+def test_refused_launches_are_not_runs_and_scoped_counts_as_a_pass():  # the first real scoreboard read 20% for cf/max
+    rows = [row(gate="SCOPED"), row(gate="PASS"), row(gate="REFUSED"), row(gate="REFUSED"), row(gate="FAIL")]
+    with tempfile.TemporaryDirectory() as d:
+        lines = run(d, rows)
+    assert lines[0].startswith("KAIZEN 3 runs") and "runs 3  pass 67%" in lines[1], lines
+
+
 if __name__ == "__main__":
     from tool_tests import run_cases
     run_cases([v for k, v in sorted(globals().items()) if k.startswith("test_")], "test_kaizen_report")

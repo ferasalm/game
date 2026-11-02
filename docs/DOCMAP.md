@@ -59,7 +59,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | .claude/skills/godot-gameplay-scripter/SKILL.md | Godot Gameplay Scripter: Neon Glitch combat code | 0 | 5 |
 | .claude/skills/godot-shader-developer/SKILL.md | Godot Shader Developer: Neon Glitch light and VFX | 0 | 9 |
 | .claude/skills/level-designer/SKILL.md | Level Designer: Neon Glitch spaces and encounters | 0 | 4 |
-| .claude/skills/low-cost-pipeline/SKILL.md | Low-cost pipeline (Feras 11-01, v2 11-02): one folder owns the workflow | 3 | 14 |
+| .claude/skills/low-cost-pipeline/SKILL.md | Low-cost pipeline (Feras 11-01, v2 11-02): one folder owns the workflow | 3 | 15 |
 | .claude/skills/low-cost-pipeline/changelog.md | Changelog: one line per upgrade (Kaizen). Newest last. Say what changed, why, and what to watch. | 0 | 3 |
 | .claude/skills/low-cost-pipeline/foremen.md | Foremen and context hygiene (Feras 11-02) | 0 | 8 |
 | .claude/skills/low-cost-pipeline/mechanical.md | Mechanical lane: DeepSeek without reasoning (Feras 11-02) | 0 | 3 |

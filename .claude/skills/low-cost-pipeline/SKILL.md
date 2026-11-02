@@ -29,7 +29,7 @@ Files here: [routing.md](routing.md) who does what, [foremen.md](foremen.md) rep
 4. Read `python tools/part_report.py <task>`: PASS -> review; FAIL/NOWORK/ERROR -> read the one named reason; BREACH -> read the breach (usually a fixture edit the brief missed: review the diff, merge by hand).
 5. Review: `bash tools/cross_review.sh <task> <brief> <base>` (reviewer = other family than the author, set in builders.conf); flags go to a file; confirm each against the code.
 6. Merge one part at a time: `python tools/parts_plan.py --branches oc/a oc/b`, then `bash tools/merge_run.sh <task>` (prefix and VERDICT PASS come from the .result), regenerate MAP and DOCMAP on a conflict (generated files only), `bash tools/check.sh` to a file, read its last line BEFORE any push.
-7. Kaizen: one line in changelog.md (what to cut or tune), from runs.csv.
+7. Kaizen: `python tools/kaizen_report.py` (20 lines from runs.csv: pass rate, minutes, idle, tokens, cost per worker/effort, `tune:` hints), then one line in changelog.md.
 
 ## Hard rules
 - The head reads at most the 15-line reports, the locked tests in full, and risky hunks (hooks, gates, pipeline, saves) line by line. Redirect every long command to a file and read an offset or `tail -n 15`.
