@@ -13,6 +13,7 @@ set -uo pipefail
 . "$(dirname "$0")/lib.sh"
 builder="$1"; name="$2"; brief="$(cd "$(dirname "$3")" && pwd)/$(basename "$3")"; base="$4"; model="${5:-}"
 RUN_KIND="${RUN_KIND:-godot}"
+expect_red="${EXPECT_RED:-0}"  # read once (row 26 S5): a test-writing run is judged by scope_gate, never by a green check
 here="$lib_dir"; root="$(git rev-parse --show-toplevel)"; dir="$(wt_dir)"; wt="$dir/$name"; res="$wt.result"
 prefix="$(builder_prefix "$builder")"
 idle_sec="${IDLE_SEC:-$((IDLE_MIN * 60))}"; quiet_sec="${QUIET_SEC:-300}"; poll="${WATCH_POLL:-20}"
@@ -155,6 +156,26 @@ leftovers "build"; cp "$wt.log" "$wt.build.log" 2> /dev/null; fix_from=""
 if [ -z "${SKIP_BUILD:-}" ] && ! commits && git -C "$wt" rev-parse HEAD > /dev/null 2>&1; then
   why="$(grep -a -m1 '[^[:space:]]' "$wt.log" 2> /dev/null | tr -d '\r')"
   nowork_exit "${why:-the builder exited with no commit and no change in its worktree}"
+fi
+# EXPECT_RED=1 (row 26 S5, Feras 11-02): this run writes the red tests, so check.sh, the fix passes and build_gate do
+# not apply: scope_gate.py judges the worktree instead, and the result's first word is its verdict (SCOPED or REJECT).
+if [ "$expect_red" = 1 ]; then
+  scope="$($py "$here/scope_gate.py" check --wt "$wt" --base "$base" --brief "$brief" < /dev/null 2>&1)"
+  status="$(echo "$scope" | sed -n 's/^VERDICT //p' | head -1)"; gate_error=""
+  if [ -z "$status" ]; then  # a crashed gate is REJECT with its own line, never SCOPED (row25-sync-dirty read a traceback as FAIL)
+    status=REJECT; gate_error="$(echo "$scope" | grep -v '^[[:space:]]*$' | tail -1)"
+    [ -n "$gate_error" ] || gate_error="the scope gate printed no output"
+  fi
+  { result_head "$status" "$prefix/$name"
+    [ -z "$idle_note" ] || echo "$idle_note"
+    [ -z "$fork_note" ] || echo "$fork_note"
+    [ -z "$gate_error" ] || echo "gate error: $gate_error"
+    echo "$scope"
+    echo "--- commits"; git -C "$wt" log --oneline "$base..HEAD" | head -30; } > "$res"
+  cat "$res"
+  log_row "$status" "$(( ($(date +%s) - pipeline_start) / 60 ))" 0
+  [ "$status" = SCOPED ] && exit 0
+  exit 1
 fi
 fix=0  # FIX_PASSES free fix passes (builders.conf; Feras 10-28: builder time is free), each fed the latest FAIL lines
 until check; do
