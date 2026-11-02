@@ -727,6 +727,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/statusline.py`: Status line command (row 23 e, 2026-11-01): reads Claude Code's status JSON on stdin, prints one line
 - `tools/sync_main.sh`: Brings the main checkout up to origin/main and proves the game starts (2026-10-24: merges pulled without a re-import
 - `tools/sync_personas.py`: Copies the 10 Neon Glitch personas from their one source (.agents/skills/<name>/SKILL.md) to .claude/skills/<name>/SKILL.md
+- `tools/test_agy_quiet.py`: Row 26 (11-02): `agy -p` prints its log only when it finishes, so an agy run's log stays 0 bytes while it works. The quiet
 - `tools/test_art_refs.py`: tools/art/refs.json: one approved reference per character (row 1 item 3, 10-28). Every Rodin model has an entry,
 - `tools/test_base_red.py`: base_red.py refuses a base holding a red tool test the brief does not name (rows 23, 24), on a toy git repo.
 - `tools/test_build_gate.py`: Self-test for build_gate.py: python tools/test_build_gate.py (temp git repos, plain asserts, exit 1 on failure).
