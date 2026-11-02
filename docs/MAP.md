@@ -744,6 +744,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_kill_tree.py`: Tests kill_tree (tools/lib.sh): a tree with a native grandchild and a parent still forking during the kill dies whole.
 - `tools/test_map.py`: Self-test for map.py: only tracked files are mapped (an untracked file made CI fail "MAP.md current").
 - `tools/test_no_legacy_hero.py`: Guard: the hero's old code id stays gone (renamed to rydan, save v7, Feras 2026-10-27). Fails on the old id in the
+- `tools/test_oc_usage.py`: Row 26 S2 (Feras 11-02): a builder run's cost is read from opencode's own session export, never guessed from its log
 - `tools/test_personas.py`: The 10 personas are tailored to Neon Glitch (Feras 10-28: "not generic") and their copies never drift (row 1 item 9).
 - `tools/test_plugins.py`: The repo marketplace and the studio plugin stay loadable and consistent (system-v3 row 22, 2026-11-01).
 - `tools/test_pm.py`: Self-test for plugins/pm/scripts/pm.py (row 23 a, 2026-11-01): board, next, row add|set|done, week, report.
@@ -752,6 +753,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_py_runs.py`: Self-test for non-Godot builder runs (row 12 C, 2026-10-28): python tools/test_py_runs.py.
 - `tools/test_res_graph.py`: Self-test for res_graph.py --check: python tools/test_res_graph.py (a fake project in a temp folder, exit 1 on failure).
 - `tools/test_review_gate.py`: Self-test for tools/hooks/review_gate.py + review_stamp.py (D5, D21): no game render reaches Feras unreviewed.
+- `tools/test_runs_log.py`: Row 26 S2 (Feras 11-02): docs/runs.csv is the pipeline's scoreboard. Cost columns are real or `?` (unknown is not
 - `tools/test_session_start.py`: Self-test for .claude/hooks/session-start.sh (reports the session's own worktree) and the .gitignore .env rule.
 - `tools/test_session_stats.py`: session_stats counts calls, failed calls, real user turns (not tool results or injected tags) and peak context.
 - `tools/test_slots.py`: Self-test for tools/slots.sh: python tools/test_slots.py (temp dirs, plain asserts, exit 1 on failure).
