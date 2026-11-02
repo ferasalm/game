@@ -20,6 +20,8 @@ tools/build_pipeline.sh (all 175 lines), tools/test_build_pipeline.py (stubs via
 7. Every end path (PASS, FAIL, BREACH, ERROR, NOWORK, REFUSED) appends ONE docs/runs.csv row through `$py tools/runs_log.py append` (not `python`; no `|| true` that hides a failing call: print a WARN line instead): effort from `$py tools/model_effort.py "$eff_m"`; for builders cf and oc the tokens come from `$py tools/oc_usage.py collect --wt "$wt"` piped into `fields --in-rate $CF_INPUT_RATE --out-rate $CF_OUTPUT_RATE` (source `opencode-export`); agy and any run with 0 sessions log `?,?,?` and source `unknown`; --idle-min from item 3. REFUSED rows use minutes 0 and `?` tokens.
 8. tools/cf_build.sh appends NO spend line when the pipeline exits 3 (REFUSED: it appended a junk `?` line). tools/slots.sh append-spend takes an optional 7th argument WT: when given and `oc_usage.py collect --wt WT` finds sessions, the csv line is `date,task,in,out,usd` from those numbers; otherwise the old log parsing runs unchanged. tools/cf_build.sh passes `"$wt"` (`$dir/$task`).
 
+9. A builder that never started (oc_task.sh refused: a leftover worktree from another base, a missing opencode, exit 126) is NOWORK with the first stderr or log line as its reason (`why: <line>`), never the bare "CHECKLIST missing"; and a NOWORK or REFUSED run removes its own empty worktree and branch so a rerun with a new base starts clean (test: a leftover worktree on an older base, relaunch -> a clear reason, then a clean rerun). I write this test myself after reading the GLM tests.
+
 ## Do NOT edit
 D6 defaults, protected by tools/build_gate.py without being listed. Keep this prose free of backticks outside May edit.
 `tools/test_build_pipeline.py`

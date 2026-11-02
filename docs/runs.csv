@@ -9,3 +9,4 @@ date,task,worker,effort,gate,fix_passes,minutes,cost,real_findings,tokens_in,tok
 2026-11-02,row26-s7-prune,cf,low,PASS,0,18,0,0,?,?,?,unknown,?
 2026-11-02,row26-s2-usage,cf,high,BREACH,1,36,0,0,?,?,?,unknown,?
 2026-11-02,row26-s4-tests,cf,-,NOWORK,0,4,0,0,?,?,?,unknown,?
+2026-11-02,row26-s4-tests,cf,-,NOWORK,0,4,0,0,?,?,?,unknown,?
