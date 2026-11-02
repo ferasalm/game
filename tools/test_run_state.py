@@ -22,8 +22,8 @@ commit() { mkdir -p features; echo "## a" > features/a.gd; git add -A; git -c us
 case "${FAKE2_MODE:-}" in
   del_brief) commit; rm -f "$KILL_BRIEF" ;; break_git) commit; echo broken > .git ;;
   bad_check) touch fail.flag; commit ;;
-  slow_fix) case "$2" in *.fix.md) sleep 8; rm -f fail.flag; commit ;; *) touch fail.flag; commit ;; esac ;; tick) commit; for i in 1 2 3 4 5 6 7 8; do echo "tick $i"; sleep 1; done ;;
-  beat) commit; mkdir -p .check; for i in 1 2 3 4 5 6 7 8; do touch .check/alive; sleep 1; done; rm -rf .check ;;
+  slow_fix) case "$2" in *.fix.md) sleep 8; touch "$BEAT_DONE"; rm -f fail.flag; commit ;; *) touch fail.flag; commit ;; esac ;; tick) commit; for i in 1 2 3 4 5 6 7 8; do echo "tick $i"; sleep 1; done ;;
+  beat) commit; mkdir -p .check; for i in 1 2 3 4 5 6 7 8; do touch .check/alive; sleep 1; done; touch "$BEAT_DONE"; rm -rf .check ;;
   hang2) case "$2" in *.fix.md) echo x > f2; git add -A; git -c user.name=t -c user.email=t@t commit -qm fix; sleep 30 ;;
     *) touch fail.flag; commit; sleep 30 ;; esac ;;
 esac
@@ -131,16 +131,18 @@ def test_a_builder_that_keeps_logging_is_not_quiet_killed():
 
 def test_a_silent_fix_pass_with_no_commit_of_its_own_is_not_quiet_killed():
     top, g = toy()  # review 11-02: the build's commits made every fix pass look "committed", so it was cut after QUIET_SEC
-    rc, out, err = pipeline(g, top, QUIET_SEC="3", WATCH_POLL="1", FIX_PASSES="1", **stub_builder(top, "slow_fix"))
-    res = result(top)
-    assert rc == 0 and res.startswith("PASS") and not re.search(r"^quiet: ", res, re.M), (rc, res, err)
+    done = top + "/slow_fix.done"  # the stub's proof it was not cut before the end of its silent stretch: after its own
+    rc, out, err = pipeline(g, top, QUIET_SEC="3", WATCH_POLL="1", FIX_PASSES="1", BEAT_DONE=done, **stub_builder(top, "slow_fix"))
+    res = result(top)  # commit a poll later may still be quiet-killed (committed, then silent) on a slow runner: not asserted
+    assert os.path.exists(done) and rc == 0 and res.startswith("PASS"), (os.path.exists(done), rc, res, err)
 
 
 def test_a_builder_waiting_on_its_check_heartbeat_is_not_quiet_killed():
     top, g = toy()  # review 11-02: check.sh prints nothing until a step ends; its .check/alive beat is the sign of life
-    rc, out, err = pipeline(g, top, QUIET_SEC="3", WATCH_POLL="1", **stub_builder(top, "beat"))
-    res = result(top)
-    assert rc == 0 and res.startswith("PASS") and not re.search(r"^quiet: ", res, re.M), (rc, res, err)
+    done = top + "/beat.done"  # written after 8 silent seconds of beats: only a builder that was NOT cut gets here
+    rc, out, err = pipeline(g, top, QUIET_SEC="3", WATCH_POLL="1", BEAT_DONE=done, **stub_builder(top, "beat"))
+    res = result(top)  # a kill just after the stub's last line (committed, then silent) is legitimate and not asserted
+    assert os.path.exists(done) and rc == 0 and res.startswith("PASS"), (os.path.exists(done), rc, res, err)
 
 
 def test_idle_minutes_are_summed_over_every_kill_of_the_run():
