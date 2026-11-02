@@ -179,6 +179,7 @@ docs/briefs/row26-pipeline-v2-plan.md :: tools/test_pipeline_skill.py
 docs/briefs/row26-s10-report.md :: tools/part_report.py
 docs/briefs/row26-s10-report.md :: tools/test_part_report.py
 docs/briefs/row26-s12-parts.md :: tools/parts_plan.py
+docs/briefs/row26-s12-parts.md :: tools/test_parts_plan.py
 docs/briefs/row26-s2-usage.md :: cloudflare-workers-ai/
 docs/briefs/row26-s2-usage.md :: tools/model_effort.py
 docs/briefs/row26-s2-usage.md :: tools/oc_usage.py

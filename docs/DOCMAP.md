@@ -195,7 +195,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 
 ## Dangling
 
-- docs/briefs/row26-s12-parts.md :: tools/test_parts_plan.py
+(none)
 
 ## Orphans
 
