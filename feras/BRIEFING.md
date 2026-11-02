@@ -3,23 +3,23 @@ Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after 
 HANDOFF.md; this file is your view of it. "Open now" is rewritten at every /handoff; below it, reports newest first,
 each headed by its date and time (GMT+3): Done | Still open | When | How | Your move vs mine | Checked.
 
-## Open now (Mon 11-02 21:38)
+## Open now (Mon 11-02 21:55)
 | # | Open item | Status | Checked | Your move? | When |
 |---|---|---|---|---|---|
 | 1 | M1 build in 6 waves from docs/briefs/m1-plan.md (9 part brie | ready: wave 1 (m1-defs) | - | no | ready: wave 1 (m1-defs) |
 | 2 | Low-cost pipeline v2 (Feras 11-01/02), BUILT and measured in | built 11-02; trial with row 4's first builds | - | no | built 11-02; trial with row 4's first builds |
-| 3 | Plan the language server (LSP) for the reviewer agents: prob | queued: dedicated chat | - | no | queued: dedicated chat |
-| 4 | Bake Roya (sprite-bake), native-scale render on the prison r | ready | - | no | ready |
-| 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | later: after row 4 | - | yes | later: after row 4 |
-| 6 | Art batch: Bilqis re-model (v2), guard, props (booth, floodl | queued; Rodin credits end ~11-17 | - | no | queued; Rodin credits end ~11-17 |
-| 7 | Free image-to-3D proof (rydan_style_v2 to a TRELLIS HF Space | queued | - | no | queued |
-| 8 | Asset preparation pipeline (jpg -> png, sizes, import settin | parked | - | no | parked |
-| 9 | Obscura proof: builders fetch web pages with the Obscura hea | parked | - | no | parked |
-| 10 | Art bible 2D pass: drop the retired 3D runtime lines (fog, m | parked | - | no | parked |
-| 11 | Bilqis's portraits are now the Neon ones: keep or overturn ( | open | - | yes | 10-27 |
-| 12 | Art homework into inbox/: concept pictures, an empty plate p | open | - | yes | 10-24 |
-| 13 | Optional final review of pipeline v2 by one Opus high chat:  | open | - | no | 11-02 |
-| 14 | After merging row 26 to main: `python tools/plugin_prune.py` | open | - | no | 11-02 |
+| 3 | Bake Roya (sprite-bake), native-scale render on the prison r | ready | - | no | ready |
+| 4 | Feras plays M1 on PC and phone; notes -> fix-pass rows | later: after row 4 | - | yes | later: after row 4 |
+| 5 | Art batch: Bilqis re-model (v2), guard, props (booth, floodl | queued; Rodin credits end ~11-17 | - | no | queued; Rodin credits end ~11-17 |
+| 6 | Free image-to-3D proof (rydan_style_v2 to a TRELLIS HF Space | queued | - | no | queued |
+| 7 | Asset preparation pipeline (jpg -> png, sizes, import settin | parked | - | no | parked |
+| 8 | Obscura proof: builders fetch web pages with the Obscura hea | parked | - | no | parked |
+| 9 | Art bible 2D pass: drop the retired 3D runtime lines (fog, m | parked | - | no | parked |
+| 10 | Bilqis's portraits are now the Neon ones: keep or overturn ( | open | - | yes | 10-27 |
+| 11 | Art homework into inbox/: concept pictures, an empty plate p | open | - | yes | 10-24 |
+| 12 | Optional final review of pipeline v2 by one Opus high chat:  | open | - | no | 11-02 |
+| 13 | After merging row 26 to main: `python tools/plugin_prune.py` | open | - | no | 11-02 |
+| 14 | Revisit LSP for review-code after row 4 (M1 built): rerun th | open | - | no | 11-02 |
 | 15 | Doc graph cleanup (row 27 shipped `tools/doc_graph.py`, DOCM | open | - | no | 11-01 |
 | 16 | Row 20 leftovers, no row yet (row 24 is done; specs too vagu | open | - | no | 11-01 |
 
@@ -31,6 +31,14 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 **How**: row 4, Gameplay, builder: cf DeepSeek/GLM, agy; the head chat is Opus high.
 **Your move vs mine**: yours: none required (optional: skim `docs/design/m1-fight.md` section 2-4, the rules you can still change before the build). Mine: run row 4 wave 1.
 **Checked**: `check.sh --no-godot` all checks passed (docs, lint, res_graph, tool tests); `parts_plan.py` OK for each wave; repos checked with `gh api`. Not run: Godot tests (docs-only change), the red tests, a render.
+
+## Mon 11-02 15:10: row 27, LSP for the reviewer agents (Sonnet 5.5 high; the brief asked for Opus high, the chat ran Sonnet)
+**Done** (on main): verdict **DON'T DO now**: the 6 reviewers do not get the `LSP` tool. Live probes (6 headless Haiku runs, $0.05 total): (a) a plugin agent's `tools:` can list LSP and really gets it (134 references of `DefReader`), and one Godot server is shared by the chat and its sub-agents; (b) cost 0.6-0.8 GB RAM and about 16 s to start warm (up to 130 s on a fresh worktree); (c) the failure path works: floor refused, the agent made 1 LSP call and 1 Grep call and stopped; (d) value: in 8 past diffs, 0 of 9 changed function/signal names were declared in more than one file, so grep found every caller. Only review-code could ever gain. Written: docs/audits/2026-11-02-lsp-reviewers.md (numbers, recipe), a decisions-log line, a LESSONS line (`claude plugin validate` accepts any tool name, so only a live call proves a `tools:` line), the coach suggestion closed.
+**Still open**: revisit LSP for review-code after row 4 (M1 built), when real gameplay code exists: rerun the 10-minute recipe on 3 fresh diffs (planned, Open point, owner Claude). Row 27 left the queue (no execution row, nothing to build).
+**When**: the revisit after row 4 (Wed 11-04 at the earliest).
+**How**: Ops, chat (plan); the revisit is a Haiku-low-sized probe plus a one-line decision.
+**Your move**: none. A cheap use that works today: the head chat can call LSP for a Ripple question on a name shared by several files.
+**Checked**: the 6 probes read (output, process samples, costs); handoff.sh ran map, doc_check and check.sh (582 tests passed, 0 failed after the DOCMAP refresh), pushed to main, CI waited to green (HANDOFF PASS), sync_main SYNC PASS. Not run: a cross-review (docs only, no code changed). One slip caught: probe 2 first tested a leftover bogus tool name because a guard-refused command never applied my edit; redone, and the audit says so.
 
 ## Mon 11-02 13:30: row 26, low-cost pipeline v2 (Sonnet 5.5 high, one chat; you were asleep)
 **Done** (on main after this handoff): the whole workflow now lives in ONE folder, `.claude/skills/low-cost-pipeline/` (SKILL.md 40 lines + routing, foremen, mechanical lane, proof, changelog, 3 brief templates). Built by cf and agy workers from locked tests, each diff read by me line by line: (a) cost is real: `opencode session export` per worktree, `runs.csv` has tokens, usd_est, idle_min (unknown = `?`); (b) run state tells the truth: a crashed gate is ERROR, the brief is copied at launch, stale PASS removed, NOWORK/REFUSED/ERROR rows logged, a quiet watchdog (not for agy) kills a builder that went silent after a commit; (c) routing: reviewer = the other model family, `merge_run` reads the prefix and needs `VERDICT PASS` and regenerates the generated docs itself, the CI wait pins check.yml, OC_MODEL = CF_MODEL; (d) test-first stage as tools: `EXPECT_RED=1` scope run, `scope_gate.py`, `lock_tests.sh`; (e) `part_report.py` (15 lines per part), `parts_plan.py` and `ripple.py` (plan checks for parallel parts), `kaizen_report.py`; (f) startup collisions retried; (g) your leftovers: stale kaizen entries pruned (2 dead; 6 belong to live worktrees), `track_usage.py` tracked, CI wait fixed, OC_MODEL fixed, skills-twice = start with `claude -w`. Your decisions applied: Sonnet subagents allowed, CAP_CF 3, scripts as foremen, neurons over tokens.
@@ -58,11 +66,3 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 **Still open**: Opus sign-off chat (prompt in HANDOFF; its coach step now runs the free DeepSeek audit plus one Haiku low pass, not a full in-chat coach); doc graph cleanup; LSP for reviewer agents is queued as row 27 for a dedicated Opus planning chat (Sonnet high executes later); the Notification hook and a permissions allow list are suggestions for you, not done. Done 11-02: the blender entry left `.mcp.json` (re-add recipe in the 3d-model skill: one command, so art rows are not harder).
 **Your move vs mine**: yours: the Opus prompt. Mine: the rest.
 **Checked**: check.sh read to the end after each merge; new tests seen red first (test_free_mb 5, test_cf_audit 5, test_doc_graph 15).
-
-## Sun 11-01 22:00: row 25 follow-ups (Sonnet 5.5 high, same chat)
-**Done** (on main after this handoff): agy lens retried inline: 5 flags, 4 false on evidence (merge_run `--keep` under `set -e`, `gh run list --commit`, `timeout` on Git Bash, `BASE_RED_SEC` unset; all four ran fine in this chat), 1 real and fixed (a broken `tool_tests` import in `base_red.py` now exits 2, not a refusal). Low items fixed: `base_red.py` matches a test by full path or bare name with an end boundary and sweeps stale worktrees a killed run left (built by cf DeepSeek high from GLM-drafted red tests, gate PASS, I read the diff); `doc_check.py` scans plugins and personas for a second routing table; ops-review path and the models.md colour line corrected. Token trim finished: always-loaded notes 24.4 -> 22.5 KB (queue rules, parked context, LESSONS and DECISIONS headers moved to their homes; gate description shortened). Coach: 8/10 (Haiku read-only audit; 9/10 before: a GDScript server with no fallback rule, a stale memory line); fixed: `.claude/rules/tooling/lsp-fallbacks.md`, a test that every settings hook script exists, the memory file. Smoke chat (card you started): skills listed once, `studio:review-code` ran, cf worker call returned, `pm:status` printed the board.
-**Still open**: Opus sign-off in its own chat (prompt below, file docs/opus-signoff.md); full interactive /kaizen:coach by that chat; your one-time check that `claude plugin list` in C:\dev\game shows studio and pm enabled. The smoke chat ran as Haiku low, not Sonnet high (the card inherited a different model), so "a Sonnet chat" is proved only by this chat's own work.
-**When**: Mon 11-02 for the sign-off; M1 brief after it.
-**How**: paste into a fresh Opus high chat: `Row 25 sign-off, Ops, Opus high: read docs/opus-signoff.md first and do what it says.`
-**Your move vs mine**: yours: paste that prompt; the plugin-list check. Mine: nothing waits on you.
-**Checked**: check.sh 582 passed 0 failed after the base_red merge; `test_base_red.py` 13 tests, `test_plugins.py` 11, `test_doc_check.py` 8 (each new test seen red first). Not checked: the full interactive coach, an Opus read of the new hunks.

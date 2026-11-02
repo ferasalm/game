@@ -1,5 +1,5 @@
 # HANDOFF (current state only; ONE queue for every chat; max 60 lines)
-Last updated: 2026-11-02 (row 3 done: the M1 brief set is written, row 4 is ready), Sonnet 5.5 high.
+Last updated: 2026-11-02 (row 3 done: the M1 brief set is written, row 4 is ready; row 27 LSP verdict DON'T DO now), Sonnet 5.5 high.
 Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Open points).
 
 Queue rules (one queue, top row first; Dept, Lane, Open points, builder caps, balance band): docs/queue-rules.md.
@@ -9,7 +9,6 @@ Queue rules (one queue, top row first; Dept, Lane, Open points, builder caps, ba
 |---|---|---|---|---|---|---|
 | 4 | M1 build in 6 waves from docs/briefs/m1-plan.md (9 part briefs, spec docs/design/m1-fight.md, types m1-fight-api.md): per wave the red tests first (scope run, the head reads every test), then the parts; wave 6 archives the turn-based code (D17 Android export in CI alongside); players-eye-gate before Feras | Gameplay | builder | cf DeepSeek/GLM, agy | ready: wave 1 (m1-defs) | - |
 | 26 | Low-cost pipeline v2 (Feras 11-01/02), BUILT and measured in one chat: plan docs/briefs/row26-pipeline-v2-plan.md; the whole workflow lives in .claude/skills/low-cost-pipeline/ (changelog.md holds every result and cost, runs.csv the scoreboard, `python tools/kaizen_report.py` reads it). Left: the writer trial on row 4's first real builds (agy vs cf, with real cost) and the optional Opus review | Ops | builder + chat (review) | Sonnet high or Opus high (opusplan), cf, agy | built 11-02; trial with row 4's first builds | - |
-| 27 | Plan the language server (LSP) for the reviewer agents: probe, verdict, then a brief for Sonnet high (docs/briefs/row27-lsp-reviewers-plan.md) | Ops | chat (plan) | Opus high | queued: dedicated chat | - |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | ready | free memory >= 2 GB |
 | 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | QA | Feras | - | later: after row 4 | 4 |
 | 7 | Art batch: Bilqis re-model (v2), guard, props (booth, floodlight, qamariya window, umbrella), icons; title = Flow Omni | Art | chat (MCP) | Opus high | queued; Rodin credits end ~11-17 | 6 |
@@ -27,6 +26,7 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 | Art homework into inbox/: concept pictures, an empty plate per scene (no characters, HUD or rain), icon art (row 7) | Feras | 10-24 |
 | Optional final review of pipeline v2 by one Opus high chat: docs/opus-review-row26.md (risky hunks, test quality, stale lines, what the proof really shows) | Claude (Opus) | 11-02 |
 | After merging row 26 to main: `python tools/plugin_prune.py` (dry run, then --apply) once the finished worktrees are removed; 6 kaizen entries remain for live worktrees | Claude | 11-02 |
+| Revisit LSP for review-code after row 4 (M1 built): rerun the recipe in docs/audits/2026-11-02-lsp-reviewers.md on 3 fresh diffs; DO only if grep missed a caller of a name declared in 2+ files (verdict now: DON'T DO) | Claude | 11-02 |
 | Doc graph cleanup (row 27 shipped `tools/doc_graph.py`, DOCMAP.md, check.sh gate): 220 baselined dangling pairs in docs/doc_graph_allow.txt (most are example paths in .agents/archive personas), 30 orphans and 240 overlap lines to merge or delete; bare file names (`models.md`) do not count as references yet | Claude | 11-01 |
 | Row 20 leftovers, no row yet (row 24 is done; specs too vague to brief): session_stats dates by entry and a tighter GUARD regex, Gameplay lessons.md + research-queue.md, frame_score blank-line slot; row 3 input: docs/audits/2026-11-02-integrity.md Top 10 (its item 5, test_action_def, is a false positive) | Claude | 11-01 |
 
@@ -42,4 +42,4 @@ docs/context.md (what is on main, the 3D archive, inbox/retired/ never a source)
 
 ## Prompt for the next chat
 Start with `claude --model opusplan -w <name>` (a chat started in its own worktree lists skills once), `/effort high`, stay in auto mode, then paste this as one message (Opus: no `/goal`):
-`Row 4, Gameplay, Opus high (head): run M1 wave 1; read docs/next-chat.md first and do what it says.` (Optional, separate Opus high chat: `Row 26 review, Ops, Opus high: read docs/opus-review-row26.md first and do what it says.`) (A separate Opus high chat: `Row 27, Ops, Opus high: plan the LSP for the reviewer agents; read docs/briefs/row27-lsp-reviewers-plan.md first and do what it says.`)
+`Row 4, Gameplay, Opus high (head): run M1 wave 1; read docs/next-chat.md first and do what it says.` (Optional, separate Opus high chat: `Row 26 review, Ops, Opus high: read docs/opus-review-row26.md first and do what it says.`)

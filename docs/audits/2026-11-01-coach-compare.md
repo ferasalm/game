@@ -42,5 +42,5 @@ replaces the check. The union is now 13 distinct true items: Haiku 5 unique-or-s
 
 ## Done from these reports (Sonnet, 11-01)
 LSP fallback rule written; hook-script-exists test added; memory big-asks fixed; OpenRouter memory line fixed; dead `handoff` override removed from
-settings.json. Open: Notification hook (optional), LSP in reviewer tools (needs a probe that `tools: LSP` is allowed), permissions allow list,
+settings.json. LSP in reviewer tools: CLOSED 11-02, DON'T DO now (docs/audits/2026-11-02-lsp-reviewers.md). Open: Notification hook (optional), permissions allow list,
 blender in `.mcp.json` (Feras's call), model-routing memory trim.
