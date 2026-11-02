@@ -8,7 +8,7 @@ import sys
 import time
 import traceback
 
-SERIAL = ("tools/test_build_pipeline.py", "tools/test_py_runs.py", "tools/test_run_state.py")  # each runs whole pipelines with wall-clock bounds (alone, so load cannot flake them); the skippable ones; base_red leaves them out
+SERIAL = ("tools/test_build_pipeline.py", "tools/test_py_runs.py", "tools/test_run_state.py", "tools/test_scope_stage.py")  # each runs whole pipelines with wall-clock bounds (alone, so load cannot flake them); the skippable ones; base_red leaves them out
 
 
 def workers() -> int:

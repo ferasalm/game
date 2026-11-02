@@ -151,7 +151,7 @@ def test_pipeline_toys_with_wall_clock_bounds_run_alone_and_base_red_leaves_them
     """test_routing and test_run_state flaked red under base_red's parallel load and refused a clean base (a wall-clock
     bound is a race, never loosened): a test that runs whole pipelines is SERIAL, which base_red skips."""
     import tool_tests
-    for name in ("tools/test_build_pipeline.py", "tools/test_py_runs.py", "tools/test_run_state.py"):
+    for name in ("tools/test_build_pipeline.py", "tools/test_py_runs.py", "tools/test_run_state.py", "tools/test_scope_stage.py"):
         assert name in tool_tests.SERIAL, name
 
 

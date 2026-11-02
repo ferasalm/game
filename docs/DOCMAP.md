@@ -133,7 +133,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/briefs/row25-base-red.md | Brief: row25-base-red (pipeline run, cf DeepSeek high; fixes from the row 25 review lenses) | 0 | 5 |
 | docs/briefs/row26-a-runstate.md | Brief: row26-a-runstate (cf DeepSeek max; Python and shell, RUN_KIND=py) | 2 | 14 |
 | docs/briefs/row26-a-tests.md | Brief: row26-a-tests (SCOPE RUN: GLM-5.3 max writes ONLY the red tests; RUN_KIND=py) | 0 | 10 |
-| docs/briefs/row26-pipeline-v2-plan.md | Plan: low-cost pipeline v2 (row 26, Feras 11-02; head = Claude, any model) | 3 | 23 |
+| docs/briefs/row26-pipeline-v2-plan.md | Plan: low-cost pipeline v2 (row 26, Feras 11-02; head = Claude, any model) | 3 | 24 |
 | docs/briefs/row26-s10-report.md | Brief: row26-s10-report (cf DeepSeek high; Python only, RUN_KIND=py) | 0 | 11 |
 | docs/briefs/row26-s12-parts.md | Brief: row26-s12-parts (cf DeepSeek high; Python only, RUN_KIND=py) | 0 | 8 |
 | docs/briefs/row26-s13-ripple.md | Brief: row26-s13-ripple (cf DeepSeek high; Python only, RUN_KIND=py) | 0 | 10 |
@@ -179,7 +179,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/ideas.md | Ideas inbox (never loaded at start; triaged into HANDOFF queue rows at the weekly plan, Feras 10-29) | 2 | 1 |
 | docs/lessons-archive.md | Lessons archive (lookup only, never loaded; first section 3D-only, moved 2026-10-25 when 3D was archived, tag 3d-archive) | 3 | 18 |
 | docs/next-chat.md | Next chat: Row 3, Opus high (the M1 brief) | 1 | 6 |
-| docs/opus-review-row26.md | Row 26 optional final review: low-cost pipeline v2 (Opus high, one chat) | 1 | 15 |
+| docs/opus-review-row26.md | Row 26 optional final review: low-cost pipeline v2 (Opus high, one chat) | 1 | 16 |
 | docs/playtest-with-claude.md | Playtest with Claude (mark bugs while you play) | 0 | 2 |
 | docs/playtest/2026-10-27.md | Playtest 2026-10-27: Feras's 25 notes, re-triaged for real-time combat (D15) | 4 | 1 |
 | docs/queue-rules.md | How HANDOFF.md works (moved out of HANDOFF.md 2026-11-01; Feras 2026-10-27, departments 10-28, Rank 1 11-01) | 0 | 2 |
