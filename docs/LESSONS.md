@@ -45,6 +45,8 @@ Triage rules (D9): docs/lessons-archive.md header.
 - Two opencode v2 servers started in the same second died on one SQLite database ("database is locked") and the pipeline said bare NOWORK; a wall-clock bound in a pipeline-spawning test flaked under base_red's parallel load and refused a clean base -> oc_task.sh retries a startup collision; such tests count events or run SERIAL, never a looser limit (2026-11-02).
 - `agy -p` prints its log only at the end (0 bytes while it works), so a "log stopped growing" watchdog cut a working agy run; a red test on a shared base refuses every sibling launch -> a watchdog needs a signal the builder really emits; each part's red tests live on their own base branch (lock_tests.sh) (2026-11-02).
 
+- `claude plugin validate --strict` passed `tools: Read, Grep, Glob, NopeTool`, and a probe's `sed` inside a guard-refused command never ran, so "LSP missing" tested a bogus name -> a frontmatter claim needs one live headless call (`claude -p --plugin-dir <copy>`, script file, `--allowedTools`), and `grep ^tools` on the file right before it (2026-11-02).
+
 ## 4. Worktrees and hooks (Claude chats)
 - `cd` into another worktree moves the session's directory -> `git -C <path>`, or absolute paths in a read (2026-10-21; again 10-31).
 - A worktree-isolated session's Bash refuses git on any other worktree (even `git worktree remove`) -> one PowerShell call from C:\dev\game (2026-10-31).
