@@ -694,6 +694,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/oc_review.sh`: Reviews an opencode task (branch oc/<task>) the same cheap way as an agy one: report, check result, commits, stats,
 - `tools/oc_task.sh`: Runs opencode on one task brief inside its own git worktree, never in the main checkout (DECISIONS 2026-10-23).
 - `tools/oc_usage.py`: Read a run's token counts and cost from opencode's own session export (row 26 S2, Feras 11-02).
+- `tools/part_report.py`: One short report per part: the .result, the runs.csv cost and the cross-review flags in <= 15 lines (row 26 S10).
 - `tools/playtest.sh`: Runs the game with playtest capture and mirrors its output into inbox/playtest/game.log.
 - `tools/plugin_prune.py`: Removes plugin registry entries whose project folder is gone (row 26 S7, Feras 11-02: `claude plugin list` showed
 - `tools/prompt_check.py`: prompt_check.py lints a brief, a oneshot prompt, or a chat prompt.
@@ -750,6 +751,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_no_legacy_hero.py`: Guard: the hero's old code id stays gone (renamed to rydan, save v7, Feras 2026-10-27). Fails on the old id in the
 - `tools/test_oc_task_prompt.py`: Row 26 (11-02): GLM's scope run died at once with "Argument list too long" (exit 126): oc_task.sh passed the whole prompt
 - `tools/test_oc_usage.py`: Row 26 S2 (Feras 11-02): a builder run's cost is read from opencode's own session export, never guessed from its log
+- `tools/test_part_report.py`: Row 26 S10 (Feras 11-02, no context pollution): the head reads ONE short report per part instead of a log or a diff.
 - `tools/test_personas.py`: The 10 personas are tailored to Neon Glitch (Feras 10-28: "not generic") and their copies never drift (row 1 item 9).
 - `tools/test_plugin_prune.py`: Row 26 S7 (Feras 11-02, asked and agreed): `claude plugin list` showed kaizen@kaizen eight times, two of them for
 - `tools/test_plugins.py`: The repo marketplace and the studio plugin stay loadable and consistent (system-v3 row 22, 2026-11-01).
