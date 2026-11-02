@@ -64,7 +64,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | .claude/skills/low-cost-pipeline/foremen.md | Foremen and context hygiene (Feras 11-02) | 0 | 8 |
 | .claude/skills/low-cost-pipeline/mechanical.md | Mechanical lane: DeepSeek without reasoning (Feras 11-02) | 0 | 3 |
 | .claude/skills/low-cost-pipeline/proof.md | Proof: what has been shown, what each run must measure (row 26, Feras 11-02) | 0 | 2 |
-| .claude/skills/low-cost-pipeline/routing.md | Routing: who does what (the one routing table; Feras 11-01, extended 11-02) | 1 | 7 |
+| .claude/skills/low-cost-pipeline/routing.md | Routing: who does what (the one routing table; Feras 11-01, extended 11-02) | 1 | 8 |
 | .claude/skills/low-cost-pipeline/templates/brief-hand.md | Brief: <task> (<worker and effort>; <language>, RUN_KIND=<py/godot>) | 0 | 4 |
 | .claude/skills/low-cost-pipeline/templates/brief-mechanical.md | Brief: <task> (DeepSeek non-reasoning, `fast`; RUN_KIND=py) | 1 | 2 |
 | .claude/skills/low-cost-pipeline/templates/brief-scope.md | Brief: <task>-tests (SCOPE RUN: a worker writes ONLY the red tests; RUN_KIND=py) | 0 | 2 |

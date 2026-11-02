@@ -16,7 +16,7 @@ Queue rules (one queue, top row first; Dept, Lane, Open points, builder caps, ba
 | 7 | Art batch: Bilqis re-model (v2), guard, props (booth, floodlight, qamariya window, umbrella), icons; title = Flow Omni | Art | chat (MCP) | Opus high | queued; Rodin credits end ~11-17 | 6 |
 | 8 | Free image-to-3D proof (rydan_style_v2 to a TRELLIS HF Space; never Blender generate_3d) -> 3d-model skill | Art | chat (MCP) | Opus medium | queued | 7 |
 | 9 | Asset preparation pipeline (jpg -> png, sizes, import settings, manifest check) | Art | builder | cf | parked | 5 |
-| 10 | Obscura proof: builders fetch web pages with the Obscura headless browser instead of Chrome (never --stealth); a tools/ wrapper + test | Ops | builder | cf | parked | 5 |
+| 10 | Obscura proof: SET UP 11-03 (Obscura 0.2.5 in the main checkout's Obscura folder, git-ignored; tools/obscura.sh + test_obscura.py, routing row). Left: one real builder run fetches a page with it and we judge it against Chrome on a JS-heavy page; no login pages | Ops | builder | cf | parked | 5 |
 | 11 | Art bible 2D pass: drop the retired 3D runtime lines (fog, mist, sky, spatial shading, the "2150" title) the personas nearly copied; docs/design/art-bible.md | Art | builder | oc | parked | 5 |
 Key: builders are near-free bots (agy = Gemini 3.8 Flash, cf = Cloudflare DeepSeek V4.1 Flash max|none, oc = OpenRouter free lenses); chat (MCP) = a
 Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-time fight, on the prison roof.

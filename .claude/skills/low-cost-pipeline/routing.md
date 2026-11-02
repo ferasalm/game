@@ -13,6 +13,7 @@ Model cards and calibration: `.claude/skills/builders/models.md`, `docs/research
 | Mechanical edits with no reasoning | DeepSeek non-reasoning (`fast`) | mechanical.md | diff equals the edit list, a locked test |
 | Sorting, summaries, digests, quick questions | DeepSeek non-reasoning or GLM-5.3-flash | `python tools/cf_probe.py --effort none` | the caller spot-checks 3 lines |
 | Colour and character-visible pre-filter | Clef-flash | `/ai/run` (models.md) | review-player keeps the text |
+| Read a web page (research, docs, a builder that needs one) | Obscura headless browser, no Chrome | `bash tools/obscura.sh <url> [text\|markdown\|links]` (never --stealth; local/private addresses stay blocked; login pages are out of reach) | the caller spot-checks the text |
 | Flag confirmation (greps only) | Haiku low subagent | Agent tool, template in foremen.md | the head adjudicates what holds |
 | Reads over ~20k tokens across files that cf_probe cannot do | Haiku medium | Agent tool, template answer | the caller re-greps every "not found" |
 | A noisy chunk that strictly needs this chat's memory | a fork, max 2, under ~100k context | Agent tool, subagent_type fork | report of 15 lines or fewer |
