@@ -147,6 +147,14 @@ def test_a_broken_tool_tests_import_is_exit_2_not_a_refusal():  # row 25 agy len
     assert p.returncode == 2 and "could not run" in p.stdout + p.stderr, (p.returncode, p.stdout, p.stderr)
 
 
+def test_pipeline_toys_with_wall_clock_bounds_run_alone_and_base_red_leaves_them_out():  # row 26, 11-02
+    """test_routing and test_run_state flaked red under base_red's parallel load and refused a clean base (a wall-clock
+    bound is a race, never loosened): a test that runs whole pipelines is SERIAL, which base_red skips."""
+    import tool_tests
+    for name in ("tools/test_build_pipeline.py", "tools/test_py_runs.py", "tools/test_run_state.py"):
+        assert name in tool_tests.SERIAL, name
+
+
 if __name__ == "__main__":
     from tool_tests import run_cases
     run_cases([v for k, v in sorted(globals().items()) if k.startswith("test_")], "test_base_red")

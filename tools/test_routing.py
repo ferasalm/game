@@ -177,11 +177,11 @@ def test_ci_wait_cap_is_960_and_overridable():
     top, g = handoff_toy('[{"status":"in_progress","conclusion":null}]')
     put(top + "/bin/sleep", "#!/usr/bin/env bash\nexit 0\n")  # a poll round waits 20 s: instant, the cap is the rule
     os.chmod(top + "/bin/sleep", 0o755)
-    t0 = time.time()
     r = handoff_run(top, g, "--main", CI_WAIT_SEC="1")
     assert last_line(r) == "HANDOFF FAIL ci" and r.returncode != 0, (r.stdout, r.stderr)
-    assert time.time() - t0 < 15, "a 1 s cap must fail fast, not after the old 600 s"
-    assert open(top + "/gh.txt", encoding="utf-8").read().count("GH ") >= 2, "it polled the run, then gave up"
+    # counted polls, not seconds: a wall-clock bound flaked under load (row 26, 11-02); the old 600 s cap polls ~31 times
+    polls = open(top + "/gh.txt", encoding="utf-8").read().count("GH ")
+    assert 2 <= polls <= 3, ("a 1 s cap polls the run, then gives up after one wait round", polls)
 
 
 def test_oc_model_defaults_to_the_cf_model():
