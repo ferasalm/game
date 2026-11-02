@@ -20,9 +20,11 @@ export CLOUDFLARE_ACCOUNT_ID
 
 rc=0
 bash "$here/build_pipeline.sh" cf "$task" "$brief" "$base" "$model" || rc=$?
+# REFUSED (exit 3) never ran a build: no spend line (it appended a junk `?` row, row 26 11-02).
+if [ "$rc" -eq 3 ]; then exit 3; fi
 
 dir="$(wt_dir)"
 log="$dir/$task.log"
 spend_csv="$dir/cf_spend.csv"
-bash "$here/slots.sh" append-spend "$log" "$task" "$CF_INPUT_RATE" "$CF_OUTPUT_RATE" "$spend_csv"
+bash "$here/slots.sh" append-spend "$log" "$task" "$CF_INPUT_RATE" "$CF_OUTPUT_RATE" "$spend_csv" "$dir/$task"
 exit $rc

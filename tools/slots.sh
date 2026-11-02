@@ -5,10 +5,18 @@ set -uo pipefail
 dir="$(wt_dir)"
 
 if [ "${1:-}" = "append-spend" ]; then
-  log="$2"; task="$3"; in_rate="$4"; out_rate="$5"; csv="${6:-$dir/cf_spend.csv}"
+  log="$2"; task="$3"; in_rate="$4"; out_rate="$5"; csv="${6:-$dir/cf_spend.csv}"; wt="${7:-}"
+  # A 7th argument (a worktree) reads the run's own opencode sessions (row 26): a log has no token counts. 0 sessions or
+  # no argument falls back to the log parsing below, unchanged for callers that do not pass it yet.
+  fields=""
+  if [ -n "$wt" ] && [ -f "$lib_dir/oc_usage.py" ]; then
+    fields="$($py "$lib_dir/oc_usage.py" collect --wt "$wt" 2> /dev/null |
+      $py "$lib_dir/oc_usage.py" fields --in-rate "$in_rate" --out-rate "$out_rate" 2> /dev/null)"
+  fi
+  case "$fields" in [0-9]*,[0-9]*,[0-9]*) ;; *) fields="" ;; esac
   $py -c '
 import sys, re, os, datetime
-log_path, task, in_rate, out_rate, csv_path = sys.argv[1:6]
+log_path, task, in_rate, out_rate, csv_path, fields = sys.argv[1:7]
 in_r = float(in_rate)
 out_r = float(out_rate)
 date_str = datetime.date.today().isoformat()
@@ -36,6 +44,9 @@ def parse_tokens(txt):
     return None, None
 
 in_tok, out_tok = parse_tokens(text)
+if fields:
+    cells = fields.split(",")
+    in_tok, out_tok = int(cells[0]), int(cells[1])
 if in_tok is not None and out_tok is not None:
     usd = (in_tok * in_r + out_tok * out_r) / 1000000.0
     line = f"{date_str},{task},{in_tok},{out_tok},{usd:.2f}"
@@ -48,7 +59,7 @@ with open(csv_path, "a", encoding="utf-8", newline="\n") as f:
     if header_needed:
         f.write("date,task,input_tokens,output_tokens,usd\n")
     f.write(line + "\n")
-' "$log" "$task" "$in_rate" "$out_rate" "$csv"
+' "$log" "$task" "$in_rate" "$out_rate" "$csv" "$fields"
   exit 0
 fi
 
