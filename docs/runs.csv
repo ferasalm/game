@@ -15,3 +15,4 @@ date,task,worker,effort,gate,fix_passes,minutes,cost,real_findings,tokens_in,tok
 2026-11-02,row26-s4-routing,cf,high,BREACH,1,42,0,0,?,?,?,unknown,?
 2026-11-02,row26-s10-report,cf,high,PASS,0,25,0,0,?,?,?,unknown,?
 2026-11-02,row26-a-runstate,cf,-,PASS,0,69,0,0,?,?,?,unknown,?
+2026-11-02,row26-s5-scope,cf,max,REFUSED,0,0,0,0,?,?,?,unknown,0
