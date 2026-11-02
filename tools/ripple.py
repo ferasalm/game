@@ -2,11 +2,11 @@
 """List the existing tests a brief's May edit forces to change, before launch (row 26 S13, Feras 11-02).
 
 Usage: python tools/ripple.py BRIEF [--root DIR]. Prints "RIPPLE <n> test file(s) ..." and one line per test
-file that names an edited file; exits 0 always (information for the head, not a gate).
-"""
-import argparse
-import os
-import re
+file that names an edited file; exits 0 always (information for the head, not a gate)."""
+import argparse, os, re, sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from build_gate import section_paths  # the one backticked-path parser the gate already uses
 
 MAX_LINES = 20
 MAX_BYTES = 1_000_000
@@ -64,7 +64,7 @@ def read_text(path):
 
 def report(root, text):
     """The report lines: the header, then one line per test file naming an edited file, capped at MAX_LINES."""
-    edited = [p.replace("\\", "/") for p in re.findall(r"`([^`\s]+)`", section(text, "May edit"))]
+    edited = [p.replace("\\", "/") for p in section_paths(text, "May edit")]
     skip = locked_tests(text) | set(edited)
     hits = []
     for rel in walk_tests(root):
