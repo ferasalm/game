@@ -212,7 +212,7 @@ def test_merge_run_never_reuses_a_py_check():
     git(wt, "add", "-A")
     git(wt, "commit", "-qm", "work")
     checked = bg.git(wt, "rev-parse", "HEAD").strip()
-    put(top + "/game-wt/job.result", f"PASS 12:00 gemini/job\nbuilder agy\npid 1\nkind py\nchecked {checked}\n")
+    put(top + "/game-wt/job.result", f"PASS 12:00 gemini/job\nbuilder agy\npid 1\nkind py\nchecked {checked}\nVERDICT PASS\n")
     r = subprocess.run(["bash", TOOLS + "/merge_run.sh", "job"], cwd=repo, capture_output=True, text=True)
     assert r.returncode == 0 and "check reused" not in r.stdout, r.stdout + r.stderr
     assert os.path.exists(top + "/full.check"), "a py run's --no-godot check must not stand in for the full check"

@@ -168,7 +168,7 @@ def test_merge_run_refuses_non_pass_and_fast_forwards_a_pass():
     write(top, "game-wt/job.result", f"FAIL 12:00 gemini/job\nchecked {checked}\n")
     r = run()
     assert r.returncode != 0 and "refusing" in r.stderr, r.stderr
-    write(top, "game-wt/job.result", f"PASS 12:00 gemini/job\nchecked {checked}\n")
+    write(top, "game-wt/job.result", f"PASS 12:00 gemini/job\nchecked {checked}\nVERDICT PASS\n")
     r = run()
     assert r.returncode == 0 and "check reused" in r.stdout, r.stdout + r.stderr
     assert bg.git(repo, "rev-parse", "HEAD").strip() == checked and not os.path.isdir(wt)
