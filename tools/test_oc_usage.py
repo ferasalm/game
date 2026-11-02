@@ -31,6 +31,8 @@ def write(d, name, obj):
     p = os.path.join(d, name)
     with open(p, "w", encoding="utf-8", newline="\n") as f:
         f.write(obj if isinstance(obj, str) else json.dumps(obj))
+    if name.endswith(".sh"):
+        os.chmod(p, 0o755)  # a stub program must be executable: Windows git-bash runs it anyway, the Linux CI runner does not (11-02)
     return p
 
 
