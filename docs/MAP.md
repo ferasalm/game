@@ -760,6 +760,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_part_report.py`: Row 26 S10 (Feras 11-02, no context pollution): the head reads ONE short report per part instead of a log or a diff.
 - `tools/test_parts_plan.py`: Row 26 S12 (Feras 11-02): one model may run several times at once (three DeepSeek max, two agy, two GLM) to finish
 - `tools/test_personas.py`: The 10 personas are tailored to Neon Glitch (Feras 10-28: "not generic") and their copies never drift (row 1 item 9).
+- `tools/test_pipeline_skill.py`: Row 26 S6 (Feras 11-02): the whole workflow lives in ONE skill folder, .claude/skills/low-cost-pipeline/, so it can be
 - `tools/test_plugin_prune.py`: Row 26 S7 (Feras 11-02, asked and agreed): `claude plugin list` showed kaizen@kaizen eight times, two of them for
 - `tools/test_plugins.py`: The repo marketplace and the studio plugin stay loadable and consistent (system-v3 row 22, 2026-11-01).
 - `tools/test_pm.py`: Self-test for plugins/pm/scripts/pm.py (row 23 a, 2026-11-01): board, next, row add|set|done, week, report.

@@ -8,8 +8,10 @@ import subprocess
 
 MAX_LINES, MAX_CHARS = 15, 160
 HEADER = ("builder", "model", "kind", "checked", "idle_min")
-DETAILS = ("WARN", "BREACH", "FAIL", "ERROR", "CHECKLIST", "gate error:", "why:")
+DETAILS = ("WARN", "BREACH", "FAIL", "ERROR", "REJECT", "CHECKLIST", "gate error:", "why:")
 NEXT = {"PASS": "read risky hunks, then bash tools/merge_run.sh {task}",
+        "SCOPED": "read EVERY test in full, then bash tools/lock_tests.sh {task} <task>-base",
+        "REJECT": "read the REJECT lines; rerun the scope run or fix the tests by hand",
         "FAIL": "read the FAIL lines in {task}.check.txt",
         "BREACH": "read the breach, fix by hand or rerun",
         "NOWORK": "read the why line, fix the launch", "ERROR": "read the why line, fix the launch"}

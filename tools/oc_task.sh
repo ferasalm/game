@@ -18,11 +18,25 @@ wt="$(cd "$wt" && pwd)"
 [ "$wt" != "$root" ] || { echo "refusing to run in the main checkout" >&2; exit 1; }
 [ "$(git -C "$wt" rev-parse --abbrev-ref HEAD)" = "$branch" ] || { echo "worktree is not on $branch" >&2; exit 1; }
 cd "$wt"
-rc=0
+: > "$log"
 # The prompt travels as an attached file: a brief + skill + Pattern file passed as argv hit Windows' ~32 KB command cap
-# ("Argument list too long", exit 126, row 26 11-02; smoke: a 60 KB file works)
-run_limited "${OC_TIMEOUT:-90m}" oc_run --model "$model" -f "$brief" -- \
-  "Your whole task is in the attached file. Follow it exactly: it is the brief, the rules and the pipeline rules." \
-  < /dev/null > "$log" 2>&1 || rc=$?
+# ("Argument list too long", exit 126, row 26 11-02; smoke: a 60 KB file works).
+# Two opencode v2 servers started in the same second share one SQLite database and the second dies at startup ("database
+# is locked", row 26 11-02): a STARTUP failure (matches OC_START_FAIL_RE, nothing committed yet) is retried after a short
+# random wait, up to OC_START_TRIES; a real failure never is.
+attempt=1
+while :; do
+  rc=0
+  run_limited "${OC_TIMEOUT:-90m}" oc_run --model "$model" -f "$brief" -- \
+    "Your whole task is in the attached file. Follow it exactly: it is the brief, the rules and the pipeline rules." \
+    < /dev/null >> "$log" 2>&1 || rc=$?
+  [ $rc -ne 0 ] || break
+  [ "$attempt" -lt "$OC_START_TRIES" ] || break
+  grep -aqE "$OC_START_FAIL_RE" "$log" || break
+  [ -z "$(git log --oneline "$base..HEAD" 2> /dev/null)" ] || break
+  echo "startup collision (attempt $attempt of $OC_START_TRIES): retrying" >> "$log"
+  sleep "${OC_START_WAIT:-$(( RANDOM % 5 + 2 ))}"
+  attempt=$((attempt + 1))
+done
 [ $rc -eq 0 ] || echo "opencode exited $rc" >> "$log"
 echo "done: $wt ($branch); log: $log"

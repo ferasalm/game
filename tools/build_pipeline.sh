@@ -154,7 +154,9 @@ leftovers "build"; cp "$wt.log" "$wt.build.log" 2> /dev/null; fix_from=""
 # A builder that never started (oc_task.sh refused: a leftover worktree from another base, a missing opencode, exit 126)
 # leaves nothing to check: NOWORK with its own first line as the reason, never the gate's bare "CHECKLIST missing".
 if [ -z "${SKIP_BUILD:-}" ] && ! commits && git -C "$wt" rev-parse HEAD > /dev/null 2>&1; then
-  why="$(grep -a -m1 '[^[:space:]]' "$wt.log" 2> /dev/null | tr -d '\r')"
+  # the log's own error line, not its first line (that was an INFO "cli starting" line, row 26 11-02)
+  why="$(grep -a -m1 -E 'Error|ERROR|error:|exited|refused|too long|No such file|cannot|not found' "$wt.log" 2> /dev/null | tr -d '\r' | cut -c1-200)"
+  [ -n "$why" ] || why="$(grep -a -m1 '[^[:space:]]' "$wt.log" 2> /dev/null | tr -d '\r' | cut -c1-200)"
   nowork_exit "${why:-the builder exited with no commit and no change in its worktree}"
 fi
 # EXPECT_RED=1 (row 26 S5, Feras 11-02): this run writes the red tests, so check.sh, the fix passes and build_gate do
