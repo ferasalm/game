@@ -105,7 +105,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | AGENTS.md | Rules for opencode builders | 0 | 5 |
 | CLAUDE.md | game: rules for every Claude session | 0 | 18 |
 | GEMINI.md | GEMINI.md: Neon Glitch builder rules for Gemini (agy). Standing rules only; each task's brief comes in the chat. | 0 | 9 |
-| HANDOFF.md | HANDOFF (current state only; ONE queue for every chat; max 60 lines) | 1 | 10 |
+| HANDOFF.md | HANDOFF (current state only; ONE queue for every chat; max 60 lines) | 1 | 14 |
 | README.md | Neon Glitch | 0 | 7 |
 | docs/ARCHITECTURE.md | Architecture | 5 | 32 |
 | docs/CANON.md | CANON: game content decisions in force (world, story, heroes, combat, art, UI) | 6 | 4 |
@@ -136,7 +136,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/briefs/row26-p1-agy.md | Brief: row26-p1-agy (agy gemini-3.8-flash-medium; GDScript, RUN_KIND=godot) - a PROOF run, never merged into the product | 0 | 5 |
 | docs/briefs/row26-p2-kaizen-tests.md | Brief: row26-p2-kaizen-tests (SCOPE RUN: a worker writes ONLY the red tests; RUN_KIND=py) | 0 | 5 |
 | docs/briefs/row26-p2-kaizen.md | Brief: row26-p2-kaizen (cf DeepSeek low with a Pattern; Python only, RUN_KIND=py) | 1 | 9 |
-| docs/briefs/row26-pipeline-v2-plan.md | Plan: low-cost pipeline v2 (row 26, Feras 11-02; head = Claude, any model) | 3 | 24 |
+| docs/briefs/row26-pipeline-v2-plan.md | Plan: low-cost pipeline v2 (row 26, Feras 11-02; head = Claude, any model) | 4 | 24 |
 | docs/briefs/row26-s10-report.md | Brief: row26-s10-report (cf DeepSeek high; Python only, RUN_KIND=py) | 0 | 11 |
 | docs/briefs/row26-s12-parts.md | Brief: row26-s12-parts (cf DeepSeek high; Python only, RUN_KIND=py) | 0 | 8 |
 | docs/briefs/row26-s13-ripple.md | Brief: row26-s13-ripple (cf DeepSeek high; Python only, RUN_KIND=py) | 0 | 10 |
@@ -149,7 +149,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/briefs/row27-lsp-reviewers-plan.md | Row 27: plan the language server (LSP) for the reviewer agents (chat brief, Opus high; output = a brief for Sonnet high) | 1 | 17 |
 | docs/context.md | Parked and context (moved out of HANDOFF.md 2026-11-01 to cut the always-loaded bytes; resume only through a queue row) | 2 | 2 |
 | docs/decisions-archive.md | Decisions archive (superseded lines moved from DECISIONS.md, unchanged; not loaded at start) | 2 | 8 |
-| docs/decisions-log.md | Decisions log (append-only, verbatim history; not loaded at start) | 11 | 34 |
+| docs/decisions-log.md | Decisions log (append-only, verbatim history; not loaded at start) | 11 | 36 |
 | docs/decisions-process.md | Decisions in force: process (not loaded at start; pointer in docs/DECISIONS.md) | 3 | 10 |
 | docs/decisions-tools.md | Decisions in force: tools and builders (not loaded at start; pointer in docs/DECISIONS.md) | 6 | 14 |
 | docs/design/README.md | Design docs index (status per file; 3D-era files in docs/archive/design-3d/) | 0 | 2 |
@@ -182,7 +182,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/ideas.md | Ideas inbox (never loaded at start; triaged into HANDOFF queue rows at the weekly plan, Feras 10-29) | 2 | 1 |
 | docs/lessons-archive.md | Lessons archive (lookup only, never loaded; first section 3D-only, moved 2026-10-25 when 3D was archived, tag 3d-archive) | 3 | 18 |
 | docs/next-chat.md | Next chat: Row 3, Opus high (the M1 brief) | 1 | 6 |
-| docs/opus-review-row26.md | Row 26 optional final review: low-cost pipeline v2 (Opus high, one chat) | 1 | 16 |
+| docs/opus-review-row26.md | Row 26 optional final review: low-cost pipeline v2 (Opus high, one chat) | 3 | 16 |
 | docs/playtest-with-claude.md | Playtest with Claude (mark bugs while you play) | 0 | 2 |
 | docs/playtest/2026-10-27.md | Playtest 2026-10-27: Feras's 25 notes, re-triaged for real-time combat (D15) | 4 | 1 |
 | docs/queue-rules.md | How HANDOFF.md works (moved out of HANDOFF.md 2026-11-01; Feras 2026-10-27, departments 10-28, Rank 1 11-01) | 0 | 2 |

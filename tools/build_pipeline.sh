@@ -80,7 +80,9 @@ run() {  # <brief file>; watched: idle (no commit), quiet (a commit but no log g
       bg_kill=1; kill_tree "$pid"; wait "$pid" 2> /dev/null; return 99; fi
     # A builder that commits then hangs costs the full IDLE_MIN (row25-base-red: 25 of 31 min): with a commit in the
     # worktree, a log that stops growing means it is done or stuck; its commits are checked below.
-    if [ "$quiet_sec" -gt 0 ] && [ $(( now - log_mark )) -ge "$quiet_sec" ] && commits; then
+    # Streaming builders only (opencode: cf, oc): `agy -p` prints its log when it finishes, so an agy log stays 0 bytes while
+    # it works and would be cut 5 minutes after its first commit (seen in the P1 proof run, 11-02); agy keeps the idle rule.
+    if [ "$builder" != agy ] && [ "$quiet_sec" -gt 0 ] && [ $(( now - log_mark )) -ge "$quiet_sec" ] && commits; then
       quiet=1; quiet_n=$(( now - log_mark )); kill_tree "$pid"; wait "$pid" 2> /dev/null; return 99; fi
     if [ $(( now - mark )) -ge "$idle_sec" ]; then kill_tree "$pid"; wait "$pid" 2> /dev/null; return 99; fi
   done

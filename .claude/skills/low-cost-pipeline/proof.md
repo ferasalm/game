@@ -22,3 +22,15 @@ neurons). `python tools/part_report.py <task>` shows one run's row beside its re
 Every expected result word; no `?` cost rows for cf runs; no idle > 6 minutes; zero gate tracebacks; locked tests unchanged; runs.csv
 usd_est within the Cloudflare dashboard's order of magnitude; peak memory noted before raising any cap. Results go to runs.csv and
 one line each in changelog.md. Results of 11-02 so far are in changelog.md.
+
+## Results so far (11-02, one Sonnet-high chat; details and costs in changelog.md)
+| Run | Result |
+|---|---|
+| P0 | Done. GLM `none` 998 tokens / 7 s vs `max` 23,121 / 98 s, same right answer: the label works; `max` is for work that earns it. |
+| P1 | Done. agy built a Godot helper behind a locked GDScript test: PASS, the full Godot suite 584 passed. It exposed a flaw: the quiet watchdog cut agy 310 s after its commit (agy's log is empty until it finishes); fixed (streaming builders only), tested. Not shown: a render judged by the player lens (the helper has none); agy has no cost meter (`?`). |
+| P2 | Done, n=1. Scope run -> head reads every test -> lock_tests -> DeepSeek low builds: PASS. A/B of the test writers on the same brief: DeepSeek max set killed 11 of 12 seeded bugs and passed the correct code; the GLM set failed the correct code. |
+| P3 | Covered by a real run, not forced: the ripple build needed a fix pass and its build + fix tokens were summed per worktree (99k in / 27.5k out). |
+| P4 | Covered by the suite, not by hand: crashed gate -> ERROR, stale PASS removed, commit-then-hang quiet kill, forged or missing VERDICT refused, a startup collision retried, an agy log never quiet-killed (test_run_state, test_routing, test_oc_start_retry, test_agy_quiet). |
+| P5 | Done. The DeepSeek-built tool was reviewed by GLM max (family chosen from the .result): 3 of 5 flags were real bugs, now fixed with tests. |
+| P6 | Done as 12 seeded one-line bugs on the P2 tool (above), and the cross-review above found 3 unseeded ones. A seeded bug in a Godot run is still open. |
+Open: the second lens (XR_DUAL) is not built; the A/B is one task; agy cost is unmetered; peak memory with three cf runs plus a check touched the 2,000 MB floor once (a Godot run was refused, then fine).

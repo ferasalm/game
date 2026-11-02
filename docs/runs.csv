@@ -25,3 +25,4 @@ date,task,worker,effort,gate,fix_passes,minutes,cost,real_findings,tokens_in,tok
 2026-11-02,row26-p2-glm-tests,cf,max,SCOPED,0,16,0,0,171192,66662,0.1314,opencode-export,5
 2026-11-02,row26-p2-kaizen,cf,low,REFUSED,0,0,0,0,?,?,?,unknown,0
 2026-11-02,row26-p2-kaizen,cf,low,PASS,1,27,0,0,100896,34673,0.0719,opencode-export,5
+2026-11-02,row26-p1-agy,agy,medium,PASS,1,27,0,0,?,?,?,unknown,5
