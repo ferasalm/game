@@ -140,7 +140,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/briefs/row26-s2-usage.md | Brief: row26-s2-usage (cf DeepSeek high; Python only, RUN_KIND=py) | 0 | 13 |
 | docs/briefs/row26-s4-routing.md | Brief: row26-s4-routing (cf DeepSeek high; shell and Python, RUN_KIND=py) | 2 | 13 |
 | docs/briefs/row26-s4-tests.md | Brief: row26-s4-tests (SCOPE RUN: GLM-5.3 max writes ONLY the red tests; RUN_KIND=py) | 0 | 11 |
-| docs/briefs/row26-s5-scope.md | Brief: row26-s5-scope (cf DeepSeek max; shell and Python, RUN_KIND=py) | 0 | 10 |
+| docs/briefs/row26-s5-scope.md | Brief: row26-s5-scope (cf DeepSeek max; shell and Python, RUN_KIND=py) | 0 | 11 |
 | docs/briefs/row26-s7-prune.md | Brief: row26-s7-prune (cf DeepSeek low with a Pattern; Python only, RUN_KIND=py) | 0 | 7 |
 | docs/briefs/row27-doc-graph.md | Brief: row27-doc-graph (pipeline run: GLM-5.3 max wrote the red tests, cf DeepSeek max builds) | 0 | 16 |
 | docs/briefs/row27-lsp-reviewers-plan.md | Row 27: plan the language server (LSP) for the reviewer agents (chat brief, Opus high; output = a brief for Sonnet high) | 1 | 17 |
