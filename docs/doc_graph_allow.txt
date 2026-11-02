@@ -272,6 +272,9 @@ docs/design/systems-map.md :: ui/style.json
 docs/design/systems-map.md :: ui/view/portrait_faces.gd
 docs/design/valve-puzzles.md :: logic/light_lock.gd
 docs/lessons-archive.md :: CLAUDE_PROJECT_DIR/
+docs/opus-review-row26.md :: tools/lock_tests.sh
+docs/opus-review-row26.md :: tools/scope_gate.py
+docs/opus-review-row26.md :: tools/test_pipeline_skill.py
 docs/opus-signoff.md :: .check/audit/
 docs/opus-signoff.md :: cloudflare-workers-ai/
 docs/playtest-with-claude.md :: inbox/

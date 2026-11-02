@@ -9,3 +9,4 @@
 - 2026-11-02 argv cap: oc_task.sh passes the prompt as `-f <file>` (a prompt over ~32 KB died with "Argument list too long").
 - 2026-11-02 lesson: a red test on a shared base refuses every sibling launch (base_red); each part's red tests live on its own base branch (lock_tests.sh does it). Two BREACHes were briefs that missed existing tests: ripple.py.
 - 2026-11-02 lesson: parts that pass alone can fail together (a new stub call in one made another's test count wrong): parts_plan.py plus a full check after each merge.
+- 2026-11-02 CAP_CF is 3 (Feras): three cf runs at once; the memory floor (2000 MB) is the limit to watch.

@@ -100,7 +100,7 @@ reviewer with no plugins/studio/agents/<name>.md, and any plugins/studio/agents/
 ## Limits (one table)
 | Limit | Value | Enforced by |
 |---|---|---|
-| Godot builder runs, machine-wide | 2 at once (CAP_GODOT=2; agy CAP_AGY=2, Cloudflare DeepSeek CAP_CF=2; a RUN_KIND=py run counts toward its builder cap only) | tools/slots.sh (refuses when full) |
+| Godot builder runs, machine-wide | 2 at once (CAP_GODOT=2; agy CAP_AGY=2, Cloudflare DeepSeek CAP_CF=3; a RUN_KIND=py run counts toward its builder cap only) | tools/slots.sh (refuses when full) |
 | Text run (opencode, OpenRouter :free; no Godot) | 1 (CAP_OC=1) | tools/slots.sh |
 | Godot test suites at once | 2 (CHECK_SLOTS=2) | tools/check_slot.sh |
 | Free memory before a Godot run | >= 2000 MB of available RAM (MIN_FREE_MB=2000, Feras 11-01) | tools/slots.sh |
