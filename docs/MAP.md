@@ -701,6 +701,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/plugin_prune.py`: Removes plugin registry entries whose project folder is gone (row 26 S7, Feras 11-02: `claude plugin list` showed
 - `tools/prompt_check.py`: prompt_check.py lints a brief, a oneshot prompt, or a chat prompt.
 - `tools/res_graph.py`: What does the game actually use? Walks res:// paths, class_name references and glTF side files from roots and sorts
+- `tools/ripple.py`: List the existing tests a brief's May edit forces to change, before launch (row 26 S13, Feras 11-02).
 - `tools/rodin/rewrite_glb.py`: Rebuild a Rodin glb with new triangle indices (from Godot, winding flipped back; IDX_BIN '-' keeps its own), no
 - `tools/rodin/slim_indices.gd`: Rodin step 1: simplifies a Rodin glb mesh with Godot's LOD generator and writes the index buffer (env SRC, IDX, MAX_TRIS, DST); rewrite_glb.py then builds the slim glb (usage: docs/archive/design-3d/characters-3d.md 8)
 - `tools/run_godot.sh`: Runs the pinned Godot headless on this project with the given arguments; fails on a non-zero exit or on
@@ -767,6 +768,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_py_runs.py`: Self-test for non-Godot builder runs (row 12 C, 2026-10-28): python tools/test_py_runs.py.
 - `tools/test_res_graph.py`: Self-test for res_graph.py --check: python tools/test_res_graph.py (a fake project in a temp folder, exit 1 on failure).
 - `tools/test_review_gate.py`: Self-test for tools/hooks/review_gate.py + review_stamp.py (D5, D21): no game render reaches Feras unreviewed.
+- `tools/test_ripple.py`: Row 26 S13 (Feras 11-02): two builder runs on 11-02 ended BREACH because the brief's May edit missed existing tests the
 - `tools/test_routing.py`: Red tests for docs/briefs/row26-s4-routing.md (row 26 S4, Feras 11-02): the cross-review reviewer comes from the
 - `tools/test_run_state.py`: Red tests, written first (row 26), for the spec in docs/briefs/row26-a-runstate.md; stubs only, this base does not build it yet.
 - `tools/test_runs_log.py`: Row 26 S2 (Feras 11-02): docs/runs.csv is the pipeline's scoreboard. Cost columns are real or `?` (unknown is not
