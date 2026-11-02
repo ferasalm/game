@@ -27,6 +27,7 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 | Bilqis's portraits are now the Neon ones: keep or overturn (archive-cleanup, decisions-log); on hold until further notice (Feras 10-31) | Feras | 10-27 |
 | Art homework into inbox/: concept pictures, an empty plate per scene (no characters, HUD or rain), icon art (row 7) | Feras | 10-24 |
 | track_usage.py is untracked and only in the main checkout, so the settings.local.json hook errors in every worktree: track it, removing the main copy first or sync_main's pull fails | Claude | 11-02 |
+| Skills list twice in a chat opened in C:\dev\game that then enters a worktree (a scoped copy joins the list; row 25 target 0 not met there; a chat started inside a worktree lists once): find a fix or make worktree-started chats the rule | Claude | 11-02 |
 | Doc graph cleanup (row 27 shipped `tools/doc_graph.py`, DOCMAP.md, check.sh gate): 220 baselined dangling pairs in docs/doc_graph_allow.txt (most are example paths in .agents/archive personas), 30 orphans and 240 overlap lines to merge or delete; bare file names (`models.md`) do not count as references yet | Claude | 11-01 |
 | Row 20 leftovers, no row yet (row 24 is done; specs too vague to brief): session_stats dates by entry and a tighter GUARD regex, Gameplay lessons.md + research-queue.md, frame_score blank-line slot; row 3 input: docs/audits/2026-11-02-integrity.md Top 10 (its item 5, test_action_def, is a false positive) | Claude | 11-01 |
 
