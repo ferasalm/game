@@ -3,6 +3,7 @@
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 
@@ -13,6 +14,20 @@ ZERO = {"sessions": 0, "input": 0, "output": 0, "reasoning": 0, "cache_read": 0,
 
 def as_int(value):
     return value if isinstance(value, int) and not isinstance(value, bool) else 0
+
+
+def norm(path):
+    """A directory as one comparable string: forward slashes, lower case, git bash /c/x = c:/x."""
+    p = str(path or "").replace("\\", "/").rstrip("/").lower()
+    m = re.match(r"^/([a-z])/(.*)$", p)
+    return f"{m.group(1)}:/{m.group(2)}" if m else p
+
+
+def dir_of(obj):
+    """The directory a session ran in (info.location.directory); '' when the export does not say."""
+    info = obj.get("info") if isinstance(obj, dict) else None
+    loc = info.get("location") if isinstance(info, dict) else None
+    return (loc.get("directory") if isinstance(loc, dict) else "") or ""
 
 
 def tokens_of(obj):
@@ -88,13 +103,17 @@ def collect_cmd(args):
     for sid in ids:
         res = oc_call(args.wt, oc_bin, data, "session", "export", *standalone, sid)
         try:
-            tok = tokens_of(json.loads(res.stdout)) if res is not None and res.returncode == 0 else None
+            obj = json.loads(res.stdout) if res is not None and res.returncode == 0 else None
         except ValueError:
-            tok = None
+            obj = None
+        tok = tokens_of(obj) if obj is not None else None
         if tok is None:  # a broken meter prints zero sessions and never fails the run
             print(json.dumps(ZERO))
             return 0
-        tokens.append(tok)
+        # `session list` shows every session of the PROJECT: all worktrees of one repo share a project id (row 26, 11-02:
+        # two runs logged the same 4.75M tokens). Only the sessions that ran in THIS worktree are the run's; no location = not counted.
+        if norm(dir_of(obj)) == norm(args.wt):
+            tokens.append(tok)
     print(json.dumps(total_of(tokens)))
     return 0
 

@@ -181,7 +181,8 @@ def test_a_refused_launch_appends_no_spend_line():
 def test_append_spend_prefers_the_sessions_of_a_worktree():
     top = tempfile.mkdtemp().replace("\\", "/")
     put(top + "/oc_bin.sh", '#!/bin/bash\n[ "$2" = list ] && { printf "ses_1\\t2026-11-02\\tmain\\n"; exit 0; }\n'
-        'printf \'{"info":{"tokens":{"input":1000,"output":200,"reasoning":0,"cache":{"read":0,"write":0}}}}\\n\'\n', 0o755)
+        'printf \'{"info":{"location":{"directory":"' + top + '"},"tokens":{"input":1000,"output":200,"reasoning":0,'
+        '"cache":{"read":0,"write":0}}}}\\n\'\n', 0o755)  # location = the worktree: the meter counts only this run's sessions
     put(top + "/job.log", "no token counts in this log\n")
     day = datetime.date.today().isoformat()
     env = {**os.environ, "OC_BIN": top + "/oc_bin.sh", "GAME_WT_DIR": top + "/wtd"}

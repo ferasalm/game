@@ -16,4 +16,6 @@ date,task,worker,effort,gate,fix_passes,minutes,cost,real_findings,tokens_in,tok
 2026-11-02,row26-s10-report,cf,high,PASS,0,25,0,0,?,?,?,unknown,?
 2026-11-02,row26-a-runstate,cf,-,PASS,0,69,0,0,?,?,?,unknown,?
 2026-11-02,row26-s5-scope,cf,max,REFUSED,0,0,0,0,?,?,?,unknown,0
-2026-11-02,row26-s12-parts,cf,high,PASS,0,38,0,0,4703233,852555,2.434,opencode-export,5
+2026-11-02,row26-s12-parts,cf,high,PASS,0,38,0,0,71588,12270,0.0362,opencode-export (corrected: per-directory),5
+2026-11-02,row26-s5-scope,cf,max,PASS,0,35,0,0,72987,19808,0.0457,opencode-export (corrected: per-directory),5
+2026-11-02,row26-s13-ripple,cf,high,PASS,1,57,0,0,99154,27506,0.0628,opencode-export (corrected: per-directory),5

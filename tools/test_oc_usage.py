@@ -13,11 +13,12 @@ OC_USAGE = os.path.join(HERE, "oc_usage.py")
 MODEL_EFFORT = os.path.join(HERE, "model_effort.py")
 
 
-def export_json(inp, out, reasoning=0, cread=0, cwrite=0):  # the shape `opencode session export` printed 11-02
-    return {"info": {"id": "ses_x", "cost": 0.5, "outcome": "succeeded",
-                     "tokens": {"input": inp, "output": out, "reasoning": reasoning,
-                                "cache": {"read": cread, "write": cwrite}}},
-            "messages": []}
+def export_json(inp, out, reasoning=0, cread=0, cwrite=0, where=None):  # the shape `opencode session export` printed 11-02
+    info = {"id": "ses_x", "cost": 0.5, "outcome": "succeeded",
+            "tokens": {"input": inp, "output": out, "reasoning": reasoning, "cache": {"read": cread, "write": cwrite}}}
+    if where:  # info.location.directory: where the session ran (all worktrees of one repo share one project)
+        info["location"] = {"directory": where}
+    return {"info": info, "messages": []}
 
 
 def run(*args, stdin=None, env=None):
@@ -66,24 +67,46 @@ def test_fields_without_a_session_is_question_marks_never_zero():
 FAKE_OC = """#!/usr/bin/env bash
 # stands in for opencode: `session list --standalone` prints two sessions, `session export` prints a fixture
 case "$*" in
-  *"session list"*) printf 'ses_one\\tbuild\\t11/2/2026\\nses_two\\tfix\\t11/2/2026\\n' ;;
+  *"session list"*) printf 'ses_one\\tbuild\\t11/2/2026\\nses_two\\tfix\\t11/2/2026\\nses_three\\tother\\t11/2/2026\\nses_four\\tnone\\t11/2/2026\\n' ;;
   *"session export"*) for a in "$@"; do last="$a"; done; cat "$FIXTURES/$last.json" ;;
   *) echo "unexpected: $*" >&2; exit 9 ;;
 esac
 """
 
 
-def test_collect_lists_a_worktrees_sessions_and_sums_their_exports():
+def test_collect_counts_only_the_sessions_that_ran_in_this_worktree():
+    """`session list` returns every session of the PROJECT (all worktrees of a repo share one id): two runs logged the same
+    4.75M tokens on 11-02. A session of another worktree, or one that names no directory, is not this run's."""
     with tempfile.TemporaryDirectory() as d:
-        write(d, "ses_one.json", export_json(1000, 200))
-        write(d, "ses_two.json", export_json(500, 100))
-        fake = write(d, "fake_oc.sh", FAKE_OC)
         wt = os.path.join(d, "wt")
         os.makedirs(wt)
+        write(d, "ses_one.json", export_json(1000, 200, where=wt))
+        write(d, "ses_two.json", export_json(500, 100, where=wt.replace("\\", "/")))  # same folder, other spelling
+        write(d, "ses_three.json", export_json(900000, 90000, where=os.path.join(d, "other-worktree")))
+        write(d, "ses_four.json", export_json(700000, 70000))  # no location: ownership unknown, not counted
+        fake = write(d, "fake_oc.sh", FAKE_OC)
         r = run(OC_USAGE, "collect", "--wt", wt, env={"OC_BIN": fake, "OC_MAJOR": "2", "FIXTURES": d})
         assert r.returncode == 0, r.stderr
         t = json.loads(r.stdout.strip().splitlines()[-1])
         assert (t["sessions"], t["input"], t["output"]) == (2, 1500, 300), t
+
+
+def test_a_run_whose_sessions_all_ran_elsewhere_is_unknown_not_somebody_elses_cost():
+    with tempfile.TemporaryDirectory() as d:
+        wt = os.path.join(d, "wt")
+        os.makedirs(wt)
+        for n in ("one", "two", "three", "four"):
+            write(d, f"ses_{n}.json", export_json(1000, 200, where=os.path.join(d, "elsewhere")))
+        fake = write(d, "fake_oc.sh", FAKE_OC)
+        r = run(OC_USAGE, "collect", "--wt", wt, env={"OC_BIN": fake, "OC_MAJOR": "2", "FIXTURES": d})
+        assert json.loads(r.stdout.strip().splitlines()[-1])["sessions"] == 0, r.stdout
+
+
+def test_git_bash_and_windows_spellings_of_a_folder_compare_equal():
+    sys.path.insert(0, HERE)
+    import oc_usage
+    assert oc_usage.norm("/c/dev/game-wt/job") == oc_usage.norm("C:\\dev\\game-wt\\job") == oc_usage.norm("c:/dev/game-wt/job/")
+    assert oc_usage.norm("/c/dev/game-wt/job") != oc_usage.norm("/c/dev/game-wt/job2")
 
 
 def test_collect_with_opencode_failing_is_zero_sessions_exit_0():  # a broken meter must never fail a run
