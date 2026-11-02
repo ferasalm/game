@@ -78,7 +78,7 @@ def test_runs_log_appends_rows_with_a_header_once():
 def test_repo_wiring_runs_csv_union_header_and_pipeline_call():
     assert "docs/runs.csv merge=union" in open(ROOT + "/.gitattributes", encoding="utf-8").read()
     first = open(ROOT + "/docs/runs.csv", encoding="utf-8").readline().strip()
-    assert first == "date,task,worker,effort,gate,fix_passes,minutes,cost,real_findings", first
+    assert first == "date,task,worker,effort,gate,fix_passes,minutes,cost,real_findings,tokens_in,tokens_out,usd_est,cost_source,idle_min", first
     pipe = open(ROOT + "/tools/build_pipeline.sh", encoding="utf-8").read()
     call = [l for l in pipe.splitlines() if "runs_log.py" in l]
     assert call and all("|| true" in l for l in call), "the pipeline logs the run, and a logging error never fails it"

@@ -19,7 +19,10 @@ wt="$(cd "$wt" && pwd)"
 [ "$(git -C "$wt" rev-parse --abbrev-ref HEAD)" = "$branch" ] || { echo "worktree is not on $branch" >&2; exit 1; }
 cd "$wt"
 rc=0
-run_limited "${OC_TIMEOUT:-90m}" oc_run --model "$model" "$(cat "$brief")" \
+# The prompt travels as an attached file: a brief + skill + Pattern file passed as argv hit Windows' ~32 KB command cap
+# ("Argument list too long", exit 126, row 26 11-02; smoke: a 60 KB file works)
+run_limited "${OC_TIMEOUT:-90m}" oc_run --model "$model" -f "$brief" -- \
+  "Your whole task is in the attached file. Follow it exactly: it is the brief, the rules and the pipeline rules." \
   < /dev/null > "$log" 2>&1 || rc=$?
 [ $rc -eq 0 ] || echo "opencode exited $rc" >> "$log"
 echo "done: $wt ($branch); log: $log"

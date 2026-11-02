@@ -13,4 +13,4 @@ Paste from HANDOFF.md ("Prompt for the next chat"): `/model opus`, `/effort high
 3. Write the M1 brief (docs/briefs/TEMPLATE.md), rewrite docs/ARCHITECTURE.md section 8, add red tests first. Then row 4 builds it.
 
 ## Rules
-- Stuck or refused: ask Feras with AskUserQuestion, options with a pick. Never `/advisor` unasked. Never a Sonnet subagent.
+- Stuck or refused: ask Feras with AskUserQuestion, options with a pick. Never `/advisor` unasked. A Sonnet subagent only at `high` (Feras 11-02).

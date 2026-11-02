@@ -26,4 +26,4 @@ tools/test_godot_lsp.py, docs/audits/2026-11-01-coach-compare.md (where the idea
 - A queue row for the execution (HANDOFF) and the /handoff report.
 
 ## Stop rules
-Same question unanswered after 2 probes: ask Feras with AskUserQuestion, options with a pick. Never /advisor unasked. Never a Sonnet subagent.
+Same question unanswered after 2 probes: ask Feras with AskUserQuestion, options with a pick. Never /advisor unasked. A Sonnet subagent only at `high` (Feras 11-02).

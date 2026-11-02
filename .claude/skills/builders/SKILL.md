@@ -25,9 +25,9 @@ docs/research/calibration-2026-10.md.
 | Bulk text | GLM-5.3-flash | cf_probe.py; on for bulk text digests since row 24 (9/10 on one audit, models.md) | the caller spot-checks 3 lines |
 | Colour and character-visible pre-filter | Clef-flash | `/ai/run` (models.md, Routing) | review-player keeps text |
 | Reads over ~20k tokens across files (when `cf_probe` cannot) | Haiku medium | Agent tool: `model: haiku`, `effort: medium`, template answer | the caller re-greps every "not found" claim |
-| Launch-and-wait CLI wrapper, template checks, simplest Claude-only task | Haiku low | Agent tool: `model: haiku`, `effort: low` (never spawn a Sonnet subagent) | template check |
+| Launch-and-wait CLI wrapper, template checks, simplest Claude-only task | Haiku low | Agent tool: `model: haiku`, `effort: low` (a Sonnet subagent is allowed at `high` only, Feras 11-02) | template check |
 | A chunk of 10+ noisy calls that strictly needs this chat's memory | a fork, at most 2 at once | Agent tool: `subagent_type: fork`, only under ~100k context; above that a Haiku low subagent with a brief | report of 15 lines or fewer |
-`/subtask` is the same fork, but only a person can type it. A fork runs on its parent's model, so keep it under ~100k context and use `Haiku low` subagents whenever chat memory is not required. Never spawn a Sonnet subagent to call builders or Haiku subagents.
+`/subtask` is the same fork, but only a person can type it. A fork runs on its parent's model, so keep it under ~100k context and use `Haiku low` subagents whenever chat memory is not required. A Sonnet subagent is allowed (Feras 11-02: to save Opus usage), at effort `high` with an Opus-scoped brief; it may call builders.
 Every worker's result is one line: `worker | task | gate | evidence path | time | cost | real findings`. One smoke call before any batch.
 
 ## The loop
@@ -73,7 +73,7 @@ Per executor:
   - list what NOT to report;
   - split big jobs into parallel runs over disjoint inputs;
   - no design choices; effort: `low` for launch-and-wait, lens, and checks; `medium` only for >20k multi-file reads when `cf_probe` cannot (never `high`; never call `/advisor` unasked—report BLOCKED to parent).
-- **Sonnet** (the default session Lead, always at high, Feras 11-01; strong when scoped, never spawned as a subagent to call builders):
+- **Sonnet** (the default session Lead, always at high, Feras 11-01; strong when scoped; as a subagent only at `high`, Feras 11-02):
   - Opus makes the decisions first, so no open design questions are left;
   - give the acceptance tests or checks;
   - stuck twice on the same thing -> stop looping and ask Feras via AskUserQuestion (with a pick) to call `/advisor opus` (never call `/advisor opus` or `/advisor sonnet` unasked);
