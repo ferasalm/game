@@ -125,7 +125,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/briefs/row25-base-red.md | Brief: row25-base-red (pipeline run, cf DeepSeek high; fixes from the row 25 review lenses) | 0 | 5 |
 | docs/briefs/row26-a-runstate.md | Brief: row26-a-runstate (cf DeepSeek max; Python and shell, RUN_KIND=py) | 1 | 13 |
 | docs/briefs/row26-a-tests.md | Brief: row26-a-tests (SCOPE RUN: GLM-5.3 max writes ONLY the red tests; RUN_KIND=py) | 0 | 9 |
-| docs/briefs/row26-pipeline-v2-plan.md | Plan: low-cost pipeline v2 (row 26, Feras 11-02; head = Claude, any model) | 1 | 14 |
+| docs/briefs/row26-pipeline-v2-plan.md | Plan: low-cost pipeline v2 (row 26, Feras 11-02; head = Claude, any model) | 1 | 17 |
 | docs/briefs/row26-s2-usage.md | Brief: row26-s2-usage (cf DeepSeek high; Python only, RUN_KIND=py) | 0 | 13 |
 | docs/briefs/row26-s4-routing.md | Brief: row26-s4-routing (cf DeepSeek high; shell and Python, RUN_KIND=py) | 1 | 11 |
 | docs/briefs/row26-s4-tests.md | Brief: row26-s4-tests (SCOPE RUN: GLM-5.3 max writes ONLY the red tests; RUN_KIND=py) | 0 | 9 |
