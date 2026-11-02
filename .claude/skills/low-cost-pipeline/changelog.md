@@ -11,3 +11,4 @@
 - 2026-11-02 lesson: parts that pass alone can fail together (a new stub call in one made another's test count wrong): parts_plan.py plus a full check after each merge.
 - 2026-11-02 CAP_CF is 3 (Feras): three cf runs at once; the memory floor (2000 MB) is the limit to watch.
 - 2026-11-02 lesson: base_red refused a clean base because two pipeline-spawning tests (test_routing CI cap, test_run_state watchdogs) had wall-clock bounds that flaked under the guard's parallel load; the CI cap test now counts polls, test_run_state is SERIAL (runs alone, left out by base_red).
+- 2026-11-02 merge_run regenerates docs/MAP.md and docs/DOCMAP.md when they are the only conflict (every parallel part adds a tool; five hand-resolutions today); any other conflict stays for the head.

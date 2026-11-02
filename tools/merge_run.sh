@@ -39,7 +39,20 @@ plan="$($py "$here/build_gate.py" can-skip --repo "$root" --checked "$checked" -
 if [ "$plan" = SKIP ] && ! grep -q '^kind py' "$res"; then
   git -C "$root" merge -q --ff-only "$branch"; echo "fast-forward onto checked $checked: check reused"
 else
-  git -C "$root" merge -q --no-edit "$branch"
+  if ! git -C "$root" merge -q --no-edit "$branch"; then
+    # Two parts that each add a tool both change the generated docs/MAP.md and docs/DOCMAP.md (row 26 S14, 11-02): when
+    # those are the ONLY conflicts they are regenerated; any other conflict stays for the head, merge left in progress.
+    conflicted="$(git -C "$root" diff --name-only --diff-filter=U)"
+    other="$(echo "$conflicted" | grep -v -x -e docs/MAP.md -e docs/DOCMAP.md || true)"
+    if [ -n "$conflicted" ] && [ -z "$other" ]; then
+      (cd "$root" && git checkout -q --ours -- $conflicted && { [ ! -f tools/map.py ] || $py tools/map.py > /dev/null; } &&
+        { [ ! -f tools/doc_graph.py ] || $py tools/doc_graph.py > /dev/null; } && git add -- docs/MAP.md docs/DOCMAP.md &&
+        git commit -q --no-edit) || { echo "merge conflict in the generated docs could not be regenerated: fix by hand" >&2; exit 1; }
+      echo "regenerated the conflicting generated docs: $(echo $conflicted)"
+    else
+      echo "merge conflict in: $(echo $other): resolve by hand (merge left in progress), then run tools/check.sh" >&2; exit 1
+    fi
+  fi
   (cd "$root" && bash tools/check.sh) || { echo "merged, but check.sh FAILED: fix before pushing" >&2; exit 1; }
 fi
 if [ -z "$keep" ]; then
