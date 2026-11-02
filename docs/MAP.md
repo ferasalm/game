@@ -687,10 +687,12 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/map.py`: Writes docs/MAP.md from each file's purpose line, so the map never drifts. --check: exit 1 if stale.
 - `tools/merge_base.sh`: Fetches and fast-forwards the current branch to origin/<branch> (default: the current branch; "main" for a branch that
 - `tools/merge_run.sh`: Merges one gated builder run into the current branch (DECISIONS 2026-10-23): only a PASS .result; a fast-forward onto
+- `tools/model_effort.py`: Print the reasoning effort a model key runs at: opencode.json says it, the model's name does not (row 26 S2).
 - `tools/musnad.py`: Transliterate Arabic to Musnad (Old South Arabian) letter by letter; scan files for Arabic.
 - `tools/oc_agents.py`: Makes one opencode subagent per game skill (.agents/skills/<name> -> .opencode/agent/<name>.md); --check fails when stale.
 - `tools/oc_review.sh`: Reviews an opencode task (branch oc/<task>) the same cheap way as an agy one: report, check result, commits, stats,
 - `tools/oc_task.sh`: Runs opencode on one task brief inside its own git worktree, never in the main checkout (DECISIONS 2026-10-23).
+- `tools/oc_usage.py`: Read a run's token counts and cost from opencode's own session export (row 26 S2, Feras 11-02).
 - `tools/playtest.sh`: Runs the game with playtest capture and mirrors its output into inbox/playtest/game.log.
 - `tools/prompt_check.py`: prompt_check.py lints a brief, a oneshot prompt, or a chat prompt.
 - `tools/res_graph.py`: What does the game actually use? Walks res:// paths, class_name references and glTF side files from roots and sorts
