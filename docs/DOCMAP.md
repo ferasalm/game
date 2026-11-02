@@ -124,8 +124,8 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/audits/2026-11-01-token-bleed.md | Token bleed in the always-loaded notes (2026-11-01, one cf DeepSeek max pass, read by Opus; bytes approximate, not yet acted on) | 0 | 8 |
 | docs/audits/2026-11-02-coach-dsv4.md | [0m | 0 | 45 |
 | docs/audits/2026-11-02-coach-glmflash.md | [0m | 0 | 28 |
-| docs/audits/2026-11-02-integrity.md | Integrity Audit: 2026-11-02 | 4 | 62 |
-| docs/audits/2026-11-02-lsp-reviewers.md | LSP for the reviewer agents (row 27): verdict DON'T DO now, revisit after M1 (Sonnet 5.5 high chat, 2026-11-02; the brief asked for Opus high) | 4 | 5 |
+| docs/audits/2026-11-02-integrity.md | Integrity Audit: 2026-11-02 | 3 | 62 |
+| docs/audits/2026-11-02-lsp-reviewers.md | LSP for the reviewer agents (row 27): verdict DON'T DO now, revisit after M1 (Sonnet 5.5 high chat, 2026-11-02; the brief asked for Opus high) | 5 | 5 |
 | docs/audits/coach-audit-prompt.md | Prompt: read-only Claude Code setup audit ("coach") for tools/cf_audit.sh | 2 | 6 |
 | docs/briefs/TEMPLATE.md | Brief: <task> (copy to docs/briefs/<task>.md; <= 80 lines; tools/test_template.py keeps the gate's headings here) | 3 | 13 |
 | docs/briefs/archive-cleanup.md | DONE 2026-10-27 (stages 1-3 on main). Chat brief: finish the 3D archive + rename zayd -> rydan (Feras 2026-10-27, decisions-log) | 0 | 9 |
