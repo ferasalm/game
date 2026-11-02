@@ -21,6 +21,7 @@ Story detail: docs/story/bible.md (CONFIRMED = locked). Vision and pillars: docs
 - 2026-10-21 | Rarity: Common to Legendary (white, green, blue, purple, gold); Heirloom tier story-only | Feras
 ## Combat
 - 2026-10-27 | Combat is real-time like Hades (feel, controls, mechanics: move, dash, attack, special, cast); turn-based battle code archived; the 25 playtest notes re-triaged (docs/playtest/2026-10-27.md) (D15) | Feras
+- 2026-11-02 | M1 combat = Hades feel + Sekiro parry: move, dash (i-frames), 3-hit combo, parry (deflect, perfect deflect, posture bar both sides, finisher on a broken guard, dash-counter); special and cast later; soft aim; guards = baton + shock-rifle; spec docs/design/m1-fight.md | Feras
 - 2026-10-24 | RPG layer: XP, levels, fixed class per hero, Luck, dodge/crit/resist; no flee vs bosses | Feras
 - 2026-10-25 | Hero fights alone; story allies are call-in assists; combat rules in logic/, apart from the real-time loop; Hard = stronger enemies, tighter resources | Feras
 - 2026-10-21 | Ambush: jambiya reverse stab before a fight; Rydan from behind on a patrol = a head start | Feras

@@ -28,8 +28,8 @@ are marked (enforced). Decisions behind this file: docs/DECISIONS.md, 2026-10-19
 - **Characters = baked sprites, never 3D at runtime.** The Rodin models in `assets/characters/` are offline
   sources: `tools/bake_sprites.tscn` renders them through `CharacterVisual` / `ModelRig` (features/art/view, kept
   for the baker) into 8-direction sheets (`tools/art/sprite_sheet.py`, `content/neon/sprites.json`).
-- **Fights on the map:** BattleSim and the timeline (features/combat/logic) drive `features/neon/battle/`; the
-  command menu and timeline bar are the reused 2D pieces of the old battle HUD.
+- **Fights are real-time on the plate** (section 8): the `features/fight` sim drives the roof; the turn-based
+  `features/neon/battle/` and BattleSim are archived by row 4.
 
 ## 4. Layers (dependencies point one way)
 ```
@@ -80,18 +80,24 @@ docs/           ARCHITECTURE BRIEFING WORKFLOW DECISIONS LESSONS MAP USAGE desig
 - Child references: `@export var x: Node` set in the scene, or `%UniqueName`. Never `$Path`, `get_node`,
   `get_parent`, `find_child` or `/root/` paths (enforced).
 
-## 8. Combat (Grandia-style timeline; design source: docs/research/gemini-blueprint.md, Module 3)
-Status 2026-10-28: this is the turn-based code still on main. Combat is real-time like Hades (CANON 10-27, VISION
-pillar 1); the M1 brief (HANDOFF queue) replaces this section. Kept from it: integer fixed ticks, pure logic, events.
-- **Timeline** (pure, built): positions are integers 0..10000; COMMAND at 7000, ACT at 10000; 60 fixed ticks a
-  second; units move in list order; every change returns a `TimelineEvent`. A unit reaching COMMAND freezes time
-  until `choose()` (player menu or AI). Cancel hits during a cast interrupt (back to 2500); other hits knock back,
-  never below COMMAND while casting. Same inputs give the same events (tested), so battles can be replayed.
-- **Formation** (pure, built): two rows per side; slot n+2 is covered by a living slot n; melee row multipliers.
-- Next (M3): `BattleSim` (damage, statuses, deaths, victory) in logic/, seeded RNG per battle; AI policies as pure
-  classes; `BattleController` (view) runs ticks, plays each event's animation and waits for it ("wait mode");
-  HUD reads state. A **balance harness** runs 1,000 seeded battles headless and prints one table (win rate,
-  length, interrupts), so tuning costs a few lines of output.
+## 8. Combat (real-time, Hades feel + Sekiro parry; spec: docs/design/m1-fight.md; CANON 2026-10-27)
+Status 2026-11-02: designed, not built (row 3 brief, row 4 builds). The turn-based timeline/BattleSim code is archived by
+row 4 (tag `turn-based-archive`); this section replaces its description.
+- **Sim** (`features/fight/logic/`, pure): integers in milli-pixels of ground space, fixed 60 ticks/s, deterministic, one
+  `FightSim.step(input) -> Array[FightEvent]`. It owns the hero and the guards for the whole roof (patrol, sight, ambush,
+  fight, walking after the win). Parts: `Ground` (screen/ground conversion, walkability through `IsoWalk`), `HeroMachine`
+  (move, 3-step combo, dash, parry), `GuardMachine` + role policies (baton, rifle), `AimAssist`, `InputBuffer`,
+  `DefenceRules` (guard, deflect, perfect, evade), `Posture`, `Trauma` (camera shake decay). Hit-stop is per-unit frozen ticks.
+- **Events** (`FightEvent`: tick, kind, unit, other, value, pos): attack_started, hit, guarded, deflected, perfect, evaded,
+  telegraph, shot, posture_broken, finisher, hurt, ko, won, lost. The view plays them; it never computes a rule.
+- **Defs/content**: `features/fight/defs/*` read `content/fight/{hero,enemies,rules,touch}.json` through DefReader; every
+  number is a content field. Player text: new rows in `localization/neon.csv` (code rule: no new CSV).
+- **View** (`features/fight/view/`): `FightView` steps the sim from `_physics_process` (60 Hz accumulator), turns Input
+  into `FightInput`, drives `IsoActor`s, VFX, SFX, flash and shake shaders, HUD, touch controls. `set_active(false)` pauses it
+  (dialogue). RoofScene hosts it; the roof opening, fuse box and exit stay RoofScene's.
+- **Harness** (`features/fight/harness/`): seeded bot policies play the sim headless; their win-rate and time bands are the
+  balance test (design section 7). Kept from the old design: integer ticks, pure logic, events, a harness.
+- Rewards, SP, items, flee and the special/cast moves are out of M1; `combat/` defs that progression still uses stay.
 
 ## 9. Exploration, encounters, puzzles (M2, M4, M5)
 Status 2026-10-28: the 3D player and Area3D lines are retired (D20); the 2D roof is features/neon (section 3).
