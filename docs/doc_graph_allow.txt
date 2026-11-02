@@ -180,6 +180,8 @@ docs/briefs/row26-a-runstate.md :: tools/test_run_state.py
 docs/briefs/row26-a-tests.md :: tools/model_effort.py
 docs/briefs/row26-a-tests.md :: tools/oc_usage.py
 docs/briefs/row26-a-tests.md :: tools/test_run_state.py
+docs/briefs/row26-p1-agy.md :: features/proofrun/logic/hp_clamp.gd
+docs/briefs/row26-p1-agy.md :: features/proofrun/tests/test_hp_clamp.gd
 docs/briefs/row26-p2-kaizen-tests.md :: tools/test_kaizen_report.py
 docs/briefs/row26-p2-kaizen.md :: tools/kaizen_report.py
 docs/briefs/row26-p2-kaizen.md :: tools/test_kaizen_report.py
