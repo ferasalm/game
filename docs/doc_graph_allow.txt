@@ -293,6 +293,7 @@ feras/BRIEFING.md :: docs/briefs/system-v3.md
 feras/BRIEFING.md :: docs/opus-signoff.md
 feras/BRIEFING.md :: inbox/
 feras/BRIEFING.md :: ops-review/SKILL.md
+feras/BRIEFING.md :: proof.md/changelog.md
 plugins/pm/skills/handoff/SKILL.md :: .check/usage.json
 plugins/studio/agents/review-canon.md :: features/x/logic/y.gd
 plugins/studio/agents/review-code.md :: features/x/logic/y.gd

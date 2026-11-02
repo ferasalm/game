@@ -41,6 +41,9 @@ Triage rules (D9): docs/lessons-archive.md header.
 - Auto mode refused a `.claude/settings.json` allow list as self-modification -> never script around it; ask Feras with the exact diff (2026-10-31).
 - `check.sh | tail && git commit` committed a failing run -> grep .check/*.log for FAIL first; never push before reading the
   final check line (2026-10-23).
+- A meter was trusted on one run: `opencode session list` is PROJECT-wide (all worktrees share one project id), so two runs logged the same 4.7M tokens -> count sessions by `info.location.directory`; check a new meter on two different runs (2026-11-02).
+- Two opencode v2 servers started in the same second died on one SQLite database ("database is locked") and the pipeline said bare NOWORK; a wall-clock bound in a pipeline-spawning test flaked under base_red's parallel load and refused a clean base -> oc_task.sh retries a startup collision; such tests count events or run SERIAL, never a looser limit (2026-11-02).
+- `agy -p` prints its log only at the end (0 bytes while it works), so a "log stopped growing" watchdog cut a working agy run; a red test on a shared base refuses every sibling launch -> a watchdog needs a signal the builder really emits; each part's red tests live on their own base branch (lock_tests.sh) (2026-11-02).
 
 ## 4. Worktrees and hooks (Claude chats)
 - `cd` into another worktree moves the session's directory -> `git -C <path>`, or absolute paths in a read (2026-10-21; again 10-31).

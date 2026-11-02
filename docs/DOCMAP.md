@@ -182,14 +182,14 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/ideas.md | Ideas inbox (never loaded at start; triaged into HANDOFF queue rows at the weekly plan, Feras 10-29) | 2 | 1 |
 | docs/lessons-archive.md | Lessons archive (lookup only, never loaded; first section 3D-only, moved 2026-10-25 when 3D was archived, tag 3d-archive) | 3 | 18 |
 | docs/next-chat.md | Next chat: Row 3, Opus high (the M1 brief) | 1 | 6 |
-| docs/opus-review-row26.md | Row 26 optional final review: low-cost pipeline v2 (Opus high, one chat) | 3 | 16 |
+| docs/opus-review-row26.md | Row 26 optional final review: low-cost pipeline v2 (Opus high, one chat) | 4 | 16 |
 | docs/playtest-with-claude.md | Playtest with Claude (mark bugs while you play) | 0 | 2 |
 | docs/playtest/2026-10-27.md | Playtest 2026-10-27: Feras's 25 notes, re-triaged for real-time combat (D15) | 4 | 1 |
 | docs/queue-rules.md | How HANDOFF.md works (moved out of HANDOFF.md 2026-11-01; Feras 2026-10-27, departments 10-28, Rank 1 11-01) | 0 | 2 |
 | docs/story/README.md | Story map: the repo and Twine, both ways | 1 | 2 |
 | docs/story/bible.md | Story bible (Feras, 2026-10-26; from inbox/docs/Neon_Glitch_Story_Bible_Final.docx (renamed by Feras 10-27), text unchanged) | 9 | 1 |
 | docs/story/chatgpt-prompt.md | Prompt for ChatGPT: turn the story into Twine passages | 0 | 0 |
-| feras/BRIEFING.md | Briefing for Feras (one file for you: newest report first, the last 5 kept; every chat updates it at /handoff) | 9 | 11 |
+| feras/BRIEFING.md | Briefing for Feras (one file for you: newest report first, the last 5 kept; every chat updates it at /handoff) | 9 | 14 |
 | feras/research-prompts.md | Research prompts for Feras (Gemini Deep Research, Argon High) | 1 | 1 |
 | plugins/pm/skills/handoff/SKILL.md | Handoff (game) | 5 | 14 |
 | plugins/pm/skills/next/SKILL.md | Run `python ${CLAUDE_PLUGIN_ROOT}/scripts/pm.py next` and show its output. | 1 | 0 |

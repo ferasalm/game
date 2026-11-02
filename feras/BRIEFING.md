@@ -3,11 +3,11 @@ Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after 
 HANDOFF.md; this file is your view of it. "Open now" is rewritten at every /handoff; below it, reports newest first,
 each headed by its date and time (GMT+3): Done | Still open | When | How | Your move vs mine | Checked.
 
-## Open now (Mon 11-02 04:51)
+## Open now (Mon 11-02 13:23)
 | # | Open item | Status | Checked | Your move? | When |
 |---|---|---|---|---|---|
 | 1 | M1 brief: real-time Rydan vs 2 guards on the prison roof, co | Tue 11-03 | - | no | Tue 11-03 |
-| 2 | Writer trial (Feras 11-01): one real brief to agy medium and | with row 4's first builds | - | no | with row 4's first builds |
+| 2 | Low-cost pipeline v2 (Feras 11-01/02), BUILT and measured in | built 11-02; trial with row 4's first builds | - | no | built 11-02; trial with row 4's first builds |
 | 3 | Plan the language server (LSP) for the reviewer agents: prob | queued: dedicated chat | - | no | queued: dedicated chat |
 | 4 | M1 build from that brief + the Android export (D17) + archiv | after row 3 | - | no | after row 3 |
 | 5 | Bake Roya (sprite-bake), native-scale render on the prison r | after row 3 | - | no | after row 3 |
@@ -19,9 +19,20 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 | 11 | Art bible 2D pass: drop the retired 3D runtime lines (fog, m | parked | - | no | parked |
 | 12 | Bilqis's portraits are now the Neon ones: keep or overturn ( | open | - | yes | 10-27 |
 | 13 | Art homework into inbox/: concept pictures, an empty plate p | open | - | yes | 10-24 |
-| 14 | track_usage.py is untracked and only in the main checkout, s | open | - | no | 11-02 |
-| 15 | Doc graph cleanup (row 27 shipped `tools/doc_graph.py`, DOCM | open | - | no | 11-01 |
-| 16 | Row 20 leftovers, no row yet (row 24 is done; specs too vagu | open | - | no | 11-01 |
+| 14 | Optional final review of pipeline v2 by one Opus high chat:  | open | - | no | 11-02 |
+| 15 | After merging row 26 to main: `python tools/plugin_prune.py` | open | - | no | 11-02 |
+| 16 | Doc graph cleanup (row 27 shipped `tools/doc_graph.py`, DOCM | open | - | no | 11-01 |
+| 17 | Row 20 leftovers, no row yet (row 24 is done; specs too vagu | open | - | no | 11-01 |
+
+## Mon 11-02 13:30: row 26, low-cost pipeline v2 (Sonnet 5.5 high, one chat; you were asleep)
+**Done** (on main after this handoff): the whole workflow now lives in ONE folder, `.claude/skills/low-cost-pipeline/` (SKILL.md 40 lines + routing, foremen, mechanical lane, proof, changelog, 3 brief templates). Built by cf and agy workers from locked tests, each diff read by me line by line: (a) cost is real: `opencode session export` per worktree, `runs.csv` has tokens, usd_est, idle_min (unknown = `?`); (b) run state tells the truth: a crashed gate is ERROR, the brief is copied at launch, stale PASS removed, NOWORK/REFUSED/ERROR rows logged, a quiet watchdog (not for agy) kills a builder that went silent after a commit; (c) routing: reviewer = the other model family, `merge_run` reads the prefix and needs `VERDICT PASS` and regenerates the generated docs itself, the CI wait pins check.yml, OC_MODEL = CF_MODEL; (d) test-first stage as tools: `EXPECT_RED=1` scope run, `scope_gate.py`, `lock_tests.sh`; (e) `part_report.py` (15 lines per part), `parts_plan.py` and `ripple.py` (plan checks for parallel parts), `kaizen_report.py`; (f) startup collisions retried; (g) your leftovers: stale kaizen entries pruned (2 dead; 6 belong to live worktrees), `track_usage.py` tracked, CI wait fixed, OC_MODEL fixed, skills-twice = start with `claude -w`. Your decisions applied: Sonnet subagents allowed, CAP_CF 3, scripts as foremen, neurons over tokens.
+**Proof** (P0-P6, details in proof.md/changelog.md): GLM effort label works (23x tokens at max for the same answer); agy Godot run PASS (suite 584 passed); test-writer A/B on one task: DeepSeek max's tests passed the correct code and killed 11 of 12 seeded bugs, GLM's failed the correct code (n=1); a real cross-review found 3 real bugs, fixed. Whole row under about $2 in cf neurons.
+**Found and fixed on the way**: my first cost meter summed the whole project (two runs showed the same 4.7M tokens): fixed and the rows corrected; the quiet watchdog would have cut working agy runs (found by the agy proof); two parallel opencode starts collided on one database (retry); two BREACHes were briefs that missed existing tests (ripple.py).
+**Still open**: optional Opus final review (prompt in HANDOFF, docs/opus-review-row26.md); the writer trial on row 4's first real builds; agy has no cost meter; the second lens (XR_DUAL) is not built; the A/B is one task; the background cache waker and one agy run were stopped by the system for low memory (not restarted).
+**When**: review any day; trial with row 4.
+**How**: row 26, Ops, builder + chat (review); Opus high for the review.
+**Your move vs mine**: yours: optionally paste the review prompt; start chats with `claude --model opusplan -w <name>`. Mine: the rest.
+**Checked**: full check.sh 582 Godot tests passed on the finished tree; the last docs fix re-checked with `check.sh --no-godot`: all checks passed. Not run: the Opus review, a render-judged agy run, a seeded bug inside a Godot run.
 
 ## Mon 11-02 04:55: row 25 sign-off (Opus 5.5 high)
 **Done** (on main after this handoff): verdict SIGNED OFF, logged in decisions-log. Both plugins validate; settings.json holds only the allowed hooks; I read every risky hunk line by line; all four lens lists re-judged, and the rejected flags are confirmed false by running or reading them (`--keep` under `set -e`, `gh run list --commit`, `timeout`, `BASE_RED_SEC`, `test_base_red.py`, two "missing" paths). Fixed, each with a test seen red first: (1) `doc_check` still skipped HANDOFF.md, the flag both lenses raised, only half fixed on 11-01; (2) `base_red` read only a brief's first Tests section; (3) the audit step itself broke the next check.sh (reports citing `.check/` paths, now ignored by doc_graph; the rest baselined); (4) `cf_audit` reports swelled to 269 KB of log lines, now stripped; (5) the pm plugin manifest was never tested. No test: the low-cost skill's `/advisor` carve-out contradicted duty 6 and is removed; a review-player stale clause and a stale memory line are gone. Closed Open points: plugins (`claude plugin list` shows studio and pm enabled, read from C:\dev\game, so nothing left for you), status line (real JSON matches the fields), sign-off, coach.
