@@ -15,6 +15,8 @@ TOOLS = os.path.dirname(os.path.abspath(__file__)).replace("\\", "/")
 ROOT = os.path.dirname(TOOLS)
 # Stub reviewer: logs its args, cwd files and config env; prints per STUB_MODE (block | late | never | slow_nemotron)
 STUB = r"""#!/usr/bin/env bash
+# a `session list/export` call is the usage meter (tools/oc_usage.py, row 26), not a reviewer call: answer it, count nothing
+case "$*" in *"session "*) exit 0 ;; esac
 top="$STUB_TOP"; n=$(cat "$top/calls" 2> /dev/null || echo 0); n=$((n + 1)); echo $n > "$top/calls"
 { echo "ARGS $*"; echo "FILES $(ls)"; echo "CONFIG ${OPENCODE_CONFIG:-none}"; } >> "$top/stub.txt"
 [ "$STUB_MODE" = slow_nemotron ] && [ $n -ge 3 ] && sleep 20
