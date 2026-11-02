@@ -170,6 +170,7 @@ docs/briefs/row26-pipeline-v2-plan.md :: game-wt/
 docs/briefs/row26-pipeline-v2-plan.md :: opencode/
 docs/briefs/row26-pipeline-v2-plan.md :: tools/cf_scope.sh
 docs/briefs/row26-pipeline-v2-plan.md :: tools/oc_usage.py
+docs/briefs/row26-pipeline-v2-plan.md :: tools/part_report.py
 docs/briefs/row26-pipeline-v2-plan.md :: tools/plugin_prune.py
 docs/briefs/row26-pipeline-v2-plan.md :: tools/scope_gate.py
 docs/briefs/row26-s2-usage.md :: cloudflare-workers-ai/
