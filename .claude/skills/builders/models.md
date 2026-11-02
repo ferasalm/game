@@ -104,7 +104,7 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
 - Cross-review: agy runs -> cf DeepSeek at max; nemotron only as a backup lens after cf fails twice. No $ cap on cf.
 
 ## Routing
-Which worker does what: SKILL.md, Who does what. A card's Best use says what a model suits; that table decides who runs.
+Which worker does what: the low-cost-pipeline skill, routing.md. A card's Best use says what a model suits; that table decides who runs.
 Limits: Clef-flash pre-filters colour and character visible only, review-player keeps text; non-reasoning never reviews.
 Evidence: docs/research/model-evidence-2026-10.md (AA numbers mostly UNVERIFIED: 1 of 3 spot-checked was invented)
 and the measured calibration lines above. Calibrated = passed a gold set (D11).

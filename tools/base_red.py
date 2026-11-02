@@ -92,7 +92,7 @@ def main(argv):
         subprocess.run(["git", "worktree", "prune"], capture_output=True)
     if bad:
         print("base holds a red test this brief does not name: " + " ".join(bad)
-              + " (keep it on the branch of the part that owns it: builders skill, The loop)")
+              + " (keep it on the branch of the part that owns it: low-cost-pipeline skill, Flow of one part)")
         return 1
     return 0
 

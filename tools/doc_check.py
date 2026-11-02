@@ -85,9 +85,9 @@ opens = table(texts["HANDOFF.md"], "## Open points")
 check(bool(opens) and opens[0] == OPEN_HEAD, f"HANDOFF.md has an '## Open points' table: {' | '.join(OPEN_HEAD)}")
 check(len(opens[1:]) <= 10, f"HANDOFF.md Open points has {len(opens[1:])} lines (max 10): close or move some")
 
-# One worker routing table (row 24, Feras 11-01): .claude/skills/builders/SKILL.md holds Who does what, nowhere else
+# One worker routing table (row 24, Feras 11-01): .claude/skills/low-cost-pipeline/routing.md holds Who does what, nowhere else
 ROUTE_HEADERS = ("| Work | Who", "| Work | Worker", "| Task class | Model")
-EXCLUDED_SKILL = ".claude/skills/builders/SKILL.md"
+EXCLUDED_SKILL = ".claude/skills/low-cost-pipeline/routing.md"
 docs_md = [ROOT / n for n in ("CLAUDE.md", "HANDOFF.md") if (ROOT / n).exists()]
 if (ROOT / "docs").exists():
     for p in (ROOT / "docs").rglob("*.md"):

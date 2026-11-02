@@ -47,11 +47,11 @@ Scale: a small, low-risk change (a few lines, no machinery, nothing player-visib
 ## Lean process (Feras 10-28, Rank 1 11-01; how: docs/WORKFLOW.md Start here)
 - Motto COOKE (Clarity, Organization, Optimization, Kaizen, Efficiency); a fiduciary duty to Feras; top-down; foundations
   solid and flexible (tests, data-driven content, small modules, no hacks). Always learning: think deeply and critically.
-- Each task goes to the cheapest worker that does it well (builders skill, Who does what). Priorities, the higher wins a
+- Each task goes to the cheapest worker that does it well (low-cost-pipeline skill, routing.md). Priorities, the higher wins a
   tie (Feras 10-31): 1 output quality, a hard gate (checks pass, Opus signs off); 2 codebase integrity and flexibility;
   3 Claude tokens and usage limits; 4 organization and simplicity; 5 speed. Builder time is free.
 - Opus plans and owns every output that reaches Feras as if it did the work; Sonnet high executes from an Opus brief,
-  delegating by the builders Who does what table (worker policy: DECISIONS Process 11-01). Opus (or the Lead chat) reviews
+  delegating by the low-cost-pipeline routing table (worker policy: DECISIONS Process 11-01). Opus (or the Lead chat) reviews
   whatever another model made, tiered (gates, cross-review lens via cf max / agy or a Haiku low pass, then the list and risky hunks).
 - IMPORTANT: one task, model and effort per chat, finished at full quality; context size never stops or hands off work
   (DECISIONS 10-31). /handoff when the task is done or at ~85% of the 5-hour window; a follow-up of <= ~10 tool calls stays,

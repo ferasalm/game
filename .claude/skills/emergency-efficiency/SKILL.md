@@ -3,7 +3,7 @@ name: emergency-efficiency
 description: Low-budget mode when the Claude limit is tight (owner says "emergency efficiency", the 5-hour window passes 50%, or a chat starts low). A delta on the builders skill.
 ---
 # Emergency efficiency: delta on the builders skill (D3; Feras 2026-10-23)
-Everything in `.claude/skills/builders/SKILL.md` applies; this only tightens it.
+Everything in `.claude/skills/low-cost-pipeline/` and `.claude/skills/builders/SKILL.md` applies; this only tightens it.
 
 ## Claude's budget
 - ONE director chat, no Claude side sessions. At most 2 Haiku subagents, only for jobs that read > ~20k tokens.

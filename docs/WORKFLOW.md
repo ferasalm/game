@@ -10,10 +10,10 @@ row name a Dept from the Routing table and a lane.
 1. **Look** (free): `bash tools/status.sh`: builders, branches not on main, worktrees, the queue, Feras's list.
 2. **Pick**: the top HANDOFF queue row. Its Dept is a label: the Routing table row says which skills and persona to
    load and who reviews.
-3. **Who does it**: `builders` skill (`.claude/skills/builders/SKILL.md`), Who does what.
+3. **Who does it**: `low-cost-pipeline` skill (`.claude/skills/low-cost-pipeline/routing.md`).
 
 4. **Brief**: docs/briefs/TEMPLATE.md; child brief recipes in `builders` skill (`.claude/skills/builders/SKILL.md`, Prompt recipes).
-5. **The worker orchestrates** (a child chat): routes by the Routing table's lane; build loop in `builders` skill (`.claude/skills/builders/SKILL.md`, The loop); visual work passes players-eye-gate, review-player, review-feras and `python tools/hooks/review_stamp.py`. Nested agents work (10-28) but each costs a fresh start.
+5. **The worker orchestrates** (a child chat): routes by the Routing table's lane; build flow in the `low-cost-pipeline` skill (`.claude/skills/low-cost-pipeline/SKILL.md`, Flow of one part); visual work passes players-eye-gate, review-player, review-feras and `python tools/hooks/review_stamp.py`. Nested agents work (10-28) but each costs a fresh start.
 6. **The father** reads the report, checks it with `bash tools/status.sh` (branch on main, row updated), picks next.
    Open children are the queue rows whose Status says "child open"; status.sh lists their branches and worktrees.
 7. **Evolve**: each chat upgrades one tool, check, skill or doc; every 5 chats ops-review reads /session-report
@@ -77,7 +77,7 @@ docs/HOW_WE_WORK.md draws this loop for Feras: a change to these Protocols updat
 ## Routing (one table; departments are labels, Feras 10-28 option B)
 A department is a label, not an agent: the HANDOFF queue's Dept column names a Dept below, and that row says which
 skills and persona the worker loads, its lane and its reviewer. Every brief names its persona; our rules (CLAUDE.md,
-.claude/rules/code.md, CANON) outrank persona text. Lanes: agy, cf, oc = the builders (who takes what: builders skill, Who does what; run caps: Limits); chat =
+.claude/rules/code.md, CANON) outrank persona text. Lanes: agy, cf, oc = the builders (who takes what: low-cost-pipeline skill, routing.md; run caps: Limits); chat =
 Opus for plan, taste, MCP, review. No department chat stays open between tasks; its lessons and research queue live in
 its skill folder. tools/doc_check.py fails on an unknown Dept, a persona with no .agents/skills/<name>/SKILL.md, a
 reviewer with no plugins/studio/agents/<name>.md, and any plugins/studio/agents/dept-*.md (retired to ~/.claude/archive, D7).
@@ -128,15 +128,15 @@ Department research queues and dispatch: `.claude/skills/ops-review/SKILL.md` (R
 
 
 ## Readers
-Reading rule: CLAUDE.md. Reader models and review lenses: `builders` skill (`.claude/skills/builders/SKILL.md`, Who does what).
+Reading rule: CLAUDE.md. Reader models and review lenses: `low-cost-pipeline` skill (`.claude/skills/low-cost-pipeline/routing.md`).
 
 
 ## Model routing on Pro
-Which worker does what and model routing: `builders` skill (`.claude/skills/builders/SKILL.md`, Who does what).
+Which worker does what and model routing: `low-cost-pipeline` skill (`.claude/skills/low-cost-pipeline/routing.md`).
 
 
 ## Builder loop (agy, Cloudflare DeepSeek, opencode)
-Builder loop, debug recipe and prompt recipes: `builders` skill (`.claude/skills/builders/SKILL.md`).
+Builder flow: `low-cost-pipeline` skill; debug recipe and prompt recipes: `builders` skill (`.claude/skills/builders/SKILL.md`).
 
 
 ## Practices taken from reem-bot and feras-career

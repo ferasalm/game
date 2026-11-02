@@ -1,0 +1,11 @@
+# Changelog: one line per upgrade (Kaizen). Newest last. Say what changed, why, and what to watch.
+- 2026-11-01 v1 (row 25): head + GLM critic, GLM middle, DeepSeek and agy hands; three small Python runs proved the plumbing only.
+- 2026-11-02 v2 (row 26): three independent critiques (Claude, GLM max, DeepSeek max) in docs/research/pipeline-v2/; plan in docs/briefs/row26-pipeline-v2-plan.md.
+- 2026-11-02 cost is measured: `opencode session export` gives tokens per session (the log has none); runs.csv gains tokens, usd_est, source, idle_min; unknown is `?`.
+- 2026-11-02 run state is true: a crashed gate is ERROR (was FAIL), the brief is copied at launch, a stale PASS is removed, fix_passes counts passes that ran, NOWORK/REFUSED/ERROR rows reach runs.csv, a builder that never started says why.
+- 2026-11-02 idle: a quiet watchdog (QUIET_SEC 300) kills a builder that committed then went silent; watch for a slow thinker cut short (its commits are still gated).
+- 2026-11-02 routing: reviewer by author family (builders.conf XR_REVIEWER_*), merge_run reads the prefix and needs `VERDICT PASS`, CI wait pins check.yml with every run green and a 960 s cap, OC_MODEL = CF_MODEL.
+- 2026-11-02 context: part_report.py replaces reading logs and diffs; foremen are scripts; one Haiku flag confirmer.
+- 2026-11-02 argv cap: oc_task.sh passes the prompt as `-f <file>` (a prompt over ~32 KB died with "Argument list too long").
+- 2026-11-02 lesson: a red test on a shared base refuses every sibling launch (base_red); each part's red tests live on its own base branch (lock_tests.sh does it). Two BREACHes were briefs that missed existing tests: ripple.py.
+- 2026-11-02 lesson: parts that pass alone can fail together (a new stub call in one made another's test count wrong): parts_plan.py plus a full check after each merge.

@@ -40,17 +40,17 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | .agents/skills/ui-designer/SKILL.md | UI Designer: Neon Glitch menus and HUD | 2 | 5 |
 | .agents/skills/ui-finish-gate-reviewer/SKILL.md | UI Finish-Gate Reviewer: Neon Glitch, before Feras | 2 | 4 |
 | .claude/coach-history.md | Coach history (kaizen:coach; committed; entries older than 30 days move to coach-history-archive.md) | 5 | 6 |
-| .claude/rules/code.md | Code rules (Claude and builders; build_pipeline pastes this file into every builder prompt) | 13 | 9 |
+| .claude/rules/code.md | Code rules (Claude and builders; build_pipeline pastes this file into every builder prompt) | 14 | 9 |
 | .claude/rules/tooling/lsp-fallbacks.md | GDScript language server (studio plugin) and what to do when it is down | 8 | 6 |
 | .claude/skills/3d-model/SKILL.md | 3D models (Rodin credits, about 50 left on 10-27 minus the Roya jobs in SPEND.md, expire about 2026-11-17) | 2 | 9 |
 | .claude/skills/3d-model/lessons.md | 3d-model lessons (dated lines, <= 40) | 0 | 1 |
 | .claude/skills/3d-model/research-queue.md | Research queue (open questions for free models and Feras's Gemini runs; remove a line when answered) | 0 | 0 |
 | .claude/skills/blender-addon-engineer/SKILL.md | Blender Add-on Engineer: Neon Glitch model tooling | 0 | 6 |
-| .claude/skills/builders/SKILL.md | Builders: one skill for planning, building, debugging and briefing | 4 | 13 |
+| .claude/skills/builders/SKILL.md | Builders: how to brief each executor, and how to debug | 4 | 6 |
 | .claude/skills/builders/lessons.md | Builder lessons (seed: docs/LESSONS.md section 4; add dated lines here, keep <= 40) | 0 | 7 |
-| .claude/skills/builders/models.md | Builder Model Cards | 0 | 6 |
+| .claude/skills/builders/models.md | Builder Model Cards | 1 | 6 |
 | .claude/skills/builders/research-queue.md | Research queue (open questions for free models and Feras's Gemini runs; remove a line when answered) | 0 | 0 |
-| .claude/skills/emergency-efficiency/SKILL.md | Emergency efficiency: delta on the builders skill (D3; Feras 2026-10-23) | 0 | 9 |
+| .claude/skills/emergency-efficiency/SKILL.md | Emergency efficiency: delta on the builders skill (D3; Feras 2026-10-23) | 0 | 10 |
 | .claude/skills/flow-media/SKILL.md | Flow media (Claude in Chrome only) | 1 | 4 |
 | .claude/skills/flow-media/lessons.md | flow-media lessons (seed: docs/LESSONS.md section 5; dated lines, <= 40) | 0 | 1 |
 | .claude/skills/flow-media/research-queue.md | Research queue (open questions for free models and Feras's Gemini runs; remove a line when answered) | 0 | 0 |
@@ -59,7 +59,15 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | .claude/skills/godot-gameplay-scripter/SKILL.md | Godot Gameplay Scripter: Neon Glitch combat code | 0 | 5 |
 | .claude/skills/godot-shader-developer/SKILL.md | Godot Shader Developer: Neon Glitch light and VFX | 0 | 9 |
 | .claude/skills/level-designer/SKILL.md | Level Designer: Neon Glitch spaces and encounters | 0 | 4 |
-| .claude/skills/low-cost-pipeline/SKILL.md | Low-cost pipeline (Feras 11-01): head, middle, hand | 1 | 4 |
+| .claude/skills/low-cost-pipeline/SKILL.md | Low-cost pipeline (Feras 11-01, v2 11-02): one folder owns the workflow | 2 | 11 |
+| .claude/skills/low-cost-pipeline/changelog.md | Changelog: one line per upgrade (Kaizen). Newest last. Say what changed, why, and what to watch. | 0 | 1 |
+| .claude/skills/low-cost-pipeline/foremen.md | Foremen and context hygiene (Feras 11-02) | 0 | 4 |
+| .claude/skills/low-cost-pipeline/mechanical.md | Mechanical lane: DeepSeek without reasoning (Feras 11-02) | 0 | 3 |
+| .claude/skills/low-cost-pipeline/proof.md | Proof: what has been shown, what each run must measure (row 26, Feras 11-02) | 0 | 2 |
+| .claude/skills/low-cost-pipeline/routing.md | Routing: who does what (the one routing table; Feras 11-01, extended 11-02) | 1 | 7 |
+| .claude/skills/low-cost-pipeline/templates/brief-hand.md | Brief: <task> (<worker and effort>; <language>, RUN_KIND=<py/godot>) | 0 | 3 |
+| .claude/skills/low-cost-pipeline/templates/brief-mechanical.md | Brief: <task> (DeepSeek non-reasoning, `fast`; RUN_KIND=py) | 1 | 2 |
+| .claude/skills/low-cost-pipeline/templates/brief-scope.md | Brief: <task>-tests (SCOPE RUN: a worker writes ONLY the red tests; RUN_KIND=py) | 0 | 2 |
 | .claude/skills/market-player/SKILL.md | Market and player (draft only: Feras decides, publishes and spends) | 0 | 1 |
 | .claude/skills/market-player/lessons.md | market-player lessons (dated lines, <= 40) | 0 | 0 |
 | .claude/skills/market-player/research-queue.md | Research queue (open questions for free models and Feras's Gemini runs; remove a line when answered) | 0 | 0 |
@@ -104,11 +112,11 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/DECISIONS.md | Decisions in force: the rules most tasks need (full history: docs/decisions-log.md) | 19 | 10 |
 | docs/HOW_WE_WORK.md | How We Work | 3 | 3 |
 | docs/LESSONS.md | Lessons (curated; symptom -> cause -> fix; dated; max 100 lines; aim ~50; condense back to ~70) | 13 | 11 |
-| docs/MAP.md | Map (generated by tools/map.py; do not edit by hand) | 16 | 755 |
+| docs/MAP.md | Map (generated by tools/map.py; do not edit by hand) | 17 | 755 |
 | docs/SPEND.md | SPEND (every credit or money spend: date / what / amount / why / who approved) | 6 | 0 |
 | docs/USAGE.md | Usage ledger | 5 | 15 |
-| docs/VISION.md | Neon Glitch: vision (Feras owns this file; it changes only by a logged decision) | 11 | 4 |
-| docs/WORKFLOW.md | WORKFLOW: how the studio works (protocols, routing, limits, routes) | 17 | 36 |
+| docs/VISION.md | Neon Glitch: vision (Feras owns this file; it changes only by a logged decision) | 12 | 4 |
+| docs/WORKFLOW.md | WORKFLOW: how the studio works (protocols, routing, limits, routes) | 16 | 38 |
 | docs/audits/2026-11-01-coach-compare.md | Coach audit: cf DeepSeek V4.1 Flash max vs Haiku 5.5 medium (2026-11-01, row 25; for Feras and Claude) | 4 | 7 |
 | docs/audits/2026-11-01-coach-dsv4.md | Coach audit by cf DeepSeek V4.1 Flash max, read-only (2026-11-01, row 25; saved from the opencode output) | 0 | 23 |
 | docs/audits/2026-11-01-coach-glmflash.md | Coach audit by cf GLM-5.3-Flash, read-only (2026-11-02, row 25; saved from the opencode output) | 1 | 22 |
@@ -118,16 +126,17 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/audits/2026-11-02-coach-glmflash.md | [0m | 0 | 28 |
 | docs/audits/2026-11-02-integrity.md | Integrity Audit: 2026-11-02 | 4 | 62 |
 | docs/audits/coach-audit-prompt.md | Prompt: read-only Claude Code setup audit ("coach") for tools/cf_audit.sh | 2 | 6 |
-| docs/briefs/TEMPLATE.md | Brief: <task> (copy to docs/briefs/<task>.md; <= 80 lines; tools/test_template.py keeps the gate's headings here) | 5 | 13 |
+| docs/briefs/TEMPLATE.md | Brief: <task> (copy to docs/briefs/<task>.md; <= 80 lines; tools/test_template.py keeps the gate's headings here) | 3 | 13 |
 | docs/briefs/archive-cleanup.md | DONE 2026-10-27 (stages 1-3 on main). Chat brief: finish the 3D archive + rename zayd -> rydan (Feras 2026-10-27, decisions-log) | 0 | 9 |
 | docs/briefs/neon-cold-open.md | Brief: neon-cold-open (Neon Glitch: Roya cold open, watch only, about 40 s; <= 60 lines) | 1 | 22 |
 | docs/briefs/neon-roof.md | Brief: neon-roof (Neon Glitch prison roof: iso exploration; <= 60 lines) | 1 | 25 |
 | docs/briefs/row25-base-red.md | Brief: row25-base-red (pipeline run, cf DeepSeek high; fixes from the row 25 review lenses) | 0 | 5 |
 | docs/briefs/row26-a-runstate.md | Brief: row26-a-runstate (cf DeepSeek max; Python and shell, RUN_KIND=py) | 2 | 14 |
 | docs/briefs/row26-a-tests.md | Brief: row26-a-tests (SCOPE RUN: GLM-5.3 max writes ONLY the red tests; RUN_KIND=py) | 0 | 10 |
-| docs/briefs/row26-pipeline-v2-plan.md | Plan: low-cost pipeline v2 (row 26, Feras 11-02; head = Claude, any model) | 1 | 19 |
+| docs/briefs/row26-pipeline-v2-plan.md | Plan: low-cost pipeline v2 (row 26, Feras 11-02; head = Claude, any model) | 2 | 20 |
 | docs/briefs/row26-s10-report.md | Brief: row26-s10-report (cf DeepSeek high; Python only, RUN_KIND=py) | 0 | 11 |
 | docs/briefs/row26-s12-parts.md | Brief: row26-s12-parts (cf DeepSeek high; Python only, RUN_KIND=py) | 0 | 6 |
+| docs/briefs/row26-s13-ripple.md | Brief: row26-s13-ripple (cf DeepSeek high; Python only, RUN_KIND=py) | 0 | 8 |
 | docs/briefs/row26-s2-usage.md | Brief: row26-s2-usage (cf DeepSeek high; Python only, RUN_KIND=py) | 0 | 13 |
 | docs/briefs/row26-s4-routing.md | Brief: row26-s4-routing (cf DeepSeek high; shell and Python, RUN_KIND=py) | 2 | 13 |
 | docs/briefs/row26-s4-tests.md | Brief: row26-s4-tests (SCOPE RUN: GLM-5.3 max writes ONLY the red tests; RUN_KIND=py) | 0 | 11 |
@@ -203,10 +212,15 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 - .claude/skills/3d-model/lessons.md
 - .claude/skills/3d-model/research-queue.md
 - .claude/skills/builders/lessons.md
-- .claude/skills/builders/models.md
 - .claude/skills/builders/research-queue.md
 - .claude/skills/flow-media/lessons.md
 - .claude/skills/flow-media/research-queue.md
+- .claude/skills/low-cost-pipeline/changelog.md
+- .claude/skills/low-cost-pipeline/foremen.md
+- .claude/skills/low-cost-pipeline/mechanical.md
+- .claude/skills/low-cost-pipeline/proof.md
+- .claude/skills/low-cost-pipeline/templates/brief-hand.md
+- .claude/skills/low-cost-pipeline/templates/brief-scope.md
 - .claude/skills/market-player/lessons.md
 - .claude/skills/market-player/research-queue.md
 - .claude/skills/ops-review/lessons.md
@@ -226,6 +240,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 - docs/briefs/row26-a-tests.md
 - docs/briefs/row26-s10-report.md
 - docs/briefs/row26-s12-parts.md
+- docs/briefs/row26-s13-ripple.md
 - docs/briefs/row26-s2-usage.md
 - docs/briefs/row26-s4-tests.md
 - docs/briefs/row26-s5-scope.md
@@ -438,11 +453,12 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 - .agents/skills/level-designer/SKILL.md, .claude/skills/level-designer/SKILL.md: - vision: "living old sana'a: cyberpunk yemen as the world itself: tower-houses, qamariya light, jambiya, qishr, umbrellas against acid rain, musnad signs."
 - .agents/skills/level-designer/SKILL.md, .claude/skills/level-designer/SKILL.md: - write the emotional arc in one paragraph and name the moment the player must remember.
 - .agents/skills/ui-finish-gate-reviewer/SKILL.md, .claude/skills/ui-finish-gate-reviewer/SKILL.md, plugins/studio/agents/ui-finish-gate-reviewer.md: - write the product lens first: who plays, what they finish, the first-read object, the primary action, density, and the phone constraint.
+- .claude/skills/low-cost-pipeline/templates/brief-hand.md, docs/briefs/TEMPLATE.md: <the owner's words, one or two lines>. pillar served (docs/vision.md): <one pillar; combat feel wins ties>.
 - .agents/archive/codebase-archaeologist/SKILL.md, .agents/archive/codebase-onboarding-engineer/SKILL.md, .agents/archive/devops-automator/SKILL.md, .agents/archive/feedback-synthesizer/SKILL.md, .agents/archive/git-workflow-master/SKILL.md, .agents/archive/mcp-builder/SKILL.md, .agents/archive/performance-benchmarker/SKILL.md, .agents/archive/prompt-engineer/SKILL.md, .agents/archive/rapid-prototyper/SKILL.md, .agents/archive/software-architect/SKILL.md, .agents/archive/technical-writer/SKILL.md, .agents/archive/test-results-analyzer/SKILL.md, .agents/archive/ux-architect/SKILL.md, .agents/archive/workflow-architect/SKILL.md, .agents/skills/code-reviewer/SKILL.md, .agents/skills/cultural-intelligence-strategist/SKILL.md, .agents/skills/image-prompt-engineer/SKILL.md, .agents/skills/minimal-change-engineer/SKILL.md: > builder note: gemini.md and the brief win where this differs (typed gdscript in godot 4.7, no web stacks, <= 200 lines a file, numbers in content json). source: agency-agents (mit), .agents/skills/agency-license.
-- docs/briefs/row25-base-red.md, docs/briefs/row26-s10-report.md, docs/briefs/row26-s12-parts.md, docs/briefs/row26-s2-usage.md, docs/briefs/row26-s4-routing.md: `bash tools/check.sh --no-godot` raw last 15 lines; final message ends with `built-by: deepseek v4.1 flash high (opencode)`.
+- docs/briefs/row25-base-red.md, docs/briefs/row26-s10-report.md, docs/briefs/row26-s12-parts.md, docs/briefs/row26-s13-ripple.md, docs/briefs/row26-s2-usage.md, docs/briefs/row26-s4-routing.md: `bash tools/check.sh --no-godot` raw last 15 lines; final message ends with `built-by: deepseek v4.1 flash high (opencode)`.
 - docs/briefs/row26-a-runstate.md, docs/briefs/row26-s5-scope.md, docs/briefs/row27-doc-graph.md: `bash tools/check.sh --no-godot` raw last 15 lines; final message ends with `built-by: deepseek v4.1 flash max (opencode)`.
 - .agents/skills/blender-addon-engineer/SKILL.md, .agents/skills/game-audio-engineer/SKILL.md, .agents/skills/game-designer/SKILL.md, .agents/skills/godot-gameplay-scripter/SKILL.md, .agents/skills/godot-shader-developer/SKILL.md, .agents/skills/level-designer/SKILL.md, .agents/skills/narrative-designer/SKILL.md, .agents/skills/technical-artist/SKILL.md, .agents/skills/ui-designer/SKILL.md, .agents/skills/ui-finish-gate-reviewer/SKILL.md, .claude/skills/blender-addon-engineer/SKILL.md, .claude/skills/game-audio-engineer/SKILL.md, .claude/skills/game-designer/SKILL.md, .claude/skills/godot-gameplay-scripter/SKILL.md, .claude/skills/godot-shader-developer/SKILL.md, .claude/skills/level-designer/SKILL.md, .claude/skills/narrative-designer/SKILL.md, .claude/skills/technical-artist/SKILL.md, .claude/skills/ui-designer/SKILL.md, .claude/skills/ui-finish-gate-reviewer/SKILL.md, plugins/studio/agents/ui-finish-gate-reviewer.md: adapted from the agency (agency-agents), mit: see .agents/skills/agency-license.
-- docs/briefs/row26-a-runstate.md, docs/briefs/row26-s10-report.md, docs/briefs/row26-s12-parts.md, docs/briefs/row26-s2-usage.md, docs/briefs/row26-s4-routing.md, docs/briefs/row26-s5-scope.md, docs/briefs/row26-s7-prune.md: d6 defaults, protected by tools/build_gate.py without being listed. keep this prose free of backticks outside may edit.
+- .claude/skills/low-cost-pipeline/templates/brief-hand.md, docs/briefs/row26-a-runstate.md, docs/briefs/row26-s10-report.md, docs/briefs/row26-s12-parts.md, docs/briefs/row26-s13-ripple.md, docs/briefs/row26-s2-usage.md, docs/briefs/row26-s4-routing.md, docs/briefs/row26-s5-scope.md, docs/briefs/row26-s7-prune.md: d6 defaults, protected by tools/build_gate.py without being listed. keep this prose free of backticks outside may edit.
 - docs/design/combat.md, docs/design/rydan-moves.md: demo combat stays these timeline battles; action combat (decisions 2026-10-23) replaces them after the demo.
 - .agents/skills/market-card/SKILL.md, .opencode/agent/market-card.md: description: load for market research, competitor comparables, player-persona walkthroughs, surveys and feedback synthesis for the game (not for code or art production).
 - .agents/skills/ui-card/SKILL.md, .opencode/agent/ui-card.md: description: load when building or reviewing a godot ui screen, menu, hud, dialogue box, portrait or player-facing text in this game.
@@ -462,7 +478,8 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 - plugins/studio/agents/review-canon.md, plugins/studio/agents/review-code.md, plugins/studio/agents/review-cost.md, plugins/studio/agents/review-feras.md, plugins/studio/agents/review-market.md, plugins/studio/agents/review-player.md: free route: the same brief goes to nvidia/nemotron-3-ultra-550b-a55b:free (public content only, 50 requests a day).
 - plugins/studio/agents/review-canon.md, plugins/studio/agents/review-code.md, plugins/studio/agents/review-cost.md, plugins/studio/agents/review-feras.md, plugins/studio/agents/review-market.md, plugins/studio/agents/review-player.md: if nothing is wrong, output one line: `none | - | no findings | inputs: <what you read>`.
 - .opencode/agent/art-card.md, .opencode/agent/blender-addon-engineer.md, .opencode/agent/code-reviewer.md, .opencode/agent/cultural-intelligence-strategist.md, .opencode/agent/game-audio-engineer.md, .opencode/agent/game-designer.md, .opencode/agent/gameplay-card.md, .opencode/agent/godot-gameplay-scripter.md, .opencode/agent/godot-shader-developer.md, .opencode/agent/image-prompt-engineer.md, .opencode/agent/level-designer.md, .opencode/agent/market-card.md, .opencode/agent/minimal-change-engineer.md, .opencode/agent/narrative-designer.md, .opencode/agent/technical-artist.md, .opencode/agent/ui-card.md, .opencode/agent/ui-designer.md, .opencode/agent/ui-finish-gate-reviewer.md: no c#, <= 200 lines a file, logic/ folders pure, numbers in content json, player text as localization keys. edit only
-- docs/briefs/row26-a-tests.md, docs/briefs/row26-s4-tests.md: none: tests only. they are red on the base because the spec is unbuilt; do not run check.sh to turn them green.
+- docs/briefs/row26-s12-parts.md, docs/briefs/row26-s13-ripple.md: none: a new stand-alone tool; the skill and the head call it. docs/map.md and docmap.md refresh themselves.
+- .claude/skills/low-cost-pipeline/templates/brief-scope.md, docs/briefs/row26-a-tests.md, docs/briefs/row26-s4-tests.md: none: tests only. they are red on the base because the spec is unbuilt; do not run check.sh to turn them green.
 - .agents/skills/narrative-designer/SKILL.md, .claude/skills/narrative-designer/SKILL.md: review-canon (routing: story, dialogue, names; lane oc drafts + chat taste). it checks drift from the bible, canon and names before feras sees it.
 - .agents/skills/godot-gameplay-scripter/SKILL.md, .claude/skills/godot-gameplay-scripter/SKILL.md: review-code (routing: godot gameplay code and tests; lane agy/cf). it reads the diff and the tests; it does not accept a weak or skipped check.
 - .agents/skills/level-designer/SKILL.md, .claude/skills/level-designer/SKILL.md: review-code + review-player (routing: levels, encounters, the roof layout; lane agy + chat review). code checks the layout data; the player lens checks what a new player reads.

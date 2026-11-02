@@ -1,34 +1,39 @@
 ---
 name: low-cost-pipeline
-description: Feras's 11-01 three-tier pipeline for Sonnet-high chats: head (Sonnet + GLM-5.3 max critic), middle (GLM-5.3 max scopes and writes red tests via opencode), hand (DeepSeek V4.1 Flash low/high/max and agy gemini-3.8-flash-medium execute). Use when a chat must plan, delegate, build and review at near-zero Claude cost.
+description: The whole build workflow of this repo in one folder: a Claude head (Opus or Sonnet, high) plans and decides, cheap workers (DeepSeek V4.1 Flash, GLM-5.3, agy gemini-3.8-flash) write tests and code in parallel, scripts report back in 15 lines. Use when a chat must plan a batch, delegate, build, review, merge or resume a pipeline task.
 ---
-# Low-cost pipeline (Feras 11-01): head, middle, hand
+# Low-cost pipeline (Feras 11-01, v2 11-02): one folder owns the workflow
+The head is any Claude chat at high effort (`claude --model opusplan`: Opus plans, Sonnet high executes). The head decides and
+adjudicates; cheap workers do the bulk; every other stage is a script. Claude tokens are the scarce thing, neurons are not.
+Files here: [routing.md](routing.md) who does what, [foremen.md](foremen.md) reports and context hygiene,
+[mechanical.md](mechanical.md) the no-reasoning lane, [proof.md](proof.md) proof runs and how to read the scoreboard,
+[changelog.md](changelog.md) one line per upgrade, [templates/](templates/) the three brief shapes.
 
-Sits on top of the builders skill (its Who does what table, loop, gates and merge scripts stay in force). This skill only
-adds the tier split and the commands. One smoke call per route before any batch (all five routes smoked 11-01).
+## Resume (a fresh head, cold)
+1. `bash tools/status.sh`, then read the plan file named in HANDOFF.md or the prompt (for row 26: docs/briefs/row26-pipeline-v2-plan.md). State lives in files, never in chat memory.
+2. `bash tools/slots.sh` (what runs, memory), `python tools/part_report.py <task>` per finished part (15 lines each).
+3. Take the next unfinished step of the plan; tell Feras one line (step, who runs it).
 
-## Tiers
-| Tier | Worker | Job | Command |
-|---|---|---|---|
-| Head | Claude Sonnet 5.5 high (this chat) | design, brief, review, merge, decide; never writes bulk code | - |
-| Head critic | GLM-5.3 max, Cloudflare | cross-check the plan, the brief and the diff before the head acts | `python tools/cf_probe.py --model @cf/zai-org/glm-5.3 --effort max --prompt-file p.md --out r.txt` (read-only) |
-| Middle | GLM-5.3 max via opencode | scope a brief into steps and Ripple, write the red tests | `bash tools/cf_build.sh <task> <brief> <base> cloudflare-workers-ai/@cf/zai-org/glm-5.3` |
-| Hand | DeepSeek V4.1 Flash, `low` / `high` / `max` / `fast` (none) | implement against the locked tests | `bash tools/cf_build.sh <task> <brief> <base> [cloudflare-workers-ai/deepseek-v4.1-flash-low\|-high\|fast]`; no model = max |
-| Hand | agy `gemini-3.8-flash-medium` | Godot code, discovery, docs from a brief | `bash tools/build_pipeline.sh agy <task> <brief> <base>` (`RUN_KIND=py` for Python and docs) |
+## Plan a batch (before any launch)
+- Split by FILES, not features: every part owns a disjoint May edit set and its own locked red test; only generated files (MAP.md, DOCMAP.md, runs.csv, doc_graph_allow.txt) may be shared. Parts that need another's output run after it. State the merge order (leaves first, wiring last).
+- `python tools/ripple.py <brief>` lists existing tests that name the files you will touch: put their unavoidable fixture edits in May edit with a reason (two BREACHes on 11-02 were this miss).
+- `python tools/parts_plan.py brief1.md brief2.md ...` must print OK (overlap, contradictions, shared tests).
+- Same model may run several times at once (caps in tools/builders.conf, per builder family); parallel parts cost neurons, not Claude tokens.
+- Pick each part's worker from routing.md; pre-mortem in three lines; no open design questions in a brief.
 
-Models live in `opencode.json` (GLM max, DeepSeek low, high, fast, max; limits set). `cf_build.sh` takes the model as its 4th argument.
+## Flow of one part
+1. Brief from the right template (templates/); the DeepSeek-max critic reads spec and brief into a file; the head fixes the real gaps. The critic is a different family than the test writer.
+2. Scope: `EXPECT_RED=1 RUN_KIND=py bash tools/cf_build.sh <task>-tests <brief> <base> <GLM or DeepSeek model>` (FIX_PASSES=0). Result SCOPED or REJECT. The head READS EVERY TEST (weak tests are the usual defect), edits or rejects, then `bash tools/lock_tests.sh <task>-tests <task>-base` (the tests branch becomes the hand's base; the gate protects them).
+3. Build: `RUN_KIND=py bash tools/cf_build.sh <task> <brief> <task>-base [model]` (agy: `bash tools/build_pipeline.sh agy ...`), run_in_background. Never pass a base holding another part's red test.
+4. Read `python tools/part_report.py <task>`: PASS -> review; FAIL/NOWORK/ERROR -> read the one named reason; BREACH -> read the breach (usually a fixture edit the brief missed: review the diff, merge by hand).
+5. Review: `bash tools/cross_review.sh <task> <brief> <base>` (reviewer = other family than the author, set in builders.conf); flags go to a file; confirm each against the code.
+6. Merge one part at a time: `python tools/parts_plan.py --branches oc/a oc/b`, then `bash tools/merge_run.sh <task>` (prefix and VERDICT PASS come from the .result), regenerate MAP and DOCMAP on a conflict (generated files only), `bash tools/check.sh` to a file, read its last line BEFORE any push.
+7. Kaizen: one line in changelog.md (what to cut or tune), from runs.csv.
 
-## Flow of one task
-1. Head writes the spec (no open questions) and a brief from docs/briefs/TEMPLATE.md; the critic reads spec + brief and lists gaps; the head fixes real ones.
-2. Middle (GLM max, `RUN_KIND=py` if no Godot) turns the brief into a scoped brief with Ripple and writes only the red tests in its own branch.
-3. Head reads the tests (never trust a builder-written test unread: weak or gamed assertions are the usual defect), edits or rejects, then locks them. The gate rejects a hand that edits them.
-4. Hand implements: DeepSeek low for exact edits with a Pattern, high for logic, max for hard logic and every fix pass; agy for Godot and docs. Parts run in parallel, each with only its own red test (builders loop, step 2).
-5. Gate = `check.sh` + build_gate + `cross_review.sh` (critic lens: a different model than the author: GLM max reviews DeepSeek and agy work, DeepSeek max reviews GLM work). Head confirms every flag against the code.
-6. Head merges (`merge_run.sh <task> oc` for cf runs), reads `.result`, never only the summary.
-
-## Rules
-- `/advisor`: CLAUDE.md duty 6 stands here too: stuck twice, ask Feras first; never unasked.
-- The head writes only what the brief would cost more than the edit; risky machinery (hooks, gates, saves, settings) the head reads line by line.
-- Cost: Cloudflare is billed in neurons (cf_spend.csv, no cap); GLM max is slower than DeepSeek (parser run: 619 s vs ~443 s), so run it background and wait for the notification.
-- GLM-5.3 max calibration so far: second-reviewer level only (1/2 key defects, models.md); judge its tests and flags, do not copy them.
-- Exit codes: a `.result` first word PASS / FAIL / NOWORK / BREACH decides; stdout of opencode proves nothing.
+## Hard rules
+- The head reads at most the 15-line reports, the locked tests in full, and risky hunks (hooks, gates, pipeline, saves) line by line. Redirect every long command to a file and read an offset or `tail -n 15`.
+- Never edit a tool a live run executes (bash reads scripts as they run): `bash tools/slots.sh` shows 0 runs first.
+- A red test lives on its own part's base branch, never on a base shared with siblings (base_red refuses it).
+- Stuck twice on one step: ask Feras (AskUserQuestion, with a pick); `/advisor` only with his OK (CLAUDE.md duty 6).
+- A result's first word decides: PASS, FAIL, NOWORK, BREACH, ERROR (SCOPED/REJECT for a scope run). stdout of opencode proves nothing.
+- Unknown cost is `?`, never 0. Read runs.csv, not memory.

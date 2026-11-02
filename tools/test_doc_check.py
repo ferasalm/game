@@ -107,25 +107,25 @@ def test_warns_when_always_loaded_bytes_reach_75_percent():  # row 24 (row 20 le
 SKILL_TABLE = ["| Work | Worker | How | Gate |", "|---|---|---|---|", "| code | agy | build_pipeline.sh | check |"]
 
 
-def test_a_second_worker_routing_table_fails():  # row 24 (one home): the builders skill holds Who does what, nowhere else
-    ok = run_check(QUEUE, extra={".claude/skills/builders/SKILL.md": SKILL_TABLE})
+def test_a_second_worker_routing_table_fails():  # row 24 (one home): the low-cost-pipeline skill (routing.md) holds Who does what, nowhere else
+    ok = run_check(QUEUE, extra={".claude/skills/low-cost-pipeline/routing.md": SKILL_TABLE})
     assert ok.returncode == 0, ok.stdout + ok.stderr
     for name, table in (("docs/WORKFLOW2.md", ["| Work | Who | Effort |", "|---|---|---|", "| code | agy | medium |"]),
                         (".claude/skills/builders/models.md", ["| Task class | Model | Calibrated |", "|---|---|---|", "| code | agy | yes |"])):
-        r = run_check(QUEUE, extra={".claude/skills/builders/SKILL.md": SKILL_TABLE, name: table})
+        r = run_check(QUEUE, extra={".claude/skills/low-cost-pipeline/routing.md": SKILL_TABLE, name: table})
         assert r.returncode == 1 and "second worker routing table" in r.stdout and name in r.stdout, name + "\n" + r.stdout
-    arch = run_check(QUEUE, extra={".claude/skills/builders/SKILL.md": SKILL_TABLE, "docs/archive/old.md": SKILL_TABLE})
+    arch = run_check(QUEUE, extra={".claude/skills/low-cost-pipeline/routing.md": SKILL_TABLE, "docs/archive/old.md": SKILL_TABLE})
     assert arch.returncode == 0, "archived docs are history, not a routing table\n" + arch.stdout
 
 
 def test_a_second_routing_table_in_a_plugin_or_a_persona_fails():  # row 25 lens: the scan missed plugins/ and .agents/
     for name in ("plugins/pm/skills/x/SKILL.md", ".agents/skills/p/SKILL.md"):
-        r = run_check(QUEUE, extra={".claude/skills/builders/SKILL.md": SKILL_TABLE, name: SKILL_TABLE})
+        r = run_check(QUEUE, extra={".claude/skills/low-cost-pipeline/routing.md": SKILL_TABLE, name: SKILL_TABLE})
         assert r.returncode == 1 and "second worker routing table" in r.stdout and name in r.stdout, name + "\n" + r.stdout
 
 
 def test_a_second_routing_table_in_handoff_fails():  # row 25 sign-off: both lenses named HANDOFF.md, the first fix left it out
-    r = run_check(QUEUE + SKILL_TABLE, extra={".claude/skills/builders/SKILL.md": SKILL_TABLE})
+    r = run_check(QUEUE + SKILL_TABLE, extra={".claude/skills/low-cost-pipeline/routing.md": SKILL_TABLE})
     assert r.returncode == 1 and "second worker routing table: HANDOFF.md" in r.stdout, r.stdout
 
 
