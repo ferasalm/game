@@ -7,3 +7,4 @@ date,task,worker,effort,gate,fix_passes,minutes,cost,real_findings
 2026-11-01,row25-base-red,cf,high,PASS,0,31,0,0
 2026-11-01,row27-doc-graph,cf,-,PASS,0,27,0,0
 2026-11-02,row26-s7-prune,cf,low,PASS,0,18,0,0
+2026-11-02,row26-s2-usage,cf,high,BREACH,1,36,0,0
