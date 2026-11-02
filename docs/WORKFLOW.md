@@ -105,6 +105,7 @@ reviewer with no plugins/studio/agents/<name>.md, and any plugins/studio/agents/
 | Godot test suites at once | 2 (CHECK_SLOTS=2) | tools/check_slot.sh |
 | Free memory before a Godot run | >= 2000 MB of available RAM (MIN_FREE_MB=2000, Feras 11-01) | tools/slots.sh |
 | Builder with no commit | killed after 25 min (IDLE_MIN=25); result NOWORK | tools/build_pipeline.sh |
+| Builder that committed, then went silent (cf, oc; not agy) | killed after QUIET_SEC=300 of no log growth and no `.check/alive` beat; its commits are gated | tools/build_pipeline.sh, tools/check.sh |
 | OpenRouter :free requests | 50 a day, shared by all :free models | the provider; check before a run |
 | Claude's handoff | the chat's task done, or ~85% of the 5-hour window; never context size (Feras 10-31) | the status line's usage; review-cost |
 | Always-loaded notes | 27 KB each; lines: CLAUDE.md 80, HANDOFF 60, DECISIONS 70, LESSONS 100 (warns at 75%) | tools/doc_check.py |

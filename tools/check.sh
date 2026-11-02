@@ -4,6 +4,11 @@
 set -uo pipefail
 cd "$(dirname "$0")/.."
 mkdir -p .check
+# Heartbeat (review 11-02): a step prints nothing until it ends, so a builder waiting on this check in the foreground looked
+# hung to build_pipeline's quiet watchdog (4 of 6 quiet kills on 11-02 were inside check.sh). .check/alive is touched while
+# this script lives; the loop ends within one beat of it (no trap, no orphan) and holds none of its output pipes.
+hb_parent=$$
+( while kill -0 "$hb_parent" 2> /dev/null; do touch .check/alive; sleep "${CHECK_HEARTBEAT_SEC:-15}"; done ) > /dev/null 2>&1 < /dev/null &
 fails=0
 step() {
   local name="$1" t0=$SECONDS; shift

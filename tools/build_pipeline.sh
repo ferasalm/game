@@ -18,7 +18,7 @@ here="$lib_dir"; root="$(git rev-parse --show-toplevel)"; dir="$(wt_dir)"; wt="$
 prefix="$(builder_prefix "$builder")"
 idle_sec="${IDLE_SEC:-$((IDLE_MIN * 60))}"; quiet_sec="${QUIET_SEC:-300}"; poll="${WATCH_POLL:-20}"
 pipeline_start=$(date +%s)
-idle_min=0; idle_note=""; quota=""; bg_kill=""; quiet=""; quiet_n=0; fork_note=""; fix=0
+idle_min=0; idle_total=0; idle_note=""; quota=""; bg_kill=""; quiet=""; quiet_n=0; fork_note=""; fix=0
 model_used="${model:-}"
 if [ -z "$model_used" ]; then  # the model the build runs on: argv, else the builder's builders.conf default
   case "$builder" in agy) model_used="$AGY_MODEL" ;; cf) model_used="$CF_MODEL" ;; oc) model_used="$OC_MODEL" ;; esac
@@ -32,7 +32,8 @@ log_row() {  # <gate> <minutes> <fix passes>: ONE docs/runs.csv row per end path
   read -r tin tout usd src <<< "$(row_tokens "$1")"
   eff="$($py tools/model_effort.py "$eff_m" 2> /dev/null)"; [ -n "$eff" ] || eff="-"
   local args=(append --task "$name" --worker "$builder" --effort "$eff" --gate "$1" --fix-passes "$3" --minutes "$2")
-  args+=(--cost 0 --findings 0 --tokens-in "$tin" --tokens-out "$tout" --usd "$usd" --source "$src" --idle-min "$idle_min")
+  # cost and real_findings are not measured here: unknown is ?, never 0 (the real reading is usd_est, review 11-02)
+  args+=(--cost '?' --findings '?' --tokens-in "$tin" --tokens-out "$tout" --usd "$usd" --source "$src" --idle-min "$idle_min")
   $py tools/runs_log.py "${args[@]}" || echo "WARN: the run logger failed, no docs/runs.csv row for $name" >&2 || true
 }
 refuse() { echo "REFUSED: $*" >&2; echo "REFUSED: $*"; clean_empty_wt; log_row REFUSED 0 "$fix"; exit 3; }
@@ -61,7 +62,7 @@ cp "$brief" "$brief_copy" 2> /dev/null || refuse "brief $brief is not readable"
 brief="$brief_copy"
 
 run() {  # <brief file>; watched: idle (no commit), quiet (a commit but no log growth), background check. 99 when killed.
-  local last pid mark bg_mark="" log_size=-1 log_mark n0
+  local last pid mark bg_mark="" log_size=-1 log_mark n0 alive
   mark=$(date +%s); log_mark=$mark
   n0="$(git -C "$wt" rev-list --count "$base..HEAD" 2> /dev/null || echo 0)"  # commits before this call: a fix pass starts with the build's
   if [ -n "${BUILDER_CMD:-}" ]; then bash "$BUILDER_CMD" "$name" "$1" "$base" ${model:+"$model"} < /dev/null > "$wt.log" 2>&1 &
@@ -73,6 +74,8 @@ run() {  # <brief file>; watched: idle (no commit), quiet (a commit but no log g
     local now size; now=$(date +%s)
     last="$(git -C "$wt" log -1 --format=%ct 2> /dev/null || echo 0)"; [ "${last:-0}" -gt "$mark" ] && mark="$last"
     size="$(stat -c %s "$wt.log" 2> /dev/null || echo 0)"; [ "$size" = "$log_size" ] || { log_size="$size"; log_mark=$now; }
+    # check.sh's heartbeat: a builder waiting on its foreground check is working, not hung (review 11-02)
+    alive="$(stat -c %Y "$wt/.check/alive" 2> /dev/null || echo 0)"; [ $(( now - alive )) -ge "$quiet_sec" ] || log_mark=$now
     # opencode's spent free quota prints no text and exits 0 (row16-audit hung 25 min, 10-29): stop at the first sight
     if grep -q "$OC_QUOTA_MSG" "$wt.log" 2> /dev/null; then quota=1; kill_tree "$pid"; wait "$pid" 2> /dev/null; return 99; fi
     # A check the builder moved to the background reaches no commit (fast-probe-stream polled one for 25 min, row 18c)
@@ -95,7 +98,9 @@ run() {  # <brief file>; watched: idle (no commit), quiet (a commit but no log g
 }
 kill_exit() {  # <step>: killed idle/quiet/background. Committed work still goes to check and gate (builders hang after a commit)
   leftovers "$1"
-  idle_min=$(( idle_sec / 60 )); [ -z "$quiet" ] || idle_min=$(( quiet_n / 60 )); [ -z "$bg_kill" ] || idle_min=0
+  # the seconds this kill cost, SUMMED over the run's kills (a build kill plus a fix-pass kill is both; review 11-02)
+  local lost=$idle_sec; [ -z "$quiet" ] || lost=$quiet_n; [ -z "$bg_kill" ] || lost=0
+  idle_total=$(( idle_total + lost )); idle_min=$(( idle_total / ${IDLE_UNIT:-60} ))  # IDLE_UNIT: tests shrink a "minute"
   if commits; then
     idle_note="idle: $1 killed after ${idle_sec}s without a commit; its commits were checked"
     if [ -n "$quiet" ]; then idle_note="quiet: $1 killed after ${quiet_n}s without log output; its commits were checked"

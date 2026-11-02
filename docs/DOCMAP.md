@@ -126,7 +126,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/audits/2026-11-02-coach-glmflash.md | [0m | 0 | 28 |
 | docs/audits/2026-11-02-integrity.md | Integrity Audit: 2026-11-02 | 4 | 62 |
 | docs/audits/coach-audit-prompt.md | Prompt: read-only Claude Code setup audit ("coach") for tools/cf_audit.sh | 2 | 6 |
-| docs/briefs/TEMPLATE.md | Brief: <task> (copy to docs/briefs/<task>.md; <= 80 lines; tools/test_template.py keeps the gate's headings here) | 4 | 13 |
+| docs/briefs/TEMPLATE.md | Brief: <task> (copy to docs/briefs/<task>.md; <= 80 lines; tools/test_template.py keeps the gate's headings here; for a pipeline batch start from the scope, hand or mechanical shape in the low-cost-pipeline skill instead) | 4 | 13 |
 | docs/briefs/archive-cleanup.md | DONE 2026-10-27 (stages 1-3 on main). Chat brief: finish the 3D archive + rename zayd -> rydan (Feras 2026-10-27, decisions-log) | 0 | 9 |
 | docs/briefs/neon-cold-open.md | Brief: neon-cold-open (Neon Glitch: Roya cold open, watch only, about 40 s; <= 60 lines) | 1 | 22 |
 | docs/briefs/neon-roof.md | Brief: neon-roof (Neon Glitch prison roof: iso exploration; <= 60 lines) | 1 | 25 |

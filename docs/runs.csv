@@ -1,28 +1,28 @@
 date,task,worker,effort,gate,fix_passes,minutes,cost,real_findings,tokens_in,tokens_out,usd_est,cost_source,idle_min
-2026-11-01,row24b-archive,cf,none,FAIL,3,33,0,1,?,?,?,unknown,?
-2026-11-01,row24a-one-home-docs,agy,medium,PASS,1,38,0,1,?,?,?,unknown,?
-2026-11-01,row24c-audit,agy,medium,BREACH,1,52,0,1,?,?,?,unknown,?
-2026-11-01,row25-sync-dirty,cf,low,FAIL,1,41,0,0,?,?,?,unknown,?
-2026-11-01,row25-sync-dirty2,cf,low,PASS,0,29,0,0,?,?,?,unknown,?
-2026-11-01,row25-base-red,cf,high,PASS,0,31,0,0,?,?,?,unknown,?
-2026-11-01,row27-doc-graph,cf,-,PASS,0,27,0,0,?,?,?,unknown,?
-2026-11-02,row26-s7-prune,cf,low,PASS,0,18,0,0,?,?,?,unknown,?
-2026-11-02,row26-s2-usage,cf,high,BREACH,1,36,0,0,?,?,?,unknown,?
-2026-11-02,row26-s4-tests,cf,-,NOWORK,0,4,0,0,?,?,?,unknown,?
-2026-11-02,row26-s4-tests,cf,-,NOWORK,0,4,0,0,?,?,?,unknown,?
-2026-11-02,row26-s4-tests,cf,-,FAIL,1,29,0,0,?,?,?,unknown,?
-2026-11-02,row26-a-tests,cf,-,FAIL,1,43,0,0,?,?,?,unknown,?
-2026-11-02,row26-s4-routing,cf,high,BREACH,1,42,0,0,?,?,?,unknown,?
-2026-11-02,row26-s10-report,cf,high,PASS,0,25,0,0,?,?,?,unknown,?
-2026-11-02,row26-a-runstate,cf,-,PASS,0,69,0,0,?,?,?,unknown,?
-2026-11-02,row26-s5-scope,cf,max,REFUSED,0,0,0,0,?,?,?,unknown,0
-2026-11-02,row26-s12-parts,cf,high,PASS,0,38,0,0,71588,12270,0.0362,opencode-export (corrected: per-directory),5
-2026-11-02,row26-s5-scope,cf,max,PASS,0,35,0,0,72987,19808,0.0457,opencode-export (corrected: per-directory),5
-2026-11-02,row26-s13-ripple,cf,high,PASS,1,57,0,0,99154,27506,0.0628,opencode-export (corrected: per-directory),5
-2026-11-02,row26-p1-agy,agy,medium,REFUSED,0,0,0,0,?,?,?,unknown,0
-2026-11-02,row26-p2-ds-tests,cf,max,NOWORK,0,4,0,0,?,?,?,unknown,0
-2026-11-02,row26-p2-ds-tests,cf,max,SCOPED,0,7,0,0,57110,28864,0.0518,opencode-export,0
-2026-11-02,row26-p2-glm-tests,cf,max,SCOPED,0,16,0,0,171192,66662,0.1314,opencode-export,5
-2026-11-02,row26-p2-kaizen,cf,low,REFUSED,0,0,0,0,?,?,?,unknown,0
-2026-11-02,row26-p2-kaizen,cf,low,PASS,1,27,0,0,100896,34673,0.0719,opencode-export,5
-2026-11-02,row26-p1-agy,agy,medium,PASS,1,27,0,0,?,?,?,unknown,5
+2026-11-01,row24b-archive,cf,none,FAIL,3,33,?,1,?,?,?,unknown,?
+2026-11-01,row24a-one-home-docs,agy,medium,PASS,1,38,?,1,?,?,?,unknown,?
+2026-11-01,row24c-audit,agy,medium,BREACH,1,52,?,1,?,?,?,unknown,?
+2026-11-01,row25-sync-dirty,cf,low,FAIL,1,41,?,0,?,?,?,unknown,?
+2026-11-01,row25-sync-dirty2,cf,low,PASS,0,29,?,0,?,?,?,unknown,?
+2026-11-01,row25-base-red,cf,high,PASS,0,31,?,0,?,?,?,unknown,?
+2026-11-01,row27-doc-graph,cf,-,PASS,0,27,?,0,?,?,?,unknown,?
+2026-11-02,row26-s7-prune,cf,low,PASS,0,18,?,0,?,?,?,unknown,?
+2026-11-02,row26-s2-usage,cf,high,BREACH,1,36,?,0,?,?,?,unknown,?
+2026-11-02,row26-s4-tests,cf,-,NOWORK,0,4,?,0,?,?,?,unknown,?
+2026-11-02,row26-s4-tests,cf,-,NOWORK,0,4,?,0,?,?,?,unknown,?
+2026-11-02,row26-s4-tests,cf,-,FAIL,1,29,?,0,?,?,?,unknown,?
+2026-11-02,row26-a-tests,cf,-,FAIL,1,43,?,0,?,?,?,unknown,25
+2026-11-02,row26-s4-routing,cf,high,BREACH,1,42,?,0,?,?,?,unknown,25
+2026-11-02,row26-s10-report,cf,high,PASS,0,25,?,0,?,?,?,unknown,?
+2026-11-02,row26-a-runstate,cf,-,PASS,0,69,?,0,?,?,?,unknown,?
+2026-11-02,row26-s5-scope,cf,max,REFUSED,0,0,?,0,?,?,?,unknown,0
+2026-11-02,row26-s12-parts,cf,high,PASS,0,38,?,0,71588,12270,0.0362,opencode-export (corrected: per-directory),5
+2026-11-02,row26-s5-scope,cf,max,PASS,0,35,?,0,72987,19808,0.0457,opencode-export (corrected: per-directory),5
+2026-11-02,row26-s13-ripple,cf,high,PASS,1,57,?,0,99154,27506,0.0628,opencode-export (corrected: per-directory),5
+2026-11-02,row26-p1-agy,agy,medium,REFUSED,0,0,?,0,?,?,?,unknown,0
+2026-11-02,row26-p2-ds-tests,cf,max,NOWORK,0,4,?,0,?,?,?,unknown,0
+2026-11-02,row26-p2-ds-tests,cf,max,SCOPED,0,7,?,0,57110,28864,0.0518,opencode-export,0
+2026-11-02,row26-p2-glm-tests,cf,max,SCOPED,0,16,?,0,171192,66662,0.1314,opencode-export,5
+2026-11-02,row26-p2-kaizen,cf,low,REFUSED,0,0,?,0,?,?,?,unknown,0
+2026-11-02,row26-p2-kaizen,cf,low,PASS,1,27,?,0,100896,34673,0.0719,opencode-export,5
+2026-11-02,row26-p1-agy,agy,medium,PASS,1,27,?,0,?,?,?,unknown,5

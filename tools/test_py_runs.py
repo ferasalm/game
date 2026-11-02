@@ -7,6 +7,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import build_gate as bg  # noqa: E402
@@ -70,6 +71,20 @@ def check_toy():
     git(d, "add", "-A")
     git(d, "commit", "-qm", "toy")
     return d
+
+
+def test_check_sh_beats_while_it_runs_and_stops_after():
+    d = check_toy()  # review 11-02: build_pipeline's quiet watchdog reads .check/alive; the beat must not outlive check.sh
+    put(d + "/tools/tool_tests.py", "import time\ntime.sleep(3)\nprint('ok')\n")
+    env = {**os.environ, "CHECK_SLOT_DIR": d + "/slots", "CHECK_HEARTBEAT_SEC": "1"}
+    r = subprocess.run(["bash", "tools/check.sh", "--no-godot"], cwd=d, env=env, capture_output=True, text=True, timeout=60)
+    assert r.returncode == 0, r.stdout + r.stderr
+    alive = d + "/.check/alive"
+    time.sleep(1.5)  # one last beat may land just after check.sh exits; then the loop must be gone
+    m1 = os.path.getmtime(alive)
+    time.sleep(3)
+    assert os.path.getmtime(alive) == m1, "the heartbeat loop must end with check.sh"
+    assert m1 - os.path.getmtime(d + "/.check/docs.log") >= 1, "it must beat during the 3 s step, not only at the start"
 
 
 def test_check_no_godot_runs_no_godot():

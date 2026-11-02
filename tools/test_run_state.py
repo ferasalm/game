@@ -23,6 +23,9 @@ case "${FAKE2_MODE:-}" in
   del_brief) commit; rm -f "$KILL_BRIEF" ;; break_git) commit; echo broken > .git ;;
   bad_check) touch fail.flag; commit ;;
   slow_fix) case "$2" in *.fix.md) sleep 8; rm -f fail.flag; commit ;; *) touch fail.flag; commit ;; esac ;; tick) commit; for i in 1 2 3 4 5 6 7 8; do echo "tick $i"; sleep 1; done ;;
+  beat) commit; mkdir -p .check; for i in 1 2 3 4 5 6 7 8; do touch .check/alive; sleep 1; done; rm -rf .check ;;
+  hang2) case "$2" in *.fix.md) echo x > f2; git add -A; git -c user.name=t -c user.email=t@t commit -qm fix; sleep 30 ;;
+    *) touch fail.flag; commit; sleep 30 ;; esac ;;
 esac
 '''
 
@@ -133,6 +136,23 @@ def test_a_silent_fix_pass_with_no_commit_of_its_own_is_not_quiet_killed():
     assert rc == 0 and res.startswith("PASS") and not re.search(r"^quiet: ", res, re.M), (rc, res, err)
 
 
+def test_a_builder_waiting_on_its_check_heartbeat_is_not_quiet_killed():
+    top, g = toy()  # review 11-02: check.sh prints nothing until a step ends; its .check/alive beat is the sign of life
+    rc, out, err = pipeline(g, top, QUIET_SEC="3", WATCH_POLL="1", **stub_builder(top, "beat"))
+    res = result(top)
+    assert rc == 0 and res.startswith("PASS") and not re.search(r"^quiet: ", res, re.M), (rc, res, err)
+
+
+def test_idle_minutes_are_summed_over_every_kill_of_the_run():
+    top, g = toy_tools()  # a build kill AND a fix-pass kill: each costs QUIET_SEC; IDLE_UNIT=1 makes a "minute" one second
+    kids = child_env()
+    rc, out, err = pipeline(g, top, QUIET_SEC="3", WATCH_POLL="1", FIX_PASSES="1", IDLE_UNIT="1",
+                            **stub_builder(top, "hang2"), **kids)
+    idle = int(re.search(r"^idle_min (\d+)$", result(top), re.M).group(1))
+    assert idle >= 6, (idle, "one kill costs 3-4 s here, two cost at least 6", result(top))
+    assert runs_rows(g)[-1]["idle_min"] == str(idle), runs_rows(g)[-1]
+
+
 def test_a_builder_with_no_commit_still_gets_the_idle_rule():
     top, g = toy()
     kids = child_env()
@@ -169,6 +189,7 @@ def test_every_end_path_appends_one_runs_csv_row():
         mine = [r for r in rows if r["task"] == name]
         assert len(mine) == 1 and mine[0]["gate"] == word and mine[0]["cost_source"] == "unknown", (name, mine)
         assert mine[0]["tokens_in"] == mine[0]["tokens_out"] == mine[0]["usd_est"] == "?", mine[0]
+        assert mine[0]["cost"] == mine[0]["real_findings"] == "?", ("unknown is ?, never 0", mine[0])
 
 
 def test_a_refused_launch_appends_no_spend_line():
@@ -207,4 +228,6 @@ if __name__ == "__main__":
         "test_a_builder_that_commits_then_hangs_is_quiet_killed_early",
         "test_a_builder_that_keeps_logging_is_not_quiet_killed",
         "test_a_silent_fix_pass_with_no_commit_of_its_own_is_not_quiet_killed",
+        "test_a_builder_waiting_on_its_check_heartbeat_is_not_quiet_killed",
+        "test_idle_minutes_are_summed_over_every_kill_of_the_run",
         "test_a_builder_with_no_commit_still_gets_the_idle_rule"))
