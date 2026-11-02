@@ -142,6 +142,36 @@ def test_untracked_file_does_not_fail():
         shutil.rmtree(top, ignore_errors=True)
 
 
+def test_an_identical_untracked_copy_of_a_newly_tracked_file_is_replaced_not_a_pull_failure():  # row 26, 11-02: track_usage.py
+    top, g, other = toy()
+    try:
+        put(other + "/hook.py", "print('usage')\n")
+        git(other, "add", "-A")
+        git(other, "commit", "-qm", "track the hook")
+        git(other, "push", "-q", "origin", "HEAD:main")
+        put(g + "/hook.py", "print('usage')\n")  # the hand-copied, untracked, identical file
+        r = run(g)
+        assert last_line(r).startswith("SYNC PASS"), r.stdout + r.stderr
+        assert git(g, "ls-files", "hook.py").stdout.strip() == "hook.py", "now tracked"
+    finally:
+        shutil.rmtree(top, ignore_errors=True)
+
+
+def test_a_different_untracked_file_of_the_same_name_is_never_deleted():
+    top, g, other = toy()
+    try:
+        put(other + "/hook.py", "print('usage')\n")
+        git(other, "add", "-A")
+        git(other, "commit", "-qm", "track the hook")
+        git(other, "push", "-q", "origin", "HEAD:main")
+        put(g + "/hook.py", "print('my own edits')\n")
+        r = run(g)
+        assert last_line(r) == "SYNC FAIL pull", r.stdout + r.stderr
+        assert open(g + "/hook.py", encoding="utf-8").read() == "print('my own edits')\n", "the owner's file is untouched"
+    finally:
+        shutil.rmtree(top, ignore_errors=True)
+
+
 if __name__ == "__main__":
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     for t in tests:

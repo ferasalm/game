@@ -7,7 +7,15 @@ root="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$root" || exit 1
 git diff --quiet HEAD -- || { echo "SYNC FAIL dirty"; exit 1; }  # never carry uncommitted tracked changes across the switch
 [ "$(git rev-parse --abbrev-ref HEAD)" = main ] || git switch -q main || { echo "SYNC FAIL branch"; exit 1; }  # a pull on a side branch left main behind
-git fetch -q origin && git pull -q --ff-only origin main || { echo "SYNC FAIL pull"; exit 1; }
+git fetch -q origin || { echo "SYNC FAIL pull"; exit 1; }
+# A file that was hand-copied here untracked and that origin/main now tracks with IDENTICAL content (the usage hook,
+# row 26 11-02) would make the pull refuse to overwrite it: drop that copy, the tracked one replaces it. A differing
+# untracked file is never touched (the pull then fails and says so).
+for f in $(git diff --name-only --diff-filter=A HEAD origin/main 2> /dev/null); do
+  if [ -f "$f" ] && ! git ls-files --error-unmatch -- "$f" > /dev/null 2>&1 &&
+     [ "$(git hash-object -- "$f")" = "$(git rev-parse "origin/main:$f" 2> /dev/null)" ]; then rm -f -- "$f"; fi
+done
+git pull -q --ff-only origin main || { echo "SYNC FAIL pull"; exit 1; }
 bash tools/run_godot.sh --import > /dev/null 2>&1 || { echo "SYNC FAIL import"; exit 1; }
 out="$(bash tools/run_godot.sh --quit-after 300 2>&1)"
 if [ $? -ne 0 ]; then

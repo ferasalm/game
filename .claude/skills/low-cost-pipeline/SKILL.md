@@ -10,6 +10,7 @@ Files here: [routing.md](routing.md) who does what, [foremen.md](foremen.md) rep
 [changelog.md](changelog.md) one line per upgrade, [templates/](templates/) the three brief shapes.
 
 ## Resume (a fresh head, cold)
+0. Start the chat in its own worktree: `claude --model opusplan -w <name>` (not in C:\dev\game and then entering one: that lists every project skill twice, measured 11-02).
 1. `bash tools/status.sh`, then read the plan file named in HANDOFF.md or the prompt (for row 26: docs/briefs/row26-pipeline-v2-plan.md). State lives in files, never in chat memory.
 2. `bash tools/slots.sh` (what runs, memory), `python tools/part_report.py <task>` per finished part (15 lines each).
 3. Take the next unfinished step of the plan; tell Feras one line (step, who runs it).
