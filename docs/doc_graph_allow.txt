@@ -193,6 +193,9 @@ docs/briefs/row26-s4-tests.md :: cloudflare-workers-ai/
 docs/briefs/row26-s4-tests.md :: gemini/
 docs/briefs/row26-s4-tests.md :: tools/ci_state.py
 docs/briefs/row26-s4-tests.md :: tools/test_routing.py
+docs/briefs/row26-s5-scope.md :: tools/lock_tests.sh
+docs/briefs/row26-s5-scope.md :: tools/scope_gate.py
+docs/briefs/row26-s5-scope.md :: tools/test_scope_stage.py
 docs/briefs/row26-s7-prune.md :: tools/plugin_prune.py
 docs/briefs/row26-s7-prune.md :: tools/test_plugin_prune.py
 docs/briefs/row27-doc-graph.md :: .check/
