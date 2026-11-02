@@ -68,8 +68,10 @@ def test_runs_log_appends_rows_with_a_header_once():
     assert py(*base, "--task", "pm, plugin").returncode == 0
     assert py(*base, "--task", "second").returncode == 0
     rows = list(csv.reader(open(path, encoding="utf-8", newline="")))
-    assert rows[0] == ["date", "task", "worker", "effort", "gate", "fix_passes", "minutes", "cost", "real_findings"]
-    assert len(rows) == 3 and rows[1] == ["2026-11-01", "pm, plugin", "agy", "medium", "PASS", "1", "12.5", "0", "2"], rows
+    header = ["date", "task", "worker", "effort", "gate", "fix_passes", "minutes", "cost", "real_findings"]
+    assert rows[0] == header + ["tokens_in", "tokens_out", "usd_est", "cost_source", "idle_min"], rows[0]
+    assert len(rows) == 3 and rows[1] == ["2026-11-01", "pm, plugin", "agy", "medium", "PASS", "1", "12.5", "0", "2",
+                                          "?", "?", "?", "unknown", "?"], rows
     assert open(path, encoding="utf-8", newline="").read().count("\r") == 0, "LF only (LESSONS: Python writes CRLF)"
 
 
