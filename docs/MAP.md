@@ -684,6 +684,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/kill_tree.py`: Kills a process and every descendant, also children forked while the kill runs (tools/lib.sh kill_tree calls it).
 - `tools/lib.sh`: Shared shell helpers for the builder tools (slots, pipeline, task runners, merge, check): paths, python, limits.
 - `tools/lint_gd.py`: GDScript rules Godot itself doesn't enforce (docs/ARCHITECTURE.md, "Code rules"); exit 1 on any break.
+- `tools/lock_tests.sh`: Lock a SCOPED test-writing run as the hand's base branch (row 26 S5, Feras 11-02): <new-base> at oc/<task>'s tip, the
 - `tools/main_file.sh`: Prints a file as it is on origin/main, after a fetch, without touching the work tree (row 23 d, 2026-11-01).
 - `tools/map.py`: Writes docs/MAP.md from each file's purpose line, so the map never drifts. --check: exit 1 if stale.
 - `tools/merge_base.sh`: Fetches and fast-forwards the current branch to origin/<branch> (default: the current branch; "main" for a branch that
@@ -704,6 +705,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/run_godot.sh`: Runs the pinned Godot headless on this project with the given arguments; fails on a non-zero exit or on
 - `tools/run_state.sh`: Run state for build_pipeline.sh (row 26, Feras 11-02): the .result header every reader parses by name, the tokens of an
 - `tools/runs_log.py`: Append run scoreboard entries to docs/runs.csv.
+- `tools/scope_gate.py`: Scope gate: judges a test-writing run before the head reads it (row 26 S5, Feras 11-02).
 - `tools/session_stats.py`: Per-day quality signals from Claude Code transcripts (ops-review, kaizen coach): tool calls, failed calls, calls per
 - `tools/shot_menu.gd`: purpose: Renders pause, save, shop, or equipment menu at 1920x1080 to an inbox PNG
 - `tools/shot_menu.tscn`: scene
@@ -765,6 +767,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_routing.py`: Red tests for docs/briefs/row26-s4-routing.md (row 26 S4, Feras 11-02): the cross-review reviewer comes from the
 - `tools/test_run_state.py`: Red tests, written first (row 26), for the spec in docs/briefs/row26-a-runstate.md; stubs only, this base does not build it yet.
 - `tools/test_runs_log.py`: Row 26 S2 (Feras 11-02): docs/runs.csv is the pipeline's scoreboard. Cost columns are real or `?` (unknown is not
+- `tools/test_scope_stage.py`: Row 26 S5 (Feras 11-02, GLM max writes the tests, the head reads them, DeepSeek builds against them): the test-first
 - `tools/test_session_start.py`: Self-test for .claude/hooks/session-start.sh (reports the session's own worktree) and the .gitignore .env rule.
 - `tools/test_session_stats.py`: session_stats counts calls, failed calls, real user turns (not tool results or injected tags) and peak context.
 - `tools/test_slots.py`: Self-test for tools/slots.sh: python tools/test_slots.py (temp dirs, plain asserts, exit 1 on failure).

@@ -23,10 +23,12 @@ def generated(path):
     return any(fnmatch.fnmatch(path, pat) for pat in GENERATED)
 
 
-def file_faults(status):
+def file_faults(status, brief_rel):
     """What a test-writing run may not do: touch product code, or modify/delete a test (only adding is allowed)."""
     out = []
     for path, st in status.items():
+        if path == brief_rel:  # the brief is the run's input, not its work (a hand run keeps it in the checkout)
+            continue
         if is_test(path):
             if st != "A":
                 out.append(f"existing test changed: {path}")
@@ -48,7 +50,7 @@ def asked(brief):
 def judge(wt, base, brief):
     """The checklist lines and the verdict word for one test-writing run."""
     status = change_status(wt, f"{base}...HEAD")
-    faults = file_faults(status)
+    faults = file_faults(status, os.path.relpath(brief, wt).replace("\\", "/"))
     new = runnable_new_tests(status, KINDS)
     passed = new_tests_on_base(wt, base, new) if new and not faults else []  # a rejected run needs no base run
     lines = [f"scope gate: {len(status)} changed file(s) in {wt} from {base}...HEAD"]
