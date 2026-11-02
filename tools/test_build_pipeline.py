@@ -301,7 +301,8 @@ def test_oc_task_default_model_deepseek_outer_timeout_and_base_check():
     t0 = time.time()
     r = task(g, top, "oc_task.sh", "job", "origin/main", OC_TIMEOUT="2s", **kids)
     log = open(top + "/game-wt/job.log", encoding="utf-8").read()
-    assert "deepseek" in log and "free" in log, log
+    # row 26 S4: OC_MODEL defaults to CF_MODEL (the free route is spent), so the log names the cf provider, not ":free"
+    assert "deepseek" in log and "cloudflare-workers-ai" in log, log
     assert "--print-logs" in log, ("without it a spent free quota prints nothing (10-29)", log)
     # v2 (row 18): without --standalone the shared service runs it (no logs, other config, survives the timeout);
     # v2 rejects "ERROR" and exits 1

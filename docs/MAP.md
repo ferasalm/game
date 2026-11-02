@@ -657,6 +657,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/cf_probe.py`: One timed Workers AI call for model calibration (row 18): time to first token, tokens, speed, finish reason.
 - `tools/check.sh`: One command for every check (docs, lint, Godot import, tests). One ok/FAIL line per step; logs in .check/.
 - `tools/check_slot.sh`: Test-run slots shared by every worktree on this machine: at most CHECK_SLOTS Godot test suites at once. Four at once
+- `tools/ci_state.py`: One word for `gh run list --workflow check.yml --json status,conclusion` on stdin (row 26 S4, Feras 11-02).
 - `tools/cross_review.opencode.json`: content: ? x0
 - `tools/cross_review.py`: Parse cross-review finding blocks from reviewer logs into structured data.
 - `tools/cross_review.sh`: Cross-review (row 12 A, DECISIONS 2026-10-28): the other model family reviews a PASS run before Claude's gate:
@@ -686,7 +687,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/main_file.sh`: Prints a file as it is on origin/main, after a fetch, without touching the work tree (row 23 d, 2026-11-01).
 - `tools/map.py`: Writes docs/MAP.md from each file's purpose line, so the map never drifts. --check: exit 1 if stale.
 - `tools/merge_base.sh`: Fetches and fast-forwards the current branch to origin/<branch> (default: the current branch; "main" for a branch that
-- `tools/merge_run.sh`: Merges one gated builder run into the current branch (DECISIONS 2026-10-23): only a PASS .result; a fast-forward onto
+- `tools/merge_run.sh`: Merges one gated builder run into the current branch (DECISIONS 2026-10-23): only a PASS .result that also carries a
 - `tools/model_effort.py`: Print the reasoning effort a model key runs at: opencode.json says it, the model's name does not (row 26 S2).
 - `tools/musnad.py`: Transliterate Arabic to Musnad (Old South Arabian) letter by letter; scan files for Arabic.
 - `tools/oc_agents.py`: Makes one opencode subagent per game skill (.agents/skills/<name> -> .opencode/agent/<name>.md); --check fails when stale.
