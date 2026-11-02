@@ -681,6 +681,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/hooks/stop_notify.py`: Stop hook (coach 12, Feras 10-31): a Windows balloon when a chat ends its turn, so Feras need not watch it. Runs the
 - `tools/hooks/token_handoff.py`: PostToolUse hook: tells a chat its cumulative cache reads (cost = calls x context, row 16 10-29) at 25M tokens, then
 - `tools/import_agents.py`: Copies the chosen agency agents (~/.claude/agents, MIT) into .agents/skills/<name>/SKILL.md for every builder.
+- `tools/kaizen_report.py`: One Kaizen line per batch: docs/runs.csv in, at most 20 lines of cut-or-tune advice out (row 26 P2).
 - `tools/kill_tree.py`: Kills a process and every descendant, also children forked while the kill runs (tools/lib.sh kill_tree calls it).
 - `tools/lib.sh`: Shared shell helpers for the builder tools (slots, pipeline, task runners, merge, check): paths, python, limits.
 - `tools/lint_gd.py`: GDScript rules Godot itself doesn't enforce (docs/ARCHITECTURE.md, "Code rules"); exit 1 on any break.
