@@ -27,7 +27,7 @@ Models live in `opencode.json` (GLM max, DeepSeek low, high, fast, max; limits s
 6. Head merges (`merge_run.sh <task> oc` for cf runs), reads `.result`, never only the summary.
 
 ## Rules
-- `/advisor` is for building this pipeline only (Feras 11-01); beyond that the CLAUDE.md duty 6 stands: ask first.
+- `/advisor`: CLAUDE.md duty 6 stands here too: stuck twice, ask Feras first; never unasked.
 - The head writes only what the brief would cost more than the edit; risky machinery (hooks, gates, saves, settings) the head reads line by line.
 - Cost: Cloudflare is billed in neurons (cf_spend.csv, no cap); GLM max is slower than DeepSeek (parser run: 619 s vs ~443 s), so run it background and wait for the notification.
 - GLM-5.3 max calibration so far: second-reviewer level only (1/2 key defects, models.md); judge its tests and flags, do not copy them.

@@ -88,9 +88,7 @@ check(len(opens[1:]) <= 10, f"HANDOFF.md Open points has {len(opens[1:])} lines 
 # One worker routing table (row 24, Feras 11-01): .claude/skills/builders/SKILL.md holds Who does what, nowhere else
 ROUTE_HEADERS = ("| Work | Who", "| Work | Worker", "| Task class | Model")
 EXCLUDED_SKILL = ".claude/skills/builders/SKILL.md"
-docs_md = []
-if (ROOT / "CLAUDE.md").exists():
-    docs_md.append(ROOT / "CLAUDE.md")
+docs_md = [ROOT / n for n in ("CLAUDE.md", "HANDOFF.md") if (ROOT / n).exists()]
 if (ROOT / "docs").exists():
     for p in (ROOT / "docs").rglob("*.md"):
         rel = p.relative_to(ROOT).as_posix()

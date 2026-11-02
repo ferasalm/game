@@ -95,6 +95,13 @@ def test_tokens_with_wildcards_placeholders_urls_and_dotdot_are_ignored():
     assert r.returncode == 0, out(r)
 
 
+def test_a_path_under_dot_check_is_scratch_not_a_reference():  # an audit report cites .check/audit/ and failed the next check.sh
+    root = toy({"docs/t.md": "# t purpose\n.check/audit/memory/MEMORY.md and .check/\n"})
+    assert run(root).returncode == 0
+    r = run(root, "--check")
+    assert r.returncode == 0, out(r)
+
+
 def test_an_at_import_is_an_edge():
     root = toy({
         "docs/main.md": "# main purpose\nrun @step.md then @gone.md\n",

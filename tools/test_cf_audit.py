@@ -16,7 +16,7 @@ echo "CONFIG ${OPENCODE_CONFIG:-none}"
 echo "BOX $(ls .check/audit | tr '\\n' ' ')"
 echo "INLINE ${OPENCODE_CONFIG_CONTENT:-none}" | tr -d '\\n\\r '; echo
 [ "${STUB_SLEEP:-0}" = 0 ] || sleep "$STUB_SLEEP"
-echo "REPORT: all fine"
+echo "timestamp=1 level=INFO message=noise"; echo "timestamp=2 level=ERROR message=kept"; echo "REPORT: all fine"
 """
 
 
@@ -51,7 +51,7 @@ def test_it_stages_the_box_and_runs_the_read_only_cf_model():
     assert "cross_review.opencode.json" in out, out  # the read-only config
     assert "deepseek-v4.1-flash-1017" in out and "--model" in out, out
     assert "coach" in out and "memory" in out and "prompt.md" in out, out  # the staged box
-    assert "REPORT: all fine" in out
+    assert "REPORT: all fine" in out and "level=INFO" not in out and "level=ERROR message=kept" in out  # 11-02: 269 KB of log
     # the repo's own opencode.json allows bash and edit and outranks OPENCODE_CONFIG: only inline content holds (probed 11-01)
     assert '"bash":"deny"' in out and '"edit":"deny"' in out, out
     assert open(repo + "/.check/audit/coach/skills.md").read() == "checklist\n"

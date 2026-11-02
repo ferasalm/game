@@ -127,6 +127,13 @@ docs/audits/2026-11-01-coach-haiku.md :: .claude/hooks/track_usage.py
 docs/audits/2026-11-01-coach-haiku.md :: .claude/settings.local.json
 docs/audits/2026-11-01-coach-haiku.md :: players-eye-gate/SKILL.md
 docs/audits/2026-11-01-token-bleed.md :: .claude/skills/handoff/SKILL.md
+docs/audits/2026-11-02-coach-dsv4.md :: .claude/hooks/track_usage.py
+docs/audits/2026-11-02-coach-dsv4.md :: .claude/logs/
+docs/audits/2026-11-02-coach-dsv4.md :: .claude/settings.local.json
+docs/audits/2026-11-02-coach-dsv4.md :: binaries/
+docs/audits/2026-11-02-coach-dsv4.md :: hooks/
+docs/audits/2026-11-02-coach-dsv4.md :: tooling/lsp-fallbacks.md
+docs/audits/2026-11-02-coach-glmflash.md :: handoff/SKILL.md
 docs/audits/2026-11-02-integrity.md :: d/
 docs/audits/2026-11-02-integrity.md :: features/combat/view/battle_hud.gd
 docs/audits/coach-audit-prompt.md :: .check/audit/coach/
@@ -217,6 +224,7 @@ feras/BRIEFING.md :: .check/statusline_raw.json
 feras/BRIEFING.md :: .check/usage.json
 feras/BRIEFING.md :: builders/lessons.md
 feras/BRIEFING.md :: docs/briefs/system-v3.md
+feras/BRIEFING.md :: docs/opus-signoff.md
 feras/BRIEFING.md :: inbox/
 feras/BRIEFING.md :: ops-review/SKILL.md
 plugins/pm/skills/handoff/SKILL.md :: .check/usage.json

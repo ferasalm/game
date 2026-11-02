@@ -34,5 +34,6 @@ rc=0
   --format default -- "$ask" < /dev/null >> "$out" 2>&1) || rc=$?
 [ "$rc" -eq 0 ] || echo "audit exited $rc" >> "$out"
 bash "$lib_dir/slots.sh" append-spend "$out" "audit" "$CF_INPUT_RATE" "$CF_OUTPUT_RATE" "$(wt_dir)/cf_spend.csv" || true
+sed -i '/^timestamp=.* level=INFO /d' "$out"  # opencode v2 logs each git call at INFO: 269 KB around a 6 KB report (11-02); errors stay
 echo "audit report: $out"
 exit "$rc"

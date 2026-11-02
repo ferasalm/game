@@ -32,11 +32,13 @@ def hook_commands(cfg):
 
 
 def test_manifests_parse_and_the_marketplace_points_at_the_plugin():
-    market, plugin = load(".claude-plugin", "marketplace.json"), load("plugins", "studio", ".claude-plugin", "plugin.json")
-    assert market["name"] == "neon" and plugin["name"] == "studio" and re.fullmatch(r"[a-z][a-z0-9-]*", plugin["name"])
-    entry = next(p for p in market["plugins"] if p["name"] == "studio")
-    assert entry["source"].startswith("./") and os.path.isdir(os.path.join(ROOT, entry["source"])), entry
-    assert plugin["version"] and plugin["description"]
+    market = load(".claude-plugin", "marketplace.json")
+    assert market["name"] == "neon" and {"studio", "pm"} <= {p["name"] for p in market["plugins"]}, market
+    for entry in market["plugins"]:  # every entry, not only studio (11-02 coach audit: pm's manifest was never read)
+        plugin = load("plugins", entry["name"], ".claude-plugin", "plugin.json")
+        assert plugin["name"] == entry["name"] and re.fullmatch(r"[a-z][a-z0-9-]*", plugin["name"])
+        assert entry["source"].startswith("./") and os.path.isdir(os.path.join(ROOT, entry["source"])), entry
+        assert plugin["version"] and plugin["description"]
 
 
 def test_claude_plugin_validate_passes_when_claude_is_installed():

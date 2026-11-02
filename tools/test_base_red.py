@@ -95,6 +95,10 @@ def test_a_brief_naming_another_directorys_test_claims_nothing():
     assert base_red.foreign(["tools/b/test_x.py"], "## Tests\n- tools/a/test_x.py\n") == ["tools/b/test_x.py"]
 
 
+def test_every_tests_section_of_a_brief_counts():  # row 25 DeepSeek lens: only the first section was read
+    assert base_red.foreign(["tools/test_a.py"], "## Tests\n- other\n## Do\nx\n## Tests\n- tools/test_a.py\n") == []
+
+
 def test_a_bare_name_still_claims_by_basename():
     assert base_red.foreign(["tools/b/test_x.py"], "## Tests\n- test_x.py\n") == []
 

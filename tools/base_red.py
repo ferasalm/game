@@ -27,8 +27,7 @@ def names(section, path):
 
 def foreign(failed, brief_text):
     """The failing tests the brief's Tests section does not name; a name in Do NOT edit claims nothing."""
-    m = re.search(r"^## Tests[^\n]*\n(.*?)(?=^## |\Z)", brief_text, re.M | re.S)
-    section = m.group(1) if m else ""
+    section = "\n".join(re.findall(r"^## Tests[^\n]*\n(.*?)(?=^## |\Z)", brief_text, re.M | re.S))
     return [p for p in failed if not names(section, p)]
 
 

@@ -59,8 +59,8 @@ def purpose(text: str) -> str:
 def refs(text: str) -> list:
     """Every repo-path token and @file.md import in a node, in file order, without duplicates."""
     found = [t for t in (m.group(0) for m in TOKEN.finditer(text))
-             if "/" in t and not t.startswith("/") and not any(bad in t for bad in BAD)
-             and (t.endswith("/") or t.rsplit(".", 1)[-1] in EXTS)]
+             if "/" in t and not t.startswith(("/", ".check/")) and not any(bad in t for bad in BAD)
+             and (t.endswith("/") or t.rsplit(".", 1)[-1] in EXTS)]  # .check/ is git-ignored scratch: citing it refers to no doc
     found += [m.group(1) for m in IMPORT.finditer(text)
               if not m.group(1).startswith("/") and not any(bad in m.group(1) for bad in BAD)]
     return list(dict.fromkeys(found))
