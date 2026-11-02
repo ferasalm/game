@@ -681,6 +681,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/hooks/stop_notify.py`: Stop hook (coach 12, Feras 10-31): a Windows balloon when a chat ends its turn, so Feras need not watch it. Runs the
 - `tools/hooks/token_handoff.py`: PostToolUse hook: tells a chat its cumulative cache reads (cost = calls x context, row 16 10-29) at 25M tokens, then
 - `tools/import_agents.py`: Copies the chosen agency agents (~/.claude/agents, MIT) into .agents/skills/<name>/SKILL.md for every builder.
+- `tools/kaizen_report.py`: One Kaizen line per batch: docs/runs.csv in, at most 20 lines of cut-or-tune advice out (row 26 P2).
 - `tools/kill_tree.py`: Kills a process and every descendant, also children forked while the kill runs (tools/lib.sh kill_tree calls it).
 - `tools/lib.sh`: Shared shell helpers for the builder tools (slots, pipeline, task runners, merge, check): paths, python, limits.
 - `tools/lint_gd.py`: GDScript rules Godot itself doesn't enforce (docs/ARCHITECTURE.md, "Code rules"); exit 1 on any break.
@@ -751,6 +752,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_hook_heredoc.py`: Self-test for tools/hooks/heredoc_guard.py (LESSONS 4): a python heredoc holding a backslash, in any form, and a
 - `tools/test_hook_run.py`: Self-test for tools/hooks/run.sh: hooks run the session's own copy, a missing script never blocks a tool.
 - `tools/test_hook_stop_notify.py`: Self-test for tools/hooks/stop_notify.py: a Stop makes one balloon command, a repeat Stop stays quiet, bad input never blocks.
+- `tools/test_kaizen_report.py`: Row 26 P2 locked tests for tools/kaizen_report.py: one Kaizen line per batch in at most 20 lines.
 - `tools/test_kill_tree.py`: Tests kill_tree (tools/lib.sh): a tree with a native grandchild and a parent still forking during the kill dies whole.
 - `tools/test_map.py`: Self-test for map.py: only tracked files are mapped (an untracked file made CI fail "MAP.md current").
 - `tools/test_merge_generated.py`: Row 26 S14 (11-02): every parallel part adds a tool, so every merge of two parts conflicted on the generated files
