@@ -18,10 +18,26 @@ if [ -z "$head" ]; then
   for p in gemini oc; do git -C "$root" rev-parse -q --verify "refs/heads/$p/$run" > /dev/null && { head="$p/$run"; break; }; done
 fi
 [ -n "$head" ] || { echo "no branch gemini/$run or oc/$run: pass a head ref" >&2; exit 2; }
-[ -n "$rev" ] || case "$head" in gemini/*) rev=cf ;; oc/*) rev=agy ;; *) echo "pass a reviewer for $head" >&2; exit 2 ;; esac
+# The run's .result names its author family (row 26 S4, Feras 11-02): an agy build is gemini, a cf or oc build says its
+# model; a known family is reviewed by the other one. No .result, no model line or an unknown family: the branch prefix.
+fam=""
+if [ -z "$rev" ] && [ -f "$(wt_dir)/$run.result" ]; then
+  res="$(wt_dir)/$run.result"
+  builder="$(sed -n 's/^builder //p' "$res" | head -n 1 | tr -d '\r')"
+  author_model="$(sed -n 's/^model //p' "$res" | head -n 1 | tr -d '\r')"
+  case "$builder" in agy) fam=gemini ;; *)
+    case "$author_model" in *glm*) fam=glm ;; *deepseek*) fam=deepseek ;; esac ;;
+  esac
+fi
+if [ -n "$fam" ]; then rev=cf
+elif [ -z "$rev" ]; then case "$head" in gemini/*) rev=cf ;; oc/*) rev=agy ;; *) echo "pass a reviewer for $head" >&2; exit 2 ;; esac
+fi
 case "$rev" in agy|oc|cf) ;; *) echo "reviewer: agy, oc or cf" >&2; exit 2 ;; esac
-# cf = DeepSeek 1017 (parser 1/2 key, 10-30); oc = nemotron :free, weak: a backup lens for obvious patterns only (10-30)
-model="$CF_MODEL"; if [ "$rev" = oc ]; then model="$XR_OC_MODEL"; REVIEW_TIMEOUT="$XR_OC_TIMEOUT"; fi
+# cf = the other family's model (GLM max for agy and DeepSeek runs, DeepSeek max for GLM runs, data in builders.conf);
+# oc = nemotron :free, weak: a backup lens for obvious patterns only (10-30)
+model="$CF_MODEL"
+case "$fam" in gemini) model="$XR_REVIEWER_GEMINI" ;; deepseek) model="$XR_REVIEWER_DEEPSEEK" ;; glm) model="$XR_REVIEWER_GLM" ;; esac
+if [ "$rev" = oc ]; then model="$XR_OC_MODEL"; REVIEW_TIMEOUT="$XR_OC_TIMEOUT"; fi
 
 box="$(wt_dir)/xr/$run-$rev"; log="$(wt_dir)/$run.xr-$rev.log"; out="$root/.check/reviews/$run-cross.md"
 rm -rf "$box"; mkdir -p "$box" "$(dirname "$out")"
@@ -60,7 +76,7 @@ if ! parse > /dev/null; then
 BEGIN FINDINGS / END FINDINGS block the packet defines, from the diff it holds, now."
 fi
 [ "$rev" != cf ] || bash "$lib_dir/slots.sh" append-spend "$log" "$run-xr" "$CF_INPUT_RATE" "$CF_OUTPUT_RATE" \
-  "$(wt_dir)/cf_spend.csv" || true
+  "$(wt_dir)/cf_spend.csv" "$box" || true  # the 7th arg (WT): tokens come from the box's session
 if [ "$rev" = cf ] && ! parse > /dev/null; then  # cf failed twice: nemotron as the backup lens (Feras 10-30)
   echo "== backup lens ($XR_OC_MODEL)" >> "$log"
   rev=oc; model="$XR_OC_MODEL"
