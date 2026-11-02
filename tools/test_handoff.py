@@ -122,6 +122,17 @@ def test_detached_head_fails_at_push_with_no_commit_lost():
     assert r.returncode != 0 and last_line(r) == "HANDOFF FAIL push", r.stdout + r.stderr
 
 
+def test_the_doc_graph_is_regenerated_into_the_commit():  # check.sh gates docs/DOCMAP.md: a doc edit left it stale (11-03)
+    top, g = toy()
+    put(g + "/tools/doc_graph.py", "open('docs_map.txt', 'w').write('regenerated')\n")
+    git(g, "add", "-A")
+    git(g, "commit", "-qm", "stub doc_graph")
+    put(g + "/README.md", "two\n")
+    r = run(g, "m")
+    assert last_line(r) == "HANDOFF PASS", r.stdout + r.stderr
+    assert git(g, "show", "HEAD:docs_map.txt").stdout.strip() == "regenerated", "the tool's output must join the commit"
+
+
 def test_map_runs_after_the_new_files_are_staged():  # map.py lists `git ls-files --cached`: CI went red on main with a stale MAP.md (11-02)
     top, g = toy()
     put(g + "/tools/map.py", "import subprocess\nout = subprocess.run(['git', 'ls-files', '--cached'], capture_output=True, text=True).stdout\n"
