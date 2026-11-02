@@ -195,7 +195,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 
 ## Dangling
 
-- docs/briefs/row26-pipeline-v2-plan.md :: tools/ripple.py
+(none)
 
 ## Orphans
 
