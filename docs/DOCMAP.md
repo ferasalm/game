@@ -105,7 +105,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | AGENTS.md | Rules for opencode builders | 0 | 5 |
 | CLAUDE.md | game: rules for every Claude session | 0 | 18 |
 | GEMINI.md | GEMINI.md: Neon Glitch builder rules for Gemini (agy). Standing rules only; each task's brief comes in the chat. | 0 | 9 |
-| HANDOFF.md | HANDOFF (current state only; ONE queue for every chat; max 60 lines) | 1 | 14 |
+| HANDOFF.md | HANDOFF (current state only; ONE queue for every chat; max 60 lines) | 1 | 15 |
 | README.md | Neon Glitch | 0 | 7 |
 | docs/ARCHITECTURE.md | Architecture | 5 | 32 |
 | docs/CANON.md | CANON: game content decisions in force (world, story, heroes, combat, art, UI) | 6 | 4 |
@@ -126,7 +126,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/audits/2026-11-02-coach-glmflash.md | [0m | 0 | 28 |
 | docs/audits/2026-11-02-integrity.md | Integrity Audit: 2026-11-02 | 4 | 62 |
 | docs/audits/coach-audit-prompt.md | Prompt: read-only Claude Code setup audit ("coach") for tools/cf_audit.sh | 2 | 6 |
-| docs/briefs/TEMPLATE.md | Brief: <task> (copy to docs/briefs/<task>.md; <= 80 lines; tools/test_template.py keeps the gate's headings here) | 3 | 13 |
+| docs/briefs/TEMPLATE.md | Brief: <task> (copy to docs/briefs/<task>.md; <= 80 lines; tools/test_template.py keeps the gate's headings here) | 4 | 13 |
 | docs/briefs/archive-cleanup.md | DONE 2026-10-27 (stages 1-3 on main). Chat brief: finish the 3D archive + rename zayd -> rydan (Feras 2026-10-27, decisions-log) | 0 | 9 |
 | docs/briefs/neon-cold-open.md | Brief: neon-cold-open (Neon Glitch: Roya cold open, watch only, about 40 s; <= 60 lines) | 1 | 22 |
 | docs/briefs/neon-roof.md | Brief: neon-roof (Neon Glitch prison roof: iso exploration; <= 60 lines) | 1 | 25 |

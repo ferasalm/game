@@ -61,8 +61,9 @@ cp "$brief" "$brief_copy" 2> /dev/null || refuse "brief $brief is not readable"
 brief="$brief_copy"
 
 run() {  # <brief file>; watched: idle (no commit), quiet (a commit but no log growth), background check. 99 when killed.
-  local last pid mark bg_mark="" log_size=-1 log_mark
+  local last pid mark bg_mark="" log_size=-1 log_mark n0
   mark=$(date +%s); log_mark=$mark
+  n0="$(git -C "$wt" rev-list --count "$base..HEAD" 2> /dev/null || echo 0)"  # commits before this call: a fix pass starts with the build's
   if [ -n "${BUILDER_CMD:-}" ]; then bash "$BUILDER_CMD" "$name" "$1" "$base" ${model:+"$model"} < /dev/null > "$wt.log" 2>&1 &
   elif [ "$builder" = agy ]; then bash "$here/agy_task.sh" "$name" "$1" "$base" ${model:+"$model"} < /dev/null &
   else bash "$here/oc_task.sh" "$name" "$1" "$base" ${model:+"$model"} < /dev/null & fi
@@ -82,7 +83,10 @@ run() {  # <brief file>; watched: idle (no commit), quiet (a commit but no log g
     # worktree, a log that stops growing means it is done or stuck; its commits are checked below.
     # Streaming builders only (opencode: cf, oc): `agy -p` prints its log when it finishes, so an agy log stays 0 bytes while
     # it works and would be cut 5 minutes after its first commit (seen in the P1 proof run, 11-02); agy keeps the idle rule.
-    if [ "$builder" != agy ] && [ "$quiet_sec" -gt 0 ] && [ $(( now - log_mark )) -ge "$quiet_sec" ] && commits; then
+    # Review 11-02: "commits" alone is true for every fix pass (the build committed), so a thinking fix pass was cut after
+    # 5 silent minutes with nothing of its own to check (row26-s13-ripple): the quiet rule needs a commit made in THIS call.
+    if [ "$builder" != agy ] && [ "$quiet_sec" -gt 0 ] && [ $(( now - log_mark )) -ge "$quiet_sec" ] &&
+       [ "$(git -C "$wt" rev-list --count "$base..HEAD" 2> /dev/null || echo 0)" -gt "${n0:-0}" ]; then
       quiet=1; quiet_n=$(( now - log_mark )); kill_tree "$pid"; wait "$pid" 2> /dev/null; return 99; fi
     if [ $(( now - mark )) -ge "$idle_sec" ]; then kill_tree "$pid"; wait "$pid" 2> /dev/null; return 99; fi
   done

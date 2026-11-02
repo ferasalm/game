@@ -21,7 +21,8 @@ ensure_wt "$root" "$wt" "oc/$name" "$3" || exit 1; cd "$wt"
 commit() { mkdir -p features; echo "## a" > features/a.gd; git add -A; git -c user.name=t -c user.email=t@t commit -qm feat; }
 case "${FAKE2_MODE:-}" in
   del_brief) commit; rm -f "$KILL_BRIEF" ;; break_git) commit; echo broken > .git ;;
-  bad_check) touch fail.flag; commit ;; tick) commit; for i in 1 2 3 4 5 6 7 8; do echo "tick $i"; sleep 1; done ;;
+  bad_check) touch fail.flag; commit ;;
+  slow_fix) case "$2" in *.fix.md) sleep 8; rm -f fail.flag; commit ;; *) touch fail.flag; commit ;; esac ;; tick) commit; for i in 1 2 3 4 5 6 7 8; do echo "tick $i"; sleep 1; done ;;
 esac
 '''
 
@@ -125,6 +126,13 @@ def test_a_builder_that_keeps_logging_is_not_quiet_killed():
     assert not re.search(r"^quiet: ", res, re.M) and "\nidle_min 0\n" in res, res  # base: no header lines yet
 
 
+def test_a_silent_fix_pass_with_no_commit_of_its_own_is_not_quiet_killed():
+    top, g = toy()  # review 11-02: the build's commits made every fix pass look "committed", so it was cut after QUIET_SEC
+    rc, out, err = pipeline(g, top, QUIET_SEC="3", WATCH_POLL="1", FIX_PASSES="1", **stub_builder(top, "slow_fix"))
+    res = result(top)
+    assert rc == 0 and res.startswith("PASS") and not re.search(r"^quiet: ", res, re.M), (rc, res, err)
+
+
 def test_a_builder_with_no_commit_still_gets_the_idle_rule():
     top, g = toy()
     kids = child_env()
@@ -198,4 +206,5 @@ if __name__ == "__main__":
     run_cases(tests, "test_run_state", serial=(  # wall-clock bounds run alone; a limit is never loosened (10-31)
         "test_a_builder_that_commits_then_hangs_is_quiet_killed_early",
         "test_a_builder_that_keeps_logging_is_not_quiet_killed",
+        "test_a_silent_fix_pass_with_no_commit_of_its_own_is_not_quiet_killed",
         "test_a_builder_with_no_commit_still_gets_the_idle_rule"))
