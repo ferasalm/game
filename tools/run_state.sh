@@ -56,10 +56,10 @@ clean_empty_wt() {  # a NOWORK or REFUSED run leaves no worktree or branch: a re
   git -C "$root" branch -D "$prefix/$name" > /dev/null 2>&1
 }
 
-nowork_exit() {  # <reason>: nothing to check; the empty worktree goes, the row is logged, exit 1
+nowork_exit() {  # <reason>: nothing to check; the row is logged (its sessions still count), then the empty worktree goes
   { result_head NOWORK "$prefix/$name"; echo "why: $1"; } > "$res"
   cat "$res"
-  clean_empty_wt
   log_row NOWORK "$(( ($(date +%s) - pipeline_start) / 60 ))" "${fix:-0}"
+  clean_empty_wt
   exit 1
 }
