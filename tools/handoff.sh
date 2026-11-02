@@ -21,6 +21,10 @@ done
 
 root="$(git rev-parse --show-toplevel 2> /dev/null)" || { echo "not inside a git repository"; exit 2; }
 cd "$root" || exit 2
+# CI_WAIT_SEC is data in tools/builders.conf (row 26 S4: CI may take 15 min); the copy below only serves a repo that
+# has no builders.conf (a toy checkout), so the wait still has a cap there.
+[ -f tools/builders.conf ] && . tools/builders.conf
+ci_wait="${CI_WAIT_SEC:-960}"
 
 fail() { echo "HANDOFF FAIL $1"; exit 1; }
 
@@ -66,7 +70,11 @@ fi
 
 if [ "$to_main" = 1 ]; then
   echo "== ci"
-  ci_cmd="${HANDOFF_CI:-gh run list --commit $(git rev-parse HEAD) --limit 1 --json conclusion -q '.[0].conclusion'}"
+  # The check workflow for this exact commit (row 26 S4, Feras 11-02): `gh run list --limit 1` read any workflow, and
+  # "the first run" is the Android export's (D17) as soon as a second one exists. ci_state.py waits for every run of
+  # check.yml on the commit and speaks one word.
+  sha="$(git rev-parse HEAD)"
+  ci_cmd="${HANDOFF_CI:-gh run list --workflow check.yml --commit $sha --json status,conclusion | python tools/ci_state.py}"
   waited=0
   while :; do
     ci_out="$(bash -c "$ci_cmd" 2>&1)" || ci_out="error"
@@ -77,7 +85,7 @@ if [ "$to_main" = 1 ]; then
         echo "ci: ${ci_word:-no run yet}; waiting 20 s" ;;
       *) fail ci ;;
     esac
-    [ "$waited" -ge 600 ] && fail ci
+    [ "$waited" -ge "$ci_wait" ] && fail ci
     sleep 20
     waited=$((waited + 20))
   done

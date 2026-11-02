@@ -657,6 +657,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/cf_probe.py`: One timed Workers AI call for model calibration (row 18): time to first token, tokens, speed, finish reason.
 - `tools/check.sh`: One command for every check (docs, lint, Godot import, tests). One ok/FAIL line per step; logs in .check/.
 - `tools/check_slot.sh`: Test-run slots shared by every worktree on this machine: at most CHECK_SLOTS Godot test suites at once. Four at once
+- `tools/ci_state.py`: One word for `gh run list --workflow check.yml --json status,conclusion` on stdin (row 26 S4, Feras 11-02).
 - `tools/cross_review.opencode.json`: content: ? x0
 - `tools/cross_review.py`: Parse cross-review finding blocks from reviewer logs into structured data.
 - `tools/cross_review.sh`: Cross-review (row 12 A, DECISIONS 2026-10-28): the other model family reviews a PASS run before Claude's gate:
@@ -686,7 +687,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/main_file.sh`: Prints a file as it is on origin/main, after a fetch, without touching the work tree (row 23 d, 2026-11-01).
 - `tools/map.py`: Writes docs/MAP.md from each file's purpose line, so the map never drifts. --check: exit 1 if stale.
 - `tools/merge_base.sh`: Fetches and fast-forwards the current branch to origin/<branch> (default: the current branch; "main" for a branch that
-- `tools/merge_run.sh`: Merges one gated builder run into the current branch (DECISIONS 2026-10-23): only a PASS .result; a fast-forward onto
+- `tools/merge_run.sh`: Merges one gated builder run into the current branch (DECISIONS 2026-10-23): only a PASS .result that also carries a
 - `tools/model_effort.py`: Print the reasoning effort a model key runs at: opencode.json says it, the model's name does not (row 26 S2).
 - `tools/musnad.py`: Transliterate Arabic to Musnad (Old South Arabian) letter by letter; scan files for Arabic.
 - `tools/oc_agents.py`: Makes one opencode subagent per game skill (.agents/skills/<name> -> .opencode/agent/<name>.md); --check fails when stale.
@@ -747,6 +748,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_kill_tree.py`: Tests kill_tree (tools/lib.sh): a tree with a native grandchild and a parent still forking during the kill dies whole.
 - `tools/test_map.py`: Self-test for map.py: only tracked files are mapped (an untracked file made CI fail "MAP.md current").
 - `tools/test_no_legacy_hero.py`: Guard: the hero's old code id stays gone (renamed to rydan, save v7, Feras 2026-10-27). Fails on the old id in the
+- `tools/test_oc_task_prompt.py`: Row 26 (11-02): GLM's scope run died at once with "Argument list too long" (exit 126): oc_task.sh passed the whole prompt
 - `tools/test_oc_usage.py`: Row 26 S2 (Feras 11-02): a builder run's cost is read from opencode's own session export, never guessed from its log
 - `tools/test_personas.py`: The 10 personas are tailored to Neon Glitch (Feras 10-28: "not generic") and their copies never drift (row 1 item 9).
 - `tools/test_plugin_prune.py`: Row 26 S7 (Feras 11-02, asked and agreed): `claude plugin list` showed kaizen@kaizen eight times, two of them for
@@ -757,6 +759,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_py_runs.py`: Self-test for non-Godot builder runs (row 12 C, 2026-10-28): python tools/test_py_runs.py.
 - `tools/test_res_graph.py`: Self-test for res_graph.py --check: python tools/test_res_graph.py (a fake project in a temp folder, exit 1 on failure).
 - `tools/test_review_gate.py`: Self-test for tools/hooks/review_gate.py + review_stamp.py (D5, D21): no game render reaches Feras unreviewed.
+- `tools/test_routing.py`: Red tests for docs/briefs/row26-s4-routing.md (row 26 S4, Feras 11-02): the cross-review reviewer comes from the
 - `tools/test_runs_log.py`: Row 26 S2 (Feras 11-02): docs/runs.csv is the pipeline's scoreboard. Cost columns are real or `?` (unknown is not
 - `tools/test_session_start.py`: Self-test for .claude/hooks/session-start.sh (reports the session's own worktree) and the .gitignore .env rule.
 - `tools/test_session_stats.py`: session_stats counts calls, failed calls, real user turns (not tool results or injected tags) and peak context.

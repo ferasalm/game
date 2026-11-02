@@ -12,3 +12,4 @@ date,task,worker,effort,gate,fix_passes,minutes,cost,real_findings,tokens_in,tok
 2026-11-02,row26-s4-tests,cf,-,NOWORK,0,4,0,0,?,?,?,unknown,?
 2026-11-02,row26-s4-tests,cf,-,FAIL,1,29,0,0,?,?,?,unknown,?
 2026-11-02,row26-a-tests,cf,-,FAIL,1,43,0,0,?,?,?,unknown,?
+2026-11-02,row26-s4-routing,cf,high,BREACH,1,42,0,0,?,?,?,unknown,?
