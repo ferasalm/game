@@ -27,3 +27,16 @@ Input: three independent critiques (docs/research/pipeline-v2/ (claude.md, glm53
 1. Editing build_pipeline.sh while a run uses it crashes that run: `bash tools/slots.sh` must show 0 runs before each merge (LESSONS 3).
 2. S1 and S3 both edit build_pipeline.sh: serialize them (S3 after S1 merges).
 3. A weak builder writes a lenient red test: the head reads every locked test; P6 measures it.
+
+## Feras's ideas (11-02, pasted mid-run) and the verdicts
+| Idea | Verdict | Where it lands |
+|---|---|---|
+| Head context discipline (never paste builder output, adjudicate from flag lists, rotate head chats, keep prompt-cache stable) | Mostly already the rule (read `.result` first word, one task per chat, /handoff). Adopt as 4 lines in the skill. Exception kept: the head still reads every locked test and every risky hunk in full (priority 1 beats tokens). | S6 |
+| Free lenses for recall, Claude only adjudicates (dual critic on plan/brief, dual lens at the gate) | Dual critic: done this run (GLM + DeepSeek + Claude union found 9 real items none had alone). Dual lens at the gate: adopt as an option (`XR_DUAL=1`, deduped flag list), default single; turn it on for risky machinery and Godot; keep it only if P5/P6 show the second lens catching something the first missed. | S4 option, judged by S9 |
+| Break the GLM plan-to-test correlation | Adopt as a rule: the critic of a brief is a different family than the model that writes its tests (GLM writes tests -> DeepSeek max critiques the brief, and the reverse). | S6 (skill rule) |
+| A/B the middle tier, DeepSeek max vs GLM max over 5-10 tasks | Adopt, sized to what is measurable now: the same scope brief (row26-s4-tests) goes to both, head-scored by seeded mutations (does the implementation that passes still survive a planted bug?). The larger 5-10 task trial stays in row 26's writer trial with M1 builds. | S9 (P2), row 26 |
+| Batch fix passes without head turns | Already true (FIX_PASSES=2 free passes, the head re-engages on the `.result`). Reconcile the 3-round cap in the builders skill with FIX_PASSES (builder side 2, head side 1 more). | S6 |
+| Close the telemetry loop (Claude tokens per task next to cf_spend, neuron soft budget per batch) | Soft budget: adopt (`CF_SOFT_BUDGET_USD` per day in builders.conf, slots.sh warns at launch; cheap). Claude tokens per task via session_stats.py: not yet (its dates-by-entry gap is an open point and it measures a chat, not a task); revisit after S2 gives the cf side. | S2/S4 follow-up |
+| Verify plumbing labels (does GLM effort max change anything on the probe route; route big diff critiques through opencode to escape the 32k clip) | Adopt as proof run P0, ~2 cheap probes: same prompt at none and max, compare completion/reasoning tokens. The two critic runs here (15.6k in / 29.8k out GLM, 15.9k in / 22.0k out DeepSeek, both at max, ~$0.04 each) already show large thinking at max and no clip. | S9 (P0) |
+
+Found while relaunching: a REFUSED launch still appended a `?` line to cf_spend.csv (cf_build.sh appends after any exit) -> row26-a-runstate item 8 skips the spend line when the pipeline exits 3. A red test on a shared base refuses every sibling launch (rows 23/24 again): each part's red tests live on its own base branch (row26-s2-base, row26-s7-base); S5 makes that automatic.

@@ -22,6 +22,7 @@ ONE new file `tools/test_run_state.py` (<= 200 lines, functions <= 40 lines), pl
 8. `test_a_builder_with_no_commit_still_gets_the_idle_rule`: IDLE_SEC=4, QUIET_SEC=2, the stub never commits -> NOWORK.
 9. `test_opencode_free_models_are_refused`: builder oc with model `opencode/deepseek-v4.1-flash-free` -> exit 3 and a REFUSED line naming cf_build.sh; with OC_ALLOW_FREE=1 it is not refused for that reason.
 10. `test_every_end_path_appends_one_runs_csv_row`: PASS, FAIL, NOWORK and REFUSED runs each add exactly one row (set the file with RUNS_CSV or the repo's docs/runs.csv in the toy, whichever runs_log's default resolves to there), with the matching gate word, `?` tokens and source `unknown` when no opencode session exists.
+12. `test_a_refused_launch_appends_no_spend_line`: cf_build.sh with a stub pipeline that exits 3 -> the cf_spend csv has no new line.
 11. `test_append_spend_prefers_the_sessions_of_a_worktree`: call `bash tools/slots.sh append-spend LOG task 0.30 1.20 CSV WT` with a stub OC_BIN that lists/exports one session of 1000 in / 200 out -> the csv line is `<date>,task,1000,200,0.00` (usd 0.00054 rounds to 0.00 at two decimals; assert the first four fields exactly); with no WT the old log parsing result (`?`) is unchanged.
 
 ## Do NOT edit
