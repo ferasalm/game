@@ -747,6 +747,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_kill_tree.py`: Tests kill_tree (tools/lib.sh): a tree with a native grandchild and a parent still forking during the kill dies whole.
 - `tools/test_map.py`: Self-test for map.py: only tracked files are mapped (an untracked file made CI fail "MAP.md current").
 - `tools/test_no_legacy_hero.py`: Guard: the hero's old code id stays gone (renamed to rydan, save v7, Feras 2026-10-27). Fails on the old id in the
+- `tools/test_oc_task_prompt.py`: Row 26 (11-02): GLM's scope run died at once with "Argument list too long" (exit 126): oc_task.sh passed the whole prompt
 - `tools/test_oc_usage.py`: Row 26 S2 (Feras 11-02): a builder run's cost is read from opencode's own session export, never guessed from its log
 - `tools/test_personas.py`: The 10 personas are tailored to Neon Glitch (Feras 10-28: "not generic") and their copies never drift (row 1 item 9).
 - `tools/test_plugin_prune.py`: Row 26 S7 (Feras 11-02, asked and agreed): `claude plugin list` showed kaizen@kaizen eight times, two of them for
