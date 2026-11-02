@@ -648,7 +648,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/bake_sprites.tscn`: scene
 - `tools/base_red.py`: Refuses a base holding a red tool test the brief does not name (rows 23 and 24; the rule alone did not hold): a sibling's
 - `tools/build_gate.py`: Build gate: judges a builder run before Claude reads it (NOWORK, BREACH, FAIL or PASS plus a WARN checklist).
-- `tools/build_pipeline.sh`: Free builder pipeline (DECISIONS 2026-10-23, hardened 2026-10-27): slots check -> builder run (idle watchdog) ->
+- `tools/build_pipeline.sh`: Free builder pipeline (DECISIONS 2026-10-23, hardened 2026-10-27, run state 2026-11-02): slots check -> builder run (idle
 - `tools/builders.conf`
 - `tools/cf_audit.sh`: Read-only audit by Cloudflare DeepSeek V4.1 Flash at max (row 25, Feras 11-01): the model reads the repository with opencode's
 - `tools/cf_build.sh`: Cloudflare builder (Workers AI DeepSeek V4.1 Flash, Workers Paid, no $ cap since 10-30, spend in cf_spend.csv): runs
@@ -700,6 +700,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/rodin/rewrite_glb.py`: Rebuild a Rodin glb with new triangle indices (from Godot, winding flipped back; IDX_BIN '-' keeps its own), no
 - `tools/rodin/slim_indices.gd`: Rodin step 1: simplifies a Rodin glb mesh with Godot's LOD generator and writes the index buffer (env SRC, IDX, MAX_TRIS, DST); rewrite_glb.py then builds the slim glb (usage: docs/archive/design-3d/characters-3d.md 8)
 - `tools/run_godot.sh`: Runs the pinned Godot headless on this project with the given arguments; fails on a non-zero exit or on
+- `tools/run_state.sh`: Run state for build_pipeline.sh (row 26, Feras 11-02): the .result header every reader parses by name, the tokens of an
 - `tools/runs_log.py`: Append run scoreboard entries to docs/runs.csv.
 - `tools/session_stats.py`: Per-day quality signals from Claude Code transcripts (ops-review, kaizen coach): tool calls, failed calls, calls per
 - `tools/shot_menu.gd`: purpose: Renders pause, save, shop, or equipment menu at 1920x1080 to an inbox PNG
