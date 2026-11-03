@@ -1,4 +1,4 @@
-# Brief: m1-view (cf DeepSeek high; GDScript, RUN_KIND=godot)
+# Brief: m1-view (nv DeepSeek high; GDScript, RUN_KIND=godot)
 You are in your own worktree on branch oc/m1-view (made from origin/m1-view-base: m1-sim, m1-touch and m1-juice merged, plus the
 locked tests; pushed). Follow GEMINI.md, including <review_misses>. Load the builders skill.
 Pattern: features/neon/roof/roof_scene.gd, features/neon/roof/view/roof_hud.gd, features/neon/neon_game.gd

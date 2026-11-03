@@ -53,4 +53,4 @@ Proof: <check.sh last lines + raw FAIL lines>
 ```
 
 ## Reviewer
-review-code (Routing: Godot gameplay code and tests; lane agy/cf). It reads the diff and the tests; it does not accept a weak or skipped check.
+review-code (Routing: Godot gameplay code and tests; lane agy/nv). It reads the diff and the tests; it does not accept a weak or skipped check.

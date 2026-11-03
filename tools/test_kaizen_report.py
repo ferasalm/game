@@ -14,7 +14,7 @@ HEADER = ("date,task,worker,effort,gate,fix_passes,minutes,cost,real_findings,to
 OLD_HEADER = "date,task,worker,effort,gate,fix_passes,minutes,cost,real_findings"
 
 
-def row(date="2026-10-01", worker="cf", effort="max", gate="PASS", fix=0, minutes=10, tokens_in=100,
+def row(date="2026-10-01", worker="nv", effort="max", gate="PASS", fix=0, minutes=10, tokens_in=100,
         tokens_out=10, usd="0.01", idle=0, cost_source="opencode-export"):
     """One 14-column runs.csv row, with the boring cells defaulted."""
     return [date, "job", worker, effort, gate, fix, minutes, 0, 0, tokens_in, tokens_out, usd, cost_source, idle]
@@ -50,7 +50,7 @@ def test_groups_are_sorted_and_summed_with_unknowns_left_out():
         lines = run(d, rows)
     assert lines == [
         "KAIZEN 7 runs, 2026-10-01..2026-10-07",
-        "cf/max  runs 4  pass 75%  min avg 20.0  fix avg 1.0  idle 10 min  tok 3500/500  usd 0.04 (1 unknown)",
+        "nv/max  runs 4  pass 75%  min avg 20.0  fix avg 1.0  idle 10 min  tok 3500/500  usd 0.04 (1 unknown)",
         "agy/-  runs 2  pass 50%  min avg 30.0  fix avg 0.0  idle 3 min  tok ?/?  usd ? (2 unknown)",
         "glm/high  runs 1  pass 100%  min avg 45.0  fix avg 3.0  idle 0 min  tok 800/80  usd 0.01 (0 unknown)",
         "tune: 3 row(s) have no cost reading (older runs or non-opencode builders)",
@@ -58,12 +58,12 @@ def test_groups_are_sorted_and_summed_with_unknowns_left_out():
 
 
 def test_an_old_nine_column_file_reads_every_new_column_as_unknown():
-    old = [["2026-09-01", "job", "cf", "max", "PASS", 0, 20, 0, 0]]
+    old = [["2026-09-01", "job", "nv", "max", "PASS", 0, 20, 0, 0]]
     with tempfile.TemporaryDirectory() as d:
         lines = run(d, old, header=OLD_HEADER)
     assert lines == [
         "KAIZEN 1 runs, 2026-09-01..2026-09-01",
-        "cf/max  runs 1  pass 100%  min avg 20.0  fix avg 0.0  idle ? min  tok ?/?  usd ? (1 unknown)",
+        "nv/max  runs 1  pass 100%  min avg 20.0  fix avg 0.0  idle ? min  tok ?/?  usd ? (1 unknown)",
         "tune: 1 row(s) have no cost reading (older runs or non-opencode builders)",
     ]
 
@@ -81,7 +81,7 @@ def test_since_filters_by_date_and_the_header_names_the_range():
     assert "tok 600/60" in all_lines[1], all_lines
     assert since_lines == [
         "KAIZEN 2 runs, 2026-10-05..2026-10-09",
-        "cf/max  runs 2  pass 100%  min avg 25.0  fix avg 0.0  idle 5 min  tok 500/50  usd 0.05 (0 unknown)",
+        "nv/max  runs 2  pass 100%  min avg 25.0  fix avg 0.0  idle 5 min  tok 500/50  usd 0.05 (0 unknown)",
     ], since_lines
 
 
@@ -95,8 +95,8 @@ def test_empty_or_missing_csv_reads_kaizen_0_runs():
 def test_the_idle_tune_fires_at_ten_minutes_and_fifteen_percent():
     ten = [row(date=f"2026-10-0{i}", minutes=10, idle=i) for i in (1, 2, 3, 4)]
     fifteen = [row(date=f"2026-10-0{i}", minutes=20, idle=3) for i in (1, 2, 3, 4)]
-    wants = ["tune: cf/max lost 10 of 40 min to idle: lower QUIET_SEC or tighten the first-commit deadline",
-             "tune: cf/max lost 12 of 80 min to idle: lower QUIET_SEC or tighten the first-commit deadline"]
+    wants = ["tune: nv/max lost 10 of 40 min to idle: lower QUIET_SEC or tighten the first-commit deadline",
+             "tune: nv/max lost 12 of 80 min to idle: lower QUIET_SEC or tighten the first-commit deadline"]
     for rows, want in zip((ten, fifteen), wants):
         with tempfile.TemporaryDirectory() as d:
             lines = run(d, rows)
@@ -108,8 +108,8 @@ def test_the_low_pass_tune_fires_below_seventy_percent_with_three_runs():
     with tempfile.TemporaryDirectory() as d:
         lines = run(d, rows)
     assert lines[1:] == [
-        "cf/max  runs 3  pass 0%  min avg 10.0  fix avg 0.0  idle 0 min  tok 300/30  usd 0.03 (0 unknown)",
-        "tune: cf/max passes only 0% of 3 runs: tighten briefs or move up an effort",
+        "nv/max  runs 3  pass 0%  min avg 10.0  fix avg 0.0  idle 0 min  tok 300/30  usd 0.03 (0 unknown)",
+        "tune: nv/max passes only 0% of 3 runs: tighten briefs or move up an effort",
     ], lines
 
 
@@ -118,8 +118,8 @@ def test_the_fix_passes_tune_fires_over_one_fix_pass_a_run():
     with tempfile.TemporaryDirectory() as d:
         lines = run(d, rows)
     assert lines[1:] == [
-        "cf/max  runs 3  pass 100%  min avg 10.0  fix avg 1.3  idle 0 min  tok 300/30  usd 0.03 (0 unknown)",
-        "tune: cf/max needs 1.3 fix passes a run: write sharper tests",
+        "nv/max  runs 3  pass 100%  min avg 10.0  fix avg 1.3  idle 0 min  tok 300/30  usd 0.03 (0 unknown)",
+        "tune: nv/max needs 1.3 fix passes a run: write sharper tests",
     ], lines
 
 
@@ -128,7 +128,7 @@ def test_the_unknown_cost_tune_fires_on_a_question_mark_usd():
     with tempfile.TemporaryDirectory() as d:
         lines = run(d, rows)
     assert lines[1:] == [
-        "cf/max  runs 2  pass 100%  min avg 10.0  fix avg 0.0  idle 0 min  tok 200/20  usd ? (0 unknown)",
+        "nv/max  runs 2  pass 100%  min avg 10.0  fix avg 0.0  idle 0 min  tok 200/20  usd ? (0 unknown)",
         "tune: 2 row(s) have no cost reading (older runs or non-opencode builders)",
     ], lines
 
@@ -152,10 +152,10 @@ def test_tune_lines_come_in_the_brief_order():
     with tempfile.TemporaryDirectory() as d:
         lines = run(d, rows)
     assert lines[1:] == [
-        "cf/max  runs 3  pass 0%  min avg 10.0  fix avg 2.0  idle 24 min  tok 300/30  usd ? (0 unknown)",
-        "tune: cf/max lost 24 of 30 min to idle: lower QUIET_SEC or tighten the first-commit deadline",
-        "tune: cf/max passes only 0% of 3 runs: tighten briefs or move up an effort",
-        "tune: cf/max needs 2.0 fix passes a run: write sharper tests",
+        "nv/max  runs 3  pass 0%  min avg 10.0  fix avg 2.0  idle 24 min  tok 300/30  usd ? (0 unknown)",
+        "tune: nv/max lost 24 of 30 min to idle: lower QUIET_SEC or tighten the first-commit deadline",
+        "tune: nv/max passes only 0% of 3 runs: tighten briefs or move up an effort",
+        "tune: nv/max needs 2.0 fix passes a run: write sharper tests",
         "tune: 3 row(s) have no cost reading (older runs or non-opencode builders)",
     ], lines
 
@@ -207,7 +207,7 @@ def test_pass_percent_rounds_it_does_not_floor():  # seeded-bug run 11-02: round
     assert "pass 67%" in lines[1], lines
 
 
-def test_refused_launches_are_not_runs_and_scoped_counts_as_a_pass():  # the first real scoreboard read 20% for cf/max
+def test_refused_launches_are_not_runs_and_scoped_counts_as_a_pass():  # the first real scoreboard read 20% for nv/max
     rows = [row(gate="SCOPED"), row(gate="PASS"), row(gate="REFUSED"), row(gate="REFUSED"), row(gate="FAIL")]
     with tempfile.TemporaryDirectory() as d:
         lines = run(d, rows)

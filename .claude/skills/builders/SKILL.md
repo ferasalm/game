@@ -30,19 +30,19 @@ Per executor:
   - one task type per run, <= 8 steps; exact files and grep patterns with head_limit;
   - a fixed output template, with one worked example line; "if unsure write UNSURE and the evidence, never guess";
   - list what NOT to report; split big jobs into parallel runs over disjoint inputs; no design choices;
-  - effort `low` for launch-and-wait, lens and checks; `medium` only for >20k multi-file reads when `cf_probe` cannot (never `high`; never call `/advisor` unasked: report BLOCKED to the parent).
+  - effort `low` for launch-and-wait, lens and checks; `medium` only for >20k multi-file reads when `nv_audit.sh` cannot (never `high`; never call `/advisor` unasked: report BLOCKED to the parent).
 - **Claude (Opus or Sonnet), as the head or a subagent** (Sonnet always at high, Feras 11-01; allowed as a subagent, Feras 11-02):
   - the decisions are made first, so no open design questions are left; give the acceptance tests or checks;
   - stuck twice on one thing -> stop looping and ask Feras via AskUserQuestion (with a pick) to call `/advisor opus` (never unasked);
-  - grep, then read <=2 small named excerpts yourself; delegate larger reads and summaries to `cf_probe.py --effort none` or Haiku;
+  - grep, then read <=2 small named excerpts yourself; delegate larger reads and summaries to `tools/nv_audit.sh` (one-shot) or Haiku;
   - milestone-only reports; finish the task, whatever the context size.
 - **agy** (Gemini Flash; Godot code, facts, discovery, Python tools and docs when its quota is free; not creative or disciplined):
   - geometry, colour and size numbers plus the concept path for any visual; first commit within 15 minutes (idle watchdog);
   - GEMINI.md review_misses; it never judges legibility or feel (the player lens does); always reviewed by another family.
-- **DeepSeek** (Cloudflare via opencode; code plus tests; edits outside its scope):
+- **DeepSeek** (NVIDIA NIM via opencode, free; code plus tests; edits outside its scope):
   - an explicit Do NOT edit list and tests written first and protected;
   - include `.claude/rules/code.md` and a house Pattern example when running `fast` (`none`) so types and JSON traps pass checks;
   - small file sets; exact edit lists for the mechanical lane; spend logged by runs.csv.
-- **GLM-5.3** (Cloudflare via opencode; the player-facing words, the player's side of a brief, test authoring): tests and text, not bulk code; judge its flags, do not copy them.
+- **GLM-5.3** (NVIDIA NIM via opencode, free; the player-facing words, the player's side of a brief, test authoring): tests and text, not bulk code; judge its flags, do not copy them.
 - **Free models** (OpenRouter :free active; `opencode/*-free` routes are spent): public content only; one-shot when possible; only the roles that passed calibration (lens: `nemotron-3-ultra :free` via `XR_OC_MODEL`; not a reader).
 - **Reviewers** (lens agents): inputs are the diff, the brief and the criteria only; flag correctness and requirement gaps only; <= 15 lines.

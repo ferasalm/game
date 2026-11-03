@@ -5,16 +5,16 @@ special and cast later; soft aim; floating stick + 3 buttons; baton + rifle guar
 ## Parts, order, workers (disjoint May edit sets; parts_plan.py checks them)
 | Wave | Part (brief) | Owns | Worker | Needs |
 |---|---|---|---|---|
-| 1 | m1-defs | data types, defs, content/fight, rooms kind/facing, 4 text keys | cf DeepSeek high | - |
-| 2 | m1-hero | Ground, InputBuffer, AimAssist, Posture, DefenceRules, Trauma, HeroMachine | cf DeepSeek max | 1 |
-| 2 | m1-guards | Sight, GuardMachine (baton, rifle) | cf DeepSeek max | 1 |
-| 2 | m1-touch | project.godot actions, touch layout and controls | cf GLM-5.3 max | 1 |
-| 3 | m1-sim | HitResolver, FightSim, determinism | cf DeepSeek max | 2 hero, guards |
+| 1 | m1-defs | data types, defs, content/fight, rooms kind/facing, 4 text keys | nv DeepSeek high | - |
+| 2 | m1-hero | Ground, InputBuffer, AimAssist, Posture, DefenceRules, Trauma, HeroMachine | nv DeepSeek max | 1 |
+| 2 | m1-guards | Sight, GuardMachine (baton, rifle) | nv DeepSeek max | 1 |
+| 2 | m1-touch | project.godot actions, touch layout and controls | nv GLM-5.3 max | 1 |
+| 3 | m1-sim | HitResolver, FightSim, determinism | nv DeepSeek max | 2 hero, guards |
 | 4 | m1-juice | IsoActor flash/dissolve, FightFx, sounds.json | agy medium | 3 |
-| 4 | m1-harness | bots, runner, balance bands | cf DeepSeek max | 3 |
-| 5 | m1-view | FightView, FightHud, RoofScene and NeonGame wiring, shot scene | cf DeepSeek high | 3, touch, juice |
-| 6 | m1-archive | delete the turn-based code (tag turn-based-archive first) | cf DeepSeek fast + high | 5 |
-Wave n+1 starts when wave n is merged and the base is pushed; parts of one wave run in parallel (CAP_CF 3, agy 2).
+| 4 | m1-harness | bots, runner, balance bands | nv DeepSeek max | 3 |
+| 5 | m1-view | FightView, FightHud, RoofScene and NeonGame wiring, shot scene | nv DeepSeek high | 3, touch, juice |
+| 6 | m1-archive | delete the turn-based code (tag turn-based-archive first) | nv DeepSeek fast + high | 5 |
+Wave n+1 starts when wave n is merged and the base is pushed; parts of one wave run in parallel (CAP_NV 3, agy 2).
 Each part: critic read of the brief by another family, scope run for red tests, the head READS EVERY TEST, lock_tests.sh,
 build, part_report, cross_review by the other family, merge_run.sh, check.sh to a file.
 

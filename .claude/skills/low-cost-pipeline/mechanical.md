@@ -7,7 +7,7 @@ The head decides where and writes the instructions; the worker only does what th
 - `## Edits`: a numbered list, each item `file | anchor text (exact, unique) | replacement (exact)` or `file | action`. No "improve", no "also".
 - `## May edit`: exactly the files in the list. The gate BREACHes any other file.
 - A Pattern file for the house style, `.claude/rules/code.md` (pasted automatically), and a locked check: a test or a grep assertion per edit (`grep -c` of the new text equals the count in the list).
-- Launch: `RUN_KIND=py bash tools/cf_build.sh <task> <brief> <base> fast`. A failing check sends the fix pass to the max model (cf_build.sh fast does this).
+- Launch: `RUN_KIND=py bash tools/nv_build.sh <task> <brief> <base> fast`. A failing check sends the fix pass to the max model (nv_build.sh fast does this).
 
 ## Test it before trusting it
 1. First use of a new kind of edit: one smoke edit (two files), then diff it against the list by eye.

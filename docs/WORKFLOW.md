@@ -28,7 +28,7 @@ Department: <Id> (a label: Routing table). Queue row: <#>. Model: Opus <effort> 
 Skills: <names; a skill the chat does not list yet: Read .claude/skills/<name>/SKILL.md>. Persona: <.agents/skills name>
 Goal: <one line; player-visible where it can be>
 Context: <the decisions, files and CANON lines it needs; no chat history>
-Lane plan: <pieces for agy / cf / oc, Haiku readers, reviewers; what the chat does itself>
+Lane plan: <pieces for agy / nv / oc, Haiku readers, reviewers; what the chat does itself>
 May edit: <paths>. Do NOT edit: <paths other chats own right now>. Commit and merge: <yes | no, the father does>
 Done when: <check.sh passes; the gate or render; merged to main; queue row updated>
 Report: 15 lines or fewer: what changed (commits), runs launched, what failed, questions for Feras.
@@ -52,8 +52,8 @@ docs/HOW_WE_WORK.md draws this loop for Feras: a change to these Protocols updat
 - **Review (tiered, Feras 10-28: Opus never reads needlessly, and signs off on whatever reaches Feras):**
   1. Gates first: check.sh, build_gate (.result first line). FAIL, NOWORK or BREACH goes back unread.
      PASS: cross-review (row 12 A, 10-29): `bash tools/cross_review.sh <run> <brief> <base>` in the background. On for
-     oc/* runs (agy reviews, free, ~11 min, 3/5 on calibration); gemini/* runs: Cloudflare DeepSeek 1017 at max effort
-     (Feras 10-30; nemotron :free only as the backup lens after cf fails twice). USAGE logs real hits a run: under 1 on
+     oc/* runs (agy reviews, free, ~11 min, 3/5 on calibration); gemini/* runs: NVIDIA DeepSeek V4.1 Flash (free) at max effort
+     (Feras 10-30; nemotron :free only as the backup lens after nv fails twice). USAGE logs real hits a run: under 1 on
      average over 5 runs -> drop the step. Opus vets the table
      (.check/reviews/<run>-cross.md) in step 3; real findings go to the builder as its fix pass, then the gate again;
      fail-open/closed findings stay Opus's (agy argued the wrong side on calibration).
@@ -77,7 +77,7 @@ docs/HOW_WE_WORK.md draws this loop for Feras: a change to these Protocols updat
 ## Routing (one table; departments are labels, Feras 10-28 option B)
 A department is a label, not an agent: the HANDOFF queue's Dept column names a Dept below, and that row says which
 skills and persona the worker loads, its lane and its reviewer. Every brief names its persona; our rules (CLAUDE.md,
-.claude/rules/code.md, CANON) outrank persona text. Lanes: agy, cf, oc = the builders (who takes what: low-cost-pipeline skill, routing.md; run caps: Limits); chat =
+.claude/rules/code.md, CANON) outrank persona text. Lanes: agy, nv, oc = the builders (who takes what: low-cost-pipeline skill, routing.md; run caps: Limits); chat =
 Opus for plan, taste, MCP, review. No department chat stays open between tasks; its lessons and research queue live in
 its skill folder. tools/doc_check.py fails on an unknown Dept, a persona with no .agents/skills/<name>/SKILL.md, a
 reviewer with no plugins/studio/agents/<name>.md, and any plugins/studio/agents/dept-*.md (retired to ~/.claude/archive, D7).
@@ -85,9 +85,9 @@ reviewer with no plugins/studio/agents/<name>.md, and any plugins/studio/agents/
 | Request | Dept | Skills | Persona | Lane | Reviewer |
 |---|---|---|---|---|---|
 | the queue, picks, briefs, reading reports (Feras directs) | Producer | builders; tools/status.sh | - | chat (plan) | review-feras |
-| process, tools, hooks, checks, merging PASS runs | Ops | builders, ops-review; emergency-efficiency when the window is tight | - | builder (agy, cf) + chat (review) | review-code + review-cost |
+| process, tools, hooks, checks, merging PASS runs | Ops | builders, ops-review; emergency-efficiency when the window is tight | - | builder (agy, nv) + chat (review) | review-code + review-cost |
 | combat and systems design: specs, balance | Gameplay | builders + a spec in docs/design/ | game-designer | chat (plan) | review-feras |
-| Godot gameplay code and tests | Gameplay | builders | godot-gameplay-scripter | builder (agy, cf) | review-code |
+| Godot gameplay code and tests | Gameplay | builders | godot-gameplay-scripter | builder (agy, nv) | review-code |
 | levels, encounters, the roof layout | Gameplay | builders; docs/design/systems-map.md | level-designer | builder (agy) + chat (review) | review-code + review-player |
 | shaders, VFX, rain, neon light | Art | builders; docs/design/art-bible.md | godot-shader-developer | builder (agy) | review-code + review-player |
 | images, 3D models, sprites, renders | Art | flow-media, 3d-model, sprite-bake; docs/design/art-bible.md | technical-artist, blender-addon-engineer | chat (MCP) | review-player |
@@ -100,12 +100,12 @@ reviewer with no plugins/studio/agents/<name>.md, and any plugins/studio/agents/
 ## Limits (one table)
 | Limit | Value | Enforced by |
 |---|---|---|
-| Godot builder runs, machine-wide | 2 at once (CAP_GODOT=2; agy CAP_AGY=2, Cloudflare DeepSeek CAP_CF=3; a RUN_KIND=py run counts toward its builder cap only) | tools/slots.sh (refuses when full) |
+| Godot builder runs, machine-wide | 2 at once (CAP_GODOT=2; agy CAP_AGY=2, NVIDIA DeepSeek (free) CAP_NV=3; a RUN_KIND=py run counts toward its builder cap only) | tools/slots.sh (refuses when full) |
 | Text run (opencode, OpenRouter :free; no Godot) | 1 (CAP_OC=1) | tools/slots.sh |
 | Godot test suites at once | 2 (CHECK_SLOTS=2) | tools/check_slot.sh |
 | Free memory before a Godot run | >= 2000 MB of available RAM (MIN_FREE_MB=2000, Feras 11-01) | tools/slots.sh |
 | Builder with no commit | killed after 25 min (IDLE_MIN=25); result NOWORK | tools/build_pipeline.sh |
-| Builder that committed, then went silent (cf, oc; not agy) | killed after QUIET_SEC=300 of no log growth and no `.check/alive` beat; its commits are gated | tools/build_pipeline.sh, tools/check.sh |
+| Builder that committed, then went silent (nv, oc; not agy) | killed after QUIET_SEC=300 of no log growth and no `.check/alive` beat; its commits are gated | tools/build_pipeline.sh, tools/check.sh |
 | OpenRouter :free requests | 50 a day, shared by all :free models | the provider; check before a run |
 | Claude's handoff | the chat's task done, or ~85% of the 5-hour window; never context size (Feras 10-31) | the status line's usage; review-cost |
 | Always-loaded notes | 27 KB each; lines: CLAUDE.md 80, HANDOFF 60, DECISIONS 70, LESSONS 100 (warns at 75%) | tools/doc_check.py |
@@ -120,7 +120,7 @@ reviewer with no plugins/studio/agents/<name>.md, and any plugins/studio/agents/
 | 3D models | Blender MCP search_assets / import_asset (CC0); open-source image-to-3D | Rodin while credits last: cost named first, log SPEND.md |
 | Sprites | tools/art bake: offline renders (bake_sprites.tscn) | none needed |
 | Sound and fonts | CC0 SFX (Freesound CC0, Kenney); CC0 fonts (OFL) | none; Feras OK before download, manifest entry |
-| Research | see Research protocol | Cloudflare DeepSeek, no $ cap, spend logged |
+| Research | see Research protocol | NVIDIA DeepSeek (free, nv lane) |
 
 PreToolUse hook tools/hooks/pre_spend.py blocks paid generation tools unless Feras says "spend ok" (P3.9). Before Rodin ends, prove free 3D route.
 
@@ -136,7 +136,7 @@ Reading rule: CLAUDE.md. Reader models and review lenses: `low-cost-pipeline` sk
 Which worker does what and model routing: `low-cost-pipeline` skill (`.claude/skills/low-cost-pipeline/routing.md`).
 
 
-## Builder loop (agy, Cloudflare DeepSeek, opencode)
+## Builder loop (agy, NVIDIA DeepSeek (free), opencode)
 Builder flow: `low-cost-pipeline` skill; debug recipe and prompt recipes: `builders` skill (`.claude/skills/builders/SKILL.md`).
 
 

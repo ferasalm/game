@@ -17,7 +17,7 @@ def write(root, name, lines):
 
 
 QUEUE = ["## Queue", "| # | Task | Dept | Lane | Who | Status | Blocked by |", "|---|---|---|---|---|---|---|",
-         "| 1 | hooks | Ops | builder + chat (review) | cf; Opus high | next | - |",
+         "| 1 | hooks | Ops | builder + chat (review) | nv; Opus high | next | - |",
          "| 2 | M1 brief | Gameplay | chat (plan) | Opus high | queued | 1 |",
          "| 3 | play M1 | QA | Feras | - | queued | 2 |", "## Waiting on Feras", "| What | Since |", "|---|---|", "| 9 | not a queue row |",
          "## Open points", "| Point | Owner | Since |", "|---|---|---|", "| art homework | Feras | 10-24 |"]
@@ -55,12 +55,12 @@ def test_warns_at_75_percent_but_passes():
 def test_queue_rows_need_a_lane():
     for bad, why in (("| 4 | x | Ops | Opus | Opus high | next | - |", "lane is builder"),  # a model is not a lane
                      ("| 4 | x | Ops | chat | Opus high | next | - |", "lane is builder"),  # a chat without its reason
-                     ("| 4 | x | Ops | builder | Opus high | next | - |", "names agy, cf or oc"),
+                     ("| 4 | x | Ops | builder | Opus high | next | - |", "names agy, nv or oc"),
                      ("| 4 | x | Ops | chat (taste) | - | next | - |", "names Opus and its effort"),
                      ("| 4 | x | Ops | chat (taste) | Sonnet medium | next | - |", "names Opus and its effort")):
         r = run_check(QUEUE[:6] + [bad] + QUEUE[6:])
         assert r.returncode == 1 and why in r.stdout, bad + "\n" + r.stdout
-    good = "| 4 | x | Ops | builder + chat (review) | agy, cf; Sonnet high | next | - |"  # Feras 10-31: Sonnet high executes
+    good = "| 4 | x | Ops | builder + chat (review) | agy, nv; Sonnet high | next | - |"  # Feras 10-31: Sonnet high executes
     r = run_check(QUEUE[:6] + [good] + QUEUE[6:])
     assert r.returncode == 0, good + "\n" + r.stdout
     r = run_check(["# HANDOFF", "1. step. Model: Sonnet. Effort: medium."])  # the old numbered steps

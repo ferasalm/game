@@ -6,16 +6,15 @@ import re
 import sys
 
 WORDS = ("none", "low", "medium", "high", "max")
-PREFIX = "cloudflare-workers-ai/"
 
 
 def configured(model):
-    """The model key's options.reasoning_effort under provider cloudflare-workers-ai, or None."""
-    key = model[len(PREFIX):] if model.startswith(PREFIX) else model
+    """The model key's options.reasoning_effort under its provider (the slug's first part) in opencode.json, or None."""
+    prov, _, key = model.partition("/")
     path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "opencode.json")
     try:
         with open(path, encoding="utf-8") as f:
-            models = json.load(f)["provider"]["cloudflare-workers-ai"]["models"]
+            models = json.load(f)["provider"][prov]["models"]
         effort = models[key]["options"]["reasoning_effort"]
     except (OSError, ValueError, KeyError, TypeError):
         return None

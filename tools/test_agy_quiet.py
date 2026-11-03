@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Row 26 (11-02): `agy -p` prints its log only when it finishes, so an agy run's log stays 0 bytes while it works. The quiet
-watchdog (kill a builder whose log stopped growing after a commit) is for streaming builders (opencode: cf, oc); it must never
+watchdog (kill a builder whose log stopped growing after a commit) is for streaming builders (opencode: nv, oc); it must never
 cut a working agy run. agy keeps only the idle rule (no commit for IDLE_MIN)."""
 import os
 import re
@@ -38,7 +38,7 @@ def test_an_agy_run_with_a_silent_log_is_never_quiet_killed():
 
 
 def test_a_streaming_builder_that_goes_silent_after_a_commit_still_is():
-    rc, res = launch("cf")
+    rc, res = launch("nv")
     assert re.search(r"^quiet: ", res, re.M), res
 
 

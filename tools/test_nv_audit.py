@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Self-test for tools/cf_audit.sh (row 25, 2026-11-01): the read-only cf audit stages its box, runs opencode with the
-read-only config and the cf model, writes the report, and reports a timeout as 124. Stub opencode on OC_BIN."""
+"""Self-test for tools/nv_audit.sh (row 25, 2026-11-01): the read-only nv audit stages its box, runs opencode with the
+read-only config and the nv model, writes the report, and reports a timeout as 124. Stub opencode on OC_BIN."""
 import json
 import os
 import shutil
@@ -39,7 +39,7 @@ def toy():
 def run(top, repo, *args, **env):
     e = {**os.environ, "OC_BIN": top + "/stub.sh", "OC_MAJOR": "2", "GAME_WT_DIR": top + "/wt", "COACH_DIR": top + "/coach",
          "MEMORY_DIR": top + "/mem", **env}
-    return subprocess.run([BASH, TOOLS + "/cf_audit.sh", *args], cwd=repo, capture_output=True, text=True, env=e,
+    return subprocess.run([BASH, TOOLS + "/nv_audit.sh", *args], cwd=repo, capture_output=True, text=True, env=e,
                           stdin=subprocess.DEVNULL, timeout=120)
 
 
@@ -49,7 +49,7 @@ def test_it_stages_the_box_and_runs_the_read_only_cf_model():
     assert r.returncode == 0, r.stdout + r.stderr
     out = open(top + "/out.md", encoding="utf-8").read()
     assert "cross_review.opencode.json" in out, out  # the read-only config
-    assert "deepseek-v4.1-flash-1017" in out and "--model" in out, out
+    assert "nvidia/deepseek-ai/deepseek-v4.1-flash" in out and "--model" in out, out
     assert "coach" in out and "memory" in out and "prompt.md" in out, out  # the staged box
     assert "REPORT: all fine" in out and "level=INFO" not in out and "level=ERROR message=kept" in out  # 11-02: 269 KB of log
     # the repo's own opencode.json allows bash and edit and outranks OPENCODE_CONFIG: only inline content holds (probed 11-01)
@@ -67,15 +67,15 @@ def test_the_config_it_uses_denies_every_write_and_run_tool():
 
 def test_audit_model_picks_the_glm_lens_and_the_config_lets_glm_write_a_long_report():
     top, repo = toy()
-    glm = "cloudflare-workers-ai/@cf/zai-org/glm-5.3-flash"
+    glm = "nvidia/z-ai/glm-5.3-flash"
     r = run(top, repo, top + "/prompt.md", top + "/out.md", AUDIT_MODEL=glm)
     assert r.returncode == 0, r.stdout + r.stderr
     out = open(top + "/out.md", encoding="utf-8").read()
     assert "--model " + glm in out and "deepseek" not in out.split("ARGS")[1].split("CONFIG")[0], out
-    models = json.load(open(TOOLS + "/cross_review.opencode.json", encoding="utf-8"))["provider"]["cloudflare-workers-ai"]["models"]
-    for name in ("@cf/zai-org/glm-5.3", "@cf/zai-org/glm-5.3-flash"):  # opencode's hidden 32k output cap cut GLM off with no text (11-01)
-        assert models[name]["limit"]["output"] >= 100000, name
-    assert models["@cf/zai-org/glm-5.3"]["options"]["reasoning_effort"] == "max"
+    models = json.load(open(TOOLS + "/cross_review.opencode.json", encoding="utf-8"))["provider"]["nvidia"]["models"]
+    # opencode's hidden 32k output cap cut GLM off with no text (11-01)
+    assert models["z-ai/glm-5.3-flash"]["limit"]["output"] >= 100000, models
+    assert models["z-ai/glm-5.3-flash"]["options"]["reasoning_effort"] == "max"
 
 
 def test_audit_root_audits_another_checkout():
@@ -101,4 +101,4 @@ def test_a_run_past_its_time_is_124_and_keeps_the_partial_report():
 
 if __name__ == "__main__":
     from tool_tests import run_cases
-    run_cases([v for k, v in sorted(globals().items()) if k.startswith("test_")], "test_cf_audit")
+    run_cases([v for k, v in sorted(globals().items()) if k.startswith("test_")], "test_nv_audit")

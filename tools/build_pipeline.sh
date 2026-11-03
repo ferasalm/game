@@ -3,7 +3,7 @@
 # and quiet watchdogs) -> check.sh -> up to FIX_PASSES free fix passes fed the FAIL lines, each checked -> build_gate.py ->
 # game-wt/<task>.result (first word PASS/FAIL/NOWORK/BREACH/ERROR, the gate's checklist, the checked commit, the pipeline's
 # pid, the model and the minutes an idle or quiet kill cost). Exit 0 only for PASS; tools/merge_run.sh merges a PASS.
-# Usage (cwd = a checkout whose origin has <base> pushed): bash tools/build_pipeline.sh <oc|agy|cf> <task> <brief> <base> [model]
+# Usage (cwd = a checkout whose origin has <base> pushed): bash tools/build_pipeline.sh <oc|agy|nv> <task> <brief> <base> [model]
 # Refuses (exit 3, no .result) when slots/memory say no, when <base> has commits origin lacks, when <base> holds a red tool
 # test the brief does not name (base_red.py), or when an oc builder would spend a spent opencode/*-free route.
 # Every end path (PASS, FAIL, BREACH, ERROR, NOWORK, REFUSED) appends one docs/runs.csv row (tools/run_state.sh).
@@ -21,7 +21,7 @@ pipeline_start=$(date +%s)
 idle_min=0; idle_total=0; idle_note=""; quota=""; bg_kill=""; quiet=""; quiet_n=0; fork_note=""; fix=0
 model_used="${model:-}"
 if [ -z "$model_used" ]; then  # the model the build runs on: argv, else the builder's builders.conf default
-  case "$builder" in agy) model_used="$AGY_MODEL" ;; cf) model_used="$CF_MODEL" ;; oc) model_used="$OC_MODEL" ;; esac
+  case "$builder" in agy) model_used="$AGY_MODEL" ;; nv) model_used="$NV_MODEL" ;; oc) model_used="$OC_MODEL" ;; esac
 fi
 eff_m="$model_used"
 rm -f "$res"  # a refused or relaunched run must not leave an old PASS for a reader (row25-sync-dirty)
@@ -39,7 +39,7 @@ log_row() {  # <gate> <minutes> <fix passes>: ONE docs/runs.csv row per end path
 refuse() { echo "REFUSED: $*" >&2; echo "REFUSED: $*"; clean_empty_wt; log_row REFUSED 0 "$fix"; exit 3; }
 case "$builder" in  # a spent free route prints nothing and exits 0 (row16-audit): never launch one by accident
   oc) case "$model_used" in opencode/*-free)
-        [ "${OC_ALLOW_FREE:-0}" = 1 ] || refuse "opencode/...-free routes are spent; use tools/cf_build.sh (or OC_ALLOW_FREE=1)" ;;
+        [ "${OC_ALLOW_FREE:-0}" = 1 ] || refuse "opencode/...-free routes are spent; use tools/nv_build.sh (or OC_ALLOW_FREE=1)" ;;
       esac ;;
 esac
 case "$RUN_KIND" in godot) chk="bash tools/check.sh" ;; py) chk="bash tools/check.sh --no-godot" ;;
@@ -76,15 +76,15 @@ run() {  # <brief file>; watched: idle (no commit), quiet (a commit but no log g
     size="$(stat -c %s "$wt.log" 2> /dev/null || echo 0)"; [ "$size" = "$log_size" ] || { log_size="$size"; log_mark=$now; }
     # check.sh's heartbeat: a builder waiting on its foreground check is working, not hung (review 11-02)
     alive="$(stat -c %Y "$wt/.check/alive" 2> /dev/null || echo 0)"; [ $(( now - alive )) -ge "$quiet_sec" ] || log_mark=$now
-    # opencode's spent free quota prints no text and exits 0 (row16-audit hung 25 min, 10-29): stop at the first sight
-    if grep -q "$OC_QUOTA_MSG" "$wt.log" 2> /dev/null; then quota=1; kill_tree "$pid"; wait "$pid" 2> /dev/null; return 99; fi
+    # a provider refusal (spent free quota, rate limit, 5xx: NV_FALLBACK_RE) often prints no model text and exits 0 (row16-audit hung 25 min, 10-29): stop at the first sight; nv_build.sh moves on down NV_CHAIN
+    if grep -qE "${NV_FALLBACK_RE:-$OC_QUOTA_MSG}" "$wt.log" 2> /dev/null; then quota=1; kill_tree "$pid"; wait "$pid" 2> /dev/null; return 99; fi
     # A check the builder moved to the background reaches no commit (fast-probe-stream polled one for 25 min, row 18c)
     if [ -z "$bg_mark" ] && grep -a -B2 "$OC_BG_MSG" "$wt.log" 2> /dev/null | grep -aq 'check\.sh'; then bg_mark="$now"; fi
     if [ -n "$bg_mark" ] && [ "$mark" -lt "$bg_mark" ] && [ $(( now - bg_mark )) -ge "$BG_WAIT_SEC" ]; then
       bg_kill=1; kill_tree "$pid"; wait "$pid" 2> /dev/null; return 99; fi
     # A builder that commits then hangs costs the full IDLE_MIN (row25-base-red: 25 of 31 min): with a commit in the
     # worktree, a log that stops growing means it is done or stuck; its commits are checked below.
-    # Streaming builders only (opencode: cf, oc): `agy -p` prints its log when it finishes, so an agy log stays 0 bytes while
+    # Streaming builders only (opencode: nv, oc): `agy -p` prints its log when it finishes, so an agy log stays 0 bytes while
     # it works and would be cut 5 minutes after its first commit (seen in the P1 proof run, 11-02); agy keeps the idle rule.
     # Review 11-02: "commits" alone is true for every fix pass (the build committed), so a thinking fix pass was cut after
     # 5 silent minutes with nothing of its own to check (row26-s13-ripple): the quiet rule needs a commit made in THIS call.
@@ -109,7 +109,7 @@ kill_exit() {  # <step>: killed idle/quiet/background. Committed work still goes
   fi
   local why="idle: no commit for ${idle_sec}s, builder killed (the brief needs a first-commit deadline)"
   [ -z "$quiet" ] || why="quiet: no log output for ${quiet_n}s, builder killed and it made no commit to check"
-  [ -z "$quota" ] || why="quota: opencode's free usage limit is spent ($OC_QUOTA_MSG); rerun on cf (tools/cf_build.sh)"
+  [ -z "$quota" ] || why="quota: the provider refused the model (NV_FALLBACK_RE matched the log); nv_build.sh tries the next NV_CHAIN model"
   nowork_exit "$why"
 }
 check() {  # -> 0 when all checks pass; output in <task>.check.txt
@@ -194,7 +194,7 @@ fix=0  # FIX_PASSES free fix passes (builders.conf; Feras 10-28: builder time is
 until check; do
   [ "$fix" -lt "$FIX_PASSES" ] || break  # count the passes that ran, not the one that was refused (row 24b: 3 of 2)
   fix=$((fix + 1))
-  model="${FIX_MODEL:-$model}"  # a fast build's failures are debugging: they get the reasoning model (cf_build.sh fast)
+  model="${FIX_MODEL:-$model}"  # a fast build's failures are debugging: they get the reasoning model (nv_build.sh fast)
   [ -n "$fix_from" ] || fix_from="$(git -C "$wt" rev-parse HEAD)"
   status_line RUNNING "fix pass $fix"
   { echo "# Fix pass $fix of $FIX_PASSES: $name (<= 45 min)"

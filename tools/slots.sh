@@ -5,7 +5,7 @@ set -uo pipefail
 dir="$(wt_dir)"
 
 if [ "${1:-}" = "append-spend" ]; then
-  log="$2"; task="$3"; in_rate="$4"; out_rate="$5"; csv="${6:-$dir/cf_spend.csv}"; wt="${7:-}"
+  log="$2"; task="$3"; in_rate="$4"; out_rate="$5"; csv="${6:-$dir/nv_spend.csv}"; wt="${7:-}"
   # A 7th argument (a worktree) reads the run's own opencode sessions (row 26): a log has no token counts. 0 sessions or
   # no argument falls back to the log parsing below, unchanged for callers that do not pass it yet.
   fields=""
@@ -65,7 +65,7 @@ fi
 
 now=$(date +%s)
 count_agy=0
-count_cf=0
+count_nv=0
 count_oc=0
 count_godot=0
 free="$(free_mb)"
@@ -114,16 +114,16 @@ for res in "$dir"/*.result; do
     echo "$builder $task $step_val since $time_val"
     case "$builder" in
       agy) count_agy=$((count_agy + 1)); [ "$kind" = "godot" ] && count_godot=$((count_godot + 1)) ;;
-      cf)  count_cf=$((count_cf + 1)); [ "$kind" = "godot" ] && count_godot=$((count_godot + 1)) ;;
+      nv)  count_nv=$((count_nv + 1)); [ "$kind" = "godot" ] && count_godot=$((count_godot + 1)) ;;
       oc)  count_oc=$((count_oc + 1)) ;;
     esac
   fi
 done
 
-echo "agy $count_agy/$CAP_AGY  cf $count_cf/$CAP_CF  oc $count_oc/$CAP_OC"
+echo "agy $count_agy/$CAP_AGY  nv $count_nv/$CAP_NV  oc $count_oc/$CAP_OC"
 echo "godot $count_godot/$CAP_GODOT  free ${free} MB (floor $MIN_FREE_MB)"
 
-if [ "${1:-}" = "can-start" ]; then  # slots.sh can-start <agy|cf|oc> [godot|py]: exit 0 only when a run of that kind may start
+if [ "${1:-}" = "can-start" ]; then  # slots.sh can-start <agy|nv|oc> [godot|py]: exit 0 only when a run of that kind may start
   builder="${2:-}"
   run_kind="${3:-godot}"
   case "$builder" in
@@ -134,11 +134,11 @@ if [ "${1:-}" = "can-start" ]; then  # slots.sh can-start <agy|cf|oc> [godot|py]
     agy)
       [ $count_agy -lt $CAP_AGY ] || { echo "REFUSED: agy $count_agy/$CAP_AGY"; exit 1; }
       ;;
-    cf)
-      [ $count_cf -lt $CAP_CF ] || { echo "REFUSED: cf $count_cf/$CAP_CF"; exit 1; }
+    nv)
+      [ $count_nv -lt $CAP_NV ] || { echo "REFUSED: nv $count_nv/$CAP_NV"; exit 1; }
       ;;
     *)
-      echo "can-start: builder agy|cf|oc"; exit 2
+      echo "can-start: builder agy|nv|oc"; exit 2
       ;;
   esac
   if [ "$run_kind" = "godot" ]; then
@@ -148,7 +148,7 @@ if [ "${1:-}" = "can-start" ]; then  # slots.sh can-start <agy|cf|oc> [godot|py]
   exit 0
 fi
 
-spend_csv="$dir/cf_spend.csv"
+spend_csv="$dir/nv_spend.csv"
 month="$(date +%Y-%m)"
 spend="$($py -c '
 import sys, csv, os
@@ -165,17 +165,17 @@ if os.path.isfile(path):
                 val = row[4].strip()
                 try:
                     total += float(val)
-                except ValueError:  # cf_mcp and cf_probe lines: tokens, then the model; priced at the DeepSeek rates
+                except ValueError:  # a line with tokens, then the model: priced at the NV rates (0 since Cloudflare retired 11-04)
                     if row[2].isdigit() and row[3].isdigit():
                         total += (int(row[2]) * in_rate + int(row[3]) * out_rate) / 1000000.0
                     else:
                         unpriced += 1
 print(f"{total:.2f}" + (f" (+ {unpriced} runs with no token count)" if unpriced else ""))
-' "$spend_csv" "$month" "$CF_INPUT_RATE" "$CF_OUTPUT_RATE")"
+' "$spend_csv" "$month" "$NV_INPUT_RATE" "$NV_OUTPUT_RATE")"
 
-echo "cf spend this month: \$$spend"
+echo "nv spend this month: \$$spend"
 
-if [ $count_agy -gt $CAP_AGY ] || [ $count_cf -gt $CAP_CF ] || [ $count_oc -gt $CAP_OC ] || [ $count_godot -gt $CAP_GODOT ]; then
+if [ $count_agy -gt $CAP_AGY ] || [ $count_nv -gt $CAP_NV ] || [ $count_oc -gt $CAP_OC ] || [ $count_godot -gt $CAP_GODOT ]; then
   exit 1
 fi
 exit 0

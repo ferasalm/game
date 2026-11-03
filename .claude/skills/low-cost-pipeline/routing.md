@@ -6,16 +6,16 @@ Model cards and calibration: `.claude/skills/builders/models.md`, `docs/research
 | Work | Worker | How | Gate |
 |---|---|---|---|
 | Plan, spec, brief, decisions, final review, merge | the Claude head (Opus or Sonnet, high) | this chat | Feras |
-| Red tests (scope run) | GLM-5.3 max, or DeepSeek max for logic-heavy code | `EXPECT_RED=1 bash tools/cf_build.sh <task>-tests ...` | scope_gate, then the head reads every test |
-| Logic, scripts, tools, every fix pass, correctness review | DeepSeek V4.1 Flash 1017 max (high for routine) | `bash tools/cf_build.sh <task> <brief> <base> [model]` | check.sh, build_gate, cross-review by GLM |
-| Player text, dialogue, UI wording, design prose, the player-side read of a brief | GLM-5.3 max | cf_build.sh with the GLM model, RUN_KIND=py | cross-review by DeepSeek, review-canon |
+| Red tests (scope run) | GLM-5.3 max, or DeepSeek max for logic-heavy code | `EXPECT_RED=1 bash tools/nv_build.sh <task>-tests ...` | scope_gate, then the head reads every test |
+| Logic, scripts, tools, every fix pass, correctness review | DeepSeek V4.1 Flash 1017 max (high for routine) | `bash tools/nv_build.sh <task> <brief> <base> [model]` | check.sh, build_gate, cross-review by GLM |
+| Player text, dialogue, UI wording, design prose, the player-side read of a brief | GLM-5.3 max | nv_build.sh with the GLM model, RUN_KIND=py | cross-review by DeepSeek, review-canon |
 | Godot code and API or physics facts, discovery, research digests | agy gemini-3.8-flash-medium | `bash tools/build_pipeline.sh agy <task> <brief> <base>` | locked tests, review by DeepSeek or GLM |
 | Mechanical edits with no reasoning | DeepSeek non-reasoning (`fast`) | mechanical.md | diff equals the edit list, a locked test |
-| Sorting, summaries, digests, quick questions | DeepSeek non-reasoning or GLM-5.3-flash | `python tools/cf_probe.py --effort none` | the caller spot-checks 3 lines |
+| Sorting, summaries, digests, quick questions | DeepSeek non-reasoning or GLM-5.3-flash | `python `tools/nv_audit.sh` (one-shot) | the caller spot-checks 3 lines |
 | Colour and character-visible pre-filter | Clef-flash | `/ai/run` (models.md) | review-player keeps the text |
 | Read a web page (research, docs, a builder that needs one) | Obscura headless browser, no Chrome | `bash tools/obscura.sh <url> [text\|markdown\|links]` (never --stealth; local/private addresses stay blocked; login pages are out of reach) | the caller spot-checks the text |
 | Flag confirmation (greps only) | Haiku low subagent | Agent tool, template in foremen.md | the head adjudicates what holds |
-| Reads over ~20k tokens across files that cf_probe cannot do | Haiku medium | Agent tool, template answer | the caller re-greps every "not found" |
+| Reads over ~20k tokens across files that nv_audit.sh cannot do | Haiku medium | Agent tool, template answer | the caller re-greps every "not found" |
 | A noisy chunk that strictly needs this chat's memory | a fork, max 2, under ~100k context | Agent tool, subagent_type fork | report of 15 lines or fewer |
 | Sonnet as a subagent | allowed at high with an Opus-scoped brief (Feras 11-02, to save Opus usage) | Agent tool, model sonnet | the head reviews its report |
 

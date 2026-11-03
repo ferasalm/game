@@ -1,4 +1,4 @@
-# Brief: m1-touch (cf GLM-5.3 max + DeepSeek high fix; GDScript, RUN_KIND=godot)
+# Brief: m1-touch (nv GLM-5.3 max + DeepSeek high fix; GDScript, RUN_KIND=godot)
 You are in your own worktree on branch oc/m1-touch (made from origin/m1-touch-base: m1-defs merged, plus the locked tests; pushed).
 Follow GEMINI.md, including <review_misses>. Load the builders skill.
 Pattern: features/ui/view/ui_stack.gd, features/neon/roof/view/roof_hud.gd

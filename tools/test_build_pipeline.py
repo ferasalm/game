@@ -97,7 +97,7 @@ def pipeline(g, top, name="job", base="main", brief=BRIEF, **env_extra):
     put(top + "/brief.md", brief)
     env = {**os.environ, "BUILDER_CMD": top + "/fake_builder.sh", "FREE_MB": "99999", "NEWTEST_KINDS": "py", "LIBSH": TOOLS + "/lib.sh", **env_extra}
     env.pop("GAME_WT_DIR", None)
-    p = subprocess.Popen(["bash", PIPE, "cf", name, top + "/brief.md", base], cwd=g, env=env, stdin=subprocess.PIPE,
+    p = subprocess.Popen(["bash", PIPE, "nv", name, top + "/brief.md", base], cwd=g, env=env, stdin=subprocess.PIPE,
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     out, err = p.stdout.read(), p.stderr.read()
     p.wait()
@@ -174,18 +174,19 @@ def test_task_skills_and_pattern_files_reach_the_prompt():
     assert "WARN" in err and "tests/ghost.gd" in err and "Pattern to follow: tests/ghost" not in seen, err
 
 
-def test_fast_model_is_the_same_deepseek_without_reasoning():
-    cfg = json.load(open(os.path.join(TOOLS, "..", "opencode.json"), encoding="utf-8"))
-    models = cfg["provider"]["cloudflare-workers-ai"]["models"]
-    fast = models["deepseek-v4.1-flash-fast"]
-    assert fast["id"] in models and fast["options"]["reasoning_effort"] == "none", fast
-    conf = open(os.path.join(TOOLS, "builders.conf"), encoding="utf-8").read()
-    assert "cloudflare-workers-ai/deepseek-v4.1-flash-fast" in conf and "gemini-3.8-flash-medium" in conf
+def test_nv_chain_starts_with_the_nv_model_and_falls_back_free():  # Cloudflare retired (Feras 11-04)
+    r = subprocess.run(["bash", "-c", f". '{TOOLS}/lib.sh'; echo \"$NV_MODEL|$NV_CHAIN|$AGY_MODEL\""],
+                       capture_output=True, text=True, env={k: v for k, v in os.environ.items()
+                                                            if not k.startswith(("NV_", "AGY_"))})
+    model, chain, agy = r.stdout.strip().split("|")
+    hops = chain.split()
+    assert hops[0] == model == "nvidia/deepseek-ai/deepseek-v4.1-flash" and agy == "gemini-3.8-flash-medium", r.stdout
+    assert [h.split("/")[0] for h in hops] == ["nvidia", "opencode", "cerebras", "openrouter"], hops  # Feras's order
 
 
 def test_refuses_when_slots_full():
     top, g = toy()
-    for n, b in (("a", "agy"), ("b", "cf")):
+    for n, b in (("a", "agy"), ("b", "nv")):
         put(f"{top}/game-wt/{n}.result", f"RUNNING 10:00 build\nbuilder {b}\n")
         put(f"{top}/game-wt/{n}.log", "x")
     rc, out, err = pipeline(g, top)
@@ -277,7 +278,7 @@ def test_spent_free_quota_stops_the_run_at_once_as_nowork():  # row16-audit (10-
     t0 = time.time()
     rc, out, err = pipeline(g, top, FAKE_MODE="quota", IDLE_SEC="300", WATCH_POLL="1", **child_env())
     res = result(top)
-    assert rc != 0 and res.startswith("NOWORK") and "quota" in res and "cf_build" in res, (out, err, res)
+    assert rc != 0 and res.startswith("NOWORK") and "quota" in res and "nv_build" in res, (out, err, res)
     assert time.time() - t0 < 60, "the quota line must stop the run long before the idle limit"
 
 
@@ -301,8 +302,8 @@ def test_oc_task_default_model_deepseek_outer_timeout_and_base_check():
     t0 = time.time()
     r = task(g, top, "oc_task.sh", "job", "origin/main", OC_TIMEOUT="2s", **kids)
     log = open(top + "/game-wt/job.log", encoding="utf-8").read()
-    # row 26 S4: OC_MODEL defaults to CF_MODEL (the free route is spent), so the log names the cf provider, not ":free"
-    assert "deepseek" in log and "cloudflare-workers-ai" in log, log
+    # row 26 S4: OC_MODEL defaults to NV_MODEL (the free route is spent), so the log names the nv provider, not ":free"
+    assert "deepseek" in log and "nvidia/" in log, log
     assert "--print-logs" in log, ("without it a spent free quota prints nothing (10-29)", log)
     # v2 (row 18): without --standalone the shared service runs it (no logs, other config, survives the timeout);
     # v2 rejects "ERROR" and exits 1

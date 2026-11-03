@@ -1,9 +1,10 @@
 # SPEND (every credit or money spend: date | what | amount | why | who approved)
-Rule: name the cost first, Feras approves in chat, then the line goes here. Cloudflare DeepSeek spend is logged by cf_build
-(tools/cf_spend). Paid image APIs <= $1.
+Rule: name the cost first, Feras approves in chat, then the line goes here. Builder model calls are free (tools/free_providers.txt);
+nv_build logs their tokens to nv_spend.csv at $0. Paid image APIs <= $1.
 2026-10-26 | Hyper3D Rodin: Rydan (generate + rig) | ~credits not recorded | first hero asset | Feras
 Rodin balance 2026-10-27: about 50 credits, expiring about 2026-11-17 (plan section 12).
 2026-10-27 | Hyper3D Rodin: Roya model, Gen-2.5-Medium Quad 7k (generation 400ebe9f) | 1.5 credits for model + rig together (Feras: balance 51.5 -> 50) | hero asset, unified style v3 | Feras
 2026-10-27 | Hyper3D Rodin: Roya rig human_UE + 10 presets (generation 0db0cf3f) FAILED "Animation retarget requires target Hips" | 0 (inside the measured 1.5) | hero asset | Feras
 2026-10-27 | Hyper3D Rodin: Roya rig human_UE, no presets (generation e744d0d1) | in the 1.5 above | hero asset | Feras
 Rodin balance 2026-10-27 after Roya: 50 credits (Feras). Measured: one character (Medium Quad model + UE rig) = 1.5 credits.
+2026-11-04 | Cloudflare Workers AI bill for the cf builder lane (Oct-Nov builds and reviews) | $32.29 billed (our meter said $10.85 + 28 unmetered runs) | unplanned: no $ cap was set | NOT approved; Feras asks Cloudflare for a waiver; lane retired 11-04

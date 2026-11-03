@@ -1,4 +1,4 @@
-# Brief: m1-archive (cf DeepSeek non-reasoning for the moves + high for the fixes; RUN_KIND=godot)
+# Brief: m1-archive (nv DeepSeek non-reasoning for the moves + high for the fixes; RUN_KIND=godot)
 You are in your own worktree on branch oc/m1-archive (made from origin/m1-archive-base: m1-view merged; pushed). Follow GEMINI.md,
 including <review_misses>. Load the builders skill.
 Pattern: docs/archive/3d-reuse.md (how the 3D archive was recorded)

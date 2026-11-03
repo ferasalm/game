@@ -2,7 +2,7 @@
 """Red tests for docs/briefs/row26-s4-routing.md (row 26 S4, Feras 11-02): the cross-review reviewer comes from the
 run's .result (agy or DeepSeek work -> GLM max, GLM work -> DeepSeek max), merge_run reads its prefix from the .result
 and refuses one without a VERDICT PASS line, ci_state maps gh run list JSON to one word, handoff's ci step asks for the
-check.yml workflow and waits CI_WAIT_SEC, and OC_MODEL defaults to CF_MODEL. Red on this base because that spec is
+check.yml workflow and waits CI_WAIT_SEC, and OC_MODEL defaults to NV_MODEL. Red on this base because that spec is
 unbuilt; the routing run implements them and may not edit this file. python tools/test_routing.py"""
 import os
 import shutil
@@ -16,8 +16,8 @@ sys.path.insert(0, TOOLS)
 from test_cross_review_sh import review, toy as xr_toy  # the xr toy + runner; the stub logs ARGS lines to assert on
 from test_handoff import BASH, last_line, put, sh, toy as h_toy  # the handoff toy: bare origin + clone + stub steps
 
-XR_GLM = "cloudflare-workers-ai/@cf/zai-org/glm-5.3"  # XR_REVIEWER_GEMINI and XR_REVIEWER_DEEPSEEK (spec item 1)
-CF_DEEPSEEK = "cloudflare-workers-ai/@cf/deepseek-ai/deepseek-v4.1-flash-1017"  # CF_MODEL, so also XR_REVIEWER_GLM
+XR_GLM = "nvidia/z-ai/glm-5.3-flash"  # XR_REVIEWER_GEMINI and XR_REVIEWER_DEEPSEEK (spec item 1)
+NV_DEEPSEEK = "nvidia/deepseek-ai/deepseek-v4.1-flash"  # NV_MODEL, so also XR_REVIEWER_GLM
 GH_OK = '[{"status":"completed","conclusion":"success"}]'
 GH_STUB = '#!/usr/bin/env bash\necho "GH $*" >> "$GH_REC"\necho \'%s\'\n'
 
@@ -61,7 +61,7 @@ def merge_toy(prefix, verdict=True, both=False):
     tip = git_out(wt, "rev-parse", "HEAD")
     if both:  # the base's gemini default would merge this alias: only the VERDICT gate can refuse it
         git_out(g, "branch", "gemini/job", tip)
-    body = f"PASS 10:00 {prefix}/job\nbuilder cf\nchecked {tip}\n" + ("VERDICT PASS\n" if verdict else "")
+    body = f"PASS 10:00 {prefix}/job\nbuilder nv\nchecked {tip}\n" + ("VERDICT PASS\n" if verdict else "")
     put(top + "/game-wt/job.result", body)
     return top, g, base, tip
 
@@ -85,10 +85,10 @@ def handoff_run(top, g, *flags, **env_extra):
 
 
 def test_a_deepseek_run_is_reviewed_by_glm():
-    top, g = result_toy("oc/job", "cf", "cloudflare-workers-ai/deepseek-v4.1-flash-high")
+    top, g = result_toy("oc/job", "nv", "nvidia/deepseek-ai/deepseek-v4.1-flash")
     r, stub, _ = review(top, g)
     calls = oc_calls(stub)
-    assert r.returncode == 0 and len(calls) == 1, (r.stdout, stub)  # a cf reviewer, not the base's branch-prefix agy
+    assert r.returncode == 0 and len(calls) == 1, (r.stdout, stub)  # a nv reviewer, not the base's branch-prefix agy
     assert f"--model {XR_GLM}" in calls[0], calls[0]
 
 
@@ -97,7 +97,7 @@ def test_a_glm_run_is_reviewed_by_deepseek_max():
     r, stub, _ = review(top, g)
     calls = oc_calls(stub)
     assert r.returncode == 0 and len(calls) == 1, (r.stdout, stub)
-    assert f"--model {CF_DEEPSEEK}" in calls[0], calls[0]
+    assert f"--model {NV_DEEPSEEK}" in calls[0], calls[0]
 
 
 def test_an_agy_run_is_reviewed_by_glm():
@@ -118,18 +118,18 @@ def test_unknown_family_falls_back_to_the_branch_prefix_rule():
 
 
 def test_an_explicit_reviewer_argument_wins():
-    top, g = result_toy("oc/job", "cf", "cloudflare-workers-ai/deepseek-v4.1-flash-high")
+    top, g = result_toy("oc/job", "nv", "nvidia/deepseek-ai/deepseek-v4.1-flash")
     r, stub, _ = review(top, g, "oc/job", "agy")
     assert r.returncode == 0, (r.stdout, stub)
     assert "--dangerously-skip-permissions" in stub and "-f packet.md" not in stub, stub
 
 
 def test_the_reviewer_models_are_data_in_builders_conf():
-    top, g = result_toy("oc/job", "cf", "cloudflare-workers-ai/deepseek-v4.1-flash-high")
-    r, stub, _ = review(top, g, XR_REVIEWER_DEEPSEEK="cloudflare-workers-ai/@cf/other/model")
+    top, g = result_toy("oc/job", "nv", "nvidia/deepseek-ai/deepseek-v4.1-flash")
+    r, stub, _ = review(top, g, XR_REVIEWER_DEEPSEEK="nvidia/other/model")
     calls = oc_calls(stub)
     assert r.returncode == 0 and len(calls) == 1, (r.stdout, stub)
-    assert "--model cloudflare-workers-ai/@cf/other/model" in calls[0], calls[0]
+    assert "--model nvidia/other/model" in calls[0], calls[0]
 
 
 def test_merge_run_reads_the_prefix_from_the_result():
@@ -185,8 +185,8 @@ def test_ci_wait_cap_is_960_and_overridable():
 
 
 def test_oc_model_defaults_to_the_cf_model():
-    env = {k: v for k, v in os.environ.items() if k not in ("OC_MODEL", "CF_MODEL")}
-    r = subprocess.run(["bash", "-c", f". '{TOOLS}/lib.sh'; echo $OC_MODEL $CF_MODEL"], capture_output=True, text=True,
+    env = {k: v for k, v in os.environ.items() if k not in ("OC_MODEL", "NV_MODEL")}
+    r = subprocess.run(["bash", "-c", f". '{TOOLS}/lib.sh'; echo $OC_MODEL $NV_MODEL"], capture_output=True, text=True,
                        env=env)
     words = r.stdout.split()
     assert r.returncode == 0 and len(words) == 2 and words[0] == words[1], (r.stdout, r.stderr)

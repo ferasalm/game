@@ -8,7 +8,7 @@ Paste from HANDOFF.md ("Prompt for the next chat"): `claude --model opusplan -w 
 - Feras decided (decisions-log 11-02): move, dash, 3-hit combo, parry with posture and a dash-counter; soft aim; floating
   stick + buttons; baton + rifle guards. Special and cast are out of M1. Numbers are [PLACEHOLDER], tuned by the harness and play.
 - Red tests are NOT written yet: a wave's tests need the previous wave's types, so each wave starts with its scope run.
-- Pipeline: the low-cost-pipeline skill (Resume, Plan a batch, Flow of one part). The row 26 writer trial (agy vs cf, real cost) rides on these builds.
+- Pipeline: the low-cost-pipeline skill (Resume, Plan a batch, Flow of one part). The row 26 writer trial (agy vs nv, real cost) rides on these builds.
 
 ## Do
 1. `bash tools/status.sh`, `bash tools/slots.sh`; Wave 1 = m1-defs: critic read of the brief, scope run for its red tests (GDScript:

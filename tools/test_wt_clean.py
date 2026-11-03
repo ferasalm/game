@@ -19,7 +19,7 @@ def test_wt_clean():
     sleeper = subprocess.Popen(["bash", "-c", "echo $$; sleep 30"], stdout=subprocess.PIPE, text=True)
     live_pid = sleeper.stdout.readline().strip()  # an msys pid, like the $$ the pipeline writes
     res = {"merged": "PASS 1:00 oc/merged\n", "unmerged": "PASS 1:00 oc/unmerged\n",
-           "live": f"RUNNING 1:00 build\nbuilder cf\npid {live_pid}\n", "dead": "RUNNING 1:00 build\nbuilder cf\npid 999999\n"}
+           "live": f"RUNNING 1:00 build\nbuilder nv\npid {live_pid}\n", "dead": "RUNNING 1:00 build\nbuilder nv\npid 999999\n"}
     for n, text in res.items():
         with open(f"{top}/game-wt/{n}.result", "w", newline="\n") as f:
             f.write(text)

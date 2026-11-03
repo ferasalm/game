@@ -7,7 +7,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 ## (root)
 - `.godot-version`
 - `.ignore`
-- `.mcp.json`: content: ? x0
 - `AGENTS.md`
 - `GEMINI.md`
 - `opencode.json`: content: ? x0
@@ -650,11 +649,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/build_gate.py`: Build gate: judges a builder run before Claude reads it (NOWORK, BREACH, FAIL or PASS plus a WARN checklist).
 - `tools/build_pipeline.sh`: Free builder pipeline (DECISIONS 2026-10-23, hardened 2026-10-27, run state 2026-11-02): slots check -> builder run (idle
 - `tools/builders.conf`
-- `tools/cf_audit.sh`: Read-only audit by Cloudflare DeepSeek V4.1 Flash at max (row 25, Feras 11-01): the model reads the repository with opencode's
-- `tools/cf_build.sh`: Cloudflare builder (Workers AI DeepSeek V4.1 Flash, Workers Paid, no $ cap since 10-30, spend in cf_spend.csv): runs
-- `tools/cf_mcp/server.py`: Stdio MCP server: triage_trace (DeepSeek V4.1 Flash), generate_patch (DeepSeek V4.1 Flash), optional .agents persona.
-- `tools/cf_mcp/test_server.py`: Tests for tools/cf_mcp/server.py over its real stdio protocol, in dry mode (no Cloudflare call, no credentials).
-- `tools/cf_probe.py`: One timed Workers AI call for model calibration (row 18): time to first token, tokens, speed, finish reason.
 - `tools/check.sh`: One command for every check (docs, lint, Godot import, tests). One ok/FAIL line per step; logs in .check/.
 - `tools/check_slot.sh`: Test-run slots shared by every worktree on this machine: at most CHECK_SLOTS Godot test suites at once. Four at once
 - `tools/ci_state.py`: One word for `gh run list --workflow check.yml --json status,conclusion` on stdin (row 26 S4, Feras 11-02).
@@ -670,6 +664,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/fps_probe.gd`: FPS probe: plays a scene with vsync off and prints the average and worst frames per second after a warm-up
 - `tools/frame_score.py`: Score vision model yes/no answers on frames against reference labels.
 - `tools/free_mb.py`: Prints the available PHYSICAL memory in MB, the number Task Manager calls "available" (Feras 11-01: the floor used to count
+- `tools/free_providers.txt`
 - `tools/gate_checklist.py`: Checklist parsing and verification for build_gate.
 - `tools/godot.sh`: Prints the path of the pinned Godot binary (.godot-version), downloading it once into ~/.cache/godot.
 - `tools/handoff.sh`: The mechanical half of /handoff in one call (row 23 b, 2026-11-01): map, doc_check, check, commit, push and (with
@@ -692,6 +687,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/merge_run.sh`: Merges one gated builder run into the current branch (DECISIONS 2026-10-23): only a PASS .result that also carries a
 - `tools/model_effort.py`: Print the reasoning effort a model key runs at: opencode.json says it, the model's name does not (row 26 S2).
 - `tools/musnad.py`: Transliterate Arabic to Musnad (Old South Arabian) letter by letter; scan files for Arabic.
+- `tools/nv_audit.sh`: Read-only audit by DeepSeek V4.1 Flash on NVIDIA NIM, free (row 25, Feras 11-01; Cloudflare retired 11-04): the model reads the repository with opencode's
+- `tools/nv_build.sh`: Free builder lane (Feras 11-04; Cloudflare retired after an unexpected bill): runs build_pipeline.sh on opencode with
 - `tools/obscura.sh`: Fetch a web page with the Obscura headless browser (Feras 10-28/11-03: instead of Chrome for builders and research).
 - `tools/oc_agents.py`: Makes one opencode subagent per game skill (.agents/skills/<name> -> .opencode/agent/<name>.md); --check fails when stale.
 - `tools/oc_review.sh`: Reviews an opencode task (branch oc/<task>) the same cheap way as an agy one: report, check result, commits, stats,
@@ -733,9 +730,6 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_base_red.py`: base_red.py refuses a base holding a red tool test the brief does not name (rows 23, 24), on a toy git repo.
 - `tools/test_build_gate.py`: Self-test for build_gate.py: python tools/test_build_gate.py (temp git repos, plain asserts, exit 1 on failure).
 - `tools/test_build_pipeline.py`: Self-test for build_pipeline.sh, oc_task.sh, agy_task.sh and lib.sh on a toy repo: stub builder, stub memory, real git.
-- `tools/test_cf_audit.py`: Self-test for tools/cf_audit.sh (row 25, 2026-11-01): the read-only cf audit stages its box, runs opencode with the
-- `tools/test_cf_probe.py`: cf_probe: the stream folds into the right timings and tokens; effort, extras and an image reach the body.
-- `tools/test_cf_probe_stream.py`: cf_probe stream: a broken `data:` line is skipped and counted, never a crash; both good events survive.
 - `tools/test_check_slot.py`: check_slot.sh: a full set of slots makes the next run wait; a released or stale slot lets it in.
 - `tools/test_content_kinds.py`: ContentDB loads every content/**/*.json and errors on a kind it does not know, which breaks boot and every Godot test
 - `tools/test_cross_review.py`: Self-test for the cross-review findings parser (row 12 A/B, 2026-10-28): python tools/test_cross_review.py.
@@ -746,6 +740,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_file_sizes.py`: Bandwidth guard (Feras 10-30: his internet is metered): git sends only new objects, so a sync costs kilobytes until
 - `tools/test_frame_score.py`: Tests tools/frame_score.py. Run: python tools/test_frame_score.py
 - `tools/test_free_mb.py`: The memory floor reads available PHYSICAL memory (Task Manager's "available"), not free virtual memory (row 25,
+- `tools/test_free_providers.py`: Every model a builder may call is on a free provider (Feras 11-04: Cloudflare billed $32.29 on a lane with no cap).
 - `tools/test_gate_checklist.py`: Tests for brief checklist verification in build_gate.
 - `tools/test_gate_d6.py`: Self-test for the D6 gate rules (2026-10-27): protected tests and assets, removed checks, new tests fail on base.
 - `tools/test_git_helpers.py`: Self-test for tools/main_file.sh and tools/merge_base.sh (row 23 d, 2026-11-01) in a throwaway repo with a bare origin.
@@ -759,6 +754,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_map.py`: Self-test for map.py: only tracked files are mapped (an untracked file made CI fail "MAP.md current").
 - `tools/test_merge_generated.py`: Row 26 S14 (11-02): every parallel part adds a tool, so every merge of two parts conflicted on the generated files
 - `tools/test_no_legacy_hero.py`: Guard: the hero's old code id stays gone (renamed to rydan, save v7, Feras 2026-10-27). Fails on the old id in the
+- `tools/test_nv_audit.py`: Self-test for tools/nv_audit.sh (row 25, 2026-11-01): the read-only nv audit stages its box, runs opencode with the
+- `tools/test_nv_build.py`: nv_build.sh walks NV_CHAIN (Feras 11-04): a provider refusal (`why: quota`) reruns the task on the next model; a
 - `tools/test_obscura.py`: tools/obscura.sh: the Obscura fetch wrapper (11-03). Stub binaries only: no network, no real Obscura.
 - `tools/test_oc_start_retry.py`: Row 26 (11-02): two opencode v2 servers started in the same second share one SQLite database; the second died with
 - `tools/test_oc_task_prompt.py`: Row 26 (11-02): GLM's scope run died at once with "Argument list too long" (exit 126): oc_task.sh passed the whole prompt

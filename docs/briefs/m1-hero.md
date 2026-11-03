@@ -1,4 +1,4 @@
-# Brief: m1-hero (cf DeepSeek max; GDScript, RUN_KIND=godot)
+# Brief: m1-hero (nv DeepSeek max; GDScript, RUN_KIND=godot)
 You are in your own worktree on branch oc/m1-hero (made from origin/m1-hero-base, the locked tests on top of m1-defs; pushed). Follow
 GEMINI.md, including <review_misses>. Load the builders skill.
 Pattern: features/neon/logic/iso_walk.gd, features/neon/roof/logic/contact_rules.gd, features/neon/roof/tests/test_contact_rules.gd

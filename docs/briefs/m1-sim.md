@@ -1,4 +1,4 @@
-# Brief: m1-sim (cf DeepSeek max; GDScript, RUN_KIND=godot)
+# Brief: m1-sim (nv DeepSeek max; GDScript, RUN_KIND=godot)
 You are in your own worktree on branch oc/m1-sim (made from origin/m1-sim-base: m1-defs, m1-hero and m1-guards merged, plus the
 locked tests; pushed). Follow GEMINI.md, including <review_misses>. Load the builders skill.
 Pattern: features/fight/logic/hero_machine.gd, features/fight/logic/guard_machine.gd (from the merged parts)

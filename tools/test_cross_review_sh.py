@@ -68,7 +68,7 @@ def toy():
 
 def review(top, g, *extra, mode="block", **env_extra):
     env = {**os.environ, "PATH": f"{top}/bin{os.pathsep}" + os.environ["PATH"], "STUB_TOP": top, "STUB_MODE": mode,
-           "GAME_WT_DIR": top + "/game-wt", "CLOUDFLARE_ACCOUNT_ID": "test", "REVIEW_TIMEOUT": "60s", "OC_BIN": "opencode",
+           "GAME_WT_DIR": top + "/game-wt", "REVIEW_TIMEOUT": "60s", "OC_BIN": "opencode",
            **env_extra}
     r = subprocess.run(["bash", f"{TOOLS}/cross_review.sh", "job", top + "/brief.md", "main", *extra], cwd=g, env=env,
                        capture_output=True, text=True, stdin=subprocess.DEVNULL)
@@ -104,8 +104,8 @@ def test_cf_reviews_agy_runs_nemotron_only_as_backup_and_silence_is_invalid():  
     assert r.returncode == 1 and out.startswith("INVALID"), ("no block must never read as a clean review", out)
     calls = [line for line in stub.splitlines() if line.startswith("ARGS ")]
     assert len(calls) == 3 and all("-f packet.md" in c and "--print-logs" in c for c in calls), stub
-    assert "deepseek" in calls[0] and "deepseek" in calls[1], ("cf DeepSeek reviews agy runs first", stub)
-    assert "nemotron" in calls[2], ("nemotron is the backup lens only after cf fails twice", stub)
+    assert "deepseek" in calls[0] and "deepseek" in calls[1], ("nv DeepSeek reviews agy runs first", stub)
+    assert "nemotron" in calls[2], ("nemotron is the backup lens only after nv fails twice", stub)
     assert "cross_review.opencode.json" in stub, ("opencode reviewers run with bash and edit denied", stub)
 
 
@@ -134,13 +134,13 @@ def test_review_config_denies_bash_and_edit():
     assert perm["bash"] == "deny" and perm["edit"] == "deny", perm
     # v2's execute tool (a JS sandbox) ran echo and fetched a page past the bash and webfetch denies (probe, row 18 10-30)
     assert all(perm.get(k) == "deny" for k in ("execute", "webfetch", "websearch", "task")), perm
-    # Workers AI DeepSeek 1017 at "high" filled opencode's hidden 32k output cap with reasoning and printed nothing (3
+    # DeepSeek at "high" (then on Cloudflare) filled opencode's hidden 32k output cap with reasoning and printed nothing (3
     # runs, 10-29). Max with the cap at 128k: a valid block in 443 s, less noise than low (Feras 10-30: max).
-    ds = cfg["provider"]["cloudflare-workers-ai"]["models"]["@cf/deepseek-ai/deepseek-v4.1-flash-1017"]
+    ds = cfg["provider"]["nvidia"]["models"]["deepseek-ai/deepseek-v4.1-flash"]
     assert ds["options"]["reasoning_effort"] == "max", ds
     build = json.load(open(f"{ROOT}/opencode.json", encoding="utf-8"))
-    bds = build["provider"]["cloudflare-workers-ai"]["models"]["@cf/deepseek-ai/deepseek-v4.1-flash-1017"]
-    assert bds["options"]["reasoning_effort"] == "max", ("cf builds think at max too", bds)
+    bds = build["provider"]["nvidia"]["models"]["deepseek-ai/deepseek-v4.1-flash"]
+    assert bds["options"]["reasoning_effort"] == "max", ("nv builds think at max too", bds)
     # v2's image tool could spend OpenRouter credit past pre_spend.py, which guards Claude's tools only (row 18, 10-30)
     assert build["permission"]["experimental_image_generate"] == "deny", build["permission"]
     # v2 dropped OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX (row 18): the cap lives on the model

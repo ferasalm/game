@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Copies the chosen agency agents (~/.claude/agents, MIT) into .agents/skills/<name>/SKILL.md for every builder.
 
-agy reads .agents/skills (GEMINI.md), opencode gets one subagent each (tools/oc_agents.py), and the cf-agents MCP takes
-one as `agent` (tools/cf_mcp/server.py). Claude already sees ~/.claude/agents. Feras 2026-10-24.
+agy reads .agents/skills (GEMINI.md) and opencode gets one subagent each (tools/oc_agents.py; the Cloudflare MCP that also took
+one as `agent` was retired 11-04). Claude already sees ~/.claude/agents. Feras 2026-10-24.
 Usage: python tools/import_agents.py [source dir]   (then: python tools/oc_agents.py)
 """
 import pathlib

@@ -1,4 +1,4 @@
-# Brief: m1-guards (cf DeepSeek max; GDScript, RUN_KIND=godot)
+# Brief: m1-guards (nv DeepSeek max; GDScript, RUN_KIND=godot)
 You are in your own worktree on branch oc/m1-guards (made from origin/m1-guards-base, the locked tests on top of m1-defs; pushed).
 Follow GEMINI.md, including <review_misses>. Load the builders skill.
 Pattern: features/neon/roof/view/roof_patrol.gd, features/neon/roof/logic/contact_rules.gd, features/neon/roof/tests/test_contact_rules.gd

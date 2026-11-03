@@ -36,11 +36,11 @@ result_head() {  # <word> <step>: slots.sh reads builder, pid and kind by name; 
   echo "idle_min $idle_min"
 }
 
-row_tokens() {  # <gate>: "in out usd source"; a cf or oc run's own sessions are the only real reading, else ? (never 0)
-  if [ "$1" != REFUSED ] && { [ "$builder" = cf ] || [ "$builder" = oc ]; }; then
+row_tokens() {  # <gate>: "in out usd source"; a nv or oc run's own sessions are the only real reading, else ? (never 0)
+  if [ "$1" != REFUSED ] && { [ "$builder" = nv ] || [ "$builder" = oc ]; }; then
     local f in_t out_t usd
     f="$($py tools/oc_usage.py collect --wt "$wt" 2> /dev/null |
-      $py tools/oc_usage.py fields --in-rate "$CF_INPUT_RATE" --out-rate "$CF_OUTPUT_RATE" 2> /dev/null)"
+      $py tools/oc_usage.py fields --in-rate "$NV_INPUT_RATE" --out-rate "$NV_OUTPUT_RATE" 2> /dev/null)"
     case "$f" in [0-9]*,[0-9]*,[0-9]*)
       IFS=, read -r in_t out_t usd <<< "$f"; echo "$in_t $out_t $usd opencode-export"; return 0 ;; esac
   fi

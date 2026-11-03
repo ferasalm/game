@@ -1,8 +1,8 @@
 # Brief: <task> (copy to docs/briefs/<task>.md; <= 80 lines; tools/test_template.py keeps the gate's headings here; for a pipeline batch start from the scope, hand or mechanical shape in the low-cost-pipeline skill instead)
 You are in your own worktree on branch <gemini|oc>/<task> (made from origin/main; push the base first). Follow GEMINI.md, including
 <review_misses>. Load the <persona> skill (the persona from the docs/WORKFLOW.md Routing table; build_pipeline.sh pastes .agents/skills/<persona> into the prompt; our rules outrank its text).
-Pattern: <1-3 real repo files to copy, comma separated; the pipeline pastes them; required for `cf_build.sh ... fast`>
-Timebox: <N> min (<= 45; hard cap AGY_TIMEOUT/OC_TIMEOUT, 90 min). First commit within 15 min, then small WIP commits: no commit for 25 min (IDLE_MIN) = NOWORK; after a commit, a streaming builder (cf, oc) silent for QUIET_SEC (300 s) is killed and its commits checked (a running check.sh counts as alive).
+Pattern: <1-3 real repo files to copy, comma separated; the pipeline pastes them; required for `nv_build.sh ... fast`>
+Timebox: <N> min (<= 45; hard cap AGY_TIMEOUT/OC_TIMEOUT, 90 min). First commit within 15 min, then small WIP commits: no commit for 25 min (IDLE_MIN) = NOWORK; after a commit, a streaming builder (nv, oc) silent for QUIET_SEC (300 s) is killed and its commits checked (a running check.sh counts as alive).
 
 ## Why
 <the owner's words, one or two lines>. Pillar served (docs/VISION.md): <one pillar; combat feel wins ties>.

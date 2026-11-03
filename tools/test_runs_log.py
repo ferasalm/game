@@ -15,7 +15,7 @@ NEW_COLS = ["tokens_in", "tokens_out", "usd_est", "cost_source", "idle_min"]
 
 
 def append(path, *extra, task="t1", gate="PASS"):
-    cmd = [sys.executable, RUNS_LOG, "append", "--task", task, "--worker", "cf", "--effort", "max", "--gate", gate,
+    cmd = [sys.executable, RUNS_LOG, "append", "--task", task, "--worker", "nv", "--effort", "max", "--gate", gate,
            "--fix-passes", "1", "--minutes", "9", "--cost", "0", "--findings", "0", "--file", path, "--date", "2026-11-02"]
     return subprocess.run(cmd + list(extra), capture_output=True, text=True, timeout=60)
 
@@ -50,7 +50,7 @@ def test_an_old_nine_column_file_is_migrated_and_old_rows_read_unknown():
     with tempfile.TemporaryDirectory() as d:
         p = os.path.join(d, "runs.csv")
         with open(p, "w", encoding="utf-8", newline="\n") as f:
-            f.write(OLD_HEADER + "\n2026-11-01,old,cf,none,FAIL,3,33,0,1\n")
+            f.write(OLD_HEADER + "\n2026-11-01,old,nv,none,FAIL,3,33,0,1\n")
         assert append(p, task="new").returncode == 0
         got = rows(p)
         assert [r["task"] for r in got] == ["old", "new"], got

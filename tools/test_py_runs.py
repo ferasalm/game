@@ -17,7 +17,7 @@ SLOTS = TOOLS + "/slots.sh"
 
 
 def slots(wt_dir, *args, **env_extra):
-    env = {**os.environ, "GAME_WT_DIR": wt_dir, "CAP_AGY": "2", "CAP_CF": "2", "CAP_OC": "1", "CAP_GODOT": "2",
+    env = {**os.environ, "GAME_WT_DIR": wt_dir, "CAP_AGY": "2", "CAP_NV": "2", "CAP_OC": "1", "CAP_GODOT": "2",
            "FREE_MB": "99999", **env_extra}
     return subprocess.run(["bash", SLOTS, *args], env=env, capture_output=True, text=True)
 
@@ -30,7 +30,7 @@ def running(d, name, builder, kind=None):
 def test_py_run_takes_no_godot_slot():
     d = tempfile.mkdtemp().replace("\\", "/")
     running(d, "a", "agy", "godot")
-    running(d, "b", "cf")  # a result from before the kind line counts as a Godot run
+    running(d, "b", "nv")  # a result from before the kind line counts as a Godot run
     running(d, "c", "agy", "py")
     r = slots(d, CAP_AGY="3")
     assert "godot 2/2" in r.stdout and "agy 2/3" in r.stdout, r.stdout
@@ -48,9 +48,9 @@ def test_builder_cap_holds_for_every_kind():
     r = slots(d, "can-start", "agy", "py")
     assert r.returncode == 1 and "REFUSED: agy 2/2" in r.stdout, r.stdout
     d = tempfile.mkdtemp().replace("\\", "/")
-    running(d, "c", "cf", "py")
-    r = slots(d, "can-start", "cf", "godot", CAP_CF="1")
-    assert r.returncode == 1 and "REFUSED: cf 1/1" in r.stdout, ("CAP_CF was never checked", r.stdout)
+    running(d, "c", "nv", "py")
+    r = slots(d, "can-start", "nv", "godot", CAP_NV="1")
+    assert r.returncode == 1 and "REFUSED: nv 1/1" in r.stdout, ("CAP_NV was never checked", r.stdout)
     r = slots(d, "can-start", "agy", "py", CAP_AGY="1")
     assert r.returncode == 0, r.stdout
 
@@ -123,7 +123,7 @@ def py_pipeline(top, g, check=CHECK_ARGS, **env_extra):
     git(g, "push", "-q", "origin", "HEAD:main")
     put(top + "/py_builder.sh", PY_BUILDER)
     put(top + "/brief.md", BRIEF)
-    for n, b in (("x", "agy"), ("y", "cf")):  # both Godot slots full
+    for n, b in (("x", "agy"), ("y", "nv")):  # both Godot slots full
         put(f"{top}/game-wt/{n}.result", f"RUNNING 10:00 build\nbuilder {b}\n")
         put(f"{top}/game-wt/{n}.log", "x")
     env = {**os.environ, "BUILDER_CMD": top + "/py_builder.sh", "FREE_MB": "100", "NEWTEST_KINDS": "py",

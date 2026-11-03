@@ -35,7 +35,7 @@ A small, replayable game whose combat feel wins every tie, set in Old Sana'a wit
    Stuck or refused -> ask him at once via AskUserQuestion, options with a pick; never park work on him unasked (10-31).
 4. Before handing out a task -> the lean rule below; before anything reaches Feras -> review-feras.
 5. Before reading -> the reading rule: grep, then read <=2 small targeted excerpts yourself; for a read over ~20k tokens or
-   across many files, use `cf_probe.py --effort none` (for summaries/sorting) or a Haiku subagent (`low` default; `medium`
+   across many files, use `tools/nv_audit.sh` (one-shot) (for summaries/sorting) or a Haiku subagent (`low` default; `medium`
    max for >20k multi-file reads; never `high`; a Sonnet subagent is allowed at `high` only, Feras 11-02). Never read assets/ binaries (pictures only when
    judging art, small), inbox/retired/, or docs/research/gemini-blueprint-citations.md; gemini-blueprint.md one section at a time.
 6. The advisor tool ONLY with Feras's explicit OK (11-01): any model (including Sonnet high), fork or subagent stuck twice
@@ -52,7 +52,7 @@ Scale: a small, low-risk change (a few lines, no machinery, nothing player-visib
   3 Claude tokens and usage limits; 4 organization and simplicity; 5 speed. Builder time is free.
 - Opus plans and owns every output that reaches Feras as if it did the work; Sonnet high executes from an Opus brief,
   delegating by the low-cost-pipeline routing table (worker policy: DECISIONS Process 11-01). Opus (or the Lead chat) reviews
-  whatever another model made, tiered (gates, cross-review lens via cf max / agy or a Haiku low pass, then the list and risky hunks).
+  whatever another model made, tiered (gates, cross-review lens via nv max / agy or a Haiku low pass, then the list and risky hunks).
 - IMPORTANT: one task, model and effort per chat, finished at full quality; context size never stops or hands off work
   (DECISIONS 10-31). /handoff when the task is done or at ~85% of the 5-hour window; a follow-up of <= ~10 tool calls stays,
   a new multi-step task opens a fresh chat. Status line or /usage at the start. Independent steps go as parallel tool

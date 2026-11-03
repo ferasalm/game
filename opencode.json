@@ -17,57 +17,24 @@
     }
   },
   "provider": {
-    "cloudflare-workers-ai": {
+    "nvidia": {
       "models": {
-        "@cf/zai-org/glm-5.3": {
+        "deepseek-ai/deepseek-v4.1-flash": {
           "options": {
             "reasoning_effort": "max"
           },
           "limit": {
-            "context": 200000,
-            "output": 128000
+            "context": 1000000,
+            "output": 384000
           }
         },
-        "@cf/deepseek-ai/deepseek-v4.1-flash-1017": {
+        "z-ai/glm-5.3-flash": {
           "options": {
             "reasoning_effort": "max"
           },
           "limit": {
-            "context": 1048576,
-            "output": 384000
-          }
-        },
-        "deepseek-v4.1-flash-low": {
-          "id": "@cf/deepseek-ai/deepseek-v4.1-flash-1017",
-          "name": "DeepSeek V4.1 Flash, low reasoning",
-          "options": {
-            "reasoning_effort": "low"
-          },
-          "limit": {
-            "context": 1048576,
-            "output": 384000
-          }
-        },
-        "deepseek-v4.1-flash-high": {
-          "id": "@cf/deepseek-ai/deepseek-v4.1-flash-1017",
-          "name": "DeepSeek V4.1 Flash, high reasoning",
-          "options": {
-            "reasoning_effort": "high"
-          },
-          "limit": {
-            "context": 1048576,
-            "output": 384000
-          }
-        },
-        "deepseek-v4.1-flash-fast": {
-          "id": "@cf/deepseek-ai/deepseek-v4.1-flash-1017",
-          "name": "DeepSeek V4.1 Flash, no reasoning",
-          "options": {
-            "reasoning_effort": "none"
-          },
-          "limit": {
-            "context": 1048576,
-            "output": 384000
+            "context": 1000000,
+            "output": 131072
           }
         }
       }

@@ -19,8 +19,8 @@ Last updated: 2026-11-01 (fixture).
 ## Queue
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
-| 23 | pm plugin and one-call handoff | Ops | builder + chat (review) | agy, cf; Sonnet high | next: Sun 11-01 | - |
-| 24 | One home for every rule | Ops | builder + chat (review) | agy, cf; Sonnet high | Mon 11-02 | 23 |
+| 23 | pm plugin and one-call handoff | Ops | builder + chat (review) | agy, nv; Sonnet high | next: Sun 11-01 | - |
+| 24 | One home for every rule | Ops | builder + chat (review) | agy, nv; Sonnet high | Mon 11-02 | 23 |
 | 25 | Opus gate on system-v3 | Ops | chat (review) | Opus high | Mon 11-02 | 24 |
 | 3 | M1 brief | Gameplay | chat (plan) | Opus high | Tue 11-03 | 25 |
 | 4 | M1 build | Gameplay | builder | agy | after row 3 | 3 |
@@ -113,13 +113,13 @@ def test_next_prints_the_top_row_and_the_paste_ready_prompt():
 
 def test_row_add_set_done_edit_only_their_row():
     d, ok = setup()
-    r = pm(d, ok, "row", "add", "--task", "Tool X", "--dept", "Ops", "--lane", "builder", "--who", "cf",
+    r = pm(d, ok, "row", "add", "--task", "Tool X", "--dept", "Ops", "--lane", "builder", "--who", "nv",
            "--status", "next", "--blocked", "-")
     assert r.returncode == 0, r.stderr
-    assert "| 26 | Tool X | Ops | builder | cf | next | - |" in read(d)
+    assert "| 26 | Tool X | Ops | builder | nv | next | - |" in read(d)
     r = pm(d, ok, "row", "set", "24", "--status", "Tue 11-03")
     assert r.returncode == 0, r.stderr
-    assert "| 24 | One home for every rule | Ops | builder + chat (review) | agy, cf; Sonnet high | Tue 11-03 | 23 |" in read(d)
+    assert "| 24 | One home for every rule | Ops | builder + chat (review) | agy, nv; Sonnet high | Tue 11-03 | 23 |" in read(d)
     r = pm(d, ok, "row", "add", "--task", "Top", "--dept", "Ops", "--lane", "builder", "--who", "agy",
            "--status", "now", "--blocked", "-", "--at", "1")
     assert r.returncode == 0, r.stderr
@@ -134,7 +134,7 @@ def test_row_edit_is_restored_when_doc_check_fails():
     d, bad = setup(doc_check_ok=False)
     before = read(d)
     for args in (("row", "set", "23", "--status", "x"), ("row", "done", "23"),
-                 ("row", "add", "--task", "T", "--dept", "Ops", "--lane", "builder", "--who", "cf", "--status", "s", "--blocked", "-")):
+                 ("row", "add", "--task", "T", "--dept", "Ops", "--lane", "builder", "--who", "nv", "--status", "s", "--blocked", "-")):
         r = pm(d, bad, *args)
         assert r.returncode != 0 and "doc_check" in (r.stdout + r.stderr), (args, r.stdout, r.stderr)
         assert read(d) == before, f"HANDOFF.md must be restored after a failed {args[:2]}"

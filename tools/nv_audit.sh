@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-# Read-only audit by Cloudflare DeepSeek V4.1 Flash at max (row 25, Feras 11-01): the model reads the repository with opencode's
+# Read-only audit by DeepSeek V4.1 Flash on NVIDIA NIM, free (row 25, Feras 11-01; Cloudflare retired 11-04): the model reads the repository with opencode's
 # read tools only (tools/cross_review.opencode.json denies edit, bash, web, task) and prints one report. Needs no Claude tokens.
 # Staged under <repo>/.check/audit/: prompt.md, coach/ (the kaizen coach checklists), memory/ (the user's memory files), because
 # opencode may not read outside the repo (external_directory deny). COACH_DIR and MEMORY_DIR override where they come from.
-# Usage (cwd = a checkout): bash tools/cf_audit.sh <prompt-file> <out-file> [timeout, default AUDIT_TIMEOUT or 30m]
-# Model: AUDIT_MODEL, default cf DeepSeek V4.1 Flash max. GLM lens: AUDIT_MODEL=cloudflare-workers-ai/@cf/zai-org/glm-5.3-flash
-# (no effort levels, Feras 10-31) or cloudflare-workers-ai/@cf/zai-org/glm-5.3 (max). Their long-output caps live in cross_review.opencode.json.
-# Exit: 0 ran, 2 usage, 124 timed out (the partial report stays in <out-file>). Spend line: cf_spend.csv like a cross-review.
+# Usage (cwd = a checkout): bash tools/nv_audit.sh <prompt-file> <out-file> [timeout, default AUDIT_TIMEOUT or 30m]
+# Model: AUDIT_MODEL, default NV_MODEL (DeepSeek V4.1 Flash). GLM lens: AUDIT_MODEL=nvidia/z-ai/glm-5.3-flash; any slug must pass
+# tools/free_providers.txt. Also the one-shot text probe that replaced cf_probe.py (summaries, sorting: a prompt file in, a report out).
+# Exit: 0 ran, 2 usage, 124 timed out (the partial report stays in <out-file>). Token line: nv_spend.csv (USD 0) like a cross-review.
 set -uo pipefail
 . "$(dirname "$0")/lib.sh"
-[ $# -ge 2 ] && [ -f "$1" ] || { echo "usage: cf_audit.sh <prompt-file> <out-file> [timeout]" >&2; exit 2; }
+[ $# -ge 2 ] && [ -f "$1" ] || { echo "usage: nv_audit.sh <prompt-file> <out-file> [timeout]" >&2; exit 2; }
 prompt="$1"; out="$2"; limit="${3:-${AUDIT_TIMEOUT:-30m}}"
 root="${AUDIT_ROOT:-$(git rev-parse --show-toplevel 2> /dev/null)}"  # AUDIT_ROOT: audit another checkout (an old commit's worktree)
 [ -n "$root" ] && [ -d "$root" ] || { echo "not inside a git repository (or AUDIT_ROOT is not a folder)" >&2; exit 2; }
@@ -30,10 +30,10 @@ rc=0
 # The repo's own opencode.json allows bash and edit and outranks OPENCODE_CONFIG (probed 11-01: a file was written); inline
 # content outranks the project file, so the deny rules go in both. cross_review.sh needs no inline copy: its box has no project file.
 (cd "$root" && OPENCODE_CONFIG="$lib_dir/cross_review.opencode.json" \
-  OPENCODE_CONFIG_CONTENT="$(cat "$lib_dir/cross_review.opencode.json")" run_limited "$limit" oc_run --model "${AUDIT_MODEL:-$CF_MODEL}" \
+  OPENCODE_CONFIG_CONTENT="$(cat "$lib_dir/cross_review.opencode.json")" run_limited "$limit" oc_run --model "${AUDIT_MODEL:-$NV_MODEL}" \
   --format default -- "$ask" < /dev/null >> "$out" 2>&1) || rc=$?
 [ "$rc" -eq 0 ] || echo "audit exited $rc" >> "$out"
-bash "$lib_dir/slots.sh" append-spend "$out" "audit" "$CF_INPUT_RATE" "$CF_OUTPUT_RATE" "$(wt_dir)/cf_spend.csv" || true
+bash "$lib_dir/slots.sh" append-spend "$out" "audit" "$NV_INPUT_RATE" "$NV_OUTPUT_RATE" "$(wt_dir)/nv_spend.csv" || true
 sed -i '/^timestamp=.* level=INFO /d' "$out"  # opencode v2 logs each git call at INFO: 269 KB around a 6 KB report (11-02); errors stay
 echo "audit report: $out"
 exit "$rc"

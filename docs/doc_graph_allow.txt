@@ -129,20 +129,24 @@ docs/USAGE.md :: Videos/edit/
 docs/USAGE.md :: docs/BRIEFING.md
 docs/USAGE.md :: lib.sh/builders.conf
 docs/USAGE.md :: rules/code.md
+docs/USAGE.md :: tools/cf_probe.py
 docs/WORKFLOW.md :: .check/reviews/
 docs/WORKFLOW.md :: gemini/
 docs/WORKFLOW.md :: logic/
 docs/WORKFLOW.md :: oc/
 docs/audits/2026-11-01-coach-compare.md :: cloudflare-workers-ai/
 docs/audits/2026-11-01-coach-compare.md :: docs/briefs/row22-probe.md
+docs/audits/2026-11-01-coach-compare.md :: tools/cf_audit.sh
 docs/audits/2026-11-01-coach-dsv4.md :: .claude/logs/
 docs/audits/2026-11-01-coach-dsv4.md :: .claude/settings.local.json
 docs/audits/2026-11-01-coach-dsv4.md :: scripts/godot_lsp.py
 docs/audits/2026-11-01-coach-dsv4.md :: studio/README.md
+docs/audits/2026-11-01-coach-dsv4.md :: tools/cf_audit.sh
 docs/audits/2026-11-01-coach-glmflash.md :: .check/audit/memory/openrouter-free-only.md
 docs/audits/2026-11-01-coach-glmflash.md :: .check/usage.json
 docs/audits/2026-11-01-coach-glmflash.md :: cloudflare-workers-ai/
 docs/audits/2026-11-01-coach-glmflash.md :: docs/briefs/row22-probe.md
+docs/audits/2026-11-01-coach-glmflash.md :: tools/cf_audit.sh
 docs/audits/2026-11-01-coach-haiku.md :: .claude/hooks/track_usage.py
 docs/audits/2026-11-01-coach-haiku.md :: .claude/settings.local.json
 docs/audits/2026-11-01-coach-haiku.md :: players-eye-gate/SKILL.md
@@ -161,6 +165,7 @@ docs/audits/coach-audit-prompt.md :: .check/audit/coach/checklists/
 docs/audits/coach-audit-prompt.md :: .check/audit/memory/
 docs/audits/coach-audit-prompt.md :: .check/audit/memory/MEMORY.md
 docs/audits/coach-audit-prompt.md :: hooks/hooks.json
+docs/audits/coach-audit-prompt.md :: tools/cf_audit.sh
 docs/briefs/TEMPLATE.md :: features/x/logic/x.gd
 docs/briefs/TEMPLATE.md :: features/x/tests/test_x.gd
 docs/briefs/TEMPLATE.md :: localization/x.csv
@@ -254,6 +259,7 @@ docs/briefs/row25-base-red.md :: tools/a/test_x.py
 docs/briefs/row25-base-red.md :: tools/b/test_x.py
 docs/briefs/row26-a-runstate.md :: dir/
 docs/briefs/row26-a-runstate.md :: opencode/
+docs/briefs/row26-a-runstate.md :: tools/cf_build.sh
 docs/briefs/row26-a-runstate.md :: tools/model_effort.py
 docs/briefs/row26-a-runstate.md :: tools/oc_usage.py
 docs/briefs/row26-a-runstate.md :: tools/test_run_state.py
@@ -284,6 +290,7 @@ docs/briefs/row26-s13-ripple.md :: tools/a.py
 docs/briefs/row26-s13-ripple.md :: tools/ripple.py
 docs/briefs/row26-s13-ripple.md :: tools/test_ripple.py
 docs/briefs/row26-s2-usage.md :: cloudflare-workers-ai/
+docs/briefs/row26-s2-usage.md :: tools/cf_build.sh
 docs/briefs/row26-s2-usage.md :: tools/model_effort.py
 docs/briefs/row26-s2-usage.md :: tools/oc_usage.py
 docs/briefs/row26-s2-usage.md :: tools/test_oc_usage.py
@@ -315,6 +322,7 @@ docs/decisions-archive.md :: docs/design/prototype.md
 docs/decisions-archive.md :: docs/design/zayd-moves.md
 docs/decisions-archive.md :: inbox/camera-refs/
 docs/decisions-archive.md :: inbox/spike/
+docs/decisions-archive.md :: tools/cf_build.sh
 docs/decisions-log.md :: docs/audits/2026-10-29-process-review.md
 docs/decisions-log.md :: docs/briefs/process-completion.md
 docs/decisions-log.md :: inbox/

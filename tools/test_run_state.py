@@ -11,7 +11,7 @@ import time
 from test_build_pipeline import BRIEF, FAKE_BUILDER, TOOLS, child_env, pipeline, put, result, sh, git, toy
 from test_kill_tree import marked
 
-os.environ["OC_BIN"] = "true"  # the spec's runs.csv step meters cf/oc runs through opencode: `true` = 0 sessions
+os.environ["OC_BIN"] = "true"  # the spec's runs.csv step meters nv/oc runs through opencode: `true` = 0 sessions
 
 TOY_BUILDER = r'''#!/bin/bash
 # stub builder: FAKE2_MODE picks the mischief; break_git: the gate's git call crashes, so no VERDICT line
@@ -79,7 +79,7 @@ def test_the_brief_is_copied_at_launch():
 def test_a_refused_launch_removes_the_old_pass_result():
     top, g = toy()
     put(top + "/game-wt/job.result", "PASS 10:00 oc/job\nbuilder oc\npid 1\nkind godot\n")
-    for n, b in (("a", "agy"), ("b", "cf")):
+    for n, b in (("a", "agy"), ("b", "nv")):
         put(f"{top}/game-wt/{n}.result", f"RUNNING 10:00 build\nbuilder {b}\n")
         put(f"{top}/game-wt/{n}.log", "x")
     rc, out, err = pipeline(g, top)
@@ -104,9 +104,9 @@ def test_result_header_has_model_and_idle_min():
     rc, out, err = pipeline(g, top)
     res = result(top)
     assert rc == 0 and res.startswith("PASS"), (rc, res, err)
-    model = re.search(r"CF_MODEL:=([^}]+)", open(TOOLS + "/builders.conf", encoding="utf-8").read()).group(1)
-    assert f"\nmodel {model}\n" in res, res  # the builders.conf default for builder cf
-    assert "\nidle_min 0\n" in res and "\nbuilder cf\n" in res and "\npid " in res and "\nkind godot\n" in res, res
+    model = re.search(r"NV_MODEL:=([^}]+)", open(TOOLS + "/builders.conf", encoding="utf-8").read()).group(1)
+    assert f"\nmodel {model}\n" in res, res  # the builders.conf default for builder nv
+    assert "\nidle_min 0\n" in res and "\nbuilder nv\n" in res and "\npid " in res and "\nkind godot\n" in res, res
 
 
 def test_a_builder_that_commits_then_hangs_is_quiet_killed_early():
@@ -170,7 +170,7 @@ def test_opencode_free_models_are_refused():
     free = "opencode/deepseek-v4.1-flash-free"
     top, g = toy()
     rc, out, err = launch(g, top, "oc", "job", free)
-    assert rc == 3 and "REFUSED" in out + err and "cf_build.sh" in out + err, (rc, out, err)
+    assert rc == 3 and "REFUSED" in out + err and "nv_build.sh" in out + err, (rc, out, err)
     top, g = toy()
     rc, out, err = launch(g, top, "oc", "job", free, OC_ALLOW_FREE="1")
     assert rc == 0 and result(top).startswith("PASS"), (rc, out, err)
@@ -181,7 +181,7 @@ def test_every_end_path_appends_one_runs_csv_row():
     pipeline(g, top, name="p")
     pipeline(g, top, name="f", FIX_PASSES="0", **stub_builder(top, "bad_check"))
     pipeline(g, top, name="n", FAKE_MODE="nothing")
-    for n, b in (("a", "agy"), ("b", "cf")):
+    for n, b in (("a", "agy"), ("b", "nv")):
         put(f"{top}/game-wt/{n}.result", f"RUNNING 10:00 build\nbuilder {b}\n")
         put(f"{top}/game-wt/{n}.log", "x")
     pipeline(g, top, name="r")
@@ -199,13 +199,13 @@ def test_a_refused_launch_appends_no_spend_line():
     put(stub + "/build_pipeline.sh", "#!/bin/bash\nexit 3\n")
     put(stub + "/lib.sh", 'lib_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"\npy=python\n'
         '$py -c "" > /dev/null 2>&1 || py=python3\nwt_dir() { echo "$GAME_WT_DIR"; }\n')
-    for f in ("cf_build.sh", "slots.sh"): shutil.copy(f"{TOOLS}/{f}", f"{stub}/{f}")
+    for f in ("nv_build.sh", "slots.sh"): shutil.copy(f"{TOOLS}/{f}", f"{stub}/{f}")
     before = "date,task,input_tokens,output_tokens,usd\n2026-10-31,old,1,2,0.00\n"
-    put(stub + "/wtd/cf_spend.csv", before)
-    env = {**os.environ, "GAME_WT_DIR": stub + "/wtd", "CLOUDFLARE_ACCOUNT_ID": "x", "CF_MODEL": "m",
-           "CF_INPUT_RATE": "0.30", "CF_OUTPUT_RATE": "1.20"}
-    r = sh(stub, "bash", stub + "/cf_build.sh", "t", stub + "/b.md", "main", env=env, check=False)
-    spend = open(stub + "/wtd/cf_spend.csv", encoding="utf-8").read()
+    put(stub + "/wtd/nv_spend.csv", before)
+    env = {**os.environ, "GAME_WT_DIR": stub + "/wtd", "NV_MODEL": "m", "NV_CHAIN": "m",
+           "NV_INPUT_RATE": "0.30", "NV_OUTPUT_RATE": "1.20"}
+    r = sh(stub, "bash", stub + "/nv_build.sh", "t", stub + "/b.md", "main", env=env, check=False)
+    spend = open(stub + "/wtd/nv_spend.csv", encoding="utf-8").read()
     assert r.returncode == 3 and spend == before, (r.returncode, r.stdout, r.stderr, spend)
 
 

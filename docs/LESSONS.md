@@ -48,6 +48,7 @@ Triage rules (D9): docs/lessons-archive.md header.
 
 - `claude plugin validate --strict` passed `tools: Read, Grep, Glob, NopeTool`, and a probe's `sed` inside a guard-refused command never ran, so "LSP missing" tested a bogus name -> a frontmatter claim needs one live headless call (`claude -p --plugin-dir <copy>`, script file, `--allowedTools`), and `grep ^tools` on the file right before it (2026-11-02).
 - 7 of 8 builder runs ended by the 5-min quiet kill; the guess "opencode does not exit" was wrong: 4 of 6 were waiting on their foreground check.sh -> a "silent = hung" rule needs a heartbeat from what the builder legitimately waits on (.check/alive) and a commit of the same call; read a killed run's last shell command before tuning a limit (2026-11-03).
+- Cloudflare billed $32.29, our meter said $10.85: a paid lane with no cap and a leaky meter -> builders use only tools/free_providers.txt (tested); paid = a provider-side hard cap first (11-04).
 - CI went red from my watchdog tests asserting "no quiet note": one poll on a slower runner caught the stub right after its commit -> assert the stub reached the END of its silent stretch (a marker it writes last), never a missing kill note (2026-11-03).
 
 ## 4. Worktrees and hooks (Claude chats)

@@ -132,13 +132,13 @@ def test_lock_tests_makes_the_hand_base_from_a_scoped_run():
     put(wt + "/job/features/test_new.py", RED_TEST)
     git(wt + "/job", "add", "-A")
     git(wt + "/job", "commit", "-qm", "tests")
-    put(wt + "/job.result", "SCOPED 10:00 oc/job\nbuilder cf\nVERDICT SCOPED\n")
+    put(wt + "/job.result", "SCOPED 10:00 oc/job\nbuilder nv\nVERDICT SCOPED\n")
     env = {**os.environ, "GAME_WT_DIR": wt}
     r = subprocess.run(["bash", LOCK, "job", "job-base"], cwd=g, env=env, capture_output=True, text=True, timeout=120)
     assert r.returncode == 0 and r.stdout.strip().splitlines()[-1].startswith("LOCKED job-base "), (r.stdout, r.stderr)
     assert subprocess.run(["git", "-C", g, "ls-remote", "--heads", "origin", "job-base"], capture_output=True,
                           text=True).stdout.strip(), "the base branch must be pushed (build_pipeline refuses an unpushed base)"
-    put(wt + "/job.result", "REJECT 10:00 oc/job\nbuilder cf\nVERDICT REJECT\n")
+    put(wt + "/job.result", "REJECT 10:00 oc/job\nbuilder nv\nVERDICT REJECT\n")
     r = subprocess.run(["bash", LOCK, "job", "job-base2"], cwd=g, env=env, capture_output=True, text=True, timeout=120)
     assert r.returncode != 0 and "SCOPED" in r.stdout + r.stderr, (r.stdout, r.stderr)
 

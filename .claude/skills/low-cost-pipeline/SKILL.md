@@ -4,7 +4,7 @@ description: The whole build workflow of this repo in one folder: a Claude head 
 ---
 # Low-cost pipeline (Feras 11-01, v2 11-02): one folder owns the workflow
 The head is any Claude chat at high effort (`claude --model opusplan`: Opus plans, Sonnet high executes). The head decides and
-adjudicates; cheap workers do the bulk; every other stage is a script. Claude tokens are the scarce thing, neurons are not.
+adjudicates; cheap workers do the bulk; every other stage is a script. Claude tokens are the scarce thing; free-tier model calls are not (rate limits are their only cap).
 Files here: [routing.md](routing.md) who does what, [foremen.md](foremen.md) reports and context hygiene,
 [mechanical.md](mechanical.md) the no-reasoning lane, [proof.md](proof.md) proof runs and how to read the scoreboard,
 [changelog.md](changelog.md) one line per upgrade, [templates/](templates/) the three brief shapes.
@@ -19,13 +19,13 @@ Files here: [routing.md](routing.md) who does what, [foremen.md](foremen.md) rep
 - Split by FILES, not features: every part owns a disjoint May edit set and its own locked red test; only generated files (MAP.md, DOCMAP.md, runs.csv, doc_graph_allow.txt) may be shared. Parts that need another's output run after it. State the merge order (leaves first, wiring last).
 - `python tools/ripple.py <brief>` lists existing tests that name the files you will touch: put their unavoidable fixture edits in May edit with a reason (two BREACHes on 11-02 were this miss).
 - `python tools/parts_plan.py brief1.md brief2.md ...` must print OK (overlap, contradictions, shared tests).
-- Same model may run several times at once (caps in tools/builders.conf, per builder family); parallel parts cost neurons, not Claude tokens.
+- Same model may run several times at once (caps in tools/builders.conf, per builder family); parallel parts cost free-tier requests (NVIDIA ~40 a minute, CAP_NV), not Claude tokens.
 - Pick each part's worker from routing.md; pre-mortem in three lines; no open design questions in a brief.
 
 ## Flow of one part
 1. Brief from the right template (templates/); the DeepSeek-max critic reads spec and brief into a file; the head fixes the real gaps. The critic is a different family than the test writer.
-2. Scope: `EXPECT_RED=1 RUN_KIND=py bash tools/cf_build.sh <task>-tests <brief> <base> <GLM or DeepSeek model>` (FIX_PASSES=0). Result SCOPED or REJECT. The head READS EVERY TEST (weak tests are the usual defect), edits or rejects, then `bash tools/lock_tests.sh <task>-tests <task>-base` (the tests branch becomes the hand's base; the gate protects them).
-3. Build: `RUN_KIND=py bash tools/cf_build.sh <task> <brief> <task>-base [model]` (agy: `bash tools/build_pipeline.sh agy ...`), run_in_background. Never pass a base holding another part's red test.
+2. Scope: `EXPECT_RED=1 RUN_KIND=py bash tools/nv_build.sh <task>-tests <brief> <base> <GLM or DeepSeek model>` (FIX_PASSES=0). Result SCOPED or REJECT. The head READS EVERY TEST (weak tests are the usual defect), edits or rejects, then `bash tools/lock_tests.sh <task>-tests <task>-base` (the tests branch becomes the hand's base; the gate protects them).
+3. Build: `RUN_KIND=py bash tools/nv_build.sh <task> <brief> <task>-base [model]` (agy: `bash tools/build_pipeline.sh agy ...`), run_in_background. Never pass a base holding another part's red test.
 4. Read `python tools/part_report.py <task>`: PASS -> review; FAIL/NOWORK/ERROR -> read the one named reason; BREACH -> read the breach (usually a fixture edit the brief missed: review the diff, merge by hand).
 5. Review: `bash tools/cross_review.sh <task> <brief> <base>` (reviewer = other family than the author, set in builders.conf); flags go to a file; confirm each against the code.
 6. Merge one part at a time: `python tools/parts_plan.py --branches oc/a oc/b`, then `bash tools/merge_run.sh <task>` (prefix and VERDICT PASS come from the .result), regenerate MAP and DOCMAP on a conflict (generated files only), `bash tools/check.sh` to a file, read its last line BEFORE any push.

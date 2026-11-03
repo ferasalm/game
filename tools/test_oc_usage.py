@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Row 26 S2 (Feras 11-02): a builder run's cost is read from opencode's own session export, never guessed from its log
-(the log holds no token counts; build_pipeline.sh wrote cost 0 and cf_spend.csv `?`). Unknown is `?`, never 0.
+(the log holds no token counts; build_pipeline.sh wrote cost 0 and nv_spend.csv `?`). Unknown is `?`, never 0.
 Also pins the effort lookup: opencode.json says what a model key reasons at, the model's name does not."""
 import json
 import os
@@ -121,10 +121,10 @@ def test_collect_with_opencode_failing_is_zero_sessions_exit_0():  # a broken me
 
 def test_effort_comes_from_opencode_json_by_model_key_not_from_the_name():
     cases = {
-        "cloudflare-workers-ai/@cf/deepseek-ai/deepseek-v4.1-flash-1017": "max",   # no effort word in the name
-        "cloudflare-workers-ai/deepseek-v4.1-flash-fast": "none",                    # "fast" is none
-        "cloudflare-workers-ai/deepseek-v4.1-flash-low": "low",
-        "cloudflare-workers-ai/@cf/zai-org/glm-5.3": "max",
+        "nvidia/deepseek-ai/deepseek-v4.1-flash": "max",   # no effort word in the name
+        "groq/some-model-fast": "none",                    # not configured: "fast" in the name is none
+        "cerebras/some-model-low": "low",
+        "nvidia/z-ai/glm-5.3-flash": "max",
         "gemini-3.8-flash-medium": "medium",                                         # not in opencode.json: the name says it
         "nonsense-model": "-",
     }

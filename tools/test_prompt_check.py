@@ -29,7 +29,7 @@ CHAT = """Department: Ops (a label: Routing table). Queue row: 22. Model: Opus h
 Skills: builders. Persona: none
 Goal: one plugin holds the skills.
 Context: docs/briefs/system-v3.md.
-Lane plan: agy writes the tool, cf max reviews.
+Lane plan: agy writes the tool, nv max reviews.
 May edit: tools/. Do NOT edit: features/. Commit and merge: no, the father does.
 Done when: check.sh passes.
 Report: 15 lines or fewer.
@@ -101,7 +101,7 @@ def test_chat_department_brief_from_workflow_passes():
 
 
 def test_chat_names_each_missing_department_line():
-    out = misses_text("chat", without(without(CHAT, "Lane plan: agy writes the tool, cf max reviews.\n"), "Report: 15 lines or fewer.\n"))
+    out = misses_text("chat", without(without(CHAT, "Lane plan: agy writes the tool, nv max reviews.\n"), "Report: 15 lines or fewer.\n"))
     assert "Lane plan" in out and "Report" in out and "Context" not in out, out
 
 
@@ -149,7 +149,7 @@ def test_cli_rejects_an_unknown_kind_and_a_missing_file():
     assert done.returncode not in (0, 1), done.stdout + done.stderr
 
 
-def test_cross_review_misses_are_closed():  # row 22 cross-review (cf max), 2026-11-01
+def test_cross_review_misses_are_closed():  # row 22 cross-review (nv max), 2026-11-01
     out = misses_text("chat", CHAT.replace("Model: Opus high", "Model: Claude Sonnet 4.5"))
     assert "/goal" in out, out  # a Sonnet model line spelled with Claude is still Sonnet
     bold = CHAT.replace("Goal:", "**Goal**:").replace("Report:", "**Report**:")

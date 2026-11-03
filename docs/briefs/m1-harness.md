@@ -1,4 +1,4 @@
-# Brief: m1-harness (cf DeepSeek max; GDScript, RUN_KIND=godot)
+# Brief: m1-harness (nv DeepSeek max; GDScript, RUN_KIND=godot)
 You are in your own worktree on branch oc/m1-harness (made from origin/m1-harness-base: m1-sim merged, plus the locked tests; pushed).
 Follow GEMINI.md, including <review_misses>. Load the builders skill.
 Pattern: features/combat/harness/balance.gd (read for the shape of a headless runner; do not edit it)

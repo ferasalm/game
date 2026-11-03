@@ -1,4 +1,4 @@
-# Brief: m1-defs (cf DeepSeek high; GDScript, RUN_KIND=godot)
+# Brief: m1-defs (nv DeepSeek high; GDScript, RUN_KIND=godot)
 You are in your own worktree on branch oc/m1-defs (made from origin/m1-defs-base, the locked tests; pushed). Follow GEMINI.md, including
 <review_misses>. Load the builders skill.
 Pattern: features/neon/roof/defs/neon_roof_rules_def.gd, core/tests/test_def_reader.gd, content/neon/roof_rules.json

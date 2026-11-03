@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Merges one gated builder run into the current branch (DECISIONS 2026-10-23): only a PASS .result that also carries a
 # `VERDICT PASS` line (row 26 S4, Feras 11-02: the gate's verdict is the merge's proof, not the first word). The run's
-# branch is the .result's own (`PASS 19:56 oc/row25` -> oc/row25), so a cf run needs no hand-typed prefix; an explicit
+# branch is the .result's own (`PASS 19:56 oc/row25` -> oc/row25), so a nv run needs no hand-typed prefix; an explicit
 # argument still wins. A fast-forward onto the exact commit the pipeline checked reuses that check, anything else merges
 # and runs tools/check.sh. Then removes the run's worktree and branch.
 # Usage (cwd = the session checkout): tools/merge_run.sh <task> [oc|gemini] [--keep]

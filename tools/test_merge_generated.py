@@ -59,7 +59,7 @@ def toy(conflict_file=None):
         put(g + "/" + conflict_file, "main side\n")
     git(g, "add", "-A")
     git(g, "commit", "-qm", "main moved")
-    put(top + "/game-wt/job.result", f"PASS 10:00 oc/job\nbuilder cf\nkind py\nchecked {tip}\nVERDICT PASS\n")
+    put(top + "/game-wt/job.result", f"PASS 10:00 oc/job\nbuilder nv\nkind py\nchecked {tip}\nVERDICT PASS\n")
     return top, g
 
 

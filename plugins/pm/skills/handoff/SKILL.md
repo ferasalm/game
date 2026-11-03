@@ -28,15 +28,15 @@ HANDOFF, DECISIONS and LESSONS load at every session start, so every line costs 
 4. **HANDOFF.md**, max 60 lines: one `## Queue` table (# | Task | Dept | Lane | Who | Status | Blocked by), then Open points
    (Point | Owner | Since), This week, Parked and context (Feras 2026-10-27: no per-chat tracks). A /handoff updates its own rows,
    removes its done rows, adds rows for work it found (Dept = a label from the docs/WORKFLOW.md Routing table; lane
-   builder with agy/cf/oc by default; `chat (taste|MCP|review|plan)` with Opus and its effort; `Feras`) and the Last
+   builder with agy/nv/oc by default; `chat (taste|MCP|review|plan)` with Opus and its effort; `Feras`) and the Last
    updated line, and rewrites its last section, "Prompt for the next chat": one line naming the row, model and effort
    (Feras 10-31: one task); a Sonnet row's prompt starts with `/goal` (builders skill, Sonnet). Rows go in with
    `python ${CLAUDE_PLUGIN_ROOT}/scripts/pm.py row ...`; `tools/doc_check.py` (inside handoff.sh) checks every row.
    Then `bash tools/status.sh` and archive the side sessions it started whose work is on main.
    Lean check (Feras 11-01): every non-Opus output merged this session was reviewed tiered (WORKFLOW Protocols:
-   Review: gates, cross-review lens via cf max / agy or a Haiku low pass on big diffs, then Lead/Opus on the list and
+   Review: gates, cross-review lens via nv max / agy or a Haiku low pass on big diffs, then Lead/Opus on the list and
    risky hunks); anything sent to Feras carried a review stamp (tools/hooks/review_stamp.py). Name any task an Opus or
-   Sonnet chat (or subagent) did that a cheaper worker (cf, agy, Haiku low) could have done.
+   Sonnet chat (or subagent) did that a cheaper worker (nv, agy, Haiku low) could have done.
 5. **Commit and push.** `bash tools/handoff.sh "<one message saying what changed>" [--main]` and read its last line
    (step 0). After a push to main, sync Feras's checkout (D10, 10-29) with one PowerShell call (the worktree guard
    refuses `git -C`, and PowerShell has no bash on PATH): `Set-Location C:\dev\game; $s = git status --porcelain;

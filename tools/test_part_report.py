@@ -10,8 +10,8 @@ import tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPORT = os.path.join(HERE, "part_report.py")
 RUNS = ("date,task,worker,effort,gate,fix_passes,minutes,cost,real_findings,tokens_in,tokens_out,usd_est,cost_source,"
-        "idle_min\n2026-11-02,job,cf,max,PASS,1,22,0,0,15000,3000,0.0081,opencode-export,4\n")
-PASS = ("PASS 07:50 oc/job\nbuilder cf\npid 12\nkind py\nmodel cloudflare-workers-ai/deepseek-v4.1-flash-high\nidle_min 4\n"
+        "idle_min\n2026-11-02,job,nv,max,PASS,1,22,0,0,15000,3000,0.0081,opencode-export,4\n")
+PASS = ("PASS 07:50 oc/job\nbuilder nv\npid 12\nkind py\nmodel nvidia/deepseek-ai/deepseek-v4.1-flash\nidle_min 4\n"
         "quiet: build killed after 300s without log output; its commits were checked\nchecked 4e0abbcd17502ef3c7ff21cbb7c11462b7495796\n"
         "ok   new test fails on base: tools/test_x.py\nWARN fix pass edited tests: tools/test_y.py\nVERDICT PASS\n"
         "--- commits\n2ce7a3e docs: regenerate MAP\n07b7ce9 tools: add x\n--- diffstat\n docs/MAP.md | 1 +\n"
@@ -44,7 +44,7 @@ def test_a_pass_report_has_the_word_model_cost_flags_and_the_next_step():
     with tempfile.TemporaryDirectory() as d:
         setup(d)
         out, lines = report(d)
-        assert lines[0].startswith("PASS job") and "deepseek-v4.1-flash-high" in lines[0], lines[0]
+        assert lines[0].startswith("PASS job") and "model=nvidia/deepseek-ai/deepseek-v4.1-flash" in lines[0], lines[0]
         assert "4e0abbc" in out and "2 files" in out and "2 commits" in out, out
         assert "15000" in out and "3000" in out and "0.0081" in out and "opencode-export" in out, out
         assert "idle_min 4" in out and "quiet:" in out, out
@@ -68,7 +68,7 @@ def test_non_pass_words_say_why_and_never_suggest_a_merge():
              "ERROR": "gate error: FileNotFoundError brief", "FAIL": "FAIL tool_tests (126 s)"}
     for word, detail in cases.items():
         with tempfile.TemporaryDirectory() as d:
-            setup(d, result=f"{word} 08:00 oc/job\nbuilder cf\nkind py\nidle_min 0\n{detail}\n--- commits\n--- diffstat\n")
+            setup(d, result=f"{word} 08:00 oc/job\nbuilder nv\nkind py\nidle_min 0\n{detail}\n--- commits\n--- diffstat\n")
             out, lines = report(d)
             assert lines[0].startswith(f"{word} job") and detail in out, (word, out)
             assert "merge_run.sh" not in out, (word, out)
