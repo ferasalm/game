@@ -1,6 +1,6 @@
-# Providers a builder, reviewer or audit may call (Feras 11-04: every key here is free-tier, no card attached).
-# Cloudflare was retired after an unexpected $32.29 bill; a paid provider never comes back without Feras's OK and a
-# docs/SPEND.md line. One rule per line: <prefix> [suffix the model id must end with]. test_free_providers.py reads it.
+# Providers a builder, reviewer or audit may call (Feras 11-04: NVIDIA, Google, Groq keys are free-tier, no card; Cerebras
+# spends its $4.85 prepaid credit at worst, accepted as the capped fallback hop; OpenRouter :free and opencode Zen free cost 0).
+# Any other paid provider needs his OK and a docs/SPEND.md line. One rule per line: <prefix> [suffix the id must end with].
 nvidia/
 cerebras/
 groq/
