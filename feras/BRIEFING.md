@@ -3,7 +3,7 @@ Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after 
 HANDOFF.md; this file is your view of it. "Open now" is rewritten at every /handoff; below it, reports newest first,
 each headed by its date and time (GMT+3): Done | Still open | When | How | Your move vs mine | Checked.
 
-## Open now (Tue 11-03 00:47)
+## Open now (Wed 11-04 01:33)
 | # | Open item | Status | Checked | Your move? | When |
 |---|---|---|---|---|---|
 | 1 | M1 build in 6 waves from docs/briefs/m1-plan.md (9 part brie | ready: wave 1 (m1-defs) | - | no | ready: wave 1 (m1-defs) |
@@ -17,11 +17,19 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 | 9 | Art bible 2D pass: drop the retired 3D runtime lines (fog, m | parked | - | no | parked |
 | 10 | Bilqis's portraits are now the Neon ones: keep or overturn ( | open | - | yes | 10-27 |
 | 11 | Art homework into inbox/: concept pictures, an empty plate p | open | - | yes | 10-24 |
-| 12 | Row 26 review follow-ups DONE 11-02 (decisions-log, changelo | open | - | no | 11-02 |
+| 12 | Row 26 review follow-ups left (done items: changelog.md, dec | open | - | no | 11-02 |
 | 13 | After merging row 26 to main: `python tools/plugin_prune.py` | open | - | no | 11-02 |
 | 14 | Revisit LSP for review-code after row 4 (M1 built): rerun th | open | - | no | 11-02 |
 | 15 | Doc graph cleanup (row 27 shipped `tools/doc_graph.py`, DOCM | open | - | no | 11-01 |
 | 16 | Row 20 leftovers, no row yet (row 24 is done; specs too vagu | open | - | no | 11-01 |
+
+## Wed 11-04 01:35: sync, worktree cleanup, Cloudflare retired (Opus 5.5, auto effort, one chat)
+- Done (main): main synced (SYNC PASS); 16 finished worktrees removed (branches kept); no unmerged branch held work main lacks. cf lane retired: free `nv` lane (tools/nv_build.sh) = DeepSeek V4.1 Flash on NVIDIA NIM, provider refusals fall back NVIDIA > Zen free > Cerebras > OpenRouter :free; reviews on NVIDIA GLM-5.3-flash; cf_probe, cf_audit, the cf-agents MCP gone (nv_audit.sh does one-shot text); tools/free_providers.txt + a test fail any paid model slug; docs, skills and M1 briefs updated; decision, SPEND line, lesson logged. Calendar: today's event lists your Cloudflare moves.
+- Still open: Open point (f), NVIDIA is slow (DeepSeek 439 s on a toy task): watch the first nv builds (planned: row 4 wave 1). Zen free is spent today (the chain skips it in 2 s). Cerebras lists a paid price; on a no-card key it refuses rather than bills.
+- When: row 4 wave 1 next chat (Wed 11-04).
+- How: row 4, Gameplay, builder lane, nv + agy, Opus high head.
+- Your move vs mine: yours (waiting on Feras): ask Cloudflare billing for a waiver of the $32.29, downgrade Workers Paid, delete the API token and the CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID user env vars. Mine: nothing pending.
+- Checked: live tool-use proof on NVIDIA DeepSeek and GLM, Cerebras and OpenRouter (wrote, ran, committed); every changed tool test run alone (all pass); branch CI full suite green (582 Godot tests). Not checked locally: the full check.sh (killed by Claude Code at 716 MB free; CI ran it instead).
 
 ## Tue 11-03 00:30: row 26 review, follow-ups, Obscura (Sonnet 5.5 high, one chat; the prompt said Opus, it ran on Sonnet)
 **Done** (on main after this handoff): the optional review of pipeline v2 is finished and SIGNED OFF with fixes. (1) The 5-minute quiet kill was cutting fix passes that had made no commit of their own; fixed with a test. (2) Its real cause: 4 of 6 quiet kills were builders waiting on their own foreground `check.sh`, which prints nothing until a step ends (not "opencode does not exit"); `check.sh` now beats a heartbeat file and the watchdog counts it. (3) `runs.csv`: `cost` is `?` instead of a hard-coded 0, idle minutes are summed over every kill, two 25-minute idle rows corrected. (4) P6 proven: a seeded off-by-one behind 5 green tests was caught by the GLM cross-review (about $0.02). (5) Stale pointers and two stale doc lines fixed. (6) Obscura is set up: `tools/obscura.sh <url> [text|markdown|links]` (never --stealth, http(s) only, timeout), tested, binaries git-ignored, routing row added.
@@ -57,13 +65,3 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 **How**: row 26, Ops, builder + chat (review); Opus high for the review.
 **Your move vs mine**: yours: optionally paste the review prompt; start chats with `claude --model opusplan -w <name>`. Mine: the rest.
 **Checked**: full check.sh 582 Godot tests passed on the finished tree; the last docs fix re-checked with `check.sh --no-godot`: all checks passed. Not run: the Opus review, a render-judged agy run, a seeded bug inside a Godot run.
-
-## Mon 11-02 04:55: row 25 sign-off (Opus 5.5 high)
-**Done** (on main after this handoff): verdict SIGNED OFF, logged in decisions-log. Both plugins validate; settings.json holds only the allowed hooks; I read every risky hunk line by line; all four lens lists re-judged, and the rejected flags are confirmed false by running or reading them (`--keep` under `set -e`, `gh run list --commit`, `timeout`, `BASE_RED_SEC`, `test_base_red.py`, two "missing" paths). Fixed, each with a test seen red first: (1) `doc_check` still skipped HANDOFF.md, the flag both lenses raised, only half fixed on 11-01; (2) `base_red` read only a brief's first Tests section; (3) the audit step itself broke the next check.sh (reports citing `.check/` paths, now ignored by doc_graph; the rest baselined); (4) `cf_audit` reports swelled to 269 KB of log lines, now stripped; (5) the pm plugin manifest was never tested. No test: the low-cost skill's `/advisor` carve-out contradicted duty 6 and is removed; a review-player stale clause and a stale memory line are gone. Closed Open points: plugins (`claude plugin list` shows studio and pm enabled, read from C:\dev\game, so nothing left for you), status line (real JSON matches the fields), sign-off, coach.
-**Coach**: 9/10 from the union of DeepSeek, GLM flash and a Haiku pass (was 8). The target of 10 is not met: track_usage hook, Notification hook, LSP for reviewers.
-**Still open**: the worker proof is plumbing only: 3 small Python runs, no Godot, no agy hand, and cost was never measured (runs.csv says 0, cf_spend `?`); `row25-base-red` sat idle 25 of its 31 minutes. Added to row 26 (planned with row 4's first builds). `track_usage.py` lives only in the main checkout, so its hook errors in worktrees: new Open point, mine, planned next Ops chat. Not planned: `gh run list --limit 1` picks any workflow (the repo has one, so harmless today); stale kaizen@kaizen install entries (harmless); `OC_MODEL` default stays on the spent route (documented, cf_build.sh is the route).
-**Sign-off exception, not met**: the target "skills listed twice: 0" fails for a chat opened in C:\dev\game that then enters a worktree: this chat's list gained a second, scoped copy of the project skills right after it entered (`builders`, `low-cost-pipeline` and others). The 11-01 smoke's "listed once" and row 22's fresh-chat check cover a chat started inside a worktree, not this path. It costs tokens every turn and risks picking a copy from another checkout, but breaks nothing, so the sign-off stands with this exception. New Open point, mine, planned next Ops chat.
-**When**: M1 brief Tue 11-03, or earlier today.
-**How**: row 3, Gameplay, chat (plan), Opus high; prompt at the end of HANDOFF.md.
-**Your move vs mine**: yours: paste the prompt. Mine: the rest.
-**Checked**: check.sh on origin/main after the second import: 582 passed; its only reds were my audit reports arriving mid-run. Final `handoff.sh --main`: HANDOFF PASS, CI success on 4b7c238. New tests: doc_check 9, base_red 14, cf_audit 6, plugins 11. Not checked: the full interactive /kaizen:coach (not needed: the reports did not disagree on a high item), review-feras on this report (ops text, nothing player-visible), the smoke card by me (its report is in the 22:00 entry; it did not test entering a worktree from main, see the exception above).

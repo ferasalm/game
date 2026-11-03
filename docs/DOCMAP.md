@@ -105,7 +105,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | AGENTS.md | Rules for opencode builders | 0 | 5 |
 | CLAUDE.md | game: rules for every Claude session | 0 | 19 |
 | GEMINI.md | GEMINI.md: Neon Glitch builder rules for Gemini (agy). Standing rules only; each task's brief comes in the chat. | 0 | 9 |
-| HANDOFF.md | HANDOFF (current state only; ONE queue for every chat; max 60 lines) | 1 | 14 |
+| HANDOFF.md | HANDOFF (current state only; ONE queue for every chat; max 60 lines) | 1 | 15 |
 | README.md | Neon Glitch | 0 | 7 |
 | docs/ARCHITECTURE.md | Architecture | 4 | 33 |
 | docs/CANON.md | CANON: game content decisions in force (world, story, heroes, combat, art, UI) | 5 | 5 |
@@ -202,7 +202,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/story/README.md | Story map: the repo and Twine, both ways | 1 | 2 |
 | docs/story/bible.md | Story bible (Feras, 2026-10-26; from inbox/docs/Neon_Glitch_Story_Bible_Final.docx (renamed by Feras 10-27), text unchanged) | 9 | 1 |
 | docs/story/chatgpt-prompt.md | Prompt for ChatGPT: turn the story into Twine passages | 0 | 0 |
-| feras/BRIEFING.md | Briefing for Feras (one file for you: newest report first, the last 5 kept; every chat updates it at /handoff) | 9 | 11 |
+| feras/BRIEFING.md | Briefing for Feras (one file for you: newest report first, the last 5 kept; every chat updates it at /handoff) | 9 | 12 |
 | feras/research-prompts.md | Research prompts for Feras (Gemini Deep Research, Argon High) | 1 | 1 |
 | plugins/pm/skills/handoff/SKILL.md | Handoff (game) | 5 | 14 |
 | plugins/pm/skills/next/SKILL.md | Run `python ${CLAUDE_PLUGIN_ROOT}/scripts/pm.py next` and show its output. | 1 | 0 |

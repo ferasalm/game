@@ -1,5 +1,5 @@
 # HANDOFF (current state only; ONE queue for every chat; max 60 lines)
-Last updated: 2026-11-04 (Cloudflare retired: free nv lane on NVIDIA NIM with a free fallback chain; worktrees synced and cleaned), Opus 5.5.
+Last updated: 2026-11-04 (Cloudflare retired: free nv lane + fallback chain; worktrees cleaned), Opus 5.5.
 Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Open points).
 
 Queue rules (one queue, top row first; Dept, Lane, Open points, builder caps, balance band): docs/queue-rules.md.
@@ -24,7 +24,7 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 |---|---|---|
 | Bilqis's portraits are now the Neon ones: keep or overturn (archive-cleanup, decisions-log); on hold until further notice (Feras 10-31) | Feras | 10-27 |
 | Art homework into inbox/: concept pictures, an empty plate per scene (no characters, HUD or rain), icon art (row 7) | Feras | 10-24 |
-| Row 26 review follow-ups left (done items: changelog.md, decisions-log 11-02/03): (a) Cloudflare retired 11-04 (bill $32.29: Feras asks Cloudflare for a waiver, downgrades the plan, deletes the token and the 2 env vars); (b) after 5 more nv runs read `python tools/kaizen_report.py` idle, then QUIET_SEC; (c) P6 on a Godot run; (d) agy cost unmetered; (e) A/B and model personalities are n=1 | Claude, Feras (a) | 11-02 |
+| Row 26 review follow-ups left (done items: changelog.md, decisions-log 11-02/03): (a) Cloudflare retired 11-04 (bill $32.29: Feras asks Cloudflare for a waiver, downgrades the plan, deletes the token and the 2 env vars); (b) after 5 more nv runs read `python tools/kaizen_report.py` idle, then QUIET_SEC; (c) P6 on a Godot run; (d) agy cost unmetered; (e) A/B and model personalities are n=1; (f) NIM is slow (439 s toy task): watch QUIET_SEC on the first nv builds | Claude, Feras (a) | 11-02 |
 | After merging row 26 to main: `python tools/plugin_prune.py` (dry run, then --apply) once the finished worktrees are removed; 6 kaizen entries remain for live worktrees | Claude | 11-02 |
 | Revisit LSP for review-code after row 4 (M1 built): rerun the recipe in docs/audits/2026-11-02-lsp-reviewers.md on 3 fresh diffs; DO only if grep missed a caller of a name declared in 2+ files (verdict now: DON'T DO) | Claude | 11-02 |
 | Doc graph cleanup (row 27 shipped `tools/doc_graph.py`, DOCMAP.md, check.sh gate): 220 baselined dangling pairs in docs/doc_graph_allow.txt (most are example paths in .agents/archive personas), 30 orphans and 240 overlap lines to merge or delete; bare file names (`models.md`) do not count as references yet | Claude | 11-01 |
@@ -42,4 +42,4 @@ docs/context.md (what is on main, the 3D archive, inbox/retired/ never a source)
 
 ## Prompt for the next chat
 Start with `claude --model opusplan -w <name>` (a chat started in its own worktree lists skills once), `/effort high`, stay in auto mode, then paste this as one message (Opus: no `/goal`):
-`Row 4, Gameplay, Opus high (head): run M1 wave 1; read docs/next-chat.md first and do what it says.` (Feras starts first with a sync chat for his recent worktrees; the row 26 review is done.)
+`Row 4, Gameplay, Opus high (head): run M1 wave 1 on the nv lane (tools/nv_build.sh); read docs/next-chat.md first and do what it says.` (Before it, Feras: the Cloudflare moves on today's calendar.)
