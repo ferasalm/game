@@ -3,10 +3,10 @@ Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after 
 HANDOFF.md; this file is your view of it. "Open now" is rewritten at every /handoff; below it, reports newest first,
 each headed by its date and time (GMT+3): Done | Still open | When | How | Your move vs mine | Checked.
 
-## Open now (Wed 11-04 03:51)
+## Open now (Wed 11-04 17:40)
 | # | Open item | Status | Checked | Your move? | When |
 |---|---|---|---|---|---|
-| 1 | Low-cost pipeline v3 after Cloudflare: plan input docs/brief | ready (Feras: oc-v2 logins first) | - | no | ready (Feras: oc-v2 logins first) |
+| 1 | What-we-have pipeline (row 28): d reverted after a red CI, redo then c, b, a, e | planned (next chat) | d green locally, main CI red on MAP.md, fixed class in lessons | no | next chat |
 | 2 | M1 build in 6 waves from docs/briefs/m1-plan.md (9 part brie | ready: wave 1 (m1-defs) on agy; nv/OpenRouter lanes after row 28 | - | no | ready: wave 1 (m1-defs) on agy; nv/OpenRouter lanes after row 28 |
 | 3 | Bake Roya (sprite-bake), native-scale render on the prison r | ready | - | no | ready |
 | 4 | Feras plays M1 on PC and phone; notes -> fix-pass rows | later: after row 4 | - | yes | later: after row 4 |
@@ -21,6 +21,14 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 | 13 | Revisit LSP for review-code after row 4 (M1 built): rerun th | open | - | no | 11-02 |
 | 14 | Doc graph cleanup (row 27 shipped `tools/doc_graph.py`, DOCM | open | - | no | 11-01 |
 | 15 | Row 20 leftovers, no row yet (row 24 is done; specs too vagu | open | - | no | 11-01 |
+
+## Wed 11-04 17:40: row 28 night run stopped on a red CI, part d reverted (the chat ran on Sonnet 5.5; the prompt said Opus high)
+- Done (main): part d (the nv_build.sh login preflight) was built and green locally, but main CI failed `MAP.md current` because I committed by hand with the map made before `git add`: reverted at once (4c86be6, CI green). Red tests for parts c and b are written and saved in docs/briefs/row28-locked-tests/, briefs b and c name their exact interfaces. A later handoff commit also went red on MAP.md (a stray log file was listed in it); fixed in the final push.
+- Still open: parts d (redo), c, b, a, e of row 28; none built tonight. Part b's `tools/cn_holidays.txt` dates are from memory and unverified (the brief says so).
+- When: row 28 next chat, any day (`pwsh tools\next_chat.ps1`); its prompt starts with the d redo.
+- How: row 28, Ops, chat (plan), Opus high, then builders c and b in parallel.
+- Your move (waiting on Feras): the oc-v2 OpenRouter login and $3 limit stay in HANDOFF Open points (paid lanes only); none else. Mine: redo d, then c, b, a, e. Two small fixes are proposed: check.sh warns on untracked files (map.py reads only `git ls-files --cached`), and next_chat.ps1 clears CLAUDE_CODE_CHILD_SESSION (it made this chat's transcript saving off; no usage measure for this chat).
+- Checked: Python tests for d (8 new, 6 and 15 old) and check.sh --no-godot green locally; CI of the revert green; not checked: Godot (memory 1.7 GB, below the 2 GB floor; main CI runs it), no builder or paid call ran.
 
 ## Wed 11-04 02:30: Cloudflare cleanup done, pipeline v3 queued (Opus 5.5, same chat)
 - Done (main): Cloudflare removed from opencode (CLI and desktop share these): the 2 user env vars (yours had not saved), the stored key in opencode's database, both auth.json entries (backups *.bak-20261104). Cerebras kept as the capped fallback; OpenRouter $13 bought, so 1000 free requests a day. Row 28 written: docs/briefs/row28-pipeline-v3-plan.md holds your 11-04 decisions; row 26 closed into it.

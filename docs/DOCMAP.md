@@ -214,7 +214,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/story/README.md | Story map: the repo and Twine, both ways | 1 | 2 |
 | docs/story/bible.md | Story bible (Feras, 2026-10-26; from inbox/docs/Neon_Glitch_Story_Bible_Final.docx (renamed by Feras 10-27), text unchanged) | 7 | 1 |
 | docs/story/chatgpt-prompt.md | Prompt for ChatGPT: turn the story into Twine passages | 0 | 0 |
-| feras/BRIEFING.md | Briefing for Feras (one file for you: newest report first, the last 5 kept; every chat updates it at /handoff) | 9 | 11 |
+| feras/BRIEFING.md | Briefing for Feras (one file for you: newest report first, the last 5 kept; every chat updates it at /handoff) | 9 | 12 |
 | feras/research-prompts.md | Research prompts for Feras (Gemini Deep Research, Argon High) | 1 | 1 |
 | plugins/pm/skills/handoff/SKILL.md | Handoff (game) | 5 | 14 |
 | plugins/pm/skills/next/SKILL.md | Run `python ${CLAUDE_PLUGIN_ROOT}/scripts/pm.py next` and show its output. | 1 | 0 |
