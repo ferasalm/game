@@ -28,6 +28,7 @@ docs() {  # doc_check.py, then the doc graph: a stale docs/DOCMAP.md or a new da
   $py tools/doc_graph.py --check
 }
 no_godot=0; [ "${1:-}" = "--no-godot" ] && no_godot=1
+bash tools/untracked_warn.sh  # warn only: map.py and doc_graph.py read tracked files, so an unadded new file fails CI "MAP.md current"
 step docs docs
 step lint $py tools/lint_gd.py
 step res_graph $py tools/res_graph.py --check  # no file under features/ core/ content/ assets/ that nothing uses

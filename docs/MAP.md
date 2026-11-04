@@ -760,6 +760,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_no_legacy_hero.py`: Guard: the hero's old code id stays gone (renamed to rydan, save v7, Feras 2026-10-27). Fails on the old id in the
 - `tools/test_nv_audit.py`: Self-test for tools/nv_audit.sh (row 25, 2026-11-01): the read-only nv audit stages its box, runs opencode with the
 - `tools/test_nv_build.py`: nv_build.sh walks NV_CHAIN (Feras 11-04): a provider refusal (`why: quota`) reruns the task on the next model; a
+- `tools/test_nv_preflight.py`: nv_build.sh preflight (row 28 part d): a chain model whose provider is not stored in oc-v2 is skipped with a login
 - `tools/test_obscura.py`: tools/obscura.sh: the Obscura fetch wrapper (11-03). Stub binaries only: no network, no real Obscura.
 - `tools/test_oc_start_retry.py`: Row 26 (11-02): two opencode v2 servers started in the same second share one SQLite database; the second died with
 - `tools/test_oc_task_prompt.py`: Row 26 (11-02): GLM's scope run died at once with "Argument list too long" (exit 126): oc_task.sh passed the whole prompt
@@ -791,11 +792,13 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_token_handoff.py`: Self-test for tools/hooks/token_handoff.py: cache-read information at 25M, then every +10M; context size never warns
 - `tools/test_tool_tests.py`: Tests tool_tests.py parallel test execution and process runner.
 - `tools/test_twine_sync.py`: Self-test for tools/twine_sync.py: python tools/test_twine_sync.py (temp dirs, plain asserts, exit 1 on failure).
+- `tools/test_untracked_warn.py`: untracked_warn.sh: warns about an untracked file, stays quiet when it is added or ignored, never fails.
 - `tools/test_usage_row.py`: Self-test for row 23 c (2026-11-01): session_stats.py --row <session id> prints a USAGE row; tools/runs_log.py appends
 - `tools/test_wait_run.py`: Self-test for tools/wait_run.sh (row 16): after its wait it reports each run and the best move: re-arm a running
 - `tools/test_wt_clean.py`: Self-test for tools/wt_clean.sh: merged and dead builder worktrees go, live and unmerged ones stay.
 - `tools/tool_tests.py`: Runs tool tests in parallel worker threads with logs in .check; the 2 slow toy tests skip while tools/ is unchanged.
 - `tools/twine_format.py`: Twee 3 <-> Twine 2 library HTML conversion for tools/twine_sync.py (parse, write, layout, to/from HTML).
 - `tools/twine_sync.py`: Syncs a Twee 3 story in the repo with the Twine 2 desktop library, both ways (docs/story/README.md).
+- `tools/untracked_warn.sh`: Warn (never fail) when untracked, non-ignored files exist: map.py and doc_graph.py read only tracked files, so a new
 - `tools/wait_run.sh`: Cache waker for builder runs (row 16, Feras 10-29). A chat waiting on a run is idle and its prompt cache lives 1 hour:
 - `tools/wt_clean.sh`: Lists (default) or removes (--apply) builder worktrees in game-wt that are merged into origin/main, ended NOWORK, or

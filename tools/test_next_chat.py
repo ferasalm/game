@@ -19,9 +19,11 @@ def test_the_new_chat_clears_the_child_session_marker_before_claude_starts():
     assert line.index("Remove-Item Env:CLAUDE_CODE_CHILD_SESSION") < line.index("claude --model"), line
 
 
-def test_the_new_chat_still_reads_the_prompt_file_and_starts_opusplan_high():
+def test_the_new_chat_still_reads_the_prompt_file_and_starts_opus_high():
+    # opusplan executes on Sonnet outside plan mode (11-04 night): the new chat names opus itself
     line = inner_line()
-    assert "next_chat_prompt.txt" in line and "--model opusplan --effort high" in line, line
+    assert "next_chat_prompt.txt" in line and "--model opus --effort high" in line, line
+    assert "opusplan" not in line, line
 
 
 if __name__ == "__main__":

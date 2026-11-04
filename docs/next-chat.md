@@ -1,6 +1,6 @@
 # Next chat: Row 4, Opus high (head of the M1 build)
 
-Paste from HANDOFF.md ("Prompt for the next chat"): `claude --model opusplan -w <name>`, `/effort high`, auto mode, then the one-line pointer.
+Paste from HANDOFF.md ("Prompt for the next chat"): `claude --model opus -w <name>` (not opusplan: it executes on Sonnet outside plan mode, 11-04), `/effort high`, auto mode, then the one-line pointer.
 
 ## Where it stands (2026-11-02)
 - Row 3 is done: the M1 brief set is written. Read docs/briefs/m1-plan.md first (waves, workers, gates), then the spec
