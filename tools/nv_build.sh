@@ -14,6 +14,33 @@ task="$1"; brief="$2"; base="$3"
 if [ -n "${4:-}" ]; then chain="$4"; else chain="$NV_CHAIN"; fi
 dir="$(wt_dir)"
 
+# Preflight (row 28 part d, Feras 11-04): builds log in to opencode's oc-v2 data dir (lib.sh oc_run), so a chain model
+# whose provider is not stored there fails at its first call with an error NV_FALLBACK_RE does not know. Ask
+# `auth list` once (first column = provider, case-insensitive; opencode itself needs no login) and skip such models.
+# A failing or unparseable `auth list` never blocks: warn and run the chain unchanged.
+if [ "${OC_MAJOR:-2}" = 1 ]; then auth_dir="$HOME/.local/share/oc-cli"; auth_flag=""; else auth_dir="$HOME/.local/share/oc-v2"; auth_flag="--standalone"; fi
+logged=""
+if auth_out="$(XDG_DATA_HOME="$auth_dir" timeout 60 "${OC_BIN:-opencode}" auth list $auth_flag < /dev/null 2> /dev/null)"; then
+  logged="$(printf '%s\n' "$auth_out" | tr -d '\r' | awk '$1 ~ /^[A-Za-z][A-Za-z0-9_-]*$/ {print tolower($1)}')"
+fi
+if [ -z "$logged" ]; then
+  echo "nv_build: warning: 'auth list' gave no providers; running the chain unchanged" >&2
+else
+  usable=""
+  login_hint='$env:XDG_DATA_HOME="$HOME\.local\share\oc-v2"; & '"${OC_BIN:-opencode}"' auth login --standalone'
+  for model in $chain; do
+    prov="${model%%/*}"
+    if [ "$prov" = opencode ] || printf '%s\n' "$logged" | grep -qx "$(printf '%s' "$prov" | tr 'A-Z' 'a-z')"; then
+      usable="$usable $model"
+    else
+      echo "nv_build: skipping $model: ${prov^} is not logged in to oc-v2 (PowerShell: $login_hint)" >&2
+    fi
+  done
+  # nothing left to run (every model skipped, or the pinned one): REFUSED; the skip lines above name the missing logins
+  if [ -z "$usable" ]; then exit 3; fi
+  chain="$usable"
+fi
+
 rc=0
 for model in $chain; do
   rc=0
