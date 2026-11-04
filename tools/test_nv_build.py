@@ -31,7 +31,6 @@ def run(**env):
     wtd = top + "/wtd"
     os.makedirs(wtd)
     e = {**{k: v for k, v in os.environ.items() if not k.startswith("NV_")}, "GAME_WT_DIR": wtd,
-         "OC_BIN": "/nonexistent/opencode",  # preflight (part d) warns and runs the chain unchanged
          "NV_CHAIN": "nvidia/a opencode/b-free cerebras/c", "REFUSE_MODELS": "", "FAIL_MODELS": "", "SHUT_MODELS": ""}
     e.update(env)
     args = [BASH, tools + "/nv_build.sh", "job", top + "/brief.md", "origin/main"] + e.pop("_ARGS", "").split()

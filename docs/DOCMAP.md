@@ -162,7 +162,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/briefs/row28-a-lanes.md | Brief: row28-a-lanes (agy; JSON, shell and Python, RUN_KIND=py; red tests first from the head) | 0 | 5 |
 | docs/briefs/row28-b-peak-gate.md | Brief: row28-b-peak-gate (nv or agy; Python, RUN_KIND=py) | 0 | 8 |
 | docs/briefs/row28-c-cliff-guard.md | Brief: row28-c-cliff-guard (agy; Python, RUN_KIND=py) | 0 | 6 |
-| docs/briefs/row28-d-preflight.md | Brief: row28-d-preflight (Opus writes it: pipeline machinery; shell + Python, RUN_KIND=py) | 0 | 7 |
+| docs/briefs/row28-d-preflight.md | Brief: row28-d-preflight (Opus writes it: pipeline machinery; shell + Python, RUN_KIND=py) | 0 | 6 |
 | docs/briefs/row28-e-routing-v3.md | Brief: row28-e-routing-v3 (head, Sonnet high; docs and a small Python edit, RUN_KIND=py) | 0 | 9 |
 | docs/briefs/row28-f-calibration.md | Brief: row28-f-calibration (head + builders; runs after Feras's candidate research; D11) | 0 | 6 |
 | docs/briefs/row28-h-glm-content.md | Brief: row28-h-glm-content (head + agy for scripts; Python and docs, RUN_KIND=py) | 0 | 13 |
