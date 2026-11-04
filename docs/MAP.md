@@ -756,6 +756,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_kill_tree.py`: Tests kill_tree (tools/lib.sh): a tree with a native grandchild and a parent still forking during the kill dies whole.
 - `tools/test_map.py`: Self-test for map.py: only tracked files are mapped (an untracked file made CI fail "MAP.md current").
 - `tools/test_merge_generated.py`: Row 26 S14 (11-02): every parallel part adds a tool, so every merge of two parts conflicted on the generated files
+- `tools/test_next_chat.py`: tools/next_chat.ps1 opens the next chat with a clean environment (11-04): a chat that inherits CLAUDE_CODE_CHILD_SESSION
 - `tools/test_no_legacy_hero.py`: Guard: the hero's old code id stays gone (renamed to rydan, save v7, Feras 2026-10-27). Fails on the old id in the
 - `tools/test_nv_audit.py`: Self-test for tools/nv_audit.sh (row 25, 2026-11-01): the read-only nv audit stages its box, runs opencode with the
 - `tools/test_nv_build.py`: nv_build.sh walks NV_CHAIN (Feras 11-04): a provider refusal (`why: quota`) reruns the task on the next model; a
