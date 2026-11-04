@@ -65,7 +65,9 @@ it on the page (no table; values only on hover).
   "environment". Fix used 11-04: logout the old duplicates, `auth export <provider> --standalone | auth import --standalone`
   into oc-v2, restart the service), and nv_build.sh gets a preflight: the model's provider
   must appear in `auth list --standalone` for oc-v2, else REFUSED with the login line (plus a test). Providers to
-  log in: NVIDIA, Cerebras, Google (Groq dropped 11-04). The next chat checks `auth list` first; a missing provider
+  log in: NVIDIA, Cerebras, Google (Groq dropped 11-04). DONE 11-04: oc-v2 `auth list --standalone` shows Cerebras 2,
+  Google 2, Nvidia 2, OpenRouter twice ("OpenRouter" and "API key": smoke-test which one is active); service restarted,
+  no Cloudflare lines. Next chat: one live smoke call per provider through oc-v2 before any brief relies on it. The next chat checks `auth list` first; a missing provider
   -> that lane is skipped, not blocked.
 - OpenRouter has no :free DeepSeek V4.1 Flash 1017. Paid: $0.15 in / $0.60 out per M, cache read $0.003, 1M context,
   393k output (opencode models.json cache 11-04; recheck live).
