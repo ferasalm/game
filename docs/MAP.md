@@ -724,7 +724,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/status.sh`: One look at the state of the work (Feras 2026-10-27): builders, branches not yet on main, worktrees with nothing left,
 - `tools/statusline.py`: Status line command (row 23 e, 2026-11-01): reads Claude Code's status JSON on stdin, prints one line
 - `tools/sync_main.sh`: Brings the main checkout up to origin/main and proves the game starts (2026-10-24: merges pulled without a re-import
-- `tools/sync_personas.py`: Copies the 10 Neon Glitch personas from their one source (.agents/skills/<name>/SKILL.md) to .claude/skills/<name>/SKILL.md
+- `tools/sync_personas.py`: Copies the 10 stock persona sources (.agents/skills/<name>/SKILL.md, agency-agents text; row 28 part g, Feras 11-04)
 - `tools/test_agy_quiet.py`: Row 26 (11-02): `agy -p` prints its log only when it finishes, so an agy run's log stays 0 bytes while it works. The quiet
 - `tools/test_art_refs.py`: tools/art/refs.json: one approved reference per character (row 1 item 3, 10-28). Every Rodin model has an entry,
 - `tools/test_base_red.py`: base_red.py refuses a base holding a red tool test the brief does not name (rows 23, 24), on a toy git repo.
@@ -762,7 +762,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_oc_usage.py`: Row 26 S2 (Feras 11-02): a builder run's cost is read from opencode's own session export, never guessed from its log
 - `tools/test_part_report.py`: Row 26 S10 (Feras 11-02, no context pollution): the head reads ONE short report per part instead of a log or a diff.
 - `tools/test_parts_plan.py`: Row 26 S12 (Feras 11-02): one model may run several times at once (three DeepSeek max, two agy, two GLM) to finish
-- `tools/test_personas.py`: The 10 personas are tailored to Neon Glitch (Feras 10-28: "not generic") and their copies never drift (row 1 item 9).
+- `tools/test_personas.py`: The persona copies are stock agency-agents text plus ONE shared overlay (row 28 part g, Feras 11-04; this reverses the
 - `tools/test_pipeline_skill.py`: Row 26 S6 (Feras 11-02): the whole workflow lives in ONE skill folder, .claude/skills/low-cost-pipeline/, so it can be
 - `tools/test_plugin_prune.py`: Row 26 S7 (Feras 11-02, asked and agreed): `claude plugin list` showed kaizen@kaizen eight times, two of them for
 - `tools/test_plugins.py`: The repo marketplace and the studio plugin stay loadable and consistent (system-v3 row 22, 2026-11-01).

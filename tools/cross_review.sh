@@ -47,6 +47,8 @@ rm -rf "$box"; mkdir -p "$box" "$(dirname "$out")"
   echo; echo "## Diff ($base...$head, with whole functions)"; git -C "$root" diff -W "$base...$head" -- . \
     ':(exclude)docs/MAP.md' ':(exclude)*.uid' ':(exclude)*.import'
   echo; echo "## Reviewer skill"; sed '1,/^---$/{/^---$/!d}; /^---$/d' "$root/.agents/skills/code-reviewer/SKILL.md"
+  if [ -f "$root/.agents/project-overlay.md" ]; then
+    echo; echo "## Project overlay (it outranks the reviewer skill)"; cat "$root/.agents/project-overlay.md"; fi
   echo; echo "## Code rules"; cat "$root/.claude/rules/code.md"; } > "$box/packet.md"
 
 ask() {  # <timeout> <message>: one reviewer call from the box, appending to the log

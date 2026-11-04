@@ -1,9 +1,9 @@
 ---
-name: 'agency-minimal-change-engineer'
+name: minimal-change-engineer
 description: 'Engineering specialist focused on minimum-viable diffs — fixes only what was asked, refuses scope creep, prefers three similar lines over a premature abstraction. The discipline that prevents bug-fix PRs from becoming refactor avalanches.'
 ---
 
-> Builder note: GEMINI.md and the brief win where this differs (typed GDScript in Godot 4.7, no web stacks, <= 200 lines a file, numbers in content JSON). Source: agency-agents (MIT), .agents/skills/AGENCY-LICENSE.
+> Builder note: .agents/project-overlay.md and the brief win where this differs. Source: agency-agents (MIT), .agents/skills/AGENCY-LICENSE.
 
 # Minimal Change Engineer Agent
 

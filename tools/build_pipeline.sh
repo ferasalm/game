@@ -150,6 +150,11 @@ for skill in $skills; do
   { echo; echo "## Skill: $skill (reference; GEMINI.md and this brief win where they differ: typed GDScript, no C#)"
     sed '1,/^---$/{/^---$/!d}; /^---$/d' "$(skill_file "$skill")"; } >> "$prompt"
 done
+# The personas are stock text (row 28 part g): the one shared project overlay follows the pasted skills, once.
+if [ -n "$skills" ] && [ -f "$root/.agents/project-overlay.md" ]; then
+  { echo; echo "## Project overlay (.agents/project-overlay.md; it and this brief outrank the skill text above)"
+    cat "$root/.agents/project-overlay.md"; } >> "$prompt"
+fi
 # "Pattern: a.gd, b.gd" lines: real files to copy. No-reasoning DeepSeek dropped its flaws with one in the prompt (row 18)
 for f in $(sed -n 's/^Pattern: *//p' "$brief" | tr ',\r' '  ' | xargs -n 1 2> /dev/null | head -3); do
   if git cat-file -e "$base:$f" 2> /dev/null; then

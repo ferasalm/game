@@ -19,7 +19,8 @@ missing prerequisites.
 - Skills: .agents/skills/<name>/SKILL.md: game (godot-gameplay-scripter, godot-shader-developer, technical-artist,
   level-designer, game-designer, narrative-designer, game-audio-engineer, blender-addon-engineer) and agency personas
   (code-reviewer, minimal-change-engineer, ...) and role cards (gameplay-card, art-card, ui-card, market-card); retired
-  personas: .agents/archive/; `ls`. Act as the ones your brief names; where they differ from the code rules, the code rules win.
+  personas: .agents/archive/; `ls`. Act as the ones your brief names; the personas are stock text, so the brief,
+  .agents/project-overlay.md (pasted after them) and the code rules win where they differ.
 </operating_rules>
 
 <scope>

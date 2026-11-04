@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""The 10 personas are tailored to Neon Glitch (Feras 10-28: "not generic") and their copies never drift (row 1 item 9)."""
+"""The persona copies are stock agency-agents text plus ONE shared overlay (row 28 part g, Feras 11-04; this reverses the
+10-28 'tailored personas' rule). Project text lives in .agents/project-overlay.md only; the copies never drift."""
 import contextlib
 import io
 import os
@@ -10,30 +11,58 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import sync_personas as sp  # noqa: E402
 
-FOREIGN = re.compile(r"\b(Unity|Unreal|FMOD|Wwise|UE5|Blueprints?)\b|C#")
-MAX_BYTES = 9000  # build_pipeline pastes a persona into every builder prompt
+PROJECT = re.compile(r"Neon|Sana'a|Feras|Godot 4\.7|CANON")
+NOTE = ("> Builder note: .agents/project-overlay.md and the brief win where this differs. "
+        "Source: agency-agents (MIT), .agents/skills/AGENCY-LICENSE.")
+IMPORTED = ("code-reviewer", "cultural-intelligence-strategist", "image-prompt-engineer", "minimal-change-engineer")
+OVERLAY = sp.ROOT / ".agents" / "project-overlay.md"
+MAX_OVERLAY_LINES = 40
 
 
 def source(name):
     return (sp.ROOT / ".agents/skills" / name / "SKILL.md").read_text(encoding="utf-8")
 
 
-def test_each_persona_is_tailored_to_our_stack():
+def problems(name, text):
+    """The reasons one persona text breaks the rules (empty list = fine)."""
+    meta, body = sp.split(text)
+    out = []
+    if meta.get("name") != name:
+        out.append("frontmatter name is not the folder name")
+    if not meta.get("description"):
+        out.append("no description")
+    if PROJECT.search(text):
+        out.append("holds project text: " + PROJECT.search(text).group())
+    if NOTE not in body:
+        out.append("no overlay note")
+    if body.count("Builder note:") != 1:
+        out.append("not exactly one builder note")
+    return out
+
+
+def test_every_persona_is_stock_text_with_the_overlay_note():
     bad = []
-    for name in sp.PERSONAS:
-        text = source(name)
-        meta, body = sp.split(text)
-        foreign = FOREIGN.search(body)
-        for ok, why in ((meta.get("name") == name, "frontmatter name is the folder name"),
-                        (bool(meta.get("description")), "has a description"),
-                        (not foreign, f"names another engine or tool: {foreign.group() if foreign else ''}"),
-                        ("Godot 4.7.2" in body and ".claude/rules/code.md" in body, "names Godot 4.7.2 and .claude/rules/code.md"),
-                        (re.search(r"^Adapted from .*AGENCY-LICENSE", body, re.M) is not None, "an 'Adapted from ... AGENCY-LICENSE' line"),
-                        ("\n## Output template\n" in body and "\n## Reviewer\n" in body, "Output template and Reviewer sections"),
-                        (len(text.encode()) <= MAX_BYTES, f"{len(text.encode())} bytes (max {MAX_BYTES})")):
-            if not ok:
-                bad.append(f"{name}: {why}")
+    for name in sp.PERSONAS + IMPORTED:
+        bad += [f"{name}: {why}" for why in problems(name, source(name))]
     assert not bad, "\n".join(bad)
+
+
+def test_the_rules_catch_bad_copies():  # probe each rule with one bad case (LESSONS: a check that only prints never fails)
+    good = "---\nname: x\ndescription: d\n---\n\n" + NOTE + "\n\n# X\n"
+    assert problems("x", good) == []
+    assert "frontmatter name is not the folder name" in problems("y", good)
+    assert any("project text" in p for p in problems("x", good + "Neon Glitch\n"))
+    assert "no overlay note" in problems("x", good.replace(NOTE, "note"))
+    assert "not exactly one builder note" in problems("x", good + "> Builder note: again\n")
+    assert "no description" in problems("x", good.replace("description: d", "description:"))
+
+
+def test_overlay_is_short_and_pointed():
+    lines = OVERLAY.read_text(encoding="utf-8").splitlines()
+    assert len(lines) <= MAX_OVERLAY_LINES, f"{len(lines)} lines (max {MAX_OVERLAY_LINES})"
+    text = "\n".join(lines)
+    for ref in ("docs/CANON.md", "docs/VISION.md", ".claude/rules/code.md", "the brief wins"):
+        assert ref in text or ref.replace("the brief wins", "brief wins") in text, f"overlay lacks {ref}"
 
 
 def test_licence_is_kept():
@@ -45,19 +74,15 @@ def test_copies_match_the_source():
     assert r.returncode == 0, r.stdout + r.stderr
 
 
-def test_drift_is_caught():  # probe the check with one bad case (LESSONS: a check that only prints never fails)
-    path = sp.ROOT / "plugins/studio/agents/ui-finish-gate-reviewer.md"
-    old = path.read_text(encoding="utf-8") if path.exists() else None
+def test_drift_is_caught():
+    path = sp.ROOT / ".claude/skills/game-designer/SKILL.md"
+    old = path.read_text(encoding="utf-8")
     try:
-        path.write_text((old or "") + "\nedited by hand\n", encoding="utf-8", newline="\n")
-        # the planted drift's FAIL line is expected: hide it (an audit misread it as real drift, 10-30)
-        with contextlib.redirect_stdout(io.StringIO()):
+        path.write_text(old + "\nedited by hand\n", encoding="utf-8", newline="\n")
+        with contextlib.redirect_stdout(io.StringIO()):  # the planted drift's FAIL line is expected: hide it
             assert sp.main(check=True) == 1
     finally:
-        if old is None:
-            path.unlink()
-        else:
-            path.write_text(old, encoding="utf-8", newline="\n")
+        path.write_text(old, encoding="utf-8", newline="\n")
 
 
 if __name__ == "__main__":

@@ -20,8 +20,8 @@ CHOSEN = {
     "design-ui-finish-gate-reviewer": "ui-finish-gate-reviewer",
     "design-image-prompt-engineer": "image-prompt-engineer",
 }
-NOTE = ("> Builder note: GEMINI.md and the brief win where this differs (typed GDScript in Godot 4.7, no web stacks, "
-        "<= 200 lines a file, numbers in content JSON). Source: agency-agents (MIT), .agents/skills/AGENCY-LICENSE.\n\n")
+NOTE = ("> Builder note: .agents/project-overlay.md and the brief win where this differs. "
+        "Source: agency-agents (MIT), .agents/skills/AGENCY-LICENSE.\n\n")  # stock text + ONE shared overlay (row 28 part g)
 
 
 def convert(text: str, name: str) -> str:
@@ -31,7 +31,7 @@ def convert(text: str, name: str) -> str:
     desc = re.search(r"^description:\s*(.*)$", m.group(1), re.M)
     body = text[m.end():].lstrip("\n")
     d = (desc.group(1).strip().strip("'\"") if desc else name).replace("'", "''")
-    return f"---\nname: 'agency-{name}'\ndescription: '{d}'\n---\n\n{NOTE}{body}"
+    return f"---\nname: {name}\ndescription: '{d}'\n---\n\n{NOTE}{body}"
 
 
 def main(argv: list) -> int:

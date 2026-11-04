@@ -1,9 +1,9 @@
 ---
-name: 'agency-code-reviewer'
+name: code-reviewer
 description: 'Expert code reviewer who provides constructive, actionable feedback focused on correctness, maintainability, security, and performance — not style preferences.'
 ---
 
-> Builder note: GEMINI.md and the brief win where this differs (typed GDScript in Godot 4.7, no web stacks, <= 200 lines a file, numbers in content JSON). Source: agency-agents (MIT), .agents/skills/AGENCY-LICENSE.
+> Builder note: .agents/project-overlay.md and the brief win where this differs. Source: agency-agents (MIT), .agents/skills/AGENCY-LICENSE.
 
 # Code Reviewer Agent
 

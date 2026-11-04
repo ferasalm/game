@@ -400,3 +400,19 @@ plugins/studio/agents/review-feras.md :: features/x/logic/y.gd
 plugins/studio/agents/review-market.md :: features/x/logic/y.gd
 plugins/studio/agents/review-player.md :: features/x/logic/y.gd
 tools/cross_review_prompt.md :: tools/example.py
+# Row 28 briefs name files their parts will create (planned paths; drop each line when its part merges)
+docs/briefs/row28-b-peak-gate.md :: nvidia/
+docs/briefs/row28-b-peak-gate.md :: opencode/
+docs/briefs/row28-b-peak-gate.md :: openrouter/
+docs/briefs/row28-b-peak-gate.md :: tools/peak_gate.py
+docs/briefs/row28-b-peak-gate.md :: tools/test_peak_gate.py
+docs/briefs/row28-c-cliff-guard.md :: tools/cliff_guard.py
+docs/briefs/row28-c-cliff-guard.md :: tools/test_cliff_guard.py
+docs/briefs/row28-d-preflight.md :: tools/test_nv_preflight.py
+docs/briefs/row28-h-glm-content.md :: tools/content_build.sh
+docs/briefs/row28-h-glm-content.md :: tools/test_content_build.py
+docs/briefs/row28-i-test-consult.md :: builders/SKILL.md
+docs/briefs/row28-i-test-consult.md :: tools/consult_tests.sh
+docs/briefs/row28-i-test-consult.md :: tools/test_consult_tests.py
+docs/briefs/row28-j-night-queue.md :: tools/night_queue.sh
+docs/briefs/row28-j-night-queue.md :: tools/test_night_queue.py

@@ -1,5 +1,5 @@
 # HANDOFF (current state only; ONE queue for every chat; max 60 lines)
-Last updated: 2026-11-04 (Cloudflare retired: free nv lane + fallback chain; worktrees cleaned), Opus 5.5.
+Last updated: 2026-11-04 night (row 28: briefs a-j, part g built), Opus 5.5.
 Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Open points).
 
 Queue rules (one queue, top row first; Dept, Lane, Open points, builder caps, balance band): docs/queue-rules.md.
@@ -7,7 +7,7 @@ Queue rules (one queue, top row first; Dept, Lane, Open points, builder caps, ba
 ## Queue
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
-| 28 | What-we-have pipeline (roles decided 11-04): docs/briefs/row28-pipeline-v3-plan.md | Ops | chat (plan) | Opus high | ready: next chat = verify live, brief a-j, build g (oc-v2 logins: NVIDIA, Cerebras, Google; Groq dropped) | - |
+| 28 | What-we-have pipeline: docs/briefs/row28-pipeline-v3-plan.md (its 11-04 night status wins) | Ops | chat (plan) | Opus high | g done, briefs a-j written; next d, c, b, a (prompt below), then e, i, h, j; f after Feras's research | OpenRouter key (Open points) for paid lanes only |
 | 4 | M1 build in 6 waves from docs/briefs/m1-plan.md (9 part briefs, spec docs/design/m1-fight.md, types m1-fight-api.md): per wave the red tests first (scope run, the head reads every test), then the parts; wave 6 archives the turn-based code (D17 Android export in CI alongside); players-eye-gate before Feras | Gameplay | builder | nv DeepSeek/GLM, agy | ready: wave 1 (m1-defs) on agy; nv/OpenRouter lanes after row 28 | - |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | ready | free memory >= 2 GB |
 | 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | QA | Feras | - | later: after row 4 | 4 |
@@ -23,6 +23,7 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 | Point | Owner | Since |
 |---|---|---|
 | Bilqis's portraits are now the Neon ones: keep or overturn (archive-cleanup, decisions-log); on hold until further notice (Feras 10-31) | Feras | 10-27 |
+| Row 28: log OpenRouter into oc-v2 again (`auth login --standalone`; its smoke call says "User not found"), set the key's $3 monthly limit on openrouter.ai, logout the duplicate entry; NIM deepseek/glm timed out (flaky), judge later | Feras | 11-04 |
 | Art homework into inbox/: concept pictures, an empty plate per scene (no characters, HUD or rain), icon art (row 7) | Feras | 10-24 |
 | After merging row 26 to main: `python tools/plugin_prune.py` (dry run, then --apply) once the finished worktrees are removed; 6 kaizen entries remain for live worktrees | Claude | 11-02 |
 | Revisit LSP for review-code after row 4 (M1 built): rerun the recipe in docs/audits/2026-11-02-lsp-reviewers.md on 3 fresh diffs; DO only if grep missed a caller of a name declared in 2+ files (verdict now: DON'T DO) | Claude | 11-02 |
@@ -40,5 +41,4 @@ Claude chat that drives Blender, Flow or Rodin; M1 = the first playable real-tim
 docs/context.md (what is on main, the 3D archive, inbox/retired/ never a source); resume only through a queue row.
 
 ## Prompt for the next chat
-Start with `claude --model opusplan -w <name>` (a chat started in its own worktree lists skills once), `/effort high`, stay in auto mode, then paste this as one message (Opus: no `/goal`):
-`Row 28, Ops, Opus high: the what-we-have pipeline. Read docs/briefs/row28-pipeline-v3-plan.md first (its 11-04 sections win). In plan mode: check oc-v2 auth list, verify every "Check live" item, ask me edge cases with AskUserQuestion, then write part briefs a-j. Then exit plan mode and build part g (skills reset to the earliest git versions + one shared overlay), re-enter plan mode to review the diff, run check.sh, merge and /handoff.` (Before it, Feras: log NVIDIA, Cerebras and Google into the oc-v2 opencode folder; Groq dropped.)
+`pwsh tools\next_chat.ps1` opens it (opusplan, high, auto mode, own worktree); the prompt is tools/next_chat_prompt.txt: d, then c and b, a (guard half), e; no questions, no paid calls. Then i, h, j, f with Feras awake.

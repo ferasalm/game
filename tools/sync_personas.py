@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Copies the 10 Neon Glitch personas from their one source (.agents/skills/<name>/SKILL.md) to .claude/skills/<name>/SKILL.md
-(verbatim) and, for AGENTS, plugins/studio/agents/<name>.md (name + description + the source body); --check fails on drift (row 1 item 9, Feras 10-28).
+"""Copies the 10 stock persona sources (.agents/skills/<name>/SKILL.md, agency-agents text; row 28 part g, Feras 11-04)
+to .claude/skills/<name>/SKILL.md verbatim; --check fails on drift. The studio agent ui-finish-gate-reviewer is project-written
+and is no longer generated from a persona.
 
 Edit only the source, then run this. Usage: python tools/sync_personas.py [--check]
 """
@@ -12,7 +13,6 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 PERSONAS = ("game-designer", "narrative-designer", "technical-artist", "level-designer", "game-audio-engineer",
             "godot-gameplay-scripter", "godot-shader-developer", "blender-addon-engineer", "ui-designer",
             "ui-finish-gate-reviewer")
-AGENTS = ("ui-finish-gate-reviewer",)  # a routing reviewer; the others left the agents folder with 0 uses (coach 11, 10-31)
 
 
 def split(text):
@@ -30,11 +30,7 @@ def split(text):
 def outputs(name):
     """{path: text} this persona's source should produce."""
     src = (ROOT / ".agents/skills" / name / "SKILL.md").read_text(encoding="utf-8")
-    meta, body = split(src)
-    files = {ROOT / ".claude/skills" / name / "SKILL.md": src}
-    if name in AGENTS:
-        files[ROOT / "plugins/studio/agents" / f"{name}.md"] = f"---\nname: {name}\ndescription: {meta.get('description', '')}\n---\n{body}"
-    return files
+    return {ROOT / ".claude/skills" / name / "SKILL.md": src}
 
 
 def main(check):

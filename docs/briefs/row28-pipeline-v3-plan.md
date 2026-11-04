@@ -104,3 +104,19 @@ service); a peak-hour paid DeepSeek launch is refused by the gate in a test; Fer
 - After 5 more pipeline runs read `python tools/kaizen_report.py` idle minutes, then tune QUIET_SEC (NIM/DeepSeek slowness).
 - P6 (seeded-defect cross-review) on a Godot run; agy cost is unmetered; A/B and model personalities are n=1.
 - OpenRouter free-models router as the last chain hop (smoke-test first, its exact slug in free_providers.txt).
+
+## Status 11-04 night (chat 2, Opus high): live checks done, briefs written, part g built
+Briefs: docs/briefs/row28-{a-lanes,b-peak-gate,c-cliff-guard,d-preflight,e-routing-v3,f-calibration,h-glm-content,i-test-consult,j-night-queue}.md.
+Build order: d (Opus writes), c, b (agy/nv, red tests from the head), a (its paid ids stay unused until Feras's cap), e, i, h, j, f.
+Corrections to this file (checked live 11-04, they win): DeepSeek peak (04-07 and 09-13 GMT+3, Mon-Fri, x2) is DeepSeek's OWN endpoint
+only; OpenRouter has 45 providers (many cheaper than DeepSeek off-peak at any hour), so paid DeepSeek goes through OpenRouter with
+`provider.ignore: DeepSeek` and fp8 or better; a direct DeepSeek call passes a peak gate (part b). Cliffs: Haiku 5.5 x5 past 100k (not 200k),
+GPT-6 Luna x2 past 272k, Sonnet 5.5 none. GLM-5.3-flash has no OpenRouter :free route (paid $0.03-0.15 in per M). Free router slug: `openrouter/free`.
+Feras decided (decisions-log 11-04): route around peak on OpenRouter + gate for non-OpenRouter DeepSeek; split UI copies (stock for the two
+.claude/skills UI personas, the studio agent ui-finish-gate-reviewer and market-player stay project-written); ONE OpenRouter key with a $3 monthly limit.
+Smoke calls through oc-v2 (11-04 night): Cerebras OK; NVIDIA deepseek and glm timed out (ECONNRESET, NIM flaky, login fine); OpenRouter
+"User not found" (the key in oc-v2 is dead: Feras must log in again with --standalone and set the $3 limit); Google not smoke-tested (no chain model uses it).
+Part g shipped: 14 persona sources in .agents/skills are stock agency text (+ one NOTE line), .claude/skills copies are generated from them
+(tools/sync_personas.py), .agents/project-overlay.md (pasted after the pasted skills by build_pipeline and after the reviewer skill by
+cross_review), project rules that lived only in the old tailored personas kept in docs/design/persona-rules.md. test_personas.py now pins the
+reverse of the 10-28 rule (no project words in a persona, one overlay). Generic craft advice from the old tailored copies is dropped (the stock text covers it); the old copies stay in git history (commit before row 28 part g).

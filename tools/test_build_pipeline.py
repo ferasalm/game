@@ -174,6 +174,25 @@ def test_task_skills_and_pattern_files_reach_the_prompt():
     assert "WARN" in err and "tests/ghost.gd" in err and "Pattern to follow: tests/ghost" not in seen, err
 
 
+def test_project_overlay_follows_the_pasted_skills_once():  # row 28 part g: personas are stock text plus ONE overlay
+    top, g = toy()
+    put(g + "/.agents/project-overlay.md", "OVERLAY-MARKER: the brief wins\n")
+    git(g, "add", "-A")
+    git(g, "commit", "-qm", "overlay")
+    git(g, "push", "-q", "origin", "HEAD:main")
+    rc, out, err = pipeline(g, top, brief=BRIEF + "Load the players-eye-gate skill.\n")
+    seen = open(top + "/game-wt/job.prompt.seen", encoding="utf-8").read()
+    assert seen.count("OVERLAY-MARKER") == 1, seen[-600:]
+    assert seen.index("## Skill: players-eye-gate") < seen.index("OVERLAY-MARKER") < seen.index("RULE-MARKER"), "order: skill, overlay, code rules"
+    top2, g2 = toy()
+    put(g2 + "/.agents/project-overlay.md", "OVERLAY-MARKER\n")
+    git(g2, "add", "-A")
+    git(g2, "commit", "-qm", "overlay")
+    git(g2, "push", "-q", "origin", "HEAD:main")
+    rc, out, err = pipeline(g2, top2)  # no skill pasted: no overlay either
+    assert "OVERLAY-MARKER" not in open(top2 + "/game-wt/job.prompt.seen", encoding="utf-8").read()
+
+
 def test_nv_chain_starts_with_the_nv_model_and_falls_back_free():  # Cloudflare retired (Feras 11-04)
     r = subprocess.run(["bash", "-c", f". '{TOOLS}/lib.sh'; echo \"$NV_MODEL|$NV_CHAIN|$AGY_MODEL\""],
                        capture_output=True, text=True, env={k: v for k, v in os.environ.items()
