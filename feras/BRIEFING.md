@@ -3,7 +3,7 @@ Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after 
 HANDOFF.md; this file is your view of it. "Open now" is rewritten at every /handoff; below it, reports newest first,
 each headed by its date and time (GMT+3): Done | Still open | When | How | Your move vs mine | Checked.
 
-## Open now (Wed 11-04 18:15)
+## Open now (Wed 11-04 19:12)
 | # | Open item | Status | Checked | Your move? | When |
 |---|---|---|---|---|---|
 | 1 | What-we-have pipeline: docs/briefs/row28-pipeline-v3-plan.md | g done, briefs a-j written; d reverted 4c86be6 (red CI: MAP.md); redo per tools/next_chat_prompt.txt; c, b (tests: docs/briefs/row28-locked-tests/), a, e; i, h, j; f after Feras's research | - | no | g done, briefs a-j written; d reverted 4c86be6 (red CI: MAP.md); redo per tools/next_chat_prompt.txt; c, b (tests: docs/briefs/row28-locked-tests/), a, e; i, h, j; f after Feras's research |
@@ -16,7 +16,7 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 | 8 | Obscura proof: SET UP 11-03 (Obscura 0.2.5 in the main check | parked | - | no | parked |
 | 9 | Art bible 2D pass: drop the retired 3D runtime lines (fog, m | parked | - | no | parked |
 | 10 | Bilqis's portraits are now the Neon ones: keep or overturn ( | open | - | yes | 10-27 |
-| 11 | Row 28: log OpenRouter into oc-v2 again (`auth login --stand | open | - | yes | 11-04 |
+| 11 | OpenRouter key in oc-v2 ($3 limit, valid 30 days, free smoke | open | - | yes | 11-04 |
 | 12 | Art homework into inbox/: concept pictures, an empty plate p | open | - | yes | 10-24 |
 | 13 | After merging row 26 to main: `python tools/plugin_prune.py` | open | - | no | 11-02 |
 | 14 | Revisit LSP for review-code after row 4 (M1 built): rerun th | open | - | no | 11-02 |
@@ -28,7 +28,7 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 - Still open: parts d (redo), c, b, a, e of row 28; none built tonight. Part b's `tools/cn_holidays.txt` dates are from memory and unverified (the brief says so).
 - When: row 28 next chat, any day (`pwsh tools\next_chat.ps1`); its prompt starts with the d redo.
 - How: row 28, Ops, chat (plan), Opus high, then builders c and b in parallel.
-- Your move (waiting on Feras): the oc-v2 OpenRouter login and $3 limit stay in HANDOFF Open points (paid lanes only); none else. Mine: redo d, then c, b, a, e. Two small fixes are proposed: check.sh warns on untracked files (map.py reads only `git ls-files --cached`), and next_chat.ps1 clears CLAUDE_CODE_CHILD_SESSION (it made this chat's transcript saving off; no usage measure for this chat).
+- Your move (waiting on Feras): none: the oc-v2 OpenRouter login is done (Feras, 18:30; $3 limit, valid 30 days, renew about 12-04; a free-model smoke call passed). Mine: redo d, then c, b, a, e. Two small fixes are proposed: check.sh warns on untracked files (map.py reads only `git ls-files --cached`), and next_chat.ps1 clears CLAUDE_CODE_CHILD_SESSION (it made this chat's transcript saving off; no usage measure for this chat).
 - Checked: Python tests for d (8 new, 6 and 15 old) and check.sh --no-godot green locally; CI of the revert green; not checked: Godot (memory 1.7 GB, below the 2 GB floor; main CI runs it), no builder or paid call ran.
 
 ## Wed 11-04 02:30: Cloudflare cleanup done, pipeline v3 queued (Opus 5.5, same chat)
