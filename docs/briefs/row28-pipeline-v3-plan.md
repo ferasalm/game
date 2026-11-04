@@ -34,7 +34,25 @@ New parts: g. agency-agents skills reset to stock + ONE shared project overlay p
 copies in .claude/skills and .agents/skills). h. GLM-5.3-flash content lane (who calls it, output format = docs/JSON,
 review-canon). i. Isolated test-idea consults (a script that sends the part spec without builder context, returns ideas only).
 j. Overnight NIM queue. Check live first: GLM-5.3-flash free routes (NIM, OpenRouter :free) and its paid price; agy flash-low slug.
-Note: the AA comparison page renders by JavaScript (WebFetch saw another model pair); read it in Chrome if the numbers matter.
+Haiku: medium for reads, xhigh for anything that writes, reviews or debugs (max not used).
+Part g source: each repo copy (.claude/skills, .agents/skills, plugins/studio/agents) goes back to its EARLIEST git version
+(`git log --diff-filter=A --format=%h -- <file>`), grep-verified free of project text (Neon, Sana'a, Feras, Godot 4.7, CANON);
+~/.claude/agents are stock already (grep 11-04: 0 hits). The overlay is one new file under .agents/ (name it in the brief; <= 40 lines:
+CANON/VISION pointers, code.md pointer, "the brief wins") that build_pipeline pastes; tools/import_agents.py NOTE shrinks to point at it.
+Groq: dropped (does not work for Feras, 11-04); never in the chain.
+
+## AA data read 11-04 in Chrome (Intelligence Index v5.0.1 | cost per index task | output tokens/s)
+| Model (effort) | Index | $/task | tok/s |
+|---|---|---|---|
+| Sonnet 5.5 max / xhigh / high / medium / low | 55 / 50 / 42 / 31 / 26 | 10.02 / 4.09 / 1.64 / 0.78 / 0.51 | 139 / 107 / 103 / 97 / 97 |
+| Haiku 5.5 max / xhigh / high / medium / low | 36 / 35 / 30 / 25 / 19 | 0.41 / 0.25 / 0.16 / 0.09 / 0.04 | 236 / 181 / 177 / 168 / 160 |
+| DeepSeek V4.1 Flash 1017 max / high / non-reasoning | 33 / 29 / 19 | 0.60 / 0.46 / 0.43 | 165 / 201 / 172 |
+| Gemini 3.8 Flash high / medium / low | 31 / 30 / 23 | 7.77 / 6.26 / n/a | 130 / n/a / n/a |
+| GLM-5.3-Flash | 28 | 0.58 | 71 |
+All 1M context. Reading: the index is generic (office, terminal, code, knowledge); Feras's game playtests outrank it for
+creative and Godot roles. Gemini is costly per task on the API but free through agy, so it must never fall back to paid
+Gemini. DeepSeek max is +4 for +30% cost: use max for debugging and mechanics within the $3 cap. Personality chart: read
+it on the page (no table; values only on hover).
 
 ## Found in the 11-04 chat (facts, checked)
 - BLOCKER: the pipeline's opencode data dir (oc-v2, lib.sh oc_run, --standalone) holds only the OpenRouter key; NVIDIA,
@@ -42,7 +60,9 @@ Note: the AA comparison page renders by JavaScript (WebFetch saw another model p
   (default dir), so they passed while a real nv build would fail to log in, and an auth error is not in NV_FALLBACK_RE.
   Fix: Feras logs each needed provider into oc-v2 (PowerShell: `$env:XDG_DATA_HOME="$HOME\.local\share\oc-v2";
   & "$HOME\.local\opt\opencode-2.2.2\opencode.exe" auth login`), and nv_build.sh gets a preflight: the model's provider
-  must appear in `auth list --standalone` for oc-v2, else REFUSED with the login line (plus a test).
+  must appear in `auth list --standalone` for oc-v2, else REFUSED with the login line (plus a test). Providers to
+  log in: NVIDIA, Cerebras, Google (Groq dropped 11-04). The next chat checks `auth list` first; a missing provider
+  -> that lane is skipped, not blocked.
 - OpenRouter has no :free DeepSeek V4.1 Flash 1017. Paid: $0.15 in / $0.60 out per M, cache read $0.003, 1M context,
   393k output (opencode models.json cache 11-04; recheck live).
 - Zen free routes are spent ("Free usage limit reached"); the chain skips them in ~2 s.

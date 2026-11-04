@@ -7,7 +7,7 @@ Queue rules (one queue, top row first; Dept, Lane, Open points, builder caps, ba
 ## Queue
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
-| 28 | What-we-have pipeline (was v3; roles decided 11-04: agy builds, GLM-5.3-flash content, DeepSeek debug/mechanics, head writes tests, $3 cap + OK per paid run, skills reset to stock + overlay): plan input docs/briefs/row28-pipeline-v3-plan.md; verify live, brief parts a-j, build | Ops | chat (plan) | Opus high | ready (Feras: oc-v2 logins first) | - |
+| 28 | What-we-have pipeline (roles decided 11-04): docs/briefs/row28-pipeline-v3-plan.md | Ops | chat (plan) | Opus high | ready: next chat = verify live, brief a-j, build g (oc-v2 logins: NVIDIA, Cerebras, Google; Groq dropped) | - |
 | 4 | M1 build in 6 waves from docs/briefs/m1-plan.md (9 part briefs, spec docs/design/m1-fight.md, types m1-fight-api.md): per wave the red tests first (scope run, the head reads every test), then the parts; wave 6 archives the turn-based code (D17 Android export in CI alongside); players-eye-gate before Feras | Gameplay | builder | nv DeepSeek/GLM, agy | ready: wave 1 (m1-defs) on agy; nv/OpenRouter lanes after row 28 | - |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | ready | free memory >= 2 GB |
 | 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | QA | Feras | - | later: after row 4 | 4 |
@@ -41,4 +41,4 @@ docs/context.md (what is on main, the 3D archive, inbox/retired/ never a source)
 
 ## Prompt for the next chat
 Start with `claude --model opusplan -w <name>` (a chat started in its own worktree lists skills once), `/effort high`, stay in auto mode, then paste this as one message (Opus: no `/goal`):
-`Row 28, Ops, Opus high: plan low-cost pipeline v3; read docs/briefs/row28-pipeline-v3-plan.md first and do what it says.` (Before it, Feras: log NVIDIA, Cerebras, Groq and Google into the oc-v2 opencode folder, plan section Found.)
+`Row 28, Ops, Opus high: the what-we-have pipeline. Read docs/briefs/row28-pipeline-v3-plan.md first (its What-we-have and AA data sections win over older lines). In plan mode: check oc-v2 auth list, verify every "Check live" item, ask me edge cases with AskUserQuestion, then write part briefs a-j. Then exit plan mode and build part g (skills reset to the earliest git versions + one shared overlay), re-enter plan mode to review the diff, run check.sh, merge and /handoff.` (Before it, Feras: log NVIDIA, Cerebras and Google into the oc-v2 opencode folder; Groq dropped.)

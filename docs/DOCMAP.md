@@ -158,7 +158,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/briefs/row26-s7-prune.md | Brief: row26-s7-prune (cf DeepSeek low with a Pattern; Python only, RUN_KIND=py) | 0 | 7 |
 | docs/briefs/row27-doc-graph.md | Brief: row27-doc-graph (pipeline run: GLM-5.3 max wrote the red tests, cf DeepSeek max builds) | 0 | 16 |
 | docs/briefs/row27-lsp-reviewers-plan.md | Row 27: plan the language server (LSP) for the reviewer agents (chat brief, Opus high; output = a brief for Sonnet high) | 0 | 17 |
-| docs/briefs/row28-pipeline-v3-plan.md | Row 28: low-cost pipeline v3 after Cloudflare (plan input, Feras 2026-11-04; planned in a fresh Opus high chat) | 2 | 2 |
+| docs/briefs/row28-pipeline-v3-plan.md | Row 28: low-cost pipeline v3 after Cloudflare (plan input, Feras 2026-11-04; planned in a fresh Opus high chat) | 2 | 3 |
 | docs/context.md | Parked and context (moved out of HANDOFF.md 2026-11-01 to cut the always-loaded bytes; resume only through a queue row) | 2 | 2 |
 | docs/decisions-archive.md | Decisions archive (superseded lines moved from DECISIONS.md, unchanged; not loaded at start) | 2 | 7 |
 | docs/decisions-log.md | Decisions log (append-only, verbatim history; not loaded at start) | 11 | 42 |
