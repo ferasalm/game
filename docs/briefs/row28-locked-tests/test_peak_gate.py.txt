@@ -1,0 +1,133 @@
+#!/usr/bin/env python3
+"""peak_gate.py (row 28 part b, Feras 11-04): DeepSeek's OWN API costs 2x Mon-Fri 01:00-04:00 and 06:00-10:00 UTC
+(04:00-07:00 and 09:00-13:00 GMT+3), except Chinese public holidays. The gate refuses (exit 1, `peak: ...` line) a slug that
+names DeepSeek and is NOT routed through openrouter/, nvidia/ or opencode/ (those cost 0 or already route around peak).
+Window start is inclusive, end exclusive, days and clock are UTC. build_pipeline.sh refuses (exit 3) when the gate says peak.
+Dates fixed here: 2026-11-04 is a Wednesday, 11-06 a Friday, 11-07 a Saturday, 11-02 a Monday."""
+import csv
+import os
+import subprocess
+import sys
+import tempfile
+
+TOOLS = os.path.dirname(os.path.abspath(__file__)).replace("\\", "/")
+DEEPSEEK = "deepseek/deepseek-v4.1-flash"  # DeepSeek's own endpoint
+
+
+def gate(slug, now, **env):
+    e = {k: v for k, v in os.environ.items() if not k.startswith("PEAK_")}
+    e.update(env)
+    return subprocess.run([sys.executable, TOOLS + "/peak_gate.py", slug, "--now", now], capture_output=True, text=True,
+                          stdin=subprocess.DEVNULL, timeout=30, env=e)
+
+
+def holidays(first_line, *dates):
+    path = os.path.join(tempfile.mkdtemp(), "cn_holidays.txt")
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        f.write(first_line + "\n" + "\n".join(dates) + "\n")
+    return path.replace("\\", "/")
+
+
+def test_peak_window_edges():
+    for now, peak in (("2026-11-04T00:59:59Z", False), ("2026-11-04T01:00:00Z", True), ("2026-11-04T03:59:59Z", True),
+                      ("2026-11-04T04:00:00Z", False), ("2026-11-04T05:59:59Z", False), ("2026-11-04T06:00:00Z", True),
+                      ("2026-11-04T09:59:59Z", True), ("2026-11-04T10:00:00Z", False), ("2026-11-04T23:00:00Z", False)):
+        r = gate(DEEPSEEK, now)
+        assert r.returncode == (1 if peak else 0), (now, r.returncode, r.stdout, r.stderr)
+
+
+def test_the_refusal_names_the_slug_and_the_end_in_gmt_plus_3():
+    r = gate(DEEPSEEK, "2026-11-04T02:00:00Z")
+    assert r.returncode == 1 and r.stdout.strip() == f"peak: {DEEPSEEK} costs 2x until 07:00 GMT+3; wait or use openrouter/", r.stdout
+    r = gate(DEEPSEEK, "2026-11-04T08:30:00Z")
+    assert r.returncode == 1 and "until 13:00 GMT+3" in r.stdout, r.stdout
+
+
+def test_weekdays_are_gated_and_the_weekend_is_not():
+    for now, peak in (("2026-11-02T02:00:00Z", True), ("2026-11-06T09:00:00Z", True),  # Monday, Friday
+                      ("2026-11-07T02:00:00Z", False), ("2026-11-08T07:00:00Z", False)):  # Saturday, Sunday
+        r = gate(DEEPSEEK, now)
+        assert r.returncode == (1 if peak else 0), (now, r.returncode, r.stdout)
+
+
+def test_only_a_direct_deepseek_slug_is_gated():
+    now = "2026-11-04T02:00:00Z"  # Wednesday, inside the first window
+    for slug in ("deepseek/deepseek-v4.1-flash", "deepseek-v4.1-flash", "DeepSeek/DeepSeek-V4.1-Pro"):
+        assert gate(slug, now).returncode == 1, slug
+    for slug in ("openrouter/deepseek/deepseek-v4.1-flash", "nvidia/deepseek-ai/deepseek-v4.1-flash",
+                 "opencode/deepseek-v4.1-flash-free", "cerebras/qwen-3.8-27b", "nvidia/z-ai/glm-5.3-flash",
+                 "gemini-3.8-flash-medium", "claude-sonnet-5-5", ""):
+        r = gate(slug, now)
+        assert r.returncode == 0 and r.stdout == "", (slug, r.returncode, r.stdout)
+
+
+def test_a_listed_holiday_is_not_peak():
+    path = holidays("# 2026 test list, source: https://example.test/notice", "2026-11-04")
+    assert gate(DEEPSEEK, "2026-11-04T02:00:00Z", PEAK_HOLIDAYS=path).returncode == 0
+    assert gate(DEEPSEEK, "2026-11-05T02:00:00Z", PEAK_HOLIDAYS=path).returncode == 1  # the next day is not listed
+
+
+def test_a_holiday_list_of_another_year_warns_and_still_gates():
+    path = holidays("# 2026 test list, source: https://example.test/notice", "2026-11-04")
+    r = gate(DEEPSEEK, "2027-01-04T02:00:00Z", PEAK_HOLIDAYS=path)  # a Monday in 2027
+    assert r.returncode == 1 and "WARN" in r.stderr and "2026" in r.stderr, (r.returncode, r.stderr)
+
+
+def test_the_windows_come_from_builders_conf_and_env_overrides_them():
+    conf = open(TOOLS + "/builders.conf", encoding="utf-8").read()
+    assert 'PEAK_UTC:=01:00-04:00 06:00-10:00' in conf and 'PEAK_DAYS:=Mon Tue Wed Thu Fri' in conf, "defaults missing"
+    r = gate(DEEPSEEK, "2026-11-04T12:30:00Z", PEAK_UTC="12:00-13:00")
+    assert r.returncode == 1 and "until 16:00 GMT+3" in r.stdout, (r.returncode, r.stdout)
+    assert gate(DEEPSEEK, "2026-11-04T02:00:00Z", PEAK_DAYS="Sat Sun").returncode == 0
+
+
+def test_the_real_holiday_file_names_its_source_and_year_on_line_one():
+    lines = open(TOOLS + "/cn_holidays.txt", encoding="utf-8").read().split("\n")
+    assert lines[0].startswith("#") and "http" in lines[0] and "2026" in lines[0], lines[0]
+    dates = [x.strip() for x in lines[1:] if x.strip() and not x.startswith("#")]
+    assert len(dates) >= 20 and all(len(d) == 10 and d[4] == "-" and d[7] == "-" and d.startswith("2026") for d in dates), dates[:3]
+    assert "2026-10-01" in dates, "National Day is a public holiday"
+
+
+def test_build_pipeline_refuses_a_direct_deepseek_run_at_peak():
+    from test_build_pipeline import pipeline, toy
+    top, g = toy()
+    rc, out, err = pipeline(g, top, NV_MODEL=DEEPSEEK, PEAK_NOW="2026-11-04T02:00:00Z")
+    assert rc == 3 and "REFUSED" in out + err and "peak:" in out + err, (rc, out, err)
+    assert not os.path.exists(top + "/game-wt/job.result"), "a refused launch leaves no result"
+
+
+def test_build_pipeline_does_not_refuse_an_openrouter_route_at_peak():
+    from test_build_pipeline import pipeline, toy
+    top, g = toy()
+    rc, out, err = pipeline(g, top, NV_MODEL="openrouter/deepseek/deepseek-v4.1-flash", PEAK_NOW="2026-11-04T02:00:00Z")
+    assert "peak:" not in out + err, (rc, out, err)
+
+
+def test_kaizen_report_splits_paid_spend_by_the_peak_flag():
+    path = os.path.join(tempfile.mkdtemp(), "runs.csv")
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        w = csv.writer(f)
+        w.writerow(["date", "task", "worker", "effort", "gate", "fix_passes", "minutes", "cost", "real_findings",
+                    "tokens_in", "tokens_out", "usd_est", "cost_source", "idle_min", "peak"])
+        for i, (usd, peak) in enumerate((("0.30", "1"), ("0.10", "1"), ("0.05", "0"), ("0.02", "0"), ("0.01", "0"), ("0.50", "?"))):
+            w.writerow(["2026-11-04", f"t{i}", "nv", "high", "PASS", "0", "10", "?", "?", "100", "50", usd, "meter", "0", peak])
+    r = subprocess.run([sys.executable, TOOLS + "/kaizen_report.py", "--csv", path], capture_output=True, text=True,
+                       stdin=subprocess.DEVNULL, timeout=30)
+    lines = r.stdout.splitlines()
+    assert "peak split  peak usd 0.40 (2 runs)  off-peak usd 0.08 (3 runs)" in lines, lines  # the unknown row counts in neither
+    assert len(lines) <= 20, len(lines)
+
+
+def test_kaizen_report_has_no_split_line_without_the_peak_column():
+    path = os.path.join(tempfile.mkdtemp(), "runs.csv")
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        f.write("date,task,worker,effort,gate,fix_passes,minutes,cost,real_findings\n2026-11-04,t,nv,high,PASS,0,10,?,?\n")
+    r = subprocess.run([sys.executable, TOOLS + "/kaizen_report.py", "--csv", path], capture_output=True, text=True,
+                       stdin=subprocess.DEVNULL, timeout=30)
+    assert r.returncode == 0 and "peak split" not in r.stdout, r.stdout
+
+
+if __name__ == "__main__":
+    from tool_tests import run_cases
+    run_cases([v for k, v in sorted(globals().items()) if k.startswith("test_")], "test_peak_gate")

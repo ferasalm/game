@@ -5,6 +5,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 
 
 ## (root)
+- `.check_ci_d.log`
 - `.godot-version`
 - `.ignore`
 - `AGENTS.md`

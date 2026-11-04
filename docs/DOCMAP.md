@@ -106,7 +106,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | AGENTS.md | Rules for opencode builders | 0 | 5 |
 | CLAUDE.md | game: rules for every Claude session | 0 | 19 |
 | GEMINI.md | GEMINI.md: Neon Glitch builder rules for Gemini (agy). Standing rules only; each task's brief comes in the chat. | 0 | 10 |
-| HANDOFF.md | HANDOFF (current state only; ONE queue for every chat; max 60 lines) | 1 | 11 |
+| HANDOFF.md | HANDOFF (current state only; ONE queue for every chat; max 60 lines) | 1 | 12 |
 | README.md | Neon Glitch | 0 | 7 |
 | docs/ARCHITECTURE.md | Architecture | 4 | 33 |
 | docs/CANON.md | CANON: game content decisions in force (world, story, heroes, combat, art, UI) | 6 | 5 |

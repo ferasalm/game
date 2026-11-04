@@ -1,5 +1,5 @@
 # HANDOFF (current state only; ONE queue for every chat; max 60 lines)
-Last updated: 2026-11-04 night (row 28: briefs a-j, part g built), Opus 5.5.
+Last updated: 2026-11-04 night (row 28: briefs a-j, part g built, part d reverted after a red CI), Opus 5.5.
 Live state in one command: `bash tools/status.sh` (builders, branches not on main, worktrees, this queue, Open points).
 
 Queue rules (one queue, top row first; Dept, Lane, Open points, builder caps, balance band): docs/queue-rules.md.
@@ -7,7 +7,7 @@ Queue rules (one queue, top row first; Dept, Lane, Open points, builder caps, ba
 ## Queue
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
-| 28 | What-we-have pipeline: docs/briefs/row28-pipeline-v3-plan.md (its 11-04 night status wins) | Ops | chat (plan) | Opus high | g done, briefs a-j written; next d, c, b, a (prompt below), then e, i, h, j; f after Feras's research | OpenRouter key (Open points) for paid lanes only |
+| 28 | What-we-have pipeline: docs/briefs/row28-pipeline-v3-plan.md (its 11-04 night status wins) | Ops | chat (plan) | Opus high | g done, briefs a-j written; d reverted 4c86be6 after red CI (MAP.md stale: map.py ran before git add), night stopped; redo steps in tools/next_chat_prompt.txt; then c, b (red tests in docs/briefs/row28-locked-tests/), a, e; i, h, j; f after Feras's research | OpenRouter key (Open points) for paid lanes only |
 | 4 | M1 build in 6 waves from docs/briefs/m1-plan.md (9 part briefs, spec docs/design/m1-fight.md, types m1-fight-api.md): per wave the red tests first (scope run, the head reads every test), then the parts; wave 6 archives the turn-based code (D17 Android export in CI alongside); players-eye-gate before Feras | Gameplay | builder | nv DeepSeek/GLM, agy | ready: wave 1 (m1-defs) on agy; nv/OpenRouter lanes after row 28 | - |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | ready | free memory >= 2 GB |
 | 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | QA | Feras | - | later: after row 4 | 4 |

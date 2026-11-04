@@ -1,0 +1,69 @@
+#!/usr/bin/env python3
+"""cliff_guard.py (row 28 part c, Feras 11-04): a prompt file past a model's price cliff prints one WARN line and still
+exits 0; under the cliff, an unknown model, or an unreadable file it stays silent and exits 0. Tokens = bytes / 3.5.
+Cliffs (verified 11-04): haiku 100k tokens (x5), luna 272k (x2); Sonnet 5.5, DeepSeek and GLM have none.
+Also pins that build_pipeline.sh calls the guard and that foremen.md states the two real cliffs, not the old 200k guess."""
+import os
+import subprocess
+import sys
+import tempfile
+
+TOOLS = os.path.dirname(os.path.abspath(__file__)).replace("\\", "/")
+ROOT = os.path.dirname(TOOLS)
+
+
+def guard(size, slug, make=True):
+    d = tempfile.mkdtemp()
+    path = os.path.join(d, "prompt.md")
+    if make:
+        with open(path, "wb") as f:
+            f.write(b"a" * size)
+    return subprocess.run([sys.executable, TOOLS + "/cliff_guard.py", path, slug], capture_output=True, text=True,
+                          stdin=subprocess.DEVNULL, timeout=30)
+
+
+def test_haiku_over_100k_warns():
+    r = guard(420000, "anthropic/claude-haiku-5-5")  # 420000 / 3.5 = 120k tokens
+    assert r.returncode == 0, r.stderr
+    assert r.stdout.strip() == "WARN: ~120k tokens, past haiku's 100k price cliff (x5)", r.stdout
+
+
+def test_haiku_under_100k_is_silent():
+    r = guard(300000, "claude-haiku-5-5")  # about 86k tokens
+    assert r.returncode == 0 and r.stdout == "" and r.stderr == "", (r.stdout, r.stderr)
+
+
+def test_luna_over_272k_warns():
+    r = guard(980000, "openrouter/openai/gpt-6-luna")  # 280k tokens
+    assert r.returncode == 0 and r.stdout.strip() == "WARN: ~280k tokens, past luna's 272k price cliff (x2)", r.stdout
+
+
+def test_the_model_match_ignores_case():
+    r = guard(420000, "Anthropic/Claude-HAIKU-5-5")
+    assert r.returncode == 0 and "past haiku's 100k price cliff" in r.stdout, r.stdout
+
+
+def test_a_model_without_a_cliff_never_warns():
+    for slug in ("claude-sonnet-5-5", "nvidia/deepseek-ai/deepseek-v4.1-flash", "nvidia/z-ai/glm-5.3-flash", "gemini-3.8-flash-medium", ""):
+        r = guard(2000000, slug)
+        assert r.returncode == 0 and r.stdout == "", (slug, r.stdout)
+
+
+def test_an_unreadable_prompt_file_is_not_a_failure():
+    r = guard(0, "claude-haiku-5-5", make=False)
+    assert r.returncode == 0 and r.stdout == "", (r.returncode, r.stdout)
+
+
+def test_build_pipeline_calls_the_guard_on_the_prompt():
+    text = open(TOOLS + "/build_pipeline.sh", encoding="utf-8").read()
+    assert "cliff_guard.py" in text and '"$prompt"' in text.split("cliff_guard.py", 1)[1].split("\n", 1)[0], "no call on the prompt file"
+
+
+def test_foremen_names_the_two_real_cliffs_and_not_the_old_guess():
+    text = open(ROOT + "/.claude/skills/low-cost-pipeline/foremen.md", encoding="utf-8").read()
+    assert "100k" in text and "272k" in text and "200k" not in text, "foremen.md must name 100k and 272k and drop 200k"
+
+
+if __name__ == "__main__":
+    from tool_tests import run_cases
+    run_cases([v for k, v in sorted(globals().items()) if k.startswith("test_")], "test_cliff_guard")

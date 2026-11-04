@@ -19,8 +19,12 @@ Feras 11-04: keep paid and subagent calls under their price cliffs. Verified liv
 D6 defaults, protected by tools/build_gate.py without being listed. Keep this prose free of backticks outside May edit.
 
 ## May edit
+`tools/cliff_guard.py`
 `tools/build_pipeline.sh`
 `.claude/skills/low-cost-pipeline/foremen.md`
+
+## Locked tests (the head wrote them, read them first; do not edit them)
+tools/test_cliff_guard.py pins: the exact output `WARN: ~120k tokens, past haiku's 100k price cliff (x5)` on stdout (tokens = bytes / 3.5, whole k, key = haiku or luna, matched case-insensitively inside the slug), luna 272k x2, silence and exit 0 for under, unknown slug or unreadable file, a call in build_pipeline.sh on the prompt file, and foremen.md naming 100k and 272k with no 200k left.
 
 ## Ripple
 build_pipeline.sh is read by every run (edit only while no run is live). grep the repo for 200k: routing.md, models.md and DECISIONS name the old cliff; part e fixes the docs, this brief fixes foremen.md only.
