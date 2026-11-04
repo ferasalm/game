@@ -7,7 +7,7 @@ Queue rules (one queue, top row first; Dept, Lane, Open points, builder caps, ba
 ## Queue
 | # | Task (brief or doc) | Dept | Lane | Who | Status | Blocked by |
 |---|---|---|---|---|---|---|
-| 28 | Low-cost pipeline v3 after Cloudflare: plan input docs/briefs/row28-pipeline-v3-plan.md (OpenRouter :free first, DeepSeek 1017 at high off-peak, oc-v2 key blocker, agy + Haiku larger, price cliffs); verify live, ask Feras, brief, build | Ops | chat (plan) | Opus high | ready (Feras: oc-v2 logins first) | - |
+| 28 | What-we-have pipeline (was v3; roles decided 11-04: agy builds, GLM-5.3-flash content, DeepSeek debug/mechanics, head writes tests, $3 cap + OK per paid run, skills reset to stock + overlay): plan input docs/briefs/row28-pipeline-v3-plan.md; verify live, brief parts a-j, build | Ops | chat (plan) | Opus high | ready (Feras: oc-v2 logins first) | - |
 | 4 | M1 build in 6 waves from docs/briefs/m1-plan.md (9 part briefs, spec docs/design/m1-fight.md, types m1-fight-api.md): per wave the red tests first (scope run, the head reads every test), then the parts; wave 6 archives the turn-based code (D17 Android export in CI alongside); players-eye-gate before Feras | Gameplay | builder | nv DeepSeek/GLM, agy | ready: wave 1 (m1-defs) on agy; nv/OpenRouter lanes after row 28 | - |
 | 6 | Bake Roya (sprite-bake), native-scale render on the prison roof, review-player + review-feras | Art | chat (MCP) | Opus high | ready | free memory >= 2 GB |
 | 5 | Feras plays M1 on PC and phone; notes -> fix-pass rows | QA | Feras | - | later: after row 4 | 4 |

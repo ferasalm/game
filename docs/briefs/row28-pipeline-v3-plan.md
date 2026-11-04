@@ -7,7 +7,7 @@ Status: input only. The planning chat reads this, verifies every "check" item li
 2. OpenRouter topped up: $13 lifetime, $8 balance, so :free models get 1000 requests/day (20/min). Use the free
    requests FIRST. The free-models router may join after a smoke test (decisions-log 11-04).
 3. NVIDIA NIM advises its endpoints for prototyping, not development: the nv lane on NIM is a stopgap, not the plan.
-4. DeepSeek V4.1 Flash 1017 stays the main writer, on OpenRouter: builds at reasoning effort HIGH (not max); max only
+4. (Superseded 11-04 by "What-we-have pipeline" below: DeepSeek debugs and owns accuracy-critical mechanics; agy builds most.) DeepSeek V4.1 Flash 1017 stays the main writer, on OpenRouter: builds at reasoning effort HIGH (not max); max only
    where it is sensitive (test writing). Pick providers by 1) reliability 2) price (OpenRouter provider routing).
 5. Other models that do the work as well may replace DeepSeek: Feras researches candidates, consults Claude, then we
    test them (calibration vs a gold task, D11).
@@ -17,6 +17,24 @@ Status: input only. The planning chat reads this, verifies every "check" item li
    off-peak.
 8. Balances (memory provider-credits): Cerebras $4.85 prepaid (capped fallback hop, kept), OpenRouter $8, Runware $4;
    agy free.
+
+## What-we-have pipeline (Feras 11-04, second chat; decisions-log 11-04). Rename and re-route, not a rebuild
+Evidence: Feras's zero-shot game playtests on OpenRouter (n = a few games per model; Design Arena Godot benchmark for Gemini).
+| Role | Worker | Note |
+|---|---|---|
+| Head: plan, brief, write red tests, review, merge | Opus or Sonnet high | may consult agy/DS/GLM for test ideas in isolated one-shot chats; the implementing builder never sees them |
+| Most building (Godot code, scenes, tools) | agy gemini-3.8-flash | free, plenty; reviewed by DeepSeek or Claude (other family) |
+| Level design, technical art, dialogue, narrative | GLM-5.3-flash | designs and JSON data, not core code; review-canon gate before merge |
+| Debugging, balancing, optimization, controls/physics/combat logic | DeepSeek V4.1 Flash 1017 | accuracy over creativity; VISION: combat feel wins ties |
+| Routine reads | agy gemini-3.8-flash-low, then Haiku (medium default, xhigh max) | |
+| Consultant, named decision only | GLM-5.3-Max or GPT-6.1-Sol | Feras's OK each time; GLM-5.3 (full) not used |
+Lanes: free first (opencode free routes, OpenRouter :free, NVIDIA NIM only when time has zero priority = overnight queue);
+paid OpenRouter (GLM-5.3-flash, DeepSeek) on its own key with a $3/month provider-side hard cap AND Feras's OK per run.
+New parts: g. agency-agents skills reset to stock + ONE shared project overlay pasted into builder prompts (tools/import_agents.py;
+copies in .claude/skills and .agents/skills). h. GLM-5.3-flash content lane (who calls it, output format = docs/JSON,
+review-canon). i. Isolated test-idea consults (a script that sends the part spec without builder context, returns ideas only).
+j. Overnight NIM queue. Check live first: GLM-5.3-flash free routes (NIM, OpenRouter :free) and its paid price; agy flash-low slug.
+Note: the AA comparison page renders by JavaScript (WebFetch saw another model pair); read it in Chrome if the numbers matter.
 
 ## Found in the 11-04 chat (facts, checked)
 - BLOCKER: the pipeline's opencode data dir (oc-v2, lib.sh oc_run, --standalone) holds only the OpenRouter key; NVIDIA,

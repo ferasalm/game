@@ -35,8 +35,8 @@ A small, replayable game whose combat feel wins every tie, set in Old Sana'a wit
    Stuck or refused -> ask him at once via AskUserQuestion, options with a pick; never park work on him unasked (10-31).
 4. Before handing out a task -> the lean rule below; before anything reaches Feras -> review-feras.
 5. Before reading -> the reading rule: grep, then read <=2 small targeted excerpts yourself; for a read over ~20k tokens or
-   across many files, use `tools/nv_audit.sh` (one-shot) (for summaries/sorting) or a Haiku subagent (`low` default; `medium`
-   max for >20k multi-file reads; never `high`; a Sonnet subagent is allowed at `high` only, Feras 11-02). Never read assets/ binaries (pictures only when
+   across many files, use agy gemini-3.8-flash-low for routine reads, `tools/nv_audit.sh` (one-shot) or a Haiku subagent (`medium`
+   default, up to `xhigh` for a scoped hard task, Feras 11-04; a Sonnet subagent is allowed at `high` only, Feras 11-02). Never read assets/ binaries (pictures only when
    judging art, small), inbox/retired/, or docs/research/gemini-blueprint-citations.md; gemini-blueprint.md one section at a time.
 6. The advisor tool ONLY with Feras's explicit OK (11-01): any model (including Sonnet high), fork or subagent stuck twice
    on the same step stops looping and asks him via AskUserQuestion "May I use /advisor opus?" with a pick (a subagent reports
