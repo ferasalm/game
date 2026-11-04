@@ -27,6 +27,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `.agents/archive/test-results-analyzer/SKILL.md`
 - `.agents/archive/ux-architect/SKILL.md`
 - `.agents/archive/workflow-architect/SKILL.md`
+- `.agents/project-overlay.md`
 - `.agents/skills/AGENCY-LICENSE`
 - `.agents/skills/art-card/SKILL.md`
 - `.agents/skills/blender-addon-engineer/SKILL.md`
@@ -687,6 +688,8 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/merge_run.sh`: Merges one gated builder run into the current branch (DECISIONS 2026-10-23): only a PASS .result that also carries a
 - `tools/model_effort.py`: Print the reasoning effort a model key runs at: opencode.json says it, the model's name does not (row 26 S2).
 - `tools/musnad.py`: Transliterate Arabic to Musnad (Old South Arabian) letter by letter; scan files for Arabic.
+- `tools/next_chat.ps1`
+- `tools/next_chat_prompt.txt`
 - `tools/nv_audit.sh`: Read-only audit by DeepSeek V4.1 Flash on NVIDIA NIM, free (row 25, Feras 11-01; Cloudflare retired 11-04): the model reads the repository with opencode's
 - `tools/nv_build.sh`: Free builder lane (Feras 11-04; Cloudflare retired after an unexpected bill): runs build_pipeline.sh on opencode with
 - `tools/obscura.sh`: Fetch a web page with the Obscura headless browser (Feras 10-28/11-03: instead of Chrome for builders and research).
