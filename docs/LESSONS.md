@@ -32,7 +32,7 @@ Triage rules (D9): docs/lessons-archive.md header.
   line 98): bash reads a script as it runs -> never edit a tool a live run executes; re-gate with SKIP_BUILD=1 (2026-10-30).
 - "Builder hung / reviewer printed nothing" had silent causes (opencode's spent free quota, DeepSeek thinking past the 32k
   cap) -> probe with `--print-logs` and `--format json` before blaming the model (2026-10-30).
-- A new tool version breaks silently (opencode v2) -> back up its data dirs, probe in a throwaway repo (2026-10-30).
+- A new tool version breaks silently (opencode v2) -> back up its data dirs, probe in a throwaway repo; opencode `auth` needs `--standalone` (11-04).
 - 4 paid probes crashed at their spend-log line (path wrong in worktrees) -> one smoke call before a batch (2026-10-31).
 - Bash `VAR=x cmd` given to Feras failed in his PowerShell -> give him PowerShell (2026-10-31).
 - `claude -p "/x"` from Git Bash turned the command into a path -> `MSYS_NO_PATHCONV=1` (2026-10-31).

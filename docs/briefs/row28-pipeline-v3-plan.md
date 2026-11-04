@@ -59,7 +59,11 @@ it on the page (no table; values only on hover).
   Cerebras, Groq, Google keys live in opencode's default dir. The 11-04 smoke tests went through the background service
   (default dir), so they passed while a real nv build would fail to log in, and an auth error is not in NV_FALLBACK_RE.
   Fix: Feras logs each needed provider into oc-v2 (PowerShell: `$env:XDG_DATA_HOME="$HOME\.local\share\oc-v2";
-  & "$HOME\.local\opt\opencode-2.2.2\opencode.exe" auth login`), and nv_build.sh gets a preflight: the model's provider
+  & "$HOME\.local\opt\opencode-2.2.2\opencode.exe" auth login --standalone`; WITHOUT --standalone the login goes to the
+  background service, which ignores XDG_DATA_HOME and writes the default dir: Feras's 11-04 logins landed there as
+  duplicates "Nvidia 2" etc., and that service, started before the Cloudflare vars were deleted, still lists them as
+  "environment". Fix used 11-04: logout the old duplicates, `auth export <provider> --standalone | auth import --standalone`
+  into oc-v2, restart the service), and nv_build.sh gets a preflight: the model's provider
   must appear in `auth list --standalone` for oc-v2, else REFUSED with the login line (plus a test). Providers to
   log in: NVIDIA, Cerebras, Google (Groq dropped 11-04). The next chat checks `auth list` first; a missing provider
   -> that lane is skipped, not blocked.
