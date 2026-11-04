@@ -1,0 +1,62 @@
+# Row 28: low-cost pipeline v3 after Cloudflare (plan input, Feras 2026-11-04; planned in a fresh Opus high chat)
+Status: input only. The planning chat reads this, verifies every "check" item live, asks Feras the open questions
+(AskUserQuestion, recommended first), then writes part briefs. Home of the workflow: .claude/skills/low-cost-pipeline/.
+
+## What Feras decided or reported (11-04, verbatim intent)
+1. Cloudflare retired (waiver refused; tokens and env vars deleted; the plan lapses unpaid). OpenCode Go: NOT now.
+2. OpenRouter topped up: $13 lifetime, $8 balance, so :free models get 1000 requests/day (20/min). Use the free
+   requests FIRST. The free-models router may join after a smoke test (decisions-log 11-04).
+3. NVIDIA NIM advises its endpoints for prototyping, not development: the nv lane on NIM is a stopgap, not the plan.
+4. DeepSeek V4.1 Flash 1017 stays the main writer, on OpenRouter: builds at reasoning effort HIGH (not max); max only
+   where it is sensitive (test writing). Pick providers by 1) reliability 2) price (OpenRouter provider routing).
+5. Other models that do the work as well may replace DeepSeek: Feras researches candidates, consults Claude, then we
+   test them (calibration vs a gold task, D11).
+6. agy and Haiku take a larger role to make up for less DeepSeek.
+7. Price cliffs to design around: Claude Sonnet doubles and Haiku x5 past 200k context; GPT 6 Luna rises past 250k;
+   DeepSeek costs double in peak hours (Feras read: Mon-Fri 04:00-07:00 and 09:00-13:00 GMT+3) -> DeepSeek runs only
+   off-peak.
+8. Balances (memory provider-credits): Cerebras $4.85 prepaid (capped fallback hop, kept), OpenRouter $8, Runware $4;
+   agy free.
+
+## Found in the 11-04 chat (facts, checked)
+- BLOCKER: the pipeline's opencode data dir (oc-v2, lib.sh oc_run, --standalone) holds only the OpenRouter key; NVIDIA,
+  Cerebras, Groq, Google keys live in opencode's default dir. The 11-04 smoke tests went through the background service
+  (default dir), so they passed while a real nv build would fail to log in, and an auth error is not in NV_FALLBACK_RE.
+  Fix: Feras logs each needed provider into oc-v2 (PowerShell: `$env:XDG_DATA_HOME="$HOME\.local\share\oc-v2";
+  & "$HOME\.local\opt\opencode-2.2.2\opencode.exe" auth login`), and nv_build.sh gets a preflight: the model's provider
+  must appear in `auth list --standalone` for oc-v2, else REFUSED with the login line (plus a test).
+- OpenRouter has no :free DeepSeek V4.1 Flash 1017. Paid: $0.15 in / $0.60 out per M, cache read $0.003, 1M context,
+  393k output (opencode models.json cache 11-04; recheck live).
+- Zen free routes are spent ("Free usage limit reached"); the chain skips them in ~2 s.
+- NIM is slow: DeepSeek 439 s, GLM 218 s on a toy write-run-commit task (QUIET_SEC 300 risk).
+
+## Check live before deciding (never from memory or this file)
+- DeepSeek peak/off-peak hours and whether they apply through OpenRouter providers (DeepSeek's own API page vs each
+  OpenRouter provider's price); convert to GMT+3; Feras's figure above is what he read, not verified.
+- Context-tier prices: Claude Sonnet/Haiku past 200k (claude-api skill), GPT 6 Luna past 250k, DeepSeek 1017 tiers.
+- OpenRouter provider list, uptime and price for deepseek/deepseek-v4.1-flash-1017 (list-model-endpoints,
+  get-endpoint-uptime-history); whether `reasoning.effort: high` is honoured per provider.
+- Which :free models on OpenRouter can build or review (calibrated lens list, models.md); the free router's slug.
+
+## Parts to brief (draft; the planning chat orders and sizes them)
+a. Lane: an `or` (OpenRouter) build lane or NV_CHAIN reordered: OpenRouter :free first, then DeepSeek 1017 paid at high
+   (provider order by reliability then price, a per-key $ limit on OpenRouter as the hard cap), NIM only for
+   prototyping. Effort per task class (high builds, max test writing) in opencode.json variants + routing.md.
+b. Off-peak gate: a script (with a test) that refuses or queues a paid DeepSeek run in peak hours (GMT+3 table in
+   builders.conf), and kaizen_report shows peak vs off-peak spend.
+c. Context guard: every Claude subagent and paid model call stays under its price cliff (200k Claude, 250k Luna):
+   briefs and foremen keep packets small; a check warns on a packet over the cliff.
+d. Credentials preflight in nv_build.sh (above) + test; free_providers.txt rules for the opencode-go provider only if Feras
+   subscribes later.
+e. Routing v3: agy and Haiku take more (which classes), DeepSeek fewer and only off-peak; update routing.md, models.md,
+   builders skill, WORKFLOW, DECISIONS; runs.csv records provider, effort, peak flag and $.
+f. Candidate models (after Feras's research): one calibration task each, scored vs Haiku/agy (D11).
+
+## Acceptance
+check.sh green; CI green on main; one real build per lane reaches PASS through the pipeline (not the background
+service); a peak-hour paid DeepSeek launch is refused by the gate in a test; Feras OKs the routing table.
+
+## Carried from row 26 (its writer trial agy vs cf is moot; row and Open point closed 11-04)
+- After 5 more pipeline runs read `python tools/kaizen_report.py` idle minutes, then tune QUIET_SEC (NIM/DeepSeek slowness).
+- P6 (seeded-defect cross-review) on a Godot run; agy cost is unmetered; A/B and model personalities are n=1.
+- OpenRouter free-models router as the last chain hop (smoke-test first, its exact slug in free_providers.txt).

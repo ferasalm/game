@@ -3,11 +3,11 @@ Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after 
 HANDOFF.md; this file is your view of it. "Open now" is rewritten at every /handoff; below it, reports newest first,
 each headed by its date and time (GMT+3): Done | Still open | When | How | Your move vs mine | Checked.
 
-## Open now (Wed 11-04 01:33)
+## Open now (Wed 11-04 03:51)
 | # | Open item | Status | Checked | Your move? | When |
 |---|---|---|---|---|---|
-| 1 | M1 build in 6 waves from docs/briefs/m1-plan.md (9 part brie | ready: wave 1 (m1-defs) | - | no | ready: wave 1 (m1-defs) |
-| 2 | Low-cost pipeline v2 (Feras 11-01/02), BUILT and measured in | built 11-02; trial with row 4's first builds | - | no | built 11-02; trial with row 4's first builds |
+| 1 | Low-cost pipeline v3 after Cloudflare: plan input docs/brief | ready (Feras: oc-v2 logins first) | - | no | ready (Feras: oc-v2 logins first) |
+| 2 | M1 build in 6 waves from docs/briefs/m1-plan.md (9 part brie | ready: wave 1 (m1-defs) on agy; nv/OpenRouter lanes after row 28 | - | no | ready: wave 1 (m1-defs) on agy; nv/OpenRouter lanes after row 28 |
 | 3 | Bake Roya (sprite-bake), native-scale render on the prison r | ready | - | no | ready |
 | 4 | Feras plays M1 on PC and phone; notes -> fix-pass rows | later: after row 4 | - | yes | later: after row 4 |
 | 5 | Art batch: Bilqis re-model (v2), guard, props (booth, floodl | queued; Rodin credits end ~11-17 | - | no | queued; Rodin credits end ~11-17 |
@@ -17,11 +17,18 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 | 9 | Art bible 2D pass: drop the retired 3D runtime lines (fog, m | parked | - | no | parked |
 | 10 | Bilqis's portraits are now the Neon ones: keep or overturn ( | open | - | yes | 10-27 |
 | 11 | Art homework into inbox/: concept pictures, an empty plate p | open | - | yes | 10-24 |
-| 12 | Row 26 review follow-ups left (done items: changelog.md, dec | open | - | no | 11-02 |
-| 13 | After merging row 26 to main: `python tools/plugin_prune.py` | open | - | no | 11-02 |
-| 14 | Revisit LSP for review-code after row 4 (M1 built): rerun th | open | - | no | 11-02 |
-| 15 | Doc graph cleanup (row 27 shipped `tools/doc_graph.py`, DOCM | open | - | no | 11-01 |
-| 16 | Row 20 leftovers, no row yet (row 24 is done; specs too vagu | open | - | no | 11-01 |
+| 12 | After merging row 26 to main: `python tools/plugin_prune.py` | open | - | no | 11-02 |
+| 13 | Revisit LSP for review-code after row 4 (M1 built): rerun th | open | - | no | 11-02 |
+| 14 | Doc graph cleanup (row 27 shipped `tools/doc_graph.py`, DOCM | open | - | no | 11-01 |
+| 15 | Row 20 leftovers, no row yet (row 24 is done; specs too vagu | open | - | no | 11-01 |
+
+## Wed 11-04 02:30: Cloudflare cleanup done, pipeline v3 queued (Opus 5.5, same chat)
+- Done (main): Cloudflare removed from opencode (CLI and desktop share these): the 2 user env vars (yours had not saved), the stored key in opencode's database, both auth.json entries (backups *.bak-20261104). Cerebras kept as the capped fallback; OpenRouter $13 bought, so 1000 free requests a day. Row 28 written: docs/briefs/row28-pipeline-v3-plan.md holds your 11-04 decisions; row 26 closed into it.
+- Still open: BLOCKER, the pipeline's opencode folder (oc-v2) has only the OpenRouter key, so nv builds would fail to log in (my smoke tests used the background service, which reads the other folder).
+- When: row 28 next chat (planned Wed 11-04 or Thu 11-05); row 4 wave 1 can run on agy meanwhile.
+- How: row 28, Ops, chat (plan), Opus high.
+- Your move (waiting on Feras): restart the OpenCode desktop app and terminals; log NVIDIA, Cerebras, Groq and Google into oc-v2 (PowerShell line in the plan, section Found). Mine: nothing pending.
+- Checked: `auth list --standalone` shows no Cloudflare; doc_check; not checked: a real pipeline build on NVIDIA (blocked by the logins).
 
 ## Wed 11-04 01:35: sync, worktree cleanup, Cloudflare retired (Opus 5.5, auto effort, one chat)
 - Done (main): main synced (SYNC PASS); 16 finished worktrees removed (branches kept); no unmerged branch held work main lacks. cf lane retired: free `nv` lane (tools/nv_build.sh) = DeepSeek V4.1 Flash on NVIDIA NIM, provider refusals fall back NVIDIA > Zen free > Cerebras > OpenRouter :free; reviews on NVIDIA GLM-5.3-flash; cf_probe, cf_audit, the cf-agents MCP gone (nv_audit.sh does one-shot text); tools/free_providers.txt + a test fail any paid model slug; docs, skills and M1 briefs updated; decision, SPEND line, lesson logged. Calendar: today's event lists your Cloudflare moves.
@@ -56,12 +63,3 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 **Your move**: none. A cheap use that works today: the head chat can call LSP for a Ripple question on a name shared by several files.
 **Checked**: the 6 probes read (output, process samples, costs); handoff.sh ran map, doc_check and check.sh (582 tests passed, 0 failed after the DOCMAP refresh), pushed to main, CI waited to green (HANDOFF PASS), sync_main SYNC PASS. Not run: a cross-review (docs only, no code changed). One slip caught: probe 2 first tested a leftover bogus tool name because a guard-refused command never applied my edit; redone, and the audit says so.
 
-## Mon 11-02 13:30: row 26, low-cost pipeline v2 (Sonnet 5.5 high, one chat; you were asleep)
-**Done** (on main after this handoff): the whole workflow now lives in ONE folder, `.claude/skills/low-cost-pipeline/` (SKILL.md 40 lines + routing, foremen, mechanical lane, proof, changelog, 3 brief templates). Built by cf and agy workers from locked tests, each diff read by me line by line: (a) cost is real: `opencode session export` per worktree, `runs.csv` has tokens, usd_est, idle_min (unknown = `?`); (b) run state tells the truth: a crashed gate is ERROR, the brief is copied at launch, stale PASS removed, NOWORK/REFUSED/ERROR rows logged, a quiet watchdog (not for agy) kills a builder that went silent after a commit; (c) routing: reviewer = the other model family, `merge_run` reads the prefix and needs `VERDICT PASS` and regenerates the generated docs itself, the CI wait pins check.yml, OC_MODEL = CF_MODEL; (d) test-first stage as tools: `EXPECT_RED=1` scope run, `scope_gate.py`, `lock_tests.sh`; (e) `part_report.py` (15 lines per part), `parts_plan.py` and `ripple.py` (plan checks for parallel parts), `kaizen_report.py`; (f) startup collisions retried; (g) your leftovers: stale kaizen entries pruned (2 dead; 6 belong to live worktrees), `track_usage.py` tracked, CI wait fixed, OC_MODEL fixed, skills-twice = start with `claude -w`. Your decisions applied: Sonnet subagents allowed, CAP_CF 3, scripts as foremen, neurons over tokens.
-**Proof** (P0-P6, details in proof.md/changelog.md): GLM effort label works (23x tokens at max for the same answer); agy Godot run PASS (suite 584 passed); test-writer A/B on one task: DeepSeek max's tests passed the correct code and killed 11 of 12 seeded bugs, GLM's failed the correct code (n=1); a real cross-review found 3 real bugs, fixed. Whole row under about $2 in cf neurons.
-**Found and fixed on the way**: my first cost meter summed the whole project (two runs showed the same 4.7M tokens): fixed and the rows corrected; the quiet watchdog would have cut working agy runs (found by the agy proof); two parallel opencode starts collided on one database (retry); two BREACHes were briefs that missed existing tests (ripple.py).
-**Still open**: optional Opus final review (prompt in HANDOFF, docs/opus-review-row26.md); the writer trial on row 4's first real builds; agy has no cost meter; the second lens (XR_DUAL) is not built; the A/B is one task; the background cache waker and one agy run were stopped by the system for low memory (not restarted).
-**When**: review any day; trial with row 4.
-**How**: row 26, Ops, builder + chat (review); Opus high for the review.
-**Your move vs mine**: yours: optionally paste the review prompt; start chats with `claude --model opusplan -w <name>`. Mine: the rest.
-**Checked**: full check.sh 582 Godot tests passed on the finished tree; the last docs fix re-checked with `check.sh --no-godot`: all checks passed. Not run: the Opus review, a render-judged agy run, a seeded bug inside a Godot run.
