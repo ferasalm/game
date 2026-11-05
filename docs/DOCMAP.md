@@ -126,8 +126,8 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/audits/2026-11-02-coach-dsv4.md | [0m | 0 | 45 |
 | docs/audits/2026-11-02-coach-glmflash.md | [0m | 0 | 28 |
 | docs/audits/2026-11-02-integrity.md | Integrity Audit: 2026-11-02 | 3 | 62 |
-| docs/audits/2026-11-02-lsp-reviewers.md | LSP for the reviewer agents (row 27): verdict DON'T DO now, revisit after M1 (Sonnet 5.5 high chat, 2026-11-02; the brief asked for Opus high) | 5 | 5 |
-| docs/audits/2026-11-05-dia-review.md | Dia review of the workflow (2026-11-05): verified, decided, done, handed off | 2 | 8 |
+| docs/audits/2026-11-02-lsp-reviewers.md | LSP for the reviewer agents (row 27): verdict DON'T DO now, revisit after M1 (Sonnet 5.5 high chat, 2026-11-02; the brief asked for Opus high) | 4 | 5 |
+| docs/audits/2026-11-05-dia-review.md | Dia review of the workflow (2026-11-05): verified, decided, done, handed off | 3 | 8 |
 | docs/audits/coach-audit-prompt.md | Prompt: read-only Claude Code setup audit ("coach") for tools/cf_audit.sh | 2 | 5 |
 | docs/briefs/TEMPLATE.md | Brief: <task> (copy to docs/briefs/<task>.md; <= 80 lines; tools/test_template.py keeps the gate's headings here; for a pipeline batch start from the scope, hand or mechanical shape in the low-cost-pipeline skill instead) | 2 | 13 |
 | docs/briefs/archive-cleanup.md | DONE 2026-10-27 (stages 1-3 on main). Chat brief: finish the 3D archive + rename zayd -> rydan (Feras 2026-10-27, decisions-log) | 0 | 9 |
@@ -189,7 +189,7 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/design/identity.md | Identity: the Hook (the game's signature motif) | 1 | 0 |
 | docs/design/level-1.md | Level 1: the rooftops of Souq al-Milh (demo level; Level Designer, rewritten 2026-10-23 from the owner's brief) | 0 | 2 |
 | docs/design/m1-fight-api.md | M1 fight: shared types and signatures (row 3, 2026-11-02; every m1 part builds against exactly this) | 6 | 1 |
-| docs/design/m1-fight.md | M1 fight spec: real-time Rydan vs 2 guards on the prison roof (row 3, 2026-11-02; Feras: Hades feel + Sekiro parry) | 16 | 2 |
+| docs/design/m1-fight.md | M1 fight spec: real-time Rydan vs 2 guards on the prison roof (row 3, 2026-11-02; Feras: Hades feel + Sekiro parry) | 15 | 2 |
 | docs/design/music.md | Music: no menu or merchant tracks; menus and Abu Nabil's stall keep explore_souq (DECISIONS 2026-10-22) | 1 | 2 |
 | docs/design/neon-glitch-plan.md | Neon Glitch: game plan (brainstorm 2026-10-25, Feras + Claude) | 3 | 3 |
 | docs/design/night-sanaa.md | Night Sana'a: the city around the rooftop (geography is loose; Feras may correct it) | 0 | 1 |
@@ -216,9 +216,9 @@ python tools/doc_graph.py. A stale map or a new dangling reference fails tools/c
 | docs/story/bible.md | Story bible (Feras, 2026-10-26; from inbox/docs/Neon_Glitch_Story_Bible_Final.docx (renamed by Feras 10-27), text unchanged) | 7 | 1 |
 | docs/story/chatgpt-prompt.md | Prompt for ChatGPT: turn the story into Twine passages | 0 | 0 |
 | docs/transcripts/2026-11-04-row28-night.md | Transcript: row 28 night chat, Wed 2026-11-04 (reconstructed) | 0 | 9 |
-| feras/BRIEFING.md | Briefing for Feras (one file for you: newest report first, the last 5 kept; every chat updates it at /handoff) | 10 | 12 |
+| feras/BRIEFING.md | Briefing for Feras (one file for you: newest report first, the last 5 kept; every chat updates it at /handoff) | 10 | 10 |
 | feras/research-prompts.md | Research prompts for Feras (Gemini Deep Research, Argon High) | 1 | 1 |
-| plugins/pm/skills/handoff/SKILL.md | Handoff (game) | 5 | 14 |
+| plugins/pm/skills/handoff/SKILL.md | Handoff (game) | 5 | 15 |
 | plugins/pm/skills/next/SKILL.md | Run `python ${CLAUDE_PLUGIN_ROOT}/scripts/pm.py next` and show its output. | 1 | 0 |
 | plugins/pm/skills/report/SKILL.md | Run `python ${CLAUDE_PLUGIN_ROOT}/scripts/pm.py report "$@"` and show its output. | 1 | 0 |
 | plugins/pm/skills/row/SKILL.md | Run `python ${CLAUDE_PLUGIN_ROOT}/scripts/pm.py row "$@"` and show its output. | 1 | 0 |

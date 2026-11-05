@@ -31,8 +31,7 @@ HANDOFF, DECISIONS and LESSONS load at every session start, so every line costs 
    builder with agy/nv/oc by default; `chat (taste|MCP|review|plan)` with Opus and its effort; `Feras`) and the Last
    updated line, and rewrites its last section, "Prompt for the next chat": one line naming the row, model and effort
    (Feras 10-31: one task); a Sonnet row's prompt starts with `/goal` (builders skill, Sonnet). Rows go in with
-   `python plugins/pm/scripts/pm.py row ...` run from your worktree (the same for `report`; ${CLAUDE_PLUGIN_ROOT} is the
-   MAIN checkout's copy and writes Feras's files there, 11-05); `tools/doc_check.py` (inside handoff.sh) checks every row.
+   `python plugins/pm/scripts/pm.py row ...` from your worktree (${CLAUDE_PLUGIN_ROOT} = main's copy, 11-05); doc_check checks rows.
    Then `bash tools/status.sh` and archive the side sessions it started whose work is on main.
    Lean check (Feras 11-01): every non-Opus output merged this session was reviewed tiered (WORKFLOW Protocols:
    Review: gates, cross-review lens via nv max / agy or a Haiku xhigh pass on big diffs, then Lead/Opus on the list and
