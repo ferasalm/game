@@ -3,10 +3,10 @@ Open it from any chat: `feras/BRIEFING.md` (C:\dev\game\feras\BRIEFING.md after 
 HANDOFF.md; this file is your view of it. "Open now" is rewritten at every /handoff; below it, reports newest first,
 each headed by its date and time (GMT+3): Done | Still open | When | How | Your move vs mine | Checked.
 
-## Open now (Wed 11-04 19:12)
+## Open now (Thu 11-05 06:30)
 | # | Open item | Status | Checked | Your move? | When |
 |---|---|---|---|---|---|
-| 1 | What-we-have pipeline: docs/briefs/row28-pipeline-v3-plan.md | g done, briefs a-j written; d reverted 4c86be6 (red CI: MAP.md); redo per tools/next_chat_prompt.txt; c, b (tests: docs/briefs/row28-locked-tests/), a, e; i, h, j; f after Feras's research | - | no | g done, briefs a-j written; d reverted 4c86be6 (red CI: MAP.md); redo per tools/next_chat_prompt.txt; c, b (tests: docs/briefs/row28-locked-tests/), a, e; i, h, j; f after Feras's research |
+| 1 | What-we-have pipeline: docs/briefs/row28-pipeline-v3-plan.md | g, d done (11-05); next c, b (tests: docs/briefs/row28-locked-tests/), a, e (meter); i, h, j; f after Feras's research; then row 4 | - | no | g, d done (11-05); next c, b (tests: docs/briefs/row28-locked-tests/), a, e (meter); i, h, j; f after Feras's research; then row 4 |
 | 2 | M1 build in 6 waves from docs/briefs/m1-plan.md (9 part brie | ready: wave 1 (m1-defs) on agy; nv/OpenRouter lanes after row 28 | - | no | ready: wave 1 (m1-defs) on agy; nv/OpenRouter lanes after row 28 |
 | 3 | Bake Roya (sprite-bake), native-scale render on the prison r | ready | - | no | ready |
 | 4 | Feras plays M1 on PC and phone; notes -> fix-pass rows | later: after row 4 | - | yes | later: after row 4 |
@@ -22,6 +22,15 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 | 14 | Revisit LSP for review-code after row 4 (M1 built): rerun th | open | - | no | 11-02 |
 | 15 | Doc graph cleanup (row 27 shipped `tools/doc_graph.py`, DOCM | open | - | no | 11-01 |
 | 16 | Row 20 leftovers, no row yet (row 24 is done; specs too vagu | open | - | no | 11-01 |
+| 17 | Ops review due (13 sessions): first Ops chat after row 28 b, | open | - | no | 11-05 |
+
+## Thu 11-05 06:30: Dia's feedback checked, routing fixes and row 28 part d merged (Opus 5.5 xhigh, one chat)
+- Done (main): Dia's 11 claims checked in docs/audits/2026-11-05-dia-review.md (8 true, 2 true with a wrong fix or cause, 1 roughly true); your four picks are logged (decisions-log 11-05) and built. Following pick 2, Cerebras and Groq left the allowlist: your 11-04 "Cerebras stays the 3rd hop" line is struck, and the $4.85 credit idles until part f. Also fixed: routing.md (retired Clef-flash and GLM-5.3 max, red tests given to a builder), copied reviewer maps in WORKFLOW and models.md, review agents at effort low against your 11-04 xhigh rule, opencode's bare default (uncalibrated Inkling, now DeepSeek). New check: test_routing_docs.py. Part d's redo reviewed by Opus and merged.
+- Still open (planned): row 28 c, b, then a (revised: paid ids carry rates, the paid hop runs only with PAID_OK), e (now the cost meter), then i, h, j, f, then M1. Reviewer rollback test: on the first Godot agy run (M1 wave 1). Paid DeepSeek smoke on OpenRouter: at part a, needing your per-run OK then. Build-time data: after c and b (5 runs of kaizen_report). Ops review: first Ops chat after b and c (Open point).
+- When: row 28 c and b start when you open the next chat (planned Fri 11-06; `pwsh tools\next_chat.ps1`, Opus high).
+- How: row 28, Ops, chat (plan), Opus high; agy builds c, b, a, e.
+- Your move: nothing waiting on you from this chat; note that review agents at xhigh use more Claude usage per review than at low. Mine: row 28 in order.
+- Checked: full check.sh green (582 Godot tests and every tool test; the first run was red on 2 doc_graph lines, fixed); a Haiku review-code (xhigh) pass on the code diff (2 fixes, 2 tests added, 2 points kept with reasons); review-feras on this report (7 notes applied); CI is watched by handoff.sh on this push (result in the chat). Not checked: no builder or paid call ran.
 
 ## Wed 11-04 17:40: row 28 night run stopped on a red CI, part d reverted (opusplan, high; the executing model said it was Sonnet 5.5)
 - Done (main): part d (the nv_build.sh login preflight) was built and green locally, but main CI failed `MAP.md current` because I committed by hand with the map made before `git add`: reverted at once (4c86be6, CI green). Red tests for parts c and b are written and saved in docs/briefs/row28-locked-tests/, briefs b and c name their exact interfaces. A later handoff commit also went red on MAP.md (a stray log file was listed in it); fixed in the final push.
@@ -54,21 +63,3 @@ each headed by its date and time (GMT+3): Done | Still open | When | How | Your 
 **How**: HANDOFF queue row 26 (Ops, builder + chat) is done except the writer trial with row 4's first builds; row 10 (Obscura proof, Ops, cf) is parked behind row 5 with the wrapper already built.
 **Your move vs mine**: yours: sync your recent worktrees, then start row 4. Mine: nothing queued from this chat.
 **Checked and not checked**: full `bash tools/check.sh` passed three times (582 tests), the new tests were also run against the old scripts and failed there (so they test something); the Obscura wrapper ran once on the real binary (example.com, dash.cloudflare.com) and 6 stub tests pass. Not checked: the Cloudflare bill, a Godot P6 run, Obscura on a JS-heavy page (the row 10 proof).
-
-## Mon 11-02 21:38: row 3, the M1 brief (Sonnet 5.5 high in the Opus row 3 chat)
-**Done** (on main after this handoff): the whole M1 brief set. Spec `docs/design/m1-fight.md` (your decisions: move, dash, 3-hit combo, Sekiro-style parry with posture bars, perfect deflect, finisher and a dash-counter; soft aim; floating stick + 3 buttons; baton + shock-rifle guards; special and cast later), shared types `m1-fight-api.md`, 9 part briefs and `docs/briefs/m1-plan.md` (6 waves, a worker per part), ARCHITECTURE section 8 rewritten, CANON, VISION, DECISIONS and the decisions log updated. GitHub research (`docs/research/m1-fight-github.md`): 9 real repos, none worth copying; the numbers (12-tick deflect window, 133 ms input buffer, hit-stop 4-12 ticks) are sourced.
-**Design in one line**: one deterministic 60-tick sim owns Rydan and both guards for the whole roof (no battle scene swap); bots in CI must prove "masher loses, parrier wins 80% in 20-45 s".
-**Still open**: red tests (not written: each wave needs the previous wave's types, so row 4 starts every wave with its scope run); all numbers are [PLACEHOLDER] until the harness and your play; real dash and 3 combo clips are art asks for row 7 (M1 reuses the run and attack clips).
-**When**: row 4 starts any day; M1 playable after its 6 waves.
-**How**: row 4, Gameplay, builder: cf DeepSeek/GLM, agy; the head chat is Opus high.
-**Your move vs mine**: yours: none required (optional: skim `docs/design/m1-fight.md` section 2-4, the rules you can still change before the build). Mine: run row 4 wave 1.
-**Checked**: `check.sh --no-godot` all checks passed (docs, lint, res_graph, tool tests); `parts_plan.py` OK for each wave; repos checked with `gh api`. Not run: Godot tests (docs-only change), the red tests, a render.
-
-## Mon 11-02 15:10: row 27, LSP for the reviewer agents (Sonnet 5.5 high; the brief asked for Opus high, the chat ran Sonnet)
-**Done** (on main): verdict **DON'T DO now**: the 6 reviewers do not get the `LSP` tool. Live probes (6 headless Haiku runs, $0.05 total): (a) a plugin agent's `tools:` can list LSP and really gets it (134 references of `DefReader`), and one Godot server is shared by the chat and its sub-agents; (b) cost 0.6-0.8 GB RAM and about 16 s to start warm (up to 130 s on a fresh worktree); (c) the failure path works: floor refused, the agent made 1 LSP call and 1 Grep call and stopped; (d) value: in 8 past diffs, 0 of 9 changed function/signal names were declared in more than one file, so grep found every caller. Only review-code could ever gain. Written: docs/audits/2026-11-02-lsp-reviewers.md (numbers, recipe), a decisions-log line, a LESSONS line (`claude plugin validate` accepts any tool name, so only a live call proves a `tools:` line), the coach suggestion closed.
-**Still open**: revisit LSP for review-code after row 4 (M1 built), when real gameplay code exists: rerun the 10-minute recipe on 3 fresh diffs (planned, Open point, owner Claude). Row 27 left the queue (no execution row, nothing to build).
-**When**: the revisit after row 4 (Wed 11-04 at the earliest).
-**How**: Ops, chat (plan); the revisit is a Haiku-low-sized probe plus a one-line decision.
-**Your move**: none. A cheap use that works today: the head chat can call LSP for a Ripple question on a name shared by several files.
-**Checked**: the 6 probes read (output, process samples, costs); handoff.sh ran map, doc_check and check.sh (582 tests passed, 0 failed after the DOCMAP refresh), pushed to main, CI waited to green (HANDOFF PASS), sync_main SYNC PASS. Not run: a cross-review (docs only, no code changed). One slip caught: probe 2 first tested a leftover bogus tool name because a guard-refused command never applied my edit; redone, and the audit says so.
-

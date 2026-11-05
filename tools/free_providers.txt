@@ -1,5 +1,5 @@
 # Providers a builder, reviewer or audit may call (Feras 11-04: NVIDIA and Google keys are free-tier, no card; OpenRouter
-# :free and opencode Zen free cost 0). Out 11-05: Cerebras (its qwen-3.8-27b is uncalibrated, $0.99/$1.49 per M with no
+# :free and opencode Zen free cost 0). Out 11-05: Cerebras (its qwen-3.8-27b is uncalibrated, $0.99 in, $1.49 out per M with no
 # cache discount; back only after row 28 part f calibrates it) and Groq (dropped 11-04). Any other paid provider needs his
 # OK and a docs/SPEND.md line. One rule per line: <prefix> [suffix the id must end with].
 nvidia/

@@ -18,7 +18,7 @@ flowchart TB
     subgraph Lead["Lead (Claude)"]
         OpusPlan["Opus: plans and writes specs"]
         SonnetExec["Sonnet high: executes, briefs and red tests"]
-        HaikuWait["Haiku low: launches and waits on builders"]
+        HaikuWait["Haiku medium: launches and waits on builders"]
         OpusGate["Opus: gates diffs and signs off"]
     end
     subgraph Pipe["Builder pipeline (agy, nv, oc)"]

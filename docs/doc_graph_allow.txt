@@ -416,3 +416,5 @@ docs/briefs/row28-i-test-consult.md :: tools/consult_tests.sh
 docs/briefs/row28-i-test-consult.md :: tools/test_consult_tests.py
 docs/briefs/row28-j-night-queue.md :: tools/night_queue.sh
 docs/briefs/row28-j-night-queue.md :: tools/test_night_queue.py
+docs/briefs/row28-e-meter.md :: tools/model_rates.py
+docs/briefs/row28-e-meter.md :: tools/test_model_rates.py

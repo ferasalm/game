@@ -7,7 +7,7 @@ and HANDOFF. Chat: Opus 5.5 xhigh, worktree dia-review. Feras's picks: decisions
 |---|---|---|---|
 | 1 | agy and DeepSeek code both go to GLM-5.3-flash, the weakest code reviewer | true | builders.conf XR_REVIEWER_*; models.md head to head (GLM 4 findings, "real but few"); WORKFLOW and models.md said DeepSeek: the conf was the stale copy of 11-02, the 11-04 decision already said DeepSeek |
 | 2 | routing.md gives red tests to retired GLM-5.3 max; DeepSeek max should write them | stale line true, fix rejected | DECISIONS 11-04: the head writes red tests; DeepSeek writing them would undo it |
-| 3 | Cerebras qwen-3.8-27b sits in the chain without a card (D11) | true, worse | $0.99/$1.49 per M, no cache discount, 131k context (opencode models cache); part a's interim made it the FIRST day hop; Nemotron Ultra (last hop) was calibrated as a lens only |
+| 3 | Cerebras qwen-3.8-27b sits in the chain without a card (D11) | true, worse | $0.99 in, $1.49 out per M, no cache discount, 131k context (opencode models cache); part a's interim made it the FIRST day hop; Nemotron Ultra (last hop) was calibrated as a lens only |
 | 4 | Laguna-S, Inkling, Clef-flash, GLM-5.3 full are dead weight | true | Laguna 5/6 vs Nemotron 6/6, unused; Inkling = opencode.json default, uncalibrated; Clef and GLM-5.3 max still routed in routing.md |
 | 5 | Long chats drive cost | true | USAGE.md row 26: 448 calls, 307M cache reads, 619k peak; "one part per chat" already existed (10-31) and was broken |
 | 6 | DeepSeek to paid OpenRouter, ~$0.04 a max review | true | already part a; 66k out x $0.60/M |
