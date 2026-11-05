@@ -10,14 +10,14 @@ Everything in `.claude/skills/low-cost-pipeline/` and `.claude/skills/builders/S
   This overrides the normal routing (docs/WORKFLOW.md, Start here step 3: Opus child chats and subagents, as many
   as needed; Feras 10-28) while the 5-hour window is past 50%: open no new child chats (let running ones finish their
   unit and /handoff); Haiku subagents only when a job reads > ~20k tokens, until the window resets.
-- Finish the task at hand; context size never hands it off (Feras 10-31). At ~85% of the 5-hour window: /handoff.
+- Finish the task at hand; past the soft 300k context line, finish the current step, then /handoff (Feras 11-05). At ~85% of the 5-hour window: /handoff.
 - Claude reads first: the first line of `../game-wt/<task>.result`, `bash tools/slots.sh`, greps of what it must decide,
   and the calibrated lens output (<= 15 lines); a diff, log or whole file when the decision or a review needs it.
 - One tool batch per step, background waits, no polling. Answers to Feras: a few lines.
 
 ## Who does what
 - Builders build (caps and models: tools/builders.conf); Claude plans, briefs (TEMPLATE, <= 60 lines) and merges.
-- Reviews by the calibrated lens (docs/research/calibration-2026-10.md): the free route first, Haiku low second.
+- Reviews by the calibrated lens (docs/research/calibration-2026-10.md): the free route first, Haiku xhigh second (Feras 11-04).
 - Builders NEVER merge or push to main. Claude merges with `tools/merge_run.sh` after reading a PASS.
 
 ## Safety

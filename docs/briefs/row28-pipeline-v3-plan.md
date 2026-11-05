@@ -106,7 +106,7 @@ service); a peak-hour paid DeepSeek launch is refused by the gate in a test; Fer
 - OpenRouter free-models router as the last chain hop (smoke-test first, its exact slug in free_providers.txt).
 
 ## Status 11-04 night (chat 2, Opus high): live checks done, briefs written, part g built
-Briefs: docs/briefs/row28-{a-lanes,b-peak-gate,c-cliff-guard,d-preflight,e-routing-v3,f-calibration,h-glm-content,i-test-consult,j-night-queue}.md.
+Briefs: docs/briefs/row28-{a-lanes,b-peak-gate,c-cliff-guard,d-preflight,e-meter,f-calibration,h-glm-content,i-test-consult,j-night-queue}.md.
 Build order: d (Opus writes), c, b (agy/nv, red tests from the head), a (its paid ids stay unused until Feras's cap), e, i, h, j, f.
 Corrections to this file (checked live 11-04, they win): DeepSeek peak (04-07 and 09-13 GMT+3, Mon-Fri, x2) is DeepSeek's OWN endpoint
 only; OpenRouter has 45 providers (many cheaper than DeepSeek off-peak at any hour), so paid DeepSeek goes through OpenRouter with
@@ -120,3 +120,18 @@ Part g shipped: 14 persona sources in .agents/skills are stock agency text (+ on
 (tools/sync_personas.py), .agents/project-overlay.md (pasted after the pasted skills by build_pipeline and after the reviewer skill by
 cross_review), project rules that lived only in the old tailored personas kept in docs/design/persona-rules.md. test_personas.py now pins the
 reverse of the 10-28 rule (no project words in a persona, one overlay). Generic craft advice from the old tailored copies is dropped (the stock text covers it); the old copies stay in git history (commit before row 28 part g).
+
+## Status 11-05 (Dia-review chat, Opus xhigh; docs/audits/2026-11-05-dia-review.md): this section wins over the ones above
+Part d merged: the redo on worktree-row28-next was reviewed by Opus (the preflight parses the real `auth list --standalone`
+columns) and landed on main with this chat's work. Feras 11-05: the order stays c, b, a, e, then i, h, j, f, all before M1.
+Done here, so no part redoes it: reviewer map (agy and GLM runs -> DeepSeek max; DeepSeek runs -> Claude studio:review-code,
+Haiku xhigh; cross_review.sh writes the hand-off into the review file); one fallback chain per family (NV_CHAIN DeepSeek,
+GLM_CHAIN GLM-5.3-flash; nv_build.sh takes deepseek|glm; Cerebras qwen and Nemotron left the build chain, Cerebras and
+Groq left free_providers.txt); routing.md rewritten to the 11-04 roles (the head writes red tests); models.md trimmed
+(Laguna-S, Inkling, GLM-5.3 full, qwen in one NOT USED line) plus prices and cliffs; opencode.json default = NV_MODEL
+(DeepSeek on NIM); review agents at Haiku xhigh; soft 300k context line (hook + docs); tools/test_routing_docs.py.
+Changed briefs: a (paid ids carry rates; the family's paid id is the last hop only with PAID_OK=1; no Cerebras or
+OpenRouter :free hop; adds nv_build.sh), e renamed row28-e-meter (per-model rates for every spend line, runs.csv columns;
+the docs half is done). b stays as briefed, though paid DeepSeek already skips DeepSeek's peak endpoint (it guards a
+direct call only). f gains qwen-3.8-27b as a candidate. Carried P6 is now the reviewer rollback test: seed a defect into
+the first Godot agy run; DeepSeek max missing it twice in a row brings GLM back as a second lens.

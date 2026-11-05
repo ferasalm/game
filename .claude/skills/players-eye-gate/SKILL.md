@@ -16,7 +16,7 @@ The bars live in docs/design/acceptance.md (ids C1, M1, U1 ...); Feras edits the
    another checkout, never assets/. One Godot at a time (`bash tools/slots.sh`); `tools/run_godot.sh --import` first after a pull.
 2. Measure: `python tools/eye_metrics.py`. Lines are `METRIC <name> <value> <PASS|WARN> <bar>`; it always exits 0. Every
    WARN goes in the report. (Bars: fps >= 24, colours > 256, font >= 18 px at 720p; chroma and frames are info.)
-3. Look: the calibrated player lens (agent `studio:review-player`, Haiku effort low, or nemotron-3-ultra :free via
+3. Look: the calibrated player lens (agent `studio:review-player`, Haiku effort xhigh (Feras 11-04), or nemotron-3-ultra :free via
    `mcp__openrouter__send-message` with public content only) reads 4-6 frames at 640x360 plus contact.png against
    acceptance.md, and answers each id seen: OK / MISS / CANNOT SEE, one line each. Frames, not code.
 4. Confirm: Opus (or the advisor) re-reads the flagged frames and confirms or drops each MISS. A lens finding is a flag, not a fact.

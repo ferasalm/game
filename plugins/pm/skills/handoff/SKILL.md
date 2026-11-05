@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: End-of-session wrap-up for the game repo. Runs the checks, logs the owner's decisions, curates LESSONS, adds a USAGE row, updates its rows of the HANDOFF.md queue, commits and pushes. Use when the user types /handoff, says "wrap up", or the chat's task is done. Context size never triggers it (Feras 10-31).
+description: End-of-session wrap-up for the game repo. Runs the checks, logs the owner's decisions, curates LESSONS, adds a USAGE row, updates its rows of the HANDOFF.md queue, commits and pushes. Use when the user types /handoff, says "wrap up", or the chat's task is done, or the context passed the soft 300k line and the current step is done (Feras 11-05).
 ---
 
 # Handoff (game)
@@ -34,9 +34,9 @@ HANDOFF, DECISIONS and LESSONS load at every session start, so every line costs 
    `python ${CLAUDE_PLUGIN_ROOT}/scripts/pm.py row ...`; `tools/doc_check.py` (inside handoff.sh) checks every row.
    Then `bash tools/status.sh` and archive the side sessions it started whose work is on main.
    Lean check (Feras 11-01): every non-Opus output merged this session was reviewed tiered (WORKFLOW Protocols:
-   Review: gates, cross-review lens via nv max / agy or a Haiku low pass on big diffs, then Lead/Opus on the list and
+   Review: gates, cross-review lens via nv max / agy or a Haiku xhigh pass on big diffs, then Lead/Opus on the list and
    risky hunks); anything sent to Feras carried a review stamp (tools/hooks/review_stamp.py). Name any task an Opus or
-   Sonnet chat (or subagent) did that a cheaper worker (nv, agy, Haiku low) could have done.
+   Sonnet chat (or subagent) did that a cheaper worker (nv, agy, Haiku medium) could have done.
 5. **Commit and push.** `bash tools/handoff.sh "<one message saying what changed>" [--main]` and read its last line
    (step 0). After a push to main, sync Feras's checkout (D10, 10-29) with one PowerShell call (the worktree guard
    refuses `git -C`, and PowerShell has no bash on PATH): `Set-Location C:\dev\game; $s = git status --porcelain;

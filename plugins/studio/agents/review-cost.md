@@ -4,7 +4,7 @@ description: Use at the end of a session to compare its tool calls and reads wit
 model: haiku
 tools: Read, Grep, Glob
 maxTurns: 8
-effort: low
+effort: xhigh
 ---
 # review-cost: lens agent (calibrated 2026-10-27, docs/research/calibration-2026-10.md)
 Free route: the same brief goes to nvidia/nemotron-3-ultra-550b-a55b:free (public content only, 50 requests a day).

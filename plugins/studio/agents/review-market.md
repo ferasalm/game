@@ -4,7 +4,7 @@ description: Use on a title screen, opening or first-30-seconds flow: hook, read
 model: haiku
 tools: Read, Grep, Glob
 maxTurns: 8
-effort: low
+effort: xhigh
 ---
 # review-market: lens agent (calibrated 2026-10-27, docs/research/calibration-2026-10.md)
 Free route: the same brief goes to nvidia/nemotron-3-ultra-550b-a55b:free (public content only, 50 requests a day).

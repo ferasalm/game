@@ -41,6 +41,12 @@ if [ "$rev" = oc ]; then model="$XR_OC_MODEL"; REVIEW_TIMEOUT="$XR_OC_TIMEOUT"; 
 
 box="$(wt_dir)/xr/$run-$rev"; log="$(wt_dir)/$run.xr-$rev.log"; out="$root/.check/reviews/$run-cross.md"
 rm -rf "$box"; mkdir -p "$box" "$(dirname "$out")"
+# A family reviewed by Claude (builders.conf XR_REVIEWER_*=claude, Feras 11-05): no builder lens runs; the review file
+# says so, so the head's next step (read the review file) launches the Haiku review-code subagent instead.
+if [ "$model" = claude ]; then
+  msg="reviewer: Claude for $fam runs (builders.conf): the head launches the studio:review-code subagent (Haiku, effort xhigh) on git diff $base...$head; no builder lens ran"
+  echo "$msg" > "$out"; echo "$msg"; exit 0
+fi
 { cat "$lib_dir/cross_review_prompt.md"; echo; echo "## Brief"; cat "$brief"
   # from the merge base (three dots: never main's newer commits) and no generated files: a 2-dot diff with MAP.md
   # sent DeepSeek into a 32k-token runaway with no block (10-29)

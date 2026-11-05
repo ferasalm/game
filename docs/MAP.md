@@ -779,6 +779,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_review_gate.py`: Self-test for tools/hooks/review_gate.py + review_stamp.py (D5, D21): no game render reaches Feras unreviewed.
 - `tools/test_ripple.py`: Row 26 S13 (Feras 11-02): two builder runs on 11-02 ended BREACH because the brief's May edit missed existing tests the
 - `tools/test_routing.py`: Red tests for docs/briefs/row26-s4-routing.md (row 26 S4, Feras 11-02): the cross-review reviewer comes from the
+- `tools/test_routing_docs.py`: Routing docs point at tools/builders.conf instead of copying its reviewer map, and route no work to a retired model
 - `tools/test_run_state.py`: Red tests, written first (row 26), for the spec in docs/briefs/row26-a-runstate.md; stubs only, this base does not build it yet.
 - `tools/test_runs_log.py`: Row 26 S2 (Feras 11-02): docs/runs.csv is the pipeline's scoreboard. Cost columns are real or `?` (unknown is not
 - `tools/test_scope_stage.py`: Row 26 S5 (Feras 11-02, GLM max writes the tests, the head reads them, DeepSeek builds against them): the test-first
@@ -789,7 +790,7 @@ Architecture and rules: docs/ARCHITECTURE.md. Folder rule: a feature keeps its l
 - `tools/test_statusline.py`: Self-test for tools/statusline.py (row 23 e, 2026-11-01). Field names are from the official statusline docs (fetched 11-01):
 - `tools/test_sync_main.py`: Self-test for tools/sync_main.sh (row 25, 2026-11-01) in a throwaway repo with a bare origin and a stub run_godot.sh.
 - `tools/test_template.py`: TEMPLATE.md stays readable by the gate (P3.8, 2026-10-27): its headings, an empty forbidden list, parseable checklist.
-- `tools/test_token_handoff.py`: Self-test for tools/hooks/token_handoff.py: cache-read information at 25M, then every +10M; context size never warns
+- `tools/test_token_handoff.py`: Self-test for tools/hooks/token_handoff.py: cache-read information at 25M, then every +10M; one note when the context
 - `tools/test_tool_tests.py`: Tests tool_tests.py parallel test execution and process runner.
 - `tools/test_twine_sync.py`: Self-test for tools/twine_sync.py: python tools/test_twine_sync.py (temp dirs, plain asserts, exit 1 on failure).
 - `tools/test_untracked_warn.py`: untracked_warn.sh: warns about an untracked file, stays quiet when it is added or ignored, never fails.

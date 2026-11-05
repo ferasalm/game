@@ -19,7 +19,7 @@ Triage rules (D9): docs/lessons-archive.md header.
 - A subagent costs 150-290k tokens -> delegate only when the worker reads far more than its brief.
 - A slow check: `.check/*.log` showed 82% of tool_tests in 2 files -> time the steps before choosing a fix (2026-10-31).
 - A model "hang" sat near `API key expired` in the log -> grep a failed run's log for ERROR first (2026-10-31).
-- A superseded rule lives on in a doc or prompt string -> grep for it when a decision changes.
+- A superseded rule lives on in a doc or prompt string -> grep for it when a decision changes; a copied config map drifted (reviewers, 11-05) -> one copy, test_routing_docs.py.
 - Gemini research contains invented numbers -> ideas and norms only, never facts.
 - A skill with `paths:` frontmatter (flow-media, 3d-model, sprite-bake, players-eye-gate) is not in a chat's skill list
   until it touches a matching file -> the department brief says Read .claude/skills/<name>/SKILL.md (2026-10-28).

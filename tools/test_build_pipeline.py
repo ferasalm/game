@@ -200,7 +200,8 @@ def test_nv_chain_starts_with_the_nv_model_and_falls_back_free():  # Cloudflare 
     model, chain, agy = r.stdout.strip().split("|")
     hops = chain.split()
     assert hops[0] == model == "nvidia/deepseek-ai/deepseek-v4.1-flash" and agy == "gemini-3.8-flash-medium", r.stdout
-    assert [h.split("/")[0] for h in hops] == ["nvidia", "opencode", "cerebras", "openrouter"], hops  # Feras's order
+    # Feras 11-05: the same model on its free routes only (Cerebras qwen and Nemotron left: not calibrated as builders)
+    assert [h.split("/")[0] for h in hops] == ["nvidia", "opencode"], hops
 
 
 def test_refuses_when_slots_full():

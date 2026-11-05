@@ -1,9 +1,8 @@
-# Providers a builder, reviewer or audit may call (Feras 11-04: NVIDIA, Google, Groq keys are free-tier, no card; Cerebras
-# spends its $4.85 prepaid credit at worst, accepted as the capped fallback hop; OpenRouter :free and opencode Zen free cost 0).
-# Any other paid provider needs his OK and a docs/SPEND.md line. One rule per line: <prefix> [suffix the id must end with].
+# Providers a builder, reviewer or audit may call (Feras 11-04: NVIDIA and Google keys are free-tier, no card; OpenRouter
+# :free and opencode Zen free cost 0). Out 11-05: Cerebras (its qwen-3.8-27b is uncalibrated, $0.99/$1.49 per M with no
+# cache discount; back only after row 28 part f calibrates it) and Groq (dropped 11-04). Any other paid provider needs his
+# OK and a docs/SPEND.md line. One rule per line: <prefix> [suffix the id must end with].
 nvidia/
-cerebras/
-groq/
 google/
 opencode/ -free
 openrouter/ :free

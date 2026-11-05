@@ -51,20 +51,20 @@ docs/HOW_WE_WORK.md draws this loop for Feras: a change to these Protocols updat
 - **Build:** slots (tools/slots.sh), then the pipeline (tools/build_pipeline.sh).
 - **Review (tiered, Feras 10-28: Opus never reads needlessly, and signs off on whatever reaches Feras):**
   1. Gates first: check.sh, build_gate (.result first line). FAIL, NOWORK or BREACH goes back unread.
-     PASS: cross-review (row 12 A, 10-29): `bash tools/cross_review.sh <run> <brief> <base>` in the background. On for
-     oc/* runs (agy reviews, free, ~11 min, 3/5 on calibration); gemini/* runs: NVIDIA DeepSeek V4.1 Flash (free) at max effort
-     (Feras 10-30; nemotron :free only as the backup lens after nv fails twice). USAGE logs real hits a run: under 1 on
+     PASS: cross-review (row 12 A, 10-29): `bash tools/cross_review.sh <run> <brief> <base>` in the background. The
+     reviewer is the other family, set only in tools/builders.conf (XR_REVIEWER_*; a run handed to Claude gets the
+     studio:review-code subagent, Haiku xhigh; the free backup lens after nv fails twice). USAGE logs real hits a run: under 1 on
      average over 5 runs -> drop the step. Opus vets the table
      (.check/reviews/<run>-cross.md) in step 3; real findings go to the builder as its fix pass, then the gate again;
      fail-open/closed findings stay Opus's (agy argued the wrong side on calibration).
-  2. Big diffs (over ~300 lines or ~10 files): a Haiku low pass (or a free lens, Readers) lists the misses against
+  2. Big diffs (over ~300 lines or ~10 files): a Haiku xhigh pass (or a free lens, Readers) lists the misses against
      the brief's Checklist; small diffs skip to 3.
   3. Opus reads that list, the WARN lines and the risky hunks only: logic/, saves, hooks, settings.json, anything no
      test reaches; review-code on the whole diff only when the tier-2 list is not clean.
   4. Anything that reaches Feras: the eye gate (tools/eye_gate.sh), review-player + review-feras, then
      `python tools/hooks/review_stamp.py <file>`; the review_gate hook blocks a send-to-Feras tool (a file send, an Artifact) on an
      unstamped render (tools/hooks/review_gate.py).
-- **Handoff:** when the chat's task is done or at ~85% of the 5-hour window; context size never triggers it (CLAUDE.md). It records one improvement made and one proposed.
+- **Handoff:** when the chat's task is done, at ~85% of the 5-hour window, or past the soft 300k context line once the current step is done (DECISIONS 11-05; tools/hooks/token_handoff.py says it once). It records one improvement made and one proposed.
 - **ops-review:** every 5 sessions, or at 50% of the window: `python tools/session_stats.py` (slips, guards, calls per turn),
   then `/kaizen:coach` (reads ~/.claude/coach-usage-log.jsonl from the track_usage hook; its score, accepted and declined items go to .claude/coach-history.md, committed, so the next run
   trends and never re-asks); its USAGE row says "ops-review done" (the session-start hook counts rows since it and

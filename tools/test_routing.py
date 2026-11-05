@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Red tests for docs/briefs/row26-s4-routing.md (row 26 S4, Feras 11-02): the cross-review reviewer comes from the
-run's .result (agy or DeepSeek work -> GLM max, GLM work -> DeepSeek max), merge_run reads its prefix from the .result
+run's .result (Feras 11-05: agy and GLM work -> DeepSeek max, DeepSeek work -> Claude review-code; was GLM for agy and
+DeepSeek work, 11-02), merge_run reads its prefix from the .result
 and refuses one without a VERDICT PASS line, ci_state maps gh run list JSON to one word, handoff's ci step asks for the
 check.yml workflow and waits CI_WAIT_SEC, and OC_MODEL defaults to NV_MODEL. Red on this base because that spec is
 unbuilt; the routing run implements them and may not edit this file. python tools/test_routing.py"""
@@ -16,8 +17,8 @@ sys.path.insert(0, TOOLS)
 from test_cross_review_sh import review, toy as xr_toy  # the xr toy + runner; the stub logs ARGS lines to assert on
 from test_handoff import BASH, last_line, put, sh, toy as h_toy  # the handoff toy: bare origin + clone + stub steps
 
-XR_GLM = "nvidia/z-ai/glm-5.3-flash"  # XR_REVIEWER_GEMINI and XR_REVIEWER_DEEPSEEK (spec item 1)
-NV_DEEPSEEK = "nvidia/deepseek-ai/deepseek-v4.1-flash"  # NV_MODEL, so also XR_REVIEWER_GLM
+XR_GLM = "nvidia/z-ai/glm-5.3-flash"  # a GLM run's author model
+NV_DEEPSEEK = "nvidia/deepseek-ai/deepseek-v4.1-flash"  # NV_MODEL, so XR_REVIEWER_GEMINI and XR_REVIEWER_GLM
 GH_OK = '[{"status":"completed","conclusion":"success"}]'
 GH_STUB = '#!/usr/bin/env bash\necho "GH $*" >> "$GH_REC"\necho \'%s\'\n'
 
@@ -84,12 +85,11 @@ def handoff_run(top, g, *flags, **env_extra):
     return sh(g, BASH, "tools/handoff.sh", "m", *flags, env=env)
 
 
-def test_a_deepseek_run_is_reviewed_by_glm():
+def test_a_deepseek_run_goes_to_claude_review_code():
     top, g = result_toy("oc/job", "nv", "nvidia/deepseek-ai/deepseek-v4.1-flash")
-    r, stub, _ = review(top, g)
-    calls = oc_calls(stub)
-    assert r.returncode == 0 and len(calls) == 1, (r.stdout, stub)  # a nv reviewer, not the base's branch-prefix agy
-    assert f"--model {XR_GLM}" in calls[0], calls[0]
+    r, stub, out = review(top, g)
+    assert r.returncode == 0 and "ARGS " not in stub, (r.stdout, stub)  # no builder lens at all, neither nv nor agy
+    assert "studio:review-code" in r.stdout and "studio:review-code" in out and "xhigh" in out, (r.stdout, out)
 
 
 def test_a_glm_run_is_reviewed_by_deepseek_max():
@@ -100,13 +100,13 @@ def test_a_glm_run_is_reviewed_by_deepseek_max():
     assert f"--model {NV_DEEPSEEK}" in calls[0], calls[0]
 
 
-def test_an_agy_run_is_reviewed_by_glm():
+def test_an_agy_run_is_reviewed_by_deepseek_max():
     top, g = result_toy("gemini/job", "agy", "gemini-3.8-flash-medium")
     git_out(g, "branch", "-m", "oc/job", "gemini/job")  # an agy run lands on gemini/<run>
     r, stub, _ = review(top, g)
     calls = oc_calls(stub)
-    assert r.returncode == 0 and len(calls) == 1, (r.stdout, stub)  # the base picks DeepSeek here: the contradiction
-    assert f"--model {XR_GLM}" in calls[0], calls[0]
+    assert r.returncode == 0 and len(calls) == 1, (r.stdout, stub)
+    assert f"--model {NV_DEEPSEEK}" in calls[0], calls[0]
 
 
 def test_unknown_family_falls_back_to_the_branch_prefix_rule():
@@ -122,6 +122,13 @@ def test_an_explicit_reviewer_argument_wins():
     r, stub, _ = review(top, g, "oc/job", "agy")
     assert r.returncode == 0, (r.stdout, stub)
     assert "--dangerously-skip-permissions" in stub and "-f packet.md" not in stub, stub
+
+
+def test_an_explicit_nv_reviewer_on_a_deepseek_run_runs_a_lens_not_claude():
+    top, g = result_toy("oc/job", "nv", "nvidia/deepseek-ai/deepseek-v4.1-flash")
+    r, stub, out = review(top, g, "oc/job", "nv")
+    calls = oc_calls(stub)
+    assert r.returncode == 0 and len(calls) == 1 and "studio:review-code" not in out, (r.stdout, stub)
 
 
 def test_the_reviewer_models_are_data_in_builders_conf():

@@ -30,7 +30,7 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
   DefReader house pattern, `is int` kept. So a Pattern file and the gates do the work; none is unmeasured on a real build.
 - **Non-reasoning, other work (10-31, Opus scored)**: sorting 8/8 in 0.44 s; GDScript question right in 0.56 s (clumsy one-liner);
   diagnosed patch right in 1.0 s. First real `fast` build (fast-probe-stream, RUN_KIND=py, 10-31): code in ~1 min, correct, gate PASS,
-  cross-review 0 findings (agy medium); 57 min end to end: checks ~11 min each, stale MAP sent it to a max fix pass that sat 25 min
+  agy medium's review found 0; 57 min end to end: checks ~11 min each, stale MAP sent it to a max fix pass that sat 25 min
   idle on its own background check; the builder never committed (pipeline WIP commits).
 - **Known failure modes**: BREACH on protected files (race B); opencode free quota runs out (opencode.ai/go to subscribe);
   a direct nv stream stops silently at the literal text `[DONE]` with finish "stop": none cuts the reply, max cuts in the thinking and
@@ -48,14 +48,8 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
 - **Best use**: Backup lens only, capped at 5 min (`XR_OC_TIMEOUT`, Feras 10-31: speed is its one merit; ~7 min on a review on 10-29, so
   the cap will often stop it, and then Claude's gate goes on alone)
 
-## GLM-5.3 (Cloudflare, retired 11-04)
-- **ID**: was `cloudflare-workers-ai/@cf/zai-org/glm-5.3`; on no free provider now
-- **Calibration (parser, 10-30, default effort)**: valid block, 619 s, 30.3k out (near the 32k cap): 1/2 key (non-UTF-8;
-  CRLF missed), 1 real minor (--out crash), 2 doubtful. Same score as nemotron and DeepSeek-low, 3x slower
-- **Best use**: second-reviewer candidate; set reasoning low before long one-shot work
-
 ## GLM-5.3-Flash (NVIDIA NIM free; was Cloudflare)
-- **ID**: `nvidia/z-ai/glm-5.3-flash` (`XR_REVIEWER_GEMINI` and `_DEEPSEEK`; reasoning_effort max accepted, 11-04) / `opencode/glm-5.3-flash-free` (spent)
+- **ID**: `nvidia/z-ai/glm-5.3-flash` (first in `GLM_CHAIN`: the creative lane, Feras 11-05; reasoning_effort max accepted, 11-04) / `opencode/glm-5.3-flash-free` (spent)
 - **Artificial Analysis**: Intelligence Index 36 (unverified, AA 2026-10-29), Coding Index 70 (unverified, AA 2026-10-29)
 - **Calibration**: vision works on nv (one synthetic image, right answer, 1.5 s, 10-31). 6 real 640 px frames vs review-player (10-31,
   default, 4-17 s a frame): colour + character visible 11/12, text readable 2/6; both planted defects caught. No
@@ -63,21 +57,7 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
   Code is its weak spot: the 16-field Def task took 813 s (first text 763 s, 44k out, 54 tok/s) vs DeepSeek none 6.7 s
 - **Row 24 calibration (11-01, bulk text)**: digest of a 116-line audit (docs/audits/2026-11-02-integrity.md) into <= 30 lines, scored on the audit's own Top 10 after grep: GLM-5.3-flash default **9/10** (217 s, 16.7k out; missed equipment_hero_header.gd:177; no invented file or line; filled the 30 lines, six of them `leave` noise) vs Haiku medium **9/10** (31 s, 64k Claude tokens, 19 lines grouped well; missed timeline.gd:8; no invented line). Pass bar 8/10: GLM ON for bulk text digests and sorting (n=1: the caller spot-checks 3 lines); the colour pre-filter job went to Clef-flash (Routing); GLM stays a candidate there only.
 - **Audit lens (11-02, docs/audits/2026-11-01-coach-compare.md, Third lens)**: setup audit via `tools/nv_audit.sh` with `AUDIT_MODEL`: 6 of 7 claims true, 1 unique true find, 1 invented claim (reported a path as absent after a failed read of a wrong path); a third lens only, every claim checked
-- **Best use**: Bulk text digests and sorting (calibrated row 24, 9/10) and a candidate screenshot pre-filter; never the CLI step (check.sh, gate, merge are scripts)
-
-## Laguna-S 2.1 :free (OpenRouter)
-- **ID**: `openrouter/laguna/laguna-s-2.1:free` (not listed in `tools/builders.conf`)
-- **Artificial Analysis**: Intelligence Index 32 (unverified, AA 2026-10-29), Coding Index 64 (unverified, AA 2026-10-29)
-- **Calibration**: Reading not run; lens 5/6 found (missed B6 licence), 0 false flags (calibration-2026-10.md)
-- **Known failure modes**: Missed licence defect (B6); missing from opencode CLI catalogue (lessons-archive.md)
-- **Best use**: Backup review lens
-
-## ThinkingMachines Inkling :free (OpenRouter)
-- **ID**: `openrouter/thinkingmachines/inkling:free` (not listed in `tools/builders.conf`)
-- **Artificial Analysis**: Intelligence Index 28 (unverified, AA 2026-10-29), Coding Index 60 (unverified, AA 2026-10-29)
-- **Calibration**: none yet
-- **Known failure modes**: Works only inside agents (403 on MCP; lessons-archive.md)
-- **Best use**: Text drafts, research lookups; opencode.json's bare default, so a build or review always passes its own --model
+- **Best use**: Creative work (level design, technical art, dialogue, narrative, player text; Feras 11-04/11-05), bulk text digests and sorting (calibrated row 24, 9/10), a candidate screenshot pre-filter; not a code reviewer (fewest real findings in the head to head below, Feras 11-05); never the CLI step (check.sh, gate, merge are scripts)
 
 ## NVIDIA Nemotron 3.5 Lightning :free (OpenRouter)
 - **ID**: `openrouter/nvidia/nemotron-3.5-lightning:free` (not listed in `tools/builders.conf`)
@@ -103,16 +83,24 @@ Model profiles, benchmarks, measured calibration scores, and failure modes.
   443 s, 66k out, ~$0.08: 1/2 key, 1 real minor, 1 doubtful (less noise than low). Watch the first max build: if steps
   trip the 25-min no-commit watchdog, builds drop to high. GLM: cap raised; effort option untested (row 18).
 - opencode.json defines nv DeepSeek at max and none only: a default or high run (row 26) needs its model entry first.
-- Cross-review: agy runs -> nv DeepSeek at max; nemotron only as a backup lens after nv fails twice. nv is free (tools/free_providers.txt).
+- Who reviews whom and the fallback chains: tools/builders.conf (XR_REVIEWER_*, NV_CHAIN, GLM_CHAIN), the only copy. nv is free (tools/free_providers.txt).
+
+## Prices and cliffs (checked live 11-04, row 28 plan status; recheck before a paid batch)
+- Paid on OpenRouter (row 28 part a, $3 monthly key cap, PAID_OK=1 + Feras's OK per run): DeepSeek V4.1 Flash 1017
+  $0.15 in / $0.60 out per M (a max review ~66k out = ~$0.04); GLM-5.3-flash $0.03-0.15 in per M (no :free route).
+  Route with `provider.ignore: DeepSeek` and fp8 or better: DeepSeek's own endpoint is the only peak-priced one
+  (x2 Mon-Fri 04:00-07:00 and 09:00-13:00 GMT+3).
+- Context cliffs: Haiku 5.5 x5 past 100k, GPT-6 Luna x2 past 272k, Sonnet 5.5 none (row 28 part c guards them).
 
 ## Routing
 Which worker does what: the low-cost-pipeline skill, routing.md. A card's Best use says what a model suits; that table decides who runs.
-Limits: Clef-flash pre-filters colour and character visible only, review-player keeps text; non-reasoning never reviews.
+Limits: non-reasoning never reviews; a fallback hop is the same model on another route (builders.conf chains, Feras 11-05).
 Evidence: docs/research/model-evidence-2026-10.md (AA numbers mostly UNVERIFIED: 1 of 3 spot-checked was invented)
 and the measured calibration lines above. Calibrated = passed a gold set (D11).
 - RETIRED 11-04 with Cloudflare: Clef-flash (`@cf/cloudflare/clef-flash`, not chat: `/ai/run`, model + state + questions, images = data-URI strings), colour/character pre-filter: 6 frames, 12/12 vs review-player, both planted defects, 3-9 s, ~$0.00002 a frame; text readable 3/6 (scores flat ~0.4).
 - Jev 1.13 Free (`jev-1.13-free`, opencode.ai/inference/systemone/v1/systemone, no key, free for a limited time), error sorting and rubric scoring: 8/8 on easy lines with labelled causes, 1-3.5 s; a hard set not run.
-opencode built-in free routes (DeepSeek, GLM-5.3-flash, Nemotron VL) are off while their free quota is spent (10-30); OpenRouter :free routes (XR_OC_MODEL nemotron-3-ultra) are active (key renewed 10-31). OC_MODEL still defaults to the spent DeepSeek route: a run on it ends NOWORK quota, use nv_build.sh.
+- NOT USED (cards removed 11-05 after the Dia review; history in git): GLM-5.3 full (Cloudflare, retired 11-04; parser 1/2 key, 3x slower than DeepSeek low); Laguna-S 2.1 :free (lens 5/6, a weaker duplicate of Nemotron Ultra's 6/6); Inkling :free (never calibrated; opencode.json's bare default became NV_MODEL, the calibrated builder, 11-05); Cerebras qwen-3.8-27b (never calibrated, $0.99/$1.49 per M with no cache discount, 131k context; out of the chain and free_providers.txt until row 28 part f calibrates it).
+opencode built-in free routes (DeepSeek, GLM-5.3-flash, Nemotron VL) are off while their free quota is spent (10-30); OpenRouter :free routes (XR_OC_MODEL nemotron-3-ultra) are active. OC_MODEL defaults to NV_MODEL (NVIDIA NIM DeepSeek).
 
 ## Rule
 A new model is used only after a calibration run (D11).

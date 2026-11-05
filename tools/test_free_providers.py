@@ -30,7 +30,7 @@ def conf_slugs(text):
     found = []
     for line in text.splitlines():
         m = re.match(r'\s*:\s*"\$\{(\w+):=(.*)\}"', line)
-        if not m or "MODEL" not in m.group(1) and m.group(1) not in ("NV_CHAIN",) and not m.group(1).startswith("XR_REVIEWER"):
+        if not m or "MODEL" not in m.group(1) and not m.group(1).endswith("_CHAIN") and not m.group(1).startswith("XR_REVIEWER"):
             continue
         for tok in m.group(2).split():
             if "/" in tok and tok.split("/", 1)[0] in PROVIDERS:

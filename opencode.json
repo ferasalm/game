@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "openrouter/thinkingmachines/inkling:free",
+  "model": "nvidia/deepseek-ai/deepseek-v4.1-flash",
   "autoupdate": false,
   "small_model": "openrouter/nvidia/nemotron-3.5-lightning:free",
   "instructions": [

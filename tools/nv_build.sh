@@ -3,15 +3,16 @@
 # the first NV_CHAIN model (NVIDIA NIM DeepSeek V4.1 Flash). When the provider refuses the run (rate limit, spent quota,
 # 5xx: the pipeline ends NOWORK with `why: quota`), the same task reruns on the next model of the chain; a model's own
 # failure (red check, no commit, a timeout) never falls through. Which work comes here: low-cost-pipeline routing.md.
-# Usage (cwd = the main checkout, run_in_background): bash <this repo>/tools/nv_build.sh <task> <brief> <base> [model]
-# A 4th arg pins one model and skips the chain. Keys: stored once by Feras with
+# Usage (cwd = the main checkout, run_in_background): bash <this repo>/tools/nv_build.sh <task> <brief> <base> [deepseek|glm|model]
+# The 4th arg picks the family's chain (deepseek, the default: NV_CHAIN; glm: GLM_CHAIN; Feras 11-05) or pins one
+# model id and skips the chain. Keys: stored once by Feras with
 # `XDG_DATA_HOME=~/.local/share/oc-v2 <OC_BIN> auth login` (Claude never handles them). Every provider is free:
 # tools/free_providers.txt, test_free_providers.py.
 set -euo pipefail
 . "$(dirname "$0")/lib.sh"
 here="$lib_dir"
 task="$1"; brief="$2"; base="$3"
-if [ -n "${4:-}" ]; then chain="$4"; else chain="$NV_CHAIN"; fi
+case "${4:-deepseek}" in deepseek) chain="$NV_CHAIN" ;; glm) chain="$GLM_CHAIN" ;; *) chain="$4" ;; esac
 dir="$(wt_dir)"
 
 # Preflight (row 28 part d, Feras 11-04): builds log in to opencode's oc-v2 data dir (lib.sh oc_run), so a chain model

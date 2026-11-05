@@ -21,9 +21,9 @@ flowchart TB
         HaikuWait["Haiku low: launches and waits on builders"]
         OpusGate["Opus: gates diffs and signs off"]
     end
-    subgraph Pipe["Builder pipeline (agy, cf, oc)"]
+    subgraph Pipe["Builder pipeline (agy, nv, oc)"]
         Brief["brief"] --> RedTest["red test"]
-        RedTest --> BuildRun["builder run (agy, cf, oc)"]
+        RedTest --> BuildRun["builder run (agy, nv, oc)"]
     end
     subgraph Studio["studio plugin"]
         Gate["gate: build_gate, check.sh"]
@@ -49,7 +49,7 @@ flowchart TB
 ```
 
 ## Roles
-| | Feras | Opus | Sonnet high | Builders (agy, cf, oc) | Haiku low / plugins |
+| | Feras | Opus | Sonnet high | Builders (agy, nv, oc) | Haiku / plugins |
 |---|---|---|---|---|---|
 | Decides | scope, story, art, spending, models, releases | architecture, plans, final sign-off | execution plan | nothing | nothing |
 | Does | plays builds, makes art, "spend ok" | writes specs, gates diffs, reviews | writes briefs & red tests, coordinates | code, tests, docs | launches/waits, studio reviews, pm queue |
@@ -67,7 +67,7 @@ Cost = model calls x context size (each call re-reads the whole chat from cache 
 - Connectors: Gmail, Google Docs, the second Rodin and Cloudflare bindings are off; Drive stays (Feras 10-29). Never
   toggle connectors mid-chat (a changed prefix is a full cache miss).
 - The advisor only with Feras's OK. Scripts go through Write/Edit, never python heredocs (a hook blocks those holding a backslash).
-- Hand off when the chat's task is done or at ~85% of the 5-hour window; context size never cuts work short (Feras 10-31).
+- Hand off when the chat's task is done, at ~85% of the 5-hour window, or past the soft 300k context line once the current step is done (Feras 11-05).
 
 ## Who syncs, where you see things
 - Syncing: the father chat. Children work in their own worktrees (one writer per set of files, so no conflicts); the

@@ -12,9 +12,9 @@ opencode.json (nvidia models and options), tools/builders.conf (NV_CHAIN, NV_FAL
 
 ## What to build
 1. opencode.json: provider openrouter, models deepseek/deepseek-v4.1-flash-1017 and z-ai/glm-5.3-flash, each with options.provider {"quantizations": ["fp8","bf16"], "ignore": ["DeepSeek"], "sort": "price", "allow_fallbacks": true} (DeepSeek's own endpoint is the only peak-priced one) and reasoning effort high; a variant named max for test writing and debugging; limit.output 131072.
-2. free_providers.txt: a new rule class `paid <prefix> <exact id>` for exactly those two ids, usable only when the env PAID_OK=1 is set by the launcher (the run's SPEND line is Feras's OK). Without PAID_OK=1 every paid id is refused by the pipeline guard that reads this file, with a message naming docs/SPEND.md.
-3. builders.conf: a separate PAID_CHAIN with the two paid ids, unused until PAID_OK. The day chain NV_CHAIN becomes OpenRouter :free first, then cerebras, then nvidia (NIM last: prototyping only) ONLY after Feras re-logs OpenRouter into oc-v2 (11-04 its key says "User not found": every build would time out before falling back) and the `openrouter/free` smoke passes; until then NV_CHAIN stays cerebras then nvidia. NV_MODEL unchanged for the overnight queue (part j).
-4. Tests extended in tools/test_free_providers.py: the two ids pass only with PAID_OK=1; any other openrouter id without :free is refused; opencode.json parses and carries ignore DeepSeek on both paid models.
+2. free_providers.txt: a new rule class `paid <prefix> <exact id> <input $/M> <output $/M>` for exactly those two ids (the head fills the rates from openrouter.ai on the day; part e's meter reads them), usable only when the env PAID_OK=1 is set by the launcher (the run's SPEND line is Feras's OK). Without PAID_OK=1 every paid id is refused by the pipeline guard that reads this file, with a message naming docs/SPEND.md. A paid line without both rates fails the test (the Dia review found Cerebras logged at $0).
+3. builders.conf: PAID_DEEPSEEK and PAID_GLM hold the two paid ids; nv_build.sh appends the family's paid id as the LAST hop of its chain (deepseek: NV_CHAIN, glm: GLM_CHAIN) only when PAID_OK=1: the same model on a paid route, never another model (Feras 11-05). NV_CHAIN and GLM_CHAIN themselves stay as they are (calibrated free routes only, 11-05); no Cerebras, no OpenRouter :free hop.
+4. Tests extended in tools/test_free_providers.py: the two ids pass only with PAID_OK=1; any other openrouter id without :free is refused; a paid line carries two numeric rates; opencode.json parses and carries ignore DeepSeek on both paid models. tools/test_nv_build.py: with PAID_OK=1 the glm word runs GLM_CHAIN then PAID_GLM; without it the paid id never runs.
 
 ## Do NOT edit
 D6 defaults, protected by tools/build_gate.py without being listed. Keep this prose free of backticks outside May edit.
@@ -24,6 +24,8 @@ D6 defaults, protected by tools/build_gate.py without being listed. Keep this pr
 `tools/free_providers.txt`
 `tools/builders.conf`
 `tools/test_free_providers.py`
+`tools/nv_build.sh`
+`tools/test_nv_build.py`
 
 ## Ripple
 Every builder and reviewer reads free_providers.txt (test_free_providers.py scans builders.conf and cross_review.opencode.json for slugs); routing.md and models.md name the chain (part e updates the docs). The OpenRouter key limit ($3 per month) is set by Feras on openrouter.ai: until he does, PAID_CHAIN stays unused.
@@ -34,7 +36,7 @@ Every builder and reviewer reads free_providers.txt (test_free_providers.py scan
 - Free requests run out (1000 per day, 20 per minute): NV_FALLBACK_RE already falls to the next model.
 
 ## Tests
-- tools/test_free_providers.py :: test_paid_ids_need_paid_ok, test_paid_models_skip_deepseek_endpoint (red on the base). Player-visible: not applicable (tooling).
+- tools/test_free_providers.py :: test_paid_ids_need_paid_ok, test_paid_models_skip_deepseek_endpoint, test_paid_lines_carry_rates; tools/test_nv_build.py :: test_paid_hop_only_with_paid_ok (red on the base; revised 11-05 after the Dia review). Player-visible: not applicable (tooling).
 
 ## Checklist
 - file: opencode.json

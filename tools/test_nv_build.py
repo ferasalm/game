@@ -3,6 +3,7 @@
 model's own failure, a PASS and a REFUSED stop the walk; a pinned 4th arg runs that one model only.
 The real nv_build.sh, lib.sh and builders.conf run against a stub build_pipeline.sh and slots.sh."""
 import os
+import re
 import shutil
 import subprocess
 import tempfile
@@ -69,6 +70,25 @@ def test_refused_by_the_pipeline_exits_3_without_a_fallback():
 def test_a_pinned_model_runs_alone():
     r, calls = run(REFUSE_MODELS="groq/x", _ARGS="groq/x")
     assert r.returncode == 1 and calls == ["nv groq/x"], calls
+
+
+def test_the_glm_word_walks_the_glm_chain_only():
+    # Feras 11-05: a refusal retries the same family's next route, never another model (NV_CHAIN is not touched)
+    r, calls = run(GLM_CHAIN="nvidia/g opencode/g-free", REFUSE_MODELS="nvidia/g", _ARGS="glm")
+    assert r.returncode == 0 and calls == ["nv nvidia/g", "nv opencode/g-free"], (r.stderr, calls)
+
+
+def test_the_deepseek_word_is_the_default_chain():
+    r, calls = run(_ARGS="deepseek")
+    assert r.returncode == 0 and calls == ["nv nvidia/a"], (r.stderr, calls)
+
+
+def test_the_build_chains_hold_one_model_each():
+    # D11 + Feras 11-05: a fallback hop is another route to the same calibrated model, so every id in a chain names it
+    conf = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "builders.conf"), encoding="utf-8").read()
+    for var, name in (("NV_CHAIN", "deepseek-v4.1-flash"), ("GLM_CHAIN", "glm-5.3-flash")):
+        ids = re.search(r'\$\{' + var + r':=([^}]*)\}', conf).group(1).split()
+        assert ids and all(name in i for i in ids), (var, ids)
 
 
 if __name__ == "__main__":

@@ -52,9 +52,9 @@ Scale: a small, low-risk change (a few lines, no machinery, nothing player-visib
   3 Claude tokens and usage limits; 4 organization and simplicity; 5 speed. Builder time is free.
 - Opus plans and owns every output that reaches Feras as if it did the work; Sonnet high executes from an Opus brief,
   delegating by the low-cost-pipeline routing table (worker policy: DECISIONS Process 11-01). Opus (or the Lead chat) reviews
-  whatever another model made, tiered (gates, cross-review lens via nv max / agy or a Haiku low pass, then the list and risky hunks).
-- IMPORTANT: one task, model and effort per chat, finished at full quality; context size never stops or hands off work
-  (DECISIONS 10-31). /handoff when the task is done or at ~85% of the 5-hour window; a follow-up of <= ~10 tool calls stays,
+  whatever another model made, tiered (gates, cross-review lens via nv max / agy or a Haiku xhigh pass, then the list and risky hunks).
+- IMPORTANT: one task, model and effort per chat, finished at full quality; past 300k context, finish the step, then
+  /handoff (DECISIONS 11-05). /handoff also when the task is done or at ~85% of the 5-hour window; a follow-up of <= ~10 tool calls stays,
   a new multi-step task opens a fresh chat. Status line or /usage at the start. Independent steps go as parallel tool
   calls in one message, never chained shell (the worktree guard refuses it; each refusal = a call).
 - Builders write when the brief is shorter than the work and the risk is low or well tested; Opus writes small, risky
